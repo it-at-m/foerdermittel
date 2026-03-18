@@ -1,5 +1,5 @@
 <!-- General project links -->
-[documentation]: https://foerdermittel.oss.muenchen.de/
+[documentation]: https://it-at-m.github.io/foerdermittel/
 [itm-opensource]: https://opensource.muenchen.de/
 [license]: ../LICENSE
 [code-of-conduct]: ./CODE_OF_CONDUCT.md
@@ -23,7 +23,7 @@ TODO ADD DESCRIPTION
 
 To learn more about the software, checkout the [documentation][documentation].
 
-The application is based on [Spring][spring-documentation] and [Vue.js][vuejs-documentation].
+The application is built with [Spring][spring-documentation] and [Vue.js][vuejs-documentation] and is based on the [refarch-templates](https://refarch.oss.muenchen.de/templates/) of it@M.
 
 ## Contributing
 

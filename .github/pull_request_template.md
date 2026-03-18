@@ -39,4 +39,8 @@ Issue: #XXX
 - [ ] Updated database migration scripts (if changes to model were made)
 - [ ] Added Swagger API annotations (if changes to API was made)
 
+### Development Stack
+
+- [ ] Checked functionality of Docker stack (if Docker stack was modified or images were changed)
+
 ## Screenshots (if UI was changed)
