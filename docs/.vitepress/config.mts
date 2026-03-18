@@ -3,7 +3,7 @@ import { withMermaid } from "vitepress-plugin-mermaid";
 
 // https://vitepress.dev/reference/site-config
 const vitepressConfig = defineConfig({
-  base: "/", // needs to be changed if delivered via sub path (e.g. "/docs/" for example.com/docs)
+  base: "/foerdermittel/", // needs to be changed if delivered via sub path (e.g. "/docs/" for example.com/docs)
   title: "Fördermittel Documentation",
   description: "Documentation template from the RefArch Templates",
   head: [
