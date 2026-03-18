@@ -14,7 +14,7 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <name>foerdermittel-backend</name>
-    <description>This is the default starting project for a backend project based on the reference architecture of it@M</description>
+    <description>Backend component for the application foerdermittel</description>
     <url>https://github.com/it-at-m/foerdermittel</url>
     <licenses>
         <license>
