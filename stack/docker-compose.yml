@@ -1,4 +1,4 @@
-name: refarch-stack
+name: foerdermittel-stack
 
 services:
   postgres:
