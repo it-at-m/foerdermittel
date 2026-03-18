@@ -20,8 +20,6 @@ jobs:
         include: # hier müssen die Pfade angegeben werden
           - app-path: foerdermittel-backend
           - app-path: foerdermittel-frontend
-          - app-path: foerdermittel-eai
-          - app-path: foerdermittel-webcomponent
 
     steps:
       - uses: it-at-m/lhm_actions/action-templates/actions/action-checkout@7cb754b2056cebda6c36db344434f85be398c493 # v1.0.25
