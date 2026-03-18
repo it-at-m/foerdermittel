@@ -3,7 +3,7 @@
 layout: home
 
 hero:
-  name: "RefArch Docs Template"
+  name: "Fördermittel Documentation"
   text: "Starter files for Vitepress-based documentation"
   tagline: "This is the default template for writing documentation in RefArch applications"
   actions:
