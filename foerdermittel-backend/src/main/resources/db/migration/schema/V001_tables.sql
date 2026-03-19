@@ -4,8 +4,8 @@
 
 CREATE TABLE "FP_ABLAGEINDEXE"
 (
-    "ID"          NUMERIC(38, 0),
-    "STB_BEREICH" VARCHAR(30),
+    "ID"          NUMERIC(38, 0) NOT NULL,
+    "STB_BEREICH" VARCHAR(30)    NOT NULL,
     "NR"          NUMERIC(4, 0),
     "WORT"        VARCHAR(80),
     "STICHWORTE"  VARCHAR(400)
@@ -23,17 +23,17 @@ COMMENT ON TABLE "FP_ABLAGEINDEXE" IS 'Suchindex zum Auffinden von Ablagen (dbas
 
 CREATE TABLE "FP_ABRUFE"
 (
-    "ID"                 NUMERIC(38, 0),
-    "PRO_PROJNR"         VARCHAR(7),
+    "ID"                 NUMERIC(38, 0)                   NOT NULL,
+    "PRO_PROJNR"         VARCHAR(7)                       NOT NULL,
     "BWI_ID"             NUMERIC(38, 0),
     "VNABR"              VARCHAR(1),
-    "ABRUF_Z"            NUMERIC(10, 0),
-    "ABRUF_D"            NUMERIC(10, 0),
-    "ABRUF_K"            NUMERIC(10, 0),
+    "ABRUF_Z"            NUMERIC(10, 0)                   NOT NULL,
+    "ABRUF_D"            NUMERIC(10, 0)                   NOT NULL,
+    "ABRUF_K"            NUMERIC(10, 0)                   NOT NULL,
     "ABRUF_DATUM"        DATE,
-    "ERH_Z"              NUMERIC(10, 0),
-    "ERH_D"              NUMERIC(10, 0),
-    "ERH_K"              NUMERIC(10, 0),
+    "ERH_Z"              NUMERIC(10, 0)                   NOT NULL,
+    "ERH_D"              NUMERIC(10, 0)                   NOT NULL,
+    "ERH_K"              NUMERIC(10, 0)                   NOT NULL,
     "ERH_DATUM"          DATE,
     "REF_REFNR"          NUMERIC(2, 0),
     "SAPABRUFAUFTRAGSNR" NUMERIC(8, 0),
@@ -45,8 +45,8 @@ CREATE TABLE "FP_ABRUFE"
     "BUCHUNGSKREIS_K"    VARCHAR(4),
     "SACHKONTO_K"        VARCHAR(6),
     "NOTIZEN"            TEXT,
-    "ANLAGEDATUM"        DATE        DEFAULT CURRENT_DATE,
-    "ANLAGEVON"          VARCHAR(30) DEFAULT USER,
+    "ANLAGEDATUM"        DATE        DEFAULT CURRENT_DATE NOT NULL,
+    "ANLAGEVON"          VARCHAR(30) DEFAULT USER         NOT NULL,
     "AENDERUNGSDATUM"    DATE,
     "AENDERUNGVON"       VARCHAR(30)
 );
@@ -84,26 +84,26 @@ COMMENT ON TABLE "FP_ABRUFE" IS 'Enthält die Abrufe zu den Bewilligungen eines 
 
 CREATE TABLE "FP_ANTRAEGE"
 (
-    "ID"              NUMERIC(38, 0),
-    "PRO_PROJNR"      VARCHAR(7),
+    "ID"              NUMERIC(38, 0)                   NOT NULL,
+    "PRO_PROJNR"      VARCHAR(7)                       NOT NULL,
     "ANTRAGSDATUM"    DATE,
-    "ANTRAGSTYP"      VARCHAR(1),
-    "GESKOSTEN"       NUMERIC(10, 0),
-    "ZWFKOSTEN"       NUMERIC(10, 0),
-    "VORZBEG"         BOOLEAN DEFAULT FALSE,
+    "ANTRAGSTYP"      VARCHAR(1)                       NOT NULL,
+    "GESKOSTEN"       NUMERIC(10, 0)                   NOT NULL,
+    "ZWFKOSTEN"       NUMERIC(10, 0)                   NOT NULL,
+    "VORZBEG"         BOOLEAN     DEFAULT FALSE        NOT NULL,
     "VBDATUM"         DATE,
     "UNBEDDAT"        DATE,
     "UNBEDJA"         DATE,
     "UNBEDBIS"        DATE,
-    "A_SU_Z"          NUMERIC(10, 0),
-    "A_SU_D"          NUMERIC(10, 0),
-    "A_SU_K"          NUMERIC(10, 0),
-    "B_VOR_SU_Z"      NUMERIC(10, 0),
-    "B_VOR_SU_D"      NUMERIC(10, 0),
-    "B_VOR_SU_K"      NUMERIC(10, 0),
+    "A_SU_Z"          NUMERIC(10, 0)                   NOT NULL,
+    "A_SU_D"          NUMERIC(10, 0)                   NOT NULL,
+    "A_SU_K"          NUMERIC(10, 0)                   NOT NULL,
+    "B_VOR_SU_Z"      NUMERIC(10, 0)                   NOT NULL,
+    "B_VOR_SU_D"      NUMERIC(10, 0)                   NOT NULL,
+    "B_VOR_SU_K"      NUMERIC(10, 0)                   NOT NULL,
     "NOTIZEN"         TEXT,
-    "ANLAGEDATUM"     DATE DEFAULT CURRENT_DATE,
-    "ANLAGEVON"       VARCHAR(30) DEFAULT USER,
+    "ANLAGEDATUM"     DATE        DEFAULT CURRENT_DATE NOT NULL,
+    "ANLAGEVON"       VARCHAR(30) DEFAULT USER         NOT NULL,
     "AENDERUNGSDATUM" DATE,
     "AENDERUNGVON"    VARCHAR(30)
 );
@@ -137,11 +137,11 @@ COMMENT ON TABLE "FP_ANTRAEGE" IS 'Enthält alle Förderanträge zu Projekten ((
 
 CREATE TABLE "FP_ARCHIV"
 (
-    "ID"                 NUMERIC(38, 0),
+    "ID"                 NUMERIC(38, 0)        NOT NULL,
     "PRO_PROJNR"         VARCHAR(7),
     "SPEICHERDATUM"      DATE,
-    "SPEICHERAKT"        BOOLEAN DEFAULT FALSE,
-    "SPEICHERRECHNUNGEN" BOOLEAN DEFAULT FALSE,
+    "SPEICHERAKT"        BOOLEAN DEFAULT FALSE NOT NULL,
+    "SPEICHERRECHNUNGEN" BOOLEAN DEFAULT FALSE NOT NULL,
     "MIKRODATPLAN"       DATE,
     "MIKRODAT"           DATE,
     "NOTIZEN"            TEXT
@@ -162,8 +162,8 @@ COMMENT ON TABLE "FP_ARCHIV" IS 'Beschreibt welche allgemeinen Dokumente und Pro
 
 CREATE TABLE "FP_BAULEITUNGEN"
 (
-    "BAULEITUNG"  VARCHAR(1),
-    "BEZEICHNUNG" VARCHAR(200)
+    "BAULEITUNG"  VARCHAR(1)   NOT NULL,
+    "BEZEICHNUNG" VARCHAR(200) NOT NULL
 );
 
 COMMENT ON COLUMN "FP_BAULEITUNGEN"."BAULEITUNG" IS 'Abkürzung der Bauleitung wie H,1,S';
@@ -175,8 +175,8 @@ COMMENT ON TABLE "FP_BAULEITUNGEN" IS 'Aufstellung aller Bauleitungen als Stammd
 
 CREATE TABLE "FP_BAUPROGRAMME"
 (
-    "BAUPROGRAMM" NUMERIC(2, 0),
-    "BEZEICHNUNG" VARCHAR(200)
+    "BAUPROGRAMM" NUMERIC(2, 0) NOT NULL,
+    "BEZEICHNUNG" VARCHAR(200)  NOT NULL
 );
 
 COMMENT ON COLUMN "FP_BAUPROGRAMME"."BAUPROGRAMM" IS 'Nummer des Bauprogramms';
@@ -188,20 +188,20 @@ COMMENT ON TABLE "FP_BAUPROGRAMME" IS 'Aufstellung aller Bauprogramme';
 
 CREATE TABLE "FP_BENUTZER"
 (
-    "ORAUSER"   VARCHAR(10)  DEFAULT NULL,
+    "ORAUSER"   VARCHAR(10) DEFAULT NULL,
     "VORNAME"   VARCHAR(30),
     "NACHNAME"  VARCHAR(30),
     "EMAIL"     VARCHAR(40),
     "ABTEILUNG" VARCHAR(30),
-    "FUNKTION1" BOOLEAN DEFAULT FALSE,
-    "FUNKTION2" BOOLEAN DEFAULT FALSE,
-    "FUNKTION3" BOOLEAN DEFAULT FALSE,
-    "FUNKTION4" BOOLEAN DEFAULT FALSE,
-    "PASSWORT"  VARCHAR(10)  DEFAULT NULL,
-    "ANREDE"    VARCHAR(10)  DEFAULT NULL,
+    "FUNKTION1" BOOLEAN     DEFAULT FALSE,
+    "FUNKTION2" BOOLEAN     DEFAULT FALSE,
+    "FUNKTION3" BOOLEAN     DEFAULT FALSE,
+    "FUNKTION4" BOOLEAN     DEFAULT FALSE,
+    "PASSWORT"  VARCHAR(10) DEFAULT NULL,
+    "ANREDE"    VARCHAR(10) DEFAULT NULL,
     "TELEFON"   VARCHAR(30),
     "LASTLOGIN" DATE,
-    "FUNKTION5" BOOLEAN DEFAULT FALSE
+    "FUNKTION5" BOOLEAN     DEFAULT FALSE
 );
 
 COMMENT ON COLUMN "FP_BENUTZER"."ORAUSER" IS 'Benutzername des Anwenders zur Anmeldung';
@@ -225,7 +225,7 @@ COMMENT ON TABLE "FP_BENUTZER" IS 'Diese Tabelle beinhaltet die Anwender des Sys
 
 CREATE TABLE "FP_BENUTZERHINWEISE"
 (
-    "FOR_FORMSMODUL" VARCHAR(30),
+    "FOR_FORMSMODUL" VARCHAR(30) NOT NULL,
     "HINWEIS1"       TEXT,
     "HINWEIS2"       TEXT,
     "HINWEIS3"       TEXT,
@@ -246,24 +246,24 @@ COMMENT ON TABLE "FP_BENUTZERHINWEISE" IS 'Enthält Benutzerhinweise im Kontext 
 
 CREATE TABLE "FP_BEWILLIGUNGEN"
 (
-    "ID"              NUMERIC(38, 0),
-    "PRO_PROJNR"      VARCHAR(7),
+    "ID"              NUMERIC(38, 0)                   NOT NULL,
+    "PRO_PROJNR"      VARCHAR(7)                       NOT NULL,
     "ANT_ID"          NUMERIC(38, 0),
     "BDATUM"          DATE,
-    "AFSATZ"          NUMERIC(8, 2),
-    "BFSATZ"          NUMERIC(8, 2),
-    "BZWFKOSTEN"      NUMERIC(10, 0),
+    "AFSATZ"          NUMERIC(8, 2)                    NOT NULL,
+    "BFSATZ"          NUMERIC(8, 2)                    NOT NULL,
+    "BZWFKOSTEN"      NUMERIC(10, 0)                   NOT NULL,
     "BZUWENDUNG_Z"    NUMERIC(10, 0),
     "BZUWENDUNG_D"    NUMERIC(10, 0),
     "BZUWENDUNG_K"    NUMERIC(10, 0),
     "BZUWART"         VARCHAR(1),
     "BAKTENZEICHEN"   VARCHAR(20),
-    "GESZUWENDUNGEN"  NUMERIC(10, 0),
-    "GESKONNEX"       NUMERIC(10, 0),
+    "GESZUWENDUNGEN"  NUMERIC(10, 0)                   NOT NULL,
+    "GESKONNEX"       NUMERIC(10, 0)                   NOT NULL,
     "KRW"             VARCHAR(1),
     "NOTIZEN"         TEXT,
-    "ANLAGEDATUM"     DATE        DEFAULT CURRENT_DATE,
-    "ANLAGEVON"       VARCHAR(30) DEFAULT USER,
+    "ANLAGEDATUM"     DATE        DEFAULT CURRENT_DATE NOT NULL,
+    "ANLAGEVON"       VARCHAR(30) DEFAULT USER         NOT NULL,
     "AENDERUNGSDATUM" DATE,
     "AENDERUNGVON"    VARCHAR(30)
 );
@@ -295,10 +295,10 @@ COMMENT ON TABLE "FP_BEWILLIGUNGEN" IS 'Enthält alle Bewilligungen zu Förderan
 
 CREATE TABLE "FP_DOMAINS"
 (
-    "TABELLE"      VARCHAR(30),
-    "SPALTE"       VARCHAR(30),
-    "WERT"         VARCHAR(3),
-    "BESCHREIBUNG" VARCHAR(50)
+    "TABELLE"      VARCHAR(30) NOT NULL,
+    "SPALTE"       VARCHAR(30) NOT NULL,
+    "WERT"         VARCHAR(3)  NOT NULL,
+    "BESCHREIBUNG" VARCHAR(50) NOT NULL
 );
 
 COMMENT ON COLUMN "FP_DOMAINS"."TABELLE" IS 'Tabelle auf welche sich die Domäne bezieht';
@@ -312,32 +312,32 @@ COMMENT ON TABLE "FP_DOMAINS" IS 'Aufstellung aller Domains und ihrer Werte';
 
 CREATE TABLE "FP_EUINFORMATIONEN"
 (
-    "ID"           NUMERIC(38, 0),
-    "JAHR"         NUMERIC(4, 0),
-    "PUB_KURZFORM" VARCHAR(1),
+    "ID"           NUMERIC(38, 0) NOT NULL,
+    "JAHR"         NUMERIC(4, 0)  NOT NULL,
+    "PUB_KURZFORM" VARCHAR(1)     NOT NULL,
     "HEFTA"        VARCHAR(1),
-    "NUMMER"       NUMERIC(3, 0),
-    "WICHTIG"      BOOLEAN,
+    "NUMMER"       NUMERIC(3, 0)  NOT NULL,
+    "WICHTIG"      BOOLEAN        NOT NULL,
     "SEITENNR"     VARCHAR(3),
     "STICHWORT"    VARCHAR(50),
-    "RAWI"         BOOLEAN,
-    "SCHULREF"     BOOLEAN,
-    "SOZREF_R_5"   BOOLEAN,
-    "RGU_11"       BOOLEAN,
-    "RGU_CS"       BOOLEAN,
-    "KRH"          BOOLEAN,
-    "AFA"          BOOLEAN,
-    "SWM"          BOOLEAN,
-    "KULTURREF"    BOOLEAN,
-    "BAUREF"       BOOLEAN,
-    "PLANREF"      BOOLEAN,
-    "DIREKTORIUM"  BOOLEAN,
-    "POR"          BOOLEAN,
-    "KVR"          BOOLEAN,
-    "KOMMREF"      BOOLEAN,
-    "SEW"          BOOLEAN,
-    "STK"          BOOLEAN,
-    "INHALT"       VARCHAR(200),
+    "RAWI"         BOOLEAN        NOT NULL,
+    "SCHULREF"     BOOLEAN        NOT NULL,
+    "SOZREF_R_5"   BOOLEAN        NOT NULL,
+    "RGU_11"       BOOLEAN        NOT NULL,
+    "RGU_CS"       BOOLEAN        NOT NULL,
+    "KRH"          BOOLEAN        NOT NULL,
+    "AFA"          BOOLEAN        NOT NULL,
+    "SWM"          BOOLEAN        NOT NULL,
+    "KULTURREF"    BOOLEAN        NOT NULL,
+    "BAUREF"       BOOLEAN        NOT NULL,
+    "PLANREF"      BOOLEAN        NOT NULL,
+    "DIREKTORIUM"  BOOLEAN        NOT NULL,
+    "POR"          BOOLEAN        NOT NULL,
+    "KVR"          BOOLEAN        NOT NULL,
+    "KOMMREF"      BOOLEAN        NOT NULL,
+    "SEW"          BOOLEAN        NOT NULL,
+    "STK"          BOOLEAN        NOT NULL,
+    "INHALT"       VARCHAR(200)   NOT NULL,
     "INFODAT"      DATE
 );
 
@@ -375,12 +375,12 @@ COMMENT ON TABLE "FP_EUINFORMATIONEN" IS 'Enthält wesentliche Informationen div
 
 CREATE TABLE "FP_FOERDERBEREICHE"
 (
-    "FB"          NUMERIC(2, 0),
-    "BEZEICHNUNG" VARCHAR(200),
-    "FUNKTION1"   BOOLEAN DEFAULT FALSE,
-    "FUNKTION2"   BOOLEAN DEFAULT FALSE,
-    "FUNKTION3"   BOOLEAN DEFAULT FALSE,
-    "FUNKTION4"   BOOLEAN DEFAULT FALSE
+    "FB"          NUMERIC(2, 0)         NOT NULL,
+    "BEZEICHNUNG" VARCHAR(200)          NOT NULL,
+    "FUNKTION1"   BOOLEAN DEFAULT FALSE NOT NULL,
+    "FUNKTION2"   BOOLEAN DEFAULT FALSE NOT NULL,
+    "FUNKTION3"   BOOLEAN DEFAULT FALSE NOT NULL,
+    "FUNKTION4"   BOOLEAN DEFAULT FALSE NOT NULL
 );
 
 COMMENT ON COLUMN "FP_FOERDERBEREICHE"."FB" IS 'Abkürzung des Förderbereichs';
@@ -396,8 +396,8 @@ COMMENT ON TABLE "FP_FOERDERBEREICHE" IS 'Austellung aller Förderbereiche (dbas
 
 CREATE TABLE "FP_GEPLANTEMASSNAHMEN"
 (
-    "ID"              NUMERIC(38, 0),
-    "KUR_KURZBEZ"     VARCHAR(8),
+    "ID"              NUMERIC(38, 0) NOT NULL,
+    "KUR_KURZBEZ"     VARCHAR(8)     NOT NULL,
     "BEZ_STADTBEZIRK" NUMERIC(2, 0),
     "STRASSE"         VARCHAR(50),
     "PROJEKT"         VARCHAR(70),
@@ -421,8 +421,8 @@ COMMENT ON TABLE "FP_GEPLANTEMASSNAHMEN" IS 'Enthält Infomationen über zukünf
 
 CREATE TABLE "FP_HAUPTABSCHNITTE"
 (
-    "HA"          VARCHAR(2),
-    "BEZEICHNUNG" VARCHAR(200)
+    "HA"          VARCHAR(2)   NOT NULL,
+    "BEZEICHNUNG" VARCHAR(200) NOT NULL
 );
 
 COMMENT ON COLUMN "FP_HAUPTABSCHNITTE"."HA" IS 'Hauptabschnitt';
@@ -434,8 +434,8 @@ COMMENT ON TABLE "FP_HAUPTABSCHNITTE" IS 'Hauptabschnitte zur Klassifizierung de
 
 CREATE TABLE "FP_HHJAHRE"
 (
-    "HHJAHR"        NUMERIC(4, 0),
-    "HHBEZEICHNUNG" VARCHAR(200),
+    "HHJAHR"        NUMERIC(4, 0) NOT NULL,
+    "HHBEZEICHNUNG" VARCHAR(200)  NOT NULL,
     "NOTIZEN"       TEXT
 );
 
@@ -449,9 +449,9 @@ COMMENT ON TABLE "FP_HHJAHRE" IS 'Aufstellung aller Haushaltsjahre';
 
 CREATE TABLE "FP_HHPLAN"
 (
-    "HHJ_JAHR"          NUMERIC(4, 0),
-    "FIPO"              VARCHAR(15) DEFAULT '000000000000000',
-    "PRO_PROJNR"        VARCHAR(7),
+    "HHJ_JAHR"          NUMERIC(4, 0)                         NOT NULL,
+    "FIPO"              VARCHAR(15) DEFAULT '000000000000000' NOT NULL,
+    "PRO_PROJNR"        VARCHAR(7)                            NOT NULL,
     "P_PSTRASSE"        VARCHAR(100),
     "P_PNAME"           VARCHAR(100),
     "P_FOB_FB"          NUMERIC(2, 0),
@@ -468,8 +468,8 @@ CREATE TABLE "FP_HHPLAN"
     "N1"                NUMERIC(12, 0),
     "N2"                NUMERIC(12, 0),
     "NOTIZEN"           TEXT,
-    "ANLAGEDATUM"       DATE        DEFAULT CURRENT_DATE,
-    "ANLAGEVON"         VARCHAR(30) DEFAULT USER,
+    "ANLAGEDATUM"       DATE        DEFAULT CURRENT_DATE      NOT NULL,
+    "ANLAGEVON"         VARCHAR(30) DEFAULT USER              NOT NULL,
     "AENDERUNGSDATUM"   DATE,
     "AENDERUNGVON"      VARCHAR(30)
 );
@@ -504,7 +504,7 @@ COMMENT ON TABLE "FP_HHPLAN" IS 'Enthält Einnahmen (Zuwendungen und Kostenersta
 
 CREATE TABLE "FP_JAHRESSTATISTIK"
 (
-    "JAHR"                 NUMERIC(4, 0),
+    "JAHR"                 NUMERIC(4, 0) NOT NULL,
     "JAHRESSTATISTIK1_AM"  DATE,
     "JAHRESSTATISTIK1_VON" VARCHAR(30),
     "JAHRESSTATISTIK2_AM"  DATE,
@@ -529,11 +529,11 @@ COMMENT ON TABLE "FP_JAHRESSTATISTIK" IS 'Diese Tabelle protokolliert die Erstel
 
 CREATE TABLE "FP_JAHRESSTATISTIK1"
 (
-    "ID"               NUMERIC(38, 0),
-    "JSS_JAHR"         NUMERIC(4, 0),
-    "FOERDERBEREICH"   VARCHAR(60),
-    "FB"               NUMERIC(2, 0),
-    "GRUPPE"           NUMERIC(1, 0),
+    "ID"               NUMERIC(38, 0) NOT NULL,
+    "JSS_JAHR"         NUMERIC(4, 0)  NOT NULL,
+    "FOERDERBEREICH"   VARCHAR(60)    NOT NULL,
+    "FB"               NUMERIC(2, 0)  NOT NULL,
+    "GRUPPE"           NUMERIC(1, 0)  NOT NULL,
     "GESAMTKOSTEN"     NUMERIC(12, 2),
     "ZUWENDUNGSFAEHIG" NUMERIC(12, 2),
     "B_ZUSCHUSS"       NUMERIC(12, 2),
@@ -564,11 +564,11 @@ COMMENT ON TABLE "FP_JAHRESSTATISTIK1" IS 'Diese Tabelle enthält die generierte
 
 CREATE TABLE "FP_JAHRESSTATISTIK2"
 (
-    "ID"                   NUMERIC(38, 0),
-    "JSS_JAHR"             NUMERIC(4, 0),
-    "FOERDERBEREICH"       VARCHAR(60),
-    "FB"                   NUMERIC(2, 0),
-    "GRUPPE"               NUMERIC(1, 0),
+    "ID"                   NUMERIC(38, 0) NOT NULL,
+    "JSS_JAHR"             NUMERIC(4, 0)  NOT NULL,
+    "FOERDERBEREICH"       VARCHAR(60)    NOT NULL,
+    "FB"                   NUMERIC(2, 0)  NOT NULL,
+    "GRUPPE"               NUMERIC(1, 0)  NOT NULL,
     "ANZAHL_ABRUFE"        NUMERIC(10, 0),
     "ANZAHL_VN"            NUMERIC(10, 0),
     "ANZAHL_BEWILLIGUNGEN" NUMERIC(10, 0),
@@ -609,11 +609,11 @@ COMMENT ON TABLE "FP_JAHRESSTATISTIK2" IS 'Diese Tabelle enthält die generierte
 
 CREATE TABLE "FP_JAHRESSTATISTIK3"
 (
-    "ID"                 NUMERIC(38, 0),
-    "JSS_JAHR"           NUMERIC(4, 0),
-    "FOERDERBEREICH"     VARCHAR(60),
-    "FB"                 NUMERIC(2, 0),
-    "GRUPPE"             NUMERIC(1, 0),
+    "ID"                 NUMERIC(38, 0) NOT NULL,
+    "JSS_JAHR"           NUMERIC(4, 0)  NOT NULL,
+    "FOERDERBEREICH"     VARCHAR(60)    NOT NULL,
+    "FB"                 NUMERIC(2, 0)  NOT NULL,
+    "GRUPPE"             NUMERIC(1, 0)  NOT NULL,
     "BZUWENDUNG_Z_PLUS"  NUMERIC(12, 2),
     "BZUWENDUNG_Z_MINUS" NUMERIC(12, 2),
     "BZUWENDUNG_D_PLUS"  NUMERIC(12, 2),
@@ -646,8 +646,8 @@ COMMENT ON TABLE "FP_JAHRESSTATISTIK3" IS 'Diese Tabelle enthält die generierte
 
 CREATE TABLE "FP_KRANKENHAEUSER"
 (
-    "KRHNAME"     VARCHAR(1),
-    "BEZEICHNUNG" VARCHAR(200)
+    "KRHNAME"     VARCHAR(1)   NOT NULL,
+    "BEZEICHNUNG" VARCHAR(200) NOT NULL
 );
 
 COMMENT ON COLUMN "FP_KRANKENHAEUSER"."KRHNAME" IS 'Abkürzung des Krankenhauses wie B, R';
@@ -659,8 +659,8 @@ COMMENT ON TABLE "FP_KRANKENHAEUSER" IS 'Aufstellung aller Krankenhäuser als St
 
 CREATE TABLE "FP_KURZBEZEICHNUNGEN"
 (
-    "KURZBEZ"     VARCHAR(8),
-    "BEZEICHNUNG" VARCHAR(200)
+    "KURZBEZ"     VARCHAR(8)   NOT NULL,
+    "BEZEICHNUNG" VARCHAR(200) NOT NULL
 );
 
 COMMENT ON COLUMN "FP_KURZBEZEICHNUNGEN"."KURZBEZ" IS 'Kurzbezeichnung für eine Projekt';
@@ -672,8 +672,8 @@ COMMENT ON TABLE "FP_KURZBEZEICHNUNGEN" IS 'Alle Kurzbezeichnungen zur Klassiifz
 
 CREATE TABLE "FP_LISTENNAMEN"
 (
-    "KURZBEZ"     VARCHAR(3),
-    "BEZEICHNUNG" VARCHAR(200)
+    "KURZBEZ"     VARCHAR(3)   NOT NULL,
+    "BEZEICHNUNG" VARCHAR(200) NOT NULL
 );
 
 COMMENT ON COLUMN "FP_LISTENNAMEN"."KURZBEZ" IS 'Kurzbezeichnung für eine Liste von Stadtbezirken';
@@ -685,18 +685,18 @@ COMMENT ON TABLE "FP_LISTENNAMEN" IS 'Alle Listennamen für die Zusammenstellung
 
 CREATE TABLE "FP_PROJEKTE"
 (
-    "PROJNR"              VARCHAR(7),
-    "FOB_FB"              NUMERIC(2, 0),
-    "KUR_KURZBEZ"         VARCHAR(8),
-    "UAS_UA"              VARCHAR(2),
-    "JAHR"                VARCHAR(2),
-    "LFDNR1"              VARCHAR(1),
-    "LFDNR2"              VARCHAR(2),
+    "PROJNR"              VARCHAR(7)                       NOT NULL,
+    "FOB_FB"              NUMERIC(2, 0)                    NOT NULL,
+    "KUR_KURZBEZ"         VARCHAR(8)                       NOT NULL,
+    "UAS_UA"              VARCHAR(2)                       NOT NULL,
+    "JAHR"                VARCHAR(2)                       NOT NULL,
+    "LFDNR1"              VARCHAR(1)                       NOT NULL,
+    "LFDNR2"              VARCHAR(2)                       NOT NULL,
     "PNAME"               VARCHAR(100),
     "PSTRASSE"            VARCHAR(100),
-    "KAUF"                BOOLEAN,
+    "KAUF"                BOOLEAN                          NOT NULL,
     "PROJART"             VARCHAR(50),
-    "REFINANZIERBAR"      BOOLEAN DEFAULT TRUE,
+    "REFINANZIERBAR"      BOOLEAN     DEFAULT TRUE         NOT NULL,
     "BLE_BAULEITUNG"      VARCHAR(1),
     "BAULEITUNGKONTAKT"   VARCHAR(30),
     "BEZ_STADTBEZIRK"     NUMERIC(2, 0),
@@ -715,7 +715,7 @@ CREATE TABLE "FP_PROJEKTE"
     "VNPRUEFZWF"          NUMERIC(12, 2),
     "VNSCHLUSSZWF"        NUMERIC(12, 2),
     "VNSCHLUSSBEW"        DATE,
-    "SAP"                 BOOLEAN,
+    "SAP"                 BOOLEAN                          NOT NULL,
     "SAPSTATAUF"          BOOLEAN,
     "SAPMATNR"            NUMERIC(8, 0),
     "SAPWERTNR"           NUMERIC(8, 0),
@@ -733,9 +733,9 @@ CREATE TABLE "FP_PROJEKTE"
     "PSBAUREF"            VARCHAR(2),
     "PSBAUNR"             VARCHAR(6),
     "NOTIZEN"             TEXT,
-    "ALTDATEN"            BOOLEAN DEFAULT FALSE,
-    "ANLAGEDATUM"         DATE         DEFAULT CURRENT_DATE,
-    "ANLAGEVON"           VARCHAR(30)  DEFAULT USER,
+    "ALTDATEN"            BOOLEAN     DEFAULT FALSE        NOT NULL,
+    "ANLAGEDATUM"         DATE        DEFAULT CURRENT_DATE NOT NULL,
+    "ANLAGEVON"           VARCHAR(30) DEFAULT USER         NOT NULL,
     "AENDERUNGSDATUM"     DATE,
     "AENDERUNGVON"        VARCHAR(30),
     "VNGESAMTZUWENDUNG"   NUMERIC(12, 2),
@@ -828,18 +828,18 @@ COMMENT ON TABLE "FP_PROJEKTE" IS 'Alle Projekte der Fördermittelverwaltung (db
 
 CREATE TABLE "FP_PROJEKTE_BAUSTAND_SAVE"
 (
-    "PROJNR"              VARCHAR(7),
-    "FOB_FB"              NUMERIC(2, 0),
-    "KUR_KURZBEZ"         VARCHAR(8),
-    "UAS_UA"              VARCHAR(2),
-    "JAHR"                VARCHAR(2),
-    "LFDNR1"              VARCHAR(1),
-    "LFDNR2"              VARCHAR(2),
+    "PROJNR"              VARCHAR(7)    NOT NULL,
+    "FOB_FB"              NUMERIC(2, 0) NOT NULL,
+    "KUR_KURZBEZ"         VARCHAR(8)    NOT NULL,
+    "UAS_UA"              VARCHAR(2)    NOT NULL,
+    "JAHR"                VARCHAR(2)    NOT NULL,
+    "LFDNR1"              VARCHAR(1)    NOT NULL,
+    "LFDNR2"              VARCHAR(2)    NOT NULL,
     "PNAME"               VARCHAR(100),
     "PSTRASSE"            VARCHAR(100),
-    "KAUF"                BOOLEAN,
+    "KAUF"                BOOLEAN       NOT NULL,
     "PROJART"             VARCHAR(50),
-    "REFINANZIERBAR"      BOOLEAN,
+    "REFINANZIERBAR"      BOOLEAN       NOT NULL,
     "KFWP88"              VARCHAR(15),
     "KFWP89"              VARCHAR(15),
     "KFWP90"              VARCHAR(15),
@@ -864,7 +864,7 @@ CREATE TABLE "FP_PROJEKTE_BAUSTAND_SAVE"
     "VNPRUEFZWF"          NUMERIC(12, 2),
     "VNSCHLUSSZWF"        NUMERIC(12, 2),
     "VNSCHLUSSBEW"        DATE,
-    "SAP"                 BOOLEAN,
+    "SAP"                 BOOLEAN       NOT NULL,
     "SAPSTATAUF"          BOOLEAN,
     "SAPMATNR"            NUMERIC(8, 0),
     "SAPWERTNR"           NUMERIC(8, 0),
@@ -886,9 +886,9 @@ CREATE TABLE "FP_PROJEKTE_BAUSTAND_SAVE"
     "PSBAUREF"            VARCHAR(2),
     "PSBAUNR"             VARCHAR(6),
     "NOTIZEN"             TEXT,
-    "ALTDATEN"            BOOLEAN,
-    "ANLAGEDATUM"         DATE,
-    "ANLAGEVON"           VARCHAR(30),
+    "ALTDATEN"            BOOLEAN       NOT NULL,
+    "ANLAGEDATUM"         DATE          NOT NULL,
+    "ANLAGEVON"           VARCHAR(30)   NOT NULL,
     "AENDERUNGSDATUM"     DATE,
     "AENDERUNGVON"        VARCHAR(30),
     "VNGESAMTZUWENDUNG"   NUMERIC(12, 2),
@@ -908,18 +908,18 @@ COMMENT ON TABLE "FP_PROJEKTE_BAUSTAND_SAVE" IS 'Backup der Tabelle FP_PROJEKTE 
 
 CREATE TABLE "FP_PROJEKTE_ZINSEN_SAVE"
 (
-    "PROJNR"              VARCHAR(7),
-    "FOB_FB"              NUMERIC(2, 0),
-    "KUR_KURZBEZ"         VARCHAR(8),
-    "UAS_UA"              VARCHAR(2),
-    "JAHR"                VARCHAR(2),
-    "LFDNR1"              VARCHAR(1),
-    "LFDNR2"              VARCHAR(2),
+    "PROJNR"              VARCHAR(7)    NOT NULL,
+    "FOB_FB"              NUMERIC(2, 0) NOT NULL,
+    "KUR_KURZBEZ"         VARCHAR(8)    NOT NULL,
+    "UAS_UA"              VARCHAR(2)    NOT NULL,
+    "JAHR"                VARCHAR(2)    NOT NULL,
+    "LFDNR1"              VARCHAR(1)    NOT NULL,
+    "LFDNR2"              VARCHAR(2)    NOT NULL,
     "PNAME"               VARCHAR(100),
     "PSTRASSE"            VARCHAR(100),
-    "KAUF"                BOOLEAN,
+    "KAUF"                BOOLEAN       NOT NULL,
     "PROJART"             VARCHAR(50),
-    "REFINANZIERBAR"      BOOLEAN,
+    "REFINANZIERBAR"      BOOLEAN       NOT NULL,
     "BLE_BAULEITUNG"      VARCHAR(1),
     "BAULEITUNGKONTAKT"   VARCHAR(30),
     "BEZ_STADTBEZIRK"     NUMERIC(2, 0),
@@ -938,7 +938,7 @@ CREATE TABLE "FP_PROJEKTE_ZINSEN_SAVE"
     "VNPRUEFZWF"          NUMERIC(12, 2),
     "VNSCHLUSSZWF"        NUMERIC(12, 2),
     "VNSCHLUSSBEW"        DATE,
-    "SAP"                 BOOLEAN,
+    "SAP"                 BOOLEAN       NOT NULL,
     "SAPSTATAUF"          BOOLEAN,
     "SAPMATNR"            NUMERIC(8, 0),
     "SAPWERTNR"           NUMERIC(8, 0),
@@ -960,9 +960,9 @@ CREATE TABLE "FP_PROJEKTE_ZINSEN_SAVE"
     "PSBAUREF"            VARCHAR(2),
     "PSBAUNR"             VARCHAR(6),
     "NOTIZEN"             TEXT,
-    "ALTDATEN"            BOOLEAN,
-    "ANLAGEDATUM"         DATE,
-    "ANLAGEVON"           VARCHAR(30),
+    "ALTDATEN"            BOOLEAN       NOT NULL,
+    "ANLAGEDATUM"         DATE          NOT NULL,
+    "ANLAGEVON"           VARCHAR(30)   NOT NULL,
     "AENDERUNGSDATUM"     DATE,
     "AENDERUNGVON"        VARCHAR(30),
     "VNGESAMTZUWENDUNG"   NUMERIC(12, 2),
@@ -983,10 +983,10 @@ COMMENT ON TABLE "FP_PROJEKTE_ZINSEN_SAVE" IS 'Backup der Tabelle FP_PROJEKTE (0
 
 CREATE TABLE "FP_PROJEKTISTKOSTEN"
 (
-    "PRO_PROJNR" VARCHAR(7),
-    "JAHR"       NUMERIC(4, 0),
-    "MONAT"      NUMERIC(2, 0),
-    "ISTKOSTEN"  NUMERIC(12, 0)
+    "PRO_PROJNR" VARCHAR(7)     NOT NULL,
+    "JAHR"       NUMERIC(4, 0)  NOT NULL,
+    "MONAT"      NUMERIC(2, 0)  NOT NULL,
+    "ISTKOSTEN"  NUMERIC(12, 0) NOT NULL
 );
 
 COMMENT ON COLUMN "FP_PROJEKTISTKOSTEN"."PRO_PROJNR" IS 'IstKosten bezogen auf ein Förderprojekt';
@@ -1000,13 +1000,13 @@ COMMENT ON TABLE "FP_PROJEKTISTKOSTEN" IS 'Enthält die Istkosten der Projekte i
 
 CREATE TABLE "FP_PROJEKTTERMINE"
 (
-    "ID"           NUMERIC(38, 0),
-    "PRO_PROJNR"   VARCHAR(7),
-    "TERMIN"       DATE,
+    "ID"           NUMERIC(38, 0)        NOT NULL,
+    "PRO_PROJNR"   VARCHAR(7)            NOT NULL,
+    "TERMIN"       DATE                  NOT NULL,
     "ZUSTAENDIG"   VARCHAR(60),
     "TELEFON"      VARCHAR(30),
     "NOTIZEN"      TEXT,
-    "UEBERWACHUNG" BOOLEAN DEFAULT FALSE
+    "UEBERWACHUNG" BOOLEAN DEFAULT FALSE NOT NULL
 );
 
 COMMENT ON COLUMN "FP_PROJEKTTERMINE"."ID" IS 'Primary Key als ID';
@@ -1023,7 +1023,7 @@ COMMENT ON TABLE "FP_PROJEKTTERMINE" IS 'Enthält eine Terminverwaltung bezügli
 
 CREATE TABLE "FP_PROTOKOLL"
 (
-    "LOG_ID"            NUMERIC(38, 0),
+    "LOG_ID"            NUMERIC(38, 0) NOT NULL,
     "LOG_DATE"          DATE,
     "LOG_MODULE"        VARCHAR(100),
     "LOG_GUI_USER"      VARCHAR(30),
@@ -1044,8 +1044,8 @@ COMMENT ON TABLE "FP_PROTOKOLL" IS 'Diese Tabelle beinhaltet die systemtechnisch
 
 CREATE TABLE "FP_PUBLIKATIONEN"
 (
-    "KURZFORM"    VARCHAR(1),
-    "BEZEICHNUNG" VARCHAR(200)
+    "KURZFORM"    VARCHAR(1)   NOT NULL,
+    "BEZEICHNUNG" VARCHAR(200) NOT NULL
 );
 
 COMMENT ON COLUMN "FP_PUBLIKATIONEN"."KURZFORM" IS 'Kurzform der EU nahen Publikation';
@@ -1057,7 +1057,7 @@ COMMENT ON TABLE "FP_PUBLIKATIONEN" IS 'Enthält Kurzformen EU naher Publikation
 
 CREATE TABLE "FP_REFERATE"
 (
-    "REFNR"       NUMERIC(2, 0),
+    "REFNR"       NUMERIC(2, 0) NOT NULL,
     "BEZEICHNUNG" VARCHAR(200)
 );
 
@@ -1070,8 +1070,8 @@ COMMENT ON TABLE "FP_REFERATE" IS 'Aufstellung aller Referate  (dbase:referate)'
 
 CREATE TABLE "FP_SIEDLUNGSGEBIETE"
 (
-    "SIEDLUNGSGEBIET" NUMERIC(2, 0),
-    "BEZEICHNUNG"     VARCHAR(200)
+    "SIEDLUNGSGEBIET" NUMERIC(2, 0) NOT NULL,
+    "BEZEICHNUNG"     VARCHAR(200)  NOT NULL
 );
 
 COMMENT ON COLUMN "FP_SIEDLUNGSGEBIETE"."SIEDLUNGSGEBIET" IS 'Nummer des Siedlungsgebiets';
@@ -1083,8 +1083,8 @@ COMMENT ON TABLE "FP_SIEDLUNGSGEBIETE" IS 'Aufstellung aller Siedlungsgebiete';
 
 CREATE TABLE "FP_STADTBEZIRKE"
 (
-    "STADTBEZIRK" NUMERIC(2, 0),
-    "BEZEICHNUNG" VARCHAR(200)
+    "STADTBEZIRK" NUMERIC(2, 0) NOT NULL,
+    "BEZEICHNUNG" VARCHAR(200)  NOT NULL
 );
 
 COMMENT ON COLUMN "FP_STADTBEZIRKE"."STADTBEZIRK" IS 'Nummer des Stadtbezirks';
@@ -1096,8 +1096,8 @@ COMMENT ON TABLE "FP_STADTBEZIRKE" IS 'Aufstellung aller Stadtbezirke';
 
 CREATE TABLE "FP_STADTBEZIRKSLISTEN"
 (
-    "LNA_KURZBEZ"     VARCHAR(3),
-    "BEZ_STADTBEZIRK" NUMERIC(2, 0),
+    "LNA_KURZBEZ"     VARCHAR(3)    NOT NULL,
+    "BEZ_STADTBEZIRK" NUMERIC(2, 0) NOT NULL,
     "BEZEICHNUNG"     VARCHAR(200)
 );
 
@@ -1111,12 +1111,12 @@ COMMENT ON TABLE "FP_STADTBEZIRKSLISTEN" IS 'Zuordnung von Stadtbezirken zu eine
 
 CREATE TABLE "FP_STAEDTEBAUFOERDERUNGEN"
 (
-    "ID"           NUMERIC(38, 0),
+    "ID"           NUMERIC(38, 0)        NOT NULL,
     "BDAT"         DATE,
     "BNR"          NUMERIC(4, 0),
     "BJAHR"        NUMERIC(4, 0),
     "BETRAG"       NUMERIC(10, 0),
-    "SOZ"          BOOLEAN DEFAULT FALSE,
+    "SOZ"          BOOLEAN DEFAULT FALSE NOT NULL,
     "AZBANK"       VARCHAR(40),
     "ANTRNR"       NUMERIC(3, 0),
     "ANTRJAHR"     NUMERIC(4, 0),
@@ -1164,8 +1164,8 @@ COMMENT ON TABLE "FP_STAEDTEBAUFOERDERUNGEN" IS 'Aufstellung aller Programme zur
 
 CREATE TABLE "FP_STICHWORTBEREICHE"
 (
-    "BEREICH"     VARCHAR(30),
-    "BEZEICHNUNG" VARCHAR(200)
+    "BEREICH"     VARCHAR(30)  NOT NULL,
+    "BEZEICHNUNG" VARCHAR(200) NOT NULL
 );
 
 COMMENT ON COLUMN "FP_STICHWORTBEREICHE"."BEREICH" IS 'Definierter Bereich für die Stichwortvergabe';
@@ -1177,8 +1177,8 @@ COMMENT ON TABLE "FP_STICHWORTBEREICHE" IS 'Verzeichnis aller Stichwortbereiche 
 
 CREATE TABLE "FP_TRAEGER"
 (
-    "KURZFORM"    NUMERIC(1, 0),
-    "BEZEICHNUNG" VARCHAR(200)
+    "KURZFORM"    NUMERIC(1, 0) NOT NULL,
+    "BEZEICHNUNG" VARCHAR(200)  NOT NULL
 );
 
 COMMENT ON COLUMN "FP_TRAEGER"."KURZFORM" IS 'Kurzform für den Träger des Städtebauförderprogramms';
@@ -1190,9 +1190,9 @@ COMMENT ON TABLE "FP_TRAEGER" IS 'Enthält Träger der Städtebauförderprogramm
 
 CREATE TABLE "FP_UNTERABSCHNITTE"
 (
-    "UA"          VARCHAR(2),
-    "BEZEICHNUNG" VARCHAR(200),
-    "HAS_HA"      VARCHAR(2)
+    "UA"          VARCHAR(2)   NOT NULL,
+    "BEZEICHNUNG" VARCHAR(200) NOT NULL,
+    "HAS_HA"      VARCHAR(2)   NOT NULL
 );
 
 COMMENT ON COLUMN "FP_UNTERABSCHNITTE"."UA" IS 'Nummer des Unterabschnitts';
