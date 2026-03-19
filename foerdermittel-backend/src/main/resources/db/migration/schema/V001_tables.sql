@@ -5,7 +5,7 @@
 CREATE TABLE "FP_ABLAGEINDEXE"
 (
     "ID"          SERIAL PRIMARY KEY,
-    "STB_BEREICH" VARCHAR(30) NOT NULL,
+    "STB_BEREICH" VARCHAR(30) NOT NULL REFERENCES "FP_STICHWORTBEREICHE" ("BEREICH"),
     "NR"          NUMERIC(4, 0),
     "WORT"        VARCHAR(80),
     "STICHWORTE"  VARCHAR(400)
@@ -24,8 +24,8 @@ COMMENT ON TABLE "FP_ABLAGEINDEXE" IS 'Suchindex zum Auffinden von Ablagen (dbas
 CREATE TABLE "FP_ABRUFE"
 (
     "ID"                 SERIAL PRIMARY KEY,
-    "PRO_PROJNR"         VARCHAR(7)                       NOT NULL,
-    "BWI_ID"             INTEGER,
+    "PRO_PROJNR"         VARCHAR(7)                       NOT NULL REFERENCES "FP_PROJEKTE" ("PROJNR"),
+    "BWI_ID"             INTEGER REFERENCES "FP_BEWILLIGUNGEN" ("ID"),
     "VNABR"              VARCHAR(1),
     "ABRUF_Z"            NUMERIC(10, 0)                   NOT NULL,
     "ABRUF_D"            NUMERIC(10, 0)                   NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE "FP_ABRUFE"
     "ERH_D"              NUMERIC(10, 0)                   NOT NULL,
     "ERH_K"              NUMERIC(10, 0)                   NOT NULL,
     "ERH_DATUM"          DATE,
-    "REF_REFNR"          NUMERIC(2, 0),
+    "REF_REFNR"          NUMERIC(2, 0) REFERENCES "FP_REFERATE" ("REFNR"),
     "SAPABRUFAUFTRAGSNR" NUMERIC(8, 0),
     "SAPFAKTURANR"       NUMERIC(10, 0),
     "FIPO"               VARCHAR(15),
@@ -89,7 +89,7 @@ COMMENT ON TABLE "FP_ABRUFE" IS 'Enthält die Abrufe zu den Bewilligungen eines 
 CREATE TABLE "FP_ANTRAEGE"
 (
     "ID"              SERIAL PRIMARY KEY,
-    "PRO_PROJNR"      VARCHAR(7)                       NOT NULL,
+    "PRO_PROJNR"      VARCHAR(7)                       NOT NULL REFERENCES "FP_PROJEKTE" ("PROJNR"),
     "ANTRAGSDATUM"    DATE,
     "ANTRAGSTYP"      VARCHAR(1)                       NOT NULL,
     "GESKOSTEN"       NUMERIC(10, 0)                   NOT NULL,
@@ -144,7 +144,7 @@ COMMENT ON TABLE "FP_ANTRAEGE" IS 'Enthält alle Förderanträge zu Projekten ((
 CREATE TABLE "FP_ARCHIV"
 (
     "ID"                 SERIAL PRIMARY KEY,
-    "PRO_PROJNR"         VARCHAR(7),
+    "PRO_PROJNR"         VARCHAR(7) REFERENCES "FP_PROJEKTE" ("PROJNR"),
     "SPEICHERDATUM"      DATE,
     "SPEICHERAKT"        BOOLEAN DEFAULT FALSE NOT NULL,
     "SPEICHERRECHNUNGEN" BOOLEAN DEFAULT FALSE NOT NULL,
@@ -218,8 +218,8 @@ COMMENT ON TABLE "FP_BENUTZERHINWEISE" IS 'Enthält Benutzerhinweise im Kontext 
 CREATE TABLE "FP_BEWILLIGUNGEN"
 (
     "ID"              SERIAL PRIMARY KEY,
-    "PRO_PROJNR"      VARCHAR(7)                       NOT NULL,
-    "ANT_ID"          INTEGER,
+    "PRO_PROJNR"      VARCHAR(7)                       NOT NULL REFERENCES "FP_PROJEKTE" ("PROJNR"),
+    "ANT_ID"          INTEGER REFERENCES "FP_ANTRAEGE" ("ID"),
     "BDATUM"          DATE,
     "AFSATZ"          NUMERIC(8, 2)                    NOT NULL,
     "BFSATZ"          NUMERIC(8, 2)                    NOT NULL,
@@ -289,7 +289,7 @@ CREATE TABLE "FP_EUINFORMATIONEN"
 (
     "ID"           SERIAL PRIMARY KEY,
     "JAHR"         NUMERIC(4, 0) NOT NULL,
-    "PUB_KURZFORM" VARCHAR(1)    NOT NULL,
+    "PUB_KURZFORM" VARCHAR(1)    NOT NULL REFERENCES "FP_PUBLIKATIONEN" ("KURZFORM"),
     "HEFTA"        VARCHAR(1),
     "NUMMER"       NUMERIC(3, 0) NOT NULL,
     "WICHTIG"      BOOLEAN       NOT NULL,
@@ -372,8 +372,8 @@ COMMENT ON TABLE "FP_FOERDERBEREICHE" IS 'Austellung aller Förderbereiche (dbas
 CREATE TABLE "FP_GEPLANTEMASSNAHMEN"
 (
     "ID"              SERIAL PRIMARY KEY,
-    "KUR_KURZBEZ"     VARCHAR(8) NOT NULL,
-    "BEZ_STADTBEZIRK" NUMERIC(2, 0),
+    "KUR_KURZBEZ"     VARCHAR(8) NOT NULL REFERENCES "FP_KURZBEZEICHNUNGEN" ("KURZBEZ"),
+    "BEZ_STADTBEZIRK" NUMERIC(2, 0) REFERENCES "FP_STADTBEZIRKE" ("STADTBEZIRK"),
     "STRASSE"         VARCHAR(50),
     "PROJEKT"         VARCHAR(70),
     "BAUBEGINN"       NUMERIC(4, 0),
@@ -424,9 +424,9 @@ COMMENT ON TABLE "FP_HHJAHRE" IS 'Aufstellung aller Haushaltsjahre';
 
 CREATE TABLE "FP_HHPLAN"
 (
-    "HHJ_JAHR"          NUMERIC(4, 0)                         NOT NULL,
+    "HHJ_JAHR"          NUMERIC(4, 0)                         NOT NULL REFERENCES "FP_HHJAHRE" ("HHJAHR"),
     "FIPO"              VARCHAR(15) DEFAULT '000000000000000' NOT NULL,
-    "PRO_PROJNR"        VARCHAR(7)                            NOT NULL,
+    "PRO_PROJNR"        VARCHAR(7)                            NOT NULL REFERENCES "FP_PROJEKTE" ("PROJNR"),
     "P_PSTRASSE"        VARCHAR(100),
     "P_PNAME"           VARCHAR(100),
     "P_FOB_FB"          NUMERIC(2, 0),
@@ -508,7 +508,7 @@ COMMENT ON TABLE "FP_JAHRESSTATISTIK" IS 'Diese Tabelle protokolliert die Erstel
 CREATE TABLE "FP_JAHRESSTATISTIK1"
 (
     "ID"               SERIAL PRIMARY KEY,
-    "JSS_JAHR"         NUMERIC(4, 0) NOT NULL,
+    "JSS_JAHR"         NUMERIC(4, 0) NOT NULL REFERENCES "FP_JAHRESSTATISTIK" ("JAHR"),
     "FOERDERBEREICH"   VARCHAR(60)   NOT NULL,
     "FB"               NUMERIC(2, 0) NOT NULL,
     "GRUPPE"           NUMERIC(1, 0) NOT NULL,
@@ -543,7 +543,7 @@ COMMENT ON TABLE "FP_JAHRESSTATISTIK1" IS 'Diese Tabelle enthält die generierte
 CREATE TABLE "FP_JAHRESSTATISTIK2"
 (
     "ID"                   SERIAL PRIMARY KEY,
-    "JSS_JAHR"             NUMERIC(4, 0) NOT NULL,
+    "JSS_JAHR"             NUMERIC(4, 0) NOT NULL REFERENCES "FP_JAHRESSTATISTIK" ("JAHR"),
     "FOERDERBEREICH"       VARCHAR(60)   NOT NULL,
     "FB"                   NUMERIC(2, 0) NOT NULL,
     "GRUPPE"               NUMERIC(1, 0) NOT NULL,
@@ -588,7 +588,7 @@ COMMENT ON TABLE "FP_JAHRESSTATISTIK2" IS 'Diese Tabelle enthält die generierte
 CREATE TABLE "FP_JAHRESSTATISTIK3"
 (
     "ID"                 SERIAL PRIMARY KEY,
-    "JSS_JAHR"           NUMERIC(4, 0) NOT NULL,
+    "JSS_JAHR"           NUMERIC(4, 0) NOT NULL REFERENCES "FP_JAHRESSTATISTIK" ("JAHR"),
     "FOERDERBEREICH"     VARCHAR(60)   NOT NULL,
     "FB"                 NUMERIC(2, 0) NOT NULL,
     "GRUPPE"             NUMERIC(1, 0) NOT NULL,
@@ -664,9 +664,9 @@ COMMENT ON TABLE "FP_LISTENNAMEN" IS 'Alle Listennamen für die Zusammenstellung
 CREATE TABLE "FP_PROJEKTE"
 (
     "PROJNR"              VARCHAR(7) PRIMARY KEY,
-    "FOB_FB"              NUMERIC(2, 0)                    NOT NULL,
-    "KUR_KURZBEZ"         VARCHAR(8)                       NOT NULL,
-    "UAS_UA"              VARCHAR(2)                       NOT NULL,
+    "FOB_FB"              NUMERIC(2, 0)                    NOT NULL REFERENCES "FP_FOERDERBEREICHE" ("FB"),
+    "KUR_KURZBEZ"         VARCHAR(8)                       NOT NULL REFERENCES "FP_KURZBEZEICHNUNGEN" ("KURZBEZ"),
+    "UAS_UA"              VARCHAR(2)                       NOT NULL REFERENCES "FP_UNTERABSCHNITTE" ("UA"),
     "JAHR"                VARCHAR(2)                       NOT NULL,
     "LFDNR1"              VARCHAR(1)                       NOT NULL,
     "LFDNR2"              VARCHAR(2)                       NOT NULL,
@@ -675,10 +675,10 @@ CREATE TABLE "FP_PROJEKTE"
     "KAUF"                BOOLEAN                          NOT NULL,
     "PROJART"             VARCHAR(50),
     "REFINANZIERBAR"      BOOLEAN     DEFAULT TRUE         NOT NULL,
-    "BLE_BAULEITUNG"      VARCHAR(1),
+    "BLE_BAULEITUNG"      VARCHAR(1) REFERENCES "FP_BAULEITUNGEN" ("BAULEITUNG"),
     "BAULEITUNGKONTAKT"   VARCHAR(30),
-    "BEZ_STADTBEZIRK"     NUMERIC(2, 0),
-    "KRN_KRHNAME"         VARCHAR(1),
+    "BEZ_STADTBEZIRK"     NUMERIC(2, 0) REFERENCES "FP_STADTBEZIRKE" ("STADTBEZIRK"),
+    "KRN_KRHNAME"         VARCHAR(1) REFERENCES "FP_KRANKENHAEUSER" ("KRHNAME"),
     "KRHZWECK"            VARCHAR(1),
     "KRISOFP"             VARCHAR(1),
     "KRIPPLATZ"           NUMERIC(10, 0),
@@ -718,8 +718,8 @@ CREATE TABLE "FP_PROJEKTE"
     "AENDERUNGVON"        VARCHAR(30),
     "VNGESAMTZUWENDUNG"   NUMERIC(12, 2),
     "SAPINNENAUFTRAG"     VARCHAR(12),
-    "BPG_BAUPROGRAMM"     NUMERIC(2, 0),
-    "SGT_SIEDLUNGSGEBIET" NUMERIC(2, 0),
+    "BPG_BAUPROGRAMM"     NUMERIC(2, 0) REFERENCES "FP_BAUPROGRAMME" ("BAUPROGRAMM"),
+    "SGT_SIEDLUNGSGEBIET" NUMERIC(2, 0) REFERENCES "FP_SIEDLUNGSGEBIETE" ("SIEDLUNGSGEBIET"),
     "BAUENDE"             DATE,
     "BAUBEENDET"          VARCHAR(1),
     "BAUVERGABE1"         DATE,
@@ -971,7 +971,7 @@ COMMENT ON TABLE "FP_PROJEKTE_ZINSEN_SAVE" IS 'Backup der Tabelle FP_PROJEKTE (0
 
 CREATE TABLE "FP_PROJEKTISTKOSTEN"
 (
-    "PRO_PROJNR" VARCHAR(7)     NOT NULL,
+    "PRO_PROJNR" VARCHAR(7)     NOT NULL REFERENCES "FP_PROJEKTE" ("PROJNR"),
     "JAHR"       NUMERIC(4, 0)  NOT NULL,
     "MONAT"      NUMERIC(2, 0)  NOT NULL,
     "ISTKOSTEN"  NUMERIC(12, 0) NOT NULL,
@@ -992,7 +992,7 @@ COMMENT ON TABLE "FP_PROJEKTISTKOSTEN" IS 'Enthält die Istkosten der Projekte i
 CREATE TABLE "FP_PROJEKTTERMINE"
 (
     "ID"           SERIAL PRIMARY KEY,
-    "PRO_PROJNR"   VARCHAR(7)            NOT NULL,
+    "PRO_PROJNR"   VARCHAR(7)            NOT NULL REFERENCES "FP_PROJEKTE" ("PROJNR"),
     "TERMIN"       DATE                  NOT NULL,
     "ZUSTAENDIG"   VARCHAR(60),
     "TELEFON"      VARCHAR(30),
@@ -1089,8 +1089,8 @@ COMMENT ON TABLE "FP_STADTBEZIRKE" IS 'Aufstellung aller Stadtbezirke';
 
 CREATE TABLE "FP_STADTBEZIRKSLISTEN"
 (
-    "LNA_KURZBEZ"     VARCHAR(3)    NOT NULL,
-    "BEZ_STADTBEZIRK" NUMERIC(2, 0) NOT NULL,
+    "LNA_KURZBEZ"     VARCHAR(3)    NOT NULL REFERENCES "FP_LISTENNAMEN" ("KURZBEZ"),
+    "BEZ_STADTBEZIRK" NUMERIC(2, 0) NOT NULL REFERENCES "FP_STADTBEZIRKE" ("STADTBEZIRK"),
     "BEZEICHNUNG"     VARCHAR(200),
     PRIMARY KEY ("LNA_KURZBEZ", "BEZ_STADTBEZIRK")
 );
@@ -1117,7 +1117,7 @@ CREATE TABLE "FP_STAEDTEBAUFOERDERUNGEN"
     "AZSTK"        VARCHAR(6),
     "AUSBET"       NUMERIC(10, 0),
     "ERHDAT"       DATE,
-    "TRA_KURZFORM" NUMERIC(1, 0),
+    "TRA_KURZFORM" NUMERIC(1, 0) REFERENCES "FP_TRAEGER" ("KURZFORM"),
     "HST"          VARCHAR(15),
     "HULNR"        VARCHAR(5),
     "HULJAHR"      NUMERIC(4, 0),
@@ -1186,7 +1186,7 @@ CREATE TABLE "FP_UNTERABSCHNITTE"
 (
     "UA"          VARCHAR(2) PRIMARY KEY,
     "BEZEICHNUNG" VARCHAR(200) NOT NULL,
-    "HAS_HA"      VARCHAR(2)   NOT NULL
+    "HAS_HA"      VARCHAR(2)   NOT NULL REFERENCES "FP_HAUPTABSCHNITTE" ("HA")
 );
 
 COMMENT ON COLUMN "FP_UNTERABSCHNITTE"."UA" IS 'Nummer des Unterabschnitts';
