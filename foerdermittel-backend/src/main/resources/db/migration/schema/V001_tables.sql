@@ -90,7 +90,7 @@ CREATE TABLE "FP_ANTRAEGE"
     "ANTRAGSTYP"      VARCHAR(1),
     "GESKOSTEN"       NUMERIC(10, 0),
     "ZWFKOSTEN"       NUMERIC(10, 0),
-    "VORZBEG"         NUMERIC(1, 0) DEFAULT 0,
+    "VORZBEG"         BOOLEAN DEFAULT FALSE,
     "VBDATUM"         DATE,
     "UNBEDDAT"        DATE,
     "UNBEDJA"         DATE,
@@ -114,7 +114,7 @@ COMMENT ON COLUMN "FP_ANTRAEGE"."ANTRAGSDATUM" IS 'Datum des Förderantrags';
 COMMENT ON COLUMN "FP_ANTRAEGE"."ANTRAGSTYP" IS 'Typ des Förderantrags  (Gültige Werte siehe FP_DOMAINS)';
 COMMENT ON COLUMN "FP_ANTRAEGE"."GESKOSTEN" IS 'Beantragte Gesamtkosten des Projekts bei diesem Antrag (besonders beim Erstantrag)';
 COMMENT ON COLUMN "FP_ANTRAEGE"."ZWFKOSTEN" IS 'Beantragte zuwendungsfähige Gesamtkosten bei diesem Antrag';
-COMMENT ON COLUMN "FP_ANTRAEGE"."VORZBEG" IS 'Wurde Antrag auf vorzeitigen Baubeginn gestellt (0/1)';
+COMMENT ON COLUMN "FP_ANTRAEGE"."VORZBEG" IS 'Wurde Antrag auf vorzeitigen Baubeginn gestellt';
 COMMENT ON COLUMN "FP_ANTRAEGE"."VBDATUM" IS 'Datum eines vorzeitigen Baubeginns';
 COMMENT ON COLUMN "FP_ANTRAEGE"."UNBEDDAT" IS 'Datum des Antrags auf Unbedenklichkeit';
 COMMENT ON COLUMN "FP_ANTRAEGE"."UNBEDJA" IS 'Datum der erteilten Unbedenklichkeitsbescheinigung';
@@ -140,8 +140,8 @@ CREATE TABLE "FP_ARCHIV"
     "ID"                 NUMERIC(38, 0),
     "PRO_PROJNR"         VARCHAR(7),
     "SPEICHERDATUM"      DATE,
-    "SPEICHERAKT"        NUMERIC(1, 0) DEFAULT 0,
-    "SPEICHERRECHNUNGEN" NUMERIC(1, 0) DEFAULT 0,
+    "SPEICHERAKT"        BOOLEAN DEFAULT FALSE,
+    "SPEICHERRECHNUNGEN" BOOLEAN DEFAULT FALSE,
     "MIKRODATPLAN"       DATE,
     "MIKRODAT"           DATE,
     "NOTIZEN"            VARCHAR(4000)
@@ -193,15 +193,15 @@ CREATE TABLE "FP_BENUTZER"
     "NACHNAME"  VARCHAR(30),
     "EMAIL"     VARCHAR(40),
     "ABTEILUNG" VARCHAR(30),
-    "FUNKTION1" NUMERIC(1, 0) DEFAULT 0,
-    "FUNKTION2" NUMERIC(1, 0) DEFAULT 0,
-    "FUNKTION3" NUMERIC(1, 0) DEFAULT 0,
-    "FUNKTION4" NUMERIC(1, 0) DEFAULT 0,
+    "FUNKTION1" BOOLEAN DEFAULT FALSE,
+    "FUNKTION2" BOOLEAN DEFAULT FALSE,
+    "FUNKTION3" BOOLEAN DEFAULT FALSE,
+    "FUNKTION4" BOOLEAN DEFAULT FALSE,
     "PASSWORT"  VARCHAR(10)  DEFAULT NULL,
     "ANREDE"    VARCHAR(10)  DEFAULT NULL,
     "TELEFON"   VARCHAR(30),
     "LASTLOGIN" DATE,
-    "FUNKTION5" NUMERIC(1, 0) DEFAULT 0
+    "FUNKTION5" BOOLEAN DEFAULT FALSE
 );
 
 COMMENT ON COLUMN "FP_BENUTZER"."ORAUSER" IS 'Benutzername des Anwenders zur Anmeldung';
@@ -209,15 +209,15 @@ COMMENT ON COLUMN "FP_BENUTZER"."VORNAME" IS 'Vorname des Anwenders';
 COMMENT ON COLUMN "FP_BENUTZER"."NACHNAME" IS 'Nachname des Anwenders';
 COMMENT ON COLUMN "FP_BENUTZER"."EMAIL" IS 'Email des Anwenders';
 COMMENT ON COLUMN "FP_BENUTZER"."ABTEILUNG" IS 'Abteilung des Anwenders';
-COMMENT ON COLUMN "FP_BENUTZER"."FUNKTION1" IS 'Besitzt dieser Benutzer ADMIN Rechte (0/1)';
-COMMENT ON COLUMN "FP_BENUTZER"."FUNKTION2" IS 'Besitzt dieser User das Recht für die Haushaltsplanung (0/1)';
-COMMENT ON COLUMN "FP_BENUTZER"."FUNKTION3" IS 'Funktion noch offen (0/1)';
-COMMENT ON COLUMN "FP_BENUTZER"."FUNKTION4" IS 'Funktion noch offen (0/1)';
+COMMENT ON COLUMN "FP_BENUTZER"."FUNKTION1" IS 'Besitzt dieser Benutzer ADMIN Rechte';
+COMMENT ON COLUMN "FP_BENUTZER"."FUNKTION2" IS 'Besitzt dieser User das Recht für die Haushaltsplanung';
+COMMENT ON COLUMN "FP_BENUTZER"."FUNKTION3" IS 'Funktion noch offen';
+COMMENT ON COLUMN "FP_BENUTZER"."FUNKTION4" IS 'Funktion noch offen';
 COMMENT ON COLUMN "FP_BENUTZER"."PASSWORT" IS 'Passwort des Anwenders';
 COMMENT ON COLUMN "FP_BENUTZER"."ANREDE" IS 'Anrede (Hr., Fr.) des Anwenders';
 COMMENT ON COLUMN "FP_BENUTZER"."TELEFON" IS 'Telefon des Anwenders';
 COMMENT ON COLUMN "FP_BENUTZER"."LASTLOGIN" IS 'Datum des letzten Logins dieses Benutzers';
-COMMENT ON COLUMN "FP_BENUTZER"."FUNKTION5" IS 'Muss der Benutzer sein Passwort beim nächsten Login ändern (0/1)';
+COMMENT ON COLUMN "FP_BENUTZER"."FUNKTION5" IS 'Muss der Benutzer sein Passwort beim nächsten Login ändern';
 COMMENT ON TABLE "FP_BENUTZER" IS 'Diese Tabelle beinhaltet die Anwender des Systems Fördermittelverwaltung';
 --------------------------------------------------------
 --  DDL for Table FP_BENUTZERHINWEISE
@@ -317,26 +317,26 @@ CREATE TABLE "FP_EUINFORMATIONEN"
     "PUB_KURZFORM" VARCHAR(1),
     "HEFTA"        VARCHAR(1),
     "NUMMER"       NUMERIC(3, 0),
-    "WICHTIG"      NUMERIC(1, 0),
+    "WICHTIG"      BOOLEAN,
     "SEITENNR"     VARCHAR(3),
     "STICHWORT"    VARCHAR(50),
-    "RAWI"         NUMERIC(1, 0),
-    "SCHULREF"     NUMERIC(1, 0),
-    "SOZREF_R_5"   NUMERIC(1, 0),
-    "RGU_11"       NUMERIC(1, 0),
-    "RGU_CS"       NUMERIC(1, 0),
-    "KRH"          NUMERIC(1, 0),
-    "AFA"          NUMERIC(1, 0),
-    "SWM"          NUMERIC(1, 0),
-    "KULTURREF"    NUMERIC(1, 0),
-    "BAUREF"       NUMERIC(1, 0),
-    "PLANREF"      NUMERIC(1, 0),
-    "DIREKTORIUM"  NUMERIC(1, 0),
-    "POR"          NUMERIC(1, 0),
-    "KVR"          NUMERIC(1, 0),
-    "KOMMREF"      NUMERIC(1, 0),
-    "SEW"          NUMERIC(1, 0),
-    "STK"          NUMERIC(1, 0),
+    "RAWI"         BOOLEAN,
+    "SCHULREF"     BOOLEAN,
+    "SOZREF_R_5"   BOOLEAN,
+    "RGU_11"       BOOLEAN,
+    "RGU_CS"       BOOLEAN,
+    "KRH"          BOOLEAN,
+    "AFA"          BOOLEAN,
+    "SWM"          BOOLEAN,
+    "KULTURREF"    BOOLEAN,
+    "BAUREF"       BOOLEAN,
+    "PLANREF"      BOOLEAN,
+    "DIREKTORIUM"  BOOLEAN,
+    "POR"          BOOLEAN,
+    "KVR"          BOOLEAN,
+    "KOMMREF"      BOOLEAN,
+    "SEW"          BOOLEAN,
+    "STK"          BOOLEAN,
     "INHALT"       VARCHAR(200),
     "INFODAT"      DATE
 );
@@ -346,26 +346,26 @@ COMMENT ON COLUMN "FP_EUINFORMATIONEN"."JAHR" IS 'Jahr der Erscheinung';
 COMMENT ON COLUMN "FP_EUINFORMATIONEN"."PUB_KURZFORM" IS 'Publikation';
 COMMENT ON COLUMN "FP_EUINFORMATIONEN"."HEFTA" IS 'Zusatzbezeichnung zur Publikation';
 COMMENT ON COLUMN "FP_EUINFORMATIONEN"."NUMMER" IS 'Nummer des Heftes';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."WICHTIG" IS 'Information weitergeben (0/1)';
+COMMENT ON COLUMN "FP_EUINFORMATIONEN"."WICHTIG" IS 'Information weitergeben';
 COMMENT ON COLUMN "FP_EUINFORMATIONEN"."SEITENNR" IS 'Seitennummer inerhalb des Heftes';
 COMMENT ON COLUMN "FP_EUINFORMATIONEN"."STICHWORT" IS 'Stichwort zu dieser Infomation';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."RAWI" IS 'Soll dieses Referat informiert werden (0/1)';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."SCHULREF" IS 'Soll dieses Referat informiert werden (0/1)';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."SOZREF_R_5" IS 'Soll dieses Referat informiert werden (0/1)';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."RGU_11" IS 'Soll dieses Referat informiert werden (0/1)';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."RGU_CS" IS 'Soll dieses Referat informiert werden (0/1)';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."KRH" IS 'Soll dieses Referat informiert werden (0/1)';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."AFA" IS 'Soll dieses Referat informiert werden (0/1)';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."SWM" IS 'Soll dieses Referat informiert werden (0/1)';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."KULTURREF" IS 'Soll dieses Referat informiert werden (0/1)';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."BAUREF" IS 'Soll dieses Referat informiert werden (0/1)';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."PLANREF" IS 'Soll dieses Referat informiert werden (0/1)';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."DIREKTORIUM" IS 'Soll dieses Referat informiert werden (0/1)';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."POR" IS 'Soll dieses Referat informiert werden (0/1)';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."KVR" IS 'Soll dieses Referat informiert werden (0/1)';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."KOMMREF" IS 'Soll dieses Referat informiert werden (0/1)';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."SEW" IS 'Soll dieses Referat informiert werden (0/1)';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."STK" IS 'Soll dieses Referat informiert werden (0/1)';
+COMMENT ON COLUMN "FP_EUINFORMATIONEN"."RAWI" IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN "FP_EUINFORMATIONEN"."SCHULREF" IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN "FP_EUINFORMATIONEN"."SOZREF_R_5" IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN "FP_EUINFORMATIONEN"."RGU_11" IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN "FP_EUINFORMATIONEN"."RGU_CS" IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN "FP_EUINFORMATIONEN"."KRH" IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN "FP_EUINFORMATIONEN"."AFA" IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN "FP_EUINFORMATIONEN"."SWM" IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN "FP_EUINFORMATIONEN"."KULTURREF" IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN "FP_EUINFORMATIONEN"."BAUREF" IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN "FP_EUINFORMATIONEN"."PLANREF" IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN "FP_EUINFORMATIONEN"."DIREKTORIUM" IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN "FP_EUINFORMATIONEN"."POR" IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN "FP_EUINFORMATIONEN"."KVR" IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN "FP_EUINFORMATIONEN"."KOMMREF" IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN "FP_EUINFORMATIONEN"."SEW" IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN "FP_EUINFORMATIONEN"."STK" IS 'Soll dieses Referat informiert werden';
 COMMENT ON COLUMN "FP_EUINFORMATIONEN"."INHALT" IS 'Kurzbeschreibung der Information';
 COMMENT ON COLUMN "FP_EUINFORMATIONEN"."INFODAT" IS 'Datum der Information';
 COMMENT ON TABLE "FP_EUINFORMATIONEN" IS 'Enthält wesentliche Informationen diverses EU-naher Publikationen und ist Basis einer eigenständigen Applikation (dbase:eu)';
@@ -377,18 +377,18 @@ CREATE TABLE "FP_FOERDERBEREICHE"
 (
     "FB"          NUMERIC(2, 0),
     "BEZEICHNUNG" VARCHAR(200),
-    "FUNKTION1"   NUMERIC(1, 0) DEFAULT 0,
-    "FUNKTION2"   NUMERIC(1, 0) DEFAULT 0,
-    "FUNKTION3"   NUMERIC(1, 0) DEFAULT 0,
-    "FUNKTION4"   NUMERIC(1, 0) DEFAULT 0
+    "FUNKTION1"   BOOLEAN DEFAULT FALSE,
+    "FUNKTION2"   BOOLEAN DEFAULT FALSE,
+    "FUNKTION3"   BOOLEAN DEFAULT FALSE,
+    "FUNKTION4"   BOOLEAN DEFAULT FALSE
 );
 
 COMMENT ON COLUMN "FP_FOERDERBEREICHE"."FB" IS 'Abkürzung des Förderbereichs';
 COMMENT ON COLUMN "FP_FOERDERBEREICHE"."BEZEICHNUNG" IS 'Bezeichnung des Förderbereichs';
-COMMENT ON COLUMN "FP_FOERDERBEREICHE"."FUNKTION1" IS 'Soll der Förderbereich in der FAG-Statistik verwendet werden (0/1)';
-COMMENT ON COLUMN "FP_FOERDERBEREICHE"."FUNKTION2" IS 'Soll der Förderbereich in der Jahresstatistik verwendet werden (0/1)';
-COMMENT ON COLUMN "FP_FOERDERBEREICHE"."FUNKTION3" IS 'Ist der Förderbereich vom Typ Kindergarten (0/1). Wird verwendet in Jahresstatistik.';
-COMMENT ON COLUMN "FP_FOERDERBEREICHE"."FUNKTION4" IS 'Der Förderbereich kann als nicht relevant gekennzeichnet werden (0/1). Damit Aussteuerung in manchen Berichten';
+COMMENT ON COLUMN "FP_FOERDERBEREICHE"."FUNKTION1" IS 'Soll der Förderbereich in der FAG-Statistik verwendet werden';
+COMMENT ON COLUMN "FP_FOERDERBEREICHE"."FUNKTION2" IS 'Soll der Förderbereich in der Jahresstatistik verwendet werden';
+COMMENT ON COLUMN "FP_FOERDERBEREICHE"."FUNKTION3" IS 'Ist der Förderbereich vom Typ Kindergarten. Wird verwendet in Jahresstatistik.';
+COMMENT ON COLUMN "FP_FOERDERBEREICHE"."FUNKTION4" IS 'Der Förderbereich kann als nicht relevant gekennzeichnet werden. Damit Aussteuerung in manchen Berichten';
 COMMENT ON TABLE "FP_FOERDERBEREICHE" IS 'Austellung aller Förderbereiche (dbase:fb)';
 --------------------------------------------------------
 --  DDL for Table FP_GEPLANTEMASSNAHMEN
@@ -694,9 +694,9 @@ CREATE TABLE "FP_PROJEKTE"
     "LFDNR2"              VARCHAR(2),
     "PNAME"               VARCHAR(100),
     "PSTRASSE"            VARCHAR(100),
-    "KAUF"                NUMERIC(1, 0),
+    "KAUF"                BOOLEAN,
     "PROJART"             VARCHAR(50),
-    "REFINANZIERBAR"      NUMERIC(1, 0) DEFAULT 1,
+    "REFINANZIERBAR"      BOOLEAN DEFAULT TRUE,
     "BLE_BAULEITUNG"      VARCHAR(1),
     "BAULEITUNGKONTAKT"   VARCHAR(30),
     "BEZ_STADTBEZIRK"     NUMERIC(2, 0),
@@ -715,8 +715,8 @@ CREATE TABLE "FP_PROJEKTE"
     "VNPRUEFZWF"          NUMERIC(12, 2),
     "VNSCHLUSSZWF"        NUMERIC(12, 2),
     "VNSCHLUSSBEW"        DATE,
-    "SAP"                 NUMERIC(1, 0),
-    "SAPSTATAUF"          NUMERIC(1, 0),
+    "SAP"                 BOOLEAN,
+    "SAPSTATAUF"          BOOLEAN,
     "SAPMATNR"            NUMERIC(8, 0),
     "SAPWERTNR"           NUMERIC(8, 0),
     "SAPJAHRWERT"         DATE,
@@ -733,7 +733,7 @@ CREATE TABLE "FP_PROJEKTE"
     "PSBAUREF"            VARCHAR(2),
     "PSBAUNR"             VARCHAR(6),
     "NOTIZEN"             TEXT,
-    "ALTDATEN"            NUMERIC(1, 0) DEFAULT 0,
+    "ALTDATEN"            BOOLEAN DEFAULT FALSE,
     "ANLAGEDATUM"         DATE         DEFAULT CURRENT_DATE,
     "ANLAGEVON"           VARCHAR(30)  DEFAULT USER,
     "AENDERUNGSDATUM"     DATE,
@@ -763,9 +763,9 @@ COMMENT ON COLUMN "FP_PROJEKTE"."LFDNR1" IS 'Laufende Nummer einstellig als Teil
 COMMENT ON COLUMN "FP_PROJEKTE"."LFDNR2" IS 'Laufende Nummer zweistellig als Teil der Projektnummer (Stelle 6-7)';
 COMMENT ON COLUMN "FP_PROJEKTE"."PNAME" IS 'Name des Projekts (altes Verfahren: beginnend mit der Straße)';
 COMMENT ON COLUMN "FP_PROJEKTE"."PSTRASSE" IS 'Straße des Projekts allein';
-COMMENT ON COLUMN "FP_PROJEKTE"."KAUF" IS 'Liegt ein Ankauf oder Teilerwerb vor (0/1)';
+COMMENT ON COLUMN "FP_PROJEKTE"."KAUF" IS 'Liegt ein Ankauf oder Teilerwerb vor';
 COMMENT ON COLUMN "FP_PROJEKTE"."PROJART" IS 'Beschreibung des Projekts etwa Umbau, Neubau (Freitext)';
-COMMENT ON COLUMN "FP_PROJEKTE"."REFINANZIERBAR" IS 'Ist dieses Förderprojekt refinanzierbar (0/1)';
+COMMENT ON COLUMN "FP_PROJEKTE"."REFINANZIERBAR" IS 'Ist dieses Förderprojekt refinanzierbar';
 COMMENT ON COLUMN "FP_PROJEKTE"."BLE_BAULEITUNG" IS 'Zuständige Abteilung im Baureferat (FK)';
 COMMENT ON COLUMN "FP_PROJEKTE"."BAULEITUNGKONTAKT" IS 'Baustand: Name des Projektleiters sowie Telefon';
 COMMENT ON COLUMN "FP_PROJEKTE"."BEZ_STADTBEZIRK" IS 'Nummer des Stadtbezirks (FK)';
@@ -784,8 +784,8 @@ COMMENT ON COLUMN "FP_PROJEKTE"."VNNACHFOERDERUNG" IS 'Höhe der Nachförderung 
 COMMENT ON COLUMN "FP_PROJEKTE"."VNPRUEFZWF" IS 'Höhe der geprüften zuwendungsfähigen Kosten  lt. Verwendungsnachweis';
 COMMENT ON COLUMN "FP_PROJEKTE"."VNSCHLUSSZWF" IS 'Höhe der endgültigen zuwendungsfähigen Kosten  lt. Verwendungsnachweis';
 COMMENT ON COLUMN "FP_PROJEKTE"."VNSCHLUSSBEW" IS 'Datum des letzten Bewilligungsbescheids (Schlussbescheid)  lt. Verwendungsnachweis';
-COMMENT ON COLUMN "FP_PROJEKTE"."SAP" IS 'Wird dieses Projekt in SAP geführt (0/1)';
-COMMENT ON COLUMN "FP_PROJEKTE"."SAPSTATAUF" IS 'Statistischer Innenauftrag (0/1)';
+COMMENT ON COLUMN "FP_PROJEKTE"."SAP" IS 'Wird dieses Projekt in SAP geführt';
+COMMENT ON COLUMN "FP_PROJEKTE"."SAPSTATAUF" IS 'Statistischer Innenauftrag';
 COMMENT ON COLUMN "FP_PROJEKTE"."SAPMATNR" IS 'SAP Materialnummer';
 COMMENT ON COLUMN "FP_PROJEKTE"."SAPWERTNR" IS 'SAP Wertkontraktnummer';
 COMMENT ON COLUMN "FP_PROJEKTE"."SAPJAHRWERT" IS 'Datum in SAP (Jahr Wertkontrakt)';
@@ -837,9 +837,9 @@ CREATE TABLE "FP_PROJEKTE_BAUSTAND_SAVE"
     "LFDNR2"              VARCHAR(2),
     "PNAME"               VARCHAR(100),
     "PSTRASSE"            VARCHAR(100),
-    "KAUF"                NUMERIC(1, 0),
+    "KAUF"                BOOLEAN,
     "PROJART"             VARCHAR(50),
-    "REFINANZIERBAR"      NUMERIC(1, 0),
+    "REFINANZIERBAR"      BOOLEAN,
     "KFWP88"              VARCHAR(15),
     "KFWP89"              VARCHAR(15),
     "KFWP90"              VARCHAR(15),
@@ -864,8 +864,8 @@ CREATE TABLE "FP_PROJEKTE_BAUSTAND_SAVE"
     "VNPRUEFZWF"          NUMERIC(12, 2),
     "VNSCHLUSSZWF"        NUMERIC(12, 2),
     "VNSCHLUSSBEW"        DATE,
-    "SAP"                 NUMERIC(1, 0),
-    "SAPSTATAUF"          NUMERIC(1, 0),
+    "SAP"                 BOOLEAN,
+    "SAPSTATAUF"          BOOLEAN,
     "SAPMATNR"            NUMERIC(8, 0),
     "SAPWERTNR"           NUMERIC(8, 0),
     "SAPJAHRWERT"         DATE,
@@ -886,7 +886,7 @@ CREATE TABLE "FP_PROJEKTE_BAUSTAND_SAVE"
     "PSBAUREF"            VARCHAR(2),
     "PSBAUNR"             VARCHAR(6),
     "NOTIZEN"             TEXT,
-    "ALTDATEN"            NUMERIC(1, 0),
+    "ALTDATEN"            BOOLEAN,
     "ANLAGEDATUM"         DATE,
     "ANLAGEVON"           VARCHAR(30),
     "AENDERUNGSDATUM"     DATE,
@@ -917,9 +917,9 @@ CREATE TABLE "FP_PROJEKTE_ZINSEN_SAVE"
     "LFDNR2"              VARCHAR(2),
     "PNAME"               VARCHAR(100),
     "PSTRASSE"            VARCHAR(100),
-    "KAUF"                NUMERIC(1, 0),
+    "KAUF"                BOOLEAN,
     "PROJART"             VARCHAR(50),
-    "REFINANZIERBAR"      NUMERIC(1, 0),
+    "REFINANZIERBAR"      BOOLEAN,
     "BLE_BAULEITUNG"      VARCHAR(1),
     "BAULEITUNGKONTAKT"   VARCHAR(30),
     "BEZ_STADTBEZIRK"     NUMERIC(2, 0),
@@ -938,8 +938,8 @@ CREATE TABLE "FP_PROJEKTE_ZINSEN_SAVE"
     "VNPRUEFZWF"          NUMERIC(12, 2),
     "VNSCHLUSSZWF"        NUMERIC(12, 2),
     "VNSCHLUSSBEW"        DATE,
-    "SAP"                 NUMERIC(1, 0),
-    "SAPSTATAUF"          NUMERIC(1, 0),
+    "SAP"                 BOOLEAN,
+    "SAPSTATAUF"          BOOLEAN,
     "SAPMATNR"            NUMERIC(8, 0),
     "SAPWERTNR"           NUMERIC(8, 0),
     "SAPJAHRWERT"         DATE,
@@ -960,7 +960,7 @@ CREATE TABLE "FP_PROJEKTE_ZINSEN_SAVE"
     "PSBAUREF"            VARCHAR(2),
     "PSBAUNR"             VARCHAR(6),
     "NOTIZEN"             TEXT,
-    "ALTDATEN"            NUMERIC(1, 0),
+    "ALTDATEN"            BOOLEAN,
     "ANLAGEDATUM"         DATE,
     "ANLAGEVON"           VARCHAR(30),
     "AENDERUNGSDATUM"     DATE,
@@ -1006,7 +1006,7 @@ CREATE TABLE "FP_PROJEKTTERMINE"
     "ZUSTAENDIG"   VARCHAR(60),
     "TELEFON"      VARCHAR(30),
     "NOTIZEN"      TEXT,
-    "UEBERWACHUNG" NUMERIC(1, 0) DEFAULT 0
+    "UEBERWACHUNG" BOOLEAN DEFAULT FALSE
 );
 
 COMMENT ON COLUMN "FP_PROJEKTTERMINE"."ID" IS 'Primary Key als ID';
@@ -1015,7 +1015,7 @@ COMMENT ON COLUMN "FP_PROJEKTTERMINE"."TERMIN" IS 'Termin';
 COMMENT ON COLUMN "FP_PROJEKTTERMINE"."ZUSTAENDIG" IS 'Zuständigkeit im Baureferet';
 COMMENT ON COLUMN "FP_PROJEKTTERMINE"."TELEFON" IS 'Telefon des Bauleiters bzw. der Kontaktperson';
 COMMENT ON COLUMN "FP_PROJEKTTERMINE"."NOTIZEN" IS 'Notizen (Freitext)';
-COMMENT ON COLUMN "FP_PROJEKTTERMINE"."UEBERWACHUNG" IS 'Kennzeichen für Terminüberwachung 0/1';
+COMMENT ON COLUMN "FP_PROJEKTTERMINE"."UEBERWACHUNG" IS 'Kennzeichen für Terminüberwachung';
 COMMENT ON TABLE "FP_PROJEKTTERMINE" IS 'Enthält eine Terminverwaltung bezüglich Projekten (dbase:vnuanf)';
 --------------------------------------------------------
 --  DDL for Table FP_PROTOKOLL
@@ -1116,7 +1116,7 @@ CREATE TABLE "FP_STAEDTEBAUFOERDERUNGEN"
     "BNR"          NUMERIC(4, 0),
     "BJAHR"        NUMERIC(4, 0),
     "BETRAG"       NUMERIC(10, 0),
-    "SOZ"          NUMERIC(1, 0) DEFAULT 0,
+    "SOZ"          BOOLEAN DEFAULT FALSE,
     "AZBANK"       VARCHAR(40),
     "ANTRNR"       NUMERIC(3, 0),
     "ANTRJAHR"     NUMERIC(4, 0),
@@ -1131,7 +1131,7 @@ CREATE TABLE "FP_STAEDTEBAUFOERDERUNGEN"
     "PROJEKTNAME"  VARCHAR(60),
     "RESTLOS"      DATE,
     "ZAHLANZ"      DATE,
-    "SCHULDURK"    NUMERIC(1, 0) DEFAULT 0,
+    "SCHULDURK"    BOOLEAN DEFAULT FALSE,
     "ALT_LFDNR"    NUMERIC(10, 0)
 );
 
@@ -1140,7 +1140,7 @@ COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."BDAT" IS 'Datum der Bewilligung';
 COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."BNR" IS 'Bescheidnummer';
 COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."BJAHR" IS 'Jahr der Bewilligung';
 COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."BETRAG" IS 'Bewilligter Betrag';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."SOZ" IS 'Kennzeichen Soz Stadt (0/1)';
+COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."SOZ" IS 'Kennzeichen Soz Stadt';
 COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."AZBANK" IS 'Aktenzeichen der Bank';
 COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."ANTRNR" IS 'Antragsnummer';
 COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."ANTRJAHR" IS 'Antragsjahr';
@@ -1155,7 +1155,7 @@ COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."NOTIZEN" IS 'Notizen';
 COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."PROJEKTNAME" IS 'Name des Projekts';
 COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."RESTLOS" IS 'Datum der Restlosanzeige an Dienststelle';
 COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."ZAHLANZ" IS 'Zahlungsanzeige erhalten am';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."SCHULDURK" IS 'Schuldurkunde ausgestellt (0/1)';
+COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."SCHULDURK" IS 'Schuldurkunde ausgestellt';
 COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."ALT_LFDNR" IS 'Lfdnr zur Altdatenübernahme der Memos';
 COMMENT ON TABLE "FP_STAEDTEBAUFOERDERUNGEN" IS 'Aufstellung aller Programme zur Städtebauförderung als eingeständige Anwendung (dbase:stadt)';
 --------------------------------------------------------
