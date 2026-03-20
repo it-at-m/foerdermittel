@@ -1969,9 +1969,8 @@ SELECT A."P_PROJNR"        AS "P_PROJNR",
        F."B_BEWILL_Z"      AS "B_BEWILL_Z",
        F."B_BEWILL_D"      AS "B_BEWILL_D",
        F."B_BEWILL_K"      AS "B_BEWILL_K"
-FROM "FP_V_PROJEKTERSTANTRAG" A,
-     "FP_V_PROJEKTFLUESSE" F
-WHERE A."P_PROJNR" = F."P_PROJNR"
+FROM "FP_V_PROJEKTERSTANTRAG" A
+         JOIN "FP_V_PROJEKTFLUESSE" F ON A."P_PROJNR" = F."P_PROJNR"
 ;
 --------------------------------------------------------
 --  DDL for View FP_V_KINDER
