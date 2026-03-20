@@ -1831,40 +1831,77 @@ FROM (SELECT F.FB                                 x1,
 GROUP BY x1, x2, x3
 ;
 --------------------------------------------------------
---  DDL for View FP_V_KINDER
+--  DDL for View FP_V_PROJEKTSTAT
 --------------------------------------------------------
 
 CREATE
 OR
 REPLACE
-FORCE EDITIONABLE VIEW "FP_V_KINDER" ("P_PROJNR", "P_FOB_FB", "P_FOB_BEZEICHNUNG", "P_BEZ_STADTBEZIRK", "P_STADTBEZIRK", "P_UAS_UA", "P_KUR_KURZBEZ", "P_PNAME", "P_PSTRASSE", "P_VNDAT", "P_VNKOSTEN", "P_KRISOFP", "P_KRIPPLATZ", "P_KIGAPLATZ", "P_HORTPLATZ", "A1_ANTRAGSTYP", "A1_ANTRAGSDATUM", "A1_GESKOSTEN", "P_ERH_Z", "P_BZUWENDUNG_Z") AS
-SELECT P.PROJNR,
-       P.FOB_FB,
-       F.BEZEICHNUNG,
-       P.BEZ_STADTBEZIRK,
-       Z.BEZEICHNUNG,
-       P.UAS_UA,
-       P.KUR_KURZBEZ,
-       P.PNAME,
-       P.PSTRASSE,
-       P.VNDAT,
-       P.VNKOSTEN,
-       P.KRISOFP,
-       P.KRIPPLATZ,
-       P.KIGAPLATZ,
-       P.HORTPLATZ,
-       S.A1_ANTRAGSTYP,
-       S.A1_ANTRAGSDATUM,
-       S.A1_GESKOSTEN,
-       S.R_ERH_Z,
-       S.B_BEWILL_Z
-FROM FP_PROJEKTE P,
-     FP_FOERDERBEREICHE F,
-     FP_V_PROJEKTSTAT S,
-     FP_STADTBEZIRKE Z
-WHERE P.PROJNR = S.P_PROJNR(+)
-  AND P.FOB_FB = F.FB
-  AND P.BEZ_STADTBEZIRK = Z.STADTBEZIRK(+)
+FORCE EDITIONABLE VIEW "FP_V_PROJEKTSTAT" ("P_PROJNR", "P_FOB_FB", "P_PNAME", "P_PSTRASSE", "A1_ANTRAGSTYP", "A1_VBDATUM", "A1_VORZBEG", "P_VNDAT", "A1_GESKOSTEN", "P_VNGESKOSTEN", "P_VNPRUEFZWF", "P_VNPRUEFDAT", "P_ZINSEN", "A1_ANTRAGSDATUM", "A1_ZWFKOSTEN", "A1_A_SU_Z", "A1_A_SU_D", "A1_A_SU_K", "A1_B_VOR_SU_Z", "A1_B_VOR_SU_D", "A1_B_VOR_SU_K", "A1_NOTIZEN", "AX_A_SU_Z", "AX_A_SU_D", "AX_A_SU_K", "R_ERH_Z", "R_ERH_D", "R_ERH_K", "B_BEWILL_Z", "B_BEWILL_D", "B_BEWILL_K") AS
+SELECT A.P_PROJNR,
+       P_FOB_FB,
+       P_PNAME,
+       P_PSTRASSE,
+       A1_ANTRAGSTYP,
+       A1_VBDATUM,
+       A1_VORZBEG,
+       P_VNDAT,
+       A1_GESKOSTEN,
+       P_VNGESKOSTEN,
+       P_VNPRUEFZWF,
+       P_VNPRUEFDAT,
+       P_ZINSEN,
+       A1_ANTRAGSDATUM,
+       A1_ZWFKOSTEN,
+       A1_A_SU_Z,
+       A1_A_SU_D,
+       A1_A_SU_K,
+       A1_B_VOR_SU_Z,
+       A1_B_VOR_SU_D,
+       A1_B_VOR_SU_K,
+       A1_NOTIZEN,
+       AX_A_SU_Z,
+       AX_A_SU_D,
+       AX_A_SU_K,
+       R_ERH_Z,
+       R_ERH_D,
+       R_ERH_K,
+       B_BEWILL_Z,
+       B_BEWILL_D,
+       B_BEWILL_K
+FROM FP_V_PROJEKTERSTANTRAG A,
+     FP_V_PROJEKTFLUESSE F
+WHERE A.P_PROJNR = F.P_PROJNR
+;
+--------------------------------------------------------
+--  DDL for View FP_V_KINDER
+--------------------------------------------------------
+
+CREATE VIEW "FP_V_KINDER" AS
+SELECT P."PROJNR"          AS "P_PROJNR",
+       P."FOB_FB"          AS "P_FOB_FB",
+       F."BEZEICHNUNG"     AS "P_FOB_BEZEICHNUNG",
+       P."BEZ_STADTBEZIRK" AS "P_BEZ_STADTBEZIRK",
+       Z."BEZEICHNUNG"     AS "P_STADTBEZIRK",
+       P."UAS_UA"          AS "P_UAS_UA",
+       P."KUR_KURZBEZ"     AS "P_KUR_KURZBEZ",
+       P."PNAME"           AS "P_PNAME",
+       P."PSTRASSE"        AS "P_PSTRASSE",
+       P."VNDAT"           AS "P_VNDAT",
+       P."VNKOSTEN"        AS "P_VNKOSTEN",
+       P."KRISOFP"         AS "P_KRISOFP",
+       P."KRIPPLATZ"       AS "P_KRIPPLATZ",
+       P."KIGAPLATZ"       AS "P_KIGAPLATZ",
+       P."HORTPLATZ"       AS "P_HORTPLATZ",
+       S."A1_ANTRAGSTYP"   AS "A1_ANTRAGSTYP",
+       S."A1_ANTRAGSDATUM" AS "A1_ANTRAGSDATUM",
+       S."A1_GESKOSTEN"    AS "A1_GESKOSTEN",
+       S."R_ERH_Z"         AS "P_ERH_Z",
+       S."B_BEWILL_Z"      AS "P_BZUWENDUNG_Z"
+FROM "FP_PROJEKTE" P
+         JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
+         LEFT JOIN "FP_V_PROJEKTSTAT" S ON P."PROJNR" = S."P_PROJNR"
+         LEFT JOIN "FP_STADTBEZIRKE" Z ON P."BEZ_STADTBEZIRK" = Z."STADTBEZIRK"
 ;
 --------------------------------------------------------
 --  DDL for View FP_V_MITTELEINPLANUNG
@@ -2051,49 +2088,6 @@ FROM (SELECT P.PROJNR          x1,
            FP_BEWILLIGUNGEN B
       WHERE P.PROJNR = B.PRO_PROJNR)
 GROUP BY x1
-;
---------------------------------------------------------
---  DDL for View FP_V_PROJEKTSTAT
---------------------------------------------------------
-
-CREATE
-OR
-REPLACE
-FORCE EDITIONABLE VIEW "FP_V_PROJEKTSTAT" ("P_PROJNR", "P_FOB_FB", "P_PNAME", "P_PSTRASSE", "A1_ANTRAGSTYP", "A1_VBDATUM", "A1_VORZBEG", "P_VNDAT", "A1_GESKOSTEN", "P_VNGESKOSTEN", "P_VNPRUEFZWF", "P_VNPRUEFDAT", "P_ZINSEN", "A1_ANTRAGSDATUM", "A1_ZWFKOSTEN", "A1_A_SU_Z", "A1_A_SU_D", "A1_A_SU_K", "A1_B_VOR_SU_Z", "A1_B_VOR_SU_D", "A1_B_VOR_SU_K", "A1_NOTIZEN", "AX_A_SU_Z", "AX_A_SU_D", "AX_A_SU_K", "R_ERH_Z", "R_ERH_D", "R_ERH_K", "B_BEWILL_Z", "B_BEWILL_D", "B_BEWILL_K") AS
-SELECT A.P_PROJNR,
-       P_FOB_FB,
-       P_PNAME,
-       P_PSTRASSE,
-       A1_ANTRAGSTYP,
-       A1_VBDATUM,
-       A1_VORZBEG,
-       P_VNDAT,
-       A1_GESKOSTEN,
-       P_VNGESKOSTEN,
-       P_VNPRUEFZWF,
-       P_VNPRUEFDAT,
-       P_ZINSEN,
-       A1_ANTRAGSDATUM,
-       A1_ZWFKOSTEN,
-       A1_A_SU_Z,
-       A1_A_SU_D,
-       A1_A_SU_K,
-       A1_B_VOR_SU_Z,
-       A1_B_VOR_SU_D,
-       A1_B_VOR_SU_K,
-       A1_NOTIZEN,
-       AX_A_SU_Z,
-       AX_A_SU_D,
-       AX_A_SU_K,
-       R_ERH_Z,
-       R_ERH_D,
-       R_ERH_K,
-       B_BEWILL_Z,
-       B_BEWILL_D,
-       B_BEWILL_K
-FROM FP_V_PROJEKTERSTANTRAG A,
-     FP_V_PROJEKTFLUESSE F
-WHERE A.P_PROJNR = F.P_PROJNR
 ;
 --------------------------------------------------------
 --  DDL for View FP_V_PROJEKTSUCHE
