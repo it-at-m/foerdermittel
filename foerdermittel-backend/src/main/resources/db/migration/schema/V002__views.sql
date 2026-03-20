@@ -1834,44 +1834,41 @@ GROUP BY x1, x2, x3
 --  DDL for View FP_V_PROJEKTSTAT
 --------------------------------------------------------
 
-CREATE
-OR
-REPLACE
-FORCE EDITIONABLE VIEW "FP_V_PROJEKTSTAT" ("P_PROJNR", "P_FOB_FB", "P_PNAME", "P_PSTRASSE", "A1_ANTRAGSTYP", "A1_VBDATUM", "A1_VORZBEG", "P_VNDAT", "A1_GESKOSTEN", "P_VNGESKOSTEN", "P_VNPRUEFZWF", "P_VNPRUEFDAT", "P_ZINSEN", "A1_ANTRAGSDATUM", "A1_ZWFKOSTEN", "A1_A_SU_Z", "A1_A_SU_D", "A1_A_SU_K", "A1_B_VOR_SU_Z", "A1_B_VOR_SU_D", "A1_B_VOR_SU_K", "A1_NOTIZEN", "AX_A_SU_Z", "AX_A_SU_D", "AX_A_SU_K", "R_ERH_Z", "R_ERH_D", "R_ERH_K", "B_BEWILL_Z", "B_BEWILL_D", "B_BEWILL_K") AS
-SELECT A.P_PROJNR,
-       P_FOB_FB,
-       P_PNAME,
-       P_PSTRASSE,
-       A1_ANTRAGSTYP,
-       A1_VBDATUM,
-       A1_VORZBEG,
-       P_VNDAT,
-       A1_GESKOSTEN,
-       P_VNGESKOSTEN,
-       P_VNPRUEFZWF,
-       P_VNPRUEFDAT,
-       P_ZINSEN,
-       A1_ANTRAGSDATUM,
-       A1_ZWFKOSTEN,
-       A1_A_SU_Z,
-       A1_A_SU_D,
-       A1_A_SU_K,
-       A1_B_VOR_SU_Z,
-       A1_B_VOR_SU_D,
-       A1_B_VOR_SU_K,
-       A1_NOTIZEN,
-       AX_A_SU_Z,
-       AX_A_SU_D,
-       AX_A_SU_K,
-       R_ERH_Z,
-       R_ERH_D,
-       R_ERH_K,
-       B_BEWILL_Z,
-       B_BEWILL_D,
-       B_BEWILL_K
-FROM FP_V_PROJEKTERSTANTRAG A,
-     FP_V_PROJEKTFLUESSE F
-WHERE A.P_PROJNR = F.P_PROJNR
+CREATE VIEW "FP_V_PROJEKTSTAT" AS
+SELECT A."P_PROJNR"        AS "P_PROJNR",
+       A."P_FOB_FB"        AS "P_FOB_FB",
+       A."P_PNAME"         AS "P_PNAME",
+       A."P_PSTRASSE"      AS "P_PSTRASSE",
+       A."A1_ANTRAGSTYP"   AS "A1_ANTRAGSTYP",
+       A."A1_VBDATUM"      AS "A1_VBDATUM",
+       A."A1_VORZBEG"      AS "A1_VORZBEG",
+       A."P_VNDAT"         AS "P_VNDAT",
+       A."A1_GESKOSTEN"    AS "A1_GESKOSTEN",
+       A."P_VNGESKOSTEN"   AS "P_VNGESKOSTEN",
+       A."P_VNPRUEFZWF"    AS "P_VNPRUEFZWF",
+       A."P_VNPRUEFDAT"    AS "P_VNPRUEFDAT",
+       A."P_ZINSEN"        AS "P_ZINSEN",
+       A."A1_ANTRAGSDATUM" AS "A1_ANTRAGSDATUM",
+       A."A1_ZWFKOSTEN"    AS "A1_ZWFKOSTEN",
+       A."A1_A_SU_Z"       AS "A1_A_SU_Z",
+       A."A1_A_SU_D"       AS "A1_A_SU_D",
+       A."A1_A_SU_K"       AS "A1_A_SU_K",
+       A."A1_B_VOR_SU_Z"   AS "A1_B_VOR_SU_Z",
+       A."A1_B_VOR_SU_D"   AS "A1_B_VOR_SU_D",
+       A."A1_B_VOR_SU_K"   AS "A1_B_VOR_SU_K",
+       A."A1_NOTIZEN"      AS "A1_NOTIZEN",
+       F."AX_A_SU_Z"       AS "AX_A_SU_Z",
+       F."AX_A_SU_D"       AS "AX_A_SU_D",
+       F."AX_A_SU_K"       AS "AX_A_SU_K",
+       F."R_ERH_Z"         AS "R_ERH_Z",
+       F."R_ERH_D"         AS "R_ERH_D",
+       F."R_ERH_K"         AS "R_ERH_K",
+       F."B_BEWILL_Z"      AS "B_BEWILL_Z",
+       F."B_BEWILL_D"      AS "B_BEWILL_D",
+       F."B_BEWILL_K"      AS "B_BEWILL_K"
+FROM "FP_V_PROJEKTERSTANTRAG" A,
+     "FP_V_PROJEKTFLUESSE" F
+WHERE A."P_PROJNR" = F."P_PROJNR"
 ;
 --------------------------------------------------------
 --  DDL for View FP_V_KINDER
