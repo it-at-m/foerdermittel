@@ -68,44 +68,45 @@ FROM "FP_PROJEKTE" P
 --  DDL for View FP_V_ANTRAG_BEWILL
 --------------------------------------------------------
 
-CREATE
-OR
-REPLACE
-FORCE EDITIONABLE VIEW "FP_V_ANTRAG_BEWILL" ("V_ID", "V_PRO_PROJNR", "V_VNDAT", "V_FOB_FB", "V_FOB_BEZEICHNUNG", "V_PNAME", "V_PSTRASSE", "V_KAUF", "V_KUR_KURZBEZ", "V_KUR_BEZEICHNUNG", "V_UAS_UA", "V_UAS_BEZEICHNUNG", "V_BEZ_STADTBEZIRK", "V_BEZ_BEZEICHNUNG", "V_KRISOFP", "V_ANTRAGSDATUM", "V_ANTRAGSTYP", "V_GESKOSTEN", "V_ZWFKOSTEN", "V_A_SU_Z", "V_A_SU_D", "V_A_SU_K", "V_NOTIZEN", "V_ANT_ID", "V_BDATUM", "V_BFSATZ", "V_BZWFKOSTEN", "V_BZUWENDUNG_Z", "V_BZUWENDUNG_D", "V_BZUWENDUNG_K", "V_BZUWART") AS
-SELECT A.ID,
-       A.PRO_PROJNR,
-       P.VNDAT,
-       P.FOB_FB,
-       F.BEZEICHNUNG,
-       P.PNAME,
-       P.PSTRASSE,
-       P.KAUF,
-       P.KUR_KURZBEZ,
-       Z.BEZEICHNUNG,
-       P.UAS_UA,
-       U.BEZEICHNUNG,
-       B.NOTIZEN,
-       B.ANT_ID,
-       B.BDATUM,
-       B.BFSATZ,
-       B.BZWFKOSTEN,
-       B.BZUWENDUNG_Z,
-       B.BZUWENDUNG_D,
-       B.BZUWENDUNG_K,
-       B.BZUWART
-FROM FP_PROJEKTE P,
-     FP_ANTRAEGE A,
-     FP_FOERDERBEREICHE F,
-     FP_UNTERABSCHNITTE U,
-     FP_KURZBEZEICHNUNGEN Z,
-     FP_STADTBEZIRKE S,
-     FP_BEWILLIGUNGEN B
-WHERE P.FOB_FB = F.FB
-  AND P.PROJNR = B.PRO_PROJNR
-  AND P.UAS_UA = U.UA
-  AND P.KUR_KURZBEZ = Z.KURZBEZ
-  AND P.BEZ_STADTBEZIRK = S.STADTBEZIRK(+)
-  AND B.ANT_ID = A.ID(+)
+CREATE VIEW "FP_V_ANTRAG_BEWILL" AS
+SELECT A."ID"              AS "V_ID",
+       A."PRO_PROJNR"      AS "V_PRO_PROJNR",
+       P."VNDAT"           AS "V_VNDAT",
+       P."FOB_FB"          AS "V_FOB_FB",
+       F."BEZEICHNUNG"     AS "V_FOB_BEZEICHNUNG",
+       P."PNAME"           AS "V_PNAME",
+       P."PSTRASSE"        AS "V_PSTRASSE",
+       P."KAUF"            AS "V_KAUF",
+       P."KUR_KURZBEZ"     AS "V_KUR_KURZBEZ",
+       Z."BEZEICHNUNG"     AS "V_KUR_BEZEICHNUNG",
+       P."UAS_UA"          AS "V_UAS_UA",
+       U."BEZEICHNUNG"     AS "V_UAS_BEZEICHNUNG",
+       P."BEZ_STADTBEZIRK" AS "V_BEZ_STADTBEZIRK",
+       S."BEZEICHNUNG"     AS "V_BEZ_BEZEICHNUNG",
+       P."KRISOFP"         AS "V_KRISOFP",
+       A."ANTRAGSDATUM"    AS "V_ANTRAGSDATUM",
+       A."ANTRAGSTYP"      AS "V_ANTRAGSTYP",
+       A."GESKOSTEN"       AS "V_GESKOSTEN",
+       A."ZWFKOSTEN"       AS "V_ZWFKOSTEN",
+       A."A_SU_Z"          AS "V_A_SU_Z",
+       A."A_SU_D"          AS "V_A_SU_D",
+       A."A_SU_K"          AS "V_A_SU_K",
+       B."NOTIZEN"         AS "V_NOTIZEN",
+       B."ANT_ID"          AS "V_ANT_ID",
+       B."BDATUM"          AS "V_BDATUM",
+       B."BFSATZ"          AS "V_BFSATZ",
+       B."BZWFKOSTEN"      AS "V_BZWFKOSTEN",
+       B."BZUWENDUNG_Z"    AS "V_BZUWENDUNG_Z",
+       B."BZUWENDUNG_D"    AS "V_BZUWENDUNG_D",
+       B."BZUWENDUNG_K"    AS "V_BZUWENDUNG_K",
+       B."BZUWART"         AS "V_BZUWART"
+FROM "FP_PROJEKTE" P
+         JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
+         JOIN "FP_BEWILLIGUNGEN" B ON P."PROJNR" = B."PRO_PROJNR"
+         JOIN "FP_UNTERABSCHNITTE" U ON P."UAS_UA" = U."UA"
+         JOIN "FP_KURZBEZEICHNUNGEN" Z ON P."KUR_KURZBEZ" = Z."KURZBEZ"
+         LEFT JOIN "FP_STADTBEZIRKE" S ON P."BEZ_STADTBEZIRK" = S."STADTBEZIRK"
+         LEFT JOIN "FP_ANTRAEGE" A ON B."ANT_ID" = A."ID"
 ;
 --------------------------------------------------------
 --  DDL for View FP_V_ANTRAG_BEWILL_ABRUF
@@ -179,7 +180,7 @@ FROM (SELECT null           X0, -- Typ1
            FP_ANTRAEGE A,
            FP_BEWILLIGUNGEN B,
            FP_ABRUFE R
-      WHERE -- Typ 1: vollständige Verknüpfungen selektieren mit outerjoin
+      WHERE -- Typ 1: vollst�ndige Verkn�pfungen selektieren mit outerjoin
           P.PROJNR = A.PRO_PROJNR
         AND A.ID = B.ANT_ID(+)
         AND B.ID = R.BWI_ID(+)
@@ -267,12 +268,12 @@ OR
 REPLACE
 FORCE EDITIONABLE VIEW "FP_V_ANTRAGSUCHE" ("V_ID", "V_PRO_PROJNR", "V_VNDAT", "V_FOB_FB", "V_FOB_BEZEICHNUNG", "V_PNAME", "V_PSTRASSE", "V_KAUF", "V_KUR_KURZBEZ", "V_KUR_BEZEICHNUNG", "V_UAS_UA", "V_UAS_BEZEICHNUNG", "V_BEZ_STADTBEZIRK", "V_BEZ_BEZEICHNUNG", "V_KRISOFP", "V_ANTRAGSDATUM", "V_ANTRAGSTYP", "V_GESKOSTEN", "V_ZWFKOSTEN", "V_VORZBEG", "V_VBDATUM", "V_UNBEDDAT", "V_UNBEDJA", "V_UNBEDBIS", "V_A_SU_Z", "V_A_SU_D", "V_A_SU_K", "V_B_VOR_SU_Z", "V_B_VOR_SU_D", "V_B_VOR_SU_K", "V_NOTIZEN", "V_SGT_SIEDLUNGSGEBIET", "V_SGT_BEZEICHNUNG", "V_BPG_BAUPROGRAMM", "V_BPG_BEZEICHNUNG", "V_BID", "V_BGESZUWENDUNGEN", "V_BDATUM") AS
 SELECT
-    --  geändert Sep 2024:
+    --  ge�ndert Sep 2024:
     --  Sicherstellen, dass je Antrag nur ein Record geliefert wird.
-    --  unabhängig wieviele Bewilligungen vorliegen (0 .. viele)
+    --  unabh�ngig wieviele Bewilligungen vorliegen (0 .. viele)
     --  deshalb zwei Select mit UNION.
     --
-    --  1. Select: Antrag besitzt min. 1 Bewilligung --> liefert nur die jüngste Bewilligung
+    --  1. Select: Antrag besitzt min. 1 Bewilligung --> liefert nur die j�ngste Bewilligung
     A.ID,
     A.PRO_PROJNR,
     P.VNDAT,
@@ -333,7 +334,7 @@ WHERE P.FOB_FB = F.FB
 UNION ALL
 
 SELECT
---  2. Select: Antrag noch ohne Bewilligung --> liefert null für BEW Columns
+--  2. Select: Antrag noch ohne Bewilligung --> liefert null f�r BEW Columns
 A.ID,
 A.PRO_PROJNR,
 P.VNDAT,
@@ -571,7 +572,7 @@ CREATE
 OR
 REPLACE
 FORCE EDITIONABLE VIEW "FP_V_CHECKLISTEN1" ("V_HINWEIS", "V_PROJNR", "V_PSTRASSE", "V_INFO") AS
-SELECT '1 Offene Projekte ohne Förderantrag' HINWEIS,
+SELECT '1 Offene Projekte ohne F�rderantrag' HINWEIS,
        PROJNR                                PROJNR,
        PSTRASSE                              PSTRASSE,
        null                                  INFO
@@ -581,7 +582,7 @@ where VNDAT is null
 --
 UNION ALL
 --
-SELECT '2 Offene Projekte mit Anträgen auf Unbedenklichkeit ohne Förderantrag' HINWEIS,
+SELECT '2 Offene Projekte mit Antr�gen auf Unbedenklichkeit ohne F�rderantrag' HINWEIS,
        PROJNR                                                                  PROJNR,
        PSTRASSE                                                                PSTRASSE,
        'Unbedenk. am: ' || to_char(A.UNBEDDAT, 'DD.MM.YYYY')                   INFO
@@ -619,7 +620,7 @@ where P.PROJNR = B.PRO_PROJNR
 --
 UNION ALL
 --
-SELECT '5 Offene Projekte und Bewilligungen ohne Verknüpfung zu einem Antrag' HINWEIS,
+SELECT '5 Offene Projekte und Bewilligungen ohne Verkn�pfung zu einem Antrag' HINWEIS,
        PROJNR                                                                 PROJNR,
        PSTRASSE                                                               PSTRASSE,
        null                                                                   INFO
@@ -631,7 +632,7 @@ where B.PRO_PROJNR = P.PROJNR
 --
 UNION ALL
 --
-SELECT '6 Offene Projekte und Abrufe ohne Verknüpfung zu einer Bewilligung' HINWEIS,
+SELECT '6 Offene Projekte und Abrufe ohne Verkn�pfung zu einer Bewilligung' HINWEIS,
        PROJNR                                                               PROJNR,
        PSTRASSE                                                             PSTRASSE,
        null                                                                 INFO
@@ -693,7 +694,7 @@ where B.PRO_PROJNR = P.PROJNR
 --
 UNION ALL
 --
-SELECT '9 Projekte mit VN-Datum ab 1.1.2000 aber ohne Schlußbescheid' HINWEIS,
+SELECT '9 Projekte mit VN-Datum ab 1.1.2000 aber ohne Schlu�bescheid' HINWEIS,
        PROJNR                                                         PROJNR,
        PSTRASSE                                                       PSTRASSE,
        'VN: ' || to_char(P.VNDAT, 'DD.MM.YYYY')                       INFO
@@ -768,7 +769,7 @@ where A.PRO_PROJNR = P.PROJNR
 --
 UNION ALL
 --
-SELECT '5 Anträge ohne Antragsdatum und ohne Unbedenklichkeitsantrag' FEHLER,
+SELECT '5 Antr�ge ohne Antragsdatum und ohne Unbedenklichkeitsantrag' FEHLER,
        PROJNR                                                         PROJNR,
        PSTRASSE                                                       PSTRASSE,
        null                                                           INFO
@@ -1060,7 +1061,7 @@ SELECT x1,
        SUM(NVL(x6, 0)),
        SUM(NVL(x7, 0))
 FROM
-    -- bewilligter Zuschuss ohne Rückzahlungen
+    -- bewilligter Zuschuss ohne R�ckzahlungen
     (SELECT F.FB                                 x1,
             F.BEZEICHNUNG                        x2,
             to_number(TO_CHAR(B.BDATUM, 'YYYY')) x3,
@@ -1081,7 +1082,7 @@ FROM
               0,
               0,
               0
-     -- bewilligtes Darlehen ohne Rückzahlungen
+     -- bewilligtes Darlehen ohne R�ckzahlungen
      UNION
      SELECT F.FB                                 x1,
             F.BEZEICHNUNG                        x2,
@@ -1103,7 +1104,7 @@ FROM
               0,
               0,
               0
-     -- bewilligte Kostenerstattung ohne Rückzahlungen
+     -- bewilligte Kostenerstattung ohne R�ckzahlungen
      UNION
      SELECT F.FB                                 x1,
             F.BEZEICHNUNG                        x2,
@@ -1125,7 +1126,7 @@ FROM
               0,
               0,
               0
-     --  Bewilligter Zuschuss und rückgefordert
+     --  Bewilligter Zuschuss und r�ckgefordert
      UNION
      SELECT F.FB                                 x1,
             F.BEZEICHNUNG                        x2,
@@ -1144,7 +1145,7 @@ FROM
      GROUP BY F.FB,
               F.BEZEICHNUNG,
               to_number(TO_CHAR(B.BDATUM, 'YYYY'))
-     --  Bewilligtes Darlehen und rückgefordert
+     --  Bewilligtes Darlehen und r�ckgefordert
      UNION
      SELECT F.FB                                 x1,
             F.BEZEICHNUNG                        x2,
@@ -1163,7 +1164,7 @@ FROM
      GROUP BY F.FB,
               F.BEZEICHNUNG,
               to_number(TO_CHAR(B.BDATUM, 'YYYY'))
-     --  Bewilligte Kostenerstattung und rückgefordert
+     --  Bewilligte Kostenerstattung und r�ckgefordert
      UNION
      SELECT F.FB                                 x1,
             F.BEZEICHNUNG                        x2,
@@ -1182,7 +1183,7 @@ FROM
      GROUP BY F.FB,
               F.BEZEICHNUNG,
               to_number(TO_CHAR(B.BDATUM, 'YYYY'))
-     -- Erhalten Zuschuss ohne Rückzahlung
+     -- Erhalten Zuschuss ohne R�ckzahlung
      UNION
      SELECT F.FB                                    X1,
             F.BEZEICHNUNG                           X2,
@@ -1201,7 +1202,7 @@ FROM
      GROUP BY F.FB,
               F.BEZEICHNUNG,
               to_number(TO_CHAR(A.ERH_DATUM, 'YYYY'))
-     -- erhalten Darlehen ohne Rückzahlung
+     -- erhalten Darlehen ohne R�ckzahlung
      UNION
      SELECT F.FB                                    X1,
             F.BEZEICHNUNG                           X2,
@@ -1220,7 +1221,7 @@ FROM
      GROUP BY F.FB,
               F.BEZEICHNUNG,
               to_number(TO_CHAR(A.ERH_DATUM, 'YYYY'))
-     -- erhalten Kostenerstattung ohne Rückzahlung
+     -- erhalten Kostenerstattung ohne R�ckzahlung
      UNION
      SELECT F.FB                                    X1,
             F.BEZEICHNUNG                           X2,
@@ -1239,7 +1240,7 @@ FROM
      GROUP BY F.FB,
               F.BEZEICHNUNG,
               to_number(TO_CHAR(A.ERH_DATUM, 'YYYY'))
-     -- Erhalten Rückzahlung von Zuschüssen
+     -- Erhalten R�ckzahlung von Zusch�ssen
      UNION
      SELECT F.FB                                    X1,
             F.BEZEICHNUNG                           X2,
@@ -1258,7 +1259,7 @@ FROM
      GROUP BY F.FB,
               F.BEZEICHNUNG,
               to_number(TO_CHAR(A.ERH_DATUM, 'YYYY'))
-     -- erhalten Rückzahlung von Darlehen
+     -- erhalten R�ckzahlung von Darlehen
      UNION
      SELECT F.FB                                    X1,
             F.BEZEICHNUNG                           X2,
@@ -1277,7 +1278,7 @@ FROM
      GROUP BY F.FB,
               F.BEZEICHNUNG,
               to_number(TO_CHAR(A.ERH_DATUM, 'YYYY'))
-     -- erhalten Rückzahlung von Kostenerstattungen
+     -- erhalten R�ckzahlung von Kostenerstattungen
      UNION
      SELECT F.FB                                    X1,
             F.BEZEICHNUNG                           X2,
@@ -1965,7 +1966,7 @@ FROM (SELECT 'Projekt' X0, -- Typ projekt
       SELECT 'Termin'                                                                                      X0, -- Typ termine
              T.PRO_PROJNR                                                                                  X1,
              T.TERMIN                                                                                      X2,
-             T.NOTIZEN || chr(13) || chr(10) || 'Zuständig: ' || T.ZUSTAENDIG || ' Telefon: ' || T.TELEFON X3
+             T.NOTIZEN || chr(13) || chr(10) || 'Zust�ndig: ' || T.ZUSTAENDIG || ' Telefon: ' || T.TELEFON X3
       FROM FP_PROJEKTTERMINE T
       WHERE T.NOTIZEN IS NOT NULL)
 ;
@@ -2208,13 +2209,3 @@ WHERE P.FOB_FB = F.FB
   AND P.SGT_SIEDLUNGSGEBIET = I.SIEDLUNGSGEBIET(+)
   AND P.PROJNR = M.B_PROJNR(+)
 ;
-P.BEZ_STADTBEZIRK ,
-    S.BEZEICHNUNG ,
-    P.KRISOFP,
-    A.ANTRAGSDATUM,
-    A.ANTRAGSTYP,
-    A.GESKOSTEN,
-    A.ZWFKOSTEN,
-    A.A_SU_Z,
-    A.A_SU_D,
-    A.A_SU_K,
