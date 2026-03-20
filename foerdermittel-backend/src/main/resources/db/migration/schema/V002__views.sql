@@ -2006,37 +2006,32 @@ FROM "FP_PROJEKTE" P
 --  DDL for View FP_V_MITTELEINPLANUNG
 --------------------------------------------------------
 
-CREATE
-OR
-REPLACE
-FORCE EDITIONABLE VIEW "FP_V_MITTELEINPLANUNG" ("B_ID", "B_PROJNR", "B_ANT_ID", "B_BDATUM", "B_AFSATZ", "B_BFSATZ", "B_BZUWENDUNG_Z", "B_BZWFKOSTEN", "B_KRW", "B_ZUWART", "B_BAKTENZEICHEN", "B_GESZUWENDUNGEN", "B_GESKONNEX", "B_NOTIZEN", "A_ANTRAGSTYP", "A_ANTRAGSDATUM", "A_GESKOSTEN") AS
-SELECT B1.ID,
-       B1.PRO_PROJNR,
-       B1.ANT_ID,
-       B1.BDATUM,
-       B1.AFSATZ,
-       B1.BFSATZ,
-       B1.BZUWENDUNG_Z,
-       B1.BZWFKOSTEN,
-       B1.KRW,
-       B1.BZUWART,
-       B1.BAKTENZEICHEN,
-       B1.GESZUWENDUNGEN,
-       B1.GESKONNEX,
-       B1.NOTIZEN,
-       A1.ANTRAGSTYP,
-       A1.ANTRAGSDATUM,
-       A1.GESKOSTEN
-FROM FP_BEWILLIGUNGEN B1,
-     FP_ANTRAEGE A1
-WHERE A1.ID = B1.ANT_ID
-  AND A1.ANTRAGSTYP in ('E', 'A')
-  AND B1.ID = (SELECT max(B2.ID)
-               from FP_BEWILLIGUNGEN B2,
-                    FP_ANTRAEGE A2
-               WHERE A2.ID = B2.ANT_ID
-                 AND B2.PRO_PROJNR = B1.PRO_PROJNR
-                 AND A2.ANTRAGSTYP in ('E', 'A'))
+CREATE VIEW "FP_V_MITTELEINPLANUNG" AS
+SELECT B1."ID"             AS "B_ID",
+       B1."PRO_PROJNR"     AS "B_PROJNR",
+       B1."ANT_ID"         AS "B_ANT_ID",
+       B1."BDATUM"         AS "B_BDATUM",
+       B1."AFSATZ"         AS "B_AFSATZ",
+       B1."BFSATZ"         AS "B_BFSATZ",
+       B1."BZUWENDUNG_Z"   AS "B_BZUWENDUNG_Z",
+       B1."BZWFKOSTEN"     AS "B_BZWFKOSTEN",
+       B1."KRW"            AS "B_KRW",
+       B1."BZUWART"        AS "B_ZUWART",
+       B1."BAKTENZEICHEN"  AS "B_BAKTENZEICHEN",
+       B1."GESZUWENDUNGEN" AS "B_GESZUWENDUNGEN",
+       B1."GESKONNEX"      AS "B_GESKONNEX",
+       B1."NOTIZEN"        AS "B_NOTIZEN",
+       A1."ANTRAGSTYP"     AS "A_ANTRAGSTYP",
+       A1."ANTRAGSDATUM"   AS "A_ANTRAGSDATUM",
+       A1."GESKOSTEN"      AS "A_GESKOSTEN"
+FROM "FP_BEWILLIGUNGEN" B1
+         JOIN "FP_ANTRAEGE" A1 ON A1."ID" = B1."ANT_ID"
+WHERE A1."ANTRAGSTYP" IN ('E', 'A')
+  AND B1."ID" = (SELECT MAX(B2."ID")
+                 FROM "FP_BEWILLIGUNGEN" B2
+                          JOIN "FP_ANTRAEGE" A2 ON A2."ID" = B2."ANT_ID"
+                 WHERE B2."PRO_PROJNR" = B1."PRO_PROJNR"
+                   AND A2."ANTRAGSTYP" IN ('E', 'A'))
 ;
 --------------------------------------------------------
 --  DDL for View FP_V_NOTIZEN
