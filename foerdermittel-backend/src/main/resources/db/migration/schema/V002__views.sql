@@ -1831,6 +1831,109 @@ FROM (SELECT F.FB                                 x1,
 GROUP BY x1, x2, x3
 ;
 --------------------------------------------------------
+--  DDL for View FP_V_PROJEKTERSTANTRAG
+--------------------------------------------------------
+
+CREATE
+OR
+REPLACE
+FORCE EDITIONABLE VIEW "FP_V_PROJEKTERSTANTRAG" ("P_PROJNR", "P_FOB_FB", "P_PNAME", "P_PSTRASSE", "A1_ANTRAGSTYP", "A1_VBDATUM", "A1_VORZBEG", "P_VNDAT", "A1_GESKOSTEN", "P_VNGESKOSTEN", "P_VNPRUEFZWF", "P_VNPRUEFDAT", "P_ZINSEN", "A1_ANTRAGSDATUM", "A1_ZWFKOSTEN", "A1_A_SU_Z", "A1_A_SU_D", "A1_A_SU_K", "A1_B_VOR_SU_Z", "A1_B_VOR_SU_D", "A1_B_VOR_SU_K", "A1_NOTIZEN") AS
+SELECT P.PROJNR,
+       P.FOB_FB,
+       P.PNAME,
+       P.PSTRASSE,
+       A1.ANTRAGSTYP,
+       A1.VBDATUM,
+       A1.VORZBEG,
+       P.VNDAT,
+       A1.GESKOSTEN,
+       P.VNKOSTEN,
+       P.VNPRUEFZWF,
+       P.VNPRUEFDAT,
+       P.ZINSEN,
+       A1.ANTRAGSDATUM,
+       A1.ZWFKOSTEN,
+       A1.A_SU_Z,
+       A1.A_SU_D,
+       A1.A_SU_K,
+       A1.B_VOR_SU_Z,
+       A1.B_VOR_SU_D,
+       A1.B_VOR_SU_K,
+       A1.NOTIZEN
+FROM FP_PROJEKTE P,
+     FP_ANTRAEGE A1
+WHERE P.PROJNR = A1.PRO_PROJNR
+  AND ANTRAGSTYP in ('E', 'A')
+  AND A1.ID =
+      (SELECT MAX(ID)
+       FROM FP_ANTRAEGE Y
+       WHERE y.pro_projnr = P.PROJNR
+         AND ANTRAGSTYP in ('E', 'A'))
+;
+--------------------------------------------------------
+--  DDL for View FP_V_PROJEKTFLUESSE
+--------------------------------------------------------
+
+CREATE
+OR
+REPLACE
+FORCE EDITIONABLE VIEW "FP_V_PROJEKTFLUESSE" ("P_PROJNR", "AX_A_SU_Z", "AX_A_SU_D", "AX_A_SU_K", "R_ERH_Z", "R_ERH_D", "R_ERH_K", "B_BEWILL_Z", "B_BEWILL_D", "B_BEWILL_K") AS
+SELECT x1,
+       SUM(NVL(x24, 0)),
+       SUM(NVL(x25, 0)),
+       SUM(NVL(x26, 0)),
+       SUM(NVL(x27, 0)),
+       SUM(NVL(x28, 0)),
+       SUM(NVL(x29, 0)),
+       SUM(NVL(x30, 0)),
+       SUM(NVL(x31, 0)),
+       SUM(NVL(x32, 0))
+FROM (SELECT P.PROJNR          x1,
+             NVL(AX.A_SU_Z, 0) x24,
+             NVL(AX.A_SU_D, 0) x25,
+             NVL(AX.A_SU_K, 0) x26,
+             NULL              x27,
+             NULL              x28,
+             NULL              x29,
+             NULL              x30,
+             NULL              x31,
+             NULL              x32
+      FROM FP_PROJEKTE P,
+           FP_ANTRAEGE AX
+      WHERE P.PROJNR = AX.PRO_PROJNR
+      --
+      UNION ALL
+      SELECT P.PROJNR        x1,
+             NULL            x24,
+             NULL            x25,
+             NULL            x26,
+             NVL(R.ERH_Z, 0) x27,
+             NVL(R.ERH_D, 0) x28,
+             NVL(R.ERH_K, 0) x29,
+             NULL            x30,
+             NULL            x31,
+             NULL            x32
+      FROM FP_PROJEKTE P,
+           FP_ABRUFE R
+      WHERE P.PROJNR = R.PRO_PROJNR
+      --
+      UNION ALL
+      SELECT P.PROJNR               x1,
+             NULL                   x24,
+             NULL                   x25,
+             NULL                   x26,
+             NULL                   x27,
+             NULL                   x28,
+             NULL                   x29,
+             NVL(B.bzuwendung_Z, 0) x30,
+             NVL(B.bzuwendung_D, 0) x31,
+             NVL(B.bzuwendung_K, 0) x32
+      FROM FP_PROJEKTE P,
+           FP_BEWILLIGUNGEN B
+      WHERE P.PROJNR = B.PRO_PROJNR)
+GROUP BY x1
+;
+--------------------------------------------------------
 --  DDL for View FP_V_PROJEKTSTAT
 --------------------------------------------------------
 
@@ -1983,109 +2086,7 @@ FROM (SELECT 'Projekt' X0, -- Typ projekt
       FROM FP_PROJEKTTERMINE T
       WHERE T.NOTIZEN IS NOT NULL)
 ;
---------------------------------------------------------
---  DDL for View FP_V_PROJEKTERSTANTRAG
---------------------------------------------------------
 
-CREATE
-OR
-REPLACE
-FORCE EDITIONABLE VIEW "FP_V_PROJEKTERSTANTRAG" ("P_PROJNR", "P_FOB_FB", "P_PNAME", "P_PSTRASSE", "A1_ANTRAGSTYP", "A1_VBDATUM", "A1_VORZBEG", "P_VNDAT", "A1_GESKOSTEN", "P_VNGESKOSTEN", "P_VNPRUEFZWF", "P_VNPRUEFDAT", "P_ZINSEN", "A1_ANTRAGSDATUM", "A1_ZWFKOSTEN", "A1_A_SU_Z", "A1_A_SU_D", "A1_A_SU_K", "A1_B_VOR_SU_Z", "A1_B_VOR_SU_D", "A1_B_VOR_SU_K", "A1_NOTIZEN") AS
-SELECT P.PROJNR,
-       P.FOB_FB,
-       P.PNAME,
-       P.PSTRASSE,
-       A1.ANTRAGSTYP,
-       A1.VBDATUM,
-       A1.VORZBEG,
-       P.VNDAT,
-       A1.GESKOSTEN,
-       P.VNKOSTEN,
-       P.VNPRUEFZWF,
-       P.VNPRUEFDAT,
-       P.ZINSEN,
-       A1.ANTRAGSDATUM,
-       A1.ZWFKOSTEN,
-       A1.A_SU_Z,
-       A1.A_SU_D,
-       A1.A_SU_K,
-       A1.B_VOR_SU_Z,
-       A1.B_VOR_SU_D,
-       A1.B_VOR_SU_K,
-       A1.NOTIZEN
-FROM FP_PROJEKTE P,
-     FP_ANTRAEGE A1
-WHERE P.PROJNR = A1.PRO_PROJNR
-  AND ANTRAGSTYP in ('E', 'A')
-  AND A1.ID =
-      (SELECT MAX(ID)
-       FROM FP_ANTRAEGE Y
-       WHERE y.pro_projnr = P.PROJNR
-         AND ANTRAGSTYP in ('E', 'A'))
-;
---------------------------------------------------------
---  DDL for View FP_V_PROJEKTFLUESSE
---------------------------------------------------------
-
-CREATE
-OR
-REPLACE
-FORCE EDITIONABLE VIEW "FP_V_PROJEKTFLUESSE" ("P_PROJNR", "AX_A_SU_Z", "AX_A_SU_D", "AX_A_SU_K", "R_ERH_Z", "R_ERH_D", "R_ERH_K", "B_BEWILL_Z", "B_BEWILL_D", "B_BEWILL_K") AS
-SELECT x1,
-       SUM(NVL(x24, 0)),
-       SUM(NVL(x25, 0)),
-       SUM(NVL(x26, 0)),
-       SUM(NVL(x27, 0)),
-       SUM(NVL(x28, 0)),
-       SUM(NVL(x29, 0)),
-       SUM(NVL(x30, 0)),
-       SUM(NVL(x31, 0)),
-       SUM(NVL(x32, 0))
-FROM (SELECT P.PROJNR          x1,
-             NVL(AX.A_SU_Z, 0) x24,
-             NVL(AX.A_SU_D, 0) x25,
-             NVL(AX.A_SU_K, 0) x26,
-             NULL              x27,
-             NULL              x28,
-             NULL              x29,
-             NULL              x30,
-             NULL              x31,
-             NULL              x32
-      FROM FP_PROJEKTE P,
-           FP_ANTRAEGE AX
-      WHERE P.PROJNR = AX.PRO_PROJNR
-      --
-      UNION ALL
-      SELECT P.PROJNR        x1,
-             NULL            x24,
-             NULL            x25,
-             NULL            x26,
-             NVL(R.ERH_Z, 0) x27,
-             NVL(R.ERH_D, 0) x28,
-             NVL(R.ERH_K, 0) x29,
-             NULL            x30,
-             NULL            x31,
-             NULL            x32
-      FROM FP_PROJEKTE P,
-           FP_ABRUFE R
-      WHERE P.PROJNR = R.PRO_PROJNR
-      --
-      UNION ALL
-      SELECT P.PROJNR               x1,
-             NULL                   x24,
-             NULL                   x25,
-             NULL                   x26,
-             NULL                   x27,
-             NULL                   x28,
-             NULL                   x29,
-             NVL(B.bzuwendung_Z, 0) x30,
-             NVL(B.bzuwendung_D, 0) x31,
-             NVL(B.bzuwendung_K, 0) x32
-      FROM FP_PROJEKTE P,
-           FP_BEWILLIGUNGEN B
-      WHERE P.PROJNR = B.PRO_PROJNR)
-GROUP BY x1
-;
 --------------------------------------------------------
 --  DDL for View FP_V_PROJEKTSUCHE
 --------------------------------------------------------
