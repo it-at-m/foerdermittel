@@ -407,90 +407,81 @@ GROUP BY "PRO_PROJNR"
 --  DDL for View FP_V_BEWILL_ABRUFE
 --------------------------------------------------------
 
-CREATE
-OR
-REPLACE
-FORCE EDITIONABLE VIEW "FP_V_BEWILL_ABRUFE" ("V_PROJNR", "V_FOB_FB", "V_FOB_BEZEICHNUNG", "V_PNAME", "V_PSTRASSE", "V_KUR_KURZBEZ", "V_KUR_BEZEICHNUNG", "V_UAS_UA", "V_UAS_BEZEICHNUNG", "V_BEZ_STADTBEZIRK", "V_BEZ_BEZEICHNUNG", "V_KRISOFP", "V_VNDAT", "V_SUM_ABRUF_Z", "V_SUM_ABRUF_D", "V_SUM_ABRUF_K", "V_MIN_ABRUF_DATUM", "V_SUM_ERH_Z", "V_SUM_ERH_D", "V_SUM_ERH_K", "V_MIN_ERH_DATUM", "V_MIN_FIPO", "V_ID", "V_ANT_ID", "V_BDATUM", "V_AFSATZ", "V_BFSATZ", "V_BZWFKOSTEN", "V_BZUWENDUNG_Z", "V_BZUWENDUNG_D", "V_BZUWENDUNG_K", "V_BZUWART", "V_BAKTENZEICHEN", "V_GESZUWENDUNGEN", "V_GESKONNEX", "V_KRW") AS
+CREATE VIEW "FP_V_BEWILL_ABRUFE" AS
 SELECT
     -- Projekt
-    P.PROJNR,
-    P.FOB_FB,
-    F.BEZEICHNUNG,
-    P.PNAME,
-    P.PSTRASSE,
-    P.KUR_KURZBEZ,
-    Z.BEZEICHNUNG,
-    P.UAS_UA,
-    U.BEZEICHNUNG,
-    P.BEZ_STADTBEZIRK,
-    S.BEZEICHNUNG,
-    P.KRISOFP,
-    P.VNDAT,
+    P."PROJNR"                    AS "V_PROJNR",
+    P."FOB_FB"                    AS "V_FOB_FB",
+    F."BEZEICHNUNG"               AS "V_FOB_BEZEICHNUNG",
+    P."PNAME"                     AS "V_PNAME",
+    P."PSTRASSE"                  AS "V_PSTRASSE",
+    P."KUR_KURZBEZ"               AS "V_KUR_KURZBEZ",
+    Z."BEZEICHNUNG"               AS "V_KUR_BEZEICHNUNG",
+    P."UAS_UA"                    AS "V_UAS_UA",
+    U."BEZEICHNUNG"               AS "V_UAS_BEZEICHNUNG",
+    P."BEZ_STADTBEZIRK"           AS "V_BEZ_STADTBEZIRK",
+    S."BEZEICHNUNG"               AS "V_BEZ_BEZEICHNUNG",
+    P."KRISOFP"                   AS "V_KRISOFP",
+    P."VNDAT"                     AS "V_VNDAT",
     -- Abruf
-    sum(nvl(A.ABRUF_Z, 0)),
-    sum(nvl(A.ABRUF_D, 0)),
-    sum(nvl(A.ABRUF_K, 0)),
-    min(A.ABRUF_DATUM),
-    sum(nvl(A.ERH_Z, 0)),
-    sum(nvl(A.ERH_D, 0)),
-    sum(nvl(A.ERH_K, 0)),
-    min(A.ERH_DATUM),
-    min(A.FIPO),
+    SUM(COALESCE(A."ABRUF_Z", 0)) AS "V_SUM_ABRUF_Z",
+    SUM(COALESCE(A."ABRUF_D", 0)) AS "V_SUM_ABRUF_D",
+    SUM(COALESCE(A."ABRUF_K", 0)) AS "V_SUM_ABRUF_K",
+    MIN(A."ABRUF_DATUM")          AS "V_MIN_ABRUF_DATUM",
+    SUM(COALESCE(A."ERH_Z", 0))   AS "V_SUM_ERH_Z",
+    SUM(COALESCE(A."ERH_D", 0))   AS "V_SUM_ERH_D",
+    SUM(COALESCE(A."ERH_K", 0))   AS "V_SUM_ERH_K",
+    MIN(A."ERH_DATUM")            AS "V_MIN_ERH_DATUM",
+    MIN(A."FIPO")                 AS "V_MIN_FIPO",
     -- Bewilligung
-    B.ID,
-    B.ANT_ID,
-    B.BDATUM,
-    B.AFSATZ,
-    B.BFSATZ,
-    B.BZWFKOSTEN,
-    B.BZUWENDUNG_Z,
-    B.BZUWENDUNG_D,
-    B.BZUWENDUNG_K,
-    B.BZUWART,
-    B.BAKTENZEICHEN,
-    B.GESZUWENDUNGEN,
-    B.GESKONNEX,
-    B.KRW
-FROM FP_PROJEKTE P,
-     FP_ABRUFE A,
-     FP_FOERDERBEREICHE F,
-     FP_UNTERABSCHNITTE U,
-     FP_KURZBEZEICHNUNGEN Z,
-     FP_STADTBEZIRKE S,
-     FP_BEWILLIGUNGEN B
-WHERE P.FOB_FB = F.FB
-  AND P.PROJNR = B.PRO_PROJNR
-  AND P.UAS_UA = U.UA
-  AND P.KUR_KURZBEZ = Z.KURZBEZ
-  AND P.BEZ_STADTBEZIRK = S.STADTBEZIRK(+)
-  AND B.ID = A.BWI_ID(+)
-GROUP BY P.PROJNR,
-         P.FOB_FB,
-         F.BEZEICHNUNG,
-         P.PNAME,
-         P.PSTRASSE,
-         P.KUR_KURZBEZ,
-         Z.BEZEICHNUNG,
-         P.UAS_UA,
-         U.BEZEICHNUNG,
-         P.BEZ_STADTBEZIRK,
-         S.BEZEICHNUNG,
-         P.KRISOFP,
-         P.VNDAT,
-         B.ID,
-         B.ANT_ID,
-         B.BDATUM,
-         B.AFSATZ,
-         B.BFSATZ,
-         B.BZWFKOSTEN,
-         B.BZUWENDUNG_Z,
-         B.BZUWENDUNG_D,
-         B.BZUWENDUNG_K,
-         B.BZUWART,
-         B.BAKTENZEICHEN,
-         B.GESZUWENDUNGEN,
-         B.GESKONNEX,
-         B.KRW
+    B."ID"                        AS "V_ID",
+    B."ANT_ID"                    AS "V_ANT_ID",
+    B."BDATUM"                    AS "V_BDATUM",
+    B."AFSATZ"                    AS "V_AFSATZ",
+    B."BFSATZ"                    AS "V_BFSATZ",
+    B."BZWFKOSTEN"                AS "V_BZWFKOSTEN",
+    B."BZUWENDUNG_Z"              AS "V_BZUWENDUNG_Z",
+    B."BZUWENDUNG_D"              AS "V_BZUWENDUNG_D",
+    B."BZUWENDUNG_K"              AS "V_BZUWENDUNG_K",
+    B."BZUWART"                   AS "V_BZUWART",
+    B."BAKTENZEICHEN"             AS "V_BAKTENZEICHEN",
+    B."GESZUWENDUNGEN"            AS "V_GESZUWENDUNGEN",
+    B."GESKONNEX"                 AS "V_GESKONNEX",
+    B."KRW"                       AS "V_KRW"
+FROM "FP_PROJEKTE" P
+         JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
+         JOIN "FP_BEWILLIGUNGEN" B ON P."PROJNR" = B."PRO_PROJNR"
+         JOIN "FP_UNTERABSCHNITTE" U ON P."UAS_UA" = U."UA"
+         JOIN "FP_KURZBEZEICHNUNGEN" Z ON P."KUR_KURZBEZ" = Z."KURZBEZ"
+         LEFT JOIN "FP_STADTBEZIRKE" S ON P."BEZ_STADTBEZIRK" = S."STADTBEZIRK"
+         LEFT JOIN "FP_ABRUFE" A ON B."ID" = A."BWI_ID"
+GROUP BY P."PROJNR",
+         P."FOB_FB",
+         F."BEZEICHNUNG",
+         P."PNAME",
+         P."PSTRASSE",
+         P."KUR_KURZBEZ",
+         Z."BEZEICHNUNG",
+         P."UAS_UA",
+         U."BEZEICHNUNG",
+         P."BEZ_STADTBEZIRK",
+         S."BEZEICHNUNG",
+         P."KRISOFP",
+         P."VNDAT",
+         B."ID",
+         B."ANT_ID",
+         B."BDATUM",
+         B."AFSATZ",
+         B."BFSATZ",
+         B."BZWFKOSTEN",
+         B."BZUWENDUNG_Z",
+         B."BZUWENDUNG_D",
+         B."BZUWENDUNG_K",
+         B."BZUWART",
+         B."BAKTENZEICHEN",
+         B."GESZUWENDUNGEN",
+         B."GESKONNEX",
+         B."KRW"
 ;
 --------------------------------------------------------
 --  DDL for View FP_V_BEWILLSUCHE
