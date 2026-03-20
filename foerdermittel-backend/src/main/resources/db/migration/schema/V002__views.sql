@@ -1834,41 +1834,36 @@ GROUP BY x1, x2, x3
 --  DDL for View FP_V_PROJEKTERSTANTRAG
 --------------------------------------------------------
 
-CREATE
-OR
-REPLACE
-FORCE EDITIONABLE VIEW "FP_V_PROJEKTERSTANTRAG" ("P_PROJNR", "P_FOB_FB", "P_PNAME", "P_PSTRASSE", "A1_ANTRAGSTYP", "A1_VBDATUM", "A1_VORZBEG", "P_VNDAT", "A1_GESKOSTEN", "P_VNGESKOSTEN", "P_VNPRUEFZWF", "P_VNPRUEFDAT", "P_ZINSEN", "A1_ANTRAGSDATUM", "A1_ZWFKOSTEN", "A1_A_SU_Z", "A1_A_SU_D", "A1_A_SU_K", "A1_B_VOR_SU_Z", "A1_B_VOR_SU_D", "A1_B_VOR_SU_K", "A1_NOTIZEN") AS
-SELECT P.PROJNR,
-       P.FOB_FB,
-       P.PNAME,
-       P.PSTRASSE,
-       A1.ANTRAGSTYP,
-       A1.VBDATUM,
-       A1.VORZBEG,
-       P.VNDAT,
-       A1.GESKOSTEN,
-       P.VNKOSTEN,
-       P.VNPRUEFZWF,
-       P.VNPRUEFDAT,
-       P.ZINSEN,
-       A1.ANTRAGSDATUM,
-       A1.ZWFKOSTEN,
-       A1.A_SU_Z,
-       A1.A_SU_D,
-       A1.A_SU_K,
-       A1.B_VOR_SU_Z,
-       A1.B_VOR_SU_D,
-       A1.B_VOR_SU_K,
-       A1.NOTIZEN
-FROM FP_PROJEKTE P,
-     FP_ANTRAEGE A1
-WHERE P.PROJNR = A1.PRO_PROJNR
-  AND ANTRAGSTYP in ('E', 'A')
-  AND A1.ID =
-      (SELECT MAX(ID)
-       FROM FP_ANTRAEGE Y
-       WHERE y.pro_projnr = P.PROJNR
-         AND ANTRAGSTYP in ('E', 'A'))
+CREATE VIEW "FP_V_PROJEKTERSTANTRAG" AS
+SELECT P."PROJNR"        AS "P_PROJNR",
+       P."FOB_FB"        AS "P_FOB_FB",
+       P."PNAME"         AS "P_PNAME",
+       P."PSTRASSE"      AS "P_PSTRASSE",
+       A1."ANTRAGSTYP"   AS "A1_ANTRAGSTYP",
+       A1."VBDATUM"      AS "A1_VBDATUM",
+       A1."VORZBEG"      AS "A1_VORZBEG",
+       P."VNDAT"         AS "P_VNDAT",
+       A1."GESKOSTEN"    AS "A1_GESKOSTEN",
+       P."VNKOSTEN"      AS "P_VNGESKOSTEN",
+       P."VNPRUEFZWF"    AS "P_VNPRUEFZWF",
+       P."VNPRUEFDAT"    AS "P_VNPRUEFDAT",
+       P."ZINSEN"        AS "P_ZINSEN",
+       A1."ANTRAGSDATUM" AS "A1_ANTRAGSDATUM",
+       A1."ZWFKOSTEN"    AS "A1_ZWFKOSTEN",
+       A1."A_SU_Z"       AS "A1_A_SU_Z",
+       A1."A_SU_D"       AS "A1_A_SU_D",
+       A1."A_SU_K"       AS "A1_A_SU_K",
+       A1."B_VOR_SU_Z"   AS "A1_B_VOR_SU_Z",
+       A1."B_VOR_SU_D"   AS "A1_B_VOR_SU_D",
+       A1."B_VOR_SU_K"   AS "A1_B_VOR_SU_K",
+       A1."NOTIZEN"      AS "A1_NOTIZEN"
+FROM "FP_PROJEKTE" P
+         JOIN "FP_ANTRAEGE" A1 ON P."PROJNR" = A1."PRO_PROJNR"
+WHERE A1."ANTRAGSTYP" IN ('E', 'A')
+  AND A1."ID" = (SELECT MAX("ID")
+                 FROM "FP_ANTRAEGE" Y
+                 WHERE Y."PRO_PROJNR" = P."PROJNR"
+                   AND Y."ANTRAGSTYP" IN ('E', 'A'))
 ;
 --------------------------------------------------------
 --  DDL for View FP_V_PROJEKTFLUESSE
