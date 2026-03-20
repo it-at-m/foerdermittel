@@ -2042,48 +2042,59 @@ WHERE A1.ID = B1.ANT_ID
 --  DDL for View FP_V_NOTIZEN
 --------------------------------------------------------
 
-CREATE
-OR
-REPLACE
-FORCE EDITIONABLE VIEW "FP_V_NOTIZEN" ("V_TYP", "V_PROJNR", "V_DATUM", "V_NOTIZEN") AS
-SELECT X0,
-       X1,
-       X2,
-       X3
-FROM (SELECT 'Projekt' X0, -- Typ projekt
-             P.PROJNR  X1,
-             P.VNDAT   X2,
-             P.NOTIZEN X3
-      FROM FP_PROJEKTE P
-      WHERE P.notizen IS NOT NULL
-      UNION ALL
-      SELECT 'Antrag'       X0, -- Typ antraege
-             A.PRO_PROJNR   X1,
-             A.ANTRAGSDATUM X2,
-             A.NOTIZEN      X3
-      FROM FP_ANTRAEGE A
-      WHERE A.notizen IS NOT NULL
-      UNION ALL
-      SELECT 'Bewilligung' X0, -- Typ bewilligungen
-             B.PRO_PROJNR  X1,
-             B.BDATUM      X2,
-             B.NOTIZEN     X3
-      FROM FP_BEWILLIGUNGEN B
-      WHERE B.notizen IS NOT NULL
-      UNION
-      SELECT 'Abruf'       X0, -- Typ abrufe
-             R.PRO_PROJNR  X1,
-             R.ABRUF_DATUM X2,
-             R.NOTIZEN     X3
-      FROM FP_ABRUFE R
-      WHERE R.NOTIZEN IS NOT NULL
-      UNION
-      SELECT 'Termin'                                                                                      X0, -- Typ termine
-             T.PRO_PROJNR                                                                                  X1,
-             T.TERMIN                                                                                      X2,
-             T.NOTIZEN || chr(13) || chr(10) || 'Zust�ndig: ' || T.ZUSTAENDIG || ' Telefon: ' || T.TELEFON X3
-      FROM FP_PROJEKTTERMINE T
-      WHERE T.NOTIZEN IS NOT NULL)
+CREATE VIEW "FP_V_NOTIZEN" AS
+SELECT X0 AS "V_TYP",
+       X1 AS "V_PROJNR",
+       X2 AS "V_DATUM",
+       X3 AS "V_NOTIZEN"
+FROM (
+         -- Typ Projekt
+         SELECT 'Projekt'   AS X0,
+                P."PROJNR"  AS X1,
+                P."VNDAT"   AS X2,
+                P."NOTIZEN" AS X3
+         FROM "FP_PROJEKTE" P
+         WHERE P."NOTIZEN" IS NOT NULL
+
+         UNION ALL
+
+         -- Typ Antrag
+         SELECT 'Antrag'         AS X0,
+                A."PRO_PROJNR"   AS X1,
+                A."ANTRAGSDATUM" AS X2,
+                A."NOTIZEN"      AS X3
+         FROM "FP_ANTRAEGE" A
+         WHERE A."NOTIZEN" IS NOT NULL
+
+         UNION ALL
+
+         -- Typ Bewilligungen
+         SELECT 'Bewilligung'  AS X0,
+                B."PRO_PROJNR" AS X1,
+                B."BDATUM"     AS X2,
+                B."NOTIZEN"    AS X3
+         FROM "FP_BEWILLIGUNGEN" B
+         WHERE B."NOTIZEN" IS NOT NULL
+
+         UNION
+
+         -- Typ Abruf
+         SELECT 'Abruf'         AS X0,
+                R."PRO_PROJNR"  AS X1,
+                R."ABRUF_DATUM" AS X2,
+                R."NOTIZEN"     AS X3
+         FROM "FP_ABRUFE" R
+         WHERE R."NOTIZEN" IS NOT NULL
+
+         UNION
+
+         -- Typ Termin
+         SELECT 'Termin'                                                                           AS X0,
+                T."PRO_PROJNR"                                                                     AS X1,
+                T."TERMIN"                                                                         AS X2,
+                T."NOTIZEN" || E'\r\nZuständig: ' || T."ZUSTAENDIG" || ' Telefon: ' || T."TELEFON" AS X3
+         FROM "FP_PROJEKTTERMINE" T
+         WHERE T."NOTIZEN" IS NOT NULL) as subquery;
 ;
 
 --------------------------------------------------------
