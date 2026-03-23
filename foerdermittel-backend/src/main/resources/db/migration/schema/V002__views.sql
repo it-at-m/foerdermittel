@@ -669,67 +669,60 @@ ORDER BY 1, 2
 --  DDL for View FP_V_CHECKLISTEN2
 --------------------------------------------------------
 
-CREATE
-OR
-REPLACE
-FORCE EDITIONABLE VIEW "FP_V_CHECKLISTEN2" ("V_FEHLER", "V_PROJNR", "V_PSTRASSE", "V_INFO") AS
-SELECT '1 Verwendungsnachweise ohne VN Datum'                                FEHLER,
-       PROJNR                                                                PROJNR,
-       PSTRASSE                                                              PSTRASSE,
-       'VN ZWF KOSTEN: ' || VNZWFKOSTEN || '  VN Gesamtkosten: ' || VNKOSTEN INFO
-from FP_PROJEKTE P
-where VNDAT is null
-  and (VNZWFKOSTEN > 0 or VNKOSTEN > 0)
---
+CREATE VIEW "FP_V_CHECKLISTEN2" AS
+SELECT '1 Verwendungsnachweise ohne VN Datum'                                        AS "V_FEHLER",
+       P."PROJNR"                                                                    AS "V_PROJNR",
+       P."PSTRASSE"                                                                  AS "V_PSTRASSE",
+       'VN ZWF KOSTEN: ' || P."VNZWFKOSTEN" || '  VN Gesamtkosten: ' || P."VNKOSTEN" AS "V_INFO"
+FROM "FP_PROJEKTE" P
+WHERE P."VNDAT" IS NULL
+  AND (P."VNZWFKOSTEN" > 0 OR P."VNKOSTEN" > 0)
+
 UNION ALL
---
-SELECT '2 Erfolgte Bewilligungen ohne Bewilligungsdatum'                            FEHLER,
-       PROJNR                                                                       PROJNR,
-       PSTRASSE                                                                     PSTRASSE,
-       'Summe Zuwendungen: ' || to_char(BZUWENDUNG_Z + BZUWENDUNG_D + BZUWENDUNG_K) INFO
-from FP_BEWILLIGUNGEN B,
-     FP_PROJEKTE P
-where B.PRO_PROJNR = P.PROJNR
-  and B.BDATUM is null
-  and (BZUWENDUNG_Z > 0 or BZUWENDUNG_D > 0 or BZUWENDUNG_K > 0)
---
+
+SELECT '2 Erfolgte Bewilligungen ohne Bewilligungsdatum',
+       P."PROJNR",
+       P."PSTRASSE",
+       'Summe Zuwendungen: ' || TO_CHAR(B."BZUWENDUNG_Z" + B."BZUWENDUNG_D" + B."BZUWENDUNG_K")
+FROM "FP_BEWILLIGUNGEN" B
+         JOIN "FP_PROJEKTE" P ON B."PRO_PROJNR" = P."PROJNR"
+WHERE B."BDATUM" IS NULL
+  AND (B."BZUWENDUNG_Z" > 0 OR B."BZUWENDUNG_D" > 0 OR B."BZUWENDUNG_K" > 0)
+
 UNION ALL
---
-SELECT '3 Erfolgte Abrufe ohne Abrufdatum'                      FEHLER,
-       PROJNR                                                   PROJNR,
-       PSTRASSE                                                 PSTRASSE,
-       'Summe Abrufe: ' || to_char(ABRUF_Z + ABRUF_D + ABRUF_K) INFO
-from FP_ABRUFE A,
-     FP_PROJEKTE P
-where A.PRO_PROJNR = P.PROJNR
-  and A.ABRUF_DATUM is null
-  and (A.ABRUF_Z > 0 or A.ABRUF_D > 0 or A.ABRUF_K > 0)
---
+
+SELECT '3 Erfolgte Abrufe ohne Abrufdatum',
+       P."PROJNR",
+       P."PSTRASSE",
+       'Summe Abrufe: ' || TO_CHAR(A."ABRUF_Z" + A."ABRUF_D" + A."ABRUF_K")
+FROM "FP_ABRUFE" A
+         JOIN "FP_PROJEKTE" P ON A."PRO_PROJNR" = P."PROJNR"
+WHERE A."ABRUF_DATUM" IS NULL
+  AND (A."ABRUF_Z" > 0 OR A."ABRUF_D" > 0 OR A."ABRUF_K" > 0)
+
 UNION ALL
---
-SELECT '4 Erhaltene Abrufe ohne Erhaltdatum'                      FEHLER,
-       PROJNR                                                     PROJNR,
-       PSTRASSE                                                   PSTRASSE,
-       'Summe erhalten: ' || to_char(A.ERH_Z + A.ERH_D + A.ERH_K) INFO
-from FP_ABRUFE A,
-     FP_PROJEKTE P
-where A.PRO_PROJNR = P.PROJNR
-  and A.ERH_DATUM is null
-  and (A.ERH_Z > 0 or A.ERH_D > 0 or A.ERH_K > 0)
---
+
+SELECT '4 Erhaltene Abrufe ohne Erhaltdatum',
+       P."PROJNR",
+       P."PSTRASSE",
+       'Summe erhalten: ' || TO_CHAR(A."ERH_Z" + A."ERH_D" + A."ERH_K")
+FROM "FP_ABRUFE" A
+         JOIN "FP_PROJEKTE" P ON A."PRO_PROJNR" = P."PROJNR"
+WHERE A."ERH_DATUM" IS NULL
+  AND (A."ERH_Z" > 0 OR A."ERH_D" > 0 OR A."ERH_K" > 0)
+
 UNION ALL
---
-SELECT '5 Antr�ge ohne Antragsdatum und ohne Unbedenklichkeitsantrag' FEHLER,
-       PROJNR                                                         PROJNR,
-       PSTRASSE                                                       PSTRASSE,
-       null                                                           INFO
-from FP_ANTRAEGE A,
-     FP_PROJEKTE P
-where A.PRO_PROJNR = P.PROJNR
-  and A.unbeddat is null
-  and A.antragsdatum is null
-  and P.VNDAT is null
---
+
+SELECT '5 Anträge ohne Antragsdatum und ohne Unbedenklichkeitsantrag',
+       P."PROJNR",
+       P."PSTRASSE",
+       NULL
+FROM "FP_ANTRAEGE" A
+         JOIN "FP_PROJEKTE" P ON A."PRO_PROJNR" = P."PROJNR"
+WHERE A."UNBEDDAT" IS NULL
+  AND A."ANTRAGSDATUM" IS NULL
+  AND P."VNDAT" IS NULL
+
 ORDER BY 1, 2
 ;
 --------------------------------------------------------
