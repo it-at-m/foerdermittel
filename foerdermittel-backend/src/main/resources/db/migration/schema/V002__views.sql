@@ -529,151 +529,140 @@ FROM "FP_PROJEKTE" P
 --  DDL for View FP_V_CHECKLISTEN1
 --------------------------------------------------------
 
-CREATE
-OR
-REPLACE
-FORCE EDITIONABLE VIEW "FP_V_CHECKLISTEN1" ("V_HINWEIS", "V_PROJNR", "V_PSTRASSE", "V_INFO") AS
-SELECT '1 Offene Projekte ohne F�rderantrag' HINWEIS,
-       PROJNR                                PROJNR,
-       PSTRASSE                              PSTRASSE,
-       null                                  INFO
-from FP_PROJEKTE P
-where VNDAT is null
-  and not exists (select 1 from FP_ANTRAEGE A where P.PROJNR = A.PRO_PROJNR)
---
+CREATE VIEW "FP_V_CHECKLISTEN1" AS
+SELECT '1 Offene Projekte ohne Förderantrag' AS "V_HINWEIS",
+       P."PROJNR"                            AS "V_PROJNR",
+       P."PSTRASSE"                          AS "V_PSTRASSE",
+       NULL                                  AS "V_INFO"
+FROM "FP_PROJEKTE" P
+WHERE P."VNDAT" IS NULL
+  AND NOT EXISTS (SELECT 1 FROM "FP_ANTRAEGE" A WHERE P."PROJNR" = A."PRO_PROJNR")
+
 UNION ALL
---
-SELECT '2 Offene Projekte mit Antr�gen auf Unbedenklichkeit ohne F�rderantrag' HINWEIS,
-       PROJNR                                                                  PROJNR,
-       PSTRASSE                                                                PSTRASSE,
-       'Unbedenk. am: ' || to_char(A.UNBEDDAT, 'DD.MM.YYYY')                   INFO
-from FP_ANTRAEGE A,
-     FP_PROJEKTE P
-where A.pro_projnr = P.PROJNR
-  and A.unbeddat is not null
-  and A.antragsdatum is null
-  and P.VNDAT is null
---
+
+SELECT '2 Offene Projekte mit Anträgen auf Unbedenklichkeit ohne Förderantrag',
+       P."PROJNR",
+       P."PSTRASSE",
+       'Unbedenk. am: ' || TO_CHAR(A."UNBEDDAT", 'DD.MM.YYYY')
+FROM "FP_ANTRAEGE" A
+         JOIN "FP_PROJEKTE" P ON A."PRO_PROJNR" = P."PROJNR"
+WHERE A."UNBEDDAT" IS NOT NULL
+  AND A."ANTRAGSDATUM" IS NULL
+  AND P."VNDAT" IS NULL
+
 UNION ALL
---
-SELECT '3 Offene Projekte und ausstehende Genehmigungen zum vorzeitigen Baubeginn' HINWEIS,
-       PROJNR                                                                      PROJNR,
-       PSTRASSE                                                                    PSTRASSE,
-       'Vorz. Baubeginn: ' || A.VORZBEG                                            INFO
-from FP_ANTRAEGE A,
-     FP_PROJEKTE P
-where P.PROJNR = A.PRO_PROJNR
-  and P.VNDAT is null
-  and A.VORZBEG = 1
-  and A.VBDATUM is null
---
+
+SELECT '3 Offene Projekte und ausstehende Genehmigungen zum vorzeitigen Baubeginn',
+       P."PROJNR",
+       P."PSTRASSE",
+       'Vorz. Baubeginn: ' || A."VORZBEG"
+FROM "FP_ANTRAEGE" A
+         JOIN "FP_PROJEKTE" P ON P."PROJNR" = A."PRO_PROJNR"
+WHERE P."VNDAT" IS NULL
+  AND A."VORZBEG" = 1
+  AND A."VBDATUM" IS NULL
+
 UNION ALL
---
-SELECT '4 Offene Projekte und ausstehende Bewilligungen (ohne Datum)' HINWEIS,
-       PROJNR                                                         PROJNR,
-       PSTRASSE                                                       PSTRASSE,
-       'Bewilligt am: ' || to_char(B.BDATUM, 'DD.MM.YYYY')            INFO
-from FP_PROJEKTE P,
-     FP_BEWILLIGUNGEN B
-where P.PROJNR = B.PRO_PROJNR
-  and P.VNDAT is null
-  and BDATUM is null
---
+
+SELECT '4 Offene Projekte und ausstehende Bewilligungen (ohne Datum)',
+       P."PROJNR",
+       P."PSTRASSE",
+       'Bewilligt am: ' || TO_CHAR(B."BDATUM", 'DD.MM.YYYY')
+FROM "FP_PROJEKTE" P
+         JOIN "FP_BEWILLIGUNGEN" B ON P."PROJNR" = B."PRO_PROJNR"
+WHERE P."VNDAT" IS NULL
+  AND B."BDATUM" IS NULL
+
 UNION ALL
---
-SELECT '5 Offene Projekte und Bewilligungen ohne Verkn�pfung zu einem Antrag' HINWEIS,
-       PROJNR                                                                 PROJNR,
-       PSTRASSE                                                               PSTRASSE,
-       null                                                                   INFO
-from FP_PROJEKTE P,
-     FP_BEWILLIGUNGEN B
-where B.PRO_PROJNR = P.PROJNR
-  and P.VNDAT is null
-  and B.ANT_ID is null
---
+
+SELECT '5 Offene Projekte und Bewilligungen ohne Verknüpfung zu einem Antrag',
+       P."PROJNR",
+       P."PSTRASSE",
+       NULL
+FROM "FP_PROJEKTE" P
+         JOIN "FP_BEWILLIGUNGEN" B ON B."PRO_PROJNR" = P."PROJNR"
+WHERE P."VNDAT" IS NULL
+  AND B."ANT_ID" IS NULL
+
 UNION ALL
---
-SELECT '6 Offene Projekte und Abrufe ohne Verkn�pfung zu einer Bewilligung' HINWEIS,
-       PROJNR                                                               PROJNR,
-       PSTRASSE                                                             PSTRASSE,
-       null                                                                 INFO
-from FP_PROJEKTE P,
-     FP_ABRUFE A
-where P.PROJNR = A.PRO_PROJNR
-  and A.BWI_ID is null
-  and P.VNDAT is null
---
+
+SELECT '6 Offene Projekte und Abrufe ohne Verknüpfung zu einer Bewilligung',
+       P."PROJNR",
+       P."PSTRASSE",
+       NULL
+FROM "FP_PROJEKTE" P
+         JOIN "FP_ABRUFE" A ON P."PROJNR" = A."PRO_PROJNR"
+WHERE A."BWI_ID" IS NULL
+  AND P."VNDAT" IS NULL
+
 UNION ALL
---
-SELECT '7 Offene Projekte und leere Bewilligungen'                  HINWEIS,
-       PROJNR                                                       PROJNR,
-       PSTRASSE                                                     PSTRASSE,
-       'Leer angelegt am: ' || to_char(B.ANLAGEDATUM, 'DD.MM.YYYY') INFO
-from FP_PROJEKTE P,
-     FP_BEWILLIGUNGEN B
-where B.PRO_PROJNR = P.PROJNR
-  and P.VNDAT is null
-  and B.BDATUM is null
-  and nvl(B.AFSATZ, 0) = 0
-  and nvl(B.BFSATZ, 0) = 0
-  and nvl(B.BZWFKOSTEN, 0) = 0
-  and nvl(B.BZUWENDUNG_Z, 0) = 0
-  and nvl(B.BZUWENDUNG_D, 0) = 0
-  and nvl(B.BZUWENDUNG_K, 0) = 0
-  and B.BZUWART is null
-  and B.BAKTENZEICHEN is null
-  and nvl(B.GESZUWENDUNGEN, 0) = 0
-  and nvl(B.GESKONNEX, 0) = 0
-  and B.KRW is null
-  and B.AENDERUNGSDATUM is null
-  and B.AENDERUNGVON is null
---
+
+SELECT '7 Offene Projekte und leere Bewilligungen',
+       P."PROJNR",
+       P."PSTRASSE",
+       'Leer angelegt am: ' || TO_CHAR(B."ANLAGEDATUM", 'DD.MM.YYYY')
+FROM "FP_PROJEKTE" P
+         JOIN "FP_BEWILLIGUNGEN" B ON P."PROJNR" = B."PRO_PROJNR"
+WHERE P."VNDAT" IS NULL
+  AND B."BDATUM" IS NULL
+  AND COALESCE(B."AFSATZ", 0) = 0
+  AND COALESCE(B."BFSATZ", 0) = 0
+  AND COALESCE(B."BZWFKOSTEN", 0) = 0
+  AND COALESCE(B."BZUWENDUNG_Z", 0) = 0
+  AND COALESCE(B."BZUWENDUNG_D", 0) = 0
+  AND COALESCE(B."BZUWENDUNG_K", 0) = 0
+  AND B."BZUWART" IS NULL
+  AND B."BAKTENZEICHEN" IS NULL
+  AND COALESCE(B."GESZUWENDUNGEN", 0) = 0
+  AND COALESCE(B."GESKONNEX", 0) = 0
+  AND B."KRW" IS NULL
+  AND B."AENDERUNGSDATUM" IS NULL
+  AND B."AENDERUNGVON" IS NULL
+
 UNION ALL
---
-SELECT '8 Projekte mit VN-Datum ab 1.1.2000 und leere Bewilligungen' HINWEIS,
-       PROJNR                                                        PROJNR,
-       PSTRASSE                                                      PSTRASSE,
-       'Leer angelegt am: ' || to_char(B.ANLAGEDATUM, 'DD.MM.YYYY')  INFO
-from FP_PROJEKTE P,
-     FP_BEWILLIGUNGEN B
-where B.PRO_PROJNR = P.PROJNR
-  and P.VNDAT > to_date('01.01.2000', 'dd.mm.yyyy')
-  and B.BDATUM is null
-  and nvl(B.AFSATZ, 0) = 0
-  and nvl(B.BFSATZ, 0) = 0
-  and nvl(B.BZWFKOSTEN, 0) = 0
-  and nvl(B.BZUWENDUNG_Z, 0) = 0
-  and nvl(B.BZUWENDUNG_D, 0) = 0
-  and nvl(B.BZUWENDUNG_K, 0) = 0
-  and B.BZUWART is null
-  and B.BAKTENZEICHEN is null
-  and nvl(B.GESZUWENDUNGEN, 0) = 0
-  and nvl(B.GESKONNEX, 0) = 0
-  and B.KRW is null
-  and B.AENDERUNGSDATUM is null
-  and B.AENDERUNGVON is null
---
+
+SELECT '8 Projekte mit VN-Datum ab 1.1.2000 und leere Bewilligungen',
+       P."PROJNR",
+       P."PSTRASSE",
+       'Leer angelegt am: ' || TO_CHAR(B."ANLAGEDATUM", 'DD.MM.YYYY')
+FROM "FP_PROJEKTE" P
+         JOIN "FP_BEWILLIGUNGEN" B ON P."PROJNR" = B."PRO_PROJNR"
+WHERE P."VNDAT" > TO_DATE('01.01.2000', 'dd.mm.yyyy')
+  AND B."BDATUM" IS NULL
+  AND COALESCE(B."AFSATZ", 0) = 0
+  AND COALESCE(B."BFSATZ", 0) = 0
+  AND COALESCE(B."BZWFKOSTEN", 0) = 0
+  AND COALESCE(B."BZUWENDUNG_Z", 0) = 0
+  AND COALESCE(B."BZUWENDUNG_D", 0) = 0
+  AND COALESCE(B."BZUWENDUNG_K", 0) = 0
+  AND B."BZUWART" IS NULL
+  AND B."BAKTENZEICHEN" IS NULL
+  AND COALESCE(B."GESZUWENDUNGEN", 0) = 0
+  AND COALESCE(B."GESKONNEX", 0) = 0
+  AND B."KRW" IS NULL
+  AND B."AENDERUNGSDATUM" IS NULL
+  AND B."AENDERUNGVON" IS NULL
+
 UNION ALL
---
-SELECT '9 Projekte mit VN-Datum ab 1.1.2000 aber ohne Schlu�bescheid' HINWEIS,
-       PROJNR                                                         PROJNR,
-       PSTRASSE                                                       PSTRASSE,
-       'VN: ' || to_char(P.VNDAT, 'DD.MM.YYYY')                       INFO
-from FP_PROJEKTE P
-where VNDAT > to_date('01.01.2000', 'dd.mm.yyyy')
-  and VNSCHLUSSBEW is null
---
+
+SELECT '9 Projekte mit VN-Datum ab 1.1.2000 aber ohne Schlußbescheid',
+       P."PROJNR",
+       P."PSTRASSE",
+       'VN: ' || TO_CHAR(P."VNDAT", 'DD.MM.YYYY')
+FROM "FP_PROJEKTE" P
+WHERE P."VNDAT" > TO_DATE('01.01.2000', 'DD.MM.YYYY')
+  AND P."VNSCHLUSSBEW" IS NULL
+
 UNION ALL
---
-SELECT '10 Projekte mit VN-Datum ab 1.1.2000 aber ohne Endkosten' HINWEIS,
-       PROJNR                                                     PROJNR,
-       PSTRASSE                                                   PSTRASSE,
-       'VN: ' || to_char(P.VNDAT, 'DD.MM.YYYY')                   INFO
-from FP_PROJEKTE P
-where VNDAT > to_date('01.01.2000', 'dd.mm.yyyy')
-  and VNKOSTEN is null
---
---
+
+SELECT '10 Projekte mit VN-Datum ab 1.1.2000 aber ohne Endkosten',
+       P."PROJNR",
+       P."PSTRASSE",
+       'VN: ' || TO_CHAR(P."VNDAT", 'DD.MM.YYYY')
+FROM "FP_PROJEKTE" P
+WHERE P."VNDAT" > TO_DATE('01.01.2000', 'DD.MM.YYYY')
+  AND P."VNKOSTEN" IS NULL
+
 ORDER BY 1, 2
 ;
 --------------------------------------------------------
