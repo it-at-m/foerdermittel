@@ -1318,23 +1318,20 @@ GROUP BY x1,
 --  DDL for View FP_V_ISTKOSTENMAX
 --------------------------------------------------------
 
-CREATE
-OR
-REPLACE
-FORCE EDITIONABLE VIEW "FP_V_ISTKOSTENMAX" ("P_PROJNR", "P_MAX_ISTDATUM", "P_JAHR", "P_MONAT", "P_ISTKOSTEN") AS
-SELECT X1,
-       X2,
-       SUBSTR(X2, 1, 4) X3,
-       SUBSTR(X2, 5, 2) x4,
-       X5
-FROM (SELECT I1.PRO_PROJNR                            X1,
-             TO_CHAR(I1.JAHR || lpad(I1.MONAT, 2, 0)) X2,
-             I1.ISTKOSTEN                             X5
-      FROM FP_PROJEKTISTKOSTEN I1
-      WHERE TO_CHAR(I1.JAHR || lpad(I1.MONAT, 2, 0)) =
-            (SELECT max(TO_CHAR(I2.JAHR || lpad(I2.MONAT, 2, 0)))
-             from FP_PROJEKTISTKOSTEN I2
-             WHERE I2.PRO_PROJNR = I1.PRO_PROJNR))
+CREATE VIEW "FP_V_ISTKOSTENMAX" AS
+SELECT "X1"               AS "P_PROJNR",
+       "X2"               AS "P_MAX_ISTDATUM",
+       SUBSTR("X2", 1, 4) AS "P_JAHR",
+       SUBSTR("X2", 5, 2) AS "P_MONAT",
+       "X3"               AS "P_ISTKOSTEN"
+FROM (SELECT I1."PRO_PROJNR"                              AS "X1",
+             TO_CHAR(I1."JAHR" || LPAD(I1."MONAT", 2, 0)) AS "X2",
+             I1."ISTKOSTEN"                               AS "X3"
+      FROM "FP_PROJEKTISTKOSTEN" I1
+      WHERE TO_CHAR(I1."JAHR" || LPAD(I1."MONAT", 2, 0)) =
+            (SELECT MAX(TO_CHAR(I2."JAHR" || LPAD(I2."MONAT", 2, 0)))
+             FROM "FP_PROJEKTISTKOSTEN" I2
+             WHERE I2."PRO_PROJNR" = I1."PRO_PROJNR")) AS X
 ;
 --------------------------------------------------------
 --  DDL for View FP_V_JAHRESSTATISTIK1
