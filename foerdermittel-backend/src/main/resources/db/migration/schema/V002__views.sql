@@ -1004,257 +1004,245 @@ WHERE E."STK" IS TRUE
 --  DDL for View FP_V_FAGSTAT
 --------------------------------------------------------
 
-CREATE
-OR
-REPLACE
-FORCE EDITIONABLE VIEW "FP_V_FAGSTAT" ("F_FB", "F_BEZEICHNUNG", "F_JAHR", "B_BEWILL", "B_RUECK", "E_ERHALTEN", "E_RUECK") AS
-SELECT x1,
-       x2,
-       x3,
-       SUM(NVL(x4, 0)),
-       SUM(NVL(x5, 0)),
-       SUM(NVL(x6, 0)),
-       SUM(NVL(x7, 0))
+CREATE VIEW "FP_V_FAGSTAT" AS
+SELECT "X1"                   AS "F_FB",
+       "X2"                   AS "F_BEZEICHNUNG",
+       "X3"                   AS "F_JAHR",
+       SUM(COALESCE("X4", 0)) AS "B_BEWILL",
+       SUM(COALESCE("X5", 0)) AS "B_RUECK",
+       SUM(COALESCE("X6", 0)) AS "E_ERHALTEN",
+       SUM(COALESCE("X7", 0)) AS "E_RUECK"
 FROM
-    -- bewilligter Zuschuss ohne R�ckzahlungen
-    (SELECT F.FB                                 x1,
-            F.BEZEICHNUNG                        x2,
-            to_number(TO_CHAR(B.BDATUM, 'YYYY')) x3,
-            SUM(NVL(b.BZUWENDUNG_Z, 0))          x4,
-            0                                    x5,
-            0                                    x6,
-            0                                    x7
-     FROM FP_PROJEKTE P,
-          FP_BEWILLIGUNGEN B,
-          FP_FOERDERBEREICHE F
-     WHERE F.FB = P.FOB_FB
-       AND P.PROJNR = B.PRO_PROJNR
-       AND B.BDATUM IS NOT NULL
-       AND B.BZUWENDUNG_Z >= 0
-     GROUP BY F.FB,
-              F.BEZEICHNUNG,
-              to_number(TO_CHAR(B.BDATUM, 'YYYY')),
-              0,
-              0,
-              0
-     -- bewilligtes Darlehen ohne R�ckzahlungen
+    -- bewilligter Zuschuss ohne Rückzahlungen
+    (SELECT F."FB"                                 AS "X1",
+            F."BEZEICHNUNG"                        AS "X2",
+            TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')) AS "X3",
+            SUM(COALESCE(B."BZUWENDUNG_Z", 0))     AS "X4",
+            0                                      AS "X5",
+            0                                      AS "X6",
+            0                                      AS "X7"
+     FROM "FP_PROJEKTE" P
+              JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
+              JOIN "FP_BEWILLIGUNGEN" B ON P."PROJNR" = B."PRO_PROJNR"
+     WHERE B."BDATUM" IS NOT NULL
+       AND B."BZUWENDUNG_Z" >= 0
+     GROUP BY F."FB",
+              F."BEZEICHNUNG",
+              TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY'))
+
      UNION
-     SELECT F.FB                                 x1,
-            F.BEZEICHNUNG                        x2,
-            to_number(TO_CHAR(B.BDATUM, 'YYYY')) x3,
-            SUM(NVL(b.BZUWENDUNG_D, 0))          x4,
-            0                                    x5,
-            0                                    x6,
-            0                                    x7
-     FROM FP_PROJEKTE P,
-          FP_BEWILLIGUNGEN B,
-          FP_FOERDERBEREICHE F
-     WHERE F.FB = P.FOB_FB
-       AND P.PROJNR = B.PRO_PROJNR
-       AND B.BDATUM IS NOT NULL
-       AND B.BZUWENDUNG_D >= 0
-     GROUP BY F.FB,
-              F.BEZEICHNUNG,
-              to_number(TO_CHAR(B.BDATUM, 'YYYY')),
-              0,
-              0,
-              0
-     -- bewilligte Kostenerstattung ohne R�ckzahlungen
+
+     -- bewilligtes Darlehen ohne Rückzahlungen
+     SELECT F."FB",
+            F."BEZEICHNUNG",
+            TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')),
+            SUM(COALESCE(B."BZUWENDUNG_D", 0)),
+            0,
+            0,
+            0
+     FROM "FP_PROJEKTE" P
+              JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
+              JOIN "FP_BEWILLIGUNGEN" B ON P."PROJNR" = B."PRO_PROJNR"
+     WHERE B."BDATUM" IS NOT NULL
+       AND B."BZUWENDUNG_D" >= 0
+     GROUP BY F."FB",
+              F."BEZEICHNUNG",
+              TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY'))
+
      UNION
-     SELECT F.FB                                 x1,
-            F.BEZEICHNUNG                        x2,
-            to_number(TO_CHAR(B.BDATUM, 'YYYY')) x3,
-            SUM(NVL(b.BZUWENDUNG_K, 0))          x4,
-            0                                    x5,
-            0                                    x6,
-            0                                    x7
-     FROM FP_PROJEKTE P,
-          FP_BEWILLIGUNGEN B,
-          FP_FOERDERBEREICHE F
-     WHERE F.FB = P.FOB_FB
-       AND P.PROJNR = B.PRO_PROJNR
-       AND B.BDATUM IS NOT NULL
-       AND B.BZUWENDUNG_K >= 0
-     GROUP BY F.FB,
-              F.BEZEICHNUNG,
-              to_number(TO_CHAR(B.BDATUM, 'YYYY')),
-              0,
-              0,
-              0
-     --  Bewilligter Zuschuss und r�ckgefordert
+
+     -- bewilligte Kostenerstattung ohne Rückzahlungen
+     SELECT F."FB",
+            F."BEZEICHNUNG",
+            TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')),
+            SUM(COALESCE(B."BZUWENDUNG_K", 0)),
+            0,
+            0,
+            0
+     FROM "FP_PROJEKTE" P
+              JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
+              JOIN "FP_BEWILLIGUNGEN" B ON P."PROJNR" = B."PRO_PROJNR"
+     WHERE B."BDATUM" IS NOT NULL
+       AND B."BZUWENDUNG_K" >= 0
+     GROUP BY F."FB",
+              F."BEZEICHNUNG",
+              TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY'))
+
      UNION
-     SELECT F.FB                                 x1,
-            F.BEZEICHNUNG                        x2,
-            to_number(TO_CHAR(B.BDATUM, 'YYYY')) x3,
-            0                                    x4,
-            SUM(NVL(b.BZUWENDUNG_Z, 0))          x5,
-            0                                    x6,
-            0                                    x7
-     FROM FP_PROJEKTE P,
-          FP_BEWILLIGUNGEN B,
-          FP_FOERDERBEREICHE F
-     WHERE F.FB = P.FOB_FB
-       AND P.PROJNR = B.PRO_PROJNR
-       AND B.BDATUM IS NOT NULL
-       AND B.BZUWENDUNG_Z < 0
-     GROUP BY F.FB,
-              F.BEZEICHNUNG,
-              to_number(TO_CHAR(B.BDATUM, 'YYYY'))
-     --  Bewilligtes Darlehen und r�ckgefordert
+
+     --  Bewilligter Zuschuss und rückgefordert
+     SELECT F."FB",
+            F."BEZEICHNUNG",
+            TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')),
+            0,
+            SUM(COALESCE(B."BZUWENDUNG_Z", 0)),
+            0,
+            0
+     FROM "FP_PROJEKTE" P
+              JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
+              JOIN "FP_BEWILLIGUNGEN" B ON P."PROJNR" = B."PRO_PROJNR"
+     WHERE B."BDATUM" IS NOT NULL
+       AND B."BZUWENDUNG_Z" < 0
+     GROUP BY F."FB",
+              F."BEZEICHNUNG",
+              TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY'))
+
      UNION
-     SELECT F.FB                                 x1,
-            F.BEZEICHNUNG                        x2,
-            to_number(TO_CHAR(B.BDATUM, 'YYYY')) x3,
-            0                                    x4,
-            SUM(NVL(b.BZUWENDUNG_D, 0))          x5,
-            0                                    x6,
-            0                                    x7
-     FROM FP_PROJEKTE P,
-          FP_BEWILLIGUNGEN B,
-          FP_FOERDERBEREICHE F
-     WHERE F.FB = P.FOB_FB
-       AND P.PROJNR = B.PRO_PROJNR
-       AND B.BDATUM IS NOT NULL
-       AND B.BZUWENDUNG_D < 0
-     GROUP BY F.FB,
-              F.BEZEICHNUNG,
-              to_number(TO_CHAR(B.BDATUM, 'YYYY'))
-     --  Bewilligte Kostenerstattung und r�ckgefordert
+
+     --  Bewilligtes Darlehen und rückgefordert
+     SELECT F."FB",
+            F."BEZEICHNUNG",
+            TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')),
+            0,
+            SUM(COALESCE(B."BZUWENDUNG_D", 0)),
+            0,
+            0
+     FROM "FP_PROJEKTE" P
+              JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
+              JOIN "FP_BEWILLIGUNGEN" B ON P."PROJNR" = B."PRO_PROJNR"
+     WHERE B."BDATUM" IS NOT NULL
+       AND B."BZUWENDUNG_D" < 0
+     GROUP BY F."FB",
+              F."BEZEICHNUNG",
+              TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY'))
+
      UNION
-     SELECT F.FB                                 x1,
-            F.BEZEICHNUNG                        x2,
-            to_number(TO_CHAR(B.BDATUM, 'YYYY')) x3,
-            0                                    x4,
-            SUM(NVL(b.BZUWENDUNG_K, 0))          x5,
-            0                                    x6,
-            0                                    x7
-     FROM FP_PROJEKTE P,
-          FP_BEWILLIGUNGEN B,
-          FP_FOERDERBEREICHE F
-     WHERE F.FB = P.FOB_FB
-       AND P.PROJNR = B.PRO_PROJNR
-       AND B.BDATUM IS NOT NULL
-       AND B.BZUWENDUNG_K < 0
-     GROUP BY F.FB,
-              F.BEZEICHNUNG,
-              to_number(TO_CHAR(B.BDATUM, 'YYYY'))
-     -- Erhalten Zuschuss ohne R�ckzahlung
+
+     --  Bewilligte Kostenerstattung und rückgefordert
+     SELECT F."FB",
+            F."BEZEICHNUNG",
+            TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')),
+            0,
+            SUM(COALESCE(B."BZUWENDUNG_K", 0)),
+            0,
+            0
+     FROM "FP_PROJEKTE" P
+              JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
+              JOIN "FP_BEWILLIGUNGEN" B ON P."PROJNR" = B."PRO_PROJNR"
+     WHERE B."BDATUM" IS NOT NULL
+       AND B."BZUWENDUNG_K" < 0
+     GROUP BY F."FB",
+              F."BEZEICHNUNG",
+              TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY'))
+
      UNION
-     SELECT F.FB                                    X1,
-            F.BEZEICHNUNG                           X2,
-            to_number(TO_CHAR(A.ERH_DATUM, 'YYYY')) X3,
-            0                                       X4,
-            0                                       X5,
-            SUM(a.erh_z)                            X6,
-            0                                       X7
-     FROM FP_PROJEKTE P,
-          FP_ABRUFE A,
-          FP_FOERDERBEREICHE F
-     WHERE F.FB = P.FOB_FB
-       AND P.PROJNR = A.PRO_PROJNR
-       AND A.ERH_DATUM IS NOT NULL
-       AND A.ERH_Z >= 0
-     GROUP BY F.FB,
-              F.BEZEICHNUNG,
-              to_number(TO_CHAR(A.ERH_DATUM, 'YYYY'))
-     -- erhalten Darlehen ohne R�ckzahlung
+
+     -- Erhalten Zuschuss ohne Rückzahlung
+     SELECT F."FB",
+            F."BEZEICHNUNG",
+            TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY')),
+            0,
+            0,
+            SUM(A."ERH_Z"),
+            0
+     FROM "FP_PROJEKTE" P
+              JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
+              JOIN "FP_ABRUFE" A ON P."PROJNR" = A."PRO_PROJNR"
+
+     WHERE A."ERH_DATUM" IS NOT NULL
+       AND A."ERH_Z" >= 0
+     GROUP BY F."FB",
+              F."BEZEICHNUNG",
+              TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY'))
+
      UNION
-     SELECT F.FB                                    X1,
-            F.BEZEICHNUNG                           X2,
-            to_number(TO_CHAR(A.ERH_DATUM, 'YYYY')) X3,
-            0                                       X4,
-            0                                       X5,
-            SUM(a.erh_d)                            X6,
-            0                                       X7
-     FROM FP_PROJEKTE P,
-          FP_ABRUFE A,
-          FP_FOERDERBEREICHE F
-     WHERE F.FB = P.FOB_FB
-       AND P.PROJNR = A.PRO_PROJNR
-       AND A.ERH_DATUM IS NOT NULL
-       AND A.ERH_D >= 0
-     GROUP BY F.FB,
-              F.BEZEICHNUNG,
-              to_number(TO_CHAR(A.ERH_DATUM, 'YYYY'))
-     -- erhalten Kostenerstattung ohne R�ckzahlung
+
+     -- erhalten Darlehen ohne Rückzahlung
+     SELECT F."FB",
+            F."BEZEICHNUNG",
+            TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY')),
+            0,
+            0,
+            SUM(A."ERH_D"),
+            0
+     FROM "FP_PROJEKTE" P
+              JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
+              JOIN "FP_ABRUFE" A ON P."PROJNR" = A."PRO_PROJNR"
+     WHERE A."ERH_DATUM" IS NOT NULL
+       AND A."ERH_D" >= 0
+     GROUP BY F."FB",
+              F."BEZEICHNUNG",
+              TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY'))
+
      UNION
-     SELECT F.FB                                    X1,
-            F.BEZEICHNUNG                           X2,
-            to_number(TO_CHAR(A.ERH_DATUM, 'YYYY')) X3,
-            0                                       X4,
-            0                                       X5,
-            SUM(a.erh_k)                            X6,
-            0                                       X7
-     FROM FP_PROJEKTE P,
-          FP_ABRUFE A,
-          FP_FOERDERBEREICHE F
-     WHERE F.FB = P.FOB_FB
-       AND P.PROJNR = A.PRO_PROJNR
-       AND A.ERH_DATUM IS NOT NULL
-       AND A.ERH_K >= 0
-     GROUP BY F.FB,
-              F.BEZEICHNUNG,
-              to_number(TO_CHAR(A.ERH_DATUM, 'YYYY'))
-     -- Erhalten R�ckzahlung von Zusch�ssen
+
+     -- erhalten Kostenerstattung ohne Rückzahlung
+     SELECT F."FB",
+            F."BEZEICHNUNG",
+            TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY')),
+            0,
+            0,
+            SUM(A."ERH_K"),
+            0
+     FROM "FP_PROJEKTE" P
+              JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
+              JOIN "FP_ABRUFE" A ON P."PROJNR" = A."PRO_PROJNR"
+     WHERE A."ERH_DATUM" IS NOT NULL
+       AND A."ERH_K" >= 0
+     GROUP BY F."FB",
+              F."BEZEICHNUNG",
+              TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY'))
+
      UNION
-     SELECT F.FB                                    X1,
-            F.BEZEICHNUNG                           X2,
-            to_number(TO_CHAR(A.ERH_DATUM, 'YYYY')) X3,
-            0                                       X4,
-            0                                       X5,
-            0                                       X6,
-            SUM(a.erh_z)                            X7
-     FROM FP_PROJEKTE P,
-          FP_ABRUFE A,
-          FP_FOERDERBEREICHE F
-     WHERE F.FB = P.FOB_FB
-       AND P.PROJNR = A.PRO_PROJNR
-       AND A.ERH_DATUM IS NOT NULL
-       AND A.ERH_Z < 0
-     GROUP BY F.FB,
-              F.BEZEICHNUNG,
-              to_number(TO_CHAR(A.ERH_DATUM, 'YYYY'))
-     -- erhalten R�ckzahlung von Darlehen
+
+     -- Erhalten Rückzahlung von Zuschüssen
+     SELECT F."FB",
+            F."BEZEICHNUNG",
+            TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY')),
+            0,
+            0,
+            0,
+            SUM(A."ERH_Z")
+     FROM "FP_PROJEKTE" P
+              JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
+              JOIN "FP_ABRUFE" A ON P."PROJNR" = A."PRO_PROJNR"
+     WHERE A."ERH_DATUM" IS NOT NULL
+       AND A."ERH_Z" < 0
+     GROUP BY F."FB",
+              F."BEZEICHNUNG",
+              TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY'))
+
      UNION
-     SELECT F.FB                                    X1,
-            F.BEZEICHNUNG                           X2,
-            to_number(TO_CHAR(A.ERH_DATUM, 'YYYY')) X3,
-            0                                       X4,
-            0                                       X5,
-            0                                       X6,
-            SUM(a.erh_d)                            X7
-     FROM FP_PROJEKTE P,
-          FP_ABRUFE A,
-          FP_FOERDERBEREICHE F
-     WHERE F.FB = P.FOB_FB
-       AND P.PROJNR = A.PRO_PROJNR
-       AND A.ERH_DATUM IS NOT NULL
-       AND A.ERH_D < 0
-     GROUP BY F.FB,
-              F.BEZEICHNUNG,
-              to_number(TO_CHAR(A.ERH_DATUM, 'YYYY'))
-     -- erhalten R�ckzahlung von Kostenerstattungen
+
+     -- erhalten Rückzahlung von Darlehen
+     SELECT F."FB",
+            F."BEZEICHNUNG",
+            TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY')),
+            0,
+            0,
+            0,
+            SUM(A."ERH_D")
+     FROM "FP_PROJEKTE" P
+              JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
+              JOIN "FP_ABRUFE" A ON P."PROJNR" = A."PRO_PROJNR"
+     WHERE A."ERH_DATUM" IS NOT NULL
+       AND A."ERH_D" < 0
+     GROUP BY F."FB",
+              F."BEZEICHNUNG",
+              TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY'))
+
      UNION
-     SELECT F.FB                                    X1,
-            F.BEZEICHNUNG                           X2,
-            to_number(TO_CHAR(A.ERH_DATUM, 'YYYY')) X3,
-            0                                       X4,
-            0                                       X5,
-            0                                       X6,
-            SUM(a.erh_k)                            X7
-     FROM FP_PROJEKTE P,
-          FP_ABRUFE A,
-          FP_FOERDERBEREICHE F
-     WHERE F.FB = P.FOB_FB
-       AND P.PROJNR = A.PRO_PROJNR
-       AND A.ERH_DATUM IS NOT NULL
-       AND A.ERH_K < 0
-     GROUP BY F.FB,
-              F.BEZEICHNUNG,
-              to_number(TO_CHAR(A.ERH_DATUM, 'YYYY')))
-GROUP BY x1,
-         x2,
-         x3
+
+     -- erhalten Rückzahlung von Kostenerstattungen
+     SELECT F."FB",
+            F."BEZEICHNUNG",
+            TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY')),
+            0,
+            0,
+            0,
+            SUM(A."ERH_K")
+     FROM "FP_PROJEKTE" P
+              JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
+              JOIN "FP_ABRUFE" A ON P."PROJNR" = A."PRO_PROJNR"
+     WHERE A."ERH_DATUM" IS NOT NULL
+       AND A."ERH_K" < 0
+     GROUP BY F."FB",
+              F."BEZEICHNUNG",
+              TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY'))) AS X
+
+GROUP BY "X1",
+         "X2",
+         "X3"
 ;
 --------------------------------------------------------
 --  DDL for View FP_V_FBSTAT
