@@ -1320,91 +1320,85 @@ FROM (SELECT I1."PRO_PROJNR"                              AS "X1",
 --  DDL for View FP_V_JAHRESSTATISTIK1
 --------------------------------------------------------
 
-CREATE
-OR
-REPLACE
-FORCE EDITIONABLE VIEW "FP_V_JAHRESSTATISTIK1" ("F_FB", "F_BEZEICHNUNG", "F_JAHR", "B_BZUWENDUNG_Z", "B_BZUWENDUNG_D", "B_BZUWENDUNG_K", "A_ERH_Z", "A_ERH_D", "A_ERH_K", "E_GESKOSTEN", "E_ZWFKOSTEN") AS
-SELECT x1,
-       x2,
-       x3,
-       SUM(NVL(x4, 0)),
-       SUM(NVL(x5, 0)),
-       SUM(NVL(x6, 0)),
-       SUM(NVL(x7, 0)),
-       SUM(NVL(x8, 0)),
-       SUM(NVL(x9, 0)),
-       SUM(NVL(x10, 0)),
-       SUM(NVL(x11, 0))
-FROM (SELECT F.FB                                 x1,
-             F.BEZEICHNUNG                        x2,
-             to_number(TO_CHAR(B.BDATUM, 'YYYY')) x3,
-             SUM(NVL(b.bzuwendung_z, 0))          x4,
-             SUM(NVL(b.bzuwendung_d, 0))          x5,
-             SUM(NVL(b.bzuwendung_k, 0))          x6,
-             NULL                                 x7,
-             NULL                                 x8,
-             NULL                                 x9,
-             NULL                                 x10,
-             NULL                                 x11
-      FROM FP_PROJEKTE P,
-           FP_BEWILLIGUNGEN B,
-           FP_FOERDERBEREICHE F
-      WHERE F.FB = P.FOB_FB
-        AND P.PROJNR = B.PRO_PROJNR
-        AND B.BDATUM IS NOT NULL
-      GROUP BY F.FB,
-               F.BEZEICHNUNG,
-               to_number(TO_CHAR(B.BDATUM, 'YYYY'))
+CREATE VIEW "FP_V_JAHRESSTATISTIK1" AS
+SELECT "X1"                    AS "F_FB",
+       "X2"                    AS "F_BEZEICHNUNG",
+       "X3"                    AS "F_JAHR",
+       SUM(COALESCE("X4", 0))  AS "B_BZUWENDUNG_Z",
+       SUM(COALESCE("X5", 0))  AS "B_BZUWENDUNG_D",
+       SUM(COALESCE("X6", 0))  AS "B_BZUWENDUNG_K",
+       SUM(COALESCE("X7", 0))  AS "A_ERH_Z",
+       SUM(COALESCE("X8", 0))  AS "A_ERH_D",
+       SUM(COALESCE("X9", 0))  AS "A_ERH_K",
+       SUM(COALESCE("X10", 0)) AS "E_GESKOSTEN",
+       SUM(COALESCE("X11", 0)) AS "E_ZWFKOSTEN"
+FROM (SELECT F."FB"                                 AS "X1",
+             F."BEZEICHNUNG"                        AS "X2",
+             TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')) AS "X3",
+             SUM(COALESCE(B."BZUWENDUNG_Z", 0))     AS "X4",
+             SUM(COALESCE(b."BZUWENDUNG_D", 0))     AS "X5",
+             SUM(COALESCE(b."BZUWENDUNG_K", 0))     AS "X6",
+             NULL                                   AS "X7",
+             NULL                                   AS "X8",
+             NULL                                   AS "X9",
+             NULL                                   AS "X10",
+             NULL                                   AS "X11"
+      FROM "FP_PROJEKTE" P
+               JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
+               JOIN "FP_BEWILLIGUNGEN" B ON P."PROJNR" = B."PRO_PROJNR"
+      WHERE B."BDATUM" IS NOT NULL
+      GROUP BY F."FB",
+               F."BEZEICHNUNG",
+               TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY'))
+
       UNION
-      SELECT F.FB                                    x1,
-             F.BEZEICHNUNG                           x2,
-             to_number(TO_CHAR(A.ERH_DATUM, 'YYYY')) x3,
-             NULL                                    x4,
-             NULL                                    x5,
-             NULL                                    x6,
-             SUM(NVL(a.erh_z, 0))                    x7,
-             SUM(NVL(a.erh_d, 0))                    x8,
-             SUM(NVL(a.erh_k, 0))                    x9,
-             NULL                                    x10,
-             NULL                                    x11
-      FROM FP_PROJEKTE P,
-           FP_ABRUFE A,
-           FP_FOERDERBEREICHE F
-      WHERE F.FB = P.FOB_FB
-        AND P.PROJNR = A.PRO_PROJNR
-        AND A.ERH_DATUM IS NOT NULL
-      GROUP BY F.FB,
-               F.BEZEICHNUNG,
-               to_number(TO_CHAR(A.ERH_DATUM, 'YYYY'))
+
+      SELECT F."FB",
+             F."BEZEICHNUNG",
+             TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY')),
+             NULL,
+             NULL,
+             NULL,
+             SUM(COALESCE(A."ERH_Z", 0)),
+             SUM(COALESCE(A."ERH_D", 0)),
+             SUM(COALESCE(A."ERH_K", 0)),
+             NULL,
+             NULL
+      FROM "FP_PROJEKTE" P
+               JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
+               JOIN "FP_ABRUFE" A ON P."PROJNR" = A."PRO_PROJNR"
+      WHERE A."ERH_DATUM" IS NOT NULL
+      GROUP BY F."FB",
+               F."BEZEICHNUNG",
+               TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY'))
+
       UNION
-      SELECT F.FB                                        x1,
-             F.BEZEICHNUNG                               x2,
-             to_number(TO_CHAR(A1.ANTRAGSDATUM, 'YYYY')) x3,
-             NULL                                        x4,
-             NULL                                        x5,
-             NULL                                        x6,
-             NULL                                        x7,
-             NULL                                        x8,
-             NULL                                        x9,
-             SUM(NVL(A1.GESKOSTEN, 0))                   x10,
-             SUM(NVL(A1.ZWFKOSTEN, 0))                   x11
-      FROM FP_PROJEKTE P,
-           FP_ANTRAEGE A1,
-           FP_FOERDERBEREICHE F
-      WHERE F.FB = P.FOB_FB
-        AND P.PROJNR = A1.PRO_PROJNR
-        AND A1.ANTRAGSDATUM =
-            (SELECT MIN(ANTRAGSDATUM)
-             FROM FP_ANTRAEGE Y
-             WHERE y.pro_projnr = P.PROJNR
-               AND ANTRAGSTYP = 'E'
-               AND rownum = 1)
-      GROUP BY F.FB,
-               F.BEZEICHNUNG,
-               to_number(TO_CHAR(A1.ANTRAGSDATUM, 'YYYY')))
-GROUP BY x1,
-         x2,
-         x3
+
+      SELECT F."FB",
+             F."BEZEICHNUNG",
+             TO_NUMBER(TO_CHAR(A."ANTRAGSDATUM", 'YYYY')),
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             SUM(COALESCE(A."GESKOSTEN", 0)),
+             SUM(COALESCE(A."ZWFKOSTEN", 0))
+      FROM "FP_PROJEKTE" P
+               JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
+               JOIN "FP_ANTRAEGE" A ON P."PROJNR" = A."PRO_PROJNR"
+      WHERE A."ANTRAGSDATUM" =
+            (SELECT MIN(Y."ANTRAGSDATUM")
+             FROM "FP_ANTRAEGE" Y
+             WHERE Y."PRO_PROJNR" = P."PROJNR"
+               AND Y."ANTRAGSTYP" = 'E')
+      GROUP BY F."FB",
+               F."BEZEICHNUNG",
+               TO_NUMBER(TO_CHAR(A."ANTRAGSDATUM", 'YYYY'))) as X
+GROUP BY "X1",
+         "X2",
+         "X3"
 ;
 --------------------------------------------------------
 --  DDL for View FP_V_JAHRESSTATISTIK2
