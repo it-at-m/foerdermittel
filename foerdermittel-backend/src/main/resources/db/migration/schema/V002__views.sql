@@ -1007,13 +1007,13 @@ SELECT "X1"                   AS "F_FB",
        SUM(COALESCE("X7", 0)) AS "E_RUECK"
 FROM
     -- bewilligter Zuschuss ohne Rückzahlungen
-    (SELECT F."FB"                                 AS "X1",
-            F."BEZEICHNUNG"                        AS "X2",
-            TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')) AS "X3",
-            SUM(COALESCE(B."BZUWENDUNG_Z", 0))     AS "X4",
-            0                                      AS "X5",
-            0                                      AS "X6",
-            0                                      AS "X7"
+    (SELECT F."FB"                             AS "X1",
+            F."BEZEICHNUNG"                    AS "X2",
+            EXTRACT(YEAR FROM B."BDATUM")      AS "X3",
+            SUM(COALESCE(B."BZUWENDUNG_Z", 0)) AS "X4",
+            0                                  AS "X5",
+            0                                  AS "X6",
+            0                                  AS "X7"
      FROM "FP_PROJEKTE" P
               JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
               JOIN "FP_BEWILLIGUNGEN" B ON P."PROJNR" = B."PRO_PROJNR"
@@ -1021,14 +1021,14 @@ FROM
        AND B."BZUWENDUNG_Z" >= 0
      GROUP BY F."FB",
               F."BEZEICHNUNG",
-              TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY'))
+              EXTRACT(YEAR FROM B."BDATUM")
 
      UNION
 
      -- bewilligtes Darlehen ohne Rückzahlungen
      SELECT F."FB",
             F."BEZEICHNUNG",
-            TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')),
+            EXTRACT(YEAR FROM B."BDATUM"),
             SUM(COALESCE(B."BZUWENDUNG_D", 0)),
             0,
             0,
@@ -1040,14 +1040,14 @@ FROM
        AND B."BZUWENDUNG_D" >= 0
      GROUP BY F."FB",
               F."BEZEICHNUNG",
-              TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY'))
+              EXTRACT(YEAR FROM B."BDATUM")
 
      UNION
 
      -- bewilligte Kostenerstattung ohne Rückzahlungen
      SELECT F."FB",
             F."BEZEICHNUNG",
-            TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')),
+            EXTRACT(YEAR FROM B."BDATUM"),
             SUM(COALESCE(B."BZUWENDUNG_K", 0)),
             0,
             0,
@@ -1059,14 +1059,14 @@ FROM
        AND B."BZUWENDUNG_K" >= 0
      GROUP BY F."FB",
               F."BEZEICHNUNG",
-              TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY'))
+              EXTRACT(YEAR FROM B."BDATUM")
 
      UNION
 
      --  Bewilligter Zuschuss und rückgefordert
      SELECT F."FB",
             F."BEZEICHNUNG",
-            TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')),
+            EXTRACT(YEAR FROM B."BDATUM"),
             0,
             SUM(COALESCE(B."BZUWENDUNG_Z", 0)),
             0,
@@ -1078,14 +1078,14 @@ FROM
        AND B."BZUWENDUNG_Z" < 0
      GROUP BY F."FB",
               F."BEZEICHNUNG",
-              TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY'))
+              EXTRACT(YEAR FROM B."BDATUM")
 
      UNION
 
      --  Bewilligtes Darlehen und rückgefordert
      SELECT F."FB",
             F."BEZEICHNUNG",
-            TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')),
+            EXTRACT(YEAR FROM B."BDATUM"),
             0,
             SUM(COALESCE(B."BZUWENDUNG_D", 0)),
             0,
@@ -1097,14 +1097,14 @@ FROM
        AND B."BZUWENDUNG_D" < 0
      GROUP BY F."FB",
               F."BEZEICHNUNG",
-              TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY'))
+              EXTRACT(YEAR FROM B."BDATUM")
 
      UNION
 
      --  Bewilligte Kostenerstattung und rückgefordert
      SELECT F."FB",
             F."BEZEICHNUNG",
-            TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')),
+            EXTRACT(YEAR FROM B."BDATUM"),
             0,
             SUM(COALESCE(B."BZUWENDUNG_K", 0)),
             0,
@@ -1116,14 +1116,14 @@ FROM
        AND B."BZUWENDUNG_K" < 0
      GROUP BY F."FB",
               F."BEZEICHNUNG",
-              TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY'))
+              EXTRACT(YEAR FROM B."BDATUM")
 
      UNION
 
      -- Erhalten Zuschuss ohne Rückzahlung
      SELECT F."FB",
             F."BEZEICHNUNG",
-            TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY')),
+            EXTRACT(YEAR FROM A."ERH_DATUM"),
             0,
             0,
             SUM(A."ERH_Z"),
@@ -1136,14 +1136,14 @@ FROM
        AND A."ERH_Z" >= 0
      GROUP BY F."FB",
               F."BEZEICHNUNG",
-              TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY'))
+              EXTRACT(YEAR FROM A."ERH_DATUM")
 
      UNION
 
      -- erhalten Darlehen ohne Rückzahlung
      SELECT F."FB",
             F."BEZEICHNUNG",
-            TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY')),
+            EXTRACT(YEAR FROM A."ERH_DATUM"),
             0,
             0,
             SUM(A."ERH_D"),
@@ -1155,14 +1155,14 @@ FROM
        AND A."ERH_D" >= 0
      GROUP BY F."FB",
               F."BEZEICHNUNG",
-              TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY'))
+              EXTRACT(YEAR FROM A."ERH_DATUM")
 
      UNION
 
      -- erhalten Kostenerstattung ohne Rückzahlung
      SELECT F."FB",
             F."BEZEICHNUNG",
-            TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY')),
+            EXTRACT(YEAR FROM A."ERH_DATUM"),
             0,
             0,
             SUM(A."ERH_K"),
@@ -1174,14 +1174,14 @@ FROM
        AND A."ERH_K" >= 0
      GROUP BY F."FB",
               F."BEZEICHNUNG",
-              TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY'))
+              EXTRACT(YEAR FROM A."ERH_DATUM")
 
      UNION
 
      -- Erhalten Rückzahlung von Zuschüssen
      SELECT F."FB",
             F."BEZEICHNUNG",
-            TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY')),
+            EXTRACT(YEAR FROM A."ERH_DATUM"),
             0,
             0,
             0,
@@ -1193,14 +1193,14 @@ FROM
        AND A."ERH_Z" < 0
      GROUP BY F."FB",
               F."BEZEICHNUNG",
-              TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY'))
+              EXTRACT(YEAR FROM A."ERH_DATUM")
 
      UNION
 
      -- erhalten Rückzahlung von Darlehen
      SELECT F."FB",
             F."BEZEICHNUNG",
-            TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY')),
+            EXTRACT(YEAR FROM A."ERH_DATUM"),
             0,
             0,
             0,
@@ -1212,14 +1212,14 @@ FROM
        AND A."ERH_D" < 0
      GROUP BY F."FB",
               F."BEZEICHNUNG",
-              TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY'))
+              EXTRACT(YEAR FROM A."ERH_DATUM")
 
      UNION
 
      -- erhalten Rückzahlung von Kostenerstattungen
      SELECT F."FB",
             F."BEZEICHNUNG",
-            TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY')),
+            EXTRACT(YEAR FROM A."ERH_DATUM"),
             0,
             0,
             0,
@@ -1231,7 +1231,7 @@ FROM
        AND A."ERH_K" < 0
      GROUP BY F."FB",
               F."BEZEICHNUNG",
-              TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY'))) AS X
+              EXTRACT(YEAR FROM A."ERH_DATUM")) AS X
 
 GROUP BY "X1",
          "X2",
@@ -1251,28 +1251,28 @@ SELECT "X1"                   AS "F_FB",
        SUM(COALESCE("X7", 0)) AS "A_ERH_Z",
        SUM(COALESCE("X8", 0)) AS "A_ERH_D",
        SUM(COALESCE("X9", 0)) AS "A_ERH_K"
-FROM (SELECT F."FB"                                 AS "X1",
-             F."BEZEICHNUNG"                        AS "X2",
-             TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')) AS "X3",
-             SUM(COALESCE(B."BZUWENDUNG_Z", 0))     AS "X4",
-             SUM(COALESCE(B."BZUWENDUNG_D", 0))     AS "X5",
-             SUM(COALESCE(B."BZUWENDUNG_K", 0))     AS "X6",
-             NULL                                   AS "X7",
-             NULL                                   AS "X8",
-             NULL                                   AS "X9"
+FROM (SELECT F."FB"                             AS "X1",
+             F."BEZEICHNUNG"                    AS "X2",
+             EXTRACT(YEAR FROM B."BDATUM")      AS "X3",
+             SUM(COALESCE(B."BZUWENDUNG_Z", 0)) AS "X4",
+             SUM(COALESCE(B."BZUWENDUNG_D", 0)) AS "X5",
+             SUM(COALESCE(B."BZUWENDUNG_K", 0)) AS "X6",
+             NULL                               AS "X7",
+             NULL                               AS "X8",
+             NULL                               AS "X9"
       FROM "FP_PROJEKTE" P
                JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
                JOIN "FP_BEWILLIGUNGEN" B ON P."PROJNR" = B."PRO_PROJNR"
       WHERE B."BDATUM" IS NOT NULL
       GROUP BY F."FB",
                F."BEZEICHNUNG",
-               TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY'))
+               EXTRACT(YEAR FROM B."BDATUM")
 
       UNION
 
       SELECT F."FB",
              F."BEZEICHNUNG",
-             TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY')),
+             EXTRACT(YEAR FROM A."ERH_DATUM"),
              NULL,
              NULL,
              NULL,
@@ -1285,7 +1285,7 @@ FROM (SELECT F."FB"                                 AS "X1",
       WHERE A."ERH_DATUM" IS NOT NULL
       GROUP BY F."FB",
                F."BEZEICHNUNG",
-               TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY'))) AS X
+               EXTRACT(YEAR FROM A."ERH_DATUM")) AS X
 GROUP BY "X1",
          "X2",
          "X3"
@@ -1325,30 +1325,30 @@ SELECT "X1"                    AS "F_FB",
        SUM(COALESCE("X9", 0))  AS "A_ERH_K",
        SUM(COALESCE("X10", 0)) AS "E_GESKOSTEN",
        SUM(COALESCE("X11", 0)) AS "E_ZWFKOSTEN"
-FROM (SELECT F."FB"                                 AS "X1",
-             F."BEZEICHNUNG"                        AS "X2",
-             TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')) AS "X3",
-             SUM(COALESCE(B."BZUWENDUNG_Z", 0))     AS "X4",
-             SUM(COALESCE(B."BZUWENDUNG_D", 0))     AS "X5",
-             SUM(COALESCE(B."BZUWENDUNG_K", 0))     AS "X6",
-             NULL                                   AS "X7",
-             NULL                                   AS "X8",
-             NULL                                   AS "X9",
-             NULL                                   AS "X10",
-             NULL                                   AS "X11"
+FROM (SELECT F."FB"                             AS "X1",
+             F."BEZEICHNUNG"                    AS "X2",
+             EXTRACT(YEAR FROM B."BDATUM")      AS "X3",
+             SUM(COALESCE(B."BZUWENDUNG_Z", 0)) AS "X4",
+             SUM(COALESCE(B."BZUWENDUNG_D", 0)) AS "X5",
+             SUM(COALESCE(B."BZUWENDUNG_K", 0)) AS "X6",
+             NULL                               AS "X7",
+             NULL                               AS "X8",
+             NULL                               AS "X9",
+             NULL                               AS "X10",
+             NULL                               AS "X11"
       FROM "FP_PROJEKTE" P
                JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
                JOIN "FP_BEWILLIGUNGEN" B ON P."PROJNR" = B."PRO_PROJNR"
       WHERE B."BDATUM" IS NOT NULL
       GROUP BY F."FB",
                F."BEZEICHNUNG",
-               TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY'))
+               EXTRACT(YEAR FROM B."BDATUM")
 
       UNION
 
       SELECT F."FB",
              F."BEZEICHNUNG",
-             TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY')),
+             EXTRACT(YEAR FROM A."ERH_DATUM"),
              NULL,
              NULL,
              NULL,
@@ -1363,13 +1363,13 @@ FROM (SELECT F."FB"                                 AS "X1",
       WHERE A."ERH_DATUM" IS NOT NULL
       GROUP BY F."FB",
                F."BEZEICHNUNG",
-               TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY'))
+               EXTRACT(YEAR FROM A."ERH_DATUM")
 
       UNION
 
       SELECT F."FB",
              F."BEZEICHNUNG",
-             TO_NUMBER(TO_CHAR(A."ANTRAGSDATUM", 'YYYY')),
+             EXTRACT(YEAR FROM A."ANTRAGSDATUM"),
              NULL,
              NULL,
              NULL,
@@ -1388,7 +1388,7 @@ FROM (SELECT F."FB"                                 AS "X1",
                AND Y."ANTRAGSTYP" = 'E')
       GROUP BY F."FB",
                F."BEZEICHNUNG",
-               TO_NUMBER(TO_CHAR(A."ANTRAGSDATUM", 'YYYY'))) AS X
+               EXTRACT(YEAR FROM A."ANTRAGSDATUM")) AS X
 GROUP BY "X1",
          "X2",
          "X3"
@@ -1414,34 +1414,34 @@ SELECT "X1"                    AS "F_FB",
        SUM(COALESCE("X14", 0)) AS "V_A_VOR_SU_Z_GESAMT",
        SUM(COALESCE("X15", 0)) AS "V_A_VOR_SU_K_GESAMT",
        SUM(COALESCE("X16", 0)) AS "V_ANZAHL_UNBED"
-FROM (SELECT F."FB"                                      AS "X1",
-             F."BEZEICHNUNG"                             AS "X2",
-             TO_NUMBER(TO_CHAR(A."ABRUF_DATUM", 'YYYY')) AS "X3",
-             COUNT(*)                                    AS "X4",
-             NULL                                        AS "X5",
-             NULL                                        AS "X6",
-             NULL                                        AS "X7",
-             NULL                                        AS "X8",
-             NULL                                        AS "X9",
-             NULL                                        AS "X10",
-             NULL                                        AS "X11",
-             NULL                                        AS "X12",
-             NULL                                        AS "X13",
-             NULL                                        AS "X14",
-             NULL                                        AS "X15",
-             NULL                                        AS "X16"
+FROM (SELECT F."FB"                             AS "X1",
+             F."BEZEICHNUNG"                    AS "X2",
+             EXTRACT(YEAR FROM A."ABRUF_DATUM") AS "X3",
+             COUNT(*)                           AS "X4",
+             NULL                               AS "X5",
+             NULL                               AS "X6",
+             NULL                               AS "X7",
+             NULL                               AS "X8",
+             NULL                               AS "X9",
+             NULL                               AS "X10",
+             NULL                               AS "X11",
+             NULL                               AS "X12",
+             NULL                               AS "X13",
+             NULL                               AS "X14",
+             NULL                               AS "X15",
+             NULL                               AS "X16"
       FROM "FP_PROJEKTE" P
                JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
                JOIN "FP_ABRUFE" A ON P."PROJNR" = A."PRO_PROJNR"
       GROUP BY F."FB",
                F."BEZEICHNUNG",
-               TO_NUMBER(TO_CHAR(A."ABRUF_DATUM", 'YYYY'))
+               EXTRACT(YEAR FROM A."ABRUF_DATUM")
 
       UNION
 
       SELECT F."FB",
              F."BEZEICHNUNG",
-             TO_NUMBER(TO_CHAR(P."VNDAT", 'YYYY')),
+             EXTRACT(YEAR FROM P."VNDAT"),
              NULL,
              COUNT(*),
              NULL,
@@ -1460,13 +1460,13 @@ FROM (SELECT F."FB"                                      AS "X1",
       WHERE P."VNDAT" IS NOT NULL
       GROUP BY F."FB",
                F."BEZEICHNUNG",
-               TO_NUMBER(TO_CHAR(P."VNDAT", 'YYYY'))
+               EXTRACT(YEAR FROM P."VNDAT")
 
       UNION
 
       SELECT F."FB",
              F."BEZEICHNUNG",
-             TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')),
+             EXTRACT(YEAR FROM B."BDATUM"),
              NULL,
              NULL,
              COUNT(*),
@@ -1486,13 +1486,13 @@ FROM (SELECT F."FB"                                      AS "X1",
       WHERE B."BDATUM" IS NOT NULL
       GROUP BY F."FB",
                F."BEZEICHNUNG",
-               TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY'))
+               EXTRACT(YEAR FROM B."BDATUM")
 
       UNION
 
       SELECT F."FB",
              F."BEZEICHNUNG",
-             TO_NUMBER(TO_CHAR(A."ANTRAGSDATUM", 'YYYY')),
+             EXTRACT(YEAR FROM A."ANTRAGSDATUM"),
              NULL,
              NULL,
              NULL,
@@ -1516,13 +1516,13 @@ FROM (SELECT F."FB"                                      AS "X1",
                AND Y."ANTRAGSTYP" = 'E')
       GROUP BY F."FB",
                F."BEZEICHNUNG",
-               TO_NUMBER(TO_CHAR(A."ANTRAGSDATUM", 'YYYY'))
+               EXTRACT(YEAR FROM A."ANTRAGSDATUM")
 
       UNION
 
       SELECT F."FB",
              F."BEZEICHNUNG",
-             TO_NUMBER(TO_CHAR(A."ANTRAGSDATUM", 'YYYY')),
+             EXTRACT(YEAR FROM A."ANTRAGSDATUM"),
              NULL,
              NULL,
              NULL,
@@ -1542,13 +1542,13 @@ FROM (SELECT F."FB"                                      AS "X1",
       WHERE A."ANTRAGSTYP" = 'F' -- nicht A und nicht V
       GROUP BY F."FB",
                F."BEZEICHNUNG",
-               TO_NUMBER(TO_CHAR(A."ANTRAGSDATUM", 'YYYY'))
+               EXTRACT(YEAR FROM A."ANTRAGSDATUM")
 
       UNION
 
       SELECT F."FB",
              F."BEZEICHNUNG",
-             TO_NUMBER(TO_CHAR(A."UNBEDDAT", 'YYYY')),
+             EXTRACT(YEAR FROM A."UNBEDDAT"),
              NULL,
              NULL,
              NULL,
@@ -1569,7 +1569,7 @@ FROM (SELECT F."FB"                                      AS "X1",
         AND A."ANTRAGSTYP" = 'E'
       GROUP BY F."FB",
                F."BEZEICHNUNG",
-               TO_NUMBER(TO_CHAR(A."UNBEDDAT", 'YYYY'))) AS X
+               EXTRACT(YEAR FROM A."UNBEDDAT")) AS X
 
 GROUP BY "X1",
          "X2",
@@ -1592,18 +1592,18 @@ SELECT "X1"                    AS "F_FB",
        SUM(COALESCE("X10", 0)) AS "V_ERH_Z",
        SUM(COALESCE("X11", 0)) AS "V_ERH_D",
        SUM(COALESCE("X12", 0)) AS "V_ERH_K"
-FROM (SELECT F."FB"                                 AS "X1",
-             F."BEZEICHNUNG"                        AS "X2",
-             TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')) AS "X3",
-             SUM(COALESCE(B."BZUWENDUNG_Z", 0))     AS "X4",
-             NULL                                   AS "X5",
-             NULL                                   AS "X6",
-             NULL                                   AS "X7",
-             NULL                                   AS "X8",
-             NULL                                   AS "X9",
-             NULL                                   AS "X10",
-             NULL                                   AS "X11",
-             NULL                                   AS "X12"
+FROM (SELECT F."FB"                             AS "X1",
+             F."BEZEICHNUNG"                    AS "X2",
+             EXTRACT(YEAR FROM B."BDATUM")      AS "X3",
+             SUM(COALESCE(B."BZUWENDUNG_Z", 0)) AS "X4",
+             NULL                               AS "X5",
+             NULL                               AS "X6",
+             NULL                               AS "X7",
+             NULL                               AS "X8",
+             NULL                               AS "X9",
+             NULL                               AS "X10",
+             NULL                               AS "X11",
+             NULL                               AS "X12"
       FROM "FP_PROJEKTE" P
                JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
                JOIN "FP_BEWILLIGUNGEN" B ON P."PROJNR" = B."PRO_PROJNR"
@@ -1611,13 +1611,13 @@ FROM (SELECT F."FB"                                 AS "X1",
         AND B."BZUWENDUNG_Z" >= 0
       GROUP BY F."FB",
                F."BEZEICHNUNG",
-               TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY'))
+               EXTRACT(YEAR FROM B."BDATUM")
 
       UNION
 
       SELECT F."FB",
              F."BEZEICHNUNG",
-             TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')),
+             EXTRACT(YEAR FROM B."BDATUM"),
              NULL,
              SUM(COALESCE(B."BZUWENDUNG_D", 0)),
              NULL,
@@ -1634,13 +1634,13 @@ FROM (SELECT F."FB"                                 AS "X1",
         AND B."BZUWENDUNG_D" >= 0
       GROUP BY F."FB",
                F."BEZEICHNUNG",
-               TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY'))
+               EXTRACT(YEAR FROM B."BDATUM")
 
       UNION
 
       SELECT F."FB",
              F."BEZEICHNUNG",
-             TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')),
+             EXTRACT(YEAR FROM B."BDATUM"),
              NULL,
              NULL,
              SUM(COALESCE(B."BZUWENDUNG_K", 0)),
@@ -1657,13 +1657,13 @@ FROM (SELECT F."FB"                                 AS "X1",
         AND B."BZUWENDUNG_K" >= 0
       GROUP BY F."FB",
                F."BEZEICHNUNG",
-               TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY'))
+               EXTRACT(YEAR FROM B."BDATUM")
 
       UNION
 
       SELECT F."FB",
              F."BEZEICHNUNG",
-             TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')),
+             EXTRACT(YEAR FROM B."BDATUM"),
              NULL,
              NULL,
              NULL,
@@ -1680,13 +1680,13 @@ FROM (SELECT F."FB"                                 AS "X1",
         AND B."BZUWENDUNG_Z" < 0
       GROUP BY F."FB",
                F."BEZEICHNUNG",
-               TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY'))
+               EXTRACT(YEAR FROM B."BDATUM")
 
       UNION
 
       SELECT F."FB",
              F."BEZEICHNUNG",
-             TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')),
+             EXTRACT(YEAR FROM B."BDATUM"),
              NULL,
              NULL,
              NULL,
@@ -1703,13 +1703,13 @@ FROM (SELECT F."FB"                                 AS "X1",
         AND B."BZUWENDUNG_D" < 0
       GROUP BY F."FB",
                F."BEZEICHNUNG",
-               TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY'))
+               EXTRACT(YEAR FROM B."BDATUM")
 
       UNION
 
       SELECT F."FB",
              F."BEZEICHNUNG",
-             TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')),
+             EXTRACT(YEAR FROM B."BDATUM"),
              NULL,
              NULL,
              NULL,
@@ -1726,13 +1726,13 @@ FROM (SELECT F."FB"                                 AS "X1",
         AND B."BZUWENDUNG_K" < 0
       GROUP BY F."FB",
                F."BEZEICHNUNG",
-               TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY'))
+               EXTRACT(YEAR FROM B."BDATUM")
 
       UNION
 
       SELECT F."FB",
              F."BEZEICHNUNG",
-             TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY')),
+             EXTRACT(YEAR FROM A."ERH_DATUM"),
              NULL,
              NULL,
              NULL,
@@ -1748,7 +1748,7 @@ FROM (SELECT F."FB"                                 AS "X1",
       WHERE A."ERH_DATUM" IS NOT NULL
       GROUP BY F."FB",
                F."BEZEICHNUNG",
-               TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY'))) AS X
+               EXTRACT(YEAR FROM A."ERH_DATUM")) AS X
 
 GROUP BY "X1",
          "X2",
