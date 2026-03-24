@@ -1331,11 +1331,11 @@ FROM (SELECT F."FB"                             AS "X1",
              SUM(COALESCE(B."BZUWENDUNG_Z", 0)) AS "X4",
              SUM(COALESCE(B."BZUWENDUNG_D", 0)) AS "X5",
              SUM(COALESCE(B."BZUWENDUNG_K", 0)) AS "X6",
-             NULL                               AS "X7",
-             NULL                               AS "X8",
-             NULL                               AS "X9",
-             NULL                               AS "X10",
-             NULL                               AS "X11"
+             NULL::NUMERIC                      AS "X7",
+             NULL::NUMERIC                      AS "X8",
+             NULL::NUMERIC                      AS "X9",
+             NULL::NUMERIC                      AS "X10",
+             NULL::NUMERIC                      AS "X11"
       FROM "FP_PROJEKTE" P
                JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
                JOIN "FP_BEWILLIGUNGEN" B ON P."PROJNR" = B."PRO_PROJNR"
@@ -1418,18 +1418,18 @@ FROM (SELECT F."FB"                             AS "X1",
              F."BEZEICHNUNG"                    AS "X2",
              EXTRACT(YEAR FROM A."ABRUF_DATUM") AS "X3",
              COUNT(*)                           AS "X4",
-             NULL                               AS "X5",
-             NULL                               AS "X6",
-             NULL                               AS "X7",
-             NULL                               AS "X8",
-             NULL                               AS "X9",
-             NULL                               AS "X10",
-             NULL                               AS "X11",
-             NULL                               AS "X12",
-             NULL                               AS "X13",
-             NULL                               AS "X14",
-             NULL                               AS "X15",
-             NULL                               AS "X16"
+             NULL::BIGINT                       AS "X5",
+             NULL::BIGINT                       AS "X6",
+             NULL::NUMERIC                      AS "X7",
+             NULL::BIGINT                       AS "X8",
+             NULL::NUMERIC                      AS "X9",
+             NULL::NUMERIC                      AS "X10",
+             NULL::BIGINT                       AS "X11",
+             NULL::NUMERIC                      AS "X12",
+             NULL::NUMERIC                      AS "X13",
+             NULL::NUMERIC                      AS "X14",
+             NULL::NUMERIC                      AS "X15",
+             NULL::BIGINT                       AS "X16"
       FROM "FP_PROJEKTE" P
                JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
                JOIN "FP_ABRUFE" A ON P."PROJNR" = A."PRO_PROJNR"
@@ -1596,14 +1596,14 @@ FROM (SELECT F."FB"                             AS "X1",
              F."BEZEICHNUNG"                    AS "X2",
              EXTRACT(YEAR FROM B."BDATUM")      AS "X3",
              SUM(COALESCE(B."BZUWENDUNG_Z", 0)) AS "X4",
-             NULL                               AS "X5",
-             NULL                               AS "X6",
-             NULL                               AS "X7",
-             NULL                               AS "X8",
-             NULL                               AS "X9",
-             NULL                               AS "X10",
-             NULL                               AS "X11",
-             NULL                               AS "X12"
+             NULL::NUMERIC                      AS "X5",
+             NULL::NUMERIC                      AS "X6",
+             NULL::NUMERIC                      AS "X7",
+             NULL::NUMERIC                      AS "X8",
+             NULL::NUMERIC                      AS "X9",
+             NULL::NUMERIC                      AS "X10",
+             NULL::NUMERIC                      AS "X11",
+             NULL::NUMERIC                      AS "X12"
       FROM "FP_PROJEKTE" P
                JOIN "FP_FOERDERBEREICHE" F ON P."FOB_FB" = F."FB"
                JOIN "FP_BEWILLIGUNGEN" B ON P."PROJNR" = B."PRO_PROJNR"
@@ -1808,12 +1808,12 @@ FROM (SELECT P."PROJNR"              AS "X1",
              COALESCE(A."A_SU_Z", 0) AS "X2",
              COALESCE(A."A_SU_D", 0) AS "X3",
              COALESCE(A."A_SU_K", 0) AS "X4",
-             NULL                    AS "X5",
-             NULL                    AS "X6",
-             NULL                    AS "X7",
-             NULL                    AS "X8",
-             NULL                    AS "X9",
-             NULL                    AS "X10"
+             NULL::NUMERIC           AS "X5",
+             NULL::NUMERIC           AS "X6",
+             NULL::NUMERIC           AS "X7",
+             NULL::NUMERIC           AS "X8",
+             NULL::NUMERIC           AS "X9",
+             NULL::NUMERIC           AS "X10"
       FROM "FP_PROJEKTE" P
                JOIN "FP_ANTRAEGE" A ON P."PROJNR" = A."PRO_PROJNR"
 
