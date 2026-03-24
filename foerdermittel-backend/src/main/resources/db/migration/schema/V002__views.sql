@@ -552,7 +552,7 @@ SELECT '3 Offene Projekte und ausstehende Genehmigungen zum vorzeitigen Baubegin
 FROM "FP_ANTRAEGE" A
          JOIN "FP_PROJEKTE" P ON P."PROJNR" = A."PRO_PROJNR"
 WHERE P."VNDAT" IS NULL
-  AND A."VORZBEG" iS TRUE
+  AND A."VORZBEG" IS TRUE
   AND A."VBDATUM" IS NULL
 
 UNION ALL
@@ -1285,7 +1285,7 @@ FROM (SELECT F."FB"                                 AS "X1",
       WHERE A."ERH_DATUM" IS NOT NULL
       GROUP BY F."FB",
                F."BEZEICHNUNG",
-               TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY'))) as X
+               TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY'))) AS X
 GROUP BY "X1",
          "X2",
          "X3"
@@ -1329,8 +1329,8 @@ FROM (SELECT F."FB"                                 AS "X1",
              F."BEZEICHNUNG"                        AS "X2",
              TO_NUMBER(TO_CHAR(B."BDATUM", 'YYYY')) AS "X3",
              SUM(COALESCE(B."BZUWENDUNG_Z", 0))     AS "X4",
-             SUM(COALESCE(b."BZUWENDUNG_D", 0))     AS "X5",
-             SUM(COALESCE(b."BZUWENDUNG_K", 0))     AS "X6",
+             SUM(COALESCE(B."BZUWENDUNG_D", 0))     AS "X5",
+             SUM(COALESCE(B."BZUWENDUNG_K", 0))     AS "X6",
              NULL                                   AS "X7",
              NULL                                   AS "X8",
              NULL                                   AS "X9",
@@ -1388,7 +1388,7 @@ FROM (SELECT F."FB"                                 AS "X1",
                AND Y."ANTRAGSTYP" = 'E')
       GROUP BY F."FB",
                F."BEZEICHNUNG",
-               TO_NUMBER(TO_CHAR(A."ANTRAGSDATUM", 'YYYY'))) as X
+               TO_NUMBER(TO_CHAR(A."ANTRAGSDATUM", 'YYYY'))) AS X
 GROUP BY "X1",
          "X2",
          "X3"
@@ -1569,7 +1569,7 @@ FROM (SELECT F."FB"                                      AS "X1",
         AND A."ANTRAGSTYP" = 'E'
       GROUP BY F."FB",
                F."BEZEICHNUNG",
-               TO_NUMBER(TO_CHAR(A."UNBEDDAT", 'YYYY'))) as X
+               TO_NUMBER(TO_CHAR(A."UNBEDDAT", 'YYYY'))) AS X
 
 GROUP BY "X1",
          "X2",
@@ -1748,7 +1748,7 @@ FROM (SELECT F."FB"                                 AS "X1",
       WHERE A."ERH_DATUM" IS NOT NULL
       GROUP BY F."FB",
                F."BEZEICHNUNG",
-               TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY'))) as X
+               TO_NUMBER(TO_CHAR(A."ERH_DATUM", 'YYYY'))) AS X
 
 GROUP BY "X1",
          "X2",
@@ -1845,7 +1845,7 @@ FROM (SELECT P."PROJNR"              AS "X1",
              COALESCE(B."BZUWENDUNG_D", 0),
              COALESCE(B."BZUWENDUNG_K", 0)
       FROM "FP_PROJEKTE" P
-               JOIN "FP_BEWILLIGUNGEN" B ON P."PROJNR" = B."PRO_PROJNR") as X
+               JOIN "FP_BEWILLIGUNGEN" B ON P."PROJNR" = B."PRO_PROJNR") AS X
 GROUP BY "X1"
 ;
 --------------------------------------------------------
@@ -2004,7 +2004,7 @@ FROM (
                 T."TERMIN"                                                                         AS X2,
                 T."NOTIZEN" || E'\r\nZuständig: ' || T."ZUSTAENDIG" || ' Telefon: ' || T."TELEFON" AS X3
          FROM "FP_PROJEKTTERMINE" T
-         WHERE T."NOTIZEN" IS NOT NULL) as subquery;
+         WHERE T."NOTIZEN" IS NOT NULL) AS X;
 ;
 
 --------------------------------------------------------
@@ -2034,7 +2034,7 @@ SELECT P."PROJNR"                               AS "V_PROJNR",
        T."A1_ANTRAGSTYP"                        AS "V_A1_ANTRAGSTYP",
        T."A1_ANTRAGSDATUM"                      AS "V_VNEANTRAG",
        T."B_BEWILL_Z"                           AS "V_VNBEW_Z",
-       T."B_BEWILL_D"                           As "V_VNBEW_D",
+       T."B_BEWILL_D"                           AS "V_VNBEW_D",
        T."B_BEWILL_K"                           AS "V_VNBEW_K",
        T."R_ERH_Z"                              AS "V_VNERH_Z",
        T."R_ERH_D"                              AS "V_VNERH_D",
