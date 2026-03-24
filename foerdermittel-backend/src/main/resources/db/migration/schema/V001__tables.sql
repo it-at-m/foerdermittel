@@ -2,1038 +2,1038 @@
 --  DDL for Table FP_STICHWORTBEREICHE
 --------------------------------------------------------
 
-CREATE TABLE "FP_STICHWORTBEREICHE"
+CREATE TABLE fp_stichwortbereiche
 (
-    "BEREICH"     VARCHAR(30) PRIMARY KEY,
-    "BEZEICHNUNG" VARCHAR(200) NOT NULL
+    bereich     VARCHAR(30) PRIMARY KEY,
+    bezeichnung VARCHAR(200) NOT NULL
 );
 
-COMMENT ON COLUMN "FP_STICHWORTBEREICHE"."BEREICH" IS 'Definierter Bereich für die Stichwortvergabe';
-COMMENT ON COLUMN "FP_STICHWORTBEREICHE"."BEZEICHNUNG" IS 'Bezeichnung dieses Stichwortbereichs';
-COMMENT ON TABLE "FP_STICHWORTBEREICHE" IS 'Verzeichnis aller Stichwortbereiche (Nutzung in Ablageindexe)';
+COMMENT ON COLUMN fp_stichwortbereiche.bereich IS 'Definierter Bereich für die Stichwortvergabe';
+COMMENT ON COLUMN fp_stichwortbereiche.bezeichnung IS 'Bezeichnung dieses Stichwortbereichs';
+COMMENT ON TABLE fp_stichwortbereiche IS 'Verzeichnis aller Stichwortbereiche (Nutzung in Ablageindexe)';
 --------------------------------------------------------
 --  DDL for Table FP_ABLAGEINDEXE
 --------------------------------------------------------
 
-CREATE TABLE "FP_ABLAGEINDEXE"
+CREATE TABLE fp_ablageindexe
 (
-    "ID"          SERIAL PRIMARY KEY,
-    "STB_BEREICH" VARCHAR(30) NOT NULL REFERENCES "FP_STICHWORTBEREICHE" ("BEREICH"),
-    "NR"          NUMERIC(4, 0),
-    "WORT"        VARCHAR(80),
-    "STICHWORTE"  VARCHAR(400)
+    id          SERIAL PRIMARY KEY,
+    stb_bereich VARCHAR(30) NOT NULL REFERENCES fp_stichwortbereiche (bereich),
+    nr          NUMERIC(4, 0),
+    wort        VARCHAR(80),
+    stichworte  VARCHAR(400)
 );
 
-COMMENT ON COLUMN "FP_ABLAGEINDEXE"."ID" IS 'Primary Key (Sequence)';
-COMMENT ON COLUMN "FP_ABLAGEINDEXE"."STB_BEREICH" IS 'Bereich und Bezeichnung des Ablagedeckblattes';
-COMMENT ON COLUMN "FP_ABLAGEINDEXE"."NR" IS 'Lfd. Nummer innerhalb des Deckblattes';
-COMMENT ON COLUMN "FP_ABLAGEINDEXE"."WORT" IS 'Thema des Schriftgutes';
-COMMENT ON COLUMN "FP_ABLAGEINDEXE"."STICHWORTE" IS 'Stichwort (Index) nach dem gesucht werden kann';
-COMMENT ON TABLE "FP_ABLAGEINDEXE" IS 'Suchindex zum Auffinden von Ablagen (dbase:hinh)';
+COMMENT ON COLUMN fp_ablageindexe.id IS 'Primary Key (Sequence)';
+COMMENT ON COLUMN fp_ablageindexe.stb_bereich IS 'Bereich und Bezeichnung des Ablagedeckblattes';
+COMMENT ON COLUMN fp_ablageindexe.nr IS 'Lfd. Nummer innerhalb des Deckblattes';
+COMMENT ON COLUMN fp_ablageindexe.wort IS 'Thema des Schriftgutes';
+COMMENT ON COLUMN fp_ablageindexe.stichworte IS 'Stichwort (Index) nach dem gesucht werden kann';
+COMMENT ON TABLE fp_ablageindexe IS 'Suchindex zum Auffinden von Ablagen (dbase:hinh)';
 --------------------------------------------------------
 --  DDL for Table FP_REFERATE
 --------------------------------------------------------
 
-CREATE TABLE "FP_REFERATE"
+CREATE TABLE fp_referate
 (
-    "REFNR"       NUMERIC(2, 0) PRIMARY KEY,
-    "BEZEICHNUNG" VARCHAR(200)
+    refnr       NUMERIC(2, 0) PRIMARY KEY,
+    bezeichnung VARCHAR(200)
 );
 
-COMMENT ON COLUMN "FP_REFERATE"."REFNR" IS 'Nummer des Referats';
-COMMENT ON COLUMN "FP_REFERATE"."BEZEICHNUNG" IS 'Beschreibung des Referats';
-COMMENT ON TABLE "FP_REFERATE" IS 'Aufstellung aller Referate  (dbase:referate)';
+COMMENT ON COLUMN fp_referate.refnr IS 'Nummer des Referats';
+COMMENT ON COLUMN fp_referate.bezeichnung IS 'Beschreibung des Referats';
+COMMENT ON TABLE fp_referate IS 'Aufstellung aller Referate  (dbase:referate)';
 --------------------------------------------------------
 --  DDL for Table FP_FOERDERBEREICHE
 --------------------------------------------------------
 
-CREATE TABLE "FP_FOERDERBEREICHE"
+CREATE TABLE fp_foerderbereiche
 (
-    "FB"          NUMERIC(2, 0) PRIMARY KEY,
-    "BEZEICHNUNG" VARCHAR(200)          NOT NULL,
-    "FUNKTION1"   BOOLEAN DEFAULT FALSE NOT NULL,
-    "FUNKTION2"   BOOLEAN DEFAULT FALSE NOT NULL,
-    "FUNKTION3"   BOOLEAN DEFAULT FALSE NOT NULL,
-    "FUNKTION4"   BOOLEAN DEFAULT FALSE NOT NULL
+    fb          NUMERIC(2, 0) PRIMARY KEY,
+    bezeichnung VARCHAR(200)          NOT NULL,
+    funktion1   BOOLEAN DEFAULT FALSE NOT NULL,
+    funktion2   BOOLEAN DEFAULT FALSE NOT NULL,
+    funktion3   BOOLEAN DEFAULT FALSE NOT NULL,
+    funktion4   BOOLEAN DEFAULT FALSE NOT NULL
 );
 
-COMMENT ON COLUMN "FP_FOERDERBEREICHE"."FB" IS 'Abkürzung des Förderbereichs';
-COMMENT ON COLUMN "FP_FOERDERBEREICHE"."BEZEICHNUNG" IS 'Bezeichnung des Förderbereichs';
-COMMENT ON COLUMN "FP_FOERDERBEREICHE"."FUNKTION1" IS 'Soll der Förderbereich in der FAG-Statistik verwendet werden';
-COMMENT ON COLUMN "FP_FOERDERBEREICHE"."FUNKTION2" IS 'Soll der Förderbereich in der Jahresstatistik verwendet werden';
-COMMENT ON COLUMN "FP_FOERDERBEREICHE"."FUNKTION3" IS 'Ist der Förderbereich vom Typ Kindergarten. Wird verwendet in Jahresstatistik.';
-COMMENT ON COLUMN "FP_FOERDERBEREICHE"."FUNKTION4" IS 'Der Förderbereich kann als nicht relevant gekennzeichnet werden. Damit Aussteuerung in manchen Berichten';
-COMMENT ON TABLE "FP_FOERDERBEREICHE" IS 'Austellung aller Förderbereiche (dbase:fb)';
+COMMENT ON COLUMN fp_foerderbereiche.fb IS 'Abkürzung des Förderbereichs';
+COMMENT ON COLUMN fp_foerderbereiche.bezeichnung IS 'Bezeichnung des Förderbereichs';
+COMMENT ON COLUMN fp_foerderbereiche.funktion1 IS 'Soll der Förderbereich in der FAG-Statistik verwendet werden';
+COMMENT ON COLUMN fp_foerderbereiche.funktion2 IS 'Soll der Förderbereich in der Jahresstatistik verwendet werden';
+COMMENT ON COLUMN fp_foerderbereiche.funktion3 IS 'Ist der Förderbereich vom Typ Kindergarten. Wird verwendet in Jahresstatistik.';
+COMMENT ON COLUMN fp_foerderbereiche.funktion4 IS 'Der Förderbereich kann als nicht relevant gekennzeichnet werden. Damit Aussteuerung in manchen Berichten';
+COMMENT ON TABLE fp_foerderbereiche IS 'Austellung aller Förderbereiche (dbase:fb)';
 --------------------------------------------------------
 --  DDL for Table FP_KURZBEZEICHNUNGEN
 --------------------------------------------------------
 
-CREATE TABLE "FP_KURZBEZEICHNUNGEN"
+CREATE TABLE fp_kurzbezeichnungen
 (
-    "KURZBEZ"     VARCHAR(8) PRIMARY KEY,
-    "BEZEICHNUNG" VARCHAR(200) NOT NULL
+    kurzbez     VARCHAR(8) PRIMARY KEY,
+    bezeichnung VARCHAR(200) NOT NULL
 );
 
-COMMENT ON COLUMN "FP_KURZBEZEICHNUNGEN"."KURZBEZ" IS 'Kurzbezeichnung für eine Projekt';
-COMMENT ON COLUMN "FP_KURZBEZEICHNUNGEN"."BEZEICHNUNG" IS 'Beschreibung zu einer Kurzbezeichnung';
-COMMENT ON TABLE "FP_KURZBEZEICHNUNGEN" IS 'Alle Kurzbezeichnungen zur Klassiifzierung von Projekten  (dbase:kurzbez)';
+COMMENT ON COLUMN fp_kurzbezeichnungen.kurzbez IS 'Kurzbezeichnung für eine Projekt';
+COMMENT ON COLUMN fp_kurzbezeichnungen.bezeichnung IS 'Beschreibung zu einer Kurzbezeichnung';
+COMMENT ON TABLE fp_kurzbezeichnungen IS 'Alle Kurzbezeichnungen zur Klassiifzierung von Projekten  (dbase:kurzbez)';
 --------------------------------------------------------
 --  DDL for Table FP_HAUPTABSCHNITTE
 --------------------------------------------------------
 
-CREATE TABLE "FP_HAUPTABSCHNITTE"
+CREATE TABLE fp_hauptabschnitte
 (
-    "HA"          VARCHAR(2) PRIMARY KEY,
-    "BEZEICHNUNG" VARCHAR(200) NOT NULL
+    ha          VARCHAR(2) PRIMARY KEY,
+    bezeichnung VARCHAR(200) NOT NULL
 );
 
-COMMENT ON COLUMN "FP_HAUPTABSCHNITTE"."HA" IS 'Hauptabschnitt';
-COMMENT ON COLUMN "FP_HAUPTABSCHNITTE"."BEZEICHNUNG" IS 'Bezeichnung des Hauptabschnitts';
-COMMENT ON TABLE "FP_HAUPTABSCHNITTE" IS 'Hauptabschnitte zur Klassifizierung der Unterabschnitte (dbase: keine Datei vorhanden)';
+COMMENT ON COLUMN fp_hauptabschnitte.ha IS 'Hauptabschnitt';
+COMMENT ON COLUMN fp_hauptabschnitte.bezeichnung IS 'Bezeichnung des Hauptabschnitts';
+COMMENT ON TABLE fp_hauptabschnitte IS 'Hauptabschnitte zur Klassifizierung der Unterabschnitte (dbase: keine Datei vorhanden)';
 --------------------------------------------------------
 --  DDL for Table FP_UNTERABSCHNITTE
 --------------------------------------------------------
 
-CREATE TABLE "FP_UNTERABSCHNITTE"
+CREATE TABLE fp_unterabschnitte
 (
-    "UA"          VARCHAR(2) PRIMARY KEY,
-    "BEZEICHNUNG" VARCHAR(200) NOT NULL,
-    "HAS_HA"      VARCHAR(2)   NOT NULL REFERENCES "FP_HAUPTABSCHNITTE" ("HA")
+    ua          VARCHAR(2) PRIMARY KEY,
+    bezeichnung VARCHAR(200) NOT NULL,
+    has_ha      VARCHAR(2)   NOT NULL REFERENCES fp_hauptabschnitte (ha)
 );
 
-COMMENT ON COLUMN "FP_UNTERABSCHNITTE"."UA" IS 'Nummer des Unterabschnitts';
-COMMENT ON COLUMN "FP_UNTERABSCHNITTE"."BEZEICHNUNG" IS 'Bezeichnung des Unterabschnitts';
-COMMENT ON COLUMN "FP_UNTERABSCHNITTE"."HAS_HA" IS 'Nummer des Hauptabschnitt des UAs (FK)';
-COMMENT ON TABLE "FP_UNTERABSCHNITTE" IS 'Unterabschnitte als Teil1 der Projektnummer (dbase: keine Datei vorhanden)';
+COMMENT ON COLUMN fp_unterabschnitte.ua IS 'Nummer des Unterabschnitts';
+COMMENT ON COLUMN fp_unterabschnitte.bezeichnung IS 'Bezeichnung des Unterabschnitts';
+COMMENT ON COLUMN fp_unterabschnitte.has_ha IS 'Nummer des Hauptabschnitt des UAs (FK)';
+COMMENT ON TABLE fp_unterabschnitte IS 'Unterabschnitte als Teil1 der Projektnummer (dbase: keine Datei vorhanden)';
 --------------------------------------------------------
 --  DDL for Table FP_BAULEITUNGEN
 --------------------------------------------------------
 
-CREATE TABLE "FP_BAULEITUNGEN"
+CREATE TABLE fp_bauleitungen
 (
-    "BAULEITUNG"  VARCHAR(1) PRIMARY KEY,
-    "BEZEICHNUNG" VARCHAR(200) NOT NULL
+    bauleitung  VARCHAR(1) PRIMARY KEY,
+    bezeichnung VARCHAR(200) NOT NULL
 );
 
-COMMENT ON COLUMN "FP_BAULEITUNGEN"."BAULEITUNG" IS 'Abkürzung der Bauleitung wie H,1,S';
-COMMENT ON COLUMN "FP_BAULEITUNGEN"."BEZEICHNUNG" IS 'Beschreibung der Bauleitung';
-COMMENT ON TABLE "FP_BAULEITUNGEN" IS 'Aufstellung aller Bauleitungen als Stammdaten';
+COMMENT ON COLUMN fp_bauleitungen.bauleitung IS 'Abkürzung der Bauleitung wie H,1,S';
+COMMENT ON COLUMN fp_bauleitungen.bezeichnung IS 'Beschreibung der Bauleitung';
+COMMENT ON TABLE fp_bauleitungen IS 'Aufstellung aller Bauleitungen als Stammdaten';
 --------------------------------------------------------
 --  DDL for Table FP_STADTBEZIRKE
 --------------------------------------------------------
 
-CREATE TABLE "FP_STADTBEZIRKE"
+CREATE TABLE fp_stadtbezirke
 (
-    "STADTBEZIRK" NUMERIC(2, 0) PRIMARY KEY,
-    "BEZEICHNUNG" VARCHAR(200) NOT NULL
+    stadtbezirk NUMERIC(2, 0) PRIMARY KEY,
+    bezeichnung VARCHAR(200) NOT NULL
 );
 
-COMMENT ON COLUMN "FP_STADTBEZIRKE"."STADTBEZIRK" IS 'Nummer des Stadtbezirks';
-COMMENT ON COLUMN "FP_STADTBEZIRKE"."BEZEICHNUNG" IS 'Beschreibung des Bezirks';
-COMMENT ON TABLE "FP_STADTBEZIRKE" IS 'Aufstellung aller Stadtbezirke';
+COMMENT ON COLUMN fp_stadtbezirke.stadtbezirk IS 'Nummer des Stadtbezirks';
+COMMENT ON COLUMN fp_stadtbezirke.bezeichnung IS 'Beschreibung des Bezirks';
+COMMENT ON TABLE fp_stadtbezirke IS 'Aufstellung aller Stadtbezirke';
 --------------------------------------------------------
 --  DDL for Table FP_KRANKENHAEUSER
 --------------------------------------------------------
 
-CREATE TABLE "FP_KRANKENHAEUSER"
+CREATE TABLE fp_krankenhaeuser
 (
-    "KRHNAME"     VARCHAR(1) PRIMARY KEY,
-    "BEZEICHNUNG" VARCHAR(200) NOT NULL
+    krhname     VARCHAR(1) PRIMARY KEY,
+    bezeichnung VARCHAR(200) NOT NULL
 );
 
-COMMENT ON COLUMN "FP_KRANKENHAEUSER"."KRHNAME" IS 'Abkürzung des Krankenhauses wie B, R';
-COMMENT ON COLUMN "FP_KRANKENHAEUSER"."BEZEICHNUNG" IS 'Beschreibung des Krankenhauses';
-COMMENT ON TABLE "FP_KRANKENHAEUSER" IS 'Aufstellung aller Krankenhäuser als Stammdaten';
+COMMENT ON COLUMN fp_krankenhaeuser.krhname IS 'Abkürzung des Krankenhauses wie B, R';
+COMMENT ON COLUMN fp_krankenhaeuser.bezeichnung IS 'Beschreibung des Krankenhauses';
+COMMENT ON TABLE fp_krankenhaeuser IS 'Aufstellung aller Krankenhäuser als Stammdaten';
 --------------------------------------------------------
 --  DDL for Table FP_BAUPROGRAMME
 --------------------------------------------------------
 
-CREATE TABLE "FP_BAUPROGRAMME"
+CREATE TABLE fp_bauprogramme
 (
-    "BAUPROGRAMM" NUMERIC(2, 0) PRIMARY KEY,
-    "BEZEICHNUNG" VARCHAR(200) NOT NULL
+    bauprogramm NUMERIC(2, 0) PRIMARY KEY,
+    bezeichnung VARCHAR(200) NOT NULL
 );
 
-COMMENT ON COLUMN "FP_BAUPROGRAMME"."BAUPROGRAMM" IS 'Nummer des Bauprogramms';
-COMMENT ON COLUMN "FP_BAUPROGRAMME"."BEZEICHNUNG" IS 'Beschreibung des Bauprogramms';
-COMMENT ON TABLE "FP_BAUPROGRAMME" IS 'Aufstellung aller Bauprogramme';
+COMMENT ON COLUMN fp_bauprogramme.bauprogramm IS 'Nummer des Bauprogramms';
+COMMENT ON COLUMN fp_bauprogramme.bezeichnung IS 'Beschreibung des Bauprogramms';
+COMMENT ON TABLE fp_bauprogramme IS 'Aufstellung aller Bauprogramme';
 --------------------------------------------------------
 --  DDL for Table FP_SIEDLUNGSGEBIETE
 --------------------------------------------------------
 
-CREATE TABLE "FP_SIEDLUNGSGEBIETE"
+CREATE TABLE fp_siedlungsgebiete
 (
-    "SIEDLUNGSGEBIET" NUMERIC(2, 0) PRIMARY KEY,
-    "BEZEICHNUNG"     VARCHAR(200) NOT NULL
+    siedlungsgebiet NUMERIC(2, 0) PRIMARY KEY,
+    bezeichnung     VARCHAR(200) NOT NULL
 );
 
-COMMENT ON COLUMN "FP_SIEDLUNGSGEBIETE"."SIEDLUNGSGEBIET" IS 'Nummer des Siedlungsgebiets';
-COMMENT ON COLUMN "FP_SIEDLUNGSGEBIETE"."BEZEICHNUNG" IS 'Beschreibung des Siedlungsgebiets';
-COMMENT ON TABLE "FP_SIEDLUNGSGEBIETE" IS 'Aufstellung aller Siedlungsgebiete';
+COMMENT ON COLUMN fp_siedlungsgebiete.siedlungsgebiet IS 'Nummer des Siedlungsgebiets';
+COMMENT ON COLUMN fp_siedlungsgebiete.bezeichnung IS 'Beschreibung des Siedlungsgebiets';
+COMMENT ON TABLE fp_siedlungsgebiete IS 'Aufstellung aller Siedlungsgebiete';
 --------------------------------------------------------
 --  DDL for Table FP_PROJEKTE
 --------------------------------------------------------
-CREATE TABLE "FP_PROJEKTE"
+CREATE TABLE fp_projekte
 (
-    "PROJNR"              VARCHAR(7) PRIMARY KEY,
-    "FOB_FB"              NUMERIC(2, 0)                    NOT NULL REFERENCES "FP_FOERDERBEREICHE" ("FB"),
-    "KUR_KURZBEZ"         VARCHAR(8)                       NOT NULL REFERENCES "FP_KURZBEZEICHNUNGEN" ("KURZBEZ"),
-    "UAS_UA"              VARCHAR(2)                       NOT NULL REFERENCES "FP_UNTERABSCHNITTE" ("UA"),
-    "JAHR"                VARCHAR(2)                       NOT NULL,
-    "LFDNR1"              VARCHAR(1)                       NOT NULL,
-    "LFDNR2"              VARCHAR(2)                       NOT NULL,
-    "PNAME"               VARCHAR(100),
-    "PSTRASSE"            VARCHAR(100),
-    "KAUF"                BOOLEAN                          NOT NULL,
-    "PROJART"             VARCHAR(50),
-    "REFINANZIERBAR"      BOOLEAN     DEFAULT TRUE         NOT NULL,
-    "BLE_BAULEITUNG"      VARCHAR(1) REFERENCES "FP_BAULEITUNGEN" ("BAULEITUNG"),
-    "BAULEITUNGKONTAKT"   VARCHAR(30),
-    "BEZ_STADTBEZIRK"     NUMERIC(2, 0) REFERENCES "FP_STADTBEZIRKE" ("STADTBEZIRK"),
-    "KRN_KRHNAME"         VARCHAR(1) REFERENCES "FP_KRANKENHAEUSER" ("KRHNAME"),
-    "KRHZWECK"            VARCHAR(1),
-    "KRISOFP"             VARCHAR(1),
-    "KRIPPLATZ"           NUMERIC(10, 0),
-    "KIGAPLATZ"           NUMERIC(10, 0),
-    "HORTPLATZ"           NUMERIC(10, 0),
-    "VNDAT"               DATE,
-    "VNKOSTEN"            NUMERIC(12, 2),
-    "VNZWFKOSTEN"         NUMERIC(12, 2),
-    "VNPRUEFDAT"          DATE,
-    "VNRUECK_Z"           NUMERIC(12, 2),
-    "VNNACHFOERDERUNG"    NUMERIC(12, 2),
-    "VNPRUEFZWF"          NUMERIC(12, 2),
-    "VNSCHLUSSZWF"        NUMERIC(12, 2),
-    "VNSCHLUSSBEW"        DATE,
-    "SAP"                 BOOLEAN                          NOT NULL,
-    "SAPSTATAUF"          BOOLEAN,
-    "SAPMATNR"            NUMERIC(8, 0),
-    "SAPWERTNR"           NUMERIC(8, 0),
-    "SAPJAHRWERT"         DATE,
-    "SAPANLAGENNR"        NUMERIC(8, 0),
-    "ZINSEN"              NUMERIC(10, 0),
-    "ZINSDATUM"           DATE,
-    "FIPO"                VARCHAR(15),
-    "BUCHUNGSKREIS"       VARCHAR(4),
-    "SACHKONTO"           VARCHAR(6),
-    "FIPO_K"              VARCHAR(15),
-    "BUCHUNGSKREIS_K"     VARCHAR(4),
-    "SACHKONTO_K"         VARCHAR(6),
-    "PSBAUBUCH"           VARCHAR(2),
-    "PSBAUREF"            VARCHAR(2),
-    "PSBAUNR"             VARCHAR(6),
-    "NOTIZEN"             TEXT,
-    "ALTDATEN"            BOOLEAN     DEFAULT FALSE        NOT NULL,
-    "ANLAGEDATUM"         DATE        DEFAULT CURRENT_DATE NOT NULL,
-    "ANLAGEVON"           VARCHAR(30) DEFAULT USER         NOT NULL,
-    "AENDERUNGSDATUM"     DATE,
-    "AENDERUNGVON"        VARCHAR(30),
-    "VNGESAMTZUWENDUNG"   NUMERIC(12, 2),
-    "SAPINNENAUFTRAG"     VARCHAR(12),
-    "BPG_BAUPROGRAMM"     NUMERIC(2, 0) REFERENCES "FP_BAUPROGRAMME" ("BAUPROGRAMM"),
-    "SGT_SIEDLUNGSGEBIET" NUMERIC(2, 0) REFERENCES "FP_SIEDLUNGSGEBIETE" ("SIEDLUNGSGEBIET"),
-    "BAUENDE"             DATE,
-    "BAUBEENDET"          VARCHAR(1),
-    "BAUVERGABE1"         DATE,
-    "BAUBEGINN"           DATE,
-    "BAUMITTEILUNG"       DATE,
-    "KREDITNUMMER"        NUMERIC(8, 0),
-    "STADTANLEIHE"        VARCHAR(50),
-    "ANLEIHENENNWERT"     NUMERIC(9, 0),
-    "ANLEIHEJAHRVON"      NUMERIC(4, 0),
-    "ANLEIHEJAHRBIS"      NUMERIC(4, 0)
+    projnr              VARCHAR(7) PRIMARY KEY,
+    fob_fb              NUMERIC(2, 0)                    NOT NULL REFERENCES fp_foerderbereiche (fb),
+    kur_kurzbez         VARCHAR(8)                       NOT NULL REFERENCES fp_kurzbezeichnungen (kurzbez),
+    uas_ua              VARCHAR(2)                       NOT NULL REFERENCES fp_unterabschnitte (ua),
+    jahr                VARCHAR(2)                       NOT NULL,
+    lfdnr1              VARCHAR(1)                       NOT NULL,
+    lfdnr2              VARCHAR(2)                       NOT NULL,
+    pname               VARCHAR(100),
+    pstrasse            VARCHAR(100),
+    kauf                BOOLEAN                          NOT NULL,
+    projart             VARCHAR(50),
+    refinanzierbar      BOOLEAN     DEFAULT TRUE         NOT NULL,
+    ble_bauleitung      VARCHAR(1) REFERENCES fp_bauleitungen (bauleitung),
+    bauleitungkontakt   VARCHAR(30),
+    bez_stadtbezirk     NUMERIC(2, 0) REFERENCES fp_stadtbezirke (stadtbezirk),
+    krn_krhname         VARCHAR(1) REFERENCES fp_krankenhaeuser (krhname),
+    krhzweck            VARCHAR(1),
+    krisofp             VARCHAR(1),
+    kripplatz           NUMERIC(10, 0),
+    kigaplatz           NUMERIC(10, 0),
+    hortplatz           NUMERIC(10, 0),
+    vndat               DATE,
+    vnkosten            NUMERIC(12, 2),
+    vnzwfkosten         NUMERIC(12, 2),
+    vnpruefdat          DATE,
+    vnrueck_z           NUMERIC(12, 2),
+    vnnachfoerderung    NUMERIC(12, 2),
+    vnpruefzwf          NUMERIC(12, 2),
+    vnschlusszwf        NUMERIC(12, 2),
+    vnschlussbew        DATE,
+    sap                 BOOLEAN                          NOT NULL,
+    sapstatauf          BOOLEAN,
+    sapmatnr            NUMERIC(8, 0),
+    sapwertnr           NUMERIC(8, 0),
+    sapjahrwert         DATE,
+    sapanlagennr        NUMERIC(8, 0),
+    zinsen              NUMERIC(10, 0),
+    zinsdatum           DATE,
+    fipo                VARCHAR(15),
+    buchungskreis       VARCHAR(4),
+    sachkonto           VARCHAR(6),
+    fipo_k              VARCHAR(15),
+    buchungskreis_k     VARCHAR(4),
+    sachkonto_k         VARCHAR(6),
+    psbaubuch           VARCHAR(2),
+    psbauref            VARCHAR(2),
+    psbaunr             VARCHAR(6),
+    notizen             TEXT,
+    altdaten            BOOLEAN     DEFAULT FALSE        NOT NULL,
+    anlagedatum         DATE        DEFAULT CURRENT_DATE NOT NULL,
+    anlagevon           VARCHAR(30) DEFAULT USER         NOT NULL,
+    aenderungsdatum     DATE,
+    aenderungvon        VARCHAR(30),
+    vngesamtzuwendung   NUMERIC(12, 2),
+    sapinnenauftrag     VARCHAR(12),
+    bpg_bauprogramm     NUMERIC(2, 0) REFERENCES fp_bauprogramme (bauprogramm),
+    sgt_siedlungsgebiet NUMERIC(2, 0) REFERENCES fp_siedlungsgebiete (siedlungsgebiet),
+    bauende             DATE,
+    baubeendet          VARCHAR(1),
+    bauvergabe1         DATE,
+    baubeginn           DATE,
+    baumitteilung       DATE,
+    kreditnummer        NUMERIC(8, 0),
+    stadtanleihe        VARCHAR(50),
+    anleihenennwert     NUMERIC(9, 0),
+    anleihejahrvon      NUMERIC(4, 0),
+    anleihejahrbis      NUMERIC(4, 0)
 );
 
-CREATE INDEX ON "FP_PROJEKTE" ("AENDERUNGSDATUM");
-CREATE INDEX ON "FP_PROJEKTE" ("BEZ_STADTBEZIRK");
-CREATE INDEX ON "FP_PROJEKTE" ("BLE_BAULEITUNG");
-CREATE INDEX ON "FP_PROJEKTE" ("BPG_BAUPROGRAMM");
-CREATE INDEX ON "FP_PROJEKTE" ("FOB_FB");
-CREATE INDEX ON "FP_PROJEKTE" ("KRN_KRHNAME");
-CREATE INDEX ON "FP_PROJEKTE" ("KUR_KURZBEZ");
-CREATE INDEX ON "FP_PROJEKTE" ("SGT_SIEDLUNGSGEBIET");
-CREATE INDEX ON "FP_PROJEKTE" ("UAS_UA");
+CREATE INDEX ON fp_projekte (aenderungsdatum);
+CREATE INDEX ON fp_projekte (bez_stadtbezirk);
+CREATE INDEX ON fp_projekte (ble_bauleitung);
+CREATE INDEX ON fp_projekte (bpg_bauprogramm);
+CREATE INDEX ON fp_projekte (fob_fb);
+CREATE INDEX ON fp_projekte (krn_krhname);
+CREATE INDEX ON fp_projekte (kur_kurzbez);
+CREATE INDEX ON fp_projekte (sgt_siedlungsgebiet);
+CREATE INDEX ON fp_projekte (uas_ua);
 
-COMMENT ON COLUMN "FP_PROJEKTE"."PROJNR" IS 'Primary Key Projektnummer zusammengesetzt';
-COMMENT ON COLUMN "FP_PROJEKTE"."FOB_FB" IS 'Förderbereich Kurzform';
-COMMENT ON COLUMN "FP_PROJEKTE"."KUR_KURZBEZ" IS 'Kurzbezeichnung zur Klassifizierung eines Projekts';
-COMMENT ON COLUMN "FP_PROJEKTE"."UAS_UA" IS 'Unterabschnitt als Teil der Projektnummer (Stelle 1-2)';
-COMMENT ON COLUMN "FP_PROJEKTE"."JAHR" IS 'Jahreszahl zweistellig als Teil der Projektnummer (Stelle 3-4)';
-COMMENT ON COLUMN "FP_PROJEKTE"."LFDNR1" IS 'Laufende Nummer einstellig als Teil der Projektnummer (Stelle 5)';
-COMMENT ON COLUMN "FP_PROJEKTE"."LFDNR2" IS 'Laufende Nummer zweistellig als Teil der Projektnummer (Stelle 6-7)';
-COMMENT ON COLUMN "FP_PROJEKTE"."PNAME" IS 'Name des Projekts (altes Verfahren: beginnend mit der Straße)';
-COMMENT ON COLUMN "FP_PROJEKTE"."PSTRASSE" IS 'Straße des Projekts allein';
-COMMENT ON COLUMN "FP_PROJEKTE"."KAUF" IS 'Liegt ein Ankauf oder Teilerwerb vor';
-COMMENT ON COLUMN "FP_PROJEKTE"."PROJART" IS 'Beschreibung des Projekts etwa Umbau, Neubau (Freitext)';
-COMMENT ON COLUMN "FP_PROJEKTE"."REFINANZIERBAR" IS 'Ist dieses Förderprojekt refinanzierbar';
-COMMENT ON COLUMN "FP_PROJEKTE"."BLE_BAULEITUNG" IS 'Zuständige Abteilung im Baureferat (FK)';
-COMMENT ON COLUMN "FP_PROJEKTE"."BAULEITUNGKONTAKT" IS 'Baustand: Name des Projektleiters sowie Telefon';
-COMMENT ON COLUMN "FP_PROJEKTE"."BEZ_STADTBEZIRK" IS 'Nummer des Stadtbezirks (FK)';
-COMMENT ON COLUMN "FP_PROJEKTE"."KRN_KRHNAME" IS 'Kurzbezeichnung Krankenhausname (FK)';
-COMMENT ON COLUMN "FP_PROJEKTE"."KRHZWECK" IS 'Förderung nach Jahreskrankenhausbauprogramm (Gültige Werte siehe FP_DOMAINS)';
-COMMENT ON COLUMN "FP_PROJEKTE"."KRISOFP" IS 'Art des Krippensonderförderprogramms (Gültige Werte siehe FP_DOMAINS)';
-COMMENT ON COLUMN "FP_PROJEKTE"."KRIPPLATZ" IS 'Anzahl der Krippenplätze';
-COMMENT ON COLUMN "FP_PROJEKTE"."KIGAPLATZ" IS 'Anzahl der Kindergartenplätze';
-COMMENT ON COLUMN "FP_PROJEKTE"."HORTPLATZ" IS 'Anzahl der Hortplätze';
-COMMENT ON COLUMN "FP_PROJEKTE"."VNDAT" IS 'Datum des abgeschlossenen Verwendungsnachweises.';
-COMMENT ON COLUMN "FP_PROJEKTE"."VNKOSTEN" IS 'Endkosten lt. Verwendungsnachweis';
-COMMENT ON COLUMN "FP_PROJEKTE"."VNZWFKOSTEN" IS 'Zuwendungsfähige Gesamtkosten lt. Verwendungsnachweis';
-COMMENT ON COLUMN "FP_PROJEKTE"."VNPRUEFDAT" IS 'Datum der Prüfung des Verwendungsnachweises lt. Zuwendungsgeber';
-COMMENT ON COLUMN "FP_PROJEKTE"."VNRUECK_Z" IS 'Höhe des zurückgeforderten Zuschussbetrags  lt. Verwendungsnachweis';
-COMMENT ON COLUMN "FP_PROJEKTE"."VNNACHFOERDERUNG" IS 'Höhe der Nachförderung (Zuschuss)  lt. Verwendungsnachweis';
-COMMENT ON COLUMN "FP_PROJEKTE"."VNPRUEFZWF" IS 'Höhe der geprüften zuwendungsfähigen Kosten  lt. Verwendungsnachweis';
-COMMENT ON COLUMN "FP_PROJEKTE"."VNSCHLUSSZWF" IS 'Höhe der endgültigen zuwendungsfähigen Kosten  lt. Verwendungsnachweis';
-COMMENT ON COLUMN "FP_PROJEKTE"."VNSCHLUSSBEW" IS 'Datum des letzten Bewilligungsbescheids (Schlussbescheid)  lt. Verwendungsnachweis';
-COMMENT ON COLUMN "FP_PROJEKTE"."SAP" IS 'Wird dieses Projekt in SAP geführt';
-COMMENT ON COLUMN "FP_PROJEKTE"."SAPSTATAUF" IS 'Statistischer Innenauftrag';
-COMMENT ON COLUMN "FP_PROJEKTE"."SAPMATNR" IS 'SAP Materialnummer';
-COMMENT ON COLUMN "FP_PROJEKTE"."SAPWERTNR" IS 'SAP Wertkontraktnummer';
-COMMENT ON COLUMN "FP_PROJEKTE"."SAPJAHRWERT" IS 'Datum in SAP (Jahr Wertkontrakt)';
-COMMENT ON COLUMN "FP_PROJEKTE"."SAPANLAGENNR" IS 'SAP Anlagennummer';
-COMMENT ON COLUMN "FP_PROJEKTE"."ZINSEN" IS 'Höhe der Zinszahlungen';
-COMMENT ON COLUMN "FP_PROJEKTE"."ZINSDATUM" IS 'Datum der Zinszahlungen';
-COMMENT ON COLUMN "FP_PROJEKTE"."FIPO" IS 'Finanzposition im Haushalt (Haushaltsstelle) für Zuwendungen';
-COMMENT ON COLUMN "FP_PROJEKTE"."BUCHUNGSKREIS" IS 'SAP Buchungskreis für Zuwendungen';
-COMMENT ON COLUMN "FP_PROJEKTE"."SACHKONTO" IS 'SAP Sachkonto für Zuwendungen';
-COMMENT ON COLUMN "FP_PROJEKTE"."FIPO_K" IS 'Finanzposition im Haushalt (Haushaltsstelle) für Erstattungen';
-COMMENT ON COLUMN "FP_PROJEKTE"."BUCHUNGSKREIS_K" IS 'SAP Buchungskreis für Erstattungen';
-COMMENT ON COLUMN "FP_PROJEKTE"."SACHKONTO_K" IS 'SAP Sachkonto für Erstattungen';
-COMMENT ON COLUMN "FP_PROJEKTE"."PSBAUBUCH" IS 'Projektstruktur Baubuchnummer Teil1';
-COMMENT ON COLUMN "FP_PROJEKTE"."PSBAUREF" IS 'Projektstruktur Baubuchnummer Teil2  (Gültige Werte siehe FP_DOMAINS)';
-COMMENT ON COLUMN "FP_PROJEKTE"."PSBAUNR" IS 'Projektstruktur Baubuchnummer Teil3';
-COMMENT ON COLUMN "FP_PROJEKTE"."NOTIZEN" IS 'Notizen zum Projekt, Baustand und VN (Freitext)';
-COMMENT ON COLUMN "FP_PROJEKTE"."ALTDATEN" IS 'Kennzeichen ob dieses Projekt aus der Altdatenübernahme stammt 0=nein, 1=ja';
-COMMENT ON COLUMN "FP_PROJEKTE"."ANLAGEDATUM" IS 'Dieser Satz wurde angelegt am';
-COMMENT ON COLUMN "FP_PROJEKTE"."ANLAGEVON" IS 'Dieser Satz wurde angelegt von diesem Benutzer';
-COMMENT ON COLUMN "FP_PROJEKTE"."AENDERUNGSDATUM" IS 'Dieser Satz wurde zuletzt geändert am';
-COMMENT ON COLUMN "FP_PROJEKTE"."AENDERUNGVON" IS 'Dieser Satz wurde zuletzt geändert von diesem Benutzer';
-COMMENT ON COLUMN "FP_PROJEKTE"."VNGESAMTZUWENDUNG" IS 'Im Schlussbescheid festgesetzte Gesamtzuwendung seitens der Fördermittelgebers';
-COMMENT ON COLUMN "FP_PROJEKTE"."SAPINNENAUFTRAG" IS 'SAP Innenauftrag';
-COMMENT ON COLUMN "FP_PROJEKTE"."BPG_BAUPROGRAMM" IS 'Nummer des zugehörigen Bauprogramms (FK)';
-COMMENT ON COLUMN "FP_PROJEKTE"."SGT_SIEDLUNGSGEBIET" IS 'Nummer des zugehörigen Siedlungsgebietes (FK)';
-COMMENT ON COLUMN "FP_PROJEKTE"."BAUENDE" IS 'Datum des voraussichtlichen oder endgültigen Bauendes';
-COMMENT ON COLUMN "FP_PROJEKTE"."BAUBEENDET" IS 'Status zum Datum des Bauendes (Gültige Werte siehe FP_DOMAINS)';
-COMMENT ON COLUMN "FP_PROJEKTE"."BAUVERGABE1" IS 'Wann erfolgte die erste Vergabe zum Bau';
-COMMENT ON COLUMN "FP_PROJEKTE"."BAUBEGINN" IS 'Wann erfolgte der offizielle Baubeginn';
-COMMENT ON COLUMN "FP_PROJEKTE"."BAUMITTEILUNG" IS 'Wann erfolgte die letzte Mitteilung zum Bau';
-COMMENT ON COLUMN "FP_PROJEKTE"."KREDITNUMMER" IS 'Kreditnummer von der Kämmerei vergeben';
-COMMENT ON COLUMN "FP_PROJEKTE"."STADTANLEIHE" IS 'Falls Stadtanleihe dann Beschreibung oder Titel der Stadtanleihe';
-COMMENT ON COLUMN "FP_PROJEKTE"."ANLEIHENENNWERT" IS 'Höhe der Anleihe (Nominalwert)';
-COMMENT ON COLUMN "FP_PROJEKTE"."ANLEIHEJAHRVON" IS 'Laufzeit der Anleihe (Jahr von)';
-COMMENT ON COLUMN "FP_PROJEKTE"."ANLEIHEJAHRBIS" IS 'Laufzeit der Anleihe (Jahr bis)';
-COMMENT ON TABLE "FP_PROJEKTE" IS 'Alle Projekte der Fördermittelverwaltung (dbase:projekte,kindbetr,vn)';
+COMMENT ON COLUMN fp_projekte.projnr IS 'Primary Key Projektnummer zusammengesetzt';
+COMMENT ON COLUMN fp_projekte.fob_fb IS 'Förderbereich Kurzform';
+COMMENT ON COLUMN fp_projekte.kur_kurzbez IS 'Kurzbezeichnung zur Klassifizierung eines Projekts';
+COMMENT ON COLUMN fp_projekte.uas_ua IS 'Unterabschnitt als Teil der Projektnummer (Stelle 1-2)';
+COMMENT ON COLUMN fp_projekte.jahr IS 'Jahreszahl zweistellig als Teil der Projektnummer (Stelle 3-4)';
+COMMENT ON COLUMN fp_projekte.lfdnr1 IS 'Laufende Nummer einstellig als Teil der Projektnummer (Stelle 5)';
+COMMENT ON COLUMN fp_projekte.lfdnr2 IS 'Laufende Nummer zweistellig als Teil der Projektnummer (Stelle 6-7)';
+COMMENT ON COLUMN fp_projekte.pname IS 'Name des Projekts (altes Verfahren: beginnend mit der Straße)';
+COMMENT ON COLUMN fp_projekte.pstrasse IS 'Straße des Projekts allein';
+COMMENT ON COLUMN fp_projekte.kauf IS 'Liegt ein Ankauf oder Teilerwerb vor';
+COMMENT ON COLUMN fp_projekte.projart IS 'Beschreibung des Projekts etwa Umbau, Neubau (Freitext)';
+COMMENT ON COLUMN fp_projekte.refinanzierbar IS 'Ist dieses Förderprojekt refinanzierbar';
+COMMENT ON COLUMN fp_projekte.ble_bauleitung IS 'Zuständige Abteilung im Baureferat (FK)';
+COMMENT ON COLUMN fp_projekte.bauleitungkontakt IS 'Baustand: Name des Projektleiters sowie Telefon';
+COMMENT ON COLUMN fp_projekte.bez_stadtbezirk IS 'Nummer des Stadtbezirks (FK)';
+COMMENT ON COLUMN fp_projekte.krn_krhname IS 'Kurzbezeichnung Krankenhausname (FK)';
+COMMENT ON COLUMN fp_projekte.krhzweck IS 'Förderung nach Jahreskrankenhausbauprogramm (Gültige Werte siehe FP_DOMAINS)';
+COMMENT ON COLUMN fp_projekte.krisofp IS 'Art des Krippensonderförderprogramms (Gültige Werte siehe FP_DOMAINS)';
+COMMENT ON COLUMN fp_projekte.kripplatz IS 'Anzahl der Krippenplätze';
+COMMENT ON COLUMN fp_projekte.kigaplatz IS 'Anzahl der Kindergartenplätze';
+COMMENT ON COLUMN fp_projekte.hortplatz IS 'Anzahl der Hortplätze';
+COMMENT ON COLUMN fp_projekte.vndat IS 'Datum des abgeschlossenen Verwendungsnachweises.';
+COMMENT ON COLUMN fp_projekte.vnkosten IS 'Endkosten lt. Verwendungsnachweis';
+COMMENT ON COLUMN fp_projekte.vnzwfkosten IS 'Zuwendungsfähige Gesamtkosten lt. Verwendungsnachweis';
+COMMENT ON COLUMN fp_projekte.vnpruefdat IS 'Datum der Prüfung des Verwendungsnachweises lt. Zuwendungsgeber';
+COMMENT ON COLUMN fp_projekte.vnrueck_z IS 'Höhe des zurückgeforderten Zuschussbetrags  lt. Verwendungsnachweis';
+COMMENT ON COLUMN fp_projekte.vnnachfoerderung IS 'Höhe der Nachförderung (Zuschuss)  lt. Verwendungsnachweis';
+COMMENT ON COLUMN fp_projekte.vnpruefzwf IS 'Höhe der geprüften zuwendungsfähigen Kosten  lt. Verwendungsnachweis';
+COMMENT ON COLUMN fp_projekte.vnschlusszwf IS 'Höhe der endgültigen zuwendungsfähigen Kosten  lt. Verwendungsnachweis';
+COMMENT ON COLUMN fp_projekte.vnschlussbew IS 'Datum des letzten Bewilligungsbescheids (Schlussbescheid)  lt. Verwendungsnachweis';
+COMMENT ON COLUMN fp_projekte.sap IS 'Wird dieses Projekt in SAP geführt';
+COMMENT ON COLUMN fp_projekte.sapstatauf IS 'Statistischer Innenauftrag';
+COMMENT ON COLUMN fp_projekte.sapmatnr IS 'SAP Materialnummer';
+COMMENT ON COLUMN fp_projekte.sapwertnr IS 'SAP Wertkontraktnummer';
+COMMENT ON COLUMN fp_projekte.sapjahrwert IS 'Datum in SAP (Jahr Wertkontrakt)';
+COMMENT ON COLUMN fp_projekte.sapanlagennr IS 'SAP Anlagennummer';
+COMMENT ON COLUMN fp_projekte.zinsen IS 'Höhe der Zinszahlungen';
+COMMENT ON COLUMN fp_projekte.zinsdatum IS 'Datum der Zinszahlungen';
+COMMENT ON COLUMN fp_projekte.fipo IS 'Finanzposition im Haushalt (Haushaltsstelle) für Zuwendungen';
+COMMENT ON COLUMN fp_projekte.buchungskreis IS 'SAP Buchungskreis für Zuwendungen';
+COMMENT ON COLUMN fp_projekte.sachkonto IS 'SAP Sachkonto für Zuwendungen';
+COMMENT ON COLUMN fp_projekte.fipo_k IS 'Finanzposition im Haushalt (Haushaltsstelle) für Erstattungen';
+COMMENT ON COLUMN fp_projekte.buchungskreis_k IS 'SAP Buchungskreis für Erstattungen';
+COMMENT ON COLUMN fp_projekte.sachkonto_k IS 'SAP Sachkonto für Erstattungen';
+COMMENT ON COLUMN fp_projekte.psbaubuch IS 'Projektstruktur Baubuchnummer Teil1';
+COMMENT ON COLUMN fp_projekte.psbauref IS 'Projektstruktur Baubuchnummer Teil2  (Gültige Werte siehe FP_DOMAINS)';
+COMMENT ON COLUMN fp_projekte.psbaunr IS 'Projektstruktur Baubuchnummer Teil3';
+COMMENT ON COLUMN fp_projekte.notizen IS 'Notizen zum Projekt, Baustand und VN (Freitext)';
+COMMENT ON COLUMN fp_projekte.altdaten IS 'Kennzeichen ob dieses Projekt aus der Altdatenübernahme stammt 0=nein, 1=ja';
+COMMENT ON COLUMN fp_projekte.anlagedatum IS 'Dieser Satz wurde angelegt am';
+COMMENT ON COLUMN fp_projekte.anlagevon IS 'Dieser Satz wurde angelegt von diesem Benutzer';
+COMMENT ON COLUMN fp_projekte.aenderungsdatum IS 'Dieser Satz wurde zuletzt geändert am';
+COMMENT ON COLUMN fp_projekte.aenderungvon IS 'Dieser Satz wurde zuletzt geändert von diesem Benutzer';
+COMMENT ON COLUMN fp_projekte.vngesamtzuwendung IS 'Im Schlussbescheid festgesetzte Gesamtzuwendung seitens der Fördermittelgebers';
+COMMENT ON COLUMN fp_projekte.sapinnenauftrag IS 'SAP Innenauftrag';
+COMMENT ON COLUMN fp_projekte.bpg_bauprogramm IS 'Nummer des zugehörigen Bauprogramms (FK)';
+COMMENT ON COLUMN fp_projekte.sgt_siedlungsgebiet IS 'Nummer des zugehörigen Siedlungsgebietes (FK)';
+COMMENT ON COLUMN fp_projekte.bauende IS 'Datum des voraussichtlichen oder endgültigen Bauendes';
+COMMENT ON COLUMN fp_projekte.baubeendet IS 'Status zum Datum des Bauendes (Gültige Werte siehe FP_DOMAINS)';
+COMMENT ON COLUMN fp_projekte.bauvergabe1 IS 'Wann erfolgte die erste Vergabe zum Bau';
+COMMENT ON COLUMN fp_projekte.baubeginn IS 'Wann erfolgte der offizielle Baubeginn';
+COMMENT ON COLUMN fp_projekte.baumitteilung IS 'Wann erfolgte die letzte Mitteilung zum Bau';
+COMMENT ON COLUMN fp_projekte.kreditnummer IS 'Kreditnummer von der Kämmerei vergeben';
+COMMENT ON COLUMN fp_projekte.stadtanleihe IS 'Falls Stadtanleihe dann Beschreibung oder Titel der Stadtanleihe';
+COMMENT ON COLUMN fp_projekte.anleihenennwert IS 'Höhe der Anleihe (Nominalwert)';
+COMMENT ON COLUMN fp_projekte.anleihejahrvon IS 'Laufzeit der Anleihe (Jahr von)';
+COMMENT ON COLUMN fp_projekte.anleihejahrbis IS 'Laufzeit der Anleihe (Jahr bis)';
+COMMENT ON TABLE fp_projekte IS 'Alle Projekte der Fördermittelverwaltung (dbase:projekte,kindbetr,vn)';
 --------------------------------------------------------
 --  DDL for Table FP_ANTRAEGE
 --------------------------------------------------------
 
-CREATE TABLE "FP_ANTRAEGE"
+CREATE TABLE fp_antraege
 (
-    "ID"              SERIAL PRIMARY KEY,
-    "PRO_PROJNR"      VARCHAR(7)                       NOT NULL REFERENCES "FP_PROJEKTE" ("PROJNR"),
-    "ANTRAGSDATUM"    DATE,
-    "ANTRAGSTYP"      VARCHAR(1)                       NOT NULL,
-    "GESKOSTEN"       NUMERIC(10, 0)                   NOT NULL,
-    "ZWFKOSTEN"       NUMERIC(10, 0)                   NOT NULL,
-    "VORZBEG"         BOOLEAN     DEFAULT FALSE        NOT NULL,
-    "VBDATUM"         DATE,
-    "UNBEDDAT"        DATE,
-    "UNBEDJA"         DATE,
-    "UNBEDBIS"        DATE,
-    "A_SU_Z"          NUMERIC(10, 0)                   NOT NULL,
-    "A_SU_D"          NUMERIC(10, 0)                   NOT NULL,
-    "A_SU_K"          NUMERIC(10, 0)                   NOT NULL,
-    "B_VOR_SU_Z"      NUMERIC(10, 0)                   NOT NULL,
-    "B_VOR_SU_D"      NUMERIC(10, 0)                   NOT NULL,
-    "B_VOR_SU_K"      NUMERIC(10, 0)                   NOT NULL,
-    "NOTIZEN"         TEXT,
-    "ANLAGEDATUM"     DATE        DEFAULT CURRENT_DATE NOT NULL,
-    "ANLAGEVON"       VARCHAR(30) DEFAULT USER         NOT NULL,
-    "AENDERUNGSDATUM" DATE,
-    "AENDERUNGVON"    VARCHAR(30)
+    id              SERIAL PRIMARY KEY,
+    pro_projnr      VARCHAR(7)                       NOT NULL REFERENCES fp_projekte (projnr),
+    antragsdatum    DATE,
+    antragstyp      VARCHAR(1)                       NOT NULL,
+    geskosten       NUMERIC(10, 0)                   NOT NULL,
+    zwfkosten       NUMERIC(10, 0)                   NOT NULL,
+    vorzbeg         BOOLEAN     DEFAULT FALSE        NOT NULL,
+    vbdatum         DATE,
+    unbeddat        DATE,
+    unbedja         DATE,
+    unbedbis        DATE,
+    a_su_z          NUMERIC(10, 0)                   NOT NULL,
+    a_su_d          NUMERIC(10, 0)                   NOT NULL,
+    a_su_k          NUMERIC(10, 0)                   NOT NULL,
+    b_vor_su_z      NUMERIC(10, 0)                   NOT NULL,
+    b_vor_su_d      NUMERIC(10, 0)                   NOT NULL,
+    b_vor_su_k      NUMERIC(10, 0)                   NOT NULL,
+    notizen         TEXT,
+    anlagedatum     DATE        DEFAULT CURRENT_DATE NOT NULL,
+    anlagevon       VARCHAR(30) DEFAULT USER         NOT NULL,
+    aenderungsdatum DATE,
+    aenderungvon    VARCHAR(30)
 );
 
-CREATE INDEX ON "FP_ANTRAEGE" ("PRO_PROJNR");
+CREATE INDEX ON fp_antraege (pro_projnr);
 
-COMMENT ON COLUMN "FP_ANTRAEGE"."ID" IS 'Primärschlüssel eines Fördermittelantrags';
-COMMENT ON COLUMN "FP_ANTRAEGE"."PRO_PROJNR" IS 'Dieser Antrag bezieht sich auf dieses Projekt';
-COMMENT ON COLUMN "FP_ANTRAEGE"."ANTRAGSDATUM" IS 'Datum des Förderantrags';
-COMMENT ON COLUMN "FP_ANTRAEGE"."ANTRAGSTYP" IS 'Typ des Förderantrags  (Gültige Werte siehe FP_DOMAINS)';
-COMMENT ON COLUMN "FP_ANTRAEGE"."GESKOSTEN" IS 'Beantragte Gesamtkosten des Projekts bei diesem Antrag (besonders beim Erstantrag)';
-COMMENT ON COLUMN "FP_ANTRAEGE"."ZWFKOSTEN" IS 'Beantragte zuwendungsfähige Gesamtkosten bei diesem Antrag';
-COMMENT ON COLUMN "FP_ANTRAEGE"."VORZBEG" IS 'Wurde Antrag auf vorzeitigen Baubeginn gestellt';
-COMMENT ON COLUMN "FP_ANTRAEGE"."VBDATUM" IS 'Datum eines vorzeitigen Baubeginns';
-COMMENT ON COLUMN "FP_ANTRAEGE"."UNBEDDAT" IS 'Datum des Antrags auf Unbedenklichkeit';
-COMMENT ON COLUMN "FP_ANTRAEGE"."UNBEDJA" IS 'Datum der erteilten Unbedenklichkeitsbescheinigung';
-COMMENT ON COLUMN "FP_ANTRAEGE"."UNBEDBIS" IS 'Die erteilte Unbedenklichkeitsbescheinigung ist gültig bis zu diesem Datum';
-COMMENT ON COLUMN "FP_ANTRAEGE"."A_SU_Z" IS 'Höhe des beantragten Zuschusses (nur Anteil für ein Jahr)';
-COMMENT ON COLUMN "FP_ANTRAEGE"."A_SU_D" IS 'Höhe des beantragten Darlehens (nur Anteil für ein Jahr)';
-COMMENT ON COLUMN "FP_ANTRAEGE"."A_SU_K" IS 'Höhe der beantragten Kostenerstattung (Konnexität, nur Anteil für ein Jahr)';
-COMMENT ON COLUMN "FP_ANTRAEGE"."B_VOR_SU_Z" IS 'voraussichtlich bewilligte Gesamtzuwendung';
-COMMENT ON COLUMN "FP_ANTRAEGE"."B_VOR_SU_D" IS 'voraussichtlich bewilligtes Gesamtdarlehen';
-COMMENT ON COLUMN "FP_ANTRAEGE"."B_VOR_SU_K" IS ' voraussichtlich bewilligte Kostenerstattung';
-COMMENT ON COLUMN "FP_ANTRAEGE"."NOTIZEN" IS 'Notizen zu einem Antrag als Freitext';
-COMMENT ON COLUMN "FP_ANTRAEGE"."ANLAGEDATUM" IS 'Dieser Satz wurde angelegt am';
-COMMENT ON COLUMN "FP_ANTRAEGE"."ANLAGEVON" IS 'Dieser Satz wurde angelegt von diesem Benutzer';
-COMMENT ON COLUMN "FP_ANTRAEGE"."AENDERUNGSDATUM" IS 'Dieser Satz wurde zuletzt geändert am';
-COMMENT ON COLUMN "FP_ANTRAEGE"."AENDERUNGVON" IS 'Dieser Satz wurde zuletzt geändert von diesem Benutzer';
-COMMENT ON TABLE "FP_ANTRAEGE" IS 'Enthält alle Förderanträge zu Projekten ((dbase:erstantr)';
+COMMENT ON COLUMN fp_antraege.id IS 'Primärschlüssel eines Fördermittelantrags';
+COMMENT ON COLUMN fp_antraege.pro_projnr IS 'Dieser Antrag bezieht sich auf dieses Projekt';
+COMMENT ON COLUMN fp_antraege.antragsdatum IS 'Datum des Förderantrags';
+COMMENT ON COLUMN fp_antraege.antragstyp IS 'Typ des Förderantrags  (Gültige Werte siehe FP_DOMAINS)';
+COMMENT ON COLUMN fp_antraege.geskosten IS 'Beantragte Gesamtkosten des Projekts bei diesem Antrag (besonders beim Erstantrag)';
+COMMENT ON COLUMN fp_antraege.zwfkosten IS 'Beantragte zuwendungsfähige Gesamtkosten bei diesem Antrag';
+COMMENT ON COLUMN fp_antraege.vorzbeg IS 'Wurde Antrag auf vorzeitigen Baubeginn gestellt';
+COMMENT ON COLUMN fp_antraege.vbdatum IS 'Datum eines vorzeitigen Baubeginns';
+COMMENT ON COLUMN fp_antraege.unbeddat IS 'Datum des Antrags auf Unbedenklichkeit';
+COMMENT ON COLUMN fp_antraege.unbedja IS 'Datum der erteilten Unbedenklichkeitsbescheinigung';
+COMMENT ON COLUMN fp_antraege.unbedbis IS 'Die erteilte Unbedenklichkeitsbescheinigung ist gültig bis zu diesem Datum';
+COMMENT ON COLUMN fp_antraege.a_su_z IS 'Höhe des beantragten Zuschusses (nur Anteil für ein Jahr)';
+COMMENT ON COLUMN fp_antraege.a_su_d IS 'Höhe des beantragten Darlehens (nur Anteil für ein Jahr)';
+COMMENT ON COLUMN fp_antraege.a_su_k IS 'Höhe der beantragten Kostenerstattung (Konnexität, nur Anteil für ein Jahr)';
+COMMENT ON COLUMN fp_antraege.b_vor_su_z IS 'voraussichtlich bewilligte Gesamtzuwendung';
+COMMENT ON COLUMN fp_antraege.b_vor_su_d IS 'voraussichtlich bewilligtes Gesamtdarlehen';
+COMMENT ON COLUMN fp_antraege.b_vor_su_k IS ' voraussichtlich bewilligte Kostenerstattung';
+COMMENT ON COLUMN fp_antraege.notizen IS 'Notizen zu einem Antrag als Freitext';
+COMMENT ON COLUMN fp_antraege.anlagedatum IS 'Dieser Satz wurde angelegt am';
+COMMENT ON COLUMN fp_antraege.anlagevon IS 'Dieser Satz wurde angelegt von diesem Benutzer';
+COMMENT ON COLUMN fp_antraege.aenderungsdatum IS 'Dieser Satz wurde zuletzt geändert am';
+COMMENT ON COLUMN fp_antraege.aenderungvon IS 'Dieser Satz wurde zuletzt geändert von diesem Benutzer';
+COMMENT ON TABLE fp_antraege IS 'Enthält alle Förderanträge zu Projekten ((dbase:erstantr)';
 --------------------------------------------------------
 --  DDL for Table FP_BEWILLIGUNGEN
 --------------------------------------------------------
 
-CREATE TABLE "FP_BEWILLIGUNGEN"
+CREATE TABLE fp_bewilligungen
 (
-    "ID"              SERIAL PRIMARY KEY,
-    "PRO_PROJNR"      VARCHAR(7)                       NOT NULL REFERENCES "FP_PROJEKTE" ("PROJNR"),
-    "ANT_ID"          INTEGER REFERENCES "FP_ANTRAEGE" ("ID"),
-    "BDATUM"          DATE,
-    "AFSATZ"          NUMERIC(8, 2)                    NOT NULL,
-    "BFSATZ"          NUMERIC(8, 2)                    NOT NULL,
-    "BZWFKOSTEN"      NUMERIC(10, 0)                   NOT NULL,
-    "BZUWENDUNG_Z"    NUMERIC(10, 0),
-    "BZUWENDUNG_D"    NUMERIC(10, 0),
-    "BZUWENDUNG_K"    NUMERIC(10, 0),
-    "BZUWART"         VARCHAR(1),
-    "BAKTENZEICHEN"   VARCHAR(20),
-    "GESZUWENDUNGEN"  NUMERIC(10, 0)                   NOT NULL,
-    "GESKONNEX"       NUMERIC(10, 0)                   NOT NULL,
-    "KRW"             VARCHAR(1),
-    "NOTIZEN"         TEXT,
-    "ANLAGEDATUM"     DATE        DEFAULT CURRENT_DATE NOT NULL,
-    "ANLAGEVON"       VARCHAR(30) DEFAULT USER         NOT NULL,
-    "AENDERUNGSDATUM" DATE,
-    "AENDERUNGVON"    VARCHAR(30)
+    id              SERIAL PRIMARY KEY,
+    pro_projnr      VARCHAR(7)                       NOT NULL REFERENCES fp_projekte (projnr),
+    ant_id          INTEGER REFERENCES fp_antraege (id),
+    bdatum          DATE,
+    afsatz          NUMERIC(8, 2)                    NOT NULL,
+    bfsatz          NUMERIC(8, 2)                    NOT NULL,
+    bzwfkosten      NUMERIC(10, 0)                   NOT NULL,
+    bzuwendung_z    NUMERIC(10, 0),
+    bzuwendung_d    NUMERIC(10, 0),
+    bzuwendung_k    NUMERIC(10, 0),
+    bzuwart         VARCHAR(1),
+    baktenzeichen   VARCHAR(20),
+    geszuwendungen  NUMERIC(10, 0)                   NOT NULL,
+    geskonnex       NUMERIC(10, 0)                   NOT NULL,
+    krw             VARCHAR(1),
+    notizen         TEXT,
+    anlagedatum     DATE        DEFAULT CURRENT_DATE NOT NULL,
+    anlagevon       VARCHAR(30) DEFAULT USER         NOT NULL,
+    aenderungsdatum DATE,
+    aenderungvon    VARCHAR(30)
 );
 
-CREATE INDEX ON "FP_BEWILLIGUNGEN" ("ANT_ID");
-CREATE INDEX ON "FP_BEWILLIGUNGEN" ("PRO_PROJNR");
+CREATE INDEX ON fp_bewilligungen (ant_id);
+CREATE INDEX ON fp_bewilligungen (pro_projnr);
 
-COMMENT ON COLUMN "FP_BEWILLIGUNGEN"."ID" IS 'Primärschlüssel einer Bewilligung';
-COMMENT ON COLUMN "FP_BEWILLIGUNGEN"."PRO_PROJNR" IS 'Diese Bewilligung bezieht sich auf dieses Projekt';
-COMMENT ON COLUMN "FP_BEWILLIGUNGEN"."ANT_ID" IS 'Diese Bewilligung bezieht sich auf einen Antrag';
-COMMENT ON COLUMN "FP_BEWILLIGUNGEN"."BDATUM" IS 'Datum der Bewilligung';
-COMMENT ON COLUMN "FP_BEWILLIGUNGEN"."AFSATZ" IS 'Beantrager Fördersatz';
-COMMENT ON COLUMN "FP_BEWILLIGUNGEN"."BFSATZ" IS 'Bewilligter Fördersatz';
-COMMENT ON COLUMN "FP_BEWILLIGUNGEN"."BZWFKOSTEN" IS 'bewilligte zuwendungsfähige Kosten Gesamtbetrag';
-COMMENT ON COLUMN "FP_BEWILLIGUNGEN"."BZUWENDUNG_Z" IS 'Bewilligte Zuwendung auf Jahresbasis als Zuschuss';
-COMMENT ON COLUMN "FP_BEWILLIGUNGEN"."BZUWENDUNG_D" IS 'Bewilligte Zuwendung auf Jahresbasis als Darlehen';
-COMMENT ON COLUMN "FP_BEWILLIGUNGEN"."BZUWENDUNG_K" IS 'Bewilligte Zuwendung auf Jahresbasis als Kostenerstattung';
-COMMENT ON COLUMN "FP_BEWILLIGUNGEN"."BZUWART" IS 'Bewilligte Zuwendungsart (Werte siehe FP_DOMAINS)';
-COMMENT ON COLUMN "FP_BEWILLIGUNGEN"."BAKTENZEICHEN" IS 'Aktenzeichen des Bewilligers';
-COMMENT ON COLUMN "FP_BEWILLIGUNGEN"."GESZUWENDUNGEN" IS 'Höhe der zu erwartenden Gesamtzuwendungen für das Förderprojekt zum Zeitpunkt dieser Bewilligung';
-COMMENT ON COLUMN "FP_BEWILLIGUNGEN"."GESKONNEX" IS 'Höhe der zu erwartenden Gesamtkonnexitätszahlungen für das Förderprojekt zum Zeitpunkt dieser Bewilligung';
-COMMENT ON COLUMN "FP_BEWILLIGUNGEN"."KRW" IS 'Typ des Kostenrichtwerts (Werte siehe FP_DOMAINS)';
-COMMENT ON COLUMN "FP_BEWILLIGUNGEN"."NOTIZEN" IS 'Notizen zu einer Bewilligung als Freitext';
-COMMENT ON COLUMN "FP_BEWILLIGUNGEN"."ANLAGEDATUM" IS 'Dieser Satz wurde angelegt am';
-COMMENT ON COLUMN "FP_BEWILLIGUNGEN"."ANLAGEVON" IS 'Dieser Satz wurde angelegt von diesem Benutzer';
-COMMENT ON COLUMN "FP_BEWILLIGUNGEN"."AENDERUNGSDATUM" IS 'Dieser Satz wurde zuletzt geändert am';
-COMMENT ON COLUMN "FP_BEWILLIGUNGEN"."AENDERUNGVON" IS 'Dieser Satz wurde zuletzt geändert von diesem Benutzer';
-COMMENT ON TABLE "FP_BEWILLIGUNGEN" IS 'Enthält alle Bewilligungen zu Förderanträgen. (dbase:bewill)';
+COMMENT ON COLUMN fp_bewilligungen.id IS 'Primärschlüssel einer Bewilligung';
+COMMENT ON COLUMN fp_bewilligungen.pro_projnr IS 'Diese Bewilligung bezieht sich auf dieses Projekt';
+COMMENT ON COLUMN fp_bewilligungen.ant_id IS 'Diese Bewilligung bezieht sich auf einen Antrag';
+COMMENT ON COLUMN fp_bewilligungen.bdatum IS 'Datum der Bewilligung';
+COMMENT ON COLUMN fp_bewilligungen.afsatz IS 'Beantrager Fördersatz';
+COMMENT ON COLUMN fp_bewilligungen.bfsatz IS 'Bewilligter Fördersatz';
+COMMENT ON COLUMN fp_bewilligungen.bzwfkosten IS 'bewilligte zuwendungsfähige Kosten Gesamtbetrag';
+COMMENT ON COLUMN fp_bewilligungen.bzuwendung_z IS 'Bewilligte Zuwendung auf Jahresbasis als Zuschuss';
+COMMENT ON COLUMN fp_bewilligungen.bzuwendung_d IS 'Bewilligte Zuwendung auf Jahresbasis als Darlehen';
+COMMENT ON COLUMN fp_bewilligungen.bzuwendung_k IS 'Bewilligte Zuwendung auf Jahresbasis als Kostenerstattung';
+COMMENT ON COLUMN fp_bewilligungen.bzuwart IS 'Bewilligte Zuwendungsart (Werte siehe FP_DOMAINS)';
+COMMENT ON COLUMN fp_bewilligungen.baktenzeichen IS 'Aktenzeichen des Bewilligers';
+COMMENT ON COLUMN fp_bewilligungen.geszuwendungen IS 'Höhe der zu erwartenden Gesamtzuwendungen für das Förderprojekt zum Zeitpunkt dieser Bewilligung';
+COMMENT ON COLUMN fp_bewilligungen.geskonnex IS 'Höhe der zu erwartenden Gesamtkonnexitätszahlungen für das Förderprojekt zum Zeitpunkt dieser Bewilligung';
+COMMENT ON COLUMN fp_bewilligungen.krw IS 'Typ des Kostenrichtwerts (Werte siehe FP_DOMAINS)';
+COMMENT ON COLUMN fp_bewilligungen.notizen IS 'Notizen zu einer Bewilligung als Freitext';
+COMMENT ON COLUMN fp_bewilligungen.anlagedatum IS 'Dieser Satz wurde angelegt am';
+COMMENT ON COLUMN fp_bewilligungen.anlagevon IS 'Dieser Satz wurde angelegt von diesem Benutzer';
+COMMENT ON COLUMN fp_bewilligungen.aenderungsdatum IS 'Dieser Satz wurde zuletzt geändert am';
+COMMENT ON COLUMN fp_bewilligungen.aenderungvon IS 'Dieser Satz wurde zuletzt geändert von diesem Benutzer';
+COMMENT ON TABLE fp_bewilligungen IS 'Enthält alle Bewilligungen zu Förderanträgen. (dbase:bewill)';
 --------------------------------------------------------
 --  DDL for Table FP_ABRUFE
 --------------------------------------------------------
 
-CREATE TABLE "FP_ABRUFE"
+CREATE TABLE fp_abrufe
 (
-    "ID"                 SERIAL PRIMARY KEY,
-    "PRO_PROJNR"         VARCHAR(7)                       NOT NULL REFERENCES "FP_PROJEKTE" ("PROJNR"),
-    "BWI_ID"             INTEGER REFERENCES "FP_BEWILLIGUNGEN" ("ID"),
-    "VNABR"              VARCHAR(1),
-    "ABRUF_Z"            NUMERIC(10, 0)                   NOT NULL,
-    "ABRUF_D"            NUMERIC(10, 0)                   NOT NULL,
-    "ABRUF_K"            NUMERIC(10, 0)                   NOT NULL,
-    "ABRUF_DATUM"        DATE,
-    "ERH_Z"              NUMERIC(10, 0)                   NOT NULL,
-    "ERH_D"              NUMERIC(10, 0)                   NOT NULL,
-    "ERH_K"              NUMERIC(10, 0)                   NOT NULL,
-    "ERH_DATUM"          DATE,
-    "REF_REFNR"          NUMERIC(2, 0) REFERENCES "FP_REFERATE" ("REFNR"),
-    "SAPABRUFAUFTRAGSNR" NUMERIC(8, 0),
-    "SAPFAKTURANR"       NUMERIC(10, 0),
-    "FIPO"               VARCHAR(15),
-    "BUCHUNGSKREIS"      VARCHAR(4),
-    "SACHKONTO"          VARCHAR(6),
-    "FIPO_K"             VARCHAR(15),
-    "BUCHUNGSKREIS_K"    VARCHAR(4),
-    "SACHKONTO_K"        VARCHAR(6),
-    "NOTIZEN"            TEXT,
-    "ANLAGEDATUM"        DATE        DEFAULT CURRENT_DATE NOT NULL,
-    "ANLAGEVON"          VARCHAR(30) DEFAULT USER         NOT NULL,
-    "AENDERUNGSDATUM"    DATE,
-    "AENDERUNGVON"       VARCHAR(30)
+    id                 SERIAL PRIMARY KEY,
+    pro_projnr         VARCHAR(7)                       NOT NULL REFERENCES fp_projekte (projnr),
+    bwi_id             INTEGER REFERENCES fp_bewilligungen (id),
+    vnabr              VARCHAR(1),
+    abruf_z            NUMERIC(10, 0)                   NOT NULL,
+    abruf_d            NUMERIC(10, 0)                   NOT NULL,
+    abruf_k            NUMERIC(10, 0)                   NOT NULL,
+    abruf_datum        DATE,
+    erh_z              NUMERIC(10, 0)                   NOT NULL,
+    erh_d              NUMERIC(10, 0)                   NOT NULL,
+    erh_k              NUMERIC(10, 0)                   NOT NULL,
+    erh_datum          DATE,
+    ref_refnr          NUMERIC(2, 0) REFERENCES fp_referate (refnr),
+    sapabrufauftragsnr NUMERIC(8, 0),
+    sapfakturanr       NUMERIC(10, 0),
+    fipo               VARCHAR(15),
+    buchungskreis      VARCHAR(4),
+    sachkonto          VARCHAR(6),
+    fipo_k             VARCHAR(15),
+    buchungskreis_k    VARCHAR(4),
+    sachkonto_k        VARCHAR(6),
+    notizen            TEXT,
+    anlagedatum        DATE        DEFAULT CURRENT_DATE NOT NULL,
+    anlagevon          VARCHAR(30) DEFAULT USER         NOT NULL,
+    aenderungsdatum    DATE,
+    aenderungvon       VARCHAR(30)
 );
 
-CREATE INDEX ON "FP_ABRUFE" ("BWI_ID");
-CREATE INDEX ON "FP_ABRUFE" ("PRO_PROJNR");
-CREATE INDEX ON "FP_ABRUFE" ("REF_REFNR");
+CREATE INDEX ON fp_abrufe (bwi_id);
+CREATE INDEX ON fp_abrufe (pro_projnr);
+CREATE INDEX ON fp_abrufe (ref_refnr);
 
-COMMENT ON COLUMN "FP_ABRUFE"."ID" IS 'Primärschlüssel eines Abrufs';
-COMMENT ON COLUMN "FP_ABRUFE"."PRO_PROJNR" IS 'Dieser Abruf bezieht sich auf dieses Projekt';
-COMMENT ON COLUMN "FP_ABRUFE"."BWI_ID" IS 'Dieser Abruf bezieht sich auf eine Bewilligung';
-COMMENT ON COLUMN "FP_ABRUFE"."VNABR" IS 'Ist der Abruf mit dem Verwendungsnachweis erfolgt (Gültige Werte siehe FP_DOMAINS)';
-COMMENT ON COLUMN "FP_ABRUFE"."ABRUF_Z" IS 'Höhe der abgerufenen Zuwendung';
-COMMENT ON COLUMN "FP_ABRUFE"."ABRUF_D" IS 'Höhe des abgerufenen Darlehens';
-COMMENT ON COLUMN "FP_ABRUFE"."ABRUF_K" IS 'Höhe des abgerufenen Konnexitätsbetrags (Kostenerstattung)';
-COMMENT ON COLUMN "FP_ABRUFE"."ABRUF_DATUM" IS 'Datum an dem der Abruf erfolgte';
-COMMENT ON COLUMN "FP_ABRUFE"."ERH_Z" IS 'Höhe der erhaltenen Zuwendung';
-COMMENT ON COLUMN "FP_ABRUFE"."ERH_D" IS 'Höhe des erhaltenen Darlehens';
-COMMENT ON COLUMN "FP_ABRUFE"."ERH_K" IS 'Höhe der erhaltenen Konnexität (Kostenerstattung)';
-COMMENT ON COLUMN "FP_ABRUFE"."ERH_DATUM" IS 'Datum des Geldeingangs';
-COMMENT ON COLUMN "FP_ABRUFE"."REF_REFNR" IS 'Nummer des betroffenen Referats für diesen Abruf';
-COMMENT ON COLUMN "FP_ABRUFE"."SAPABRUFAUFTRAGSNR" IS 'SAP Auftragsnummer für diesen Abruf';
-COMMENT ON COLUMN "FP_ABRUFE"."SAPFAKTURANR" IS 'SAP Fakturanummer für diesen Abruf';
-COMMENT ON COLUMN "FP_ABRUFE"."FIPO" IS 'Haushaltsstelle (FIPO) für Zuwendungen für diesen Abruf (default aus Projekt)';
-COMMENT ON COLUMN "FP_ABRUFE"."BUCHUNGSKREIS" IS 'SAP Buchungskreis für Zuwendungen  für diesen Abruf (default aus Projekt)';
-COMMENT ON COLUMN "FP_ABRUFE"."SACHKONTO" IS 'SAP Sachkonto für Zuwendungen  für diesen Abruf (default aus Projekt)';
-COMMENT ON COLUMN "FP_ABRUFE"."FIPO_K" IS 'Haushaltsstelle (FIPO) für Kostenerstattungen  für diesen Abruf (default aus Projekt)';
-COMMENT ON COLUMN "FP_ABRUFE"."BUCHUNGSKREIS_K" IS 'SAP Buchungskreis für Kostenerstattungen  für diesen Abruf (default aus Projekt)';
-COMMENT ON COLUMN "FP_ABRUFE"."SACHKONTO_K" IS 'SAP Sachkonto für Kostenerstattungen  für diesen Abruf (default aus Projekt)';
-COMMENT ON COLUMN "FP_ABRUFE"."NOTIZEN" IS 'Notizen zum Abruf als Freitext';
-COMMENT ON COLUMN "FP_ABRUFE"."ANLAGEDATUM" IS 'Dieser Satz wurde angelegt am';
-COMMENT ON COLUMN "FP_ABRUFE"."ANLAGEVON" IS 'Dieser Satz wurde angelegt von diesem Benutzer';
-COMMENT ON COLUMN "FP_ABRUFE"."AENDERUNGSDATUM" IS 'Dieser Satz wurde zuletzt geändert am';
-COMMENT ON COLUMN "FP_ABRUFE"."AENDERUNGVON" IS 'Dieser Satz wurde zuletzt geändert von diesem Benutzer';
-COMMENT ON TABLE "FP_ABRUFE" IS 'Enthält die Abrufe zu den Bewilligungen eines Projekts (dbase:abrufe)';
+COMMENT ON COLUMN fp_abrufe.id IS 'Primärschlüssel eines Abrufs';
+COMMENT ON COLUMN fp_abrufe.pro_projnr IS 'Dieser Abruf bezieht sich auf dieses Projekt';
+COMMENT ON COLUMN fp_abrufe.bwi_id IS 'Dieser Abruf bezieht sich auf eine Bewilligung';
+COMMENT ON COLUMN fp_abrufe.vnabr IS 'Ist der Abruf mit dem Verwendungsnachweis erfolgt (Gültige Werte siehe FP_DOMAINS)';
+COMMENT ON COLUMN fp_abrufe.abruf_z IS 'Höhe der abgerufenen Zuwendung';
+COMMENT ON COLUMN fp_abrufe.abruf_d IS 'Höhe des abgerufenen Darlehens';
+COMMENT ON COLUMN fp_abrufe.abruf_k IS 'Höhe des abgerufenen Konnexitätsbetrags (Kostenerstattung)';
+COMMENT ON COLUMN fp_abrufe.abruf_datum IS 'Datum an dem der Abruf erfolgte';
+COMMENT ON COLUMN fp_abrufe.erh_z IS 'Höhe der erhaltenen Zuwendung';
+COMMENT ON COLUMN fp_abrufe.erh_d IS 'Höhe des erhaltenen Darlehens';
+COMMENT ON COLUMN fp_abrufe.erh_k IS 'Höhe der erhaltenen Konnexität (Kostenerstattung)';
+COMMENT ON COLUMN fp_abrufe.erh_datum IS 'Datum des Geldeingangs';
+COMMENT ON COLUMN fp_abrufe.ref_refnr IS 'Nummer des betroffenen Referats für diesen Abruf';
+COMMENT ON COLUMN fp_abrufe.sapabrufauftragsnr IS 'SAP Auftragsnummer für diesen Abruf';
+COMMENT ON COLUMN fp_abrufe.sapfakturanr IS 'SAP Fakturanummer für diesen Abruf';
+COMMENT ON COLUMN fp_abrufe.fipo IS 'Haushaltsstelle (FIPO) für Zuwendungen für diesen Abruf (default aus Projekt)';
+COMMENT ON COLUMN fp_abrufe.buchungskreis IS 'SAP Buchungskreis für Zuwendungen  für diesen Abruf (default aus Projekt)';
+COMMENT ON COLUMN fp_abrufe.sachkonto IS 'SAP Sachkonto für Zuwendungen  für diesen Abruf (default aus Projekt)';
+COMMENT ON COLUMN fp_abrufe.fipo_k IS 'Haushaltsstelle (FIPO) für Kostenerstattungen  für diesen Abruf (default aus Projekt)';
+COMMENT ON COLUMN fp_abrufe.buchungskreis_k IS 'SAP Buchungskreis für Kostenerstattungen  für diesen Abruf (default aus Projekt)';
+COMMENT ON COLUMN fp_abrufe.sachkonto_k IS 'SAP Sachkonto für Kostenerstattungen  für diesen Abruf (default aus Projekt)';
+COMMENT ON COLUMN fp_abrufe.notizen IS 'Notizen zum Abruf als Freitext';
+COMMENT ON COLUMN fp_abrufe.anlagedatum IS 'Dieser Satz wurde angelegt am';
+COMMENT ON COLUMN fp_abrufe.anlagevon IS 'Dieser Satz wurde angelegt von diesem Benutzer';
+COMMENT ON COLUMN fp_abrufe.aenderungsdatum IS 'Dieser Satz wurde zuletzt geändert am';
+COMMENT ON COLUMN fp_abrufe.aenderungvon IS 'Dieser Satz wurde zuletzt geändert von diesem Benutzer';
+COMMENT ON TABLE fp_abrufe IS 'Enthält die Abrufe zu den Bewilligungen eines Projekts (dbase:abrufe)';
 --------------------------------------------------------
 --  DDL for Table FP_ARCHIV
 --------------------------------------------------------
 
-CREATE TABLE "FP_ARCHIV"
+CREATE TABLE fp_archiv
 (
-    "ID"                 SERIAL PRIMARY KEY,
-    "PRO_PROJNR"         VARCHAR(7) REFERENCES "FP_PROJEKTE" ("PROJNR"),
-    "SPEICHERDATUM"      DATE,
-    "SPEICHERAKT"        BOOLEAN DEFAULT FALSE NOT NULL,
-    "SPEICHERRECHNUNGEN" BOOLEAN DEFAULT FALSE NOT NULL,
-    "MIKRODATPLAN"       DATE,
-    "MIKRODAT"           DATE,
-    "NOTIZEN"            TEXT
+    id                 SERIAL PRIMARY KEY,
+    pro_projnr         VARCHAR(7) REFERENCES fp_projekte (projnr),
+    speicherdatum      DATE,
+    speicherakt        BOOLEAN DEFAULT FALSE NOT NULL,
+    speicherrechnungen BOOLEAN DEFAULT FALSE NOT NULL,
+    mikrodatplan       DATE,
+    mikrodat           DATE,
+    notizen            TEXT
 );
 
-CREATE INDEX ON "FP_ARCHIV" ("PRO_PROJNR");
+CREATE INDEX ON fp_archiv (pro_projnr);
 
-COMMENT ON COLUMN "FP_ARCHIV"."ID" IS 'Eindeutiger Schlüssel in der Tabelle';
-COMMENT ON COLUMN "FP_ARCHIV"."PRO_PROJNR" IS 'Die Ablage kann eine Projektablage sein';
-COMMENT ON COLUMN "FP_ARCHIV"."SPEICHERDATUM" IS 'Datum der Ablage im Speicher';
-COMMENT ON COLUMN "FP_ARCHIV"."SPEICHERAKT" IS 'Befindet sich auch der Akt zu einem Projekt im Speicher (0,1)';
-COMMENT ON COLUMN "FP_ARCHIV"."SPEICHERRECHNUNGEN" IS 'Befinden sich auch die Rechnungen zu einem Projekt im Speicher (0,1)';
-COMMENT ON COLUMN "FP_ARCHIV"."MIKRODATPLAN" IS 'Bestelldatum der Microfiche (neu: Feb 2013)';
-COMMENT ON COLUMN "FP_ARCHIV"."MIKRODAT" IS 'Datum an dem die Microfiche erhalten und eingelagert wurden (neu: Feb 2013)';
-COMMENT ON COLUMN "FP_ARCHIV"."NOTIZEN" IS 'Notizen als Freitext zu einer Ablage';
-COMMENT ON TABLE "FP_ARCHIV" IS 'Beschreibt welche allgemeinen Dokumente und Projektakten und Mikrofiche im Archiv liegen. Diese Ablagen können projektbezogen sein, aber auch Dokumente allgemeiner Natur. Das Archiv selbst befindet sich im Speicher des Rathauses (dbase: speicher und mik)';
+COMMENT ON COLUMN fp_archiv.id IS 'Eindeutiger Schlüssel in der Tabelle';
+COMMENT ON COLUMN fp_archiv.pro_projnr IS 'Die Ablage kann eine Projektablage sein';
+COMMENT ON COLUMN fp_archiv.speicherdatum IS 'Datum der Ablage im Speicher';
+COMMENT ON COLUMN fp_archiv.speicherakt IS 'Befindet sich auch der Akt zu einem Projekt im Speicher (0,1)';
+COMMENT ON COLUMN fp_archiv.speicherrechnungen IS 'Befinden sich auch die Rechnungen zu einem Projekt im Speicher (0,1)';
+COMMENT ON COLUMN fp_archiv.mikrodatplan IS 'Bestelldatum der Microfiche (neu: Feb 2013)';
+COMMENT ON COLUMN fp_archiv.mikrodat IS 'Datum an dem die Microfiche erhalten und eingelagert wurden (neu: Feb 2013)';
+COMMENT ON COLUMN fp_archiv.notizen IS 'Notizen als Freitext zu einer Ablage';
+COMMENT ON TABLE fp_archiv IS 'Beschreibt welche allgemeinen Dokumente und Projektakten und Mikrofiche im Archiv liegen. Diese Ablagen können projektbezogen sein, aber auch Dokumente allgemeiner Natur. Das Archiv selbst befindet sich im Speicher des Rathauses (dbase: speicher und mik)';
 --------------------------------------------------------
 --  DDL for Table FP_BENUTZERHINWEISE
 --------------------------------------------------------
 
-CREATE TABLE "FP_BENUTZERHINWEISE"
+CREATE TABLE fp_benutzerhinweise
 (
-    "FOR_FORMSMODUL" VARCHAR(30) PRIMARY KEY,
-    "HINWEIS1"       TEXT,
-    "HINWEIS2"       TEXT,
-    "HINWEIS3"       TEXT,
-    "MENUETOP"       VARCHAR(40),
-    "MENUEZEILE"     VARCHAR(40)
+    for_formsmodul VARCHAR(30) PRIMARY KEY,
+    hinweis1       TEXT,
+    hinweis2       TEXT,
+    hinweis3       TEXT,
+    menuetop       VARCHAR(40),
+    menuezeile     VARCHAR(40)
 );
 
-COMMENT ON COLUMN "FP_BENUTZERHINWEISE"."FOR_FORMSMODUL" IS 'Name des Formsmoduls für den Bedienerhinweis';
-COMMENT ON COLUMN "FP_BENUTZERHINWEISE"."HINWEIS1" IS 'Texte für Benutzerhilfen';
-COMMENT ON COLUMN "FP_BENUTZERHINWEISE"."HINWEIS2" IS 'Texte für Benutzerhilfen';
-COMMENT ON COLUMN "FP_BENUTZERHINWEISE"."HINWEIS3" IS 'Texte für Benutzerhilfen';
-COMMENT ON COLUMN "FP_BENUTZERHINWEISE"."MENUETOP" IS 'Menütext im Topmenü (etwa Projekte)';
-COMMENT ON COLUMN "FP_BENUTZERHINWEISE"."MENUEZEILE" IS 'Menütext im aufrufenden Menü (etwa Bericht Zinsen)';
-COMMENT ON TABLE "FP_BENUTZERHINWEISE" IS 'Enthält Benutzerhinweise im Kontext eines Forms Moduls und dient damit als online Benutzerhilfe';
+COMMENT ON COLUMN fp_benutzerhinweise.for_formsmodul IS 'Name des Formsmoduls für den Bedienerhinweis';
+COMMENT ON COLUMN fp_benutzerhinweise.hinweis1 IS 'Texte für Benutzerhilfen';
+COMMENT ON COLUMN fp_benutzerhinweise.hinweis2 IS 'Texte für Benutzerhilfen';
+COMMENT ON COLUMN fp_benutzerhinweise.hinweis3 IS 'Texte für Benutzerhilfen';
+COMMENT ON COLUMN fp_benutzerhinweise.menuetop IS 'Menütext im Topmenü (etwa Projekte)';
+COMMENT ON COLUMN fp_benutzerhinweise.menuezeile IS 'Menütext im aufrufenden Menü (etwa Bericht Zinsen)';
+COMMENT ON TABLE fp_benutzerhinweise IS 'Enthält Benutzerhinweise im Kontext eines Forms Moduls und dient damit als online Benutzerhilfe';
 --------------------------------------------------------
 --  DDL for Table FP_DOMAINS
 --------------------------------------------------------
 
-CREATE TABLE "FP_DOMAINS"
+CREATE TABLE fp_domains
 (
-    "TABELLE"      VARCHAR(30) NOT NULL,
-    "SPALTE"       VARCHAR(30) NOT NULL,
-    "WERT"         VARCHAR(3)  NOT NULL,
-    "BESCHREIBUNG" VARCHAR(50) NOT NULL,
-    PRIMARY KEY ("TABELLE", "SPALTE", "WERT")
+    tabelle      VARCHAR(30) NOT NULL,
+    spalte       VARCHAR(30) NOT NULL,
+    wert         VARCHAR(3)  NOT NULL,
+    beschreibung VARCHAR(50) NOT NULL,
+    PRIMARY KEY (tabelle, spalte, wert)
 );
 
-COMMENT ON COLUMN "FP_DOMAINS"."TABELLE" IS 'Tabelle auf welche sich die Domäne bezieht';
-COMMENT ON COLUMN "FP_DOMAINS"."SPALTE" IS 'Spalte auf welche sich die Domäne bezieht';
-COMMENT ON COLUMN "FP_DOMAINS"."WERT" IS 'Wert der Domäne';
-COMMENT ON COLUMN "FP_DOMAINS"."BESCHREIBUNG" IS 'Beschreibung der Domäne';
-COMMENT ON TABLE "FP_DOMAINS" IS 'Aufstellung aller Domains und ihrer Werte';
+COMMENT ON COLUMN fp_domains.tabelle IS 'Tabelle auf welche sich die Domäne bezieht';
+COMMENT ON COLUMN fp_domains.spalte IS 'Spalte auf welche sich die Domäne bezieht';
+COMMENT ON COLUMN fp_domains.wert IS 'Wert der Domäne';
+COMMENT ON COLUMN fp_domains.beschreibung IS 'Beschreibung der Domäne';
+COMMENT ON TABLE fp_domains IS 'Aufstellung aller Domains und ihrer Werte';
 --------------------------------------------------------
 --  DDL for Table FP_PUBLIKATIONEN
 --------------------------------------------------------
 
-CREATE TABLE "FP_PUBLIKATIONEN"
+CREATE TABLE fp_publikationen
 (
-    "KURZFORM"    VARCHAR(1) PRIMARY KEY,
-    "BEZEICHNUNG" VARCHAR(200) NOT NULL
+    kurzform    VARCHAR(1) PRIMARY KEY,
+    bezeichnung VARCHAR(200) NOT NULL
 );
 
-COMMENT ON COLUMN "FP_PUBLIKATIONEN"."KURZFORM" IS 'Kurzform der EU nahen Publikation';
-COMMENT ON COLUMN "FP_PUBLIKATIONEN"."BEZEICHNUNG" IS 'Beschreibung der EU nahen Publikation';
-COMMENT ON TABLE "FP_PUBLIKATIONEN" IS 'Enthält Kurzformen EU naher Publikationen';
+COMMENT ON COLUMN fp_publikationen.kurzform IS 'Kurzform der EU nahen Publikation';
+COMMENT ON COLUMN fp_publikationen.bezeichnung IS 'Beschreibung der EU nahen Publikation';
+COMMENT ON TABLE fp_publikationen IS 'Enthält Kurzformen EU naher Publikationen';
 --------------------------------------------------------
 --  DDL for Table FP_EUINFORMATIONEN
 --------------------------------------------------------
 
-CREATE TABLE "FP_EUINFORMATIONEN"
+CREATE TABLE fp_euinformationen
 (
-    "ID"           SERIAL PRIMARY KEY,
-    "JAHR"         NUMERIC(4, 0) NOT NULL,
-    "PUB_KURZFORM" VARCHAR(1)    NOT NULL REFERENCES "FP_PUBLIKATIONEN" ("KURZFORM"),
-    "HEFTA"        VARCHAR(1),
-    "NUMMER"       NUMERIC(3, 0) NOT NULL,
-    "WICHTIG"      BOOLEAN       NOT NULL,
-    "SEITENNR"     VARCHAR(3),
-    "STICHWORT"    VARCHAR(50),
-    "RAWI"         BOOLEAN       NOT NULL,
-    "SCHULREF"     BOOLEAN       NOT NULL,
-    "SOZREF_R_5"   BOOLEAN       NOT NULL,
-    "RGU_11"       BOOLEAN       NOT NULL,
-    "RGU_CS"       BOOLEAN       NOT NULL,
-    "KRH"          BOOLEAN       NOT NULL,
-    "AFA"          BOOLEAN       NOT NULL,
-    "SWM"          BOOLEAN       NOT NULL,
-    "KULTURREF"    BOOLEAN       NOT NULL,
-    "BAUREF"       BOOLEAN       NOT NULL,
-    "PLANREF"      BOOLEAN       NOT NULL,
-    "DIREKTORIUM"  BOOLEAN       NOT NULL,
-    "POR"          BOOLEAN       NOT NULL,
-    "KVR"          BOOLEAN       NOT NULL,
-    "KOMMREF"      BOOLEAN       NOT NULL,
-    "SEW"          BOOLEAN       NOT NULL,
-    "STK"          BOOLEAN       NOT NULL,
-    "INHALT"       VARCHAR(200)  NOT NULL,
-    "INFODAT"      DATE
+    id           SERIAL PRIMARY KEY,
+    jahr         NUMERIC(4, 0) NOT NULL,
+    pub_kurzform VARCHAR(1)    NOT NULL REFERENCES fp_publikationen (kurzform),
+    hefta        VARCHAR(1),
+    nummer       NUMERIC(3, 0) NOT NULL,
+    wichtig      BOOLEAN       NOT NULL,
+    seitennr     VARCHAR(3),
+    stichwort    VARCHAR(50),
+    rawi         BOOLEAN       NOT NULL,
+    schulref     BOOLEAN       NOT NULL,
+    sozref_r_5   BOOLEAN       NOT NULL,
+    rgu_11       BOOLEAN       NOT NULL,
+    rgu_cs       BOOLEAN       NOT NULL,
+    krh          BOOLEAN       NOT NULL,
+    afa          BOOLEAN       NOT NULL,
+    swm          BOOLEAN       NOT NULL,
+    kulturref    BOOLEAN       NOT NULL,
+    bauref       BOOLEAN       NOT NULL,
+    planref      BOOLEAN       NOT NULL,
+    direktorium  BOOLEAN       NOT NULL,
+    por          BOOLEAN       NOT NULL,
+    kvr          BOOLEAN       NOT NULL,
+    kommref      BOOLEAN       NOT NULL,
+    sew          BOOLEAN       NOT NULL,
+    stk          BOOLEAN       NOT NULL,
+    inhalt       VARCHAR(200)  NOT NULL,
+    infodat      DATE
 );
 
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."ID" IS 'Primary Key';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."JAHR" IS 'Jahr der Erscheinung';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."PUB_KURZFORM" IS 'Publikation';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."HEFTA" IS 'Zusatzbezeichnung zur Publikation';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."NUMMER" IS 'Nummer des Heftes';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."WICHTIG" IS 'Information weitergeben';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."SEITENNR" IS 'Seitennummer inerhalb des Heftes';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."STICHWORT" IS 'Stichwort zu dieser Infomation';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."RAWI" IS 'Soll dieses Referat informiert werden';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."SCHULREF" IS 'Soll dieses Referat informiert werden';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."SOZREF_R_5" IS 'Soll dieses Referat informiert werden';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."RGU_11" IS 'Soll dieses Referat informiert werden';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."RGU_CS" IS 'Soll dieses Referat informiert werden';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."KRH" IS 'Soll dieses Referat informiert werden';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."AFA" IS 'Soll dieses Referat informiert werden';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."SWM" IS 'Soll dieses Referat informiert werden';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."KULTURREF" IS 'Soll dieses Referat informiert werden';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."BAUREF" IS 'Soll dieses Referat informiert werden';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."PLANREF" IS 'Soll dieses Referat informiert werden';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."DIREKTORIUM" IS 'Soll dieses Referat informiert werden';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."POR" IS 'Soll dieses Referat informiert werden';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."KVR" IS 'Soll dieses Referat informiert werden';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."KOMMREF" IS 'Soll dieses Referat informiert werden';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."SEW" IS 'Soll dieses Referat informiert werden';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."STK" IS 'Soll dieses Referat informiert werden';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."INHALT" IS 'Kurzbeschreibung der Information';
-COMMENT ON COLUMN "FP_EUINFORMATIONEN"."INFODAT" IS 'Datum der Information';
-COMMENT ON TABLE "FP_EUINFORMATIONEN" IS 'Enthält wesentliche Informationen diverses EU-naher Publikationen und ist Basis einer eigenständigen Applikation (dbase:eu)';
+COMMENT ON COLUMN fp_euinformationen.id IS 'Primary Key';
+COMMENT ON COLUMN fp_euinformationen.jahr IS 'Jahr der Erscheinung';
+COMMENT ON COLUMN fp_euinformationen.pub_kurzform IS 'Publikation';
+COMMENT ON COLUMN fp_euinformationen.hefta IS 'Zusatzbezeichnung zur Publikation';
+COMMENT ON COLUMN fp_euinformationen.nummer IS 'Nummer des Heftes';
+COMMENT ON COLUMN fp_euinformationen.wichtig IS 'Information weitergeben';
+COMMENT ON COLUMN fp_euinformationen.seitennr IS 'Seitennummer inerhalb des Heftes';
+COMMENT ON COLUMN fp_euinformationen.stichwort IS 'Stichwort zu dieser Infomation';
+COMMENT ON COLUMN fp_euinformationen.rawi IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN fp_euinformationen.schulref IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN fp_euinformationen.sozref_r_5 IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN fp_euinformationen.rgu_11 IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN fp_euinformationen.rgu_cs IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN fp_euinformationen.krh IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN fp_euinformationen.afa IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN fp_euinformationen.swm IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN fp_euinformationen.kulturref IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN fp_euinformationen.bauref IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN fp_euinformationen.planref IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN fp_euinformationen.direktorium IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN fp_euinformationen.por IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN fp_euinformationen.kvr IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN fp_euinformationen.kommref IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN fp_euinformationen.sew IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN fp_euinformationen.stk IS 'Soll dieses Referat informiert werden';
+COMMENT ON COLUMN fp_euinformationen.inhalt IS 'Kurzbeschreibung der Information';
+COMMENT ON COLUMN fp_euinformationen.infodat IS 'Datum der Information';
+COMMENT ON TABLE fp_euinformationen IS 'Enthält wesentliche Informationen diverses EU-naher Publikationen und ist Basis einer eigenständigen Applikation (dbase:eu)';
 --------------------------------------------------------
 --  DDL for Table FP_GEPLANTEMASSNAHMEN
 --------------------------------------------------------
 
-CREATE TABLE "FP_GEPLANTEMASSNAHMEN"
+CREATE TABLE fp_geplantemassnahmen
 (
-    "ID"              SERIAL PRIMARY KEY,
-    "KUR_KURZBEZ"     VARCHAR(8) NOT NULL REFERENCES "FP_KURZBEZEICHNUNGEN" ("KURZBEZ"),
-    "BEZ_STADTBEZIRK" NUMERIC(2, 0) REFERENCES "FP_STADTBEZIRKE" ("STADTBEZIRK"),
-    "STRASSE"         VARCHAR(50),
-    "PROJEKT"         VARCHAR(70),
-    "BAUBEGINN"       NUMERIC(4, 0),
-    "ANGELEGT"        NUMERIC(4, 0),
-    "PLANNR"          VARCHAR(10)
+    id              SERIAL PRIMARY KEY,
+    kur_kurzbez     VARCHAR(8) NOT NULL REFERENCES fp_kurzbezeichnungen (kurzbez),
+    bez_stadtbezirk NUMERIC(2, 0) REFERENCES fp_stadtbezirke (stadtbezirk),
+    strasse         VARCHAR(50),
+    projekt         VARCHAR(70),
+    baubeginn       NUMERIC(4, 0),
+    angelegt        NUMERIC(4, 0),
+    plannr          VARCHAR(10)
 );
 
-COMMENT ON COLUMN "FP_GEPLANTEMASSNAHMEN"."ID" IS 'Primary Key';
-COMMENT ON COLUMN "FP_GEPLANTEMASSNAHMEN"."KUR_KURZBEZ" IS 'Kurzform der Projektkategorie für das Vorhaben';
-COMMENT ON COLUMN "FP_GEPLANTEMASSNAHMEN"."BEZ_STADTBEZIRK" IS 'Stadtbezirk der geplanten Maßnahme';
-COMMENT ON COLUMN "FP_GEPLANTEMASSNAHMEN"."STRASSE" IS 'Strasse des Vorhabens';
-COMMENT ON COLUMN "FP_GEPLANTEMASSNAHMEN"."PROJEKT" IS 'Projektbezeichnung';
-COMMENT ON COLUMN "FP_GEPLANTEMASSNAHMEN"."BAUBEGINN" IS 'Geplanter Baubeginn (Jahr)';
-COMMENT ON COLUMN "FP_GEPLANTEMASSNAHMEN"."ANGELEGT" IS 'Vorgang angelegt (Jahr)';
-COMMENT ON COLUMN "FP_GEPLANTEMASSNAHMEN"."PLANNR" IS 'Nummer des Bebauungsplans';
-COMMENT ON TABLE "FP_GEPLANTEMASSNAHMEN" IS 'Enthält Infomationen über zukünftige, geplanten Maßnahmen die mal in Projekte münden sollen (dbase:geplmasn)';
+COMMENT ON COLUMN fp_geplantemassnahmen.id IS 'Primary Key';
+COMMENT ON COLUMN fp_geplantemassnahmen.kur_kurzbez IS 'Kurzform der Projektkategorie für das Vorhaben';
+COMMENT ON COLUMN fp_geplantemassnahmen.bez_stadtbezirk IS 'Stadtbezirk der geplanten Maßnahme';
+COMMENT ON COLUMN fp_geplantemassnahmen.strasse IS 'Strasse des Vorhabens';
+COMMENT ON COLUMN fp_geplantemassnahmen.projekt IS 'Projektbezeichnung';
+COMMENT ON COLUMN fp_geplantemassnahmen.baubeginn IS 'Geplanter Baubeginn (Jahr)';
+COMMENT ON COLUMN fp_geplantemassnahmen.angelegt IS 'Vorgang angelegt (Jahr)';
+COMMENT ON COLUMN fp_geplantemassnahmen.plannr IS 'Nummer des Bebauungsplans';
+COMMENT ON TABLE fp_geplantemassnahmen IS 'Enthält Infomationen über zukünftige, geplanten Maßnahmen die mal in Projekte münden sollen (dbase:geplmasn)';
 --------------------------------------------------------
 --  DDL for Table FP_HHJAHRE
 --------------------------------------------------------
 
-CREATE TABLE "FP_HHJAHRE"
+CREATE TABLE fp_hhjahre
 (
-    "HHJAHR"        NUMERIC(4, 0) PRIMARY KEY,
-    "HHBEZEICHNUNG" VARCHAR(200) NOT NULL,
-    "NOTIZEN"       TEXT
+    hhjahr        NUMERIC(4, 0) PRIMARY KEY,
+    hhbezeichnung VARCHAR(200) NOT NULL,
+    notizen       TEXT
 );
 
-COMMENT ON COLUMN "FP_HHJAHRE"."HHJAHR" IS 'Haushaltsjahr';
-COMMENT ON COLUMN "FP_HHJAHRE"."HHBEZEICHNUNG" IS 'Bezeichnung des Haushaltsjahres';
-COMMENT ON COLUMN "FP_HHJAHRE"."NOTIZEN" IS 'Notizen und Protokoll zu einem Haushaltsjahr';
-COMMENT ON TABLE "FP_HHJAHRE" IS 'Aufstellung aller Haushaltsjahre';
+COMMENT ON COLUMN fp_hhjahre.hhjahr IS 'Haushaltsjahr';
+COMMENT ON COLUMN fp_hhjahre.hhbezeichnung IS 'Bezeichnung des Haushaltsjahres';
+COMMENT ON COLUMN fp_hhjahre.notizen IS 'Notizen und Protokoll zu einem Haushaltsjahr';
+COMMENT ON TABLE fp_hhjahre IS 'Aufstellung aller Haushaltsjahre';
 --------------------------------------------------------
 --  DDL for Table FP_HHPLAN
 --------------------------------------------------------
 
-CREATE TABLE "FP_HHPLAN"
+CREATE TABLE fp_hhplan
 (
-    "HHJ_JAHR"          NUMERIC(4, 0)                         NOT NULL REFERENCES "FP_HHJAHRE" ("HHJAHR"),
-    "FIPO"              VARCHAR(15) DEFAULT '000000000000000' NOT NULL,
-    "PRO_PROJNR"        VARCHAR(7)                            NOT NULL REFERENCES "FP_PROJEKTE" ("PROJNR"),
-    "P_PSTRASSE"        VARCHAR(100),
-    "P_PNAME"           VARCHAR(100),
-    "P_FOB_FB"          NUMERIC(2, 0),
-    "P_BEZ_STADTBEZIRK" NUMERIC(2, 0),
-    "P_LNA_KURZBEZ"     VARCHAR(3),
-    "P_VNDAT"           DATE,
-    "MITTELEINPLANUNG"  NUMERIC(12, 0),
-    "BEWILLIGUNG_VOJ"   NUMERIC(12, 0),
-    "BEWILLIGUNG_HHJ"   NUMERIC(12, 0),
-    "ERHALTEN_VOJ"      NUMERIC(12, 0),
-    "ERHALTEN_HHJ"      NUMERIC(12, 0),
-    "BAUSTANDAKTUELL"   NUMERIC(12, 2),
-    "AN"                NUMERIC(12, 0),
-    "N1"                NUMERIC(12, 0),
-    "N2"                NUMERIC(12, 0),
-    "NOTIZEN"           TEXT,
-    "ANLAGEDATUM"       DATE        DEFAULT CURRENT_DATE      NOT NULL,
-    "ANLAGEVON"         VARCHAR(30) DEFAULT USER              NOT NULL,
-    "AENDERUNGSDATUM"   DATE,
-    "AENDERUNGVON"      VARCHAR(30),
-    PRIMARY KEY ("HHJ_JAHR", "PRO_PROJNR")
+    hhj_jahr          NUMERIC(4, 0)                         NOT NULL REFERENCES fp_hhjahre (hhjahr),
+    fipo              VARCHAR(15) DEFAULT '000000000000000' NOT NULL,
+    pro_projnr        VARCHAR(7)                            NOT NULL REFERENCES fp_projekte (projnr),
+    p_pstrasse        VARCHAR(100),
+    p_pname           VARCHAR(100),
+    p_fob_fb          NUMERIC(2, 0),
+    p_bez_stadtbezirk NUMERIC(2, 0),
+    p_lna_kurzbez     VARCHAR(3),
+    p_vndat           DATE,
+    mitteleinplanung  NUMERIC(12, 0),
+    bewilligung_voj   NUMERIC(12, 0),
+    bewilligung_hhj   NUMERIC(12, 0),
+    erhalten_voj      NUMERIC(12, 0),
+    erhalten_hhj      NUMERIC(12, 0),
+    baustandaktuell   NUMERIC(12, 2),
+    an                NUMERIC(12, 0),
+    n1                NUMERIC(12, 0),
+    n2                NUMERIC(12, 0),
+    notizen           TEXT,
+    anlagedatum       DATE        DEFAULT CURRENT_DATE      NOT NULL,
+    anlagevon         VARCHAR(30) DEFAULT USER              NOT NULL,
+    aenderungsdatum   DATE,
+    aenderungvon      VARCHAR(30),
+    PRIMARY KEY (hhj_jahr, pro_projnr)
 );
 
-CREATE INDEX ON "FP_HHPLAN" ("PRO_PROJNR");
+CREATE INDEX ON fp_hhplan (pro_projnr);
 
-COMMENT ON COLUMN "FP_HHPLAN"."HHJ_JAHR" IS 'Planung für ein Haushaltsjahr';
-COMMENT ON COLUMN "FP_HHPLAN"."FIPO" IS 'Planung für eine FIPO (Haushaltsstelle) des Projekts (Zuwendungen oder Konnexität)';
-COMMENT ON COLUMN "FP_HHPLAN"."PRO_PROJNR" IS 'Planung für ein Projekt innerhalb eines Haushaltsjahres';
-COMMENT ON COLUMN "FP_HHPLAN"."P_PSTRASSE" IS 'Strasse aus Projekt übernommen';
-COMMENT ON COLUMN "FP_HHPLAN"."P_PNAME" IS 'Projektname aus Projekt übernommen';
-COMMENT ON COLUMN "FP_HHPLAN"."P_FOB_FB" IS 'Förderbereich aus Projekt übernommen';
-COMMENT ON COLUMN "FP_HHPLAN"."P_BEZ_STADTBEZIRK" IS 'Stadtbezirk aus Projekt übernommen';
-COMMENT ON COLUMN "FP_HHPLAN"."P_LNA_KURZBEZ" IS 'Bezirksliste übernommen';
-COMMENT ON COLUMN "FP_HHPLAN"."P_VNDAT" IS 'VN Datum aus Projekt übernommen';
-COMMENT ON COLUMN "FP_HHPLAN"."MITTELEINPLANUNG" IS 'Mitteleinplanung zum Zeitpunkt der Erstellung der Planung.';
-COMMENT ON COLUMN "FP_HHPLAN"."BEWILLIGUNG_VOJ" IS 'Bewilligte Zuwendungen in den Vorjahren.';
-COMMENT ON COLUMN "FP_HHPLAN"."BEWILLIGUNG_HHJ" IS 'Bewilligte Zuwendungen im Haushaltsjahr.';
-COMMENT ON COLUMN "FP_HHPLAN"."ERHALTEN_VOJ" IS 'Erhaltene Zuwendungen in den Vorjahren.';
-COMMENT ON COLUMN "FP_HHPLAN"."ERHALTEN_HHJ" IS 'Erhaltene Zuwendungen im Haushaltsjahr.';
-COMMENT ON COLUMN "FP_HHPLAN"."BAUSTANDAKTUELL" IS 'Baustand zum Zeitpunkt der Erstellung der Planung.';
-COMMENT ON COLUMN "FP_HHPLAN"."AN" IS 'Ansatz im Nov des Vorjahres. Wird manuell erfasst.';
-COMMENT ON COLUMN "FP_HHPLAN"."N1" IS '1. Nachtrag im April des Haushaltsjahres. Wird manuell erfasst.';
-COMMENT ON COLUMN "FP_HHPLAN"."N2" IS '2. Nachtrag im August des Haushaltsjahres. Wird manuell erfasst.';
-COMMENT ON COLUMN "FP_HHPLAN"."NOTIZEN" IS 'Notizen und Anmerkungen bezüglich einer Position im Haushaltsplan';
-COMMENT ON COLUMN "FP_HHPLAN"."ANLAGEDATUM" IS 'Dieser Satz wurde angelegt am';
-COMMENT ON COLUMN "FP_HHPLAN"."ANLAGEVON" IS 'Dieser Satz wurde angelegt von diesem Benutzer';
-COMMENT ON COLUMN "FP_HHPLAN"."AENDERUNGSDATUM" IS 'Dieser Satz wurde zuletzt geändert am';
-COMMENT ON COLUMN "FP_HHPLAN"."AENDERUNGVON" IS 'Dieser Satz wurde zuletzt geändert von diesem Benutzer';
-COMMENT ON TABLE "FP_HHPLAN" IS 'Enthält Einnahmen (Zuwendungen und Kostenerstattungen) je Projekt und Jahr und FIPO. Ist Basis für die jährliche Aufstellung der Haushaltsplanung (dbase:haush)';
+COMMENT ON COLUMN fp_hhplan.hhj_jahr IS 'Planung für ein Haushaltsjahr';
+COMMENT ON COLUMN fp_hhplan.fipo IS 'Planung für eine FIPO (Haushaltsstelle) des Projekts (Zuwendungen oder Konnexität)';
+COMMENT ON COLUMN fp_hhplan.pro_projnr IS 'Planung für ein Projekt innerhalb eines Haushaltsjahres';
+COMMENT ON COLUMN fp_hhplan.p_pstrasse IS 'Strasse aus Projekt übernommen';
+COMMENT ON COLUMN fp_hhplan.p_pname IS 'Projektname aus Projekt übernommen';
+COMMENT ON COLUMN fp_hhplan.p_fob_fb IS 'Förderbereich aus Projekt übernommen';
+COMMENT ON COLUMN fp_hhplan.p_bez_stadtbezirk IS 'Stadtbezirk aus Projekt übernommen';
+COMMENT ON COLUMN fp_hhplan.p_lna_kurzbez IS 'Bezirksliste übernommen';
+COMMENT ON COLUMN fp_hhplan.p_vndat IS 'VN Datum aus Projekt übernommen';
+COMMENT ON COLUMN fp_hhplan.mitteleinplanung IS 'Mitteleinplanung zum Zeitpunkt der Erstellung der Planung.';
+COMMENT ON COLUMN fp_hhplan.bewilligung_voj IS 'Bewilligte Zuwendungen in den Vorjahren.';
+COMMENT ON COLUMN fp_hhplan.bewilligung_hhj IS 'Bewilligte Zuwendungen im Haushaltsjahr.';
+COMMENT ON COLUMN fp_hhplan.erhalten_voj IS 'Erhaltene Zuwendungen in den Vorjahren.';
+COMMENT ON COLUMN fp_hhplan.erhalten_hhj IS 'Erhaltene Zuwendungen im Haushaltsjahr.';
+COMMENT ON COLUMN fp_hhplan.baustandaktuell IS 'Baustand zum Zeitpunkt der Erstellung der Planung.';
+COMMENT ON COLUMN fp_hhplan.an IS 'Ansatz im Nov des Vorjahres. Wird manuell erfasst.';
+COMMENT ON COLUMN fp_hhplan.n1 IS '1. Nachtrag im April des Haushaltsjahres. Wird manuell erfasst.';
+COMMENT ON COLUMN fp_hhplan.n2 IS '2. Nachtrag im August des Haushaltsjahres. Wird manuell erfasst.';
+COMMENT ON COLUMN fp_hhplan.notizen IS 'Notizen und Anmerkungen bezüglich einer Position im Haushaltsplan';
+COMMENT ON COLUMN fp_hhplan.anlagedatum IS 'Dieser Satz wurde angelegt am';
+COMMENT ON COLUMN fp_hhplan.anlagevon IS 'Dieser Satz wurde angelegt von diesem Benutzer';
+COMMENT ON COLUMN fp_hhplan.aenderungsdatum IS 'Dieser Satz wurde zuletzt geändert am';
+COMMENT ON COLUMN fp_hhplan.aenderungvon IS 'Dieser Satz wurde zuletzt geändert von diesem Benutzer';
+COMMENT ON TABLE fp_hhplan IS 'Enthält Einnahmen (Zuwendungen und Kostenerstattungen) je Projekt und Jahr und FIPO. Ist Basis für die jährliche Aufstellung der Haushaltsplanung (dbase:haush)';
 --------------------------------------------------------
 --  DDL for Table FP_JAHRESSTATISTIK
 --------------------------------------------------------
 
-CREATE TABLE "FP_JAHRESSTATISTIK"
+CREATE TABLE fp_jahresstatistik
 (
-    "JAHR"                 NUMERIC(4, 0) PRIMARY KEY,
-    "JAHRESSTATISTIK1_AM"  DATE,
-    "JAHRESSTATISTIK1_VON" VARCHAR(30),
-    "JAHRESSTATISTIK2_AM"  DATE,
-    "JAHRESSTATISTIK2_VON" VARCHAR(30),
-    "JAHRESSTATISTIK3_AM"  DATE,
-    "JAHRESSTATISTIK3_VON" VARCHAR(30),
-    "NOTIZEN"              TEXT
+    jahr                 NUMERIC(4, 0) PRIMARY KEY,
+    jahresstatistik1_am  DATE,
+    jahresstatistik1_von VARCHAR(30),
+    jahresstatistik2_am  DATE,
+    jahresstatistik2_von VARCHAR(30),
+    jahresstatistik3_am  DATE,
+    jahresstatistik3_von VARCHAR(30),
+    notizen              TEXT
 );
 
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK"."JAHR" IS 'Jahr der Statistik';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK"."JAHRESSTATISTIK1_AM" IS 'Die Jahresstatistik I wurde zuletzt zu diesem Zeitpunkt erstellt';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK"."JAHRESSTATISTIK1_VON" IS 'Die Jahresstatistik I wurde zuletzt von diesem Benutzer erstellt';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK"."JAHRESSTATISTIK2_AM" IS 'Die Jahresstatistik II wurde zuletzt zu diesem Zeitpunkt erstellt';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK"."JAHRESSTATISTIK2_VON" IS 'Die Jahresstatistik II wurde zuletzt von diesem Benutzer erstellt';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK"."JAHRESSTATISTIK3_AM" IS 'Die Jahresstatistik III wurde zuletzt zu diesem Zeitpunkt erstellt';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK"."JAHRESSTATISTIK3_VON" IS 'Die Jahresstatistik III wurde zuletzt von diesem Benutzer erstellt';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK"."NOTIZEN" IS 'Allgemeine Notizen';
-COMMENT ON TABLE "FP_JAHRESSTATISTIK" IS 'Diese Tabelle protokolliert die Erstellung der drei Jahresstatistiken';
+COMMENT ON COLUMN fp_jahresstatistik.jahr IS 'Jahr der Statistik';
+COMMENT ON COLUMN fp_jahresstatistik.jahresstatistik1_am IS 'Die Jahresstatistik I wurde zuletzt zu diesem Zeitpunkt erstellt';
+COMMENT ON COLUMN fp_jahresstatistik.jahresstatistik1_von IS 'Die Jahresstatistik I wurde zuletzt von diesem Benutzer erstellt';
+COMMENT ON COLUMN fp_jahresstatistik.jahresstatistik2_am IS 'Die Jahresstatistik II wurde zuletzt zu diesem Zeitpunkt erstellt';
+COMMENT ON COLUMN fp_jahresstatistik.jahresstatistik2_von IS 'Die Jahresstatistik II wurde zuletzt von diesem Benutzer erstellt';
+COMMENT ON COLUMN fp_jahresstatistik.jahresstatistik3_am IS 'Die Jahresstatistik III wurde zuletzt zu diesem Zeitpunkt erstellt';
+COMMENT ON COLUMN fp_jahresstatistik.jahresstatistik3_von IS 'Die Jahresstatistik III wurde zuletzt von diesem Benutzer erstellt';
+COMMENT ON COLUMN fp_jahresstatistik.notizen IS 'Allgemeine Notizen';
+COMMENT ON TABLE fp_jahresstatistik IS 'Diese Tabelle protokolliert die Erstellung der drei Jahresstatistiken';
 --------------------------------------------------------
 --  DDL for Table FP_JAHRESSTATISTIK1
 --------------------------------------------------------
 
-CREATE TABLE "FP_JAHRESSTATISTIK1"
+CREATE TABLE fp_jahresstatistik1
 (
-    "ID"               SERIAL PRIMARY KEY,
-    "JSS_JAHR"         NUMERIC(4, 0) NOT NULL REFERENCES "FP_JAHRESSTATISTIK" ("JAHR"),
-    "FOERDERBEREICH"   VARCHAR(60)   NOT NULL,
-    "FB"               NUMERIC(2, 0) NOT NULL,
-    "GRUPPE"           NUMERIC(1, 0) NOT NULL,
-    "GESAMTKOSTEN"     NUMERIC(12, 2),
-    "ZUWENDUNGSFAEHIG" NUMERIC(12, 2),
-    "B_ZUSCHUSS"       NUMERIC(12, 2),
-    "B_DARLEHEN"       NUMERIC(12, 2),
-    "B_KONNEXITAET"    NUMERIC(12, 2),
-    "E_ZUSCHUSS"       NUMERIC(12, 2),
-    "E_DARLEHEN"       NUMERIC(12, 2),
-    "E_KONNEXITAET"    NUMERIC(12, 2)
+    id               SERIAL PRIMARY KEY,
+    jss_jahr         NUMERIC(4, 0) NOT NULL REFERENCES fp_jahresstatistik (jahr),
+    foerderbereich   VARCHAR(60)   NOT NULL,
+    fb               NUMERIC(2, 0) NOT NULL,
+    gruppe           NUMERIC(1, 0) NOT NULL,
+    gesamtkosten     NUMERIC(12, 2),
+    zuwendungsfaehig NUMERIC(12, 2),
+    b_zuschuss       NUMERIC(12, 2),
+    b_darlehen       NUMERIC(12, 2),
+    b_konnexitaet    NUMERIC(12, 2),
+    e_zuschuss       NUMERIC(12, 2),
+    e_darlehen       NUMERIC(12, 2),
+    e_konnexitaet    NUMERIC(12, 2)
 );
 
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK1"."ID" IS 'ID als Sortierungskriterium';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK1"."JSS_JAHR" IS 'Jahr der Statistik';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK1"."FOERDERBEREICH" IS 'Beschreibung des Förderbereichs';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK1"."FB" IS 'Nummer des Förderbereichs';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK1"."GRUPPE" IS 'Gruppenkennzeichen (1) FAG ohne KIGA  (2) FAG KIGA  (3) alle anderen FB  für Zwischensummen';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK1"."GESAMTKOSTEN" IS 'Gesamtkosten im Erstantrag';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK1"."ZUWENDUNGSFAEHIG" IS 'Zuwendungsfähige Kosten im Erstantrag';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK1"."B_ZUSCHUSS" IS 'Bewilligter Zuschuss  im Jahr';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK1"."B_DARLEHEN" IS 'Bewilligtes Darlehen  im Jahr';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK1"."B_KONNEXITAET" IS 'Bewilligte Konnexität im Jahr';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK1"."E_ZUSCHUSS" IS 'Erhaltener Zuschuss  im Jahr';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK1"."E_DARLEHEN" IS 'Erhaltenes Darlehen  im Jahr';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK1"."E_KONNEXITAET" IS 'Erhaltene Konnexität im Jahr';
-COMMENT ON TABLE "FP_JAHRESSTATISTIK1" IS 'Diese Tabelle enthält die generierte Jahresstatistik für Seite I';
+COMMENT ON COLUMN fp_jahresstatistik1.id IS 'ID als Sortierungskriterium';
+COMMENT ON COLUMN fp_jahresstatistik1.jss_jahr IS 'Jahr der Statistik';
+COMMENT ON COLUMN fp_jahresstatistik1.foerderbereich IS 'Beschreibung des Förderbereichs';
+COMMENT ON COLUMN fp_jahresstatistik1.fb IS 'Nummer des Förderbereichs';
+COMMENT ON COLUMN fp_jahresstatistik1.gruppe IS 'Gruppenkennzeichen (1) FAG ohne KIGA  (2) FAG KIGA  (3) alle anderen FB  für Zwischensummen';
+COMMENT ON COLUMN fp_jahresstatistik1.gesamtkosten IS 'Gesamtkosten im Erstantrag';
+COMMENT ON COLUMN fp_jahresstatistik1.zuwendungsfaehig IS 'Zuwendungsfähige Kosten im Erstantrag';
+COMMENT ON COLUMN fp_jahresstatistik1.b_zuschuss IS 'Bewilligter Zuschuss  im Jahr';
+COMMENT ON COLUMN fp_jahresstatistik1.b_darlehen IS 'Bewilligtes Darlehen  im Jahr';
+COMMENT ON COLUMN fp_jahresstatistik1.b_konnexitaet IS 'Bewilligte Konnexität im Jahr';
+COMMENT ON COLUMN fp_jahresstatistik1.e_zuschuss IS 'Erhaltener Zuschuss  im Jahr';
+COMMENT ON COLUMN fp_jahresstatistik1.e_darlehen IS 'Erhaltenes Darlehen  im Jahr';
+COMMENT ON COLUMN fp_jahresstatistik1.e_konnexitaet IS 'Erhaltene Konnexität im Jahr';
+COMMENT ON TABLE fp_jahresstatistik1 IS 'Diese Tabelle enthält die generierte Jahresstatistik für Seite I';
 --------------------------------------------------------
 --  DDL for Table FP_JAHRESSTATISTIK2
 --------------------------------------------------------
 
-CREATE TABLE "FP_JAHRESSTATISTIK2"
+CREATE TABLE fp_jahresstatistik2
 (
-    "ID"                   SERIAL PRIMARY KEY,
-    "JSS_JAHR"             NUMERIC(4, 0) NOT NULL REFERENCES "FP_JAHRESSTATISTIK" ("JAHR"),
-    "FOERDERBEREICH"       VARCHAR(60)   NOT NULL,
-    "FB"                   NUMERIC(2, 0) NOT NULL,
-    "GRUPPE"               NUMERIC(1, 0) NOT NULL,
-    "ANZAHL_ABRUFE"        NUMERIC(10, 0),
-    "ANZAHL_VN"            NUMERIC(10, 0),
-    "ANZAHL_BEWILLIGUNGEN" NUMERIC(10, 0),
-    "VNGESKOSTEN"          NUMERIC(12, 2),
-    "ANZAHL_ERST"          NUMERIC(10, 0),
-    "A_SU_Z_ERST"          NUMERIC(12, 2),
-    "A_SU_K_ERST"          NUMERIC(12, 2),
-    "ANZAHL_FOLGE"         NUMERIC(10, 0),
-    "A_SU_Z_FOLGE"         NUMERIC(12, 2),
-    "A_SU_K_FOLGE"         NUMERIC(12, 2),
-    "A_VOR_SU_Z_GESAMT"    NUMERIC(12, 2),
-    "A_VOR_SU_K_GESAMT"    NUMERIC(12, 2),
-    "ANZAHL_UNBED"         NUMERIC(10, 0)
+    id                   SERIAL PRIMARY KEY,
+    jss_jahr             NUMERIC(4, 0) NOT NULL REFERENCES fp_jahresstatistik (jahr),
+    foerderbereich       VARCHAR(60)   NOT NULL,
+    fb                   NUMERIC(2, 0) NOT NULL,
+    gruppe               NUMERIC(1, 0) NOT NULL,
+    anzahl_abrufe        NUMERIC(10, 0),
+    anzahl_vn            NUMERIC(10, 0),
+    anzahl_bewilligungen NUMERIC(10, 0),
+    vngeskosten          NUMERIC(12, 2),
+    anzahl_erst          NUMERIC(10, 0),
+    a_su_z_erst          NUMERIC(12, 2),
+    a_su_k_erst          NUMERIC(12, 2),
+    anzahl_folge         NUMERIC(10, 0),
+    a_su_z_folge         NUMERIC(12, 2),
+    a_su_k_folge         NUMERIC(12, 2),
+    a_vor_su_z_gesamt    NUMERIC(12, 2),
+    a_vor_su_k_gesamt    NUMERIC(12, 2),
+    anzahl_unbed         NUMERIC(10, 0)
 );
 
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK2"."ID" IS 'ID als Sortierkriterium';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK2"."JSS_JAHR" IS 'Jahr der Statistik';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK2"."FOERDERBEREICH" IS 'Beschreibung des Förderbereichs';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK2"."FB" IS 'Nummer des Förderbereichs';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK2"."GRUPPE" IS 'Gruppenkennzeichen für Zwischensummen';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK2"."ANZAHL_ABRUFE" IS 'Anzahl der Abrufe eines Jahres';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK2"."ANZAHL_VN" IS 'Anzahl der Verwendungsnachweise eines Jahres';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK2"."ANZAHL_BEWILLIGUNGEN" IS 'Anzahl der Bewilligungen eines Jahres';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK2"."VNGESKOSTEN" IS 'Endkosten im Verwendungsnachweis';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK2"."ANZAHL_ERST" IS 'Anzahl der Erstanträge eines Jahres';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK2"."A_SU_Z_ERST" IS 'Zuwendungen bei Erstanträgen in einem Jahr';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK2"."A_SU_K_ERST" IS 'Konnexität bei Erstanträgen in einem Jahr';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK2"."ANZAHL_FOLGE" IS 'Anzahl der Folgeanträge eines Jahres';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK2"."A_SU_Z_FOLGE" IS 'Zuwendungen bei Folgeanträgen in einem Jahr';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK2"."A_SU_K_FOLGE" IS 'Konnexität bei Folgeanträgen in einem Jahr';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK2"."A_VOR_SU_Z_GESAMT" IS 'Voraussichtliche Gesamtzuwendung über alle Anträge eines Jahres';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK2"."A_VOR_SU_K_GESAMT" IS 'Voraussichtliche Gesamtkonnexität über alle Anträge eines Jahres';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK2"."ANZAHL_UNBED" IS 'Anzahl der Unbedenklichkeitsanträge eines Jahres';
-COMMENT ON TABLE "FP_JAHRESSTATISTIK2" IS 'Diese Tabelle enthält die generierte Jahresstatistik für Seite II';
+COMMENT ON COLUMN fp_jahresstatistik2.id IS 'ID als Sortierkriterium';
+COMMENT ON COLUMN fp_jahresstatistik2.jss_jahr IS 'Jahr der Statistik';
+COMMENT ON COLUMN fp_jahresstatistik2.foerderbereich IS 'Beschreibung des Förderbereichs';
+COMMENT ON COLUMN fp_jahresstatistik2.fb IS 'Nummer des Förderbereichs';
+COMMENT ON COLUMN fp_jahresstatistik2.gruppe IS 'Gruppenkennzeichen für Zwischensummen';
+COMMENT ON COLUMN fp_jahresstatistik2.anzahl_abrufe IS 'Anzahl der Abrufe eines Jahres';
+COMMENT ON COLUMN fp_jahresstatistik2.anzahl_vn IS 'Anzahl der Verwendungsnachweise eines Jahres';
+COMMENT ON COLUMN fp_jahresstatistik2.anzahl_bewilligungen IS 'Anzahl der Bewilligungen eines Jahres';
+COMMENT ON COLUMN fp_jahresstatistik2.vngeskosten IS 'Endkosten im Verwendungsnachweis';
+COMMENT ON COLUMN fp_jahresstatistik2.anzahl_erst IS 'Anzahl der Erstanträge eines Jahres';
+COMMENT ON COLUMN fp_jahresstatistik2.a_su_z_erst IS 'Zuwendungen bei Erstanträgen in einem Jahr';
+COMMENT ON COLUMN fp_jahresstatistik2.a_su_k_erst IS 'Konnexität bei Erstanträgen in einem Jahr';
+COMMENT ON COLUMN fp_jahresstatistik2.anzahl_folge IS 'Anzahl der Folgeanträge eines Jahres';
+COMMENT ON COLUMN fp_jahresstatistik2.a_su_z_folge IS 'Zuwendungen bei Folgeanträgen in einem Jahr';
+COMMENT ON COLUMN fp_jahresstatistik2.a_su_k_folge IS 'Konnexität bei Folgeanträgen in einem Jahr';
+COMMENT ON COLUMN fp_jahresstatistik2.a_vor_su_z_gesamt IS 'Voraussichtliche Gesamtzuwendung über alle Anträge eines Jahres';
+COMMENT ON COLUMN fp_jahresstatistik2.a_vor_su_k_gesamt IS 'Voraussichtliche Gesamtkonnexität über alle Anträge eines Jahres';
+COMMENT ON COLUMN fp_jahresstatistik2.anzahl_unbed IS 'Anzahl der Unbedenklichkeitsanträge eines Jahres';
+COMMENT ON TABLE fp_jahresstatistik2 IS 'Diese Tabelle enthält die generierte Jahresstatistik für Seite II';
 --------------------------------------------------------
 --  DDL for Table FP_JAHRESSTATISTIK3
 --------------------------------------------------------
 
-CREATE TABLE "FP_JAHRESSTATISTIK3"
+CREATE TABLE fp_jahresstatistik3
 (
-    "ID"                 SERIAL PRIMARY KEY,
-    "JSS_JAHR"           NUMERIC(4, 0) NOT NULL REFERENCES "FP_JAHRESSTATISTIK" ("JAHR"),
-    "FOERDERBEREICH"     VARCHAR(60)   NOT NULL,
-    "FB"                 NUMERIC(2, 0) NOT NULL,
-    "GRUPPE"             NUMERIC(1, 0) NOT NULL,
-    "BZUWENDUNG_Z_PLUS"  NUMERIC(12, 2),
-    "BZUWENDUNG_Z_MINUS" NUMERIC(12, 2),
-    "BZUWENDUNG_D_PLUS"  NUMERIC(12, 2),
-    "BZUWENDUNG_D_MINUS" NUMERIC(12, 2),
-    "BZUWENDUNG_K_PLUS"  NUMERIC(12, 2),
-    "BZUWENDUNG_K_MINUS" NUMERIC(12, 2),
-    "ERH_Z"              NUMERIC(12, 2),
-    "ERH_D"              NUMERIC(12, 2),
-    "ERH_K"              NUMERIC(12, 2)
+    id                 SERIAL PRIMARY KEY,
+    jss_jahr           NUMERIC(4, 0) NOT NULL REFERENCES fp_jahresstatistik (jahr),
+    foerderbereich     VARCHAR(60)   NOT NULL,
+    fb                 NUMERIC(2, 0) NOT NULL,
+    gruppe             NUMERIC(1, 0) NOT NULL,
+    bzuwendung_z_plus  NUMERIC(12, 2),
+    bzuwendung_z_minus NUMERIC(12, 2),
+    bzuwendung_d_plus  NUMERIC(12, 2),
+    bzuwendung_d_minus NUMERIC(12, 2),
+    bzuwendung_k_plus  NUMERIC(12, 2),
+    bzuwendung_k_minus NUMERIC(12, 2),
+    erh_z              NUMERIC(12, 2),
+    erh_d              NUMERIC(12, 2),
+    erh_k              NUMERIC(12, 2)
 );
 
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK3"."ID" IS 'ID als Sortierkriterium';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK3"."JSS_JAHR" IS 'Jahr der Statistik';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK3"."FOERDERBEREICH" IS 'Beschreibung des Förderbereichs';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK3"."FB" IS 'Nummer des Förderbereichs';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK3"."GRUPPE" IS 'Gruppenkennzeichen für Zwischensummen';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK3"."BZUWENDUNG_Z_PLUS" IS 'Bewilligter Zuschuss im Jahr (positiver Wert)';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK3"."BZUWENDUNG_Z_MINUS" IS 'Bewilligter Zuschuss im Jahr (negativer Wert)';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK3"."BZUWENDUNG_D_PLUS" IS 'Bewilligtes Darlehen im Jahr (positiver Wert)';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK3"."BZUWENDUNG_D_MINUS" IS 'Bewilligtes Darlehen im Jahr (negativer Wert)';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK3"."BZUWENDUNG_K_PLUS" IS 'Bewilligte Konnexität im Jahr (positiver Wert)';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK3"."BZUWENDUNG_K_MINUS" IS 'Bewilligte Konnexität im Jahr (negativer Wert)';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK3"."ERH_Z" IS 'Erhaltener Zuschuss im Jahr';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK3"."ERH_D" IS 'Erhaltenes Darlehen im Jahr';
-COMMENT ON COLUMN "FP_JAHRESSTATISTIK3"."ERH_K" IS 'Erhaltene Konnexität im Jahr';
-COMMENT ON TABLE "FP_JAHRESSTATISTIK3" IS 'Diese Tabelle enthält die generierte Jahresstatistik für Seite II';
+COMMENT ON COLUMN fp_jahresstatistik3.id IS 'ID als Sortierkriterium';
+COMMENT ON COLUMN fp_jahresstatistik3.jss_jahr IS 'Jahr der Statistik';
+COMMENT ON COLUMN fp_jahresstatistik3.foerderbereich IS 'Beschreibung des Förderbereichs';
+COMMENT ON COLUMN fp_jahresstatistik3.fb IS 'Nummer des Förderbereichs';
+COMMENT ON COLUMN fp_jahresstatistik3.gruppe IS 'Gruppenkennzeichen für Zwischensummen';
+COMMENT ON COLUMN fp_jahresstatistik3.bzuwendung_z_plus IS 'Bewilligter Zuschuss im Jahr (positiver Wert)';
+COMMENT ON COLUMN fp_jahresstatistik3.bzuwendung_z_minus IS 'Bewilligter Zuschuss im Jahr (negativer Wert)';
+COMMENT ON COLUMN fp_jahresstatistik3.bzuwendung_d_plus IS 'Bewilligtes Darlehen im Jahr (positiver Wert)';
+COMMENT ON COLUMN fp_jahresstatistik3.bzuwendung_d_minus IS 'Bewilligtes Darlehen im Jahr (negativer Wert)';
+COMMENT ON COLUMN fp_jahresstatistik3.bzuwendung_k_plus IS 'Bewilligte Konnexität im Jahr (positiver Wert)';
+COMMENT ON COLUMN fp_jahresstatistik3.bzuwendung_k_minus IS 'Bewilligte Konnexität im Jahr (negativer Wert)';
+COMMENT ON COLUMN fp_jahresstatistik3.erh_z IS 'Erhaltener Zuschuss im Jahr';
+COMMENT ON COLUMN fp_jahresstatistik3.erh_d IS 'Erhaltenes Darlehen im Jahr';
+COMMENT ON COLUMN fp_jahresstatistik3.erh_k IS 'Erhaltene Konnexität im Jahr';
+COMMENT ON TABLE fp_jahresstatistik3 IS 'Diese Tabelle enthält die generierte Jahresstatistik für Seite II';
 --------------------------------------------------------
 --  DDL for Table FP_LISTENNAMEN
 --------------------------------------------------------
 
-CREATE TABLE "FP_LISTENNAMEN"
+CREATE TABLE fp_listennamen
 (
-    "KURZBEZ"     VARCHAR(3) PRIMARY KEY,
-    "BEZEICHNUNG" VARCHAR(200) NOT NULL
+    kurzbez     VARCHAR(3) PRIMARY KEY,
+    bezeichnung VARCHAR(200) NOT NULL
 );
 
-COMMENT ON COLUMN "FP_LISTENNAMEN"."KURZBEZ" IS 'Kurzbezeichnung für eine Liste von Stadtbezirken';
-COMMENT ON COLUMN "FP_LISTENNAMEN"."BEZEICHNUNG" IS 'Beschreibung zu einem Listennamen';
-COMMENT ON TABLE "FP_LISTENNAMEN" IS 'Alle Listennamen für die Zusammenstellung mehrerer Stadtbezirke';
+COMMENT ON COLUMN fp_listennamen.kurzbez IS 'Kurzbezeichnung für eine Liste von Stadtbezirken';
+COMMENT ON COLUMN fp_listennamen.bezeichnung IS 'Beschreibung zu einem Listennamen';
+COMMENT ON TABLE fp_listennamen IS 'Alle Listennamen für die Zusammenstellung mehrerer Stadtbezirke';
 --------------------------------------------------------
 --  DDL for Table FP_PROJEKTISTKOSTEN
 --------------------------------------------------------
 
-CREATE TABLE "FP_PROJEKTISTKOSTEN"
+CREATE TABLE fp_projektistkosten
 (
-    "PRO_PROJNR" VARCHAR(7)     NOT NULL REFERENCES "FP_PROJEKTE" ("PROJNR"),
-    "JAHR"       NUMERIC(4, 0)  NOT NULL,
-    "MONAT"      NUMERIC(2, 0)  NOT NULL,
-    "ISTKOSTEN"  NUMERIC(12, 0) NOT NULL,
-    PRIMARY KEY ("PRO_PROJNR", "JAHR", "MONAT")
+    pro_projnr VARCHAR(7)     NOT NULL REFERENCES fp_projekte (projnr),
+    jahr       NUMERIC(4, 0)  NOT NULL,
+    monat      NUMERIC(2, 0)  NOT NULL,
+    istkosten  NUMERIC(12, 0) NOT NULL,
+    PRIMARY KEY (pro_projnr, jahr, monat)
 );
 
-CREATE INDEX ON "FP_PROJEKTISTKOSTEN" ("PRO_PROJNR");
+CREATE INDEX ON fp_projektistkosten (pro_projnr);
 
-COMMENT ON COLUMN "FP_PROJEKTISTKOSTEN"."PRO_PROJNR" IS 'IstKosten bezogen auf ein Förderprojekt';
-COMMENT ON COLUMN "FP_PROJEKTISTKOSTEN"."JAHR" IS 'IstKosten bezogen auf ein Jahr';
-COMMENT ON COLUMN "FP_PROJEKTISTKOSTEN"."MONAT" IS 'IstKosten bezogen auf einen Monat (im Jahr)';
-COMMENT ON COLUMN "FP_PROJEKTISTKOSTEN"."ISTKOSTEN" IS 'Istkosten in Euro aktueller Gesamtstand';
-COMMENT ON TABLE "FP_PROJEKTISTKOSTEN" IS 'Enthält die Istkosten der Projekte in Form des monatlich aktuellen Gesamtwerts (dbase:pist, palt*). Diese Tabelle zeigt somit die Entwickung der IST-Kosten im Zeitverlauf jeweils summiert an.';
+COMMENT ON COLUMN fp_projektistkosten.pro_projnr IS 'IstKosten bezogen auf ein Förderprojekt';
+COMMENT ON COLUMN fp_projektistkosten.jahr IS 'IstKosten bezogen auf ein Jahr';
+COMMENT ON COLUMN fp_projektistkosten.monat IS 'IstKosten bezogen auf einen Monat (im Jahr)';
+COMMENT ON COLUMN fp_projektistkosten.istkosten IS 'Istkosten in Euro aktueller Gesamtstand';
+COMMENT ON TABLE fp_projektistkosten IS 'Enthält die Istkosten der Projekte in Form des monatlich aktuellen Gesamtwerts (dbase:pist, palt*). Diese Tabelle zeigt somit die Entwickung der IST-Kosten im Zeitverlauf jeweils summiert an.';
 --------------------------------------------------------
 --  DDL for Table FP_PROJEKTTERMINE
 --------------------------------------------------------
 
-CREATE TABLE "FP_PROJEKTTERMINE"
+CREATE TABLE fp_projekttermine
 (
-    "ID"           SERIAL PRIMARY KEY,
-    "PRO_PROJNR"   VARCHAR(7)            NOT NULL REFERENCES "FP_PROJEKTE" ("PROJNR"),
-    "TERMIN"       DATE                  NOT NULL,
-    "ZUSTAENDIG"   VARCHAR(60),
-    "TELEFON"      VARCHAR(30),
-    "NOTIZEN"      TEXT,
-    "UEBERWACHUNG" BOOLEAN DEFAULT FALSE NOT NULL
+    id           SERIAL PRIMARY KEY,
+    pro_projnr   VARCHAR(7)            NOT NULL REFERENCES fp_projekte (projnr),
+    termin       DATE                  NOT NULL,
+    zustaendig   VARCHAR(60),
+    telefon      VARCHAR(30),
+    notizen      TEXT,
+    ueberwachung BOOLEAN DEFAULT FALSE NOT NULL
 );
 
-CREATE INDEX ON "FP_PROJEKTTERMINE" ("PRO_PROJNR");
+CREATE INDEX ON fp_projekttermine (pro_projnr);
 
-COMMENT ON COLUMN "FP_PROJEKTTERMINE"."ID" IS 'Primary Key als ID';
-COMMENT ON COLUMN "FP_PROJEKTTERMINE"."PRO_PROJNR" IS 'Projektbezug eines Termins';
-COMMENT ON COLUMN "FP_PROJEKTTERMINE"."TERMIN" IS 'Termin';
-COMMENT ON COLUMN "FP_PROJEKTTERMINE"."ZUSTAENDIG" IS 'Zuständigkeit im Baureferet';
-COMMENT ON COLUMN "FP_PROJEKTTERMINE"."TELEFON" IS 'Telefon des Bauleiters bzw. der Kontaktperson';
-COMMENT ON COLUMN "FP_PROJEKTTERMINE"."NOTIZEN" IS 'Notizen (Freitext)';
-COMMENT ON COLUMN "FP_PROJEKTTERMINE"."UEBERWACHUNG" IS 'Kennzeichen für Terminüberwachung';
-COMMENT ON TABLE "FP_PROJEKTTERMINE" IS 'Enthält eine Terminverwaltung bezüglich Projekten (dbase:vnuanf)';
+COMMENT ON COLUMN fp_projekttermine.id IS 'Primary Key als ID';
+COMMENT ON COLUMN fp_projekttermine.pro_projnr IS 'Projektbezug eines Termins';
+COMMENT ON COLUMN fp_projekttermine.termin IS 'Termin';
+COMMENT ON COLUMN fp_projekttermine.zustaendig IS 'Zuständigkeit im Baureferet';
+COMMENT ON COLUMN fp_projekttermine.telefon IS 'Telefon des Bauleiters bzw. der Kontaktperson';
+COMMENT ON COLUMN fp_projekttermine.notizen IS 'Notizen (Freitext)';
+COMMENT ON COLUMN fp_projekttermine.ueberwachung IS 'Kennzeichen für Terminüberwachung';
+COMMENT ON TABLE fp_projekttermine IS 'Enthält eine Terminverwaltung bezüglich Projekten (dbase:vnuanf)';
 --------------------------------------------------------
 --  DDL for Table FP_PROTOKOLL
 --------------------------------------------------------
 
-CREATE TABLE "FP_PROTOKOLL"
+CREATE TABLE fp_protokoll
 (
-    "LOG_ID"            SERIAL PRIMARY KEY,
-    "LOG_DATE"          DATE,
-    "LOG_MODULE"        VARCHAR(100),
-    "LOG_GUI_USER"      VARCHAR(30),
-    "LOG_MESSAGE"       TEXT,
-    "LOG_ERROR_MESSAGE" TEXT
+    log_id            SERIAL PRIMARY KEY,
+    log_date          DATE,
+    log_module        VARCHAR(100),
+    log_gui_user      VARCHAR(30),
+    log_message       TEXT,
+    log_error_message TEXT
 );
 
-COMMENT ON COLUMN "FP_PROTOKOLL"."LOG_ID" IS 'Eindeutiger Schluessel für einen Record';
-COMMENT ON COLUMN "FP_PROTOKOLL"."LOG_DATE" IS 'Datum des Ereignisses';
-COMMENT ON COLUMN "FP_PROTOKOLL"."LOG_MODULE" IS 'Module des Ereignisses';
-COMMENT ON COLUMN "FP_PROTOKOLL"."LOG_GUI_USER" IS 'Beutzername des Ereignisses';
-COMMENT ON COLUMN "FP_PROTOKOLL"."LOG_MESSAGE" IS 'Log Message';
-COMMENT ON COLUMN "FP_PROTOKOLL"."LOG_ERROR_MESSAGE" IS 'Log Error';
-COMMENT ON TABLE "FP_PROTOKOLL" IS 'Diese Tabelle beinhaltet die systemtechnischen Protokolle im Falle von Systemfehlern oder Prozeduren';
+COMMENT ON COLUMN fp_protokoll.log_id IS 'Eindeutiger Schluessel für einen Record';
+COMMENT ON COLUMN fp_protokoll.log_date IS 'Datum des Ereignisses';
+COMMENT ON COLUMN fp_protokoll.log_module IS 'Module des Ereignisses';
+COMMENT ON COLUMN fp_protokoll.log_gui_user IS 'Beutzername des Ereignisses';
+COMMENT ON COLUMN fp_protokoll.log_message IS 'Log Message';
+COMMENT ON COLUMN fp_protokoll.log_error_message IS 'Log Error';
+COMMENT ON TABLE fp_protokoll IS 'Diese Tabelle beinhaltet die systemtechnischen Protokolle im Falle von Systemfehlern oder Prozeduren';
 --------------------------------------------------------
 --  DDL for Table FP_STADTBEZIRKSLISTEN
 --------------------------------------------------------
 
-CREATE TABLE "FP_STADTBEZIRKSLISTEN"
+CREATE TABLE fp_stadtbezirkslisten
 (
-    "LNA_KURZBEZ"     VARCHAR(3)    NOT NULL REFERENCES "FP_LISTENNAMEN" ("KURZBEZ"),
-    "BEZ_STADTBEZIRK" NUMERIC(2, 0) NOT NULL REFERENCES "FP_STADTBEZIRKE" ("STADTBEZIRK"),
-    "BEZEICHNUNG"     VARCHAR(200),
-    PRIMARY KEY ("LNA_KURZBEZ", "BEZ_STADTBEZIRK")
+    lna_kurzbez     VARCHAR(3)    NOT NULL REFERENCES fp_listennamen (kurzbez),
+    bez_stadtbezirk NUMERIC(2, 0) NOT NULL REFERENCES fp_stadtbezirke (stadtbezirk),
+    bezeichnung     VARCHAR(200),
+    PRIMARY KEY (lna_kurzbez, bez_stadtbezirk)
 );
 
-COMMENT ON COLUMN "FP_STADTBEZIRKSLISTEN"."LNA_KURZBEZ" IS 'Kurzbezeichnung der Stadtbezirksliste';
-COMMENT ON COLUMN "FP_STADTBEZIRKSLISTEN"."BEZ_STADTBEZIRK" IS 'Nummer des Stadtbezirks';
-COMMENT ON COLUMN "FP_STADTBEZIRKSLISTEN"."BEZEICHNUNG" IS 'Notizen zu diesem Eintrag';
-COMMENT ON TABLE "FP_STADTBEZIRKSLISTEN" IS 'Zuordnung von Stadtbezirken zu einer Stadtbezirksliste';
+COMMENT ON COLUMN fp_stadtbezirkslisten.lna_kurzbez IS 'Kurzbezeichnung der Stadtbezirksliste';
+COMMENT ON COLUMN fp_stadtbezirkslisten.bez_stadtbezirk IS 'Nummer des Stadtbezirks';
+COMMENT ON COLUMN fp_stadtbezirkslisten.bezeichnung IS 'Notizen zu diesem Eintrag';
+COMMENT ON TABLE fp_stadtbezirkslisten IS 'Zuordnung von Stadtbezirken zu einer Stadtbezirksliste';
 --------------------------------------------------------
 --  DDL for Table FP_TRAEGER
 --------------------------------------------------------
 
-CREATE TABLE "FP_TRAEGER"
+CREATE TABLE fp_traeger
 (
-    "KURZFORM"    NUMERIC(1, 0) PRIMARY KEY,
-    "BEZEICHNUNG" VARCHAR(200) NOT NULL
+    kurzform    NUMERIC(1, 0) PRIMARY KEY,
+    bezeichnung VARCHAR(200) NOT NULL
 );
 
-COMMENT ON COLUMN "FP_TRAEGER"."KURZFORM" IS 'Kurzform für den Träger des Städtebauförderprogramms';
-COMMENT ON COLUMN "FP_TRAEGER"."BEZEICHNUNG" IS 'Beschreibung des Trägers des Städebauförderprogramms';
-COMMENT ON TABLE "FP_TRAEGER" IS 'Enthält Träger der Städtebauförderprogramme';
+COMMENT ON COLUMN fp_traeger.kurzform IS 'Kurzform für den Träger des Städtebauförderprogramms';
+COMMENT ON COLUMN fp_traeger.bezeichnung IS 'Beschreibung des Trägers des Städebauförderprogramms';
+COMMENT ON TABLE fp_traeger IS 'Enthält Träger der Städtebauförderprogramme';
 --------------------------------------------------------
 --  DDL for Table FP_STAEDTEBAUFOERDERUNGEN
 --------------------------------------------------------
 
-CREATE TABLE "FP_STAEDTEBAUFOERDERUNGEN"
+CREATE TABLE fp_staedtebaufoerderungen
 (
-    "ID"           SERIAL PRIMARY KEY,
-    "BDAT"         DATE,
-    "BNR"          NUMERIC(4, 0),
-    "BJAHR"        NUMERIC(4, 0),
-    "BETRAG"       NUMERIC(10, 0),
-    "SOZ"          BOOLEAN DEFAULT FALSE NOT NULL,
-    "AZBANK"       VARCHAR(40),
-    "ANTRNR"       NUMERIC(3, 0),
-    "ANTRJAHR"     NUMERIC(4, 0),
-    "AZSTK"        VARCHAR(6),
-    "AUSBET"       NUMERIC(10, 0),
-    "ERHDAT"       DATE,
-    "TRA_KURZFORM" NUMERIC(1, 0) REFERENCES "FP_TRAEGER" ("KURZFORM"),
-    "HST"          VARCHAR(15),
-    "HULNR"        VARCHAR(5),
-    "HULJAHR"      NUMERIC(4, 0),
-    "NOTIZEN"      TEXT,
-    "PROJEKTNAME"  VARCHAR(60),
-    "RESTLOS"      DATE,
-    "ZAHLANZ"      DATE,
-    "SCHULDURK"    BOOLEAN DEFAULT FALSE,
-    "ALT_LFDNR"    NUMERIC(10, 0)
+    id           SERIAL PRIMARY KEY,
+    bdat         DATE,
+    bnr          NUMERIC(4, 0),
+    bjahr        NUMERIC(4, 0),
+    betrag       NUMERIC(10, 0),
+    soz          BOOLEAN DEFAULT FALSE NOT NULL,
+    azbank       VARCHAR(40),
+    antrnr       NUMERIC(3, 0),
+    antrjahr     NUMERIC(4, 0),
+    azstk        VARCHAR(6),
+    ausbet       NUMERIC(10, 0),
+    erhdat       DATE,
+    tra_kurzform NUMERIC(1, 0) REFERENCES fp_traeger (kurzform),
+    hst          VARCHAR(15),
+    hulnr        VARCHAR(5),
+    huljahr      NUMERIC(4, 0),
+    notizen      TEXT,
+    projektname  VARCHAR(60),
+    restlos      DATE,
+    zahlanz      DATE,
+    schuldurk    BOOLEAN DEFAULT FALSE,
+    alt_lfdnr    NUMERIC(10, 0)
 );
 
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."ID" IS 'Eindeutiger Schluessel für einen Datensatz';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."BDAT" IS 'Datum der Bewilligung';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."BNR" IS 'Bescheidnummer';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."BJAHR" IS 'Jahr der Bewilligung';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."BETRAG" IS 'Bewilligter Betrag';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."SOZ" IS 'Kennzeichen Soz Stadt';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."AZBANK" IS 'Aktenzeichen der Bank';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."ANTRNR" IS 'Antragsnummer';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."ANTRJAHR" IS 'Antragsjahr';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."AZSTK" IS 'Aktenzeichen der Stadtkämmerei';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."AUSBET" IS 'Ausbezahlter Betrag';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."ERHDAT" IS 'Datum des Geldeingangs';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."TRA_KURZFORM" IS 'Träger des Städtebauförderprogramms';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."HST" IS 'Haushaltsstelle der Stadt als Freitext';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."HULNR" IS 'Hül Nummer der Stadt';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."HULJAHR" IS 'Hül Jahr';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."NOTIZEN" IS 'Notizen';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."PROJEKTNAME" IS 'Name des Projekts';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."RESTLOS" IS 'Datum der Restlosanzeige an Dienststelle';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."ZAHLANZ" IS 'Zahlungsanzeige erhalten am';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."SCHULDURK" IS 'Schuldurkunde ausgestellt';
-COMMENT ON COLUMN "FP_STAEDTEBAUFOERDERUNGEN"."ALT_LFDNR" IS 'Lfdnr zur Altdatenübernahme der Memos';
-COMMENT ON TABLE "FP_STAEDTEBAUFOERDERUNGEN" IS 'Aufstellung aller Programme zur Städtebauförderung als eingeständige Anwendung (dbase:stadt)';
+COMMENT ON COLUMN fp_staedtebaufoerderungen.id IS 'Eindeutiger Schluessel für einen Datensatz';
+COMMENT ON COLUMN fp_staedtebaufoerderungen.bdat IS 'Datum der Bewilligung';
+COMMENT ON COLUMN fp_staedtebaufoerderungen.bnr IS 'Bescheidnummer';
+COMMENT ON COLUMN fp_staedtebaufoerderungen.bjahr IS 'Jahr der Bewilligung';
+COMMENT ON COLUMN fp_staedtebaufoerderungen.betrag IS 'Bewilligter Betrag';
+COMMENT ON COLUMN fp_staedtebaufoerderungen.soz IS 'Kennzeichen Soz Stadt';
+COMMENT ON COLUMN fp_staedtebaufoerderungen.azbank IS 'Aktenzeichen der Bank';
+COMMENT ON COLUMN fp_staedtebaufoerderungen.antrnr IS 'Antragsnummer';
+COMMENT ON COLUMN fp_staedtebaufoerderungen.antrjahr IS 'Antragsjahr';
+COMMENT ON COLUMN fp_staedtebaufoerderungen.azstk IS 'Aktenzeichen der Stadtkämmerei';
+COMMENT ON COLUMN fp_staedtebaufoerderungen.ausbet IS 'Ausbezahlter Betrag';
+COMMENT ON COLUMN fp_staedtebaufoerderungen.erhdat IS 'Datum des Geldeingangs';
+COMMENT ON COLUMN fp_staedtebaufoerderungen.tra_kurzform IS 'Träger des Städtebauförderprogramms';
+COMMENT ON COLUMN fp_staedtebaufoerderungen.hst IS 'Haushaltsstelle der Stadt als Freitext';
+COMMENT ON COLUMN fp_staedtebaufoerderungen.hulnr IS 'Hül Nummer der Stadt';
+COMMENT ON COLUMN fp_staedtebaufoerderungen.huljahr IS 'Hül Jahr';
+COMMENT ON COLUMN fp_staedtebaufoerderungen.notizen IS 'Notizen';
+COMMENT ON COLUMN fp_staedtebaufoerderungen.projektname IS 'Name des Projekts';
+COMMENT ON COLUMN fp_staedtebaufoerderungen.restlos IS 'Datum der Restlosanzeige an Dienststelle';
+COMMENT ON COLUMN fp_staedtebaufoerderungen.zahlanz IS 'Zahlungsanzeige erhalten am';
+COMMENT ON COLUMN fp_staedtebaufoerderungen.schuldurk IS 'Schuldurkunde ausgestellt';
+COMMENT ON COLUMN fp_staedtebaufoerderungen.alt_lfdnr IS 'Lfdnr zur Altdatenübernahme der Memos';
+COMMENT ON TABLE fp_staedtebaufoerderungen IS 'Aufstellung aller Programme zur Städtebauförderung als eingeständige Anwendung (dbase:stadt)';
