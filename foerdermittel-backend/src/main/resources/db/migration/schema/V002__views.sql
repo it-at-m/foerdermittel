@@ -112,152 +112,145 @@ FROM "FP_PROJEKTE" P
 --  DDL for View FP_V_ANTRAG_BEWILL_ABRUF
 --------------------------------------------------------
 
-CREATE
-OR
-REPLACE
-FORCE EDITIONABLE VIEW "FP_V_ANTRAG_BEWILL_ABRUF" ("V_P_TYP", "V_P_PROJNR", "V_P_VNDAT", "V_P_FOB_FB", "V_P_PNAME", "V_P_PSTRASSE", "V_A_ID", "V_A_ANTRAGSTYP", "V_A_ANTRAGSDATUM", "V_A_GESKOSTEN", "V_A_ZWFKOSTEN", "V_A_SU_Z", "V_A_SU_D", "V_A_SU_K", "V_B_ID", "V_B_ANT_ID", "V_B_BZUWART", "V_B_BDATUM", "V_B_BZUWENDUNG_Z", "V_B_BZUWENDUNG_D", "V_B_ZUWENDUNG_K", "V_R_BWI_ID", "V_R_ABRUF_DATUM", "V_R_ABRUF_Z", "V_R_ABRUF_D", "V_R_ABRUF_K", "V_R_ERH_DATUM", "V_R_ERH_Z", "V_R_ERH_D", "V_R_ERH_K") AS
-SELECT X0,
-       X1,
-       X2,
-       X3,
-       X4,
-       X5,
-       X_A_ID,
-       X6,
-       X7,
-       X8,
-       X9,
-       X10,
-       X11,
-       X12,
-       X_B_ID,
-       X13,
-       X14,
-       X15,
-       X16,
-       X17,
-       X18,
-       X19,
-       X20,
-       X21,
-       X22,
-       X23,
-       X24,
-       X25,
-       X26,
-       X27
-FROM (SELECT null           X0, -- Typ1
-             P.PROJNR       X1,
-             P.VNDAT        X2,
-             P.FOB_FB       X3,
-             P.PNAME        X4,
-             P.PSTRASSE     X5,
-             A.ID           X_A_ID,
-             A.ANTRAGSTYP   X6,
-             A.ANTRAGSDATUM X7,
-             A.GESKOSTEN    X8,
-             A.ZWFKOSTEN    X9,
-             A.A_SU_Z       X10,
-             A.A_SU_D       X11,
-             A.A_SU_K       X12,
-             B.ID           X_B_ID,
-             B.ANT_ID       X13,
-             B.BZUWART      X14,
-             B.BDATUM       X15,
-             B.BZUWENDUNG_Z X16,
-             B.BZUWENDUNG_D X17,
-             B.BZUWENDUNG_K X18,
-             R.BWI_ID       X19,
-             R.ABRUF_DATUM  X20,
-             R.ABRUF_Z      X21,
-             R.ABRUF_D      X22,
-             R.ABRUF_K      X23,
-             R.ERH_DATUM    X24,
-             R.ERH_Z        X25,
-             R.ERH_D        X26,
-             R.ERH_K        X27
-      FROM FP_PROJEKTE P,
-           FP_ANTRAEGE A,
-           FP_BEWILLIGUNGEN B,
-           FP_ABRUFE R
-      WHERE -- Typ 1: vollst�ndige Verkn�pfungen selektieren mit outerjoin
-          P.PROJNR = A.PRO_PROJNR
-        AND A.ID = B.ANT_ID(+)
-        AND B.ID = R.BWI_ID(+)
+CREATE VIEW "FP_V_ANTRAG_BEWILL_ABRUF" AS
+SELECT "X0"  AS "V_P_TYP",
+       "X1"  AS "V_P_PROJNR",
+       "X2"  AS "V_P_VNDAT",
+       "X3"  AS "V_P_FOB_FB",
+       "X4"  AS "V_P_PNAME",
+       "X5"  AS "V_P_PSTRASSE",
+       "X6"  AS "V_A_ID",
+       "X7"  AS "V_A_ANTRAGSTYP",
+       "X8"  AS "V_A_ANTRAGSDATUM",
+       "X9"  AS "V_A_GESKOSTEN",
+       "X10" AS "V_A_ZWFKOSTEN",
+       "X11" AS "V_A_SU_Z",
+       "X12" AS "V_A_SU_D",
+       "X13" AS "V_A_SU_K",
+       "X14" AS "V_B_ID",
+       "X15" AS "V_B_ANT_ID",
+       "X16" AS "V_B_BZUWART",
+       "X17" AS "V_B_BDATUM",
+       "X18" AS "V_B_BZUWENDUNG_Z",
+       "X19" AS "V_B_BZUWENDUNG_D",
+       "X20" AS "V_B_ZUWENDUNG_K",
+       "X21" AS "V_R_BWI_ID",
+       "X22" AS "V_R_ABRUF_DATUM",
+       "X23" AS "V_R_ABRUF_Z",
+       "X24" AS "V_R_ABRUF_D",
+       "X25" AS "V_R_ABRUF_K",
+       "X26" AS "V_R_ERH_DATUM",
+       "X27" AS "V_R_ERH_Z",
+       "X28" AS "V_R_ERH_D",
+       "X29" AS "V_R_ERH_K"
+FROM (SELECT NULL             AS "X0", -- Typ1
+             P."PROJNR"       AS "X1",
+             P."VNDAT"        AS "X2",
+             P."FOB_FB"       AS "X3",
+             P."PNAME"        AS "X4",
+             P."PSTRASSE"     AS "X5",
+             A."ID"           AS "X6",
+             A."ANTRAGSTYP"   AS "X7",
+             A."ANTRAGSDATUM" AS "X8",
+             A."GESKOSTEN"    AS "X9",
+             A."ZWFKOSTEN"    AS "X10",
+             A."A_SU_Z"       AS "X11",
+             A."A_SU_D"       AS "X12",
+             A."A_SU_K"       AS "X13",
+             B."ID"           AS "X14",
+             B."ANT_ID"       AS "X15",
+             B."BZUWART"      AS "X16",
+             B."BDATUM"       AS "X17",
+             B."BZUWENDUNG_Z" AS "X18",
+             B."BZUWENDUNG_D" AS "X19",
+             B."BZUWENDUNG_K" AS "X20",
+             R."BWI_ID"       AS "X21",
+             R."ABRUF_DATUM"  AS "X22",
+             R."ABRUF_Z"      AS "X23",
+             R."ABRUF_D"      AS "X24",
+             R."ABRUF_K"      AS "X25",
+             R."ERH_DATUM"    AS "X26",
+             R."ERH_Z"        AS "X27",
+             R."ERH_D"        AS "X28",
+             R."ERH_K"        AS "X29"
+      FROM "FP_PROJEKTE" P
+               JOIN "FP_ANTRAEGE" A ON P."PROJNR" = A."PRO_PROJNR"
+               LEFT JOIN "FP_BEWILLIGUNGEN" B
+                         ON A."ID" = B."ANT_ID" -- Typ 1: vollständige Verknüpfungen selektieren mit outerjoin
+               LEFT JOIN "FP_ABRUFE" R ON B."ID" = R."BWI_ID"
+
       UNION
-      SELECT 'Bewilligung ohne Antrag' X0, -- Typ2
-             P.PROJNR                  X1,
-             P.VNDAT                   X2,
-             P.FOB_FB                  X3,
-             P.PNAME                   X4,
-             P.PSTRASSE                X5,
-             null                      X_A_ID,
-             null                      X6,
-             null                      X7,
-             null                      X8,
-             null                      X9,
-             null                      X10,
-             null                      X11,
-             null                      X12,
-             B.ID                      X_B_ID,
-             B.ANT_ID                  X13,
-             B.BZUWART                 X14,
-             B.BDATUM                  X15,
-             B.BZUWENDUNG_Z            X16,
-             B.BZUWENDUNG_D            X17,
-             B.BZUWENDUNG_K            X18,
-             R.BWI_ID                  X19,
-             R.ABRUF_DATUM             X20,
-             R.ABRUF_Z                 X21,
-             R.ABRUF_D                 X22,
-             R.ABRUF_K                 X23,
-             R.ERH_DATUM               X24,
-             R.ERH_Z                   X25,
-             R.ERH_D                   X26,
-             R.ERH_K                   X27
-      FROM FP_PROJEKTE P,
-           FP_BEWILLIGUNGEN B,
-           FP_ABRUFE R
-      WHERE -- Typ 2: Antrag fehlt, Bewill+Abrufe vorhanden mit outerjoin
-          P.PROJNR = B.PRO_PROJNR
-        AND B.ANT_ID is null
-        AND B.ID = R.BWI_ID(+)
+
+      SELECT 'Bewilligung ohne Antrag', -- Typ2
+             P."PROJNR",
+             P."VNDAT",
+             P."FOB_FB",
+             P."PNAME",
+             P."PSTRASSE",
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             B."ID",
+             B."ANT_ID",
+             B."BZUWART",
+             B."BDATUM",
+             B."BZUWENDUNG_Z",
+             B."BZUWENDUNG_D",
+             B."BZUWENDUNG_K",
+             R."BWI_ID",
+             R."ABRUF_DATUM",
+             R."ABRUF_Z",
+             R."ABRUF_D",
+             R."ABRUF_K",
+             R."ERH_DATUM",
+             R."ERH_Z",
+             R."ERH_D",
+             R."ERH_K"
+      FROM "FP_PROJEKTE" P
+               JOIN "FP_BEWILLIGUNGEN" B ON P."PROJNR" = B."PRO_PROJNR"
+               LEFT JOIN "FP_ABRUFE" R ON B."ID" = R."BWI_ID"
+      WHERE B."ANT_ID" IS NULL
+
       UNION
-      SELECT 'Abruf ohne Bewilligung' X0, -- Typ3
-             P.PROJNR                 X1,
-             P.VNDAT                  X2,
-             P.FOB_FB                 X3,
-             P.PNAME                  X4,
-             P.PSTRASSE               X5,
-             null                     X_A_ID,
-             null                     X6,
-             null                     X7,
-             null                     X8,
-             null                     X9,
-             null                     X10,
-             null                     X11,
-             null                     X12,
-             null                     X_B_ID,
-             null                     X13,
-             null                     X14,
-             null                     X15,
-             null                     X15,
-             null                     X17,
-             null                     X18,
-             R.BWI_ID                 X19,
-             R.ABRUF_DATUM            X20,
-             R.ABRUF_Z                X21,
-             R.ABRUF_D                X22,
-             R.ABRUF_K                X23,
-             R.ERH_DATUM              X24,
-             R.ERH_Z                  X25,
-             R.ERH_D                  X26,
-             R.ERH_K                  X27
-      FROM FP_PROJEKTE P,
-           FP_ABRUFE R
-      WHERE -- Typ 3: Antrag fehlt, Bewill fehlt nur Abrufe ohne Verbindung
-          P.PROJNR = R.PRO_PROJNR
-        AND R.BWI_ID is null)
+
+      SELECT 'Abruf ohne Bewilligung', -- Typ3
+             P."PROJNR",
+             P."VNDAT",
+             P."FOB_FB",
+             P."PNAME",
+             P."PSTRASSE",
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             R."BWI_ID",
+             R."ABRUF_DATUM",
+             R."ABRUF_Z",
+             R."ABRUF_D",
+             R."ABRUF_K",
+             R."ERH_DATUM",
+             R."ERH_Z",
+             R."ERH_D",
+             R."ERH_K"
+      FROM "FP_PROJEKTE" P
+               JOIN "FP_ABRUFE" R ON P."PROJNR" = R."PRO_PROJNR"
+      WHERE R."BWI_ID" IS NULL) AS X
 ;
 --------------------------------------------------------
 --  DDL for View FP_V_ANTRAGSUCHE
