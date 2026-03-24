@@ -1300,12 +1300,12 @@ SELECT "X1"               AS "P_PROJNR",
        SUBSTR("X2", 1, 4) AS "P_JAHR",
        SUBSTR("X2", 5, 2) AS "P_MONAT",
        "X3"               AS "P_ISTKOSTEN"
-FROM (SELECT I1."PRO_PROJNR"                              AS "X1",
-             (I1."JAHR" || LPAD(I1."MONAT", 2, 0)) AS "X2",
-             I1."ISTKOSTEN"                               AS "X3"
+FROM (SELECT I1."PRO_PROJNR"                               AS "X1",
+             (I1."JAHR" || LPAD(I1."MONAT"::TEXT, 2, '0')) AS "X2",
+             I1."ISTKOSTEN"                                AS "X3"
       FROM "FP_PROJEKTISTKOSTEN" I1
-      WHERE (I1."JAHR" || LPAD(I1."MONAT", 2, 0)) =
-            (SELECT MAX(I2."JAHR" || LPAD(I2."MONAT", 2, 0))
+      WHERE (I1."JAHR" || LPAD(I1."MONAT"::TEXT, 2, '0')) =
+            (SELECT MAX(I2."JAHR" || LPAD(I2."MONAT"::TEXT, 2, '0'))
              FROM "FP_PROJEKTISTKOSTEN" I2
              WHERE I2."PRO_PROJNR" = I1."PRO_PROJNR")) AS X
 ;
