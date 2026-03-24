@@ -676,7 +676,7 @@ UNION ALL
 SELECT '2 Erfolgte Bewilligungen ohne Bewilligungsdatum',
        P."PROJNR",
        P."PSTRASSE",
-       'Summe Zuwendungen: ' || TO_CHAR(B."BZUWENDUNG_Z" + B."BZUWENDUNG_D" + B."BZUWENDUNG_K")
+       'Summe Zuwendungen: ' || (B."BZUWENDUNG_Z" + B."BZUWENDUNG_D" + B."BZUWENDUNG_K")
 FROM "FP_BEWILLIGUNGEN" B
          JOIN "FP_PROJEKTE" P ON B."PRO_PROJNR" = P."PROJNR"
 WHERE B."BDATUM" IS NULL
@@ -687,7 +687,7 @@ UNION ALL
 SELECT '3 Erfolgte Abrufe ohne Abrufdatum',
        P."PROJNR",
        P."PSTRASSE",
-       'Summe Abrufe: ' || TO_CHAR(A."ABRUF_Z" + A."ABRUF_D" + A."ABRUF_K")
+       'Summe Abrufe: ' || (A."ABRUF_Z" + A."ABRUF_D" + A."ABRUF_K")
 FROM "FP_ABRUFE" A
          JOIN "FP_PROJEKTE" P ON A."PRO_PROJNR" = P."PROJNR"
 WHERE A."ABRUF_DATUM" IS NULL
@@ -698,7 +698,7 @@ UNION ALL
 SELECT '4 Erhaltene Abrufe ohne Erhaltdatum',
        P."PROJNR",
        P."PSTRASSE",
-       'Summe erhalten: ' || TO_CHAR(A."ERH_Z" + A."ERH_D" + A."ERH_K")
+       'Summe erhalten: ' || (A."ERH_Z" + A."ERH_D" + A."ERH_K")
 FROM "FP_ABRUFE" A
          JOIN "FP_PROJEKTE" P ON A."PRO_PROJNR" = P."PROJNR"
 WHERE A."ERH_DATUM" IS NULL
@@ -1301,11 +1301,11 @@ SELECT "X1"               AS "P_PROJNR",
        SUBSTR("X2", 5, 2) AS "P_MONAT",
        "X3"               AS "P_ISTKOSTEN"
 FROM (SELECT I1."PRO_PROJNR"                              AS "X1",
-             TO_CHAR(I1."JAHR" || LPAD(I1."MONAT", 2, 0)) AS "X2",
+             (I1."JAHR" || LPAD(I1."MONAT", 2, 0)) AS "X2",
              I1."ISTKOSTEN"                               AS "X3"
       FROM "FP_PROJEKTISTKOSTEN" I1
-      WHERE TO_CHAR(I1."JAHR" || LPAD(I1."MONAT", 2, 0)) =
-            (SELECT MAX(TO_CHAR(I2."JAHR" || LPAD(I2."MONAT", 2, 0)))
+      WHERE (I1."JAHR" || LPAD(I1."MONAT", 2, 0)) =
+            (SELECT MAX(I2."JAHR" || LPAD(I2."MONAT", 2, 0))
              FROM "FP_PROJEKTISTKOSTEN" I2
              WHERE I2."PRO_PROJNR" = I1."PRO_PROJNR")) AS X
 ;
