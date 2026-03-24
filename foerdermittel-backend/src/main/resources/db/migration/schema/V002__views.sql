@@ -1800,64 +1800,60 @@ WHERE A1."ANTRAGSTYP" IN ('E', 'A')
 --  DDL for View FP_V_PROJEKTFLUESSE
 --------------------------------------------------------
 
-CREATE
-OR
-REPLACE
-FORCE EDITIONABLE VIEW "FP_V_PROJEKTFLUESSE" ("P_PROJNR", "AX_A_SU_Z", "AX_A_SU_D", "AX_A_SU_K", "R_ERH_Z", "R_ERH_D", "R_ERH_K", "B_BEWILL_Z", "B_BEWILL_D", "B_BEWILL_K") AS
-SELECT x1,
-       SUM(NVL(x24, 0)),
-       SUM(NVL(x25, 0)),
-       SUM(NVL(x26, 0)),
-       SUM(NVL(x27, 0)),
-       SUM(NVL(x28, 0)),
-       SUM(NVL(x29, 0)),
-       SUM(NVL(x30, 0)),
-       SUM(NVL(x31, 0)),
-       SUM(NVL(x32, 0))
-FROM (SELECT P.PROJNR          x1,
-             NVL(AX.A_SU_Z, 0) x24,
-             NVL(AX.A_SU_D, 0) x25,
-             NVL(AX.A_SU_K, 0) x26,
-             NULL              x27,
-             NULL              x28,
-             NULL              x29,
-             NULL              x30,
-             NULL              x31,
-             NULL              x32
-      FROM FP_PROJEKTE P,
-           FP_ANTRAEGE AX
-      WHERE P.PROJNR = AX.PRO_PROJNR
-      --
+CREATE VIEW "FP_V_PROJEKTFLUESSE" AS
+SELECT "X1"                    AS "P_PROJNR",
+       SUM(COALESCE("X2", 0))  AS "AX_A_SU_Z",
+       SUM(COALESCE("X3", 0))  AS "AX_A_SU_D",
+       SUM(COALESCE("X4", 0))  AS "AX_A_SU_K",
+       SUM(COALESCE("X5", 0))  AS "R_ERH_Z",
+       SUM(COALESCE("X6", 0))  AS "R_ERH_D",
+       SUM(COALESCE("X7", 0))  AS "R_ERH_K",
+       SUM(COALESCE("X8", 0))  AS "B_BEWILL_Z",
+       SUM(COALESCE("X9", 0))  AS "B_BEWILL_D",
+       SUM(COALESCE("X10", 0)) AS "B_BEWILL_K"
+FROM (SELECT P."PROJNR"              AS "X1",
+             COALESCE(A."A_SU_Z", 0) AS "X2",
+             COALESCE(A."A_SU_D", 0) AS "X3",
+             COALESCE(A."A_SU_K", 0) AS "X4",
+             NULL                    AS "X5",
+             NULL                    AS "X6",
+             NULL                    AS "X7",
+             NULL                    AS "X8",
+             NULL                    AS "X9",
+             NULL                    AS "X10"
+      FROM "FP_PROJEKTE" P
+               JOIN "FP_ANTRAEGE" A ON P."PROJNR" = A."PRO_PROJNR"
+
       UNION ALL
-      SELECT P.PROJNR        x1,
-             NULL            x24,
-             NULL            x25,
-             NULL            x26,
-             NVL(R.ERH_Z, 0) x27,
-             NVL(R.ERH_D, 0) x28,
-             NVL(R.ERH_K, 0) x29,
-             NULL            x30,
-             NULL            x31,
-             NULL            x32
-      FROM FP_PROJEKTE P,
-           FP_ABRUFE R
-      WHERE P.PROJNR = R.PRO_PROJNR
-      --
+
+      SELECT P."PROJNR",
+             NULL,
+             NULL,
+             NULL,
+             COALESCE(R."ERH_Z", 0),
+             COALESCE(R."ERH_D", 0),
+             COALESCE(R."ERH_K", 0),
+             NULL,
+             NULL,
+             NULL
+      FROM "FP_PROJEKTE" P
+               JOIN "FP_ABRUFE" R ON P."PROJNR" = R."PRO_PROJNR"
+
       UNION ALL
-      SELECT P.PROJNR               x1,
-             NULL                   x24,
-             NULL                   x25,
-             NULL                   x26,
-             NULL                   x27,
-             NULL                   x28,
-             NULL                   x29,
-             NVL(B.bzuwendung_Z, 0) x30,
-             NVL(B.bzuwendung_D, 0) x31,
-             NVL(B.bzuwendung_K, 0) x32
-      FROM FP_PROJEKTE P,
-           FP_BEWILLIGUNGEN B
-      WHERE P.PROJNR = B.PRO_PROJNR)
-GROUP BY x1
+
+      SELECT P."PROJNR",
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             NULL,
+             COALESCE(B."BZUWENDUNG_Z", 0),
+             COALESCE(B."BZUWENDUNG_D", 0),
+             COALESCE(B."BZUWENDUNG_K", 0)
+      FROM "FP_PROJEKTE" P
+               JOIN "FP_BEWILLIGUNGEN" B ON P."PROJNR" = B."PRO_PROJNR") as X
+GROUP BY "X1"
 ;
 --------------------------------------------------------
 --  DDL for View FP_V_PROJEKTSTAT
