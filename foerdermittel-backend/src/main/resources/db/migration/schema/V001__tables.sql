@@ -179,7 +179,7 @@ CREATE TABLE fp_projekte
     fob_fb              NUMERIC(2, 0)                    NOT NULL REFERENCES fp_foerderbereiche (fb),
     kur_kurzbez         VARCHAR(8)                       NOT NULL REFERENCES fp_kurzbezeichnungen (kurzbez),
     uas_ua              VARCHAR(2)                       NOT NULL REFERENCES fp_unterabschnitte (ua),
-    jahr                VARCHAR(2)                       NOT NULL,
+    jahr VARCHAR(2) NOT NULL,
     lfdnr1              VARCHAR(1)                       NOT NULL,
     lfdnr2              VARCHAR(2)                       NOT NULL,
     pname               VARCHAR(100),
