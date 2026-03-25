@@ -1,0 +1,15 @@
+# Cross-cutting Concepts
+
+## _\<Concept 1\>_
+
+_\<explanation\>_
+
+## _\<Concept 2\>_
+
+_\<explanation\>_
+
+…​
+
+## _\<Concept n\>_
+
+_\<explanation\>_
