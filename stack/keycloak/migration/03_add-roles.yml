@@ -15,7 +15,7 @@ changes:
       composite: false
 
   - addRole:
-        name: sachbearbeitunghaushalt
-        clientRole: true
-        clientId: local
-        composite: false
+      name: sachbearbeitunghaushalt
+      clientRole: true
+      clientId: local
+      composite: false

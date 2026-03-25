@@ -20,26 +20,26 @@ public class TheEntityService {
 
     private final TheEntityRepository theEntityRepository;
 
-    @PreAuthorize(Authorities.THEENTITY_GET)
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
     public TheEntity getTheEntity(final UUID theEntityId) {
         log.info("Get TheEntity with ID {}", theEntityId);
         return getEntityOrThrowException(theEntityId);
     }
 
-    @PreAuthorize(Authorities.THEENTITY_GET_ALL)
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
     public Page<TheEntity> getAllEntities(final int pageNumber, final int pageSize) {
         log.info("Get all TheEntity with at Page {} with a PageSize of {}", pageNumber, pageSize);
         final Pageable pageRequest = PageRequest.of(pageNumber, pageSize);
         return theEntityRepository.findAll(pageRequest);
     }
 
-    @PreAuthorize(Authorities.THEENTITY_CREATE)
+    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public TheEntity createTheEntity(final TheEntity entity) {
         log.debug("Create TheEntity {}", entity);
         return theEntityRepository.save(entity);
     }
 
-    @PreAuthorize(Authorities.THEENTITY_UPDATE)
+    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public TheEntity updateTheEntity(final TheEntity entity, final UUID theEntityId) {
         final TheEntity foundEntity = getEntityOrThrowException(theEntityId);
         foundEntity.setTextAttribute(entity.getTextAttribute());
@@ -47,7 +47,7 @@ public class TheEntityService {
         return theEntityRepository.save(foundEntity);
     }
 
-    @PreAuthorize(Authorities.THEENTITY_DELETE)
+    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteTheEntity(final UUID theEntityId) {
         log.debug("Delete TheEntity with ID {}", theEntityId);
         theEntityRepository.deleteById(theEntityId);
