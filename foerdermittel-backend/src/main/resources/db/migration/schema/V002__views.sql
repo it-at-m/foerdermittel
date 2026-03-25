@@ -2004,7 +2004,7 @@ FROM (
                 t.termin                                                                     AS x2,
                 t.notizen || E'\r\nZuständig: ' || t.zustaendig || ' Telefon: ' || t.telefon AS x3
          FROM fp_projekttermine t
-         WHERE t.notizen IS NOT NULL) AS x;
+         WHERE t.notizen IS NOT NULL) AS x
 ;
 
 --------------------------------------------------------
