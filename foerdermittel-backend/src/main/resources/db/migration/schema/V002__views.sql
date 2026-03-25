@@ -536,7 +536,7 @@ UNION ALL
 SELECT '2 Offene Projekte mit Anträgen auf Unbedenklichkeit ohne Förderantrag',
        p.projnr,
        p.pstrasse,
-       'Unbedenk. am: ' || TO_CHAR(a.unbeddat, 'DD.MM.YYYY')
+       CONCAT('Unbedenk. am: ', TO_CHAR(a.unbeddat, 'DD.MM.YYYY'))
 FROM fp_antraege a
          JOIN fp_projekte p ON a.pro_projnr = p.projnr
 WHERE a.unbeddat IS NOT NULL
@@ -548,7 +548,7 @@ UNION ALL
 SELECT '3 Offene Projekte und ausstehende Genehmigungen zum vorzeitigen Baubeginn',
        p.projnr,
        p.pstrasse,
-       'Vorz. Baubeginn: ' || a.vorzbeg
+       CONCAT('Vorz. Baubeginn: ', a.vorzbeg)
 FROM fp_antraege a
          JOIN fp_projekte p ON p.projnr = a.pro_projnr
 WHERE p.vndat IS NULL
@@ -560,7 +560,7 @@ UNION ALL
 SELECT '4 Offene Projekte und ausstehende Bewilligungen (ohne Datum)',
        p.projnr,
        p.pstrasse,
-       'Bewilligt am: ' || TO_CHAR(b.bdatum, 'DD.MM.YYYY')
+       'Bewilligung ausstehend'
 FROM fp_projekte p
          JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
 WHERE p.vndat IS NULL
@@ -593,7 +593,7 @@ UNION ALL
 SELECT '7 Offene Projekte und leere Bewilligungen',
        p.projnr,
        p.pstrasse,
-       'Leer angelegt am: ' || TO_CHAR(b.anlagedatum, 'DD.MM.YYYY')
+       CONCAT('Leer angelegt am: ', TO_CHAR(b.anlagedatum, 'DD.MM.YYYY'))
 FROM fp_projekte p
          JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
 WHERE p.vndat IS NULL
@@ -617,7 +617,7 @@ UNION ALL
 SELECT '8 Projekte mit VN-Datum ab 1.1.2000 und leere Bewilligungen',
        p.projnr,
        p.pstrasse,
-       'Leer angelegt am: ' || TO_CHAR(b.anlagedatum, 'DD.MM.YYYY')
+       CONCAT('Leer angelegt am: ', TO_CHAR(b.anlagedatum, 'DD.MM.YYYY'))
 FROM fp_projekte p
          JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
 WHERE p.vndat > TO_DATE('01.01.2000', 'dd.mm.yyyy')
@@ -641,7 +641,7 @@ UNION ALL
 SELECT '9 Projekte mit VN-Datum ab 1.1.2000 aber ohne Schlußbescheid',
        p.projnr,
        p.pstrasse,
-       'VN: ' || TO_CHAR(p.vndat, 'DD.MM.YYYY')
+       CONCAT('VN: ', TO_CHAR(p.vndat, 'DD.MM.YYYY'))
 FROM fp_projekte p
 WHERE p.vndat > TO_DATE('01.01.2000', 'DD.MM.YYYY')
   AND p.vnschlussbew IS NULL
@@ -651,7 +651,7 @@ UNION ALL
 SELECT '10 Projekte mit VN-Datum ab 1.1.2000 aber ohne Endkosten',
        p.projnr,
        p.pstrasse,
-       'VN: ' || TO_CHAR(p.vndat, 'DD.MM.YYYY')
+       CONCAT('VN: ', TO_CHAR(p.vndat, 'DD.MM.YYYY'))
 FROM fp_projekte p
 WHERE p.vndat > TO_DATE('01.01.2000', 'DD.MM.YYYY')
   AND p.vnkosten IS NULL
@@ -663,10 +663,10 @@ ORDER BY 1, 2
 --------------------------------------------------------
 
 CREATE VIEW fp_v_checklisten2 AS
-SELECT '1 Verwendungsnachweise ohne VN Datum'                                    AS v_fehler,
-       p.projnr                                                                  AS v_projnr,
-       p.pstrasse                                                                AS v_pstrasse,
-       'VN ZWF KOSTEN: ' || p.vnzwfkosten || '  VN Gesamtkosten: ' || p.vnkosten AS v_info
+SELECT '1 Verwendungsnachweise ohne VN Datum'                                          AS v_fehler,
+       p.projnr                                                                        AS v_projnr,
+       p.pstrasse                                                                      AS v_pstrasse,
+       CONCAT_WS(' ', 'VN ZWF KOSTEN:', p.vnzwfkosten, 'VN Gesamtkosten:', p.vnkosten) AS v_info
 FROM fp_projekte p
 WHERE p.vndat IS NULL
   AND (p.vnzwfkosten > 0 OR p.vnkosten > 0)
@@ -676,7 +676,7 @@ UNION ALL
 SELECT '2 Erfolgte Bewilligungen ohne Bewilligungsdatum',
        p.projnr,
        p.pstrasse,
-       'Summe Zuwendungen: ' || (b.bzuwendung_z + b.bzuwendung_d + b.bzuwendung_k)
+       CONCAT('Summe Zuwendungen: ', (b.bzuwendung_z + b.bzuwendung_d + b.bzuwendung_k))
 FROM fp_bewilligungen b
          JOIN fp_projekte p ON b.pro_projnr = p.projnr
 WHERE b.bdatum IS NULL
@@ -687,7 +687,7 @@ UNION ALL
 SELECT '3 Erfolgte Abrufe ohne Abrufdatum',
        p.projnr,
        p.pstrasse,
-       'Summe Abrufe: ' || (a.abruf_z + a.abruf_d + a.abruf_k)
+       CONCAT('Summe Abrufe: ', (a.abruf_z + a.abruf_d + a.abruf_k))
 FROM fp_abrufe a
          JOIN fp_projekte p ON a.pro_projnr = p.projnr
 WHERE a.abruf_datum IS NULL
@@ -698,7 +698,7 @@ UNION ALL
 SELECT '4 Erhaltene Abrufe ohne Erhaltdatum',
        p.projnr,
        p.pstrasse,
-       'Summe erhalten: ' || (a.erh_z + a.erh_d + a.erh_k)
+       CONCAT('Summe erhalten: ', (a.erh_z + a.erh_d + a.erh_k))
 FROM fp_abrufe a
          JOIN fp_projekte p ON a.pro_projnr = p.projnr
 WHERE a.erh_datum IS NULL
@@ -1300,12 +1300,12 @@ SELECT x1               AS p_projnr,
        SUBSTR(x2, 1, 4) AS p_jahr,
        SUBSTR(x2, 5, 2) AS p_monat,
        x3               AS p_istkosten
-FROM (SELECT i1.pro_projnr                             AS x1,
-             (i1.jahr || LPAD(i1.monat::TEXT, 2, '0')) AS x2,
-             i1.istkosten                              AS x3
+FROM (SELECT i1.pro_projnr                                 AS x1,
+             CONCAT(i1.jahr, LPAD(i1.monat::TEXT, 2, '0')) AS x2,
+             i1.istkosten                                  AS x3
       FROM fp_projektistkosten i1
-      WHERE (i1.jahr || LPAD(i1.monat::TEXT, 2, '0')) =
-            (SELECT MAX(i2.jahr || LPAD(i2.monat::TEXT, 2, '0'))
+      WHERE CONCAT(i1.jahr, LPAD(i1.monat::TEXT, 2, '0')) =
+            (SELECT MAX(CONCAT(i2.jahr, LPAD(i2.monat::TEXT, 2, '0')))
              FROM fp_projektistkosten i2
              WHERE i2.pro_projnr = i1.pro_projnr)) AS x
 ;
@@ -2002,7 +2002,7 @@ FROM (
          SELECT 'Termin'                                                                     AS x0,
                 t.pro_projnr                                                                 AS x1,
                 t.termin                                                                     AS x2,
-                t.notizen || E'\r\nZuständig: ' || t.zustaendig || ' Telefon: ' || t.telefon AS x3
+                CONCAT(t.notizen, E'\r\nZuständig: ', t.zustaendig, ' Telefon: ', t.telefon) AS x3
          FROM fp_projekttermine t
          WHERE t.notizen IS NOT NULL) AS x
 ;
@@ -2018,8 +2018,8 @@ SELECT p.projnr                 AS v_projnr,
        TO_CHAR(p.vndat, 'YYYY') AS v_vndat_jahr,
        TO_CHAR(p.vndat, 'MM')   AS v_vndat_monat,
        CASE
-           WHEN p.jahr::INTEGER <= 49 THEN '20' || p.jahr
-           ELSE '19' || p.jahr
+           WHEN p.jahr::INTEGER <= 49 THEN CONCAT('20', p.jahr)
+           ELSE CONCAT('19', p.jahr)
            END                  AS v_jahr,
        p.pname                  AS v_pname,
        p.pstrasse               AS v_pstrasse,

@@ -683,7 +683,6 @@ COMMENT ON TABLE fp_hhjahre IS 'Aufstellung aller Haushaltsjahre';
 CREATE TABLE fp_hhplan
 (
     hhj_jahr          NUMERIC(4, 0)                         NOT NULL REFERENCES fp_hhjahre (hhjahr),
-    fipo              VARCHAR(15) DEFAULT '000000000000000' NOT NULL,
     pro_projnr        VARCHAR(7)                            NOT NULL REFERENCES fp_projekte (projnr),
     p_pstrasse        VARCHAR(100),
     p_pname           VARCHAR(100),
@@ -705,6 +704,7 @@ CREATE TABLE fp_hhplan
     anlagevon         VARCHAR(30) DEFAULT USER              NOT NULL,
     aenderungsdatum   DATE,
     aenderungvon      VARCHAR(30),
+    fipo              VARCHAR(15) DEFAULT '000000000000000' NOT NULL,
     PRIMARY KEY (hhj_jahr, pro_projnr)
 );
 
