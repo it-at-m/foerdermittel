@@ -133,7 +133,7 @@ SELECT x0  AS v_p_typ,
        x17 AS v_b_bdatum,
        x18 AS v_b_bzuwendung_z,
        x19 AS v_b_bzuwendung_d,
-       x20 AS v_b_zuwendung_k,
+       x20 AS v_b_bzuwendung_k,
        x21 AS v_r_bwi_id,
        x22 AS v_r_abruf_datum,
        x23 AS v_r_abruf_z,
@@ -620,7 +620,7 @@ SELECT '8 Projekte mit VN-Datum ab 1.1.2000 und leere Bewilligungen',
        CONCAT('Leer angelegt am: ', TO_CHAR(b.anlagedatum, 'DD.MM.YYYY'))
 FROM fp_projekte p
          JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
-WHERE p.vndat > TO_DATE('01.01.2000', 'dd.mm.yyyy')
+WHERE p.vndat >= TO_DATE('01.01.2000', 'dd.mm.yyyy')
   AND b.bdatum IS NULL
   AND COALESCE(b.afsatz, 0) = 0
   AND COALESCE(b.bfsatz, 0) = 0
@@ -643,7 +643,7 @@ SELECT '9 Projekte mit VN-Datum ab 1.1.2000 aber ohne Schlußbescheid',
        p.pstrasse,
        CONCAT('VN: ', TO_CHAR(p.vndat, 'DD.MM.YYYY'))
 FROM fp_projekte p
-WHERE p.vndat > TO_DATE('01.01.2000', 'DD.MM.YYYY')
+WHERE p.vndat >= TO_DATE('01.01.2000', 'DD.MM.YYYY')
   AND p.vnschlussbew IS NULL
 
 UNION ALL
@@ -653,7 +653,7 @@ SELECT '10 Projekte mit VN-Datum ab 1.1.2000 aber ohne Endkosten',
        p.pstrasse,
        CONCAT('VN: ', TO_CHAR(p.vndat, 'DD.MM.YYYY'))
 FROM fp_projekte p
-WHERE p.vndat > TO_DATE('01.01.2000', 'DD.MM.YYYY')
+WHERE p.vndat >= TO_DATE('01.01.2000', 'DD.MM.YYYY')
   AND p.vnkosten IS NULL
 
 ORDER BY 1, 2
