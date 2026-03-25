@@ -7,12 +7,9 @@ hero:
   text: "Starter files for Vitepress-based documentation"
   tagline: "This is the default template for writing documentation in RefArch applications"
   actions:
-    - theme: brand
-      text: Example
-      link: /example
     - theme: alt
-      text: ⤴ External link
-      link: https://refarch.oss.muenchen.de
+      text: Architecture
+      link: /arc42
 features:
   - icon: 1️⃣
     title: Title 1
