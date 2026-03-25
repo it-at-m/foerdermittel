@@ -676,7 +676,8 @@ UNION ALL
 SELECT '2 Erfolgte Bewilligungen ohne Bewilligungsdatum',
        p.projnr,
        p.pstrasse,
-       CONCAT('Summe Zuwendungen: ', (b.bzuwendung_z + b.bzuwendung_d + b.bzuwendung_k))
+       CONCAT('Summe Zuwendungen: ',
+              (COALESCE(b.bzuwendung_z, 0) + COALESCE(b.bzuwendung_d, 0) + COALESCE(b.bzuwendung_k, 0)))
 FROM fp_bewilligungen b
          JOIN fp_projekte p ON b.pro_projnr = p.projnr
 WHERE b.bdatum IS NULL
@@ -1381,7 +1382,8 @@ FROM (SELECT f.fb                             AS x1,
       FROM fp_projekte p
                JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
                JOIN fp_antraege a ON p.projnr = a.pro_projnr
-      WHERE a.antragsdatum =
+      WHERE a.antragstyp = 'E'
+        AND a.antragsdatum =
             (SELECT MIN(y.antragsdatum)
              FROM fp_antraege y
              WHERE y.pro_projnr = p.projnr
@@ -1509,7 +1511,8 @@ FROM (SELECT f.fb                             AS x1,
       FROM fp_projekte p
                JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
                JOIN fp_antraege a ON p.projnr = a.pro_projnr
-      WHERE a.antragsdatum =
+      WHERE a.antragstyp = 'E'
+        AND a.antragsdatum =
             (SELECT MIN(y.antragsdatum)
              FROM fp_antraege y
              WHERE y.pro_projnr = p.projnr
