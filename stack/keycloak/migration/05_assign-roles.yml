@@ -3,10 +3,14 @@ author: Default
 realm: local_realm
 changes:
   - assignRole:
-      user: reader
-      role: reader
+      user: fmad
+      role: admin
       clientId: local
   - assignRole:
-      user: writer
-      role: writer
+      user: fmsb
+      role: sachbearbeitung
+      clientId: local
+  - assignRole:
+      user: fmsbha
+      role: sachbearbeitunghaushalt
       clientId: local
