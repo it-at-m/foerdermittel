@@ -3,32 +3,32 @@ author: Default
 realm: local_realm
 changes:
   - addUser:
-      name: admin
+      name: fmad
       lastName: admin
       firstName: test
       enabled: true
       emailVerified: true
-      email: admin@example.com
+      email: fmad@example.com
   - updateUserPassword:
-      name: admin
-      password: "admin"
+      name: fmad
+      password: "foerdermittel"
   - addUser:
-      name: sachbearbeitung
+      name: fmsb
       lastName: sachbearbeitung
       firstName: test
       enabled: true
       emailVerified: true
-      email: sachbearbeitung@example.com
+      email: fmsb@example.com
   - updateUserPassword:
-      name: sachbearbeitung
-      password: "sachbearbeitung"
+      name: fmsb
+      password: "foerdermittel"
   - addUser:
-      name: sachbearbeitunghaushalt
+      name: fmsbha
       lastName: sachbearbeitunghaushalt
       firstName: test
       enabled: true
       emailVerified: true
-      email: sachbearbeitunghaushalt@example.com
+      email: fmsbha@example.com
   - updateUserPassword:
-      name: sachbearbeitunghaushalt
-      password: "sachbearbeitunghaushalt"
+      name: fmsbha
+      password: "foerdermittel"
