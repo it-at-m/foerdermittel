@@ -5,7 +5,7 @@ changes:
   - addUser:
       name: fmad
       lastName: admin
-      firstName: test
+      firstName: testa
       enabled: true
       emailVerified: true
       email: fmad@example.com
@@ -15,7 +15,7 @@ changes:
   - addUser:
       name: fmsb
       lastName: sachbearbeitung
-      firstName: test
+      firstName: tests
       enabled: true
       emailVerified: true
       email: fmsb@example.com
@@ -25,7 +25,7 @@ changes:
   - addUser:
       name: fmsbha
       lastName: sachbearbeitunghaushalt
-      firstName: test
+      firstName: testsh
       enabled: true
       emailVerified: true
       email: fmsbha@example.com
