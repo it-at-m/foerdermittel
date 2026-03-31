@@ -138,114 +138,118 @@ SELECT x0  AS v_p_typ,
        x27 AS v_r_erh_z,
        x28 AS v_r_erh_d,
        x29 AS v_r_erh_k
-FROM (SELECT NULL           AS x0,
-             p.projnr       AS x1,
-             p.vndat        AS x2,
-             p.fob_fb       AS x3,
-             p.pname        AS x4,
-             p.pstrasse     AS x5,
-             a.id           AS x6,
-             a.antragstyp   AS x7,
-             a.antragsdatum AS x8,
-             a.geskosten    AS x9,
-             a.zwfkosten    AS x10,
-             a.a_su_z       AS x11,
-             a.a_su_d       AS x12,
-             a.a_su_k       AS x13,
-             b.id           AS x14,
-             b.ant_id       AS x15,
-             b.bzuwart      AS x16,
-             b.bdatum       AS x17,
-             b.bzuwendung_z AS x18,
-             b.bzuwendung_d AS x19,
-             b.bzuwendung_k AS x20,
-             r.bwi_id       AS x21,
-             r.abruf_datum  AS x22,
-             r.abruf_z      AS x23,
-             r.abruf_d      AS x24,
-             r.abruf_k      AS x25,
-             r.erh_datum    AS x26,
-             r.erh_z        AS x27,
-             r.erh_d        AS x28,
-             r.erh_k        AS x29
-      FROM fp_projekte p
-               JOIN fp_antraege a ON p.projnr = a.pro_projnr
-               LEFT JOIN fp_bewilligungen b
-                         ON a.id = b.ant_id
-               LEFT JOIN fp_abrufe r ON b.id = r.bwi_id
+FROM (
+         -- Typ 1: vollständige Verknüpfungen selektieren mit outerjoin
+         SELECT NULL           AS x0,
+                p.projnr       AS x1,
+                p.vndat        AS x2,
+                p.fob_fb       AS x3,
+                p.pname        AS x4,
+                p.pstrasse     AS x5,
+                a.id           AS x6,
+                a.antragstyp   AS x7,
+                a.antragsdatum AS x8,
+                a.geskosten    AS x9,
+                a.zwfkosten    AS x10,
+                a.a_su_z       AS x11,
+                a.a_su_d       AS x12,
+                a.a_su_k       AS x13,
+                b.id           AS x14,
+                b.ant_id       AS x15,
+                b.bzuwart      AS x16,
+                b.bdatum       AS x17,
+                b.bzuwendung_z AS x18,
+                b.bzuwendung_d AS x19,
+                b.bzuwendung_k AS x20,
+                r.bwi_id       AS x21,
+                r.abruf_datum  AS x22,
+                r.abruf_z      AS x23,
+                r.abruf_d      AS x24,
+                r.abruf_k      AS x25,
+                r.erh_datum    AS x26,
+                r.erh_z        AS x27,
+                r.erh_d        AS x28,
+                r.erh_k        AS x29
+         FROM fp_projekte p
+                  JOIN fp_antraege a ON p.projnr = a.pro_projnr
+                  LEFT JOIN fp_bewilligungen b
+                            ON a.id = b.ant_id
+                  LEFT JOIN fp_abrufe r ON b.id = r.bwi_id
 
-      UNION
+         UNION
 
-      SELECT 'Bewilligung ohne Antrag',
-             p.projnr,
-             p.vndat,
-             p.fob_fb,
-             p.pname,
-             p.pstrasse,
-             NULL,
-             NULL,
-             NULL,
-             NULL,
-             NULL,
-             NULL,
-             NULL,
-             NULL,
-             b.id,
-             b.ant_id,
-             b.bzuwart,
-             b.bdatum,
-             b.bzuwendung_z,
-             b.bzuwendung_d,
-             b.bzuwendung_k,
-             r.bwi_id,
-             r.abruf_datum,
-             r.abruf_z,
-             r.abruf_d,
-             r.abruf_k,
-             r.erh_datum,
-             r.erh_z,
-             r.erh_d,
-             r.erh_k
-      FROM fp_projekte p
-               JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
-               LEFT JOIN fp_abrufe r ON b.id = r.bwi_id
-      WHERE b.ant_id IS NULL
+         -- Typ 2: Antrag fehlt, Bewill+Abrufe vorhanden mit outerjoin
+         SELECT 'Bewilligung ohne Antrag',
+                p.projnr,
+                p.vndat,
+                p.fob_fb,
+                p.pname,
+                p.pstrasse,
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                b.id,
+                b.ant_id,
+                b.bzuwart,
+                b.bdatum,
+                b.bzuwendung_z,
+                b.bzuwendung_d,
+                b.bzuwendung_k,
+                r.bwi_id,
+                r.abruf_datum,
+                r.abruf_z,
+                r.abruf_d,
+                r.abruf_k,
+                r.erh_datum,
+                r.erh_z,
+                r.erh_d,
+                r.erh_k
+         FROM fp_projekte p
+                  JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
+                  LEFT JOIN fp_abrufe r ON b.id = r.bwi_id
+         WHERE b.ant_id IS NULL
 
-      UNION
+         UNION
 
-      SELECT 'Abruf ohne Bewilligung',
-             p.projnr,
-             p.vndat,
-             p.fob_fb,
-             p.pname,
-             p.pstrasse,
-             NULL,
-             NULL,
-             NULL,
-             NULL,
-             NULL,
-             NULL,
-             NULL,
-             NULL,
-             NULL,
-             NULL,
-             NULL,
-             NULL,
-             NULL,
-             NULL,
-             NULL,
-             r.bwi_id,
-             r.abruf_datum,
-             r.abruf_z,
-             r.abruf_d,
-             r.abruf_k,
-             r.erh_datum,
-             r.erh_z,
-             r.erh_d,
-             r.erh_k
-      FROM fp_projekte p
-               JOIN fp_abrufe r ON p.projnr = r.pro_projnr
-      WHERE r.bwi_id IS NULL) AS x
+         -- Typ 3: Antrag fehlt, Bewill fehlt nur Abrufe ohne Verbindung
+         SELECT 'Abruf ohne Bewilligung',
+                p.projnr,
+                p.vndat,
+                p.fob_fb,
+                p.pname,
+                p.pstrasse,
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                r.bwi_id,
+                r.abruf_datum,
+                r.abruf_z,
+                r.abruf_d,
+                r.abruf_k,
+                r.erh_datum,
+                r.erh_z,
+                r.erh_d,
+                r.erh_k
+         FROM fp_projekte p
+                  JOIN fp_abrufe r ON p.projnr = r.pro_projnr
+         WHERE r.bwi_id IS NULL) AS x
 ;
 --------------------------------------------------------
 --  DDL for View FP_V_ANTRAGSUCHE
