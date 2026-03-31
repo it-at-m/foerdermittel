@@ -3,55 +3,50 @@
 --------------------------------------------------------
 
 CREATE VIEW fp_v_abrufsuche AS
-SELECT
-    -- Projekt
-    p.projnr              AS v_projnr,
-    p.fob_fb              AS v_fob_fb,
-    f.bezeichnung         AS v_fob_bezeichnung,
-    p.pname               AS v_pname,
-    p.pstrasse            AS v_pstrasse,
-    p.kur_kurzbez         AS v_kur_kurzbez,
-    z.bezeichnung         AS v_kur_bezeichnung,
-    p.uas_ua              AS v_uas_ua,
-    u.bezeichnung         AS v_uas_bezeichnung,
-    p.bez_stadtbezirk     AS v_bez_stadtbezirk,
-    s.bezeichnung         AS v_bez_bezeichnung,
-    p.krisofp             AS v_krisofp,
-    p.vndat               AS v_vndat,
-    p.krhzweck            AS v_krhzweck,
-    p.krn_krhname         AS v_krn_krhname,
-    k.bezeichnung         AS v_krn_bezeichnung,
-    p.sapstatauf          AS v_sapstatauf,
-    p.sapanlagennr        AS v_sapanlagennr,
-    -- Abruf
-    a.vnabr               AS v_vnabr,
-    a.abruf_z             AS v_abruf_z,
-    a.abruf_d             AS v_abruf_d,
-    a.abruf_k             AS v_abruf_k,
-    a.abruf_datum         AS v_abruf_datum,
-    a.erh_z               AS v_erh_z,
-    a.erh_d               AS v_erh_d,
-    a.erh_k               AS v_erh_k,
-    a.erh_datum           AS v_erh_datum,
-    a.ref_refnr           AS v_ref_refnr,
-    r.bezeichnung         AS v_ref_bezeichnung,
-    a.sapabrufauftragsnr  AS v_sapabrufauftragsnr,
-    a.sapfakturanr        AS v_sapfakturanr,
-    a.fipo                AS v_fipo,
-    a.buchungskreis       AS v_buchungskreis,
-    a.sachkonto           AS v_sachkonto,
-    a.fipo_k              AS v_fipo_k,
-    a.buchungskreis_k     AS v_buchungskreis_k,
-    a.sachkonto_k         AS v_sachkonto_k,
-    -- Bewilligung
-    b.bdatum              AS v_bdatum,
-    b.bfsatz              AS v_bfsatz,
-    b.bzwfkosten          AS v_bzwfkosten,
-    -- SIEDLUNGSGEBIET BAUPROGRAMM
-    p.sgt_siedlungsgebiet AS v_sgt_siedlungsgebiet,
-    i.bezeichnung         AS v_sgt_bezeichnung,
-    p.bpg_bauprogramm     AS v_bpg_bauprogramm,
-    o.bezeichnung         AS v_bpg_bezeichnung
+SELECT p.projnr              AS v_projnr,
+       p.fob_fb              AS v_fob_fb,
+       f.bezeichnung         AS v_fob_bezeichnung,
+       p.pname               AS v_pname,
+       p.pstrasse            AS v_pstrasse,
+       p.kur_kurzbez         AS v_kur_kurzbez,
+       z.bezeichnung         AS v_kur_bezeichnung,
+       p.uas_ua              AS v_uas_ua,
+       u.bezeichnung         AS v_uas_bezeichnung,
+       p.bez_stadtbezirk     AS v_bez_stadtbezirk,
+       s.bezeichnung         AS v_bez_bezeichnung,
+       p.krisofp             AS v_krisofp,
+       p.vndat               AS v_vndat,
+       p.krhzweck            AS v_krhzweck,
+       p.krn_krhname         AS v_krn_krhname,
+       k.bezeichnung         AS v_krn_bezeichnung,
+       p.sapstatauf          AS v_sapstatauf,
+       p.sapanlagennr        AS v_sapanlagennr,
+       a.vnabr               AS v_vnabr,
+       a.abruf_z             AS v_abruf_z,
+       a.abruf_d             AS v_abruf_d,
+       a.abruf_k             AS v_abruf_k,
+       a.abruf_datum         AS v_abruf_datum,
+       a.erh_z               AS v_erh_z,
+       a.erh_d               AS v_erh_d,
+       a.erh_k               AS v_erh_k,
+       a.erh_datum           AS v_erh_datum,
+       a.ref_refnr           AS v_ref_refnr,
+       r.bezeichnung         AS v_ref_bezeichnung,
+       a.sapabrufauftragsnr  AS v_sapabrufauftragsnr,
+       a.sapfakturanr        AS v_sapfakturanr,
+       a.fipo                AS v_fipo,
+       a.buchungskreis       AS v_buchungskreis,
+       a.sachkonto           AS v_sachkonto,
+       a.fipo_k              AS v_fipo_k,
+       a.buchungskreis_k     AS v_buchungskreis_k,
+       a.sachkonto_k         AS v_sachkonto_k,
+       b.bdatum              AS v_bdatum,
+       b.bfsatz              AS v_bfsatz,
+       b.bzwfkosten          AS v_bzwfkosten,
+       p.sgt_siedlungsgebiet AS v_sgt_siedlungsgebiet,
+       i.bezeichnung         AS v_sgt_bezeichnung,
+       p.bpg_bauprogramm     AS v_bpg_bauprogramm,
+       o.bezeichnung         AS v_bpg_bezeichnung
 FROM fp_projekte p
          JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
          JOIN fp_abrufe a ON p.projnr = a.pro_projnr
@@ -143,7 +138,7 @@ SELECT x0  AS v_p_typ,
        x27 AS v_r_erh_z,
        x28 AS v_r_erh_d,
        x29 AS v_r_erh_k
-FROM (SELECT NULL           AS x0, -- Typ1
+FROM (SELECT NULL           AS x0,
              p.projnr       AS x1,
              p.vndat        AS x2,
              p.fob_fb       AS x3,
@@ -176,12 +171,12 @@ FROM (SELECT NULL           AS x0, -- Typ1
       FROM fp_projekte p
                JOIN fp_antraege a ON p.projnr = a.pro_projnr
                LEFT JOIN fp_bewilligungen b
-                         ON a.id = b.ant_id -- Typ 1: vollständige Verknüpfungen selektieren mit outerjoin
+                         ON a.id = b.ant_id
                LEFT JOIN fp_abrufe r ON b.id = r.bwi_id
 
       UNION
 
-      SELECT 'Bewilligung ohne Antrag', -- Typ2
+      SELECT 'Bewilligung ohne Antrag',
              p.projnr,
              p.vndat,
              p.fob_fb,
@@ -218,7 +213,7 @@ FROM (SELECT NULL           AS x0, -- Typ1
 
       UNION
 
-      SELECT 'Abruf ohne Bewilligung', -- Typ3
+      SELECT 'Abruf ohne Bewilligung',
              p.projnr,
              p.vndat,
              p.fob_fb,
@@ -260,7 +255,7 @@ CREATE VIEW fp_v_antragsuche AS
 SELECT
     --  geändert Sep 2024:
     --  Sicherstellen, dass je Antrag nur ein Record geliefert wird.
-    --  unabhängig wieviele Bewilligungen vorliegen (0 .. viele)
+    --  unabhängig wie viele Bewilligungen vorliegen (0 .. viele)
     --  deshalb zwei Select mit UNION.
     --
     --  1. Select: Antrag besitzt min. 1 Bewilligung --> liefert nur die jüngste Bewilligung
@@ -352,9 +347,9 @@ p.sgt_siedlungsgebiet,
 i.bezeichnung,
 p.bpg_bauprogramm,
 o.bezeichnung,
-NULL, --B.ID,
-NULL, --B.GESZUWENDUNGEN,
-NULL  --B.BDATUM
+NULL,
+NULL,
+NULL
 FROM fp_projekte p
          JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
          JOIN fp_antraege a ON p.projnr = a.pro_projnr
@@ -383,46 +378,42 @@ GROUP BY pro_projnr
 --------------------------------------------------------
 
 CREATE VIEW fp_v_bewill_abrufe AS
-SELECT
-    -- Projekt
-    p.projnr                    AS v_projnr,
-    p.fob_fb                    AS v_fob_fb,
-    f.bezeichnung               AS v_fob_bezeichnung,
-    p.pname                     AS v_pname,
-    p.pstrasse                  AS v_pstrasse,
-    p.kur_kurzbez               AS v_kur_kurzbez,
-    z.bezeichnung               AS v_kur_bezeichnung,
-    p.uas_ua                    AS v_uas_ua,
-    u.bezeichnung               AS v_uas_bezeichnung,
-    p.bez_stadtbezirk           AS v_bez_stadtbezirk,
-    s.bezeichnung               AS v_bez_bezeichnung,
-    p.krisofp                   AS v_krisofp,
-    p.vndat                     AS v_vndat,
-    -- Abruf
-    SUM(COALESCE(a.abruf_z, 0)) AS v_sum_abruf_z,
-    SUM(COALESCE(a.abruf_d, 0)) AS v_sum_abruf_d,
-    SUM(COALESCE(a.abruf_k, 0)) AS v_sum_abruf_k,
-    MIN(a.abruf_datum)          AS v_min_abruf_datum,
-    SUM(COALESCE(a.erh_z, 0))   AS v_sum_erh_z,
-    SUM(COALESCE(a.erh_d, 0))   AS v_sum_erh_d,
-    SUM(COALESCE(a.erh_k, 0))   AS v_sum_erh_k,
-    MIN(a.erh_datum)            AS v_min_erh_datum,
-    MIN(a.fipo)                 AS v_min_fipo,
-    -- Bewilligung
-    b.id                        AS v_id,
-    b.ant_id                    AS v_ant_id,
-    b.bdatum                    AS v_bdatum,
-    b.afsatz                    AS v_afsatz,
-    b.bfsatz                    AS v_bfsatz,
-    b.bzwfkosten                AS v_bzwfkosten,
-    b.bzuwendung_z              AS v_bzuwendung_z,
-    b.bzuwendung_d              AS v_bzuwendung_d,
-    b.bzuwendung_k              AS v_bzuwendung_k,
-    b.bzuwart                   AS v_bzuwart,
-    b.baktenzeichen             AS v_baktenzeichen,
-    b.geszuwendungen            AS v_geszuwendungen,
-    b.geskonnex                 AS v_geskonnex,
-    b.krw                       AS v_krw
+SELECT p.projnr                    AS v_projnr,
+       p.fob_fb                    AS v_fob_fb,
+       f.bezeichnung               AS v_fob_bezeichnung,
+       p.pname                     AS v_pname,
+       p.pstrasse                  AS v_pstrasse,
+       p.kur_kurzbez               AS v_kur_kurzbez,
+       z.bezeichnung               AS v_kur_bezeichnung,
+       p.uas_ua                    AS v_uas_ua,
+       u.bezeichnung               AS v_uas_bezeichnung,
+       p.bez_stadtbezirk           AS v_bez_stadtbezirk,
+       s.bezeichnung               AS v_bez_bezeichnung,
+       p.krisofp                   AS v_krisofp,
+       p.vndat                     AS v_vndat,
+       SUM(COALESCE(a.abruf_z, 0)) AS v_sum_abruf_z,
+       SUM(COALESCE(a.abruf_d, 0)) AS v_sum_abruf_d,
+       SUM(COALESCE(a.abruf_k, 0)) AS v_sum_abruf_k,
+       MIN(a.abruf_datum)          AS v_min_abruf_datum,
+       SUM(COALESCE(a.erh_z, 0))   AS v_sum_erh_z,
+       SUM(COALESCE(a.erh_d, 0))   AS v_sum_erh_d,
+       SUM(COALESCE(a.erh_k, 0))   AS v_sum_erh_k,
+       MIN(a.erh_datum)            AS v_min_erh_datum,
+       MIN(a.fipo)                 AS v_min_fipo,
+       b.id                        AS v_id,
+       b.ant_id                    AS v_ant_id,
+       b.bdatum                    AS v_bdatum,
+       b.afsatz                    AS v_afsatz,
+       b.bfsatz                    AS v_bfsatz,
+       b.bzwfkosten                AS v_bzwfkosten,
+       b.bzuwendung_z              AS v_bzuwendung_z,
+       b.bzuwendung_d              AS v_bzuwendung_d,
+       b.bzuwendung_k              AS v_bzuwendung_k,
+       b.bzuwart                   AS v_bzuwart,
+       b.baktenzeichen             AS v_baktenzeichen,
+       b.geszuwendungen            AS v_geszuwendungen,
+       b.geskonnex                 AS v_geskonnex,
+       b.krw                       AS v_krw
 FROM fp_projekte p
          JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
          JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
@@ -476,7 +467,6 @@ SELECT p.projnr              AS v_projnr,
        s.bezeichnung         AS v_bez_bezeichnung,
        p.krisofp             AS v_krisofp,
        p.vndat               AS v_vndat,
-       -- Antrag
        a.antragsdatum        AS v_antragsdatum,
        a.antragstyp          AS v_antragstyp,
        a.geskosten           AS v_geskosten,
@@ -487,7 +477,6 @@ SELECT p.projnr              AS v_projnr,
        a.b_vor_su_z          AS v_b_vor_su_z,
        a.b_vor_su_d          AS v_b_vor_su_d,
        a.b_vor_su_k          AS v_b_vor_su_k,
-       -- Bewilligung
        b.id                  AS v_id,
        b.ant_id              AS v_ant_id,
        b.bdatum              AS v_bdatum,
@@ -503,7 +492,6 @@ SELECT p.projnr              AS v_projnr,
        b.geskonnex           AS v_geskonnex,
        b.krw                 AS v_krw,
        b.notizen             AS v_notizen,
-       -- SIEDLUNGSGEBIET BAUPROGRAMM
        p.sgt_siedlungsgebiet AS v_sgt_siedlungsgebiet,
        i.bezeichnung         AS v_sgt_bezeichnung,
        p.bpg_bauprogramm     AS v_bpg_bauprogramm,
@@ -1960,54 +1948,48 @@ SELECT x0 AS v_typ,
        x1 AS v_projnr,
        x2 AS v_datum,
        x3 AS v_notizen
-FROM (
-         -- Typ Projekt
-         SELECT 'Projekt' AS x0,
-                p.projnr  AS x1,
-                p.vndat   AS x2,
-                p.notizen AS x3
-         FROM fp_projekte p
-         WHERE p.notizen IS NOT NULL
+FROM (SELECT 'Projekt' AS x0,
+             p.projnr  AS x1,
+             p.vndat   AS x2,
+             p.notizen AS x3
+      FROM fp_projekte p
+      WHERE p.notizen IS NOT NULL
 
-         UNION ALL
+      UNION ALL
 
-         -- Typ Antrag
-         SELECT 'Antrag'       AS x0,
-                a.pro_projnr   AS x1,
-                a.antragsdatum AS x2,
-                a.notizen      AS x3
-         FROM fp_antraege a
-         WHERE a.notizen IS NOT NULL
+      SELECT 'Antrag'       AS x0,
+             a.pro_projnr   AS x1,
+             a.antragsdatum AS x2,
+             a.notizen      AS x3
+      FROM fp_antraege a
+      WHERE a.notizen IS NOT NULL
 
-         UNION ALL
+      UNION ALL
 
-         -- Typ Bewilligungen
-         SELECT 'Bewilligung' AS x0,
-                b.pro_projnr  AS x1,
-                b.bdatum      AS x2,
-                b.notizen     AS x3
-         FROM fp_bewilligungen b
-         WHERE b.notizen IS NOT NULL
+      SELECT 'Bewilligung' AS x0,
+             b.pro_projnr  AS x1,
+             b.bdatum      AS x2,
+             b.notizen     AS x3
+      FROM fp_bewilligungen b
+      WHERE b.notizen IS NOT NULL
 
-         UNION
+      UNION
 
-         -- Typ Abruf
-         SELECT 'Abruf'       AS x0,
-                r.pro_projnr  AS x1,
-                r.abruf_datum AS x2,
-                r.notizen     AS x3
-         FROM fp_abrufe r
-         WHERE r.notizen IS NOT NULL
+      SELECT 'Abruf'       AS x0,
+             r.pro_projnr  AS x1,
+             r.abruf_datum AS x2,
+             r.notizen     AS x3
+      FROM fp_abrufe r
+      WHERE r.notizen IS NOT NULL
 
-         UNION
+      UNION
 
-         -- Typ Termin
-         SELECT 'Termin'                                                                     AS x0,
-                t.pro_projnr                                                                 AS x1,
-                t.termin                                                                     AS x2,
-                CONCAT(t.notizen, E'\r\nZuständig: ', t.zustaendig, ' Telefon: ', t.telefon) AS x3
-         FROM fp_projekttermine t
-         WHERE t.notizen IS NOT NULL) AS x
+      SELECT 'Termin'                                                                     AS x0,
+             t.pro_projnr                                                                 AS x1,
+             t.termin                                                                     AS x2,
+             CONCAT(t.notizen, E'\r\nZuständig: ', t.zustaendig, ' Telefon: ', t.telefon) AS x3
+      FROM fp_projekttermine t
+      WHERE t.notizen IS NOT NULL) AS x
 ;
 
 --------------------------------------------------------
