@@ -3,15 +3,13 @@ package de.muenchen.oss.foerdermittel.backend.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "fp_euinformationen")
 public class EuInformationen {

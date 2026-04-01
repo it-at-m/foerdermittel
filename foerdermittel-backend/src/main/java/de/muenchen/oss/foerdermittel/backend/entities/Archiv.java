@@ -2,14 +2,12 @@ package de.muenchen.oss.foerdermittel.backend.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "fp_archiv", indexes = {@Index(name = "fp_archiv_pro_projnr_idx",
         columnList = "pro_projnr")})

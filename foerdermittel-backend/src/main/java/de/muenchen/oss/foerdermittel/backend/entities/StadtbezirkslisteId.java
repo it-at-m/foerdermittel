@@ -5,14 +5,12 @@ import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-@Getter
-@Setter
+@Data
 @EqualsAndHashCode
 @Embeddable
 public class StadtbezirkslisteId implements Serializable {

@@ -3,13 +3,11 @@ package de.muenchen.oss.foerdermittel.backend.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.math.BigDecimal;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "fp_ablageindexe")
 public class Ablageindex {

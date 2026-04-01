@@ -2,13 +2,11 @@ package de.muenchen.oss.foerdermittel.backend.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "fp_protokoll")
 public class Protokoll {

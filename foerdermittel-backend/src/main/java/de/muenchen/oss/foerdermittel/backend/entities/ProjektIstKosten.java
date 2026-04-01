@@ -2,13 +2,11 @@ package de.muenchen.oss.foerdermittel.backend.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.math.BigDecimal;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "fp_projektistkosten", indexes = {@Index(name = "fp_projektistkosten_pro_projnr_idx",
         columnList = "pro_projnr")})
