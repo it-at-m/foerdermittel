@@ -16,7 +16,7 @@ spring:
     open-in-view: false # Disable OSIV
   flyway:
     locations:
-      - classpath:db/migration/schema
+      - classpath:db/migration
 
 server:
   error:
