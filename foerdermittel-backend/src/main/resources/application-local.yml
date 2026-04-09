@@ -15,6 +15,7 @@ spring:
   flyway:
     locations:
       - classpath:db/migration
+      - classpath:db/testdata
   security:
     oauth2:
       resourceserver:
