@@ -3,19 +3,19 @@
 ----------------------------------------
 
 TRUNCATE TABLE fp_bauleitungen CASCADE;
-INSERT INTO fp_bauleitungen
+INSERT INTO fp_bauleitungen (bauleitung, bezeichnung)
 VALUES ('A', 'Bauleitung A für Tests'),
        ('B', 'Bauleitung B für Tests'),
        ('C', 'Bauleitung C für Tests');
 
 TRUNCATE TABLE fp_bauprogramme CASCADE;
-INSERT INTO fp_bauprogramme
+INSERT INTO fp_bauprogramme (bauprogramm, bezeichnung)
 VALUES (1, 'Bauprogramm 1 für Tests'),
        (2, 'Bauprogramm 2 für Tests'),
        (3, 'Bauprogramm 3 für Tests');
 
 TRUNCATE TABLE fp_benutzerhinweise CASCADE;
-INSERT INTO fp_benutzerhinweise
+INSERT INTO fp_benutzerhinweise (for_formsmodul, hinweis1, hinweis2, hinweis3)
 VALUES ('FMW_ABLAGEINDEX_F', 'Hinweis1 für Tests', 'Hinweis2 für Tests', 'Hinweis3 für Tests'),
        ('FMW_ABRUFE_F', 'Hinweis1 für Tests', 'Hinweis2 für Tests', 'Hinweis3 für Tests'),
        ('FMW_ABRUFSUCHE_F', 'Hinweis1 für Tests', 'Hinweis2 für Tests', 'Hinweis3 für Tests'),
@@ -84,9 +84,8 @@ VALUES ('FMW_ABLAGEINDEX_F', 'Hinweis1 für Tests', 'Hinweis2 für Tests', 'Hinw
        ('FMW_UNTERABSCHNITTE_F', 'Hinweis1 für Tests', 'Hinweis2 für Tests', 'Hinweis3 für Tests'),
        ('FMW_VNSUCHE_F', 'Hinweis1 für Tests', 'Hinweis2 für Tests', 'Hinweis3 für Tests');
 
-
 TRUNCATE TABLE fp_domains CASCADE;
-INSERT INTO fp_domains
+INSERT INTO fp_domains (tabelle, spalte, wert, beschreibung)
 VALUES ('fp_abrufe', 'vnabr', 'A', 'Wert A (fp_abrufe -> vnabr) für Tests'),
        ('fp_abrufe', 'vnabr', 'B', 'Wert B (fp_abrufe -> vnabr) für Tests'),
        ('fp_abrufe', 'vnabr', 'C', 'Wert C (fp_abrufe -> vnabr) für Tests'),
@@ -96,8 +95,8 @@ VALUES ('fp_abrufe', 'vnabr', 'A', 'Wert A (fp_abrufe -> vnabr) für Tests'),
        ('fp_bewilligungen', 'bzuwart', 'A', 'Wert A (fp_bewilligungen -> bzuwart) für Tests'),
        ('fp_bewilligungen', 'bzuwart', 'B', 'Wert B (fp_bewilligungen -> bzuwart) für Tests'),
        ('fp_bewilligungen', 'bzuwart', 'C', 'Wert C (fp_bewilligungen -> bzuwart) für Tests'),
-       ('fp_bewilligungen', 'krw', 'A', 'Wert C (fp_bewilligungen -> krw) für Tests'),
-       ('fp_bewilligungen', 'krw', 'B', 'Wert C (fp_bewilligungen -> krw) für Tests'),
+       ('fp_bewilligungen', 'krw', 'A', 'Wert A (fp_bewilligungen -> krw) für Tests'),
+       ('fp_bewilligungen', 'krw', 'B', 'Wert B (fp_bewilligungen -> krw) für Tests'),
        ('fp_bewilligungen', 'krw', 'C', 'Wert C (fp_bewilligungen -> krw) für Tests'),
        ('fp_projekte', 'baubeendet', 'A', 'Wert A (fp_projekte -> baubeendet) für Tests'),
        ('fp_projekte', 'baubeendet', 'B', 'Wert B (fp_projekte -> baubeendet) für Tests'),
@@ -112,9 +111,8 @@ VALUES ('fp_abrufe', 'vnabr', 'A', 'Wert A (fp_abrufe -> vnabr) für Tests'),
        ('fp_projekte', 'psbauref', 'B', 'Wert B (fp_projekte -> psbauref) für Tests'),
        ('fp_projekte', 'psbauref', 'C', 'Wert C (fp_projekte -> psbauref) für Tests');
 
-
 TRUNCATE TABLE fp_foerderbereiche CASCADE;
-INSERT INTO fp_foerderbereiche
+INSERT INTO fp_foerderbereiche (fb, bezeichnung, funktion1, funktion2, funktion3, funktion4)
 VALUES (1, 'Förderbereich 1 für Tests', false, false, false, false),
        (2, 'Förderbereich 2 für Tests', true, false, false, false),
        (3, 'Förderbereich 3 für Tests', false, true, false, false),
@@ -132,75 +130,74 @@ VALUES (1, 'Förderbereich 1 für Tests', false, false, false, false),
        (15, 'Förderbereich 15 für Tests', false, true, true, true),
        (16, 'Förderbereich 16 für Tests', true, true, true, true);
 
-
 TRUNCATE TABLE fp_krankenhaeuser CASCADE;
-INSERT INTO fp_krankenhaeuser
+INSERT INTO fp_krankenhaeuser (krhname, bezeichnung)
 VALUES ('A', 'Krankenhaus A für Tests'),
        ('B', 'Krankenhaus B für Tests'),
        ('C', 'Krankenhaus C für Tests');
 
 TRUNCATE TABLE fp_kurzbezeichnungen CASCADE;
-INSERT INTO fp_kurzbezeichnungen
+INSERT INTO fp_kurzbezeichnungen (kurzbez, bezeichnung)
 VALUES ('KURZBEZ1', 'Kurzbezeichnung KURZBEZ1 für Tests'),
        ('KURZBEZ2', 'Kurzbezeichnung KURZBEZ2 für Tests'),
        ('KURZBEZ3', 'Kurzbezeichnung KURZBEZ3 für Tests');
 
 TRUNCATE TABLE fp_publikationen CASCADE;
-INSERT into fp_publikationen
+INSERT into fp_publikationen (kurzform, bezeichnung)
 VALUES ('A', 'Publikation A für Tests'),
        ('B', 'Publikation B für Tests'),
        ('C', 'Publikation C für Tests');
 
 TRUNCATE TABLE fp_referate CASCADE;
-INSERT INTO fp_referate
+INSERT INTO fp_referate (refnr, bezeichnung)
 VALUES (1, 'Referat 1 für Tests'),
        (2, 'Referat 2 für Tests'),
        (3, 'Referat 3 für Tests');
 
 TRUNCATE TABLE fp_siedlungsgebiete CASCADE;
-INSERT INTO fp_siedlungsgebiete
+INSERT INTO fp_siedlungsgebiete (siedlungsgebiet, bezeichnung)
 VALUES (1, 'Siedlungsgebiet 1 für Tests'),
        (2, 'Siedlungsgebiet 2 für Tests'),
        (3, 'Siedlungsgebiet 3 für Tests');
 
 TRUNCATE TABLE fp_stadtbezirke CASCADE;
-INSERT INTO fp_stadtbezirke
+INSERT INTO fp_stadtbezirke (stadtbezirk, bezeichnung)
 VALUES (1, 'Stadtbezirk 1 für Tests'),
        (2, 'Stadtbezirk 2 für Tests'),
        (3, 'Stadtbezirk 3 für Tests');
 
 TRUNCATE TABLE fp_listennamen CASCADE;
-INSERT INTO fp_listennamen
+INSERT INTO fp_listennamen (kurzbez, bezeichnung)
 VALUES ('SL1', 'Listenname SL1 für Tests'),
        ('SL2', 'Listenname SL2 für Tests'),
        ('SL3', 'Listenname SL3 für Tests');
 
 TRUNCATE TABLE fp_stadtbezirkslisten CASCADE;
-INSERT INTO fp_stadtbezirkslisten
+INSERT INTO fp_stadtbezirkslisten (lna_kurzbez, bez_stadtbezirk, bezeichnung)
 VALUES ('SL1', 1, 'Zuordnung von Stadtbezirk 1 zu Listenname SL1 für Tests'),
        ('SL2', 2, 'Zuordnung von Stadtbezirk 2 zu Listenname SL2 für Tests'),
        ('SL2', 3, 'Zuordnung von Stadtbezirk 3 zu Listenname SL2 für Tests');
 
 TRUNCATE TABLE fp_stichwortbereiche CASCADE;
-INSERT INTO fp_stichwortbereiche
+INSERT INTO fp_stichwortbereiche (bereich, bezeichnung)
 VALUES ('STICHWORTBEREICH1', 'Stichwortbereich STICHWORTBEREICH1 für Tests'),
        ('STICHWORTBEREICH2', 'Stichwortbereich STICHWORTBEREICH2 für Tests'),
        ('STICHWORTBEREICH3', 'Stichwortbereich STICHWORTBEREICH3 für Tests');
 
 TRUNCATE TABLE fp_traeger CASCADE;
-INSERT INTO fp_traeger
+INSERT INTO fp_traeger (kurzform, bezeichnung)
 VALUES (1, 'Träger 1 für Tests'),
        (2, 'Träger 2 für Tests'),
        (3, 'Träger 3 für Tests');
 
 TRUNCATE TABLE fp_hauptabschnitte CASCADE;
-INSERT INTO fp_hauptabschnitte
+INSERT INTO fp_hauptabschnitte (ha, bezeichnung)
 VALUES ('01', 'Hauptabschnitt 01 für Tests'),
-       ('02', 'Hauptabschnitt 01 für Tests'),
-       ('03', 'Hauptabschnitt 01 für Tests');
+       ('02', 'Hauptabschnitt 02 für Tests'),
+       ('03', 'Hauptabschnitt 03 für Tests');
 
 TRUNCATE TABLE fp_unterabschnitte CASCADE;
-INSERT INTO fp_unterabschnitte
+INSERT INTO fp_unterabschnitte (ua, bezeichnung, has_ha)
 VALUES ('11', 'Unterabschnitt 11 für Tests', '01'),
        ('21', 'Unterabschnitt 21 für Tests', '02'),
        ('22', 'Unterabschnitt 22 für Tests', '02'),
