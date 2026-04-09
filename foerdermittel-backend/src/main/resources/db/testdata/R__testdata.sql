@@ -1,6 +1,8 @@
+/*
 ----------------------------------------
 ------- MASTER DATA (Stammdaten) -------
 ----------------------------------------
+*/
 
 TRUNCATE TABLE fp_bauleitungen CASCADE;
 INSERT INTO fp_bauleitungen (bauleitung, bezeichnung)
