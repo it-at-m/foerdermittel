@@ -40,7 +40,7 @@ VALUES ('FMW_ABLAGEINDEX_F', 'Hinweis1 (FMW_ABLAGEINDEX_F) für Tests', 'Hinweis
         'Hinweis3 (FMW_BEWILLIGUNGEN_F) für Tests'),
        ('FMW_BEWILLSUCHE_F', 'Hinweis1 (FMW_BEWILLSUCHE_F) für Tests', 'Hinweis2 (FMW_BEWILLSUCHE_F) für Tests',
         'Hinweis3 (FMW_BEWILLSUCHE_F) für Tests'),
-       ('FMW_CHECKLISTEN_F', 'Hinweis1 8FMW_CHECKLISTEN_F) für Tests', 'Hinweis2 (FMW_CHECKLISTEN_F) für Tests',
+       ('FMW_CHECKLISTEN_F', 'Hinweis1 (FMW_CHECKLISTEN_F) für Tests', 'Hinweis2 (FMW_CHECKLISTEN_F) für Tests',
         'Hinweis3 (FMW_CHECKLISTEN_F) für Tests'),
        ('FMW_DOMAINS_F', 'Hinweis1 (FMW_DOMAINS_F) für Tests', 'Hinweis2 (FMW_DOMAINS_F) für Tests',
         'Hinweis3 (FMW_DOMAINS_F) für Tests'),
