@@ -151,33 +151,6 @@ VALUES ('FMW_ABLAGEINDEX_F', 'Funktion (FMW_ABLAGEINDEX_F) für Tests', 'Bedienu
        ('FMW_VNSUCHE_F', 'Funktion (FMW_VNSUCHE_F) für Tests', 'Bedienung (FMW_VNSUCHE_F) für Tests',
         'Vorgaben / Prüfung (FMW_VNSUCHE_F) für Tests');
 
-TRUNCATE TABLE fp_domains CASCADE;
-INSERT INTO fp_domains (tabelle, spalte, wert, beschreibung)
-VALUES ('fp_abrufe', 'vnabr', 'A', 'Wert A (fp_abrufe -> vnabr) für Tests'),
-       ('fp_abrufe', 'vnabr', 'B', 'Wert B (fp_abrufe -> vnabr) für Tests'),
-       ('fp_abrufe', 'vnabr', 'C', 'Wert C (fp_abrufe -> vnabr) für Tests'),
-       ('fp_antraege', 'antragstyp', 'A', 'Wert A (fp_antraege -> antragstyp) für Tests'),
-       ('fp_antraege', 'antragstyp', 'B', 'Wert B (fp_antraege -> antragstyp) für Tests'),
-       ('fp_antraege', 'antragstyp', 'C', 'Wert C (fp_antraege -> antragstyp) für Tests'),
-       ('fp_bewilligungen', 'bzuwart', 'A', 'Wert A (fp_bewilligungen -> bzuwart) für Tests'),
-       ('fp_bewilligungen', 'bzuwart', 'B', 'Wert B (fp_bewilligungen -> bzuwart) für Tests'),
-       ('fp_bewilligungen', 'bzuwart', 'C', 'Wert C (fp_bewilligungen -> bzuwart) für Tests'),
-       ('fp_bewilligungen', 'krw', 'A', 'Wert A (fp_bewilligungen -> krw) für Tests'),
-       ('fp_bewilligungen', 'krw', 'B', 'Wert B (fp_bewilligungen -> krw) für Tests'),
-       ('fp_bewilligungen', 'krw', 'C', 'Wert C (fp_bewilligungen -> krw) für Tests'),
-       ('fp_projekte', 'baubeendet', 'A', 'Wert A (fp_projekte -> baubeendet) für Tests'),
-       ('fp_projekte', 'baubeendet', 'B', 'Wert B (fp_projekte -> baubeendet) für Tests'),
-       ('fp_projekte', 'baubeendet', 'C', 'Wert C (fp_projekte -> baubeendet) für Tests'),
-       ('fp_projekte', 'krhzweck', 'A', 'Wert A (fp_projekte -> krhzweck) für Tests'),
-       ('fp_projekte', 'krhzweck', 'B', 'Wert B (fp_projekte -> krhzweck) für Tests'),
-       ('fp_projekte', 'krhzweck', 'C', 'Wert C (fp_projekte -> krhzweck) für Tests'),
-       ('fp_projekte', 'krisofp', 'A', 'Wert A (fp_projekte -> krisofp) für Tests'),
-       ('fp_projekte', 'krisofp', 'B', 'Wert B (fp_projekte -> krisofp) für Tests'),
-       ('fp_projekte', 'krisofp', 'C', 'Wert C (fp_projekte -> krisofp) für Tests'),
-       ('fp_projekte', 'psbauref', 'A', 'Wert A (fp_projekte -> psbauref) für Tests'),
-       ('fp_projekte', 'psbauref', 'B', 'Wert B (fp_projekte -> psbauref) für Tests'),
-       ('fp_projekte', 'psbauref', 'C', 'Wert C (fp_projekte -> psbauref) für Tests');
-
 TRUNCATE TABLE fp_foerderbereiche CASCADE;
 INSERT INTO fp_foerderbereiche (fb, bezeichnung, finanzausgleich, jahresstatistik, kindergarten, nicht_relevant)
 VALUES (1, 'Förderbereich 1 für Tests', false, false, false, false),
