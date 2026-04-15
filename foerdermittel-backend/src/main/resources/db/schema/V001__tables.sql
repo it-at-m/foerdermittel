@@ -49,20 +49,20 @@ COMMENT ON TABLE fp_referate IS 'Aufstellung aller Referate  (dbase:referate)';
 
 CREATE TABLE fp_foerderbereiche
 (
-    fb          NUMERIC(2) PRIMARY KEY,
-    bezeichnung VARCHAR(200)          NOT NULL,
-    funktion1   BOOLEAN DEFAULT FALSE NOT NULL,
-    funktion2   BOOLEAN DEFAULT FALSE NOT NULL,
-    funktion3   BOOLEAN DEFAULT FALSE NOT NULL,
-    funktion4   BOOLEAN DEFAULT FALSE NOT NULL
+    fb              NUMERIC(2) PRIMARY KEY,
+    bezeichnung     VARCHAR(200)          NOT NULL,
+    finanzausgleich BOOLEAN DEFAULT FALSE NOT NULL,
+    jahresstatistik BOOLEAN DEFAULT FALSE NOT NULL,
+    kindergarten    BOOLEAN DEFAULT FALSE NOT NULL,
+    nicht_relevant  BOOLEAN DEFAULT FALSE NOT NULL
 );
 
 COMMENT ON COLUMN fp_foerderbereiche.fb IS 'Abkürzung des Förderbereichs';
 COMMENT ON COLUMN fp_foerderbereiche.bezeichnung IS 'Bezeichnung des Förderbereichs';
-COMMENT ON COLUMN fp_foerderbereiche.funktion1 IS 'Soll der Förderbereich in der FAG-Statistik verwendet werden';
-COMMENT ON COLUMN fp_foerderbereiche.funktion2 IS 'Soll der Förderbereich in der Jahresstatistik verwendet werden';
-COMMENT ON COLUMN fp_foerderbereiche.funktion3 IS 'Ist der Förderbereich vom Typ Kindergarten. Wird verwendet in Jahresstatistik.';
-COMMENT ON COLUMN fp_foerderbereiche.funktion4 IS 'Der Förderbereich kann als nicht relevant gekennzeichnet werden. Damit Aussteuerung in manchen Berichten';
+COMMENT ON COLUMN fp_foerderbereiche.finanzausgleich IS 'Soll der Förderbereich in der FAG-Statistik verwendet werden';
+COMMENT ON COLUMN fp_foerderbereiche.jahresstatistik IS 'Soll der Förderbereich in der Jahresstatistik verwendet werden';
+COMMENT ON COLUMN fp_foerderbereiche.kindergarten IS 'Ist der Förderbereich vom Typ Kindergarten. Wird verwendet in Jahresstatistik.';
+COMMENT ON COLUMN fp_foerderbereiche.nicht_relevant IS 'Der Förderbereich kann als nicht relevant gekennzeichnet werden. Damit Aussteuerung in manchen Berichten';
 COMMENT ON TABLE fp_foerderbereiche IS 'Austellung aller Förderbereiche (dbase:fb)';
 --------------------------------------------------------
 --  DDL for Table FP_KURZBEZEICHNUNGEN
@@ -527,17 +527,17 @@ COMMENT ON TABLE fp_archiv IS 'Beschreibt welche allgemeinen Dokumente und Proje
 
 CREATE TABLE fp_benutzerhinweise
 (
-    for_formsmodul VARCHAR(30) PRIMARY KEY,
-    hinweis1       TEXT,
-    hinweis2       TEXT,
-    hinweis3       TEXT
+    view_id               VARCHAR(30) PRIMARY KEY,
+    funktionsbeschreibung TEXT,
+    bedienung             TEXT,
+    pruefung_vorgaben     TEXT
 );
 
-COMMENT ON COLUMN fp_benutzerhinweise.for_formsmodul IS 'Name des Formsmoduls für den Bedienerhinweis';
-COMMENT ON COLUMN fp_benutzerhinweise.hinweis1 IS 'Texte für Benutzerhilfen';
-COMMENT ON COLUMN fp_benutzerhinweise.hinweis2 IS 'Texte für Benutzerhilfen';
-COMMENT ON COLUMN fp_benutzerhinweise.hinweis3 IS 'Texte für Benutzerhilfen';
-COMMENT ON TABLE fp_benutzerhinweise IS 'Enthält Benutzerhinweise im Kontext eines Forms Moduls und dient damit als online Benutzerhilfe';
+COMMENT ON COLUMN fp_benutzerhinweise.view_id IS 'ID der View, für den die Benutzerhinweise gelten';
+COMMENT ON COLUMN fp_benutzerhinweise.funktionsbeschreibung IS 'Text für die Funktionsbeschreibung';
+COMMENT ON COLUMN fp_benutzerhinweise.bedienung IS 'Text für die Bedienung';
+COMMENT ON COLUMN fp_benutzerhinweise.pruefung_vorgaben IS 'Text für Prüfungen und Vorgaben';
+COMMENT ON TABLE fp_benutzerhinweise IS 'Enthält Benutzerhinweise im Kontext einer View und dient damit als editierbare Benutzerhilfe';
 --------------------------------------------------------
 --  DDL for Table FP_DOMAINS
 --------------------------------------------------------
