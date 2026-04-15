@@ -530,17 +530,13 @@ CREATE TABLE fp_benutzerhinweise
     for_formsmodul VARCHAR(30) PRIMARY KEY,
     hinweis1       TEXT,
     hinweis2       TEXT,
-    hinweis3       TEXT,
-    menuetop       VARCHAR(40),
-    menuezeile     VARCHAR(40)
+    hinweis3       TEXT
 );
 
 COMMENT ON COLUMN fp_benutzerhinweise.for_formsmodul IS 'Name des Formsmoduls für den Bedienerhinweis';
 COMMENT ON COLUMN fp_benutzerhinweise.hinweis1 IS 'Texte für Benutzerhilfen';
 COMMENT ON COLUMN fp_benutzerhinweise.hinweis2 IS 'Texte für Benutzerhilfen';
 COMMENT ON COLUMN fp_benutzerhinweise.hinweis3 IS 'Texte für Benutzerhilfen';
-COMMENT ON COLUMN fp_benutzerhinweise.menuetop IS 'Menütext im Topmenü (etwa Projekte)';
-COMMENT ON COLUMN fp_benutzerhinweise.menuezeile IS 'Menütext im aufrufenden Menü (etwa Bericht Zinsen)';
 COMMENT ON TABLE fp_benutzerhinweise IS 'Enthält Benutzerhinweise im Kontext eines Forms Moduls und dient damit als online Benutzerhilfe';
 --------------------------------------------------------
 --  DDL for Table FP_DOMAINS
