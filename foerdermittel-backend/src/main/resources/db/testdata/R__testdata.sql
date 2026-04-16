@@ -4,20 +4,20 @@
 ----------------------------------------
 */
 
-TRUNCATE TABLE fp_bauleitungen CASCADE;
-INSERT INTO fp_bauleitungen (bauleitung, bezeichnung)
+TRUNCATE TABLE bauleitungen CASCADE;
+INSERT INTO bauleitungen (bauleitung, bezeichnung)
 VALUES ('A', 'Bauleitung A für Tests'),
        ('B', 'Bauleitung B für Tests'),
        ('C', 'Bauleitung C für Tests');
 
-TRUNCATE TABLE fp_bauprogramme CASCADE;
-INSERT INTO fp_bauprogramme (bauprogramm, bezeichnung)
+TRUNCATE TABLE bauprogramme CASCADE;
+INSERT INTO bauprogramme (bauprogramm, bezeichnung)
 VALUES (1, 'Bauprogramm 1 für Tests'),
        (2, 'Bauprogramm 2 für Tests'),
        (3, 'Bauprogramm 3 für Tests');
 
-TRUNCATE TABLE fp_benutzerhinweise CASCADE;
-INSERT INTO fp_benutzerhinweise (view_id, funktionsbeschreibung, bedienung, pruefung_vorgaben)
+TRUNCATE TABLE benutzerhinweise CASCADE;
+INSERT INTO benutzerhinweise (view_id, funktionsbeschreibung, bedienung, pruefung_vorgaben)
 VALUES ('FMW_ABLAGEINDEX_F', 'Funktion (FMW_ABLAGEINDEX_F) für Tests', 'Bedienung (FMW_ABLAGEINDEX_F) für Tests',
         'Vorgaben / Prüfung (FMW_ABLAGEINDEX_F) für Tests'),
        ('FMW_ABRUFE_F', 'Funktion (FMW_ABRUFE_F) für Tests', 'Bedienung (FMW_ABRUFE_F) für Tests',
@@ -151,8 +151,8 @@ VALUES ('FMW_ABLAGEINDEX_F', 'Funktion (FMW_ABLAGEINDEX_F) für Tests', 'Bedienu
        ('FMW_VNSUCHE_F', 'Funktion (FMW_VNSUCHE_F) für Tests', 'Bedienung (FMW_VNSUCHE_F) für Tests',
         'Vorgaben / Prüfung (FMW_VNSUCHE_F) für Tests');
 
-TRUNCATE TABLE fp_foerderbereiche CASCADE;
-INSERT INTO fp_foerderbereiche (fb, bezeichnung, finanzausgleich, jahresstatistik, kindergarten, nicht_relevant)
+TRUNCATE TABLE foerderbereiche CASCADE;
+INSERT INTO foerderbereiche (fb, bezeichnung, finanzausgleich, jahresstatistik, kindergarten, nicht_relevant)
 VALUES (1, 'Förderbereich 1 für Tests', false, false, false, false),
        (2, 'Förderbereich 2 für Tests', true, false, false, false),
        (3, 'Förderbereich 3 für Tests', false, true, false, false),
@@ -170,74 +170,74 @@ VALUES (1, 'Förderbereich 1 für Tests', false, false, false, false),
        (15, 'Förderbereich 15 für Tests', false, true, true, true),
        (16, 'Förderbereich 16 für Tests', true, true, true, true);
 
-TRUNCATE TABLE fp_krankenhaeuser CASCADE;
-INSERT INTO fp_krankenhaeuser (krhname, bezeichnung)
+TRUNCATE TABLE krankenhaeuser CASCADE;
+INSERT INTO krankenhaeuser (krhname, bezeichnung)
 VALUES ('A', 'Krankenhaus A für Tests'),
        ('B', 'Krankenhaus B für Tests'),
        ('C', 'Krankenhaus C für Tests');
 
-TRUNCATE TABLE fp_kurzbezeichnungen CASCADE;
-INSERT INTO fp_kurzbezeichnungen (kurzbez, bezeichnung)
+TRUNCATE TABLE kurzbezeichnungen CASCADE;
+INSERT INTO kurzbezeichnungen (kurzbez, bezeichnung)
 VALUES ('KURZBEZ1', 'Kurzbezeichnung KURZBEZ1 für Tests'),
        ('KURZBEZ2', 'Kurzbezeichnung KURZBEZ2 für Tests'),
        ('KURZBEZ3', 'Kurzbezeichnung KURZBEZ3 für Tests');
 
-TRUNCATE TABLE fp_publikationen CASCADE;
-INSERT into fp_publikationen (kurzform, bezeichnung)
+TRUNCATE TABLE publikationen CASCADE;
+INSERT into publikationen (kurzform, bezeichnung)
 VALUES ('A', 'Publikation A für Tests'),
        ('B', 'Publikation B für Tests'),
        ('C', 'Publikation C für Tests');
 
-TRUNCATE TABLE fp_referate CASCADE;
-INSERT INTO fp_referate (refnr, bezeichnung)
+TRUNCATE TABLE referate CASCADE;
+INSERT INTO referate (refnr, bezeichnung)
 VALUES (1, 'Referat 1 für Tests'),
        (2, 'Referat 2 für Tests'),
        (3, 'Referat 3 für Tests');
 
-TRUNCATE TABLE fp_siedlungsgebiete CASCADE;
-INSERT INTO fp_siedlungsgebiete (siedlungsgebiet, bezeichnung)
+TRUNCATE TABLE siedlungsgebiete CASCADE;
+INSERT INTO siedlungsgebiete (siedlungsgebiet, bezeichnung)
 VALUES (1, 'Siedlungsgebiet 1 für Tests'),
        (2, 'Siedlungsgebiet 2 für Tests'),
        (3, 'Siedlungsgebiet 3 für Tests');
 
-TRUNCATE TABLE fp_stadtbezirke CASCADE;
-INSERT INTO fp_stadtbezirke (stadtbezirk, bezeichnung)
+TRUNCATE TABLE stadtbezirke CASCADE;
+INSERT INTO stadtbezirke (stadtbezirk, bezeichnung)
 VALUES (1, 'Stadtbezirk 1 für Tests'),
        (2, 'Stadtbezirk 2 für Tests'),
        (3, 'Stadtbezirk 3 für Tests');
 
-TRUNCATE TABLE fp_listennamen CASCADE;
-INSERT INTO fp_listennamen (kurzbez, bezeichnung)
+TRUNCATE TABLE listennamen CASCADE;
+INSERT INTO listennamen (kurzbez, bezeichnung)
 VALUES ('SL1', 'Listenname SL1 für Tests'),
        ('SL2', 'Listenname SL2 für Tests'),
        ('SL3', 'Listenname SL3 für Tests');
 
-TRUNCATE TABLE fp_stadtbezirkslisten CASCADE;
-INSERT INTO fp_stadtbezirkslisten (lna_kurzbez, bez_stadtbezirk, bezeichnung)
+TRUNCATE TABLE stadtbezirkslisten CASCADE;
+INSERT INTO stadtbezirkslisten (lna_kurzbez, bez_stadtbezirk, bezeichnung)
 VALUES ('SL1', 1, 'Zuordnung von Stadtbezirk 1 zu Listenname SL1 für Tests'),
        ('SL2', 2, 'Zuordnung von Stadtbezirk 2 zu Listenname SL2 für Tests'),
        ('SL2', 3, 'Zuordnung von Stadtbezirk 3 zu Listenname SL2 für Tests');
 
-TRUNCATE TABLE fp_stichwortbereiche CASCADE;
-INSERT INTO fp_stichwortbereiche (bereich, bezeichnung)
+TRUNCATE TABLE stichwortbereiche CASCADE;
+INSERT INTO stichwortbereiche (bereich, bezeichnung)
 VALUES ('STICHWORTBEREICH1', 'Stichwortbereich STICHWORTBEREICH1 für Tests'),
        ('STICHWORTBEREICH2', 'Stichwortbereich STICHWORTBEREICH2 für Tests'),
        ('STICHWORTBEREICH3', 'Stichwortbereich STICHWORTBEREICH3 für Tests');
 
-TRUNCATE TABLE fp_traeger CASCADE;
-INSERT INTO fp_traeger (kurzform, bezeichnung)
+TRUNCATE TABLE traeger CASCADE;
+INSERT INTO traeger (kurzform, bezeichnung)
 VALUES (1, 'Träger 1 für Tests'),
        (2, 'Träger 2 für Tests'),
        (3, 'Träger 3 für Tests');
 
-TRUNCATE TABLE fp_hauptabschnitte CASCADE;
-INSERT INTO fp_hauptabschnitte (ha, bezeichnung)
+TRUNCATE TABLE hauptabschnitte CASCADE;
+INSERT INTO hauptabschnitte (ha, bezeichnung)
 VALUES ('01', 'Hauptabschnitt 01 für Tests'),
        ('02', 'Hauptabschnitt 02 für Tests'),
        ('03', 'Hauptabschnitt 03 für Tests');
 
-TRUNCATE TABLE fp_unterabschnitte CASCADE;
-INSERT INTO fp_unterabschnitte (ua, bezeichnung, has_ha)
+TRUNCATE TABLE unterabschnitte CASCADE;
+INSERT INTO unterabschnitte (ua, bezeichnung, has_ha)
 VALUES ('11', 'Unterabschnitt 11 für Tests', '01'),
        ('21', 'Unterabschnitt 21 für Tests', '02'),
        ('22', 'Unterabschnitt 22 für Tests', '02'),
