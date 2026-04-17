@@ -16,8 +16,8 @@ COMMENT ON TYPE projekte_baubeendet IS 'Enum für Spalte baubeendet in Tabelle p
 CREATE TYPE projekte_krhzweck AS ENUM ('J', 'S', 'R');
 COMMENT ON TYPE projekte_krhzweck IS 'Enum für Spalte krhzweck in Tabelle projekte (J = Jahreskrankenhausprogramm: J, S = Jahreskrankenhausprogramm: S, R = Jahreskrankenhausprogramm: R)';
 
-CREATE TYPE projekte_krisofp AS ENUM ('Z', 'W', 'V', 'K', 'X', 'F', 'Y');
-COMMENT ON TYPE projekte_krisofp IS 'Enum für Spalte krisofp in Tabelle projekte (Z = 4. SIP – Kinderbetreuung 2017-2020/2021, W = 5. SIP – Schulkindbetreuung Land (Hortförd. GS), V = Schulkindbetreuung – Bund (GaFöG), K = KJP II, X = 1.+2. SIP - KriSoFö 2008-2014, F = FAGplus15, Y = 3. SIP - Kinderbetreuung 2015-2019';
+CREATE TYPE projekte_krisofp AS ENUM ('Z', 'W', 'V', 'K', 'S', 'X', 'F', 'Y');
+COMMENT ON TYPE projekte_krisofp IS 'Enum für Spalte krisofp in Tabelle projekte (Z = 4. SIP – Kinderbetreuung 2017-2020/2021, W = 5. SIP – Schulkindbetreuung Land (Hortförd. GS), V = Schulkindbetreuung – Bund (GaFöG), K = KJP II, S = Startchancen-Programm (SCP), X = 1.+2. SIP - KriSoFö 2008-2014, F = FAGplus15, Y = 3. SIP - Kinderbetreuung 2015-2019';
 
 CREATE TYPE projekte_psbauref AS ENUM ('GN', 'GI', 'HB', 'HI', 'HM');
 COMMENT ON TYPE projekte_psbauref IS 'Enum für Spalte psbauref in Tabelle projekte (GN = Abteilung GN im Baureferat, GI = Abteilung GI im Baureferat, HB = Abteilung HB im Baureferat, HI = Abteilung HI im Baureferat, HM = Abteilung HM im Baureferat)';
