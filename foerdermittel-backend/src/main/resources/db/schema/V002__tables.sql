@@ -76,7 +76,7 @@ CREATE TABLE kurzbezeichnungen
 
 COMMENT ON COLUMN kurzbezeichnungen.kurzbez IS 'Kurzbezeichnung für eine Projekt';
 COMMENT ON COLUMN kurzbezeichnungen.bezeichnung IS 'Beschreibung zu einer Kurzbezeichnung';
-COMMENT ON TABLE kurzbezeichnungen IS 'Alle Kurzbezeichnungen zur Klassiifzierung von Projekten  (dbase:kurzbez)';
+COMMENT ON TABLE kurzbezeichnungen IS 'Alle Kurzbezeichnungen zur Klassifizierung von Projekten  (dbase:kurzbez)';
 --------------------------------------------------------
 --  hauptabschnitte
 --------------------------------------------------------
