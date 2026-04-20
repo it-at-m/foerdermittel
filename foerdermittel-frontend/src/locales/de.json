@@ -11,7 +11,12 @@
     "no": "Nein",
     "actions": {
       "close": "Schließen",
-      "search": "Suchen"
+      "search": "Suchen",
+      "cancel": "Abbrechen",
+      "save": "Speichern",
+      "edit": "Bearbeiten",
+      "delete": "Löschen",
+      "actions": "Aktionen"
     },
     "messages": {}
   },
@@ -36,5 +41,9 @@
     }
   },
   "components": {},
-  "domain": {}
+  "domain": {
+    "krankenhaeuser": {
+      "navText": "Krankenhäuser"
+    }
+  }
 }

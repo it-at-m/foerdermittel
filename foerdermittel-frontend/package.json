@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@fontsource/roboto": "5.2.10",
+    "@jsonforms/vue-vuetify": "^3.7.0",
     "@muenchen/appswitcher-vue": "2.2.0",
     "@vueuse/core": "14.2.1",
     "pinia": "3.0.4",

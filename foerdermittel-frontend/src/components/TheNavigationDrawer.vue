@@ -14,6 +14,11 @@
           {{ t("views.getStarted.navText") }}
         </v-list-item-title>
       </v-list-item>
+      <v-list-item to="/krankenhaeuser">
+        <v-list-item-title>
+          {{ t("domain.krankenhaeuser.navText") }}
+        </v-list-item-title>
+      </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
