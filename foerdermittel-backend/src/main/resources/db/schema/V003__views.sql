@@ -1,8 +1,8 @@
 --------------------------------------------------------
---  DDL for View FP_V_ABRUFSUCHE
+--  v_abrufsuche
 --------------------------------------------------------
 
-CREATE VIEW fp_v_abrufsuche AS
+CREATE VIEW v_abrufsuche AS
 SELECT p.projnr              AS v_projnr,
        p.fob_fb              AS v_fob_fb,
        f.bezeichnung         AS v_fob_bezeichnung,
@@ -47,23 +47,23 @@ SELECT p.projnr              AS v_projnr,
        i.bezeichnung         AS v_sgt_bezeichnung,
        p.bpg_bauprogramm     AS v_bpg_bauprogramm,
        o.bezeichnung         AS v_bpg_bezeichnung
-FROM fp_projekte p
-         JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-         JOIN fp_abrufe a ON p.projnr = a.pro_projnr
-         JOIN fp_unterabschnitte u ON p.uas_ua = u.ua
-         JOIN fp_kurzbezeichnungen z ON p.kur_kurzbez = z.kurzbez
-         LEFT JOIN fp_stadtbezirke s ON p.bez_stadtbezirk = s.stadtbezirk
-         LEFT JOIN fp_bewilligungen b ON a.bwi_id = b.id
-         LEFT JOIN fp_krankenhaeuser k ON p.krn_krhname = k.krhname
-         LEFT JOIN fp_referate r ON a.ref_refnr = r.refnr
-         LEFT JOIN fp_bauprogramme o ON p.bpg_bauprogramm = o.bauprogramm
-         LEFT JOIN fp_siedlungsgebiete i ON p.sgt_siedlungsgebiet = i.siedlungsgebiet
+FROM projekte p
+         JOIN foerderbereiche f ON p.fob_fb = f.fb
+         JOIN abrufe a ON p.projnr = a.pro_projnr
+         JOIN unterabschnitte u ON p.uas_ua = u.ua
+         JOIN kurzbezeichnungen z ON p.kur_kurzbez = z.kurzbez
+         LEFT JOIN stadtbezirke s ON p.bez_stadtbezirk = s.stadtbezirk
+         LEFT JOIN bewilligungen b ON a.bwi_id = b.id
+         LEFT JOIN krankenhaeuser k ON p.krn_krhname = k.krhname
+         LEFT JOIN referate r ON a.ref_refnr = r.refnr
+         LEFT JOIN bauprogramme o ON p.bpg_bauprogramm = o.bauprogramm
+         LEFT JOIN siedlungsgebiete i ON p.sgt_siedlungsgebiet = i.siedlungsgebiet
 ;
 --------------------------------------------------------
---  DDL for View FP_V_ANTRAG_BEWILL
+--  v_antrag_bewill
 --------------------------------------------------------
 
-CREATE VIEW fp_v_antrag_bewill AS
+CREATE VIEW v_antrag_bewill AS
 SELECT a.id              AS v_id,
        a.pro_projnr      AS v_pro_projnr,
        p.vndat           AS v_vndat,
@@ -95,19 +95,19 @@ SELECT a.id              AS v_id,
        b.bzuwendung_d    AS v_bzuwendung_d,
        b.bzuwendung_k    AS v_bzuwendung_k,
        b.bzuwart         AS v_bzuwart
-FROM fp_projekte p
-         JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-         JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
-         JOIN fp_unterabschnitte u ON p.uas_ua = u.ua
-         JOIN fp_kurzbezeichnungen z ON p.kur_kurzbez = z.kurzbez
-         LEFT JOIN fp_stadtbezirke s ON p.bez_stadtbezirk = s.stadtbezirk
-         LEFT JOIN fp_antraege a ON b.ant_id = a.id
+FROM projekte p
+         JOIN foerderbereiche f ON p.fob_fb = f.fb
+         JOIN bewilligungen b ON p.projnr = b.pro_projnr
+         JOIN unterabschnitte u ON p.uas_ua = u.ua
+         JOIN kurzbezeichnungen z ON p.kur_kurzbez = z.kurzbez
+         LEFT JOIN stadtbezirke s ON p.bez_stadtbezirk = s.stadtbezirk
+         LEFT JOIN antraege a ON b.ant_id = a.id
 ;
 --------------------------------------------------------
---  DDL for View FP_V_ANTRAG_BEWILL_ABRUF
+--  v_antrag_bewill_abruf
 --------------------------------------------------------
 
-CREATE VIEW fp_v_antrag_bewill_abruf AS
+CREATE VIEW v_antrag_bewill_abruf AS
 SELECT x0  AS v_p_typ,
        x1  AS v_p_projnr,
        x2  AS v_p_vndat,
@@ -170,11 +170,11 @@ FROM (
                 r.erh_z        AS x27,
                 r.erh_d        AS x28,
                 r.erh_k        AS x29
-         FROM fp_projekte p
-                  JOIN fp_antraege a ON p.projnr = a.pro_projnr
-                  LEFT JOIN fp_bewilligungen b
+         FROM projekte p
+                  JOIN antraege a ON p.projnr = a.pro_projnr
+                  LEFT JOIN bewilligungen b
                             ON a.id = b.ant_id
-                  LEFT JOIN fp_abrufe r ON b.id = r.bwi_id
+                  LEFT JOIN abrufe r ON b.id = r.bwi_id
 
          UNION
 
@@ -209,9 +209,9 @@ FROM (
                 r.erh_z,
                 r.erh_d,
                 r.erh_k
-         FROM fp_projekte p
-                  JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
-                  LEFT JOIN fp_abrufe r ON b.id = r.bwi_id
+         FROM projekte p
+                  JOIN bewilligungen b ON p.projnr = b.pro_projnr
+                  LEFT JOIN abrufe r ON b.id = r.bwi_id
          WHERE b.ant_id IS NULL
 
          UNION
@@ -247,15 +247,15 @@ FROM (
                 r.erh_z,
                 r.erh_d,
                 r.erh_k
-         FROM fp_projekte p
-                  JOIN fp_abrufe r ON p.projnr = r.pro_projnr
+         FROM projekte p
+                  JOIN abrufe r ON p.projnr = r.pro_projnr
          WHERE r.bwi_id IS NULL) AS x
 ;
 --------------------------------------------------------
---  DDL for View FP_V_ANTRAGSUCHE
+--  v_antragsuche
 --------------------------------------------------------
 
-CREATE VIEW fp_v_antragsuche AS
+CREATE VIEW v_antragsuche AS
 SELECT
     --  geändert Sep 2024:
     --  Sicherstellen, dass je Antrag nur ein Record geliefert wird.
@@ -301,16 +301,16 @@ SELECT
     b.id                  AS v_bid,
     b.geszuwendungen      AS v_bgeszuwendungen,
     b.bdatum              AS v_bdatum
-FROM fp_projekte p
-         JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-         JOIN fp_antraege a ON p.projnr = a.pro_projnr
-         JOIN fp_bewilligungen b ON a.id = b.ant_id
-         JOIN fp_unterabschnitte u ON p.uas_ua = u.ua
-         JOIN fp_kurzbezeichnungen z ON p.kur_kurzbez = z.kurzbez
-         LEFT JOIN fp_stadtbezirke s ON p.bez_stadtbezirk = s.stadtbezirk
-         LEFT JOIN fp_bauprogramme o ON p.bpg_bauprogramm = o.bauprogramm
-         LEFT JOIN fp_siedlungsgebiete i ON p.sgt_siedlungsgebiet = i.siedlungsgebiet
-WHERE b.id = (SELECT MAX(b1.id) FROM fp_bewilligungen b1 WHERE b1.ant_id = a.id)
+FROM projekte p
+         JOIN foerderbereiche f ON p.fob_fb = f.fb
+         JOIN antraege a ON p.projnr = a.pro_projnr
+         JOIN bewilligungen b ON a.id = b.ant_id
+         JOIN unterabschnitte u ON p.uas_ua = u.ua
+         JOIN kurzbezeichnungen z ON p.kur_kurzbez = z.kurzbez
+         LEFT JOIN stadtbezirke s ON p.bez_stadtbezirk = s.stadtbezirk
+         LEFT JOIN bauprogramme o ON p.bpg_bauprogramm = o.bauprogramm
+         LEFT JOIN siedlungsgebiete i ON p.sgt_siedlungsgebiet = i.siedlungsgebiet
+WHERE b.id = (SELECT MAX(b1.id) FROM bewilligungen b1 WHERE b1.ant_id = a.id)
 
 UNION ALL
 
@@ -354,34 +354,34 @@ o.bezeichnung,
 NULL,
 NULL,
 NULL
-FROM fp_projekte p
-         JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-         JOIN fp_antraege a ON p.projnr = a.pro_projnr
-         JOIN fp_unterabschnitte u ON p.uas_ua = u.ua
-         JOIN fp_kurzbezeichnungen z ON p.kur_kurzbez = z.kurzbez
-         LEFT JOIN fp_stadtbezirke s ON p.bez_stadtbezirk = s.stadtbezirk
-         LEFT JOIN fp_bauprogramme o ON p.bpg_bauprogramm = o.bauprogramm
-         LEFT JOIN fp_siedlungsgebiete i ON p.sgt_siedlungsgebiet = i.siedlungsgebiet
-WHERE NOT EXISTS (SELECT 1 FROM fp_bewilligungen b WHERE b.ant_id = a.id)
+FROM projekte p
+         JOIN foerderbereiche f ON p.fob_fb = f.fb
+         JOIN antraege a ON p.projnr = a.pro_projnr
+         JOIN unterabschnitte u ON p.uas_ua = u.ua
+         JOIN kurzbezeichnungen z ON p.kur_kurzbez = z.kurzbez
+         LEFT JOIN stadtbezirke s ON p.bez_stadtbezirk = s.stadtbezirk
+         LEFT JOIN bauprogramme o ON p.bpg_bauprogramm = o.bauprogramm
+         LEFT JOIN siedlungsgebiete i ON p.sgt_siedlungsgebiet = i.siedlungsgebiet
+WHERE NOT EXISTS (SELECT 1 FROM bewilligungen b WHERE b.ant_id = a.id)
 ;
 --------------------------------------------------------
---  DDL for View FP_V_ANTRAG_UNBED
+--  v_antrag_unbed
 --------------------------------------------------------
 
-CREATE VIEW fp_v_antrag_unbed AS
+CREATE VIEW v_antrag_unbed AS
 SELECT pro_projnr    AS v_pro_projnr,
        MIN(unbeddat) AS v_unbeddat,
        MIN(unbedja)  AS v_unbedja,
        MIN(unbedbis) AS v_unbedbis,
        MIN(vbdatum)  AS v_vbdatum
-FROM fp_antraege
+FROM antraege
 GROUP BY pro_projnr
 ;
 --------------------------------------------------------
---  DDL for View FP_V_BEWILL_ABRUFE
+--  v_bewill_abrufe
 --------------------------------------------------------
 
-CREATE VIEW fp_v_bewill_abrufe AS
+CREATE VIEW v_bewill_abrufe AS
 SELECT p.projnr                    AS v_projnr,
        p.fob_fb                    AS v_fob_fb,
        f.bezeichnung               AS v_fob_bezeichnung,
@@ -418,13 +418,13 @@ SELECT p.projnr                    AS v_projnr,
        b.geszuwendungen            AS v_geszuwendungen,
        b.geskonnex                 AS v_geskonnex,
        b.krw                       AS v_krw
-FROM fp_projekte p
-         JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-         JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
-         JOIN fp_unterabschnitte u ON p.uas_ua = u.ua
-         JOIN fp_kurzbezeichnungen z ON p.kur_kurzbez = z.kurzbez
-         LEFT JOIN fp_stadtbezirke s ON p.bez_stadtbezirk = s.stadtbezirk
-         LEFT JOIN fp_abrufe a ON b.id = a.bwi_id
+FROM projekte p
+         JOIN foerderbereiche f ON p.fob_fb = f.fb
+         JOIN bewilligungen b ON p.projnr = b.pro_projnr
+         JOIN unterabschnitte u ON p.uas_ua = u.ua
+         JOIN kurzbezeichnungen z ON p.kur_kurzbez = z.kurzbez
+         LEFT JOIN stadtbezirke s ON p.bez_stadtbezirk = s.stadtbezirk
+         LEFT JOIN abrufe a ON b.id = a.bwi_id
 GROUP BY p.projnr,
          p.fob_fb,
          f.bezeichnung,
@@ -454,10 +454,10 @@ GROUP BY p.projnr,
          b.krw
 ;
 --------------------------------------------------------
---  DDL for View FP_V_BEWILLSUCHE
+--  v_bewillsuche
 --------------------------------------------------------
 
-CREATE VIEW fp_v_bewillsuche AS
+CREATE VIEW v_bewillsuche AS
 SELECT p.projnr              AS v_projnr,
        p.fob_fb              AS v_fob_fb,
        f.bezeichnung         AS v_fob_bezeichnung,
@@ -500,28 +500,28 @@ SELECT p.projnr              AS v_projnr,
        i.bezeichnung         AS v_sgt_bezeichnung,
        p.bpg_bauprogramm     AS v_bpg_bauprogramm,
        o.bezeichnung         AS v_bpg_bezeichnung
-FROM fp_projekte p
-         JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-         JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
-         JOIN fp_unterabschnitte u ON p.uas_ua = u.ua
-         JOIN fp_kurzbezeichnungen z ON p.kur_kurzbez = z.kurzbez
-         LEFT JOIN fp_stadtbezirke s ON p.bez_stadtbezirk = s.stadtbezirk
-         LEFT JOIN fp_antraege a ON b.ant_id = a.id
-         LEFT JOIN fp_bauprogramme o ON p.bpg_bauprogramm = o.bauprogramm
-         LEFT JOIN fp_siedlungsgebiete i ON p.sgt_siedlungsgebiet = i.siedlungsgebiet
+FROM projekte p
+         JOIN foerderbereiche f ON p.fob_fb = f.fb
+         JOIN bewilligungen b ON p.projnr = b.pro_projnr
+         JOIN unterabschnitte u ON p.uas_ua = u.ua
+         JOIN kurzbezeichnungen z ON p.kur_kurzbez = z.kurzbez
+         LEFT JOIN stadtbezirke s ON p.bez_stadtbezirk = s.stadtbezirk
+         LEFT JOIN antraege a ON b.ant_id = a.id
+         LEFT JOIN bauprogramme o ON p.bpg_bauprogramm = o.bauprogramm
+         LEFT JOIN siedlungsgebiete i ON p.sgt_siedlungsgebiet = i.siedlungsgebiet
 ;
 --------------------------------------------------------
---  DDL for View FP_V_CHECKLISTEN1
+--  v_checklisten1
 --------------------------------------------------------
 
-CREATE VIEW fp_v_checklisten1 AS
+CREATE VIEW v_checklisten1 AS
 SELECT '1 Offene Projekte ohne Förderantrag' AS v_hinweis,
        p.projnr                              AS v_projnr,
        p.pstrasse                            AS v_pstrasse,
        NULL                                  AS v_info
-FROM fp_projekte p
+FROM projekte p
 WHERE p.vndat IS NULL
-  AND NOT EXISTS (SELECT 1 FROM fp_antraege a WHERE p.projnr = a.pro_projnr)
+  AND NOT EXISTS (SELECT 1 FROM antraege a WHERE p.projnr = a.pro_projnr)
 
 UNION ALL
 
@@ -529,8 +529,8 @@ SELECT '2 Offene Projekte mit Anträgen auf Unbedenklichkeit ohne Förderantrag'
        p.projnr,
        p.pstrasse,
        CONCAT('Unbedenk. am: ', TO_CHAR(a.unbeddat, 'DD.MM.YYYY'))
-FROM fp_antraege a
-         JOIN fp_projekte p ON a.pro_projnr = p.projnr
+FROM antraege a
+         JOIN projekte p ON a.pro_projnr = p.projnr
 WHERE a.unbeddat IS NOT NULL
   AND a.antragsdatum IS NULL
   AND p.vndat IS NULL
@@ -541,8 +541,8 @@ SELECT '3 Offene Projekte und ausstehende Genehmigungen zum vorzeitigen Baubegin
        p.projnr,
        p.pstrasse,
        CONCAT('Vorz. Baubeginn: ', a.vorzbeg)
-FROM fp_antraege a
-         JOIN fp_projekte p ON p.projnr = a.pro_projnr
+FROM antraege a
+         JOIN projekte p ON p.projnr = a.pro_projnr
 WHERE p.vndat IS NULL
   AND a.vorzbeg IS TRUE
   AND a.vbdatum IS NULL
@@ -553,8 +553,8 @@ SELECT '4 Offene Projekte und ausstehende Bewilligungen (ohne Datum)',
        p.projnr,
        p.pstrasse,
        'Bewilligung ausstehend'
-FROM fp_projekte p
-         JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
+FROM projekte p
+         JOIN bewilligungen b ON p.projnr = b.pro_projnr
 WHERE p.vndat IS NULL
   AND b.bdatum IS NULL
 
@@ -564,8 +564,8 @@ SELECT '5 Offene Projekte und Bewilligungen ohne Verknüpfung zu einem Antrag',
        p.projnr,
        p.pstrasse,
        NULL
-FROM fp_projekte p
-         JOIN fp_bewilligungen b ON b.pro_projnr = p.projnr
+FROM projekte p
+         JOIN bewilligungen b ON b.pro_projnr = p.projnr
 WHERE p.vndat IS NULL
   AND b.ant_id IS NULL
 
@@ -575,8 +575,8 @@ SELECT '6 Offene Projekte und Abrufe ohne Verknüpfung zu einer Bewilligung',
        p.projnr,
        p.pstrasse,
        NULL
-FROM fp_projekte p
-         JOIN fp_abrufe a ON p.projnr = a.pro_projnr
+FROM projekte p
+         JOIN abrufe a ON p.projnr = a.pro_projnr
 WHERE a.bwi_id IS NULL
   AND p.vndat IS NULL
 
@@ -586,8 +586,8 @@ SELECT '7 Offene Projekte und leere Bewilligungen',
        p.projnr,
        p.pstrasse,
        CONCAT('Leer angelegt am: ', TO_CHAR(b.anlagedatum, 'DD.MM.YYYY'))
-FROM fp_projekte p
-         JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
+FROM projekte p
+         JOIN bewilligungen b ON p.projnr = b.pro_projnr
 WHERE p.vndat IS NULL
   AND b.bdatum IS NULL
   AND COALESCE(b.afsatz, 0) = 0
@@ -610,8 +610,8 @@ SELECT '8 Projekte mit VN-Datum ab 1.1.2000 und leere Bewilligungen',
        p.projnr,
        p.pstrasse,
        CONCAT('Leer angelegt am: ', TO_CHAR(b.anlagedatum, 'DD.MM.YYYY'))
-FROM fp_projekte p
-         JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
+FROM projekte p
+         JOIN bewilligungen b ON p.projnr = b.pro_projnr
 WHERE p.vndat >= TO_DATE('01.01.2000', 'dd.mm.yyyy')
   AND b.bdatum IS NULL
   AND COALESCE(b.afsatz, 0) = 0
@@ -634,7 +634,7 @@ SELECT '9 Projekte mit VN-Datum ab 1.1.2000 aber ohne Schlußbescheid',
        p.projnr,
        p.pstrasse,
        CONCAT('VN: ', TO_CHAR(p.vndat, 'DD.MM.YYYY'))
-FROM fp_projekte p
+FROM projekte p
 WHERE p.vndat >= TO_DATE('01.01.2000', 'DD.MM.YYYY')
   AND p.vnschlussbew IS NULL
 
@@ -644,22 +644,22 @@ SELECT '10 Projekte mit VN-Datum ab 1.1.2000 aber ohne Endkosten',
        p.projnr,
        p.pstrasse,
        CONCAT('VN: ', TO_CHAR(p.vndat, 'DD.MM.YYYY'))
-FROM fp_projekte p
+FROM projekte p
 WHERE p.vndat >= TO_DATE('01.01.2000', 'DD.MM.YYYY')
   AND p.vnkosten IS NULL
 
 ORDER BY 1, 2
 ;
 --------------------------------------------------------
---  DDL for View FP_V_CHECKLISTEN2
+--  v_checklisten2
 --------------------------------------------------------
 
-CREATE VIEW fp_v_checklisten2 AS
+CREATE VIEW v_checklisten2 AS
 SELECT '1 Verwendungsnachweise ohne VN Datum'                                          AS v_fehler,
        p.projnr                                                                        AS v_projnr,
        p.pstrasse                                                                      AS v_pstrasse,
        CONCAT_WS(' ', 'VN ZWF KOSTEN:', p.vnzwfkosten, 'VN Gesamtkosten:', p.vnkosten) AS v_info
-FROM fp_projekte p
+FROM projekte p
 WHERE p.vndat IS NULL
   AND (p.vnzwfkosten > 0 OR p.vnkosten > 0)
 
@@ -670,8 +670,8 @@ SELECT '2 Erfolgte Bewilligungen ohne Bewilligungsdatum',
        p.pstrasse,
        CONCAT('Summe Zuwendungen: ',
               (COALESCE(b.bzuwendung_z, 0) + COALESCE(b.bzuwendung_d, 0) + COALESCE(b.bzuwendung_k, 0)))
-FROM fp_bewilligungen b
-         JOIN fp_projekte p ON b.pro_projnr = p.projnr
+FROM bewilligungen b
+         JOIN projekte p ON b.pro_projnr = p.projnr
 WHERE b.bdatum IS NULL
   AND (b.bzuwendung_z > 0 OR b.bzuwendung_d > 0 OR b.bzuwendung_k > 0)
 
@@ -681,8 +681,8 @@ SELECT '3 Erfolgte Abrufe ohne Abrufdatum',
        p.projnr,
        p.pstrasse,
        CONCAT('Summe Abrufe: ', (a.abruf_z + a.abruf_d + a.abruf_k))
-FROM fp_abrufe a
-         JOIN fp_projekte p ON a.pro_projnr = p.projnr
+FROM abrufe a
+         JOIN projekte p ON a.pro_projnr = p.projnr
 WHERE a.abruf_datum IS NULL
   AND (a.abruf_z > 0 OR a.abruf_d > 0 OR a.abruf_k > 0)
 
@@ -692,8 +692,8 @@ SELECT '4 Erhaltene Abrufe ohne Erhaltdatum',
        p.projnr,
        p.pstrasse,
        CONCAT('Summe erhalten: ', (a.erh_z + a.erh_d + a.erh_k))
-FROM fp_abrufe a
-         JOIN fp_projekte p ON a.pro_projnr = p.projnr
+FROM abrufe a
+         JOIN projekte p ON a.pro_projnr = p.projnr
 WHERE a.erh_datum IS NULL
   AND (a.erh_z > 0 OR a.erh_d > 0 OR a.erh_k > 0)
 
@@ -703,8 +703,8 @@ SELECT '5 Anträge ohne Antragsdatum und ohne Unbedenklichkeitsantrag',
        p.projnr,
        p.pstrasse,
        NULL
-FROM fp_antraege a
-         JOIN fp_projekte p ON a.pro_projnr = p.projnr
+FROM antraege a
+         JOIN projekte p ON a.pro_projnr = p.projnr
 WHERE a.unbeddat IS NULL
   AND a.antragsdatum IS NULL
   AND p.vndat IS NULL
@@ -712,10 +712,10 @@ WHERE a.unbeddat IS NULL
 ORDER BY 1, 2
 ;
 --------------------------------------------------------
---  DDL for View FP_V_EUINFORMATIONEN
+--  v_euinformationen
 --------------------------------------------------------
 
-CREATE VIEW fp_v_euinformationen AS
+CREATE VIEW v_euinformationen AS
 SELECT e.jahr         AS v_jahr,
        e.hefta        AS v_hefta,
        e.nummer       AS v_nummer,
@@ -726,8 +726,8 @@ SELECT e.jahr         AS v_jahr,
        e.infodat      AS v_infodat,
        1              AS v_refid,
        'RAW'          AS v_refbez
-FROM fp_euinformationen e
-         JOIN fp_publikationen p ON e.pub_kurzform = p.kurzform
+FROM euinformationen e
+         JOIN publikationen p ON e.pub_kurzform = p.kurzform
 WHERE e.rawi IS TRUE
 
 UNION ALL
@@ -742,8 +742,8 @@ SELECT e.jahr,
        e.infodat,
        2,
        'RBS'
-FROM fp_euinformationen e
-         JOIN fp_publikationen p ON e.pub_kurzform = p.kurzform
+FROM euinformationen e
+         JOIN publikationen p ON e.pub_kurzform = p.kurzform
 WHERE e.schulref IS TRUE
 
 UNION ALL
@@ -758,8 +758,8 @@ SELECT e.jahr,
        e.infodat,
        3,
        'Sozref R 5'
-FROM fp_euinformationen e
-         JOIN fp_publikationen p ON e.pub_kurzform = p.kurzform
+FROM euinformationen e
+         JOIN publikationen p ON e.pub_kurzform = p.kurzform
 WHERE e.sozref_r_5 IS TRUE
 
 UNION ALL
@@ -774,8 +774,8 @@ SELECT e.jahr,
        e.infodat,
        4,
        'RGU 11'
-FROM fp_euinformationen e
-         JOIN fp_publikationen p ON e.pub_kurzform = p.kurzform
+FROM euinformationen e
+         JOIN publikationen p ON e.pub_kurzform = p.kurzform
 WHERE e.rgu_11 IS TRUE
 
 UNION ALL
@@ -790,8 +790,8 @@ SELECT e.jahr,
        e.infodat,
        5,
        'RGU Cs'
-FROM fp_euinformationen e
-         JOIN fp_publikationen p ON e.pub_kurzform = p.kurzform
+FROM euinformationen e
+         JOIN publikationen p ON e.pub_kurzform = p.kurzform
 WHERE e.rgu_cs IS TRUE
 
 UNION ALL
@@ -806,8 +806,8 @@ SELECT e.jahr,
        e.infodat,
        6,
        'Krh'
-FROM fp_euinformationen e
-         JOIN fp_publikationen p ON e.pub_kurzform = p.kurzform
+FROM euinformationen e
+         JOIN publikationen p ON e.pub_kurzform = p.kurzform
 WHERE e.krh IS TRUE
 
 UNION ALL
@@ -822,8 +822,8 @@ SELECT e.jahr,
        e.infodat,
        7,
        'AWB'
-FROM fp_euinformationen e
-         JOIN fp_publikationen p ON e.pub_kurzform = p.kurzform
+FROM euinformationen e
+         JOIN publikationen p ON e.pub_kurzform = p.kurzform
 WHERE e.afa IS TRUE
 
 UNION ALL
@@ -838,8 +838,8 @@ SELECT e.jahr,
        e.infodat,
        8,
        'SWM'
-FROM fp_euinformationen e
-         JOIN fp_publikationen p ON e.pub_kurzform = p.kurzform
+FROM euinformationen e
+         JOIN publikationen p ON e.pub_kurzform = p.kurzform
 WHERE e.swm IS TRUE
 
 UNION ALL
@@ -854,8 +854,8 @@ SELECT e.jahr,
        e.infodat,
        9,
        'Kulturreferat'
-FROM fp_euinformationen e
-         JOIN fp_publikationen p ON e.pub_kurzform = p.kurzform
+FROM euinformationen e
+         JOIN publikationen p ON e.pub_kurzform = p.kurzform
 WHERE e.kulturref IS TRUE
 
 UNION ALL
@@ -870,8 +870,8 @@ SELECT e.jahr,
        e.infodat,
        10,
        'Baureferat'
-FROM fp_euinformationen e
-         JOIN fp_publikationen p ON e.pub_kurzform = p.kurzform
+FROM euinformationen e
+         JOIN publikationen p ON e.pub_kurzform = p.kurzform
 WHERE e.bauref IS TRUE
 
 UNION ALL
@@ -886,8 +886,8 @@ SELECT e.jahr,
        e.infodat,
        11,
        'Planungsreferat'
-FROM fp_euinformationen e
-         JOIN fp_publikationen p ON e.pub_kurzform = p.kurzform
+FROM euinformationen e
+         JOIN publikationen p ON e.pub_kurzform = p.kurzform
 WHERE e.planref IS TRUE
 
 UNION ALL
@@ -902,8 +902,8 @@ SELECT e.jahr,
        e.infodat,
        12,
        'Direktorium'
-FROM fp_euinformationen e
-         JOIN fp_publikationen p ON e.pub_kurzform = p.kurzform
+FROM euinformationen e
+         JOIN publikationen p ON e.pub_kurzform = p.kurzform
 WHERE e.direktorium IS TRUE
 
 UNION ALL
@@ -918,8 +918,8 @@ SELECT e.jahr,
        e.infodat,
        13,
        'Personal- und Org.referat'
-FROM fp_euinformationen e
-         JOIN fp_publikationen p ON e.pub_kurzform = p.kurzform
+FROM euinformationen e
+         JOIN publikationen p ON e.pub_kurzform = p.kurzform
 WHERE e.por IS TRUE
 
 UNION ALL
@@ -934,8 +934,8 @@ SELECT e.jahr,
        e.infodat,
        14,
        'Kreisverwaltungsreferat'
-FROM fp_euinformationen e
-         JOIN fp_publikationen p ON e.pub_kurzform = p.kurzform
+FROM euinformationen e
+         JOIN publikationen p ON e.pub_kurzform = p.kurzform
 WHERE e.kvr IS TRUE
 
 UNION ALL
@@ -950,8 +950,8 @@ SELECT e.jahr,
        e.infodat,
        15,
        'Kommunalreferat'
-FROM fp_euinformationen e
-         JOIN fp_publikationen p ON e.pub_kurzform = p.kurzform
+FROM euinformationen e
+         JOIN publikationen p ON e.pub_kurzform = p.kurzform
 WHERE e.kommref IS TRUE
 
 UNION ALL
@@ -966,8 +966,8 @@ SELECT e.jahr,
        e.infodat,
        16,
        'MSE'
-FROM fp_euinformationen e
-         JOIN fp_publikationen p ON e.pub_kurzform = p.kurzform
+FROM euinformationen e
+         JOIN publikationen p ON e.pub_kurzform = p.kurzform
 WHERE e.sew IS TRUE
 
 UNION ALL
@@ -982,15 +982,15 @@ SELECT e.jahr,
        e.infodat,
        17,
        'Stk'
-FROM fp_euinformationen e
-         JOIN fp_publikationen p ON e.pub_kurzform = p.kurzform
+FROM euinformationen e
+         JOIN publikationen p ON e.pub_kurzform = p.kurzform
 WHERE e.stk IS TRUE
 ;
 --------------------------------------------------------
---  DDL for View FP_V_FAGSTAT
+--  v_fagstat
 --------------------------------------------------------
 
-CREATE VIEW fp_v_fagstat AS
+CREATE VIEW v_fagstat AS
 SELECT x1                   AS f_fb,
        x2                   AS f_bezeichnung,
        x3                   AS f_jahr,
@@ -1007,9 +1007,9 @@ FROM
             0                                AS x5,
             0                                AS x6,
             0                                AS x7
-     FROM fp_projekte p
-              JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-              JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
+     FROM projekte p
+              JOIN foerderbereiche f ON p.fob_fb = f.fb
+              JOIN bewilligungen b ON p.projnr = b.pro_projnr
      WHERE b.bdatum IS NOT NULL
        AND b.bzuwendung_z >= 0
      GROUP BY f.fb,
@@ -1026,9 +1026,9 @@ FROM
             0,
             0,
             0
-     FROM fp_projekte p
-              JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-              JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
+     FROM projekte p
+              JOIN foerderbereiche f ON p.fob_fb = f.fb
+              JOIN bewilligungen b ON p.projnr = b.pro_projnr
      WHERE b.bdatum IS NOT NULL
        AND b.bzuwendung_d >= 0
      GROUP BY f.fb,
@@ -1045,9 +1045,9 @@ FROM
             0,
             0,
             0
-     FROM fp_projekte p
-              JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-              JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
+     FROM projekte p
+              JOIN foerderbereiche f ON p.fob_fb = f.fb
+              JOIN bewilligungen b ON p.projnr = b.pro_projnr
      WHERE b.bdatum IS NOT NULL
        AND b.bzuwendung_k >= 0
      GROUP BY f.fb,
@@ -1064,9 +1064,9 @@ FROM
             SUM(COALESCE(b.bzuwendung_z, 0)),
             0,
             0
-     FROM fp_projekte p
-              JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-              JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
+     FROM projekte p
+              JOIN foerderbereiche f ON p.fob_fb = f.fb
+              JOIN bewilligungen b ON p.projnr = b.pro_projnr
      WHERE b.bdatum IS NOT NULL
        AND b.bzuwendung_z < 0
      GROUP BY f.fb,
@@ -1083,9 +1083,9 @@ FROM
             SUM(COALESCE(b.bzuwendung_d, 0)),
             0,
             0
-     FROM fp_projekte p
-              JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-              JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
+     FROM projekte p
+              JOIN foerderbereiche f ON p.fob_fb = f.fb
+              JOIN bewilligungen b ON p.projnr = b.pro_projnr
      WHERE b.bdatum IS NOT NULL
        AND b.bzuwendung_d < 0
      GROUP BY f.fb,
@@ -1102,9 +1102,9 @@ FROM
             SUM(COALESCE(b.bzuwendung_k, 0)),
             0,
             0
-     FROM fp_projekte p
-              JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-              JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
+     FROM projekte p
+              JOIN foerderbereiche f ON p.fob_fb = f.fb
+              JOIN bewilligungen b ON p.projnr = b.pro_projnr
      WHERE b.bdatum IS NOT NULL
        AND b.bzuwendung_k < 0
      GROUP BY f.fb,
@@ -1121,9 +1121,9 @@ FROM
             0,
             SUM(a.erh_z),
             0
-     FROM fp_projekte p
-              JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-              JOIN fp_abrufe a ON p.projnr = a.pro_projnr
+     FROM projekte p
+              JOIN foerderbereiche f ON p.fob_fb = f.fb
+              JOIN abrufe a ON p.projnr = a.pro_projnr
 
      WHERE a.erh_datum IS NOT NULL
        AND a.erh_z >= 0
@@ -1141,9 +1141,9 @@ FROM
             0,
             SUM(a.erh_d),
             0
-     FROM fp_projekte p
-              JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-              JOIN fp_abrufe a ON p.projnr = a.pro_projnr
+     FROM projekte p
+              JOIN foerderbereiche f ON p.fob_fb = f.fb
+              JOIN abrufe a ON p.projnr = a.pro_projnr
      WHERE a.erh_datum IS NOT NULL
        AND a.erh_d >= 0
      GROUP BY f.fb,
@@ -1160,9 +1160,9 @@ FROM
             0,
             SUM(a.erh_k),
             0
-     FROM fp_projekte p
-              JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-              JOIN fp_abrufe a ON p.projnr = a.pro_projnr
+     FROM projekte p
+              JOIN foerderbereiche f ON p.fob_fb = f.fb
+              JOIN abrufe a ON p.projnr = a.pro_projnr
      WHERE a.erh_datum IS NOT NULL
        AND a.erh_k >= 0
      GROUP BY f.fb,
@@ -1179,9 +1179,9 @@ FROM
             0,
             0,
             SUM(a.erh_z)
-     FROM fp_projekte p
-              JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-              JOIN fp_abrufe a ON p.projnr = a.pro_projnr
+     FROM projekte p
+              JOIN foerderbereiche f ON p.fob_fb = f.fb
+              JOIN abrufe a ON p.projnr = a.pro_projnr
      WHERE a.erh_datum IS NOT NULL
        AND a.erh_z < 0
      GROUP BY f.fb,
@@ -1198,9 +1198,9 @@ FROM
             0,
             0,
             SUM(a.erh_d)
-     FROM fp_projekte p
-              JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-              JOIN fp_abrufe a ON p.projnr = a.pro_projnr
+     FROM projekte p
+              JOIN foerderbereiche f ON p.fob_fb = f.fb
+              JOIN abrufe a ON p.projnr = a.pro_projnr
      WHERE a.erh_datum IS NOT NULL
        AND a.erh_d < 0
      GROUP BY f.fb,
@@ -1217,9 +1217,9 @@ FROM
             0,
             0,
             SUM(a.erh_k)
-     FROM fp_projekte p
-              JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-              JOIN fp_abrufe a ON p.projnr = a.pro_projnr
+     FROM projekte p
+              JOIN foerderbereiche f ON p.fob_fb = f.fb
+              JOIN abrufe a ON p.projnr = a.pro_projnr
      WHERE a.erh_datum IS NOT NULL
        AND a.erh_k < 0
      GROUP BY f.fb,
@@ -1231,63 +1231,10 @@ GROUP BY x1,
          x3
 ;
 --------------------------------------------------------
---  DDL for View FP_V_FBSTAT
+--  v_istkostenmax
 --------------------------------------------------------
 
-CREATE VIEW fp_v_fbstat AS
-SELECT x1                   AS f_fb,
-       x2                   AS f_bezeichnung,
-       x3                   AS f_jahr,
-       SUM(COALESCE(x4, 0)) AS b_bzuwendung_z,
-       SUM(COALESCE(x5, 0)) AS b_bzuwendung_d,
-       SUM(COALESCE(x6, 0)) AS b_bzuwendung_k,
-       SUM(COALESCE(x7, 0)) AS a_erh_z,
-       SUM(COALESCE(x8, 0)) AS a_erh_d,
-       SUM(COALESCE(x9, 0)) AS a_erh_k
-FROM (SELECT f.fb                             AS x1,
-             f.bezeichnung                    AS x2,
-             EXTRACT(YEAR FROM b.bdatum)      AS x3,
-             SUM(COALESCE(b.bzuwendung_z, 0)) AS x4,
-             SUM(COALESCE(b.bzuwendung_d, 0)) AS x5,
-             SUM(COALESCE(b.bzuwendung_k, 0)) AS x6,
-             NULL                             AS x7,
-             NULL                             AS x8,
-             NULL                             AS x9
-      FROM fp_projekte p
-               JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-               JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
-      WHERE b.bdatum IS NOT NULL
-      GROUP BY f.fb,
-               f.bezeichnung,
-               EXTRACT(YEAR FROM b.bdatum)
-
-      UNION
-
-      SELECT f.fb,
-             f.bezeichnung,
-             EXTRACT(YEAR FROM a.erh_datum),
-             NULL,
-             NULL,
-             NULL,
-             SUM(COALESCE(a.erh_z, 0)),
-             SUM(COALESCE(a.erh_d, 0)),
-             SUM(COALESCE(a.erh_k, 0))
-      FROM fp_projekte p
-               JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-               JOIN fp_abrufe a ON p.projnr = a.pro_projnr
-      WHERE a.erh_datum IS NOT NULL
-      GROUP BY f.fb,
-               f.bezeichnung,
-               EXTRACT(YEAR FROM a.erh_datum)) AS x
-GROUP BY x1,
-         x2,
-         x3
-;
---------------------------------------------------------
---  DDL for View FP_V_ISTKOSTENMAX
---------------------------------------------------------
-
-CREATE VIEW fp_v_istkostenmax AS
+CREATE VIEW v_istkostenmax AS
 SELECT x1               AS p_projnr,
        x2               AS p_max_istdatum,
        SUBSTR(x2, 1, 4) AS p_jahr,
@@ -1296,17 +1243,17 @@ SELECT x1               AS p_projnr,
 FROM (SELECT i1.pro_projnr                                 AS x1,
              CONCAT(i1.jahr, LPAD(i1.monat::TEXT, 2, '0')) AS x2,
              i1.istkosten                                  AS x3
-      FROM fp_projektistkosten i1
+      FROM projektistkosten i1
       WHERE CONCAT(i1.jahr, LPAD(i1.monat::TEXT, 2, '0')) =
             (SELECT MAX(CONCAT(i2.jahr, LPAD(i2.monat::TEXT, 2, '0')))
-             FROM fp_projektistkosten i2
+             FROM projektistkosten i2
              WHERE i2.pro_projnr = i1.pro_projnr)) AS x
 ;
 --------------------------------------------------------
---  DDL for View FP_V_JAHRESSTATISTIK1
+--  v_jahresstatistik1
 --------------------------------------------------------
 
-CREATE VIEW fp_v_jahresstatistik1 AS
+CREATE VIEW v_jahresstatistik1 AS
 SELECT x1                    AS f_fb,
        x2                    AS f_bezeichnung,
        x3                    AS f_jahr,
@@ -1329,9 +1276,9 @@ FROM (SELECT f.fb                             AS x1,
              NULL::NUMERIC                    AS x9,
              NULL::NUMERIC                    AS x10,
              NULL::NUMERIC                    AS x11
-      FROM fp_projekte p
-               JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-               JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
+      FROM projekte p
+               JOIN foerderbereiche f ON p.fob_fb = f.fb
+               JOIN bewilligungen b ON p.projnr = b.pro_projnr
       WHERE b.bdatum IS NOT NULL
       GROUP BY f.fb,
                f.bezeichnung,
@@ -1350,9 +1297,9 @@ FROM (SELECT f.fb                             AS x1,
              SUM(COALESCE(a.erh_k, 0)),
              NULL,
              NULL
-      FROM fp_projekte p
-               JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-               JOIN fp_abrufe a ON p.projnr = a.pro_projnr
+      FROM projekte p
+               JOIN foerderbereiche f ON p.fob_fb = f.fb
+               JOIN abrufe a ON p.projnr = a.pro_projnr
       WHERE a.erh_datum IS NOT NULL
       GROUP BY f.fb,
                f.bezeichnung,
@@ -1371,13 +1318,13 @@ FROM (SELECT f.fb                             AS x1,
              NULL,
              SUM(COALESCE(a.geskosten, 0)),
              SUM(COALESCE(a.zwfkosten, 0))
-      FROM fp_projekte p
-               JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-               JOIN fp_antraege a ON p.projnr = a.pro_projnr
+      FROM projekte p
+               JOIN foerderbereiche f ON p.fob_fb = f.fb
+               JOIN antraege a ON p.projnr = a.pro_projnr
       WHERE a.antragstyp = 'E'
         AND a.antragsdatum =
             (SELECT MIN(y.antragsdatum)
-             FROM fp_antraege y
+             FROM antraege y
              WHERE y.pro_projnr = p.projnr
                AND y.antragstyp = 'E')
       GROUP BY f.fb,
@@ -1388,10 +1335,10 @@ GROUP BY x1,
          x3
 ;
 --------------------------------------------------------
---  DDL for View FP_V_JAHRESSTATISTIK2
+--  v_jahresstatistik2
 --------------------------------------------------------
 
-CREATE VIEW fp_v_jahresstatistik2 AS
+CREATE VIEW v_jahresstatistik2 AS
 SELECT x1                    AS f_fb,
        x2                    AS f_bezeichnung,
        x3                    AS f_jahr,
@@ -1424,9 +1371,9 @@ FROM (SELECT f.fb                             AS x1,
              NULL::NUMERIC                    AS x14,
              NULL::NUMERIC                    AS x15,
              NULL::BIGINT                     AS x16
-      FROM fp_projekte p
-               JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-               JOIN fp_abrufe a ON p.projnr = a.pro_projnr
+      FROM projekte p
+               JOIN foerderbereiche f ON p.fob_fb = f.fb
+               JOIN abrufe a ON p.projnr = a.pro_projnr
       GROUP BY f.fb,
                f.bezeichnung,
                EXTRACT(YEAR FROM a.abruf_datum)
@@ -1449,8 +1396,8 @@ FROM (SELECT f.fb                             AS x1,
              NULL,
              NULL,
              NULL
-      FROM fp_projekte p
-               JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
+      FROM projekte p
+               JOIN foerderbereiche f ON p.fob_fb = f.fb
       WHERE p.vndat IS NOT NULL
       GROUP BY f.fb,
                f.bezeichnung,
@@ -1474,9 +1421,9 @@ FROM (SELECT f.fb                             AS x1,
              NULL,
              NULL,
              NULL
-      FROM fp_projekte p
-               JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-               JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
+      FROM projekte p
+               JOIN foerderbereiche f ON p.fob_fb = f.fb
+               JOIN bewilligungen b ON p.projnr = b.pro_projnr
       WHERE b.bdatum IS NOT NULL
       GROUP BY f.fb,
                f.bezeichnung,
@@ -1500,13 +1447,13 @@ FROM (SELECT f.fb                             AS x1,
              SUM(a.b_vor_su_z),
              SUM(a.b_vor_su_k),
              NULL
-      FROM fp_projekte p
-               JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-               JOIN fp_antraege a ON p.projnr = a.pro_projnr
+      FROM projekte p
+               JOIN foerderbereiche f ON p.fob_fb = f.fb
+               JOIN antraege a ON p.projnr = a.pro_projnr
       WHERE a.antragstyp = 'E'
         AND a.antragsdatum =
             (SELECT MIN(y.antragsdatum)
-             FROM fp_antraege y
+             FROM antraege y
              WHERE y.pro_projnr = p.projnr
                AND y.antragstyp = 'E')
       GROUP BY f.fb,
@@ -1531,9 +1478,9 @@ FROM (SELECT f.fb                             AS x1,
              NULL,
              NULL,
              NULL
-      FROM fp_projekte p
-               JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-               JOIN fp_antraege a ON p.projnr = a.pro_projnr
+      FROM projekte p
+               JOIN foerderbereiche f ON p.fob_fb = f.fb
+               JOIN antraege a ON p.projnr = a.pro_projnr
       WHERE a.antragstyp = 'F' -- nicht A und nicht V
       GROUP BY f.fb,
                f.bezeichnung,
@@ -1557,9 +1504,9 @@ FROM (SELECT f.fb                             AS x1,
              NULL,
              NULL,
              COUNT(*)
-      FROM fp_projekte p
-               JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-               JOIN fp_antraege a ON p.projnr = a.pro_projnr
+      FROM projekte p
+               JOIN foerderbereiche f ON p.fob_fb = f.fb
+               JOIN antraege a ON p.projnr = a.pro_projnr
       WHERE a.unbeddat IS NOT NULL
         AND a.antragstyp = 'E'
       GROUP BY f.fb,
@@ -1571,10 +1518,10 @@ GROUP BY x1,
          x3
 ;
 --------------------------------------------------------
---  DDL for View FP_V_JAHRESSTATISTIK3
+--  v_jahresstatistik3
 --------------------------------------------------------
 
-CREATE VIEW fp_v_jahresstatistik3 AS
+CREATE VIEW v_jahresstatistik3 AS
 SELECT x1                    AS f_fb,
        x2                    AS f_bezeichnung,
        x3                    AS f_jahr,
@@ -1599,9 +1546,9 @@ FROM (SELECT f.fb                             AS x1,
              NULL::NUMERIC                    AS x10,
              NULL::NUMERIC                    AS x11,
              NULL::NUMERIC                    AS x12
-      FROM fp_projekte p
-               JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-               JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
+      FROM projekte p
+               JOIN foerderbereiche f ON p.fob_fb = f.fb
+               JOIN bewilligungen b ON p.projnr = b.pro_projnr
       WHERE b.bdatum IS NOT NULL
         AND b.bzuwendung_z >= 0
       GROUP BY f.fb,
@@ -1622,9 +1569,9 @@ FROM (SELECT f.fb                             AS x1,
              NULL,
              NULL,
              NULL
-      FROM fp_projekte p
-               JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-               JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
+      FROM projekte p
+               JOIN foerderbereiche f ON p.fob_fb = f.fb
+               JOIN bewilligungen b ON p.projnr = b.pro_projnr
       WHERE b.bdatum IS NOT NULL
         AND b.bzuwendung_d >= 0
       GROUP BY f.fb,
@@ -1645,9 +1592,9 @@ FROM (SELECT f.fb                             AS x1,
              NULL,
              NULL,
              NULL
-      FROM fp_projekte p
-               JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-               JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
+      FROM projekte p
+               JOIN foerderbereiche f ON p.fob_fb = f.fb
+               JOIN bewilligungen b ON p.projnr = b.pro_projnr
       WHERE b.bdatum IS NOT NULL
         AND b.bzuwendung_k >= 0
       GROUP BY f.fb,
@@ -1668,9 +1615,9 @@ FROM (SELECT f.fb                             AS x1,
              NULL,
              NULL,
              NULL
-      FROM fp_projekte p
-               JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-               JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
+      FROM projekte p
+               JOIN foerderbereiche f ON p.fob_fb = f.fb
+               JOIN bewilligungen b ON p.projnr = b.pro_projnr
       WHERE b.bdatum IS NOT NULL
         AND b.bzuwendung_z < 0
       GROUP BY f.fb,
@@ -1691,9 +1638,9 @@ FROM (SELECT f.fb                             AS x1,
              NULL,
              NULL,
              NULL
-      FROM fp_projekte p
-               JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-               JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
+      FROM projekte p
+               JOIN foerderbereiche f ON p.fob_fb = f.fb
+               JOIN bewilligungen b ON p.projnr = b.pro_projnr
       WHERE b.bdatum IS NOT NULL
         AND b.bzuwendung_d < 0
       GROUP BY f.fb,
@@ -1714,9 +1661,9 @@ FROM (SELECT f.fb                             AS x1,
              NULL,
              NULL,
              NULL
-      FROM fp_projekte p
-               JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-               JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr
+      FROM projekte p
+               JOIN foerderbereiche f ON p.fob_fb = f.fb
+               JOIN bewilligungen b ON p.projnr = b.pro_projnr
       WHERE b.bdatum IS NOT NULL
         AND b.bzuwendung_k < 0
       GROUP BY f.fb,
@@ -1737,9 +1684,9 @@ FROM (SELECT f.fb                             AS x1,
              SUM(COALESCE(a.erh_z, 0)),
              SUM(COALESCE(a.erh_d, 0)),
              SUM(COALESCE(a.erh_k, 0))
-      FROM fp_projekte p
-               JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-               JOIN fp_abrufe a ON p.projnr = a.pro_projnr
+      FROM projekte p
+               JOIN foerderbereiche f ON p.fob_fb = f.fb
+               JOIN abrufe a ON p.projnr = a.pro_projnr
       WHERE a.erh_datum IS NOT NULL
       GROUP BY f.fb,
                f.bezeichnung,
@@ -1750,10 +1697,10 @@ GROUP BY x1,
          x3
 ;
 --------------------------------------------------------
---  DDL for View FP_V_PROJEKTERSTANTRAG
+--  v_projekterstantrag
 --------------------------------------------------------
 
-CREATE VIEW fp_v_projekterstantrag AS
+CREATE VIEW v_projekterstantrag AS
 SELECT p.projnr        AS p_projnr,
        p.fob_fb        AS p_fob_fb,
        p.pname         AS p_pname,
@@ -1776,19 +1723,19 @@ SELECT p.projnr        AS p_projnr,
        a1.b_vor_su_d   AS a1_b_vor_su_d,
        a1.b_vor_su_k   AS a1_b_vor_su_k,
        a1.notizen      AS a1_notizen
-FROM fp_projekte p
-         JOIN fp_antraege a1 ON p.projnr = a1.pro_projnr
+FROM projekte p
+         JOIN antraege a1 ON p.projnr = a1.pro_projnr
 WHERE a1.antragstyp IN ('E', 'A')
   AND a1.id = (SELECT MAX(id)
-               FROM fp_antraege y
+               FROM antraege y
                WHERE y.pro_projnr = p.projnr
                  AND y.antragstyp IN ('E', 'A'))
 ;
 --------------------------------------------------------
---  DDL for View FP_V_PROJEKTFLUESSE
+--  v_projektfluesse
 --------------------------------------------------------
 
-CREATE VIEW fp_v_projektfluesse AS
+CREATE VIEW v_projektfluesse AS
 SELECT x1                    AS p_projnr,
        SUM(COALESCE(x2, 0))  AS ax_a_su_z,
        SUM(COALESCE(x3, 0))  AS ax_a_su_d,
@@ -1809,8 +1756,8 @@ FROM (SELECT p.projnr              AS x1,
              NULL::NUMERIC         AS x8,
              NULL::NUMERIC         AS x9,
              NULL::NUMERIC         AS x10
-      FROM fp_projekte p
-               JOIN fp_antraege a ON p.projnr = a.pro_projnr
+      FROM projekte p
+               JOIN antraege a ON p.projnr = a.pro_projnr
 
       UNION ALL
 
@@ -1824,8 +1771,8 @@ FROM (SELECT p.projnr              AS x1,
              NULL,
              NULL,
              NULL
-      FROM fp_projekte p
-               JOIN fp_abrufe r ON p.projnr = r.pro_projnr
+      FROM projekte p
+               JOIN abrufe r ON p.projnr = r.pro_projnr
 
       UNION ALL
 
@@ -1839,15 +1786,15 @@ FROM (SELECT p.projnr              AS x1,
              COALESCE(b.bzuwendung_z, 0),
              COALESCE(b.bzuwendung_d, 0),
              COALESCE(b.bzuwendung_k, 0)
-      FROM fp_projekte p
-               JOIN fp_bewilligungen b ON p.projnr = b.pro_projnr) AS x
+      FROM projekte p
+               JOIN bewilligungen b ON p.projnr = b.pro_projnr) AS x
 GROUP BY x1
 ;
 --------------------------------------------------------
---  DDL for View FP_V_PROJEKTSTAT
+--  v_projektstat
 --------------------------------------------------------
 
-CREATE VIEW fp_v_projektstat AS
+CREATE VIEW v_projektstat AS
 SELECT a.p_projnr        AS p_projnr,
        a.p_fob_fb        AS p_fob_fb,
        a.p_pname         AS p_pname,
@@ -1879,14 +1826,14 @@ SELECT a.p_projnr        AS p_projnr,
        f.b_bewill_z      AS b_bewill_z,
        f.b_bewill_d      AS b_bewill_d,
        f.b_bewill_k      AS b_bewill_k
-FROM fp_v_projekterstantrag a
-         JOIN fp_v_projektfluesse f ON a.p_projnr = f.p_projnr
+FROM v_projekterstantrag a
+         JOIN v_projektfluesse f ON a.p_projnr = f.p_projnr
 ;
 --------------------------------------------------------
---  DDL for View FP_V_KINDER
+--  v_kinder
 --------------------------------------------------------
 
-CREATE VIEW fp_v_kinder AS
+CREATE VIEW v_kinder AS
 SELECT p.projnr          AS p_projnr,
        p.fob_fb          AS p_fob_fb,
        f.bezeichnung     AS p_fob_bezeichnung,
@@ -1907,16 +1854,16 @@ SELECT p.projnr          AS p_projnr,
        s.a1_geskosten    AS a1_geskosten,
        s.r_erh_z         AS p_erh_z,
        s.b_bewill_z      AS p_bzuwendung_z
-FROM fp_projekte p
-         JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-         LEFT JOIN fp_v_projektstat s ON p.projnr = s.p_projnr
-         LEFT JOIN fp_stadtbezirke z ON p.bez_stadtbezirk = z.stadtbezirk
+FROM projekte p
+         JOIN foerderbereiche f ON p.fob_fb = f.fb
+         LEFT JOIN v_projektstat s ON p.projnr = s.p_projnr
+         LEFT JOIN stadtbezirke z ON p.bez_stadtbezirk = z.stadtbezirk
 ;
 --------------------------------------------------------
---  DDL for View FP_V_MITTELEINPLANUNG
+--  v_mitteleinplanung
 --------------------------------------------------------
 
-CREATE VIEW fp_v_mitteleinplanung AS
+CREATE VIEW v_mitteleinplanung AS
 SELECT b1.id             AS b_id,
        b1.pro_projnr     AS b_projnr,
        b1.ant_id         AS b_ant_id,
@@ -1934,20 +1881,20 @@ SELECT b1.id             AS b_id,
        a1.antragstyp     AS a_antragstyp,
        a1.antragsdatum   AS a_antragsdatum,
        a1.geskosten      AS a_geskosten
-FROM fp_bewilligungen b1
-         JOIN fp_antraege a1 ON a1.id = b1.ant_id
+FROM bewilligungen b1
+         JOIN antraege a1 ON a1.id = b1.ant_id
 WHERE a1.antragstyp IN ('E', 'A')
   AND b1.id = (SELECT MAX(b2.id)
-               FROM fp_bewilligungen b2
-                        JOIN fp_antraege a2 ON a2.id = b2.ant_id
+               FROM bewilligungen b2
+                        JOIN antraege a2 ON a2.id = b2.ant_id
                WHERE b2.pro_projnr = b1.pro_projnr
                  AND a2.antragstyp IN ('E', 'A'))
 ;
 --------------------------------------------------------
---  DDL for View FP_V_NOTIZEN
+--  v_notizen
 --------------------------------------------------------
 
-CREATE VIEW fp_v_notizen AS
+CREATE VIEW v_notizen AS
 SELECT x0 AS v_typ,
        x1 AS v_projnr,
        x2 AS v_datum,
@@ -1956,7 +1903,7 @@ FROM (SELECT 'Projekt' AS x0,
              p.projnr  AS x1,
              p.vndat   AS x2,
              p.notizen AS x3
-      FROM fp_projekte p
+      FROM projekte p
       WHERE p.notizen IS NOT NULL
 
       UNION ALL
@@ -1965,7 +1912,7 @@ FROM (SELECT 'Projekt' AS x0,
              a.pro_projnr   AS x1,
              a.antragsdatum AS x2,
              a.notizen      AS x3
-      FROM fp_antraege a
+      FROM antraege a
       WHERE a.notizen IS NOT NULL
 
       UNION ALL
@@ -1974,7 +1921,7 @@ FROM (SELECT 'Projekt' AS x0,
              b.pro_projnr  AS x1,
              b.bdatum      AS x2,
              b.notizen     AS x3
-      FROM fp_bewilligungen b
+      FROM bewilligungen b
       WHERE b.notizen IS NOT NULL
 
       UNION
@@ -1983,7 +1930,7 @@ FROM (SELECT 'Projekt' AS x0,
              r.pro_projnr  AS x1,
              r.abruf_datum AS x2,
              r.notizen     AS x3
-      FROM fp_abrufe r
+      FROM abrufe r
       WHERE r.notizen IS NOT NULL
 
       UNION
@@ -1992,15 +1939,15 @@ FROM (SELECT 'Projekt' AS x0,
              t.pro_projnr                                                                 AS x1,
              t.termin                                                                     AS x2,
              CONCAT(t.notizen, E'\r\nZuständig: ', t.zustaendig, ' Telefon: ', t.telefon) AS x3
-      FROM fp_projekttermine t
+      FROM projekttermine t
       WHERE t.notizen IS NOT NULL) AS x
 ;
 
 --------------------------------------------------------
---  DDL for View FP_V_PROJEKTSUCHE
+--  v_projektsuche
 --------------------------------------------------------
 
-CREATE VIEW fp_v_projektsuche AS
+CREATE VIEW v_projektsuche AS
 SELECT p.projnr                 AS v_projnr,
        p.vndat                  AS v_vndat,
        p.fob_fb                 AS v_fob_fb,
@@ -2071,13 +2018,13 @@ SELECT p.projnr                 AS v_projnr,
        p.anleihenennwert        AS v_anleihenennwert,
        p.anleihejahrvon         AS v_anleihejahrvon,
        p.anleihejahrbis         AS v_anleihejahrbis
-FROM fp_projekte p
-         JOIN fp_foerderbereiche f ON p.fob_fb = f.fb
-         JOIN fp_unterabschnitte u ON p.uas_ua = u.ua
-         JOIN fp_kurzbezeichnungen z ON p.kur_kurzbez = z.kurzbez
-         LEFT JOIN fp_stadtbezirke s ON p.bez_stadtbezirk = s.stadtbezirk
-         LEFT JOIN fp_v_projektstat t ON p.projnr = t.p_projnr
-         LEFT JOIN fp_bauprogramme b ON p.bpg_bauprogramm = b.bauprogramm
-         LEFT JOIN fp_siedlungsgebiete i ON p.sgt_siedlungsgebiet = i.siedlungsgebiet
-         LEFT JOIN fp_v_mitteleinplanung m ON p.projnr = m.b_projnr
+FROM projekte p
+         JOIN foerderbereiche f ON p.fob_fb = f.fb
+         JOIN unterabschnitte u ON p.uas_ua = u.ua
+         JOIN kurzbezeichnungen z ON p.kur_kurzbez = z.kurzbez
+         LEFT JOIN stadtbezirke s ON p.bez_stadtbezirk = s.stadtbezirk
+         LEFT JOIN v_projektstat t ON p.projnr = t.p_projnr
+         LEFT JOIN bauprogramme b ON p.bpg_bauprogramm = b.bauprogramm
+         LEFT JOIN siedlungsgebiete i ON p.sgt_siedlungsgebiet = i.siedlungsgebiet
+         LEFT JOIN v_mitteleinplanung m ON p.projnr = m.b_projnr
 ;

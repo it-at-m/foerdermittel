@@ -14,8 +14,8 @@ spring:
     username: admin
   flyway:
     locations:
-      - classpath:db/migration/schema
-      - classpath:db/migration/testdata
+      - classpath:db/schema
+      - classpath:db/testdata
   security:
     oauth2:
       resourceserver:
