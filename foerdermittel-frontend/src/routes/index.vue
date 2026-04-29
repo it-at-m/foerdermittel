@@ -33,7 +33,7 @@ import { onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 import { ApiFactory } from "@/api/ApiFactory.ts";
-import { ActuatorApi } from "@/api/generated/refarch-backend";
+import { ActuatorApi } from "@/api/generated/foerdermittel-backend";
 import { checkHealth } from "@/api/healthstate-client";
 import { STATUS_INDICATORS } from "@/constants";
 import { useSnackbarStore } from "@/stores/snackbar";
