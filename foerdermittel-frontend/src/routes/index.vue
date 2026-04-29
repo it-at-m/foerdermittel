@@ -15,7 +15,11 @@
         </h1>
         <p>
           {{ t("views.index.apiGatewayStatus") }}
-          <span :class="status">{{ status }}</span>
+          <span :class="apiGwStatus">{{ apiGwStatus }}</span>
+        </p>
+        <p>
+          {{ t("views.index.backendStatus") }}
+          <span :class="backendStatus">{{ backendStatus }}</span>
         </p>
       </v-col>
     </v-row>
@@ -23,28 +27,45 @@
 </template>
 
 <script setup lang="ts">
+import type { HealthState } from "@/types/HealthState";
+
 import { onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
-import { checkHealth } from "@/api/health-client";
+import { ApiFactory } from "@/api/ApiFactory.ts";
+import { ActuatorApi } from "@/api/generated/refarch-backend";
+import { checkHealth } from "@/api/healthstate-client";
 import { STATUS_INDICATORS } from "@/constants";
 import { useSnackbarStore } from "@/stores/snackbar";
-import HealthState from "@/types/HealthState";
 
 const { t } = useI18n();
 
 const snackbarStore = useSnackbarStore();
-const status = ref("DOWN");
+const apiGwStatus = ref("DOWN");
+const backendStatus = ref("DOWN");
 
-onMounted(() => {
-  checkHealth()
-    .then((content: HealthState) => (status.value = content.status))
-    .catch((error: Error) => {
-      snackbarStore.push({
-        text: error.message,
-        color: STATUS_INDICATORS.ERROR,
-      });
+onMounted(async () => {
+  try {
+    const content = await checkHealth();
+    apiGwStatus.value = content.status;
+  } catch (error) {
+    const err = error as Error;
+    snackbarStore.push({
+      text: err.message,
+      color: STATUS_INDICATORS.ERROR,
     });
+  }
+
+  try {
+    const content = await ApiFactory.getInstance(ActuatorApi).health();
+    backendStatus.value = (content as HealthState).status;
+  } catch (error) {
+    const err = error as Error;
+    snackbarStore.push({
+      text: err.message,
+      color: STATUS_INDICATORS.ERROR,
+    });
+  }
 });
 </script>
 
