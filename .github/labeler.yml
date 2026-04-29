@@ -14,7 +14,7 @@
   - head-branch: [ '^sec', '-security-' ]
 "Component: Backend":
   - changed-files:
-    - any-glob-to-any-file: ['foerdermittel-backend/**']
+    - any-glob-to-any-file: ['backend/**']
 "Component: Frontend":
   - changed-files:
-      - any-glob-to-any-file: ['foerdermittel-frontend/**']
+      - any-glob-to-any-file: ['frontend/**']
