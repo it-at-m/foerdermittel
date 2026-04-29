@@ -17,7 +17,7 @@ on:
         description: Service-Name
         required: true
         options: # Add or modify paths according to your project structure
-          - foerdermittel-backend
+          - backend
 
 jobs:
   release-maven-artifact:

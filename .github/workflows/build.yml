@@ -19,8 +19,8 @@ jobs:
       fail-fast: false
       matrix:
         include: # Add or modify paths according to your project structure
-          - app-path: foerdermittel-backend
-          - app-path: foerdermittel-frontend
+          - app-path: backend
+          - app-path: frontend
 
     steps:
       - uses: it-at-m/lhm_actions/action-templates/actions/action-checkout@94f7e40aa557a2790abfa98a9cc9186d260b94f8 # v1.0.27
