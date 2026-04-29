@@ -9,8 +9,8 @@
         <relativePath/>
     </parent>
 
-    <groupId>de.muenchen.oss.refarch</groupId>
-    <artifactId>refarch-backend</artifactId>
+    <groupId>de.muenchen.oss.foerdermittel</groupId>
+    <artifactId>foerdermittel-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <name>foerdermittel-backend</name>
