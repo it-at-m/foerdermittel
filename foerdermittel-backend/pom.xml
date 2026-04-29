@@ -74,7 +74,7 @@
         <flyway.url>jdbc:postgresql://localhost:5432/postgres</flyway.url>
         <flyway.user>admin</flyway.user>
         <flyway.password>admin</flyway.password>
-        <flyway.locations>classpath:db/migration/schema,classpath:db/migration/testdata</flyway.locations>
+        <flyway.locations>classpath:db/schema,classpath:db/testdata</flyway.locations>
 
         <!-- Spotless P2 Mirror configuration (e.g. required when using company internal registry -->
         <p2.username /> <!-- must be empty, override via Maven settings.xml if needed -->
