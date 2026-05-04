@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import type { NavigationItem } from "@/types/NavigationItem.ts";
+import type { NavigationItem } from "@/types/NavigationItem";
 
 import {
   mdiChartBar,
@@ -55,7 +55,7 @@ import {
 import { useI18n } from "vue-i18n";
 
 import Ad2ImageAvatar from "@/components/common/Ad2ImageAvatar.vue";
-import { useUserInfoStore } from "@/stores/userinfo.ts";
+import { useUserInfoStore } from "@/stores/userinfo";
 
 const userInfoStore = useUserInfoStore();
 const { t } = useI18n();
@@ -179,7 +179,7 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t(
-          "components.theNavigationDrawer.navigationItems.search.childcareFacitilies"
+          "components.theNavigationDrawer.navigationItems.search.childcareFacilities"
         ),
       },
       {
@@ -319,7 +319,7 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t(
-          "components.theNavigationDrawer.navigationItems.reports.childcareFacitilies"
+          "components.theNavigationDrawer.navigationItems.reports.childcareFacilities"
         ),
       },
       {

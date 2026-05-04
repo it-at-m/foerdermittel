@@ -39,7 +39,7 @@
           "approvals": "Bewilligungen",
           "retrievals": "Abrufe",
           "useStatements": "Verwendungsnachweise",
-          "childcareFacitilies": "Kinderbetreuungseinrichtungen",
+          "childcareFacilities": "Kinderbetreuungseinrichtungen",
           "budget": "Haushalt"
         },
         "statistics": {
@@ -69,7 +69,7 @@
           "approvalAndPayoutProject": "Bewilligung und Auszahlung eines Projekts",
           "approvalAndPayoutCompare": "Bewilligung und Auszahlung (Vergleich)",
           "continuationRequests": "Prüfen auf Fortsetzungsanträge",
-          "childcareFacitilies": "Kinderbetreuungseinrichtungen",
+          "childcareFacilities": "Kinderbetreuungseinrichtungen",
           "budget": "Haushaltsplanung",
           "urbanPlanning": "Städtebauförderungen",
           "euInformation": "EU-Informationen",
