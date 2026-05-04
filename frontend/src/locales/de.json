@@ -1,41 +1,101 @@
 {
-  "app": {
-    "name": {
-      "part1": "refarch-",
-      "part2": "frontend",
-      "full": "@:app.name.part1@:app.name.part2"
-    }
-  },
   "common": {
+    "appName": "Fördermittel",
     "yes": "Ja",
     "no": "Nein",
     "actions": {
-      "close": "Schließen",
-      "search": "Suchen"
+      "close": "Schließen"
     },
     "messages": {}
   },
-  "views": {
-    "index": {
-      "navText": "Willkommen",
-      "header": "Willkommen beim @:app.name.full von it{'@'}M",
-      "apiGatewayStatus": "Das API-Gateway ist:",
-      "backendStatus": "Das Backend ist:"
-    },
-    "getStarted": {
-      "navText": "Get Started",
-      "header": "Get Started",
-      "docsText": "Dokumentation für die RefArch ist hier zu finden:",
-      "docsLinks": {
-        "templates": "Dokumentation RefArch-Templates",
-        "main": "Dokumentation RefArch"
-      },
-      "saveLeave": {
-        "title": "Wirklich verlassen?",
-        "text": "Wollen Sie wirklich nicht die Dokumentation anschauen?"
+  "views": {},
+  "components": {
+    "theNavigationDrawer": {
+      "loggedIn": "Angemeldet als:",
+      "navigationItems": {
+        "projects": {
+          "groupText": "Projekte",
+          "projects": "Projekte",
+          "requests": "Anträge",
+          "approvals": "Bewilligungen",
+          "retrievals": "Abrufe",
+          "deadlines": "Termine",
+          "costs": "Ist-Kosten",
+          "archive": "Archiv",
+          "budget": "Haushaltsplanung",
+          "checklists": "Checklisten"
+        },
+        "management": {
+          "groupText": "Verwaltung",
+          "urbanPlanning": "Städtebauförderungen",
+          "euInformation": "EU-Informationen",
+          "plannedMeasures": "Geplante Maßnahmen",
+          "keywords": "Stichworte"
+        },
+        "search": {
+          "groupText": "Suchen",
+          "projects": "Projekte",
+          "requests": "Anträge",
+          "approvals": "Bewilligungen",
+          "retrievals": "Abrufe",
+          "useStatements": "Verwendungsnachweise",
+          "childcareFacitilies": "Kinderbetreuungseinrichtungen",
+          "budget": "Haushalt"
+        },
+        "statistics": {
+          "groupText": "Statistiken",
+          "projects": "Projektstatistik",
+          "fagYearly": "FAG Statistik Jahresbasis",
+          "fbYearly": "FB Statistik Jahresbasis",
+          "generateYearly": "Generierung Jahresstatistik"
+        },
+        "reports": {
+          "groupText": "Berichte",
+          "projectOverview": "Projektübersicht",
+          "projectOverviewManagement": "Projektübersicht (Management Summary)",
+          "acceptanceOrderSAP": "Annahmeanordnung SAP",
+          "projects": "Projekte",
+          "requests": "Anträge",
+          "approvals": "Bewilligungen",
+          "retrievals": "Abrufe",
+          "useStatements": "Verwendungsnachweise",
+          "deadlines": "Termine",
+          "costs": "Ist-Ausgaben",
+          "archive": "Archiv",
+          "clearanceRequests": "Unbedenklichkeitsanträge",
+          "openApprovalsPerProject": "Ausstehende Bewilligungen nach Projekten",
+          "openApprovalsPerFundingArea": "Ausstehende Bewilligungen nach Förderbereich",
+          "openApprovalsEarlyStart": "Ausstehende Genehmigung vorz. Beginn",
+          "approvalAndPayoutProject": "Bewilligung und Auszahlung eines Projekts",
+          "approvalAndPayoutCompare": "Bewilligung und Auszahlung (Vergleich)",
+          "continuationRequests": "Prüfen auf Fortsetzungsanträge",
+          "childcareFacitilies": "Kinderbetreuungseinrichtungen",
+          "budget": "Haushaltsplanung",
+          "urbanPlanning": "Städtebauförderungen",
+          "euInformation": "EU-Informationen",
+          "plannedMeasures": "Geplante Maßnahmen",
+          "keywords": "Stichworte",
+          "instructions": "Bedienerhinweise (Handbuch)"
+        },
+        "masterData": {
+          "groupText": "Stammdaten",
+          "constructionManagement": "Bauleitungen",
+          "constructionPrograms": "Bauprogramme",
+          "fundingAreas": "Förderbereiche",
+          "hospitals": "Krankenhäuser",
+          "abbreviations": "Kurzbezeichnungen",
+          "publications": "Publikationen",
+          "departments": "Referate",
+          "settlementArea": "Siedlungsgebiete",
+          "districts": "Stadtbezirke",
+          "districtLists": "Stadtbezirkslisten",
+          "keywordAreas": "Stichwortbereiche",
+          "sponsors": "Träger",
+          "sections": "Hauptabschnitte",
+          "subSections": "Unterabschnitte"
+        }
       }
     }
   },
-  "components": {},
   "domain": {}
 }
