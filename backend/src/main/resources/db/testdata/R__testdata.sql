@@ -153,22 +153,22 @@ VALUES ('FMW_ABLAGEINDEX_F', 'Funktion (FMW_ABLAGEINDEX_F) für Tests', 'Bedienu
 
 TRUNCATE TABLE foerderbereiche RESTART IDENTITY CASCADE;
 INSERT INTO foerderbereiche (fb, bezeichnung, finanzausgleich, jahresstatistik, kindergarten, nicht_relevant)
-VALUES (1, 'Förderbereich 1 für Tests', false, false, false, false),
-       (2, 'Förderbereich 2 für Tests', true, false, false, false),
-       (3, 'Förderbereich 3 für Tests', false, true, false, false),
-       (4, 'Förderbereich 4 für Tests', false, false, true, false),
-       (5, 'Förderbereich 5 für Tests', false, false, false, true),
-       (6, 'Förderbereich 6 für Tests', true, true, false, false),
-       (7, 'Förderbereich 7 für Tests', true, false, true, false),
-       (8, 'Förderbereich 8 für Tests', true, false, false, true),
-       (9, 'Förderbereich 9 für Tests', false, true, true, false),
-       (10, 'Förderbereich 10 für Tests', false, true, false, true),
-       (11, 'Förderbereich 11 für Tests', false, false, true, true),
-       (12, 'Förderbereich 12 für Tests', true, true, true, false),
-       (13, 'Förderbereich 13 für Tests', true, true, false, true),
-       (14, 'Förderbereich 14 für Tests', true, false, true, true),
-       (15, 'Förderbereich 15 für Tests', false, true, true, true),
-       (16, 'Förderbereich 16 für Tests', true, true, true, true);
+VALUES (1, 'Förderbereich 1 für Tests', FALSE, FALSE, FALSE, FALSE),
+       (2, 'Förderbereich 2 für Tests', TRUE, FALSE, FALSE, FALSE),
+       (3, 'Förderbereich 3 für Tests', FALSE, TRUE, FALSE, FALSE),
+       (4, 'Förderbereich 4 für Tests', FALSE, FALSE, TRUE, FALSE),
+       (5, 'Förderbereich 5 für Tests', FALSE, FALSE, FALSE, TRUE),
+       (6, 'Förderbereich 6 für Tests', TRUE, TRUE, FALSE, FALSE),
+       (7, 'Förderbereich 7 für Tests', TRUE, FALSE, TRUE, FALSE),
+       (8, 'Förderbereich 8 für Tests', TRUE, FALSE, FALSE, TRUE),
+       (9, 'Förderbereich 9 für Tests', FALSE, TRUE, TRUE, FALSE),
+       (10, 'Förderbereich 10 für Tests', FALSE, TRUE, FALSE, TRUE),
+       (11, 'Förderbereich 11 für Tests', FALSE, FALSE, TRUE, TRUE),
+       (12, 'Förderbereich 12 für Tests', TRUE, TRUE, TRUE, FALSE),
+       (13, 'Förderbereich 13 für Tests', TRUE, TRUE, FALSE, TRUE),
+       (14, 'Förderbereich 14 für Tests', TRUE, FALSE, TRUE, TRUE),
+       (15, 'Förderbereich 15 für Tests', FALSE, TRUE, TRUE, TRUE),
+       (16, 'Förderbereich 16 für Tests', TRUE, TRUE, TRUE, TRUE);
 
 TRUNCATE TABLE krankenhaeuser RESTART IDENTITY CASCADE;
 INSERT INTO krankenhaeuser (krhname, bezeichnung)
