@@ -63,51 +63,36 @@ const { t } = useI18n();
 const navigationItems: NavigationItem[] = [
   {
     title: t(
-      "components.theNavigationDrawer.navigationItems.projects.groupText"
+      "components.theNavigationDrawer.navigationItems.projects.groupText",
+      2
     ),
     props: {
       prependIcon: mdiSitemap,
     },
     children: [
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.projects.projects"
-        ),
+        title: t("domain.projekt.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.projects.requests"
-        ),
+        title: t("domain.antrag.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.projects.approvals"
-        ),
+        title: t("domain.bewilligung.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.projects.retrievals"
-        ),
+        title: t("domain.abruf.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.projects.deadlines"
-        ),
+        title: t("domain.termin.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.projects.costs"
-        ),
+        title: t("domain.istkosten.domainName"),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.projects.archive"
-        ),
+        title: t("domain.archiv.domainName"),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.projects.budget"
-        ),
+        title: t("domain.haushaltsplanung.domainName", 2),
       },
       {
         title: t(
@@ -125,24 +110,16 @@ const navigationItems: NavigationItem[] = [
     },
     children: [
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.management.urbanPlanning"
-        ),
+        title: t("domain.staedtebaufoerderung.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.management.euInformation"
-        ),
+        title: t("domain.euinformation.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.management.plannedMeasures"
-        ),
+        title: t("domain.geplantemassnahme.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.management.keywords"
-        ),
+        title: t("domain.ablageindex.domainName", 2),
       },
     ],
   },
@@ -153,24 +130,16 @@ const navigationItems: NavigationItem[] = [
     },
     children: [
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.search.projects"
-        ),
+        title: t("domain.projekt.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.search.requests"
-        ),
+        title: t("domain.antrag.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.search.approvals"
-        ),
+        title: t("domain.bewilligung.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.search.retrievals"
-        ),
+        title: t("domain.abruf.domainName", 2),
       },
       {
         title: t(
@@ -183,9 +152,7 @@ const navigationItems: NavigationItem[] = [
         ),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.search.budget"
-        ),
+        title: t("domain.haushaltsplanung.domainName", 2),
       },
     ],
   },
@@ -198,9 +165,7 @@ const navigationItems: NavigationItem[] = [
     },
     children: [
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.statistics.projects"
-        ),
+        title: t("domain.projekt.domainName", 2),
       },
       {
         title: t(
@@ -243,24 +208,16 @@ const navigationItems: NavigationItem[] = [
         ),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.projects"
-        ),
+        title: t("domain.projekt.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.requests"
-        ),
+        title: t("domain.antrag.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.approvals"
-        ),
+        title: t("domain.bewilligung.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.retrievals"
-        ),
+        title: t("domain.abruf.domainName", 2),
       },
       {
         title: t(
@@ -268,19 +225,13 @@ const navigationItems: NavigationItem[] = [
         ),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.deadlines"
-        ),
+        title: t("domain.termin.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.costs"
-        ),
+        title: t("domain.istkosten.domainName"),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.archive"
-        ),
+        title: t("domain.archiv.domainName"),
       },
       {
         title: t(
@@ -323,34 +274,22 @@ const navigationItems: NavigationItem[] = [
         ),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.budget"
-        ),
+        title: t("domain.haushaltsplanung.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.urbanPlanning"
-        ),
+        title: t("domain.staedtebaufoerderung.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.euInformation"
-        ),
+        title: t("domain.euinformation.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.plannedMeasures"
-        ),
+        title: t("domain.geplantemassnahme.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.keywords"
-        ),
+        title: t("domain.ablageindex.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.instructions"
-        ),
+        title: t("domain.benutzerhinweis.domainName", 2),
       },
     ],
   },
@@ -363,74 +302,43 @@ const navigationItems: NavigationItem[] = [
     },
     children: [
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.masterData.constructionManagement"
-        ),
+        title: t("domain.bauleitung.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.masterData.constructionPrograms"
-        ),
+        title: t("domain.bauprogramm.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.masterData.fundingAreas"
-        ),
+        title: t("domain.foerderbereich.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.masterData.hospitals"
-        ),
+        title: t("domain.krankenhaus.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.masterData.abbreviations"
-        ),
+        title: t("domain.kurzbezeichnung.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.masterData.publications"
-        ),
+        title: t("domain.publikation.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.masterData.departments"
-        ),
+        title: t("domain.referat.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.masterData.settlementArea"
-        ),
+        title: t("domain.siedlungsgebiet.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.masterData.districts"
-        ),
+        title: t("domain.stadtbezirk.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.masterData.districtLists"
-        ),
+        title: t("domain.stadtbezirksliste.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.masterData.keywordAreas"
-        ),
+        title: t("domain.stichwortbereich.domainName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.masterData.sponsors"
-        ),
+        title: t("domain.traeger.domainName"),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.masterData.sections"
-        ),
-      },
-      {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.masterData.subSections"
-        ),
+        title: t("domain.unterabschnitt.domainName", 2),
       },
     ],
   },

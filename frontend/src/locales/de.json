@@ -15,36 +15,18 @@
       "navigationItems": {
         "projects": {
           "groupText": "Projekte",
-          "projects": "Projekte",
-          "requests": "Anträge",
-          "approvals": "Bewilligungen",
-          "retrievals": "Abrufe",
-          "deadlines": "Termine",
-          "costs": "Ist-Kosten",
-          "archive": "Archiv",
-          "budget": "Haushaltsplanung",
           "checklists": "Checklisten"
         },
         "management": {
-          "groupText": "Verwaltung",
-          "urbanPlanning": "Städtebauförderungen",
-          "euInformation": "EU-Informationen",
-          "plannedMeasures": "Geplante Maßnahmen",
-          "keywords": "Stichworte"
+          "groupText": "Verwaltung"
         },
         "search": {
           "groupText": "Suchen",
-          "projects": "Projekte",
-          "requests": "Anträge",
-          "approvals": "Bewilligungen",
-          "retrievals": "Abrufe",
           "useStatements": "Verwendungsnachweise",
-          "childcareFacilities": "Kinderbetreuungseinrichtungen",
-          "budget": "Haushalt"
+          "childcareFacilities": "Kinderbetreuungseinrichtungen"
         },
         "statistics": {
           "groupText": "Statistiken",
-          "projects": "Projektstatistik",
           "fagYearly": "FAG Statistik Jahresbasis",
           "fbYearly": "FB Statistik Jahresbasis",
           "generateYearly": "Generierung Jahresstatistik"
@@ -54,14 +36,7 @@
           "projectOverview": "Projektübersicht",
           "projectOverviewManagement": "Projektübersicht (Management Summary)",
           "acceptanceOrderSAP": "Annahmeanordnung SAP",
-          "projects": "Projekte",
-          "requests": "Anträge",
-          "approvals": "Bewilligungen",
-          "retrievals": "Abrufe",
           "useStatements": "Verwendungsnachweise",
-          "deadlines": "Termine",
-          "costs": "Ist-Ausgaben",
-          "archive": "Archiv",
           "clearanceRequests": "Unbedenklichkeitsanträge",
           "openApprovalsPerProject": "Ausstehende Bewilligungen nach Projekten",
           "openApprovalsPerFundingArea": "Ausstehende Bewilligungen nach Förderbereich",
@@ -69,33 +44,92 @@
           "approvalAndPayoutProject": "Bewilligung und Auszahlung eines Projekts",
           "approvalAndPayoutCompare": "Bewilligung und Auszahlung (Vergleich)",
           "continuationRequests": "Prüfen auf Fortsetzungsanträge",
-          "childcareFacilities": "Kinderbetreuungseinrichtungen",
-          "budget": "Haushaltsplanung",
-          "urbanPlanning": "Städtebauförderungen",
-          "euInformation": "EU-Informationen",
-          "plannedMeasures": "Geplante Maßnahmen",
-          "keywords": "Stichworte",
-          "instructions": "Bedienerhinweise (Handbuch)"
+          "childcareFacilities": "Kinderbetreuungseinrichtungen"
         },
         "masterData": {
-          "groupText": "Stammdaten",
-          "constructionManagement": "Bauleitungen",
-          "constructionPrograms": "Bauprogramme",
-          "fundingAreas": "Förderbereiche",
-          "hospitals": "Krankenhäuser",
-          "abbreviations": "Kurzbezeichnungen",
-          "publications": "Publikationen",
-          "departments": "Referate",
-          "settlementArea": "Siedlungsgebiete",
-          "districts": "Stadtbezirke",
-          "districtLists": "Stadtbezirkslisten",
-          "keywordAreas": "Stichwortbereiche",
-          "sponsors": "Träger",
-          "sections": "Hauptabschnitte",
-          "subSections": "Unterabschnitte"
+          "groupText": "Stammdaten"
         }
       }
     }
   },
-  "domain": {}
+  "domain": {
+    "projekt": {
+      "domainName": "Projekt | Projekte"
+    },
+    "antrag": {
+      "domainName": "Antrag | Anträge"
+    },
+    "bewilligung": {
+      "domainName": "Bewilligung | Bewilligungen"
+    },
+    "abruf": {
+      "domainName": "Abruf | Abrufe"
+    },
+    "termin": {
+      "domainName": "Termin | Termine"
+    },
+    "istkosten": {
+      "domainName": "Ist-Kosten"
+    },
+    "archiv": {
+      "domainName": "Archiv"
+    },
+    "haushaltsplanung": {
+      "domainName": "Haushaltsplanung | Haushaltsplanungen"
+    },
+    "staedtebaufoerderung": {
+      "domainName": "Städtebauförderung | Städtebauförderungen"
+    },
+    "euinformation": {
+      "domainName": "EU-Information | EU-Informationen"
+    },
+    "geplantemassnahme": {
+      "domainName": "Geplante Maßnahme | Geplante Maßnahmen"
+    },
+    "ablageindex": {
+      "domainName": "Stichwort | Stichworte"
+    },
+    "bauleitung": {
+      "domainName": "Bauleitung | Bauleitungen"
+    },
+    "bauprogramm": {
+      "domainName": "Bauprogramm | Bauprogramme"
+    },
+    "foerderbereich": {
+      "domainName": "Förderbereich | Förderbereiche"
+    },
+    "krankenhaus": {
+      "domainName": "Krankenhaus | Krankenhäuser"
+    },
+    "kurzbezeichnung": {
+      "domainName": "Kurzbezeichnung | Kurzbezeichnungen"
+    },
+    "publikation": {
+      "domainName": "Publikation | Publikationen"
+    },
+    "referat": {
+      "domainName": "Referat | Referate"
+    },
+    "siedlungsgebiet": {
+      "domainName": "Siedlungsgebiet | Siedlungsgebiete"
+    },
+    "stadtbezirk": {
+      "domainName": "Stadtbezirk | Stadtbezirke"
+    },
+    "stadtbezirksliste": {
+      "domainName": "Stadtbezirksliste | Stadtbezirkslisten"
+    },
+    "stichwortbereich": {
+      "domainName": "Stichwortbereich | Stichwortbereiche"
+    },
+    "traeger": {
+      "domainName": "Träger"
+    },
+    "unterabschnitt": {
+      "domainName": "Unterabschnitt | Unterabschnitte"
+    },
+    "benutzerhinweis": {
+      "domainName": "Benutzerhinweis | Benutzerhinweise"
+    }
+  }
 }
