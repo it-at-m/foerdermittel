@@ -252,120 +252,214 @@ VALUES ('11', 'Unterabschnitt 11 für Tests', '01'),
 */
 
 TRUNCATE TABLE projekte RESTART IDENTITY CASCADE;
-INSERT INTO projekte (PROJNR,FOB_FB,KUR_KURZBEZ,UAS_UA,JAHR,LFDNR1,LFDNR2,PNAME,PSTRASSE,KAUF,PROJART,REFINANZIERBAR,BLE_BAULEITUNG,BAULEITUNGKONTAKT,BEZ_STADTBEZIRK,KRN_KRHNAME,KRHZWECK,KRISOFP,KRIPPLATZ,KIGAPLATZ,HORTPLATZ,VNDAT,VNKOSTEN,VNZWFKOSTEN,VNPRUEFDAT,VNRUECK_Z,VNNACHFOERDERUNG,VNPRUEFZWF,VNSCHLUSSZWF,VNSCHLUSSBEW,SAP,SAPSTATAUF,SAPMATNR,SAPWERTNR,SAPJAHRWERT,SAPANLAGENNR,ZINSEN,ZINSDATUM,FIPO,BUCHUNGSKREIS,SACHKONTO,FIPO_K,BUCHUNGSKREIS_K,SACHKONTO_K,PSBAUBUCH,PSBAUREF,PSBAUNR,NOTIZEN,ALTDATEN,ANLAGEDATUM,ANLAGEVON,AENDERUNGSDATUM,AENDERUNGVON,VNGESAMTZUWENDUNG,SAPINNENAUFTRAG,BPG_BAUPROGRAMM,SGT_SIEDLUNGSGEBIET,BAUENDE,BAUBEENDET,BAUVERGABE1,BAUBEGINN,BAUMITTEILUNG,KREDITNUMMER,STADTANLEIHE,ANLEIHENENNWERT,ANLEIHEJAHRVON,ANLEIHEJAHRBIS)
-VALUES ('1124101','11','KURZBEZ1','11','24','1','01','Projektname 1','Müllerstraße 12','0','Projektart 1','0','A','Klaus-Jürgen Meier, HO3','1',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'1','0',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'0','2026-04-22','Test-User',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null),
-       ('2124101','12','KURZBEZ1','21','24','1','01','Projektname 2','Schönhauser Allee 42','0','Projektart 2','1','B','Anna-Lena Schmidt, HO3','1',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'1','0',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'0','2026-04-22','Test-User',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null),
-       ('2224103','14','KURZBEZ2','22','24','1','01','Projektname 3','Bäckerstraße 7','0','Projektart 3','1','A','Max Müller, HO3','1',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'1','0',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'0','2026-04-22','Test-User',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null),
-       ('3325101','11','KURZBEZ1','33','25','1','01','Projektname 4','Am Waldweg 3','0','Projektart 1','0','C','Sophie von Hohenberg, HO3','1',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'1','0',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'0','2026-04-22','Test-User',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null),
-       ('3225101','11','KURZBEZ3','32','25','1','01','Projektname 5','Hauptstraße 99','0','Projektart 3','1','C','Lavinia Traumschreiber, HO3','1',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'1','0',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'0','2026-04-22','Test-User',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null),
-       ('1125101','11','KURZBEZ1','11','25','1','01','Projektname 6','Müllerstraße 12','0','Projektart 3','1','A','Aurelius Federwolke, HO3','1',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'1','0',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'0','2026-04-22','Test-User',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null),
-       ('1126101','11','KURZBEZ1','11','26','1','01','Projektname 7','Müllerstraße 12','0','Projektart 4','0','B','Verena Lichtspiel, HO3','1',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'1','0',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'0','2026-04-22','Test-User',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null),
-       ('2126101','11','KURZBEZ3','21','26','1','01','Projektname 8','Mühlenweg 8','0','Projektart 1','1','A','Alaric Nebelgeist, HO3','1',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'1','0',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'0','2026-04-22','Test-User',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null),
-       ('1126103','11','KURZBEZ1','11','26','1','01','Projektname 9','Alte-Lindenstraße 45','0','Projektart 3','1','B','Celestine Glimmerstein, HO3','1',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'1','0',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'0','2026-04-22','Test-User',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null),
-       ('1126104','11','KURZBEZ2','11','26','1','01','Projektname 10','Schillerstraße-Ost 7','0','Projektart 2','1','C','Max Mustermann, HO3','1',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'1','0',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'0','2026-04-22','Test-User',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
+INSERT INTO projekte (projnr, fob_fb, kur_kurzbez, uas_ua, jahr, lfdnr1, lfdnr2, pname, pstrasse, kauf, projart,
+                      refinanzierbar, ble_bauleitung, bauleitungkontakt, bez_stadtbezirk, krn_krhname, krhzweck,
+                      krisofp, kripplatz, kigaplatz, hortplatz, vndat, vnkosten, vnzwfkosten, vnpruefdat, vnrueck_z,
+                      vnnachfoerderung, vnpruefzwf, vnschlusszwf, vnschlussbew, sap, sapstatauf, sapmatnr, sapwertnr,
+                      sapjahrwert, sapanlagennr, zinsen, zinsdatum, fipo, buchungskreis, sachkonto, fipo_k,
+                      buchungskreis_k, sachkonto_k, psbaubuch, psbauref, psbaunr, notizen, altdaten, anlagedatum,
+                      anlagevon, aenderungsdatum, aenderungvon, vngesamtzuwendung, sapinnenauftrag, bpg_bauprogramm,
+                      sgt_siedlungsgebiet, bauende, baubeendet, bauvergabe1, baubeginn, baumitteilung, kreditnummer,
+                      stadtanleihe, anleihenennwert, anleihejahrvon, anleihejahrbis)
+VALUES ('1124101', '11', 'KURZBEZ1', '11', '24', '1', '01', 'Projektname 1', 'Müllerstraße 12', 'false', 'Projektart 1',
+        'false', 'A', 'Klaus-Jürgen Meier, HO3', '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL, 'true', 'false', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, 'false', '2026-04-22', 'Test-User', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL, NULL, null),
+       ('2124101', '12', 'KURZBEZ1', '21', '24', '1', '01', 'Projektname 2', 'Schönhauser Allee 42', 'false',
+        'Projektart 2', 'true', 'B', 'Anna-Lena Schmidt, HO3', '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL, NULL, NULL, 'true', 'false', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL, NULL, 'false', '2026-04-22', 'Test-User', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL, NULL, NULL, NULL, null),
+       ('2224103', '14', 'KURZBEZ2', '22', '24', '1', '01', 'Projektname 3', 'Bäckerstraße 7', 'false', 'Projektart 3', 'true',
+        'A', 'Max Müller, HO3', '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, 'true', 'false', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        'false', '2026-04-22', 'Test-User', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, null),
+       ('3325101', '11', 'KURZBEZ1', '33', '25', '1', '01', 'Projektname 4', 'Am Waldweg 3', 'false', 'Projektart 1', 'false',
+        'C', 'Sophie von Hohenberg, HO3', '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, 'true', 'false', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, 'false', '2026-04-22', 'Test-User', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL, null),
+       ('3225101', '11', 'KURZBEZ3', '32', '25', '1', '01', 'Projektname 5', 'Hauptstraße 99', 'false', 'Projektart 3', 'true',
+        'C', 'Lavinia Traumschreiber, HO3', '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, 'true', 'false', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, 'false', '2026-04-22', 'Test-User', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL, null),
+       ('1125101', '11', 'KURZBEZ1', '11', '25', '1', '01', 'Projektname 6', 'Müllerstraße 12', 'false', 'Projektart 3',
+        'true', 'A', 'Aurelius Federwolke, HO3', '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL, 'true', 'false', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, 'false', '2026-04-22', 'Test-User', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL, NULL, null),
+       ('1126101', '11', 'KURZBEZ1', '11', '26', '1', '01', 'Projektname 7', 'Müllerstraße 12', 'false', 'Projektart 4',
+        'false', 'B', 'Verena Lichtspiel, HO3', '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, 'true', 'false', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, 'false', '2026-04-22', 'Test-User', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL, null),
+       ('2126101', '11', 'KURZBEZ3', '21', '26', '1', '01', 'Projektname 8', 'Mühlenweg 8', 'false', 'Projektart 1', 'true',
+        'A', 'Alaric Nebelgeist, HO3', '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, 'true', 'false', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, 'false', '2026-04-22', 'Test-User', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL, null),
+       ('1126103', '11', 'KURZBEZ1', '11', '26', '1', '01', 'Projektname 9', 'Alte-Lindenstraße 45', 'false',
+        'Projektart 3', 'true', 'B', 'Celestine Glimmerstein, HO3', '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'true', 'false', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL, NULL, NULL, 'false', '2026-04-22', 'Test-User', NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, null),
+       ('1126104', '11', 'KURZBEZ2', '11', '26', '1', '01', 'Projektname 10', 'Schillerstraße-Ost 7', 'false',
+        'Projektart 2', 'true', 'C', 'Max Mustermann, HO3', '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL, NULL, NULL, 'true', 'false', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL, NULL, 'false', '2026-04-22', 'Test-User', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL, NULL, NULL, NULL, null);
 
 TRUNCATE TABLE antraege RESTART IDENTITY CASCADE;
-INSERT INTO antraege (ID,PRO_PROJNR,ANTRAGSDATUM,ANTRAGSTYP,GESKOSTEN,ZWFKOSTEN,VORZBEG,VBDATUM,UNBEDDAT,UNBEDJA,UNBEDBIS,A_SU_Z,A_SU_D,A_SU_K,B_VOR_SU_Z,B_VOR_SU_D,B_VOR_SU_K,NOTIZEN,ANLAGEDATUM,ANLAGEVON,AENDERUNGSDATUM,AENDERUNGVON)
-VALUES ('1','1124101','2024-01-22','E','500000','250000','0',null,null,null,null,'250000','0','0','0','0','0',null,'2026-04-22','Test-User',null,null),
-       ('2','2124101','2024-01-22','E','500000','250000','0',null,null,null,null,'250000','0','0','0','0','0',null,'2026-04-22','Test-User',null,null),
-       ('3','2224103','2024-01-22','E','500000','250000','0',null,null,null,null,'250000','0','0','0','0','0',null,'2026-04-22','Test-User',null,null),
-       ('4','3325101','2025-01-22','E','500000','250000','0',null,null,null,null,'250000','0','0','0','0','0',null,'2026-04-22','Test-User',null,null),
-       ('5','3225101','2025-01-22','E','500000','250000','0',null,null,null,null,'250000','0','0','0','0','0',null,'2026-04-22','Test-User',null,null),
-       ('6','1125101','2025-01-22','E','500000','250000','0',null,null,null,null,'250000','0','0','0','0','0',null,'2026-04-22','Test-User',null,null),
-       ('7','1126101','2026-01-02','E','500000','250000','0',null,null,null,null,'250000','0','0','0','0','0',null,'2026-04-22','Test-User',null,null),
-       ('8','2126101','2026-01-05','E','500000','250000','0',null,null,null,null,'250000','0','0','0','0','0',null,'2026-04-22','Test-User',null,null),
-       ('9','1126103','2026-01-08','E','500000','250000','0',null,null,null,null,'250000','0','0','0','0','0',null,'2026-04-22','Test-User',null,null),
-       ('10','1126104','2026-01-10','E','500000','250000','0',null,null,null,null,'250000','0','0','0','0','0',null,'2026-04-22','Test-User',null,null),
-       ('11','1126101','2026-01-15','E','500000','250000','0',null,null,null,null,'125000','0','0','0','0','0',null,'2026-04-22','Test-User',null,null),
-       ('12','1126101','2026-01-18','A','500000','260000','0',null,null,null,null,'25000','0','0','0','0','0',null,'2026-04-22','Test-User',null,null),
-       ('13','1126101','2026-01-22','F','500000','260000','0',null,null,null,null,'25000','0','0','0','0','0',null,'2026-04-22','Test-User',null,null);
+INSERT INTO antraege (id, pro_projnr, antragsdatum, antragstyp, geskosten, zwfkosten, vorzbeg, vbdatum, unbeddat,
+                      unbedja, unbedbis, a_su_z, a_su_d, a_su_k, b_vor_su_z, b_vor_su_d, b_vor_su_k, notizen,
+                      anlagedatum, anlagevon, aenderungsdatum, aenderungvon)
+VALUES ('1', '1124101', '2024-01-22', 'E', '500000', '250000', 'false', NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, null),
+       ('2', '2124101', '2024-01-22', 'E', '500000', '250000', 'false', NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, null),
+       ('3', '2224103', '2024-01-22', 'E', '500000', '250000', 'false', NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, null),
+       ('4', '3325101', '2025-01-22', 'E', '500000', '250000', 'false', NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, null),
+       ('5', '3225101', '2025-01-22', 'E', '500000', '250000', 'false', NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, null),
+       ('6', '1125101', '2025-01-22', 'E', '500000', '250000', 'false', NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, null),
+       ('7', '1126101', '2026-01-02', 'E', '500000', '250000', 'false', NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, null),
+       ('8', '2126101', '2026-01-05', 'E', '500000', '250000', 'false', NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, null),
+       ('9', '1126103', '2026-01-08', 'E', '500000', '250000', 'false', NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, null),
+       ('10', '1126104', '2026-01-10', 'E', '500000', '250000', 'true', NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, null),
+       ('11', '1126101', '2026-01-15', 'E', '500000', '250000', 'false', NULL, NULL, NULL, NULL, '125000', '0', '0', '0',
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, null),
+       ('12', '1126101', '2026-01-18', 'A', '500000', '260000', 'false', NULL, NULL, NULL, NULL, '25000', '0', '0', '0',
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, null),
+       ('13', '1126101', '2026-01-22', 'F', '500000', '260000', 'false', NULL, NULL, NULL, NULL, '25000', '0', '0', '0',
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, null);
 
 TRUNCATE TABLE bewilligungen RESTART IDENTITY CASCADE;
-INSERT INTO bewilligungen (ID,PRO_PROJNR,ANT_ID,BDATUM,AFSATZ,BFSATZ,BZWFKOSTEN,BZUWENDUNG_Z,BZUWENDUNG_D,BZUWENDUNG_K,BZUWART,BAKTENZEICHEN,GESZUWENDUNGEN,GESKONNEX,KRW,NOTIZEN,ANLAGEDATUM,ANLAGEVON,AENDERUNGSDATUM,AENDERUNGVON)
-VALUES ('1','1126101','7','2026-04-22','0','50','250000','125000','0','0','T','000000000','125000','0',null,null,'2026-04-22','TEST-USER','2026-04-22','TEST-USER'),
-       ('2','1124101','1','2026-04-22','0','50','250000','125000','0','0','T','000000000','125000','0',null,null,'2026-04-22','TEST-USER','2026-04-22','TEST-USER'),
-       ('3','3225101','5','2026-04-22','0','50','250000','125000','0','0','T','000000000','125000','0',null,null,'2026-04-22','TEST-USER','2026-04-22','TEST-USER');
+INSERT INTO bewilligungen (id, pro_projnr, ant_id, bdatum, afsatz, bfsatz, bzwfkosten, bzuwendung_z, bzuwendung_d,
+                           bzuwendung_k, bzuwart, baktenzeichen, geszuwendungen, geskonnex, krw, notizen, anlagedatum,
+                           anlagevon, aenderungsdatum, aenderungvon)
+VALUES ('1', '1126101', '7', '2026-04-22', '0', '50', '250000', '125000', '0', '0', 'T', '000000000', '125000', '0',
+        NULL, NULL, '2026-04-22', 'TEST-USER', '2026-04-22', 'TEST-USER'),
+       ('2', '1124101', '1', '2026-04-22', '0', '50', '250000', '125000', '0', '0', 'T', '000000000', '125000', '0',
+        NULL, NULL, '2026-04-22', 'TEST-USER', '2026-04-22', 'TEST-USER'),
+       ('3', '3225101', '5', '2026-04-22', '0', '50', '250000', '125000', '0', '0', 'T', '000000000', '125000', '0',
+        NULL, NULL, '2026-04-22', 'TEST-USER', '2026-04-22', 'TEST-USER');
 
 TRUNCATE TABLE abrufe RESTART IDENTITY CASCADE;
-INSERT INTO abrufe (ID,PRO_PROJNR,BWI_ID,VNABR,ABRUF_Z,ABRUF_D,ABRUF_K,ABRUF_DATUM,ERH_Z,ERH_D,ERH_K,ERH_DATUM,REF_REFNR,SAPABRUFAUFTRAGSNR,SAPFAKTURANR,FIPO,BUCHUNGSKREIS,SACHKONTO,FIPO_K,BUCHUNGSKREIS_K,SACHKONTO_K,NOTIZEN,ANLAGEDATUM,ANLAGEVON,AENDERUNGSDATUM,AENDERUNGVON)
-VALUES ('1','1126101','1',null,'125000','0','0','2026-04-23','125000','0','0','2026-04-23','1',null,null,null,null,null,null,null,null,null,'2026-04-22','Test-User','2026-04-22','Test-User'),
-       ('2','1124101','2',null,'125000','0','0','2026-04-23','125000','0','0','2024-05-10','1',null,null,null,null,null,null,null,null,null,'2026-04-22','Test-User','2026-04-22','Test-User'),
-       ('3','3225101','3',null,'125000','0','0','2026-04-23','125000','0','0','2025-07-01','1',null,null,null,null,null,null,null,null,null,'2026-04-22','Test-User','2026-04-22','Test-User');
+INSERT INTO abrufe (id, pro_projnr, bwi_id, vnabr, abruf_z, abruf_d, abruf_k, abruf_datum, erh_z, erh_d, erh_k,
+                    erh_datum, ref_refnr, sapabrufauftragsnr, sapfakturanr, fipo, buchungskreis, sachkonto, fipo_k,
+                    buchungskreis_k, sachkonto_k, notizen, anlagedatum, anlagevon, aenderungsdatum, aenderungvon)
+VALUES ('1', '1126101', '1', NULL, '125000', '0', '0', '2026-04-23', '125000', '0', '0', '2026-04-23', '1', NULL, NULL,
+        NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-04-22', 'Test-User', '2026-04-22', 'Test-User'),
+       ('2', '1124101', '2', NULL, '125000', '0', '0', '2026-04-23', '125000', '0', '0', '2024-05-10', '1', NULL, NULL,
+        NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-04-22', 'Test-User', '2026-04-22', 'Test-User'),
+       ('3', '3225101', '3', NULL, '125000', '0', '0', '2026-04-23', '125000', '0', '0', '2025-07-01', '1', NULL, NULL,
+        NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-04-22', 'Test-User', '2026-04-22', 'Test-User');
 
 TRUNCATE TABLE projektistkosten RESTART IDENTITY CASCADE;
-INSERT INTO projektistkosten (PRO_PROJNR,JAHR,MONAT,ISTKOSTEN)
-VALUES ('1126101','2026','3','25000'),
-       ('1126101','2026','4','30000');
+INSERT INTO projektistkosten (pro_projnr, jahr, monat, istkosten)
+VALUES ('1126101', '2026', '3', '25000'),
+       ('1126101', '2026', '4', '30000');
 
 TRUNCATE TABLE projekttermine RESTART IDENTITY CASCADE;
-INSERT INTO projekttermine (ID,PRO_PROJNR,TERMIN,ZUSTAENDIG,TELEFON,NOTIZEN,UEBERWACHUNG)
-VALUES ('1','1126101','2026-07-22','Frau. Test','00000000','Fusce tincidunt, nisl quis bibendum fermentum, libero justo tincidunt eros (at gravida ex). Nisi ut nibh. Curabitur blandit leo a dictum euismod. Phasellus non lacus ut ligula gravida dapibus (Nam tincidunt, justo non aliquam ultrices).','0');
+INSERT INTO projekttermine (id, pro_projnr, termin, zustaendig, telefon, notizen, ueberwachung)
+VALUES ('1', '1126101', '2026-07-22', 'Frau. Test', '00000000',
+        'Fusce tincidunt, nisl quis bibendum fermentum, libero justo tincidunt eros (at gravida ex). Nisi ut nibh. Curabitur blandit leo a dictum euismod. Phasellus non lacus ut ligula gravida dapibus (Nam tincidunt, justo non aliquam ultrices).',
+        'false');
 
 TRUNCATE TABLE archiv RESTART IDENTITY CASCADE;
-INSERT INTO archiv (ID,PRO_PROJNR,SPEICHERDATUM,SPEICHERAKT,SPEICHERRECHNUNGEN,MIKRODATPLAN,MIKRODAT,NOTIZEN)
-VALUES ('1','1124101','2024-09-14','0','1','2024-09-16','2024-09-18','Fusce tincidunt, nisl quis bibendum fermentum'),
-       ('2','3325101','2025-09-14','0','0','2025-09-16','2025-09-18',null),
-       ('3','1126104','2026-04-14','0','0','2026-04-16','2026-04-18','Fusce tincidunt, nisl quis bibendum fermentum');
+INSERT INTO archiv (id, pro_projnr, speicherdatum, speicherakt, speicherrechnungen, mikrodatplan, mikrodat, notizen)
+VALUES ('1', '1124101', '2024-09-14', 'false', 'true', '2024-09-16', '2024-09-18',
+        'Fusce tincidunt, nisl quis bibendum fermentum'),
+       ('2', '3325101', '2025-09-14', 'false', 'false', '2025-09-16', '2025-09-18', null),
+       ('3', '1126104', '2026-04-14', 'false', 'false', '2026-04-16', '2026-04-18',
+        'Fusce tincidunt, nisl quis bibendum fermentum');
 
 TRUNCATE TABLE ablageindexe RESTART IDENTITY CASCADE;
-INSERT INTO ablageindexe (ID,STB_BEREICH,NR,WORT,STICHWORTE)
-values ('1','STICHWORTBEREICH1','1','Anonymisierte Mitteilung v. 01.01.2024 Beispieltext', 'Beispiel Stichwort'),
-       ('2','STICHWORTBEREICH1','1','Anonymisierte Mitteilung v. 01.01.2025 Beispieltext', 'Beispiel Stichwort'),
-       ('3','STICHWORTBEREICH1','1','Anonymisierte Mitteilung v. 01.01.2026 Beispieltext', 'Beispiel Stichwort');
+INSERT INTO ablageindexe (id, stb_bereich, nr, wort, stichworte)
+values ('1', 'STICHWORTBEREICH1', '1', 'Anonymisierte Mitteilung v. 01.01.2024 Beispieltext', 'Beispiel Stichwort'),
+       ('2', 'STICHWORTBEREICH1', '1', 'Anonymisierte Mitteilung v. 01.01.2025 Beispieltext', 'Beispiel Stichwort'),
+       ('3', 'STICHWORTBEREICH1', '1', 'Anonymisierte Mitteilung v. 01.01.2026 Beispieltext', 'Beispiel Stichwort');
 
 TRUNCATE TABLE euinformationen RESTART IDENTITY CASCADE;
-INSERT INTO euinformationen (ID, JAHR, PUB_KURZFORM, HEFTA, NUMMER, WICHTIG, SEITENNR, STICHWORT, RAWI, SCHULREF, SOZREF_R_5, RGU_11, RGU_CS, KRH, AFA, SWM, KULTURREF, BAUREF, PLANREF, DIREKTORIUM, POR, KVR, KOMMREF, SEW, STK, INHALT, INFODAT)
-VALUES
-    ('1', '2001', 'A', null, '88', '1', '0', null, '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'Anonymisierte Beschreibung 1', null),
-    ('2', '2002', 'B', null, '89', '1', '0', null, '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'Anonymisierte Beschreibung 2', null),
-    ('3', '2003', 'C', null, '90', '1', '0', null, '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'Anonymisierte Beschreibung 3', null);
+INSERT INTO euinformationen (id, jahr, pub_kurzform, hefta, nummer, wichtig, seitennr, stichwort, rawi, schulref,
+                             sozref_r_5, rgu_11, rgu_cs, krh, afa, swm, kulturref, bauref, planref, direktorium, por,
+                             kvr, kommref, sew, stk, inhalt, infodat)
+VALUES ('1', '2001', 'A', NULL, '88', 'true', '1', NULL, 'true', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false',
+        'false', 'false', 'false', 'false', 'Anonymisierte Beschreibung 1', null),
+       ('2', '2002', 'B', NULL, '89', 'true', '4', NULL, 'true', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false',
+        'false', 'false', 'false', 'false', 'Anonymisierte Beschreibung 2', null),
+       ('3', '2003', 'C', NULL, '90', 'true', '2', NULL, 'true', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false',
+        'false', 'false', 'false', 'false', 'Anonymisierte Beschreibung 3', null);
 
 TRUNCATE TABLE geplantemassnahmen RESTART IDENTITY CASCADE;
-INSERT INTO geplantemassnahmen (ID, KUR_KURZBEZ, BEZ_STADTBEZIRK, STRASSE, PROJEKT, BAUBEGINN, ANGELEGT, PLANNR)
-VALUES
-    ('1', 'KURZBEZ1', '3', 'Anonyme Straße 1', 'Anonymes Projekt Beschreibung', null, '2015', null),
-    ('2', 'KURZBEZ2', '2', 'Anonyme Straße 2', 'Anonymes Projekt Beschreibung 2', null, '2016', null),
-    ('3', 'KURZBEZ3', '1', 'Anonyme Straße 3', 'Anonymes Projekt Beschreibung 3', null, '2017', null);
+INSERT INTO geplantemassnahmen (id, kur_kurzbez, bez_stadtbezirk, strasse, projekt, baubeginn, angelegt, plannr)
+VALUES ('1', 'KURZBEZ1', '3', 'Anonyme Straße 1', 'Anonymes Projekt Beschreibung', NULL, '2015', null),
+       ('2', 'KURZBEZ2', '2', 'Anonyme Straße 2', 'Anonymes Projekt Beschreibung 2', NULL, '2016', null),
+       ('3', 'KURZBEZ3', '1', 'Anonyme Straße 3', 'Anonymes Projekt Beschreibung 3', NULL, '2017', null);
 
 TRUNCATE TABLE hhjahre RESTART IDENTITY CASCADE;
-INSERT INTO hhjahre (HHJAHR, HHBEZEICHNUNG, NOTIZEN)
-VALUES
-    ('2024', 'Haushalt 2024', null),
-    ('2025', 'Haushalt 2025', null),
-    ('2026', 'Haushalt 2026', null);
+INSERT INTO hhjahre (hhjahr, hhbezeichnung, notizen)
+VALUES ('2024', 'Haushalt 2024', null),
+       ('2025', 'Haushalt 2025', null),
+       ('2026', 'Haushalt 2026', null);
 
 TRUNCATE TABLE hhplan RESTART IDENTITY CASCADE;
-INSERT INTO hhplan (HHJ_JAHR, FIPO, PRO_PROJNR, P_PSTRASSE, P_PNAME, P_FOB_FB, P_BEZ_STADTBEZIRK, P_LNA_KURZBEZ, P_VNDAT, MITTELEINPLANUNG, BEWILLIGUNG_VOJ, BEWILLIGUNG_HHJ, ERHALTEN_VOJ, ERHALTEN_HHJ, BAUSTANDAKTUELL, AN, N1, N2, NOTIZEN, ANLAGEDATUM, ANLAGEVON, AENDERUNGSDATUM, AENDERUNGVON)
-VALUES
-    ('2026', '0000.000.0000.1', '2126101', 'Anonyme Straße 1', 'Anonymes Projekt 1', '14', '23', 'A', null, '338000', '270000', '0', '270000', '0', '100', '0', '0', '0', null, '2026-06-15', 'Anonym-User', '2024-04-22', 'Anonym-User'),
-    ('2025', '0000.000.0000.3', '3225101', 'Anonyme Straße 3', 'Anonymes Projekt 3', '14', '23', 'H', null, '338000', '90000', '0', '90000', '0', '95.1', '0', '0', '0', null, '2026-08-17', 'Anonym-User', '2022-05-13', 'Anonym-User'),
-    ('2025', '0000.000.0000.4', '3325101', 'Anonyme Straße 4', 'Anonymes Projekt 4', '14', '23', 'F', null, '338000', '90000', '0', '90000', '0', '58.91', '0', '0', '0', null, '2026-03-20', 'Anonym-User', '2026-06-10', 'Anonym-User'),
-    ('2024', '0000.000.0000.5', '2124101', 'Anonyme Straße 5', 'Anonymes Projekt 5', '14', '23', 'F', null, '338000', '0', '0', '0', '0', '13.02', '0', '0', '0', null, '2026-08-27', 'Anonym-User', '2026-06-15', 'Anonym-User'),
-    ('2024', '0000.000.0000.6', '2224103', 'Anonyme Straße 6', 'Anonymes Projekt 6', '14', '23', 'A', null, '338000', '0', '0', '0', '0', '0', '0', '0', '0', null, '2026-06-14', 'Anonym-User', '2026-06-14', 'Anonym-User');
+INSERT INTO hhplan (hhj_jahr, fipo, pro_projnr, p_pstrasse, p_pname, p_fob_fb, p_bez_stadtbezirk, p_lna_kurzbez,
+                    p_vndat, mitteleinplanung, bewilligung_voj, bewilligung_hhj, erhalten_voj, erhalten_hhj,
+                    baustandaktuell, an, n1, n2, notizen, anlagedatum, anlagevon, aenderungsdatum, aenderungvon)
+VALUES ('2026', '0000.000.0000.1', '2126101', 'Anonyme Straße 1', 'Anonymes Projekt 1', '14', '23', 'A', NULL, '338000',
+        '270000', '0', '270000', '0', '100', '0', '0', '0', NULL, '2026-06-15', 'Anonym-User', '2024-04-22',
+        'Anonym-User'),
+       ('2025', '0000.000.0000.3', '3225101', 'Anonyme Straße 3', 'Anonymes Projekt 3', '14', '23', 'H', NULL, '338000',
+        '90000', '0', '90000', '0', '95.1', '0', '0', '0', NULL, '2026-08-17', 'Anonym-User', '2022-05-13',
+        'Anonym-User'),
+       ('2025', '0000.000.0000.4', '3325101', 'Anonyme Straße 4', 'Anonymes Projekt 4', '14', '23', 'F', NULL, '338000',
+        '90000', '0', '90000', '0', '58.91', '0', '0', '0', NULL, '2026-03-20', 'Anonym-User', '2026-06-10',
+        'Anonym-User'),
+       ('2024', '0000.000.0000.5', '2124101', 'Anonyme Straße 5', 'Anonymes Projekt 5', '14', '23', 'F', NULL, '338000',
+        '0', '0', '0', '0', '13.02', '0', '0', '0', NULL, '2026-08-27', 'Anonym-User', '2026-06-15', 'Anonym-User'),
+       ('2024', '0000.000.0000.6', '2224103', 'Anonyme Straße 6', 'Anonymes Projekt 6', '14', '23', 'A', NULL, '338000',
+        '0', '0', '0', '0', '0', '0', '0', '0', NULL, '2026-06-14', 'Anonym-User', '2026-06-14', 'Anonym-User');
 
 TRUNCATE TABLE jahresstatistik RESTART IDENTITY CASCADE;
-INSERT INTO jahresstatistik (JAHR, JAHRESSTATISTIK1_AM, JAHRESSTATISTIK1_VON, JAHRESSTATISTIK2_AM, JAHRESSTATISTIK2_VON, JAHRESSTATISTIK3_AM, JAHRESSTATISTIK3_VON, NOTIZEN)
-VALUES
-    ('2024', '2024-03-09', 'Anonym-User', '2024-03-09', 'Anonym-User', '2024-03-09', 'Anonym-User', null),
-    ('2025', '2025-03-09', 'Anonym-User', '2025-03-09', 'Anonym-User', '2025-03-09', 'Anonym-User', null),
-    ('2026', '2026-03-09', 'Anonym-User', '2026-03-09', 'Anonym-User', '2026-03-09', 'Anonym-User', null);
+INSERT INTO jahresstatistik (jahr, jahresstatistik1_am, jahresstatistik1_von, jahresstatistik2_am, jahresstatistik2_von,
+                             jahresstatistik3_am, jahresstatistik3_von, notizen)
+VALUES ('2024', '2024-03-09', 'Anonym-User', '2024-03-09', 'Anonym-User', '2024-03-09', 'Anonym-User', null),
+       ('2025', '2025-03-09', 'Anonym-User', '2025-03-09', 'Anonym-User', '2025-03-09', 'Anonym-User', null),
+       ('2026', '2026-03-09', 'Anonym-User', '2026-03-09', 'Anonym-User', '2026-03-09', 'Anonym-User', null);
 
 TRUNCATE TABLE jahresstatistik1 RESTART IDENTITY CASCADE;
-INSERT INTO jahresstatistik1 (ID, JSS_JAHR, FOERDERBEREICH, FB, GRUPPE, GESAMTKOSTEN, ZUWENDUNGSFAEHIG, B_ZUSCHUSS, B_DARLEHEN, B_KONNEXITAET, E_ZUSCHUSS, E_DARLEHEN, E_KONNEXITAET)
-VALUES
-    ('1', '2026', 'Anonym', '11', '1', '50000000', '25000000', '8000000', '0', '0', '5000000', '1500000', '0');
+INSERT INTO jahresstatistik1 (id, jss_jahr, foerderbereich, fb, gruppe, gesamtkosten, zuwendungsfaehig, b_zuschuss,
+                              b_darlehen, b_konnexitaet, e_zuschuss, e_darlehen, e_konnexitaet)
+VALUES ('1', '2026', 'Anonym', '11', '1', '50000000', '25000000', '8000000', '0', '0', '5000000', '1500000', '0');
 
 TRUNCATE TABLE jahresstatistik2 RESTART IDENTITY CASCADE;
-INSERT INTO jahresstatistik2 (ID, JSS_JAHR, FOERDERBEREICH, FB, GRUPPE, ANZAHL_ABRUFE, ANZAHL_VN, ANZAHL_BEWILLIGUNGEN, VNGESKOSTEN, ANZAHL_ERST, A_SU_Z_ERST, A_SU_K_ERST, ANZAHL_FOLGE, A_SU_Z_FOLGE, A_SU_K_FOLGE, A_VOR_SU_Z_GESAMT, A_VOR_SU_K_GESAMT, ANZAHL_UNBED)
-VALUES
-    ('1', '2026', 'Bereich 11', '11', '1', '100', '10', '80', '50000000', '15', '1000000', '0', '25', '15000000', '0', '8000000', '0', '0');
+INSERT INTO jahresstatistik2 (id, jss_jahr, foerderbereich, fb, gruppe, anzahl_abrufe, anzahl_vn, anzahl_bewilligungen,
+                              vngeskosten, anzahl_erst, a_su_z_erst, a_su_k_erst, anzahl_folge, a_su_z_folge,
+                              a_su_k_folge, a_vor_su_z_gesamt, a_vor_su_k_gesamt, anzahl_unbed)
+VALUES ('1', '2026', 'Bereich 11', '11', '1', '100', '10', '80', '50000000', '15', '1000000', '0', '25', '15000000',
+        '0', '8000000', '0', '0');
 
 TRUNCATE TABLE jahresstatistik3 RESTART IDENTITY CASCADE;
-INSERT INTO jahresstatistik3 (ID, JSS_JAHR, FOERDERBEREICH, FB, GRUPPE, BZUWENDUNG_Z_PLUS, BZUWENDUNG_Z_MINUS, BZUWENDUNG_D_PLUS, BZUWENDUNG_D_MINUS, BZUWENDUNG_K_PLUS, BZUWENDUNG_K_MINUS, ERH_Z, ERH_D, ERH_K)
-VALUES
-    ('1', '2026', 'Bereich 11', '11', '1', '8000000', '0', '0', '0', '0', '0', '5000000', '1500000', '0');
+INSERT INTO jahresstatistik3 (id, jss_jahr, foerderbereich, fb, gruppe, bzuwendung_z_plus, bzuwendung_z_minus,
+                              bzuwendung_d_plus, bzuwendung_d_minus, bzuwendung_k_plus, bzuwendung_k_minus, erh_z,
+                              erh_d, erh_k)
+VALUES ('1', '2026', 'Bereich 11', '11', '1', '8000000', '0', '0', '0', '0', '0', '5000000', '1500000', '0');
 
 TRUNCATE TABLE staedtebaufoerderungen RESTART IDENTITY CASCADE;
-INSERT INTO staedtebaufoerderungen (ID, BDAT, BNR, BJAHR, BETRAG, SOZ, AZBANK, ANTRNR, ANTRJAHR, AZSTK, AUSBET, ERHDAT, TRA_KURZFORM, HST, HULNR, HULJAHR, NOTIZEN, PROJEKTNAME, RESTLOS, ZAHLANZ, SCHULDURK, ALT_LFDNR)
-VALUES
-    ('1', '2003-09-03', '001', '2004', '300000', '0', 'BANK', '001', '2004', '007', '0', null, null, null, null, null, 'Anonymisierte Wohnraumförderung, Anonymes Projektname', 'Darlehensaufnahme, Anonyme Straße', null, null, '0', '1091');
+INSERT INTO staedtebaufoerderungen (id, bdat, bnr, bjahr, betrag, soz, azbank, antrnr, antrjahr, azstk, ausbet, erhdat,
+                                    tra_kurzform, hst, hulnr, huljahr, notizen, projektname, restlos, zahlanz,
+                                    schuldurk, alt_lfdnr)
+VALUES ('1', '2003-09-03', '001', '2004', '300000', 'false', 'BANK', '001', '2004', '007', '0', NULL, NULL, NULL, NULL,
+        NULL, 'Anonymisierte Wohnraumförderung, Anonymes Projektname', 'Darlehensaufnahme, Anonyme Straße', NULL, NULL,
+        'false', '1091');
