@@ -313,56 +313,56 @@ VALUES ('1124101', '11', 'KURZBEZ1', '11', '24', '1', '01', 'Projektname 1', 'M�
         NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 TRUNCATE TABLE antraege RESTART IDENTITY CASCADE;
-INSERT INTO antraege (id, pro_projnr, antragsdatum, antragstyp, geskosten, zwfkosten, vorzbeg, vbdatum, unbeddat,
+INSERT INTO antraege (pro_projnr, antragsdatum, antragstyp, geskosten, zwfkosten, vorzbeg, vbdatum, unbeddat,
                       unbedja, unbedbis, a_su_z, a_su_d, a_su_k, b_vor_su_z, b_vor_su_d, b_vor_su_k, notizen,
                       anlagedatum, anlagevon, aenderungsdatum, aenderungvon)
-VALUES ('1', '1124101', '2024-01-22', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
+VALUES ( '1124101', '2024-01-22', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
-       ('2', '2124101', '2024-01-22', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
+       ( '2124101', '2024-01-22', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
-       ('3', '2224103', '2024-01-22', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
+       ( '2224103', '2024-01-22', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
-       ('4', '3325101', '2025-01-22', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
+       ( '3325101', '2025-01-22', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
-       ('5', '3225101', '2025-01-22', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
+       ( '3225101', '2025-01-22', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
-       ('6', '1125101', '2025-01-22', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
+       ( '1125101', '2025-01-22', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
-       ('7', '1126101', '2026-01-02', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
+       ( '1126101', '2026-01-02', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
-       ('8', '2126101', '2026-01-05', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
+       ( '2126101', '2026-01-05', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
-       ('9', '1126103', '2026-01-08', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
+       ( '1126103', '2026-01-08', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
-       ('10', '1126104', '2026-01-10', 'E', '500000', '250000', TRUE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
+       ( '1126104', '2026-01-10', 'E', '500000', '250000', TRUE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
-       ('11', '1126101', '2026-01-15', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '125000', '0', '0', '0',
+       ( '1126101', '2026-01-15', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '125000', '0', '0', '0',
         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
-       ('12', '1126101', '2026-01-18', 'A', '500000', '260000', FALSE, NULL, NULL, NULL, NULL, '25000', '0', '0', '0',
+       ( '1126101', '2026-01-18', 'A', '500000', '260000', FALSE, NULL, NULL, NULL, NULL, '25000', '0', '0', '0',
         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
-       ('13', '1126101', '2026-01-22', 'F', '500000', '260000', FALSE, NULL, NULL, NULL, NULL, '25000', '0', '0', '0',
+       ( '1126101', '2026-01-22', 'F', '500000', '260000', FALSE, NULL, NULL, NULL, NULL, '25000', '0', '0', '0',
         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL);
 
 TRUNCATE TABLE bewilligungen RESTART IDENTITY CASCADE;
-INSERT INTO bewilligungen (id, pro_projnr, ant_id, bdatum, afsatz, bfsatz, bzwfkosten, bzuwendung_z, bzuwendung_d,
+INSERT INTO bewilligungen (pro_projnr, ant_id, bdatum, afsatz, bfsatz, bzwfkosten, bzuwendung_z, bzuwendung_d,
                            bzuwendung_k, bzuwart, baktenzeichen, geszuwendungen, geskonnex, krw, notizen, anlagedatum,
                            anlagevon, aenderungsdatum, aenderungvon)
-VALUES ('1', '1126101', '7', '2026-04-22', '0', '50', '250000', '125000', '0', '0', 'T', '000000000', '125000', '0',
+VALUES ('1126101', '7', '2026-04-22', '0', '50', '250000', '125000', '0', '0', 'T', '000000000', '125000', '0',
         NULL, NULL, '2026-04-22', 'TEST-USER', '2026-04-22', 'TEST-USER'),
-       ('2', '1124101', '1', '2026-04-22', '0', '50', '250000', '125000', '0', '0', 'T', '000000000', '125000', '0',
+       ( '1124101', '1', '2026-04-22', '0', '50', '250000', '125000', '0', '0', 'T', '000000000', '125000', '0',
         NULL, NULL, '2026-04-22', 'TEST-USER', '2026-04-22', 'TEST-USER'),
-       ('3', '3225101', '5', '2026-04-22', '0', '50', '250000', '125000', '0', '0', 'T', '000000000', '125000', '0',
+       ('3225101', '5', '2026-04-22', '0', '50', '250000', '125000', '0', '0', 'T', '000000000', '125000', '0',
         NULL, NULL, '2026-04-22', 'TEST-USER', '2026-04-22', 'TEST-USER');
 
 TRUNCATE TABLE abrufe RESTART IDENTITY CASCADE;
-INSERT INTO abrufe (id, pro_projnr, bwi_id, vnabr, abruf_z, abruf_d, abruf_k, abruf_datum, erh_z, erh_d, erh_k,
+INSERT INTO abrufe (pro_projnr, bwi_id, vnabr, abruf_z, abruf_d, abruf_k, abruf_datum, erh_z, erh_d, erh_k,
                     erh_datum, ref_refnr, sapabrufauftragsnr, sapfakturanr, fipo, buchungskreis, sachkonto, fipo_k,
                     buchungskreis_k, sachkonto_k, notizen, anlagedatum, anlagevon, aenderungsdatum, aenderungvon)
-VALUES ('1', '1126101', '1', NULL, '125000', '0', '0', '2026-04-23', '125000', '0', '0', '2026-04-23', '1', NULL, NULL,
+VALUES ( '1126101', '1', NULL, '125000', '0', '0', '2026-04-23', '125000', '0', '0', '2026-04-23', '1', NULL, NULL,
         NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-04-22', 'Test-User', '2026-04-22', 'Test-User'),
-       ('2', '1124101', '2', NULL, '125000', '0', '0', '2026-04-23', '125000', '0', '0', '2024-05-10', '1', NULL, NULL,
+       ('1124101', '2', NULL, '125000', '0', '0', '2026-04-23', '125000', '0', '0', '2024-05-10', '1', NULL, NULL,
         NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-04-22', 'Test-User', '2026-04-22', 'Test-User'),
-       ('3', '3225101', '3', NULL, '125000', '0', '0', '2026-04-23', '125000', '0', '0', '2025-07-01', '1', NULL, NULL,
+       ('3225101', '3', NULL, '125000', '0', '0', '2026-04-23', '125000', '0', '0', '2025-07-01', '1', NULL, NULL,
         NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-04-22', 'Test-User', '2026-04-22', 'Test-User');
 
 TRUNCATE TABLE projektistkosten RESTART IDENTITY CASCADE;
@@ -371,41 +371,41 @@ VALUES ('1126101', '2026', '3', '25000'),
        ('1126101', '2026', '4', '30000');
 
 TRUNCATE TABLE projekttermine RESTART IDENTITY CASCADE;
-INSERT INTO projekttermine (id, pro_projnr, termin, zustaendig, telefon, notizen, ueberwachung)
-VALUES ('1', '1126101', '2026-07-22', 'Frau. Test', '00000000',
+INSERT INTO projekttermine (pro_projnr, termin, zustaendig, telefon, notizen, ueberwachung)
+VALUES ('1126101', '2026-07-22', 'Frau. Test', '00000000',
         'Fusce tincidunt, nisl quis bibendum fermentum, libero justo tincidunt eros (at gravida ex). Nisi ut nibh. Curabitur blandit leo a dictum euismod. Phasellus non lacus ut ligula gravida dapibus (Nam tincidunt, justo non aliquam ultrices).',
         FALSE);
 
 TRUNCATE TABLE archiv RESTART IDENTITY CASCADE;
-INSERT INTO archiv (id, pro_projnr, speicherdatum, speicherakt, speicherrechnungen, mikrodatplan, mikrodat, notizen)
-VALUES ('1', '1124101', '2024-09-14', FALSE, TRUE, '2024-09-16', '2024-09-18',
+INSERT INTO archiv (pro_projnr, speicherdatum, speicherakt, speicherrechnungen, mikrodatplan, mikrodat, notizen)
+VALUES ('1124101', '2024-09-14', FALSE, TRUE, '2024-09-16', '2024-09-18',
         'Fusce tincidunt, nisl quis bibendum fermentum'),
-       ('2', '3325101', '2025-09-14', FALSE, FALSE, '2025-09-16', '2025-09-18', NULL),
-       ('3', '1126104', '2026-04-14', FALSE, FALSE, '2026-04-16', '2026-04-18',
+       ('3325101', '2025-09-14', FALSE, FALSE, '2025-09-16', '2025-09-18', NULL),
+       ('1126104', '2026-04-14', FALSE, FALSE, '2026-04-16', '2026-04-18',
         'Fusce tincidunt, nisl quis bibendum fermentum');
 
 TRUNCATE TABLE ablageindexe RESTART IDENTITY CASCADE;
-INSERT INTO ablageindexe (id, stb_bereich, nr, wort, stichworte)
-values ('1', 'STICHWORTBEREICH1', '1', 'Anonymisierte Mitteilung v. 01.01.2024 Beispieltext', 'Beispiel Stichwort'),
-       ('2', 'STICHWORTBEREICH1', '1', 'Anonymisierte Mitteilung v. 01.01.2025 Beispieltext', 'Beispiel Stichwort'),
-       ('3', 'STICHWORTBEREICH1', '1', 'Anonymisierte Mitteilung v. 01.01.2026 Beispieltext', 'Beispiel Stichwort');
+INSERT INTO ablageindexe (stb_bereich, nr, wort, stichworte)
+values ('STICHWORTBEREICH1', '1', 'Anonymisierte Mitteilung v. 01.01.2024 Beispieltext', 'Beispiel Stichwort'),
+       ('STICHWORTBEREICH1', '1', 'Anonymisierte Mitteilung v. 01.01.2025 Beispieltext', 'Beispiel Stichwort'),
+       ('STICHWORTBEREICH1', '1', 'Anonymisierte Mitteilung v. 01.01.2026 Beispieltext', 'Beispiel Stichwort');
 
 TRUNCATE TABLE euinformationen RESTART IDENTITY CASCADE;
-INSERT INTO euinformationen (id, jahr, pub_kurzform, hefta, nummer, wichtig, seitennr, stichwort, rawi, schulref,
+INSERT INTO euinformationen (jahr, pub_kurzform, hefta, nummer, wichtig, seitennr, stichwort, rawi, schulref,
                              sozref_r_5, rgu_11, rgu_cs, krh, afa, swm, kulturref, bauref, planref, direktorium, por,
                              kvr, kommref, sew, stk, inhalt, infodat)
-VALUES ('1', '2001', 'A', NULL, '88', TRUE, '1', NULL, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
+VALUES ('2001', 'A', NULL, '88', TRUE, '1', NULL, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
         FALSE, FALSE, FALSE, FALSE, 'Anonymisierte Beschreibung 1', NULL),
-       ('2', '2002', 'B', NULL, '89', TRUE, '4', NULL, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
+       ('2002', 'B', NULL, '89', TRUE, '4', NULL, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
         FALSE, FALSE, FALSE, FALSE, 'Anonymisierte Beschreibung 2', NULL),
-       ('3', '2003', 'C', NULL, '90', TRUE, '2', NULL, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
+       ('2003', 'C', NULL, '90', TRUE, '2', NULL, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
         FALSE, FALSE, FALSE, FALSE, 'Anonymisierte Beschreibung 3', NULL);
 
 TRUNCATE TABLE geplantemassnahmen RESTART IDENTITY CASCADE;
-INSERT INTO geplantemassnahmen (id, kur_kurzbez, bez_stadtbezirk, strasse, projekt, baubeginn, angelegt, plannr)
-VALUES ('1', 'KURZBEZ1', '3', 'Anonyme Straße 1', 'Anonymes Projekt Beschreibung', NULL, '2015', NULL),
-       ('2', 'KURZBEZ2', '2', 'Anonyme Straße 2', 'Anonymes Projekt Beschreibung 2', NULL, '2016', NULL),
-       ('3', 'KURZBEZ3', '1', 'Anonyme Straße 3', 'Anonymes Projekt Beschreibung 3', NULL, '2017', NULL);
+INSERT INTO geplantemassnahmen (kur_kurzbez, bez_stadtbezirk, strasse, projekt, baubeginn, angelegt, plannr)
+VALUES ( 'KURZBEZ1', '3', 'Anonyme Straße 1', 'Anonymes Projekt Beschreibung', NULL, '2015', NULL),
+       ('KURZBEZ2', '2', 'Anonyme Straße 2', 'Anonymes Projekt Beschreibung 2', NULL, '2016', NULL),
+       ('KURZBEZ3', '1', 'Anonyme Straße 3', 'Anonymes Projekt Beschreibung 3', NULL, '2017', NULL);
 
 TRUNCATE TABLE hhjahre RESTART IDENTITY CASCADE;
 INSERT INTO hhjahre (hhjahr, hhbezeichnung, notizen)
@@ -439,27 +439,27 @@ VALUES ('2024', '2024-03-09', 'Anonym-User', '2024-03-09', 'Anonym-User', '2024-
        ('2026', '2026-03-09', 'Anonym-User', '2026-03-09', 'Anonym-User', '2026-03-09', 'Anonym-User', NULL);
 
 TRUNCATE TABLE jahresstatistik1 RESTART IDENTITY CASCADE;
-INSERT INTO jahresstatistik1 (id, jss_jahr, foerderbereich, fb, gruppe, gesamtkosten, zuwendungsfaehig, b_zuschuss,
+INSERT INTO jahresstatistik1 (jss_jahr, foerderbereich, fb, gruppe, gesamtkosten, zuwendungsfaehig, b_zuschuss,
                               b_darlehen, b_konnexitaet, e_zuschuss, e_darlehen, e_konnexitaet)
-VALUES ('1', '2026', 'Anonym', '11', '1', '50000000', '25000000', '8000000', '0', '0', '5000000', '1500000', '0');
+VALUES ('2026', 'Anonym', '11', '1', '50000000', '25000000', '8000000', '0', '0', '5000000', '1500000', '0');
 
 TRUNCATE TABLE jahresstatistik2 RESTART IDENTITY CASCADE;
-INSERT INTO jahresstatistik2 (id, jss_jahr, foerderbereich, fb, gruppe, anzahl_abrufe, anzahl_vn, anzahl_bewilligungen,
+INSERT INTO jahresstatistik2 (jss_jahr, foerderbereich, fb, gruppe, anzahl_abrufe, anzahl_vn, anzahl_bewilligungen,
                               vngeskosten, anzahl_erst, a_su_z_erst, a_su_k_erst, anzahl_folge, a_su_z_folge,
                               a_su_k_folge, a_vor_su_z_gesamt, a_vor_su_k_gesamt, anzahl_unbed)
-VALUES ('1', '2026', 'Bereich 11', '11', '1', '100', '10', '80', '50000000', '15', '1000000', '0', '25', '15000000',
+VALUES ( '2026', 'Bereich 11', '11', '1', '100', '10', '80', '50000000', '15', '1000000', '0', '25', '15000000',
         '0', '8000000', '0', '0');
 
 TRUNCATE TABLE jahresstatistik3 RESTART IDENTITY CASCADE;
-INSERT INTO jahresstatistik3 (id, jss_jahr, foerderbereich, fb, gruppe, bzuwendung_z_plus, bzuwendung_z_minus,
+INSERT INTO jahresstatistik3 (jss_jahr, foerderbereich, fb, gruppe, bzuwendung_z_plus, bzuwendung_z_minus,
                               bzuwendung_d_plus, bzuwendung_d_minus, bzuwendung_k_plus, bzuwendung_k_minus, erh_z,
                               erh_d, erh_k)
-VALUES ('1', '2026', 'Bereich 11', '11', '1', '8000000', '0', '0', '0', '0', '0', '5000000', '1500000', '0');
+VALUES ('2026', 'Bereich 11', '11', '1', '8000000', '0', '0', '0', '0', '0', '5000000', '1500000', '0');
 
 TRUNCATE TABLE staedtebaufoerderungen RESTART IDENTITY CASCADE;
-INSERT INTO staedtebaufoerderungen (id, bdat, bnr, bjahr, betrag, soz, azbank, antrnr, antrjahr, azstk, ausbet, erhdat,
+INSERT INTO staedtebaufoerderungen (bdat, bnr, bjahr, betrag, soz, azbank, antrnr, antrjahr, azstk, ausbet, erhdat,
                                     tra_kurzform, hst, hulnr, huljahr, notizen, projektname, restlos, zahlanz,
                                     schuldurk, alt_lfdnr)
-VALUES ('1', '2003-09-03', '001', '2004', '300000', FALSE, 'BANK', '001', '2004', '007', '0', NULL, NULL, NULL, NULL,
+VALUES ('2003-09-03', '001', '2004', '300000', FALSE, 'BANK', '001', '2004', '007', '0', NULL, NULL, NULL, NULL,
         NULL, 'Anonymisierte Wohnraumförderung, Anonymes Projektname', 'Darlehensaufnahme, Anonyme Straße', NULL, NULL,
         FALSE, '1091');
