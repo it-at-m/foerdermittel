@@ -183,7 +183,7 @@ VALUES ('KURZBEZ1', 'Kurzbezeichnung KURZBEZ1 für Tests'),
        ('KURZBEZ3', 'Kurzbezeichnung KURZBEZ3 für Tests');
 
 TRUNCATE TABLE publikationen RESTART IDENTITY CASCADE;
-INSERT into publikationen (kurzform, bezeichnung)
+INSERT INTO publikationen (kurzform, bezeichnung)
 VALUES ('A', 'Publikation A für Tests'),
        ('B', 'Publikation B für Tests'),
        ('C', 'Publikation C für Tests');
