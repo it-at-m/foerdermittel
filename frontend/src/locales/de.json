@@ -1,135 +1,128 @@
 {
   "common": {
     "appName": "Fördermittel",
-    "yes": "Ja",
-    "no": "Nein",
-    "actions": {
-      "close": "Schließen"
+    "word": {
+      "yes": "Ja",
+      "no": "Nein",
+      "management": "Verwaltung",
+      "statistic": "Statistik | Statistiken",
+      "report": "Bericht | Berichte",
+      "masterdata": "Stammdaten"
     },
-    "messages": {}
+    "action": {
+      "close": "Schließen",
+      "search": "Suchen"
+    },
+    "message": {}
   },
-  "views": {},
-  "components": {
-    "theNavigationDrawer": {
-      "loggedIn": "Angemeldet als:",
-      "navigationItems": {
-        "projects": {
-          "groupText": "Projekte",
-          "checklists": "Checklisten"
-        },
-        "management": {
-          "groupText": "Verwaltung"
-        },
-        "search": {
-          "groupText": "Suchen",
-          "useStatements": "Verwendungsnachweise",
-          "childcareFacilities": "Kinderbetreuungseinrichtungen"
-        },
-        "statistics": {
-          "groupText": "Statistiken",
-          "fagYearly": "FAG Statistik Jahresbasis",
-          "fbYearly": "FB Statistik Jahresbasis",
-          "generateYearly": "Generierung Jahresstatistik"
-        },
-        "reports": {
-          "groupText": "Berichte",
-          "projectOverview": "Projektübersicht",
-          "projectOverviewManagement": "Projektübersicht (Management Summary)",
-          "acceptanceOrderSAP": "Annahmeanordnung SAP",
-          "useStatements": "Verwendungsnachweise",
-          "clearanceRequests": "Unbedenklichkeitsanträge",
-          "openApprovalsPerProject": "Ausstehende Bewilligungen nach Projekten",
-          "openApprovalsPerFundingArea": "Ausstehende Bewilligungen nach Förderbereich",
-          "openApprovalsEarlyStart": "Ausstehende Genehmigung vorz. Beginn",
-          "approvalAndPayoutProject": "Bewilligung und Auszahlung eines Projekts",
-          "approvalAndPayoutCompare": "Bewilligung und Auszahlung (Vergleich)",
-          "continuationRequests": "Prüfen auf Fortsetzungsanträge",
-          "childcareFacilities": "Kinderbetreuungseinrichtungen"
-        },
-        "masterData": {
-          "groupText": "Stammdaten"
-        }
-      }
+  "model": {
+    "projekt": {
+      "modelName": "Projekt | Projekte"
+    },
+    "antrag": {
+      "modelName": "Antrag | Anträge"
+    },
+    "bewilligung": {
+      "modelName": "Bewilligung | Bewilligungen"
+    },
+    "abruf": {
+      "modelName": "Abruf | Abrufe"
+    },
+    "termin": {
+      "modelName": "Termin | Termine"
+    },
+    "istkosten": {
+      "modelName": "Ist-Kosten"
+    },
+    "archiv": {
+      "modelName": "Archiv"
+    },
+    "haushaltsplanung": {
+      "modelName": "Haushaltsplanung | Haushaltsplanungen"
+    },
+    "staedtebaufoerderung": {
+      "modelName": "Städtebauförderung | Städtebauförderungen"
+    },
+    "euinformation": {
+      "modelName": "EU-Information | EU-Informationen"
+    },
+    "geplantemassnahme": {
+      "modelName": "Geplante Maßnahme | Geplante Maßnahmen"
+    },
+    "ablageindex": {
+      "modelName": "Stichwort | Stichworte"
+    },
+    "bauleitung": {
+      "modelName": "Bauleitung | Bauleitungen"
+    },
+    "bauprogramm": {
+      "modelName": "Bauprogramm | Bauprogramme"
+    },
+    "foerderbereich": {
+      "modelName": "Förderbereich | Förderbereiche"
+    },
+    "krankenhaus": {
+      "modelName": "Krankenhaus | Krankenhäuser"
+    },
+    "kurzbezeichnung": {
+      "modelName": "Kurzbezeichnung | Kurzbezeichnungen"
+    },
+    "publikation": {
+      "modelName": "Publikation | Publikationen"
+    },
+    "referat": {
+      "modelName": "Referat | Referate"
+    },
+    "siedlungsgebiet": {
+      "modelName": "Siedlungsgebiet | Siedlungsgebiete"
+    },
+    "stadtbezirk": {
+      "modelName": "Stadtbezirk | Stadtbezirke"
+    },
+    "stadtbezirksliste": {
+      "modelName": "Stadtbezirksliste | Stadtbezirkslisten"
+    },
+    "stichwortbereich": {
+      "modelName": "Stichwortbereich | Stichwortbereiche"
+    },
+    "traeger": {
+      "modelName": "Träger"
+    },
+    "unterabschnitt": {
+      "modelName": "Unterabschnitt | Unterabschnitte"
+    },
+    "benutzerhinweis": {
+      "modelName": "Benutzerhinweis | Benutzerhinweise"
     }
   },
   "domain": {
-    "projekt": {
-      "domainName": "Projekt | Projekte"
+    "verwendungsNachweis": "Verwendungsnachweis | Verwendungsnachweise",
+    "kinderbetreuungsEinrichtung": "Kinderbetreuungseinrichtung | Kinderbetreuungseinrichtungen",
+    "auszahlung": "Auszahlung | Auszahlungen",
+    "statistic": {
+      "jahresStatistik": "{'Jahres'}@.lower:common.word.statistic",
+      "fagJahresStatistik": "FAG @:domain.statistic.jahresStatistik",
+      "fbJahresStatistik": "FB @:domain.statistic.jahresStatistik",
+      "generateJahresStatistik": "Generierung @:domain.statistic.jahresStatistik"
     },
-    "antrag": {
-      "domainName": "Antrag | Anträge"
-    },
-    "bewilligung": {
-      "domainName": "Bewilligung | Bewilligungen"
-    },
-    "abruf": {
-      "domainName": "Abruf | Abrufe"
-    },
-    "termin": {
-      "domainName": "Termin | Termine"
-    },
-    "istkosten": {
-      "domainName": "Ist-Kosten"
-    },
-    "archiv": {
-      "domainName": "Archiv"
-    },
-    "haushaltsplanung": {
-      "domainName": "Haushaltsplanung | Haushaltsplanungen"
-    },
-    "staedtebaufoerderung": {
-      "domainName": "Städtebauförderung | Städtebauförderungen"
-    },
-    "euinformation": {
-      "domainName": "EU-Information | EU-Informationen"
-    },
-    "geplantemassnahme": {
-      "domainName": "Geplante Maßnahme | Geplante Maßnahmen"
-    },
-    "ablageindex": {
-      "domainName": "Stichwort | Stichworte"
-    },
-    "bauleitung": {
-      "domainName": "Bauleitung | Bauleitungen"
-    },
-    "bauprogramm": {
-      "domainName": "Bauprogramm | Bauprogramme"
-    },
-    "foerderbereich": {
-      "domainName": "Förderbereich | Förderbereiche"
-    },
-    "krankenhaus": {
-      "domainName": "Krankenhaus | Krankenhäuser"
-    },
-    "kurzbezeichnung": {
-      "domainName": "Kurzbezeichnung | Kurzbezeichnungen"
-    },
-    "publikation": {
-      "domainName": "Publikation | Publikationen"
-    },
-    "referat": {
-      "domainName": "Referat | Referate"
-    },
-    "siedlungsgebiet": {
-      "domainName": "Siedlungsgebiet | Siedlungsgebiete"
-    },
-    "stadtbezirk": {
-      "domainName": "Stadtbezirk | Stadtbezirke"
-    },
-    "stadtbezirksliste": {
-      "domainName": "Stadtbezirksliste | Stadtbezirkslisten"
-    },
-    "stichwortbereich": {
-      "domainName": "Stichwortbereich | Stichwortbereiche"
-    },
-    "traeger": {
-      "domainName": "Träger"
-    },
-    "unterabschnitt": {
-      "domainName": "Unterabschnitt | Unterabschnitte"
-    },
-    "benutzerhinweis": {
-      "domainName": "Benutzerhinweis | Benutzerhinweise"
+    "report": {
+      "projektUebersicht": "@:model.projekt.modelName{'übersicht'}",
+      "projektUebersichtManagement": "@:domain.report.projektUebersicht (Management Summary)",
+      "annahmeAnordnungSAP": "Annahmeanordnung SAP",
+      "checklisten": "@:model.projekt.modelName{'-'}Checklisten",
+      "unbedenklichkeitsAntrag": "Unbedenklichkeitsantrag | Unbedenklichkeitsanträge",
+      "ausstBewilligungProjekt": "Ausst. @:model.bewilligung.modelName nach @:model.projekt.modelName",
+      "ausstBewilligungFoerderbereich": "Ausst. @:model.bewilligung.modelName nach @:model.foerderbereich.modelName",
+      "ausstGenehmigungVorzBeginn": "Ausst. Genehmigung vorz. Beginn",
+      "bewilligungAuszahlungProjekt": "@:model.bewilligung.modelName und @:domain.auszahlung eines @:model.projekt.modelName{'s'}",
+      "bewilligungAuzahlungVergleich": "@:model.bewilligung.modelName und @:domain.auszahlung (Vergleich)",
+      "fortsetzungsAntrag": "Fortsetzungsantrag | Fortsetzungsanträge"
+    }
+  },
+  "view": {},
+  "component": {
+    "theNavigationDrawer": {
+      "loggedIn": "Angemeldet als:"
     }
   }
 }

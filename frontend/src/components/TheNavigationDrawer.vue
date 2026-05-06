@@ -22,7 +22,7 @@
           />
         </v-btn>
         <div>
-          <p>{{ t("components.theNavigationDrawer.loggedIn") }}</p>
+          <p>{{ t("component.theNavigationDrawer.loggedIn") }}</p>
           <p>{{ userInfoStore.getUserInfo?.name }}</p>
         </div>
       </div>
@@ -62,283 +62,236 @@ const { t } = useI18n();
 
 const navigationItems: NavigationItem[] = [
   {
-    title: t(
-      "components.theNavigationDrawer.navigationItems.projects.groupText",
-      2
-    ),
+    title: t("model.projekt.modelName", 2),
     props: {
       prependIcon: mdiSitemap,
     },
     children: [
       {
-        title: t("domain.projekt.domainName", 2),
+        title: t("model.projekt.modelName", 2),
       },
       {
-        title: t("domain.antrag.domainName", 2),
+        title: t("model.antrag.modelName", 2),
       },
       {
-        title: t("domain.bewilligung.domainName", 2),
+        title: t("model.bewilligung.modelName", 2),
       },
       {
-        title: t("domain.abruf.domainName", 2),
+        title: t("model.abruf.modelName", 2),
       },
       {
-        title: t("domain.termin.domainName", 2),
+        title: t("model.termin.modelName", 2),
       },
       {
-        title: t("domain.istkosten.domainName"),
+        title: t("model.istkosten.modelName"),
       },
       {
-        title: t("domain.archiv.domainName"),
+        title: t("model.archiv.modelName"),
       },
       {
-        title: t("domain.haushaltsplanung.domainName", 2),
-      },
-      {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.projects.checklists"
-        ),
+        title: t("model.haushaltsplanung.modelName", 2),
       },
     ],
   },
   {
-    title: t(
-      "components.theNavigationDrawer.navigationItems.management.groupText"
-    ),
+    title: t("common.word.management"),
     props: {
       prependIcon: mdiNote,
     },
     children: [
       {
-        title: t("domain.staedtebaufoerderung.domainName", 2),
+        title: t("model.staedtebaufoerderung.modelName", 2),
       },
       {
-        title: t("domain.euinformation.domainName", 2),
+        title: t("model.euinformation.modelName", 2),
       },
       {
-        title: t("domain.geplantemassnahme.domainName", 2),
+        title: t("model.geplantemassnahme.modelName", 2),
       },
       {
-        title: t("domain.ablageindex.domainName", 2),
+        title: t("model.ablageindex.modelName", 2),
       },
     ],
   },
   {
-    title: t("components.theNavigationDrawer.navigationItems.search.groupText"),
+    title: t("common.action.search"),
     props: {
       prependIcon: mdiMagnify,
     },
     children: [
       {
-        title: t("domain.projekt.domainName", 2),
+        title: t("model.projekt.modelName", 2),
       },
       {
-        title: t("domain.antrag.domainName", 2),
+        title: t("model.antrag.modelName", 2),
       },
       {
-        title: t("domain.bewilligung.domainName", 2),
+        title: t("model.bewilligung.modelName", 2),
       },
       {
-        title: t("domain.abruf.domainName", 2),
+        title: t("model.abruf.modelName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.search.useStatements"
-        ),
+        title: t("domain.verwendungsNachweis", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.search.childcareFacilities"
-        ),
+        title: t("domain.kinderbetreuungsEinrichtung", 2),
       },
       {
-        title: t("domain.haushaltsplanung.domainName", 2),
+        title: t("model.haushaltsplanung.modelName", 2),
       },
     ],
   },
   {
-    title: t(
-      "components.theNavigationDrawer.navigationItems.statistics.groupText"
-    ),
+    title: t("common.word.statistic", 2),
     props: {
       prependIcon: mdiChartBar,
     },
     children: [
       {
-        title: t("domain.projekt.domainName", 2),
+        title: t("model.projekt.modelName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.statistics.fagYearly"
-        ),
+        title: t("domain.statistic.fagJahresStatistik"),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.statistics.fbYearly"
-        ),
+        title: t("domain.statistic.fbJahresStatistik"),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.statistics.generateYearly"
-        ),
+        title: t("domain.statistic.generateJahresStatistik"),
       },
     ],
   },
   {
-    title: t(
-      "components.theNavigationDrawer.navigationItems.reports.groupText"
-    ),
+    title: t("common.word.report", 2),
     props: {
       prependIcon: mdiFileChart,
     },
     children: [
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.projectOverview"
-        ),
+        title: t("domain.report.projektUebersicht"),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.projectOverviewManagement"
-        ),
+        title: t("domain.report.projektUebersichtManagement"),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.acceptanceOrderSAP"
-        ),
+        title: t("domain.report.annahmeAnordnungSAP"),
       },
       {
-        title: t("domain.projekt.domainName", 2),
+        title: t("model.projekt.modelName", 2),
       },
       {
-        title: t("domain.antrag.domainName", 2),
+        title: t("domain.report.checklisten"),
       },
       {
-        title: t("domain.bewilligung.domainName", 2),
+        title: t("model.antrag.modelName", 2),
       },
       {
-        title: t("domain.abruf.domainName", 2),
+        title: t("model.bewilligung.modelName", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.useStatements"
-        ),
+        title: t("model.abruf.modelName", 2),
       },
       {
-        title: t("domain.termin.domainName", 2),
+        title: t("domain.verwendungsNachweis", 2),
       },
       {
-        title: t("domain.istkosten.domainName"),
+        title: t("model.termin.modelName", 2),
       },
       {
-        title: t("domain.archiv.domainName"),
+        title: t("model.istkosten.modelName"),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.clearanceRequests"
-        ),
+        title: t("model.archiv.modelName"),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.openApprovalsPerProject"
-        ),
+        title: t("domain.report.unbedenklichkeitsAntrag", 2),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.openApprovalsPerFundingArea"
-        ),
+        title: t("domain.report.ausstBewilligungProjekt"),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.openApprovalsEarlyStart"
-        ),
+        title: t("domain.report.ausstBewilligungFoerderbereich"),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.approvalAndPayoutProject"
-        ),
+        title: t("domain.report.ausstGenehmigungVorzBeginn"),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.approvalAndPayoutCompare"
-        ),
+        title: t("domain.report.bewilligungAuszahlungProjekt"),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.continuationRequests"
-        ),
+        title: t("domain.report.bewilligungAuzahlungVergleich"),
       },
       {
-        title: t(
-          "components.theNavigationDrawer.navigationItems.reports.childcareFacilities"
-        ),
+        title: t("domain.report.fortsetzungsAntrag", 2),
       },
       {
-        title: t("domain.haushaltsplanung.domainName", 2),
+        title: t("domain.kinderbetreuungsEinrichtung", 2),
       },
       {
-        title: t("domain.staedtebaufoerderung.domainName", 2),
+        title: t("model.haushaltsplanung.modelName", 2),
       },
       {
-        title: t("domain.euinformation.domainName", 2),
+        title: t("model.staedtebaufoerderung.modelName", 2),
       },
       {
-        title: t("domain.geplantemassnahme.domainName", 2),
+        title: t("model.euinformation.modelName", 2),
       },
       {
-        title: t("domain.ablageindex.domainName", 2),
+        title: t("model.geplantemassnahme.modelName", 2),
       },
       {
-        title: t("domain.benutzerhinweis.domainName", 2),
+        title: t("model.ablageindex.modelName", 2),
+      },
+      {
+        title: t("model.benutzerhinweis.modelName", 2),
       },
     ],
   },
   {
-    title: t(
-      "components.theNavigationDrawer.navigationItems.masterData.groupText"
-    ),
+    title: t("common.word.masterdata"),
     props: {
       prependIcon: mdiDatabase,
     },
     children: [
       {
-        title: t("domain.bauleitung.domainName", 2),
+        title: t("model.bauleitung.modelName", 2),
       },
       {
-        title: t("domain.bauprogramm.domainName", 2),
+        title: t("model.bauprogramm.modelName", 2),
       },
       {
-        title: t("domain.foerderbereich.domainName", 2),
+        title: t("model.foerderbereich.modelName", 2),
       },
       {
-        title: t("domain.krankenhaus.domainName", 2),
+        title: t("model.krankenhaus.modelName", 2),
       },
       {
-        title: t("domain.kurzbezeichnung.domainName", 2),
+        title: t("model.kurzbezeichnung.modelName", 2),
       },
       {
-        title: t("domain.publikation.domainName", 2),
+        title: t("model.publikation.modelName", 2),
       },
       {
-        title: t("domain.referat.domainName", 2),
+        title: t("model.referat.modelName", 2),
       },
       {
-        title: t("domain.siedlungsgebiet.domainName", 2),
+        title: t("model.siedlungsgebiet.modelName", 2),
       },
       {
-        title: t("domain.stadtbezirk.domainName", 2),
+        title: t("model.stadtbezirk.modelName", 2),
       },
       {
-        title: t("domain.stadtbezirksliste.domainName", 2),
+        title: t("model.stadtbezirksliste.modelName", 2),
       },
       {
-        title: t("domain.stichwortbereich.domainName", 2),
+        title: t("model.stichwortbereich.modelName", 2),
       },
       {
-        title: t("domain.traeger.domainName"),
+        title: t("model.traeger.modelName"),
       },
       {
-        title: t("domain.unterabschnitt.domainName", 2),
+        title: t("model.unterabschnitt.modelName", 2),
       },
     ],
   },
