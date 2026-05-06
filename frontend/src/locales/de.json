@@ -37,6 +37,9 @@
     "archiv": {
       "modelName": "Archiv"
     },
+    "haushaltsjahr": {
+      "modelName": "Haushaltsjahr | Haushaltsjahre"
+    },
     "haushaltsplanung": {
       "modelName": "Haushaltsplanung | Haushaltsplanungen"
     },
@@ -79,6 +82,9 @@
     "stadtbezirk": {
       "modelName": "Stadtbezirk | Stadtbezirke"
     },
+    "listenname": {
+      "modelName": "Listenname | Listennamen"
+    },
     "stadtbezirksliste": {
       "modelName": "Stadtbezirksliste | Stadtbezirkslisten"
     },
@@ -87,6 +93,9 @@
     },
     "traeger": {
       "modelName": "Träger"
+    },
+    "hauptabschnitt": {
+      "modelName": "Hauptabschnitt | Hauptabschnitte"
     },
     "unterabschnitt": {
       "modelName": "Unterabschnitt | Unterabschnitte"

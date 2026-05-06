@@ -89,6 +89,9 @@ const navigationItems: NavigationItem[] = [
         title: t("model.archiv.modelName"),
       },
       {
+        title: t("model.haushaltsjahr.modelName", 2),
+      },
+      {
         title: t("model.haushaltsplanung.modelName", 2),
       },
     ],
@@ -282,6 +285,9 @@ const navigationItems: NavigationItem[] = [
         title: t("model.stadtbezirk.modelName", 2),
       },
       {
+        title: t("model.listenname.modelName", 2),
+      },
+      {
         title: t("model.stadtbezirksliste.modelName", 2),
       },
       {
@@ -289,6 +295,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.traeger.modelName"),
+      },
+      {
+        title: t("model.hauptabschnitt.modelName", 2),
       },
       {
         title: t("model.unterabschnitt.modelName", 2),
