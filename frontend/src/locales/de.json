@@ -1,41 +1,137 @@
 {
-  "app": {
-    "name": {
-      "part1": "refarch-",
-      "part2": "frontend",
-      "full": "@:app.name.part1@:app.name.part2"
-    }
-  },
   "common": {
-    "yes": "Ja",
-    "no": "Nein",
-    "actions": {
+    "appName": "Fördermittel",
+    "word": {
+      "yes": "Ja",
+      "no": "Nein",
+      "management": "Verwaltung",
+      "statistic": "Statistik | Statistiken",
+      "report": "Bericht | Berichte",
+      "masterdata": "Stammdaten"
+    },
+    "action": {
       "close": "Schließen",
       "search": "Suchen"
     },
-    "messages": {}
+    "message": {}
   },
-  "views": {
-    "index": {
-      "navText": "Willkommen",
-      "header": "Willkommen beim @:app.name.full von it{'@'}M",
-      "apiGatewayStatus": "Das API-Gateway ist:",
-      "backendStatus": "Das Backend ist:"
+  "model": {
+    "projekt": {
+      "modelName": "Projekt | Projekte"
     },
-    "getStarted": {
-      "navText": "Get Started",
-      "header": "Get Started",
-      "docsText": "Dokumentation für die RefArch ist hier zu finden:",
-      "docsLinks": {
-        "templates": "Dokumentation RefArch-Templates",
-        "main": "Dokumentation RefArch"
-      },
-      "saveLeave": {
-        "title": "Wirklich verlassen?",
-        "text": "Wollen Sie wirklich nicht die Dokumentation anschauen?"
-      }
+    "antrag": {
+      "modelName": "Antrag | Anträge"
+    },
+    "bewilligung": {
+      "modelName": "Bewilligung | Bewilligungen"
+    },
+    "abruf": {
+      "modelName": "Abruf | Abrufe"
+    },
+    "termin": {
+      "modelName": "Termin | Termine"
+    },
+    "istkosten": {
+      "modelName": "Ist-Kosten"
+    },
+    "archiv": {
+      "modelName": "Archiv"
+    },
+    "haushaltsjahr": {
+      "modelName": "Haushaltsjahr | Haushaltsjahre"
+    },
+    "haushaltsplanung": {
+      "modelName": "Haushaltsplanung | Haushaltsplanungen"
+    },
+    "staedtebaufoerderung": {
+      "modelName": "Städtebauförderung | Städtebauförderungen"
+    },
+    "euinformation": {
+      "modelName": "EU-Information | EU-Informationen"
+    },
+    "geplantemassnahme": {
+      "modelName": "Geplante Maßnahme | Geplante Maßnahmen"
+    },
+    "ablageindex": {
+      "modelName": "Stichwort | Stichworte"
+    },
+    "bauleitung": {
+      "modelName": "Bauleitung | Bauleitungen"
+    },
+    "bauprogramm": {
+      "modelName": "Bauprogramm | Bauprogramme"
+    },
+    "foerderbereich": {
+      "modelName": "Förderbereich | Förderbereiche"
+    },
+    "krankenhaus": {
+      "modelName": "Krankenhaus | Krankenhäuser"
+    },
+    "kurzbezeichnung": {
+      "modelName": "Kurzbezeichnung | Kurzbezeichnungen"
+    },
+    "publikation": {
+      "modelName": "Publikation | Publikationen"
+    },
+    "referat": {
+      "modelName": "Referat | Referate"
+    },
+    "siedlungsgebiet": {
+      "modelName": "Siedlungsgebiet | Siedlungsgebiete"
+    },
+    "stadtbezirk": {
+      "modelName": "Stadtbezirk | Stadtbezirke"
+    },
+    "listenname": {
+      "modelName": "Listenname | Listennamen"
+    },
+    "stadtbezirksliste": {
+      "modelName": "Stadtbezirksliste | Stadtbezirkslisten"
+    },
+    "stichwortbereich": {
+      "modelName": "Stichwortbereich | Stichwortbereiche"
+    },
+    "traeger": {
+      "modelName": "Träger"
+    },
+    "hauptabschnitt": {
+      "modelName": "Hauptabschnitt | Hauptabschnitte"
+    },
+    "unterabschnitt": {
+      "modelName": "Unterabschnitt | Unterabschnitte"
+    },
+    "benutzerhinweis": {
+      "modelName": "Benutzerhinweis | Benutzerhinweise"
     }
   },
-  "components": {},
-  "domain": {}
+  "domain": {
+    "verwendungsNachweis": "Verwendungsnachweis | Verwendungsnachweise",
+    "kinderbetreuungsEinrichtung": "Kinderbetreuungseinrichtung | Kinderbetreuungseinrichtungen",
+    "auszahlung": "Auszahlung | Auszahlungen",
+    "statistic": {
+      "jahresStatistik": "{'Jahres'}@.lower:common.word.statistic",
+      "fagJahresStatistik": "FAG @:domain.statistic.jahresStatistik",
+      "fbJahresStatistik": "FB @:domain.statistic.jahresStatistik",
+      "generateJahresStatistik": "Generierung @:domain.statistic.jahresStatistik"
+    },
+    "report": {
+      "projektUebersicht": "@:model.projekt.modelName{'übersicht'}",
+      "projektUebersichtManagement": "@:domain.report.projektUebersicht (Management Summary)",
+      "annahmeAnordnungSAP": "Annahmeanordnung SAP",
+      "checklisten": "@:model.projekt.modelName{'-'}Checklisten",
+      "unbedenklichkeitsAntrag": "Unbedenklichkeitsantrag | Unbedenklichkeitsanträge",
+      "ausstBewilligungProjekt": "Ausst. @:model.bewilligung.modelName nach @:model.projekt.modelName",
+      "ausstBewilligungFoerderbereich": "Ausst. @:model.bewilligung.modelName nach @:model.foerderbereich.modelName",
+      "ausstGenehmigungVorzBeginn": "Ausst. Genehmigung vorz. Beginn",
+      "bewilligungAuszahlungProjekt": "@:model.bewilligung.modelName und @:domain.auszahlung eines @:model.projekt.modelName{'s'}",
+      "bewilligungAuzahlungVergleich": "@:model.bewilligung.modelName und @:domain.auszahlung (Vergleich)",
+      "fortsetzungsAntrag": "Fortsetzungsantrag | Fortsetzungsanträge"
+    }
+  },
+  "view": {},
+  "component": {
+    "theNavigationDrawer": {
+      "loggedIn": "Angemeldet als:"
+    }
+  }
 }

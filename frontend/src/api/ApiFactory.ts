@@ -1,8 +1,8 @@
 import type { HTTPHeaders } from "@/api/generated/foerdermittel-backend";
 
-import { getHeaders } from "@/api/fetch-utils.ts";
+import { getHeaders } from "@/api/fetch-utils";
 import { BaseAPI, Configuration } from "@/api/generated/foerdermittel-backend";
-import { BASE_API_PATH } from "@/constants.ts";
+import { BASE_API_PATH } from "@/constants";
 
 type ApiCtor<T extends BaseAPI> = new (config: Configuration) => T;
 

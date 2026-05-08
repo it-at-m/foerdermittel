@@ -21,7 +21,7 @@
         variant="text"
         v-bind="props"
       >
-        {{ t("common.actions.close") }}
+        {{ t("common.action.close") }}
       </v-btn>
     </template>
   </v-snackbar-queue>
