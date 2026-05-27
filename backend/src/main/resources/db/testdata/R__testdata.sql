@@ -317,31 +317,31 @@ INSERT INTO antraege (pro_projnr, antragsdatum, antragstyp, geskosten, zwfkosten
                       unbedja, unbedbis, a_su_z, a_su_d, a_su_k, b_vor_su_z, b_vor_su_d, b_vor_su_k, notizen,
                       anlagedatum, anlagevon, aenderungsdatum, aenderungvon)
 VALUES ( '1124101', '2024-01-22', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
-         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
        ( '2124101', '2024-01-22', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
-         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
        ( '2224103', '2024-01-22', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
-         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
        ( '3325101', '2025-01-22', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
-         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
        ( '3225101', '2025-01-22', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
-         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
        ( '1125101', '2025-01-22', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
-         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
        ( '1126101', '2026-01-02', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
-         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
        ( '2126101', '2026-01-05', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
-         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
        ( '1126103', '2026-01-08', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
-         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
        ( '1126104', '2026-01-10', 'E', '500000', '250000', TRUE, NULL, NULL, NULL, NULL, '250000', '0', '0', '0',
-         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
        ( '1126101', '2026-01-15', 'E', '500000', '250000', FALSE, NULL, NULL, NULL, NULL, '125000', '0', '0', '0',
-         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
        ( '1126101', '2026-01-18', 'A', '500000', '260000', FALSE, NULL, NULL, NULL, NULL, '25000', '0', '0', '0',
-         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL),
        ( '1126101', '2026-01-22', 'F', '500000', '260000', FALSE, NULL, NULL, NULL, NULL, '25000', '0', '0', '0',
-         '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL);
+        '0', '0', NULL, '2026-04-22', 'Test-User', NULL, NULL);
 
 TRUNCATE TABLE bewilligungen RESTART IDENTITY CASCADE;
 INSERT INTO bewilligungen (pro_projnr, ant_id, bdatum, afsatz, bfsatz, bzwfkosten, bzuwendung_z, bzuwendung_d,
@@ -350,7 +350,7 @@ INSERT INTO bewilligungen (pro_projnr, ant_id, bdatum, afsatz, bfsatz, bzwfkoste
 VALUES ('1126101', '7', '2026-04-22', '0', '50', '250000', '125000', '0', '0', 'T', '000000000', '125000', '0',
         NULL, NULL, '2026-04-22', 'TEST-USER', '2026-04-22', 'TEST-USER'),
        ( '1124101', '1', '2026-04-22', '0', '50', '250000', '125000', '0', '0', 'T', '000000000', '125000', '0',
-         NULL, NULL, '2026-04-22', 'TEST-USER', '2026-04-22', 'TEST-USER'),
+        NULL, NULL, '2026-04-22', 'TEST-USER', '2026-04-22', 'TEST-USER'),
        ('3225101', '5', '2026-04-22', '0', '50', '250000', '125000', '0', '0', 'T', '000000000', '125000', '0',
         NULL, NULL, '2026-04-22', 'TEST-USER', '2026-04-22', 'TEST-USER');
 
@@ -359,7 +359,7 @@ INSERT INTO abrufe (pro_projnr, bwi_id, vnabr, abruf_z, abruf_d, abruf_k, abruf_
                     erh_datum, ref_refnr, sapabrufauftragsnr, sapfakturanr, fipo, buchungskreis, sachkonto, fipo_k,
                     buchungskreis_k, sachkonto_k, notizen, anlagedatum, anlagevon, aenderungsdatum, aenderungvon)
 VALUES ( '1126101', '1', NULL, '125000', '0', '0', '2026-04-23', '125000', '0', '0', '2026-04-23', '1', NULL, NULL,
-         NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-04-22', 'Test-User', '2026-04-22', 'Test-User'),
+        NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-04-22', 'Test-User', '2026-04-22', 'Test-User'),
        ('1124101', '2', NULL, '125000', '0', '0', '2026-04-23', '125000', '0', '0', '2024-05-10', '1', NULL, NULL,
         NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-04-22', 'Test-User', '2026-04-22', 'Test-User'),
        ('3225101', '3', NULL, '125000', '0', '0', '2026-04-23', '125000', '0', '0', '2025-07-01', '1', NULL, NULL,
@@ -448,7 +448,7 @@ INSERT INTO jahresstatistik2 (jss_jahr, foerderbereich, fb, gruppe, anzahl_abruf
                               vngeskosten, anzahl_erst, a_su_z_erst, a_su_k_erst, anzahl_folge, a_su_z_folge,
                               a_su_k_folge, a_vor_su_z_gesamt, a_vor_su_k_gesamt, anzahl_unbed)
 VALUES ( '2026', 'Bereich 11', '11', '1', '100', '10', '80', '50000000', '15', '1000000', '0', '25', '15000000',
-         '0', '8000000', '0', '0');
+        '0', '8000000', '0', '0');
 
 TRUNCATE TABLE jahresstatistik3 RESTART IDENTITY CASCADE;
 INSERT INTO jahresstatistik3 (jss_jahr, foerderbereich, fb, gruppe, bzuwendung_z_plus, bzuwendung_z_minus,
