@@ -13,7 +13,12 @@
       "close": "Schließen",
       "search": "Suchen"
     },
-    "message": {}
+    "message": {},
+    "roles": {
+      "admin": "Administrator",
+      "sachbearbeitung": "Sachbearbeitung",
+      "sachbearbeitunghaushalt": "Sachbearbeitung Haushalt"
+    }
   },
   "model": {
     "projekt": {
