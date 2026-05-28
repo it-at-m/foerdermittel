@@ -22,8 +22,20 @@
           />
         </v-btn>
         <div>
-          <p>{{ t("component.theNavigationDrawer.loggedIn") }}</p>
-          <p>{{ userInfoStore.userInfo.name }}</p>
+          <p class="mb-3">{{ t("component.theNavigationDrawer.loggedIn") }}</p>
+
+          <v-tooltip
+            :text="rolesText"
+            location="bottom"
+          >
+            <template #activator="{ props }">
+              <v-chip
+                label
+                v-bind="props"
+                >{{ userInfoStore.userInfo.name }}</v-chip
+              >
+            </template>
+          </v-tooltip>
         </div>
       </div>
     </v-container>
@@ -52,6 +64,7 @@ import {
   mdiNote,
   mdiSitemap,
 } from "@mdi/js";
+import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
 import Ad2ImageAvatar from "@/components/common/Ad2ImageAvatar.vue";
@@ -59,6 +72,10 @@ import { useUserInfoStore } from "@/stores/userinfo";
 
 const userInfoStore = useUserInfoStore();
 const { t } = useI18n();
+
+const rolesText = computed(() =>
+  userInfoStore.currentRoles.map((role) => t(`common.roles.${role}`)).join(",")
+);
 
 const navigationItems: NavigationItem[] = [
   {
