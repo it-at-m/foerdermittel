@@ -9,7 +9,7 @@
         <p class="text-h5 font-weight-bold">{{ t("common.appName") }}</p>
       </div>
       <div
-        v-if="userInfoStore.getUserInfo?.preferred_username"
+        v-if="userInfoStore.userInfo?.preferred_username"
         class="text-center"
       >
         <v-btn
@@ -18,12 +18,12 @@
           icon
         >
           <ad2-image-avatar
-            :username="userInfoStore.getUserInfo.preferred_username"
+            :username="userInfoStore.userInfo.preferred_username"
           />
         </v-btn>
         <div>
           <p>{{ t("component.theNavigationDrawer.loggedIn") }}</p>
-          <p>{{ userInfoStore.getUserInfo?.name }}</p>
+          <p>{{ userInfoStore.userInfo.name }}</p>
         </div>
       </div>
     </v-container>
