@@ -6,7 +6,9 @@
   >
     <v-container>
       <div class="text-center mb-5">
-        <p class="text-headline-small font-weight-bold">{{ t("common.appName") }}</p>
+        <p class="text-headline-small font-weight-bold">
+          {{ t("common.appName") }}
+        </p>
       </div>
       <div
         v-if="userInfoStore.userInfo?.preferred_username"
