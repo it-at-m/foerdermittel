@@ -1,3 +1,3 @@
 <template>
-  <v-container />
+  <v-container class="fill-height" />
 </template>
