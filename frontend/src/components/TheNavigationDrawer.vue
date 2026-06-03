@@ -6,21 +6,17 @@
   >
     <v-container>
       <div class="text-center mb-5">
-        <p class="text-h5 font-weight-bold">{{ t("common.appName") }}</p>
+        <p class="text-headline-small font-weight-bold">
+          {{ t("common.appName") }}
+        </p>
       </div>
       <div
         v-if="userInfoStore.userInfo?.preferred_username"
         class="text-center"
       >
-        <v-btn
-          class="mx-2"
-          variant="text"
-          icon
-        >
-          <ad2-image-avatar
-            :username="userInfoStore.userInfo.preferred_username"
-          />
-        </v-btn>
+        <ad2-image-avatar
+          :username="userInfoStore.userInfo.preferred_username"
+        />
         <div>
           <p class="mb-3">{{ t("component.theNavigationDrawer.loggedIn") }}</p>
 
