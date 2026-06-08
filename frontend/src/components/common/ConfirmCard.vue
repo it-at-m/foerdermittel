@@ -1,8 +1,8 @@
 <template>
   <v-card
     :title="title"
-    :subtitle="subtitle"
     :loading="loading"
+    class="elevation-0"
   >
     <template #text>
       <slot name="content">
@@ -26,8 +26,8 @@
         v-if="showConfirm"
         color="primary"
         variant="flat"
-        :append-icon="mdiContentSave"
-        :text="t('common.action.save')"
+        :append-icon="confirmIcon"
+        :text="confirmText ?? t('common.action.save')"
         :disabled="loading || disableConfirm"
         @click="confirm"
       />
@@ -45,10 +45,12 @@ const {
   loading = false,
   disableConfirm = false,
   showConfirm = true,
+  confirmIcon = mdiContentSave,
 } = defineProps<{
   title: string;
-  subtitle?: string;
   text?: string;
+  confirmText?: string;
+  confirmIcon?: string;
   loading?: boolean;
   disableConfirm?: boolean;
   showConfirm?: boolean;
