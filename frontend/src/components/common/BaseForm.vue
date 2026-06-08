@@ -2,11 +2,10 @@
   <v-form
     v-model="isValid"
     :disabled="disabled"
+    class="w-100"
     @update:model-value="onValidityChanged"
   >
-    <slot
-      :model="modelValue"
-    />
+    <slot :model="modelValue" />
   </v-form>
 </template>
 
