@@ -158,7 +158,6 @@ const {
   items = [],
   enableActions = true,
 } = defineProps<{
-  primaryKeyName: keyof T;
   emptyItemTemplate: T;
   domain: string;
   loading?: boolean;
@@ -215,7 +214,7 @@ const openDelete = (item: T) => {
 };
 
 const saveItem = () => {
-  if (activeItem.value[primary]) {
+  if (activeItem.value.id) {
     emit("update", activeItem.value);
   } else {
     emit("create", activeItem.value);
