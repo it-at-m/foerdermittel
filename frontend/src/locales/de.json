@@ -12,10 +12,23 @@
     "action": {
       "cancel": "Abbrechen",
       "close": "Schließen",
+      "create": "Erstellen",
+      "delete": "Löschen",
       "save": "Speichern",
-      "search": "Suchen"
+      "search": "Suchen",
+      "update": "Bearbeiten"
     },
-    "message": {},
+    "generics": {
+      "create": "{domain} @.lower:common.action.create",
+      "update": "{domain} @.lower:common.action.update",
+      "delete": "{domain} @.lower:common.action.delete"
+    },
+    "message": {
+      "confirmDelete": "Möchten Sie den Eintrag aus \"{domain}\" endgültig löschen?",
+      "deleted": "{domain} wurde gelöscht.",
+      "updated": "{domain} wurde aktualisiert.",
+      "created": "{domain} wurde erstellt."
+    },
     "roles": {
       "admin": "Administrator",
       "sachbearbeitung": "Sachbearbeitung",
