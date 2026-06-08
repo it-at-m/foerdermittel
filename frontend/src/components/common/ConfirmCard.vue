@@ -5,7 +5,7 @@
     class="elevation-0"
   >
     <template #text>
-      <slot name="content">
+      <slot>
         {{ text }}
       </slot>
     </template>

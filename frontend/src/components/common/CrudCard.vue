@@ -25,14 +25,12 @@
       @cancel="closeDialog"
       @confirm="saveItem"
     >
-      <template #content>
-        <slot
-          name="form"
-          :item="activeItem"
-          :update-item="updateActiveItem"
-          :update-validity="updateFormValidity"
-        />
-      </template>
+      <slot
+        name="form"
+        :item="activeItem"
+        :update-item="updateActiveItem"
+        :update-validity="updateFormValidity"
+      />
     </confirm-card>
 
     <confirm-card
