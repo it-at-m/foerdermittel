@@ -5,8 +5,7 @@
     @update:model-value="onValidityChanged"
   >
     <slot
-      :model="model"
-      :valid="isValid"
+      :model="modelValue"
     />
   </v-form>
 </template>
@@ -18,7 +17,7 @@ const { disabled = false } = defineProps<{
   disabled?: boolean;
 }>();
 
-const model = defineModel<T>({ required: true });
+const modelValue = defineModel<T>({ required: true });
 
 const emit = defineEmits<{
   isValid: [boolean | null];
