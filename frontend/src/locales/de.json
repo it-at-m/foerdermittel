@@ -10,7 +10,9 @@
       "masterdata": "Stammdaten"
     },
     "action": {
+      "cancel": "Abbrechen",
       "close": "Schließen",
+      "save": "Speichern",
       "search": "Suchen"
     },
     "message": {},

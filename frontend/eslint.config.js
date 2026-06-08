@@ -29,6 +29,7 @@ export default defineConfigWithVueTs(
         "kebab-case",
         { registeredComponentsOnly: false },
       ],
+      "vue/require-default-prop": "off",
       // Enforce i18n best practices manually as no stylistic ruleset exists yet
       "@intlify/vue-i18n/key-format-style": ["error"], // enforce camelCase for message keys
       "@intlify/vue-i18n/no-duplicate-keys-in-locale": ["error"],
