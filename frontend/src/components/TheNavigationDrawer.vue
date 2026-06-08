@@ -2,7 +2,7 @@
   <v-navigation-drawer
     permanent
     width="400"
-    color="primary"
+    color="secondary"
   >
     <v-container>
       <div class="text-center mb-5">
