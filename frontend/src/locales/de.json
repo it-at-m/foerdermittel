@@ -19,6 +19,7 @@
       "update": "Bearbeiten"
     },
     "generics": {
+      "manage": "{domain} verwalten",
       "create": "{domain} @.lower:common.action.create",
       "update": "{domain} @.lower:common.action.update",
       "delete": "{domain} @.lower:common.action.delete"
