@@ -2,19 +2,16 @@
   <v-card
     :title="title"
     :loading="loading"
-    class="elevation-0"
   >
     <template #text>
       <slot>
         {{ text }}
       </slot>
     </template>
-    <v-card-actions class="mb-2 mr-2">
+    <v-card-actions>
       <v-spacer />
 
       <v-btn
-        color="secondary"
-        variant="outlined"
         :class="{ 'mr-2': showConfirm }"
         :text="
           showConfirm ? t('common.action.cancel') : t('common.action.close')

@@ -17,6 +17,29 @@ export default createVuetify({
       mdi,
     },
   },
+  defaults: {
+    VBtn: {
+      color: "secondary",
+      variant: "outlined",
+    },
+    VTextField: {
+      variant: "underlined",
+    },
+    VDivider: {
+      class: "my-4",
+    },
+    VCard: {
+      class: "elevation-0",
+    },
+    VCardActions: {
+      class: "mb-2 mr-2",
+    },
+    VDialog: {
+      maxWidth: "800px",
+      width: "90%",
+      persistent: true,
+    },
+  },
   theme: {
     defaultTheme: "light",
     themes: {
