@@ -2,12 +2,11 @@
   "common": {
     "appName": "Fördermittel",
     "word": {
-      "yes": "Ja",
-      "no": "Nein",
       "management": "Verwaltung",
       "statistic": "Statistik | Statistiken",
       "report": "Bericht | Berichte",
-      "masterdata": "Stammdaten"
+      "masterdata": "Stammdaten",
+      "action": "Aktion | Aktionen"
     },
     "action": {
       "cancel": "Abbrechen",
