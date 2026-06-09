@@ -6,21 +6,16 @@
     persistent
   >
     <confirm-card
-      v-if="dialogMode === 'read' || dialogMode === 'edit'"
+      v-if="dialogMode === 'read' || dialogMode === 'write'"
       :title="
         dialogMode === 'read'
           ? domain
-          : t(
-              activeItem.id
-                ? 'common.generics.update'
-                : 'common.generics.create',
-              {
-                domain: domain,
-              }
-            )
+          : t(isEditing ? 'common.generics.update' : 'common.generics.create', {
+              domain: domain,
+            })
       "
       :loading="loading"
-      :show-confirm="dialogMode === 'edit'"
+      :show-confirm="dialogMode === 'write'"
       :disable-confirm="!isFormSlotValid"
       @cancel="closeDialog"
       @confirm="saveItem"
@@ -28,8 +23,10 @@
       <slot
         name="form"
         :item="activeItem"
+        :read-only="dialogMode === 'read'"
         :update-item="updateActiveItem"
         :update-validity="updateFormValidity"
+        :is-editing="isEditing"
       />
     </confirm-card>
 
@@ -114,6 +111,9 @@
             name="form"
             :item="item"
             :read-only="true"
+            :update-item="undefined"
+            :update-validity="undefined"
+            :is-editing="false"
           />
         </template>
         <!-- Allow custom slots for other table columns -->
@@ -144,7 +144,7 @@ import ConfirmCard from "@/components/common/ConfirmCard.vue";
 
 const { t } = useI18n();
 
-type DialogMode = "edit" | "delete" | "read" | null;
+type DialogMode = "write" | "delete" | "read" | null;
 const dialogMode = ref<DialogMode>(null);
 const showDialog = computed(() => dialogMode.value !== null);
 
@@ -175,6 +175,7 @@ const tableHeadersWithActions = computed(() => [
 ]);
 
 const activeItem = ref<T>({ ...emptyItemTemplate } as T);
+const isEditing = computed<boolean>(() => !!activeItem.value.id);
 
 const isFormSlotValid = ref(false);
 
@@ -198,12 +199,12 @@ const updateActiveItem = (newValue: T) => {
 
 const openCreate = () => {
   activeItem.value = { ...emptyItemTemplate } as T;
-  dialogMode.value = "edit";
+  dialogMode.value = "write";
 };
 
 const openEdit = (item: T) => {
   activeItem.value = structuredClone(toRaw(item)) as T;
-  dialogMode.value = "edit";
+  dialogMode.value = "write";
 };
 
 const openDelete = (item: T) => {
@@ -212,7 +213,7 @@ const openDelete = (item: T) => {
 };
 
 const saveItem = () => {
-  if (activeItem.value.id) {
+  if (isEditing.value) {
     emit("update", activeItem.value);
   } else {
     emit("create", activeItem.value);
@@ -220,7 +221,7 @@ const saveItem = () => {
 };
 
 const deleteItem = () => {
-  if (activeItem.value.id) {
+  if (isEditing.value) {
     emit("delete", activeItem.value.id);
   }
 };
