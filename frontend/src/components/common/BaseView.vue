@@ -13,7 +13,7 @@
         <slot name="actions" />
       </v-col>
     </v-row>
-    <v-divider />
+    <v-divider class="my-4" />
     <v-row>
       <slot />
     </v-row>

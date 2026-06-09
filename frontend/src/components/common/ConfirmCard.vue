@@ -8,7 +8,7 @@
         {{ text }}
       </slot>
     </template>
-    <v-card-actions>
+    <template #actions>
       <v-spacer />
 
       <v-btn
@@ -28,7 +28,7 @@
         :disabled="loading || disableConfirm"
         @click="confirm"
       />
-    </v-card-actions>
+    </template>
   </v-card>
 </template>
 

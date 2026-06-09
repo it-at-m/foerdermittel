@@ -1,18 +1,15 @@
 <template>
-  <v-dialog
-    :model-value="showDialog"
-    width="90%"
-    max-width="800px"
-    persistent
-  >
+  <v-dialog :model-value="showDialog">
     <confirm-card
       v-if="dialogMode === 'read' || dialogMode === 'write'"
       :title="
         dialogMode === 'read'
           ? domain
-          : t(isEditing ? 'common.generics.update' : 'common.generics.create', {
-              domain: domain,
-            })
+          : isEditing
+            ? t('common.generics.update', { domain })
+            : t('common.generics.create', {
+                domain,
+              })
       "
       :loading="loading"
       :show-confirm="dialogMode === 'write'"
@@ -43,17 +40,18 @@
     />
   </v-dialog>
 
-  <v-card
-    :loading="loading"
-    class="elevation-0"
-  >
-    <v-card-title>
+  <v-card class="w-100">
+    <template #title>
       <v-row align-content="center">
         <v-col class="d-flex align-center justify-end">
           <v-btn
             v-if="enableActions"
+            variant="flat"
+            color="primary"
             :append-icon="mdiPlus"
             :text="t('common.action.create')"
+            :disabled="loading"
+            class="mb-4"
             @click="openCreate"
           />
         </v-col>
@@ -63,17 +61,15 @@
           <v-divider />
         </v-col>
       </v-row>
-    </v-card-title>
+    </template>
     <template #text>
       <v-data-table-server
         :headers="tableHeadersWithActions"
         :items="items"
         :items-length="totalItems"
-        hide-default-footer
         :items-per-page="itemsPerPage"
         :loading="loading"
         show-expand
-        expand-on-click
         expand-strategy="single"
         @update:options="(data) => emit('updatedOptions', data)"
       >
@@ -87,6 +83,7 @@
             >
               <v-btn
                 v-if="enableActions"
+                size="small"
                 :icon="mdiPencil"
                 class="mr-1"
                 @click="openEdit(item)"
@@ -99,6 +96,7 @@
             >
               <v-btn
                 v-if="enableActions"
+                size="small"
                 :icon="mdiDelete"
                 @click="openDelete(item)"
               />
@@ -107,14 +105,16 @@
         </template>
         <!-- Slot for rendering the expansion panel -->
         <template #expanded="{ item }">
-          <slot
-            name="form"
-            :item="item"
-            :read-only="true"
-            :update-item="undefined"
-            :update-validity="undefined"
-            :is-editing="false"
-          />
+          <div class="ma-10">
+            <slot
+              name="form"
+              :item="item"
+              :read-only="true"
+              :update-item="undefined"
+              :update-validity="undefined"
+              :is-editing="false"
+            />
+          </div>
         </template>
         <!-- Allow custom slots for other table columns -->
         <template
@@ -169,8 +169,9 @@ const {
 const tableHeadersWithActions = computed(() => [
   ...tableHeaders,
   {
-    title: t("common.action", { count: 2 }),
+    title: t("common.word.action", { count: 2 }),
     value: "actions",
+    width: 150,
   },
 ]);
 
