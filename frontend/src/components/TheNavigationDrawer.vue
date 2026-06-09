@@ -1,9 +1,5 @@
 <template>
-  <v-navigation-drawer
-    permanent
-    width="400"
-    color="secondary"
-  >
+  <v-navigation-drawer>
     <v-container>
       <div class="text-center mb-5">
         <p class="text-headline-small font-weight-bold">
@@ -22,7 +18,6 @@
 
           <v-tooltip
             :text="rolesText"
-            location="bottom"
           >
             <template #activator="{ props }">
               <v-chip

@@ -20,13 +20,13 @@ export default createVuetify({
   defaults: {
     VBtn: {
       color: "secondary",
-      variant: "outlined",
+      variant: "text",
     },
     VTextField: {
-      variant: "underlined",
+      variant: "outlined",
     },
-    VDivider: {
-      class: "my-4",
+    VNumberInput: {
+      variant: "outlined"
     },
     VCard: {
       class: "elevation-0",
@@ -39,6 +39,18 @@ export default createVuetify({
       width: "90%",
       persistent: true,
     },
+    VNavigationDrawer: {
+      permanent: true,
+      width: 400,
+      color: "secondary"
+    },
+    VTooltip: {
+      location: "top"
+    },
+    VSnackbar: {
+      timeout: 1000,
+      color: "success"
+    }
   },
   theme: {
     defaultTheme: "light",
