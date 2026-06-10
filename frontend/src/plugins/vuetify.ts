@@ -24,9 +24,11 @@ export default createVuetify({
     },
     VTextField: {
       variant: "outlined",
+      persistentPlaceholder: true,
     },
     VNumberInput: {
-      variant: "outlined"
+      variant: "outlined",
+      persistentPlaceholder: true,
     },
     VCard: {
       class: "elevation-0",
@@ -42,15 +44,15 @@ export default createVuetify({
     VNavigationDrawer: {
       permanent: true,
       width: 400,
-      color: "secondary"
+      color: "secondary",
     },
     VTooltip: {
-      location: "top"
+      location: "bottom",
     },
     VSnackbar: {
-      timeout: 1000,
-      color: "success"
-    }
+      timeout: 5000,
+      color: "info",
+    },
   },
   theme: {
     defaultTheme: "light",

@@ -6,7 +6,7 @@
           v-if="title || domain"
           class="ma-0 text-headline-large"
         >
-          {{ title ?? t("common.generics.manage", { domain }) }}
+          {{ title ?? t("common.generics.manage", [domain]) }}
         </h1>
       </v-col>
       <v-col cols="auto">
