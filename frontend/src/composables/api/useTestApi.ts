@@ -66,7 +66,7 @@ export function useGetTests() {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(dummyData);
-      }, 10000);
+      }, 2000);
     });
   });
 }

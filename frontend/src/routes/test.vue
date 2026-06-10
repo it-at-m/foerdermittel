@@ -22,12 +22,11 @@
         @update="handleUpdate"
       >
         <template
-          #form="{ item, updateItem, updateValidity, isEditing, readOnly }"
+          #form="{ item, updateItem, updateValidity, inputDisplayMode }"
         >
           <test-form
             :model-value="item"
-            :readonly="readOnly || createTestLoading || updateTestLoading"
-            :is-edit="isEditing"
+            :display-mode="inputDisplayMode"
             @update:model-value="updateItem"
             @is-valid="updateValidity"
           />
