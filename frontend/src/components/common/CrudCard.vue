@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :model-value="showDialog">
+  <v-dialog :model-value="showDialog" :max-width="dialogWidth">
     <confirm-card
       v-if="dialogMode === 'read' || dialogMode === 'write'"
       :title="dialogTitle"
@@ -138,6 +138,7 @@ import { computed, ref, toRaw } from "vue";
 import { useI18n } from "vue-i18n";
 
 import ConfirmCard from "@/components/common/ConfirmCard.vue";
+import { DialogWidth } from "@/types/DialogWidth";
 
 const { t } = useI18n();
 
@@ -154,6 +155,7 @@ const {
   items = [],
   enableActions = true,
   expandable = false,
+  dialogWidth = DialogWidth.MEDIUM
 } = defineProps<{
   emptyItemTemplate: T;
   domainKey: string;
@@ -164,6 +166,7 @@ const {
   totalItems: number;
   enableActions?: boolean;
   expandable?: boolean;
+  dialogWidth?: DialogWidth;
 }>();
 
 const domainSingular = computed(() => t(domainKey));
