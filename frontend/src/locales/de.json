@@ -21,7 +21,8 @@
       "manage": "{0} verwalten",
       "create": "{0} @.lower:common.action.create",
       "update": "{0} @.lower:common.action.update",
-      "delete": "{0} @.lower:common.action.delete"
+      "delete": "{0} @.lower:common.action.delete",
+      "readOnly": "{0} (schreibgeschützt)"
     },
     "message": {
       "confirmDelete": "Möchten Sie den Eintrag aus \"{0}\" endgültig löschen?",
