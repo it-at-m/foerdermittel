@@ -1,7 +1,5 @@
 <template>
-  <v-snackbar-queue
-    v-model="snackbarStore.queue"
-  >
+  <v-snackbar-queue v-model="snackbarStore.queue">
     <template #text="textData">
       <v-layout class="align-center">
         <v-icon

@@ -1,10 +1,12 @@
 <template>
-  <v-dialog :model-value="showDialog" :max-width="dialogWidth">
+  <v-dialog
+    :model-value="showDialog"
+    :max-width="dialogWidth"
+  >
     <confirm-card
-      v-if="dialogMode === 'read' || dialogMode === 'write'"
+      v-if="dialogMode === 'write'"
       :title="dialogTitle"
       :loading="loading"
-      :show-confirm="dialogMode === 'write'"
       :disable-confirm="!isFormSlotValid"
       @cancel="closeDialog"
       @confirm="saveItem"
@@ -12,7 +14,6 @@
       <slot
         name="form"
         :item="activeItem"
-        :read-only="dialogMode === 'read'"
         :update-item="updateActiveItem"
         :update-validity="updateFormValidity"
         :is-editing="isEditing"
@@ -26,7 +27,6 @@
       :loading="loading"
       :confirm-icon="mdiTrashCan"
       :confirm-text="t('common.action.delete')"
-      show-confirm
       @cancel="closeDialog"
       @confirm="deleteItem"
     />
@@ -142,7 +142,7 @@ import { DialogWidth } from "@/types/DialogWidth";
 
 const { t } = useI18n();
 
-type DialogMode = "write" | "delete" | "read" | null;
+type DialogMode = "write" | "delete" | null;
 const dialogMode = ref<DialogMode>(null);
 const showDialog = computed(() => dialogMode.value !== null);
 
@@ -155,7 +155,7 @@ const {
   items = [],
   enableActions = true,
   expandable = false,
-  dialogWidth = DialogWidth.MEDIUM
+  dialogWidth = DialogWidth.MEDIUM,
 } = defineProps<{
   emptyItemTemplate: T;
   domainKey: string;
@@ -173,7 +173,6 @@ const domainSingular = computed(() => t(domainKey));
 const domainPlural = computed(() => t(domainKey, 2));
 
 const dialogTitle = computed(() => {
-  if (dialogMode.value === "read") return domainSingular.value;
   return isEditing.value
     ? t("common.generics.update", [domainPlural])
     : t("common.generics.create", [domainPlural]);

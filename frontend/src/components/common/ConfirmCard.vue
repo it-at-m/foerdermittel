@@ -12,15 +12,12 @@
       <v-spacer />
 
       <v-btn
-        :class="{ 'mr-2': showConfirm }"
-        :text="
-          showConfirm ? t('common.action.cancel') : t('common.action.close')
-        "
+        class="mr-2"
+        :text="t('common.action.cancel')"
         :disabled="loading"
         @click="cancel"
       />
       <v-btn
-        v-if="showConfirm"
         color="primary"
         variant="flat"
         :append-icon="confirmIcon"
@@ -41,7 +38,6 @@ const { t } = useI18n();
 const {
   loading = false,
   disableConfirm = false,
-  showConfirm = true,
   confirmIcon = mdiContentSave,
 } = defineProps<{
   title: string;
@@ -50,7 +46,6 @@ const {
   confirmIcon?: string;
   loading?: boolean;
   disableConfirm?: boolean;
-  showConfirm?: boolean;
 }>();
 
 const emit = defineEmits<{
