@@ -3,10 +3,10 @@
     <v-row class="justify-space-between align-center">
       <v-col cols="auto">
         <h1
-          v-if="title || domain"
+          v-if="title || domainKey"
           class="ma-0 text-headline-large"
         >
-          {{ title ?? t("common.generics.manage", [domain]) }}
+          {{ title ?? t("common.generics.manage", [t(domainKey!, 2)]) }}
         </h1>
       </v-col>
       <v-col cols="auto">
@@ -15,7 +15,7 @@
     </v-row>
     <v-divider class="my-4" />
     <v-row>
-      <slot />
+      <slot :domain-key="domainKey" />
     </v-row>
   </v-container>
 </template>
@@ -23,14 +23,9 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 
-defineProps<{
+const { domainKey } = defineProps<{
   title?: string;
-  domain?: string;
-}>();
-
-defineSlots<{
-  default(): void;
-  actions(): void;
+  domainKey?: string;
 }>();
 
 const { t } = useI18n();
