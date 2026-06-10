@@ -16,7 +16,9 @@
         :item="activeItem"
         :update-item="updateActiveItem"
         :update-validity="updateFormValidity"
-        :is-editing="isEditing"
+        :input-display-mode="
+          isEditing ? InputDisplayMode.EDIT : InputDisplayMode.CREATE
+        "
       />
     </confirm-card>
 
@@ -110,10 +112,9 @@
             <slot
               name="form"
               :item="item"
-              :read-only="true"
+              :input-display-mode="InputDisplayMode.READ"
               :update-item="undefined"
               :update-validity="undefined"
-              :is-editing="false"
             />
           </div>
         </template>
@@ -142,6 +143,7 @@ import { useI18n } from "vue-i18n";
 
 import ConfirmCard from "@/components/common/ConfirmCard.vue";
 import { DialogWidth } from "@/types/DialogWidth";
+import { InputDisplayMode } from "@/types/InputDisplayMode";
 
 const { t } = useI18n();
 
