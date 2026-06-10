@@ -18,16 +18,18 @@
       "update": "Bearbeiten"
     },
     "generics": {
-      "manage": "{domain} verwalten",
-      "create": "{domain} @.lower:common.action.create",
-      "update": "{domain} @.lower:common.action.update",
-      "delete": "{domain} @.lower:common.action.delete"
+      "manage": "{0} verwalten",
+      "create": "{0} @.lower:common.action.create",
+      "update": "{0} @.lower:common.action.update",
+      "delete": "{0} @.lower:common.action.delete"
     },
     "message": {
-      "confirmDelete": "Möchten Sie den Eintrag aus \"{domain}\" endgültig löschen?",
-      "deleted": "{domain} wurde gelöscht.",
-      "updated": "{domain} wurde aktualisiert.",
-      "created": "{domain} wurde erstellt."
+      "confirmDelete": "Möchten Sie den Eintrag aus \"{0}\" endgültig löschen?",
+      "deleted": "{0} wurde gelöscht.",
+      "updated": "{0} wurde aktualisiert.",
+      "created": "{0} wurde erstellt.",
+      "loading": "Lade {0}...",
+      "noData": "Keine {0} vorhanden."
     },
     "roles": {
       "admin": "Administrator",
