@@ -16,9 +16,7 @@
         <div>
           <p class="mb-3">{{ t("component.theNavigationDrawer.loggedIn") }}</p>
 
-          <v-tooltip
-            :text="rolesText"
-          >
+          <v-tooltip :text="rolesText">
             <template #activator="{ props }">
               <v-chip
                 label

@@ -2,15 +2,7 @@
   <v-dialog :model-value="showDialog">
     <confirm-card
       v-if="dialogMode === 'read' || dialogMode === 'write'"
-      :title="
-        dialogMode === 'read'
-          ? domain
-          : isEditing
-            ? t('common.generics.update', { domain })
-            : t('common.generics.create', {
-                domain,
-              })
-      "
+      :title="dialogTitle"
       :loading="loading"
       :show-confirm="dialogMode === 'write'"
       :disable-confirm="!isFormSlotValid"
@@ -29,8 +21,8 @@
 
     <confirm-card
       v-else-if="dialogMode === 'delete'"
-      :title="t('common.generics.delete', { domain })"
-      :text="t('common.message.confirmDelete', { domain })"
+      :title="t('common.generics.delete', [domainSingular])"
+      :text="t('common.message.confirmDelete', [domainSingular])"
       :loading="loading"
       :confirm-icon="mdiTrashCan"
       :confirm-text="t('common.action.delete')"
@@ -69,7 +61,9 @@
         :items-length="totalItems"
         :items-per-page="itemsPerPage"
         :loading="loading"
-        show-expand
+        :loading-text="t('common.message.loading', [domainPlural])"
+        :no-data-text="t('common.message.noData', [domainPlural])"
+        :show-expand="expandable"
         expand-strategy="single"
         @update:options="(data) => emit('updatedOptions', data)"
       >
@@ -104,8 +98,11 @@
           </v-row>
         </template>
         <!-- Slot for rendering the expansion panel -->
-        <template #expanded="{ item }">
-          <div class="ma-10">
+        <template
+          v-if="expandable"
+          #expanded="{ item }"
+        >
+          <div class="pa-10 bg-grey-lighten-5">
             <slot
               name="form"
               :item="item"
@@ -149,22 +146,35 @@ const dialogMode = ref<DialogMode>(null);
 const showDialog = computed(() => dialogMode.value !== null);
 
 const {
+  domainKey,
   tableHeaders,
   emptyItemTemplate,
   loading = false,
   itemsPerPage = 20,
   items = [],
   enableActions = true,
+  expandable = false,
 } = defineProps<{
   emptyItemTemplate: T;
-  domain: string;
+  domainKey: string;
   loading?: boolean;
   tableHeaders: TableColumnHeader<T>[];
   items?: T[];
   itemsPerPage?: number;
   totalItems: number;
   enableActions?: boolean;
+  expandable?: boolean;
 }>();
+
+const domainSingular = computed(() => t(domainKey));
+const domainPlural = computed(() => t(domainKey, 2));
+
+const dialogTitle = computed(() => {
+  if (dialogMode.value === "read") return domainSingular.value;
+  return isEditing.value
+    ? t("common.generics.update", [domainPlural])
+    : t("common.generics.create", [domainPlural]);
+});
 
 const tableHeadersWithActions = computed(() => [
   ...tableHeaders,
