@@ -30,7 +30,7 @@
       "updated": "{0} wurde aktualisiert.",
       "created": "{0} wurde erstellt.",
       "loading": "Lade {0}...",
-      "noData": "Keine {0} vorhanden."
+      "noData": "Keine {0} vorhanden"
     },
     "roles": {
       "admin": "Administrator",

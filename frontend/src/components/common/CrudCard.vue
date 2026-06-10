@@ -61,12 +61,16 @@
         :items-length="totalItems"
         :items-per-page="itemsPerPage"
         :loading="loading"
-        :loading-text="t('common.message.loading', [domainPlural])"
-        :no-data-text="t('common.message.noData', [domainPlural])"
         :show-expand="expandable"
         expand-strategy="single"
         @update:options="(data) => emit('updatedOptions', data)"
       >
+        <template #loading>
+          <p>{{ t("common.message.loading", [domainPlural]) }}</p>
+        </template>
+        <template #no-data>
+          <p>{{ t("common.message.noData", [domainPlural]) }}</p>
+        </template>
         <!-- Static actions for edit and delete -->
         <template #[`item.actions`]="{ item }">
           <v-row align-content="center">
@@ -120,7 +124,6 @@
           #[slotName]="slotProps"
         >
           <slot
-            v-if="slotName !== 'form' && slotName !== 'item.actions'"
             :name="slotName"
             v-bind="slotProps || {}"
           />
@@ -174,8 +177,8 @@ const domainPlural = computed(() => t(domainKey, 2));
 
 const dialogTitle = computed(() => {
   return isEditing.value
-    ? t("common.generics.update", [domainPlural])
-    : t("common.generics.create", [domainPlural]);
+    ? t("common.generics.update", [domainSingular.value])
+    : t("common.generics.create", [domainSingular.value]);
 });
 
 const tableHeadersWithActions = computed(() => [
