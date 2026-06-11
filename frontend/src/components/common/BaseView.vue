@@ -15,7 +15,7 @@
     </v-row>
     <v-divider class="my-4" />
     <v-row>
-      <slot :domain-key="domainKey" />
+      <slot />
     </v-row>
   </v-container>
 </template>
