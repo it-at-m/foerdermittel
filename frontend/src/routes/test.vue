@@ -3,22 +3,18 @@
     <crud-card
       ref="crudRef"
       :empty-item-template="EMPTY_ITEM_TEMPLATE"
-      :loading="
-        getTestsLoading ||
-        createTestLoading ||
-        updateTestLoading ||
-        deleteTestLoading
-      "
+      :loading="loading"
       :table-headers="headers"
       :domain-key="domainKey"
       :enable-actions="isAdmin"
       :items="testsData"
       :total-items="testsData?.length ?? 0"
-      :items-per-page="4"
+      :items-per-page="dataTableOptions.itemsPerPage"
       expandable
       @delete="handleDelete"
       @create="handleCreate"
       @update="handleUpdate"
+      @updated-options="handleUpdatedOptions"
     >
       <template #form="{ item, updateItem, updateValidity, inputDisplayMode }">
         <test-form
@@ -41,10 +37,11 @@
 </template>
 
 <script setup lang="ts">
+import type { DataTableOptions } from "@/types/DataTableOptions";
 import type { TableColumnHeader } from "@/types/TableColumnHeader";
 import type { Test } from "@/types/Test";
 
-import { onMounted, useTemplateRef } from "vue";
+import { computed, onMounted, ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -85,11 +82,22 @@ const {
   loading: getTestsLoading,
 } = useGetTests();
 
+onMounted(async () => await getTests());
+
 const {
   call: createTest,
   loading: createTestLoading,
   error: createTestError,
 } = useCreateTest();
+
+const handleCreate = async (test: Test) => {
+  await createTest(test);
+  if (!createTestError.value) {
+    await onSuccess(t("common.message.created", [t(domainKey)]));
+  } else {
+    onFailure(t("common.message.createdError", [t(domainKey)]));
+  }
+};
 
 const {
   call: updateTest,
@@ -97,42 +105,60 @@ const {
   error: updateTestError,
 } = useUpdateTest();
 
+const handleUpdate = async (test: Test) => {
+  await updateTest(test);
+  if (!updateTestError.value) {
+    await onSuccess(t("common.message.updated", [t(domainKey)]));
+  } else {
+    onFailure(t("common.message.updatedError", [t(domainKey)]));
+  }
+};
+
 const {
   call: deleteTest,
   loading: deleteTestLoading,
   error: deleteTestError,
 } = useDeleteTest();
 
-onMounted(async () => await getTests());
-
-const handleCreate = async (test: Test) => {
-  await createTest(test);
-  if (!createTestError.value) {
-    await onSuccess(t("common.message.created", [t(domainKey)]));
-  }
-};
-
-const handleUpdate = async (test: Test) => {
-  await updateTest(test);
-  if (!updateTestError.value) {
-    await onSuccess(t("common.message.updated", [t(domainKey)]));
-  }
-};
-
 const handleDelete = async (id: string) => {
   await deleteTest(id);
   if (!deleteTestError.value) {
     await onSuccess(t("common.message.deleted", [t(domainKey)]));
+  } else {
+    onFailure(t("common.message.deletedError", [t(domainKey)]));
   }
 };
 
+const dataTableOptions = ref<DataTableOptions>({
+  page: 1,
+  itemsPerPage: 12,
+  sortBy: [],
+});
+
+const handleUpdatedOptions = async (newOptions: DataTableOptions) => {
+  dataTableOptions.value = newOptions;
+  await getTests();
+};
+
+const loading = computed(
+  () =>
+    getTestsLoading.value ||
+    createTestLoading.value ||
+    updateTestLoading.value ||
+    deleteTestLoading.value
+);
+
 const snackbarStore = useSnackbarStore();
 const crudRef = useTemplateRef("crudRef");
+
 const onSuccess = async (msg: string) => {
   snackbarStore.push({ text: msg, color: STATUS_INDICATORS.SUCCESS });
   if (crudRef.value) {
     crudRef.value.closeDialog();
   }
   await getTests();
+};
+const onFailure = (msg: string) => {
+  snackbarStore.push({ text: msg, color: STATUS_INDICATORS.ERROR });
 };
 </script>
