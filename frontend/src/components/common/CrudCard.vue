@@ -239,7 +239,7 @@ const saveItem = () => {
 };
 
 const deleteItem = () => {
-  if (isEditing.value) {
+  if (activeItem.value.id) {
     emit("delete", activeItem.value.id);
   }
 };
