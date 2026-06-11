@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.bauprogramme;
+package de.muenchen.oss.foerdermittel.backend.bauprogramm;
 
 import static de.muenchen.oss.foerdermittel.backend.common.ExceptionMessageConstants.MSG_NOT_FOUND;
 
@@ -15,45 +15,45 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class BauprogrammeService {
+public class BauprogrammService {
 
-    private final BauprogrammeRepository bauprogrammeRepository;
+    private final BauprogrammRepository bauprogrammRepository;
 
-    @PreAuthorize(Authorities.BAUPROGRAMM_GET)
-    public Bauprogramme getBauprogramm(final Integer bauprogrammId) {
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    public Bauprogramm getBauprogramm(final Integer bauprogrammId) {
         log.info("Get Bauprogramm with ID {}", bauprogrammId);
         return getBauprogrammOrThrowException(bauprogrammId);
     }
 
-    @PreAuthorize(Authorities.BAUPROGRAMM_GET_ALL)
-    public Page<Bauprogramme> getAllBauprogramme(final int pageNumber, final int pageSize) {
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    public Page<Bauprogramm> getAllBauprogramme(final int pageNumber, final int pageSize) {
         log.info("Get all Bauprogramme with Page {} and PageSize {}", pageNumber, pageSize);
         final Pageable pageRequest = PageRequest.of(pageNumber, pageSize);
-        return bauprogrammeRepository.findAll(pageRequest);
+        return bauprogrammRepository.findAll(pageRequest);
     }
 
-    @PreAuthorize(Authorities.BAUPROGRAMM_CREATE)
-    public Bauprogramme createBauprogramm(final Bauprogramme bauprogramm) {
+    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
+    public Bauprogramm createBauprogramm(final Bauprogramm bauprogramm) {
         log.debug("Create Bauprogramm {}", bauprogramm);
-        return bauprogrammeRepository.save(bauprogramm);
+        return bauprogrammRepository.save(bauprogramm);
     }
 
-    @PreAuthorize(Authorities.BAUPROGRAMM_UPDATE)
-    public Bauprogramme updateBauprogramm(final Bauprogramme bauprogramm, final Integer bauprogrammId) {
-        final Bauprogramme foundBauprogramm = getBauprogrammOrThrowException(bauprogrammId);
+    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
+    public Bauprogramm updateBauprogramm(final Bauprogramm bauprogramm, final Integer bauprogrammId) {
+        final Bauprogramm foundBauprogramm = getBauprogrammOrThrowException(bauprogrammId);
         foundBauprogramm.setBezeichnung(bauprogramm.getBezeichnung());
         log.debug("Update Bauprogramm {}", foundBauprogramm);
-        return bauprogrammeRepository.save(foundBauprogramm);
+        return bauprogrammRepository.save(foundBauprogramm);
     }
 
-    @PreAuthorize(Authorities.BAUPROGRAMM_DELETE)
+    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteBauprogramm(final Integer bauprogrammId) {
         log.debug("Delete Bauprogramm with ID {}", bauprogrammId);
-        bauprogrammeRepository.deleteById(bauprogrammId);
+        bauprogrammRepository.deleteById(bauprogrammId);
     }
 
-    private Bauprogramme getBauprogrammOrThrowException(final Integer bauprogrammId) {
-        return bauprogrammeRepository
+    private Bauprogramm getBauprogrammOrThrowException(final Integer bauprogrammId) {
+        return bauprogrammRepository
                 .findById(bauprogrammId)
                 .orElseThrow(() -> new NotFoundException(String.format(MSG_NOT_FOUND, bauprogrammId)));
     }

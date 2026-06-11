@@ -11,18 +11,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 @SuppressWarnings("PMD.DataClass")
 public final class Authorities {
     public static final String HAS_ROLE_ADMIN = "hasRole('admin')";
-    public static final String HAS_ROLE_SACHBEARBEITUNG = "hasRole('sachbearbeitung')";
-    public static final String HAS_ROLE_SACHBEARBEITUNG_HAUSHALT = "hasRole('sachbearbeitunghaushalt')";
+    public static final String HAS_ROLE_SACHBEARBEITUNG_HAUSHALT = "hasRole('sachbearbeitunghaushalt', 'admin')";
     public static final String HAS_ANY_ROLE = "hasAnyRole('admin', 'sachbearbeitung', 'sachbearbeitunghaushalt')";
 
-    //Stammdaten
-
-    //Bauprogramme
-    public static final String BAUPROGRAMM_GET = "hasAnyRole('admin', 'sachbearbeitung', 'sachbearbeitunghaushalt')";
-    public static final String BAUPROGRAMM_GET_ALL = "hasAnyRole('admin', 'sachbearbeitung', 'sachbearbeitunghaushalt')";
-    public static final String BAUPROGRAMM_CREATE = "hasAnyRole('admin')";
-    public static final String BAUPROGRAMM_UPDATE = "hasAnyRole('admin')";
-    public static final String BAUPROGRAMM_DELETE = "hasAnyRole('admin')";
 
     private Authorities() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");

@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.bauprogramme.dto;
+package de.muenchen.oss.foerdermittel.backend.bauprogramm.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -17,15 +17,15 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
-public class BauprogrammeRequestDTO {
+public class BauprogrammRequestDTO {
 
     // ========= //
     // Variables //
     // ========= //
 
     @NotNull
-    private Integer bauprogramm;
-
+//    private Integer bauprogramm;
+    private Integer id;
     @NotNull
     @Size(max = 200)
     private String bezeichnung;

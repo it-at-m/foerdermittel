@@ -1,9 +1,11 @@
-package de.muenchen.oss.foerdermittel.backend.bauprogramme;
+package de.muenchen.oss.foerdermittel.backend.bauprogramm;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import de.muenchen.oss.foerdermittel.backend.common.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -14,6 +16,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -28,9 +32,12 @@ import java.math.BigDecimal;
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor
-public class Bauprogramme {
+@Table(name = "bauprogramme")
+public class Bauprogramm implements Serializable {
 
 
+
+    @Serial
     private static final long serialVersionUID = 1L;
 
     // ========= //
