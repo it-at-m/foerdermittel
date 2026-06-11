@@ -25,10 +25,10 @@
       "readOnly": "{0} (schreibgeschützt)"
     },
     "message": {
-      "confirmDelete": "Möchten Sie den Eintrag aus \"{0}\" endgültig löschen?",
+      "confirmDelete": "Möchten Sie den \"{0}\"-Eintrag endgültig löschen?",
       "deleted": "{0} wurde gelöscht.",
       "deletedError": "{0} konnte nicht gelöscht werden.",
-      "updated": "{0} wurde aktualisiert.",
+      "updated": "{0} wurde geändert.",
       "updatedError": "{0} konnte nicht geändert werden.",
       "created": "{0} wurde erstellt.",
       "createdError": "{0} konnte nicht erstellt werden.",

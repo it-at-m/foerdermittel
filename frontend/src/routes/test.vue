@@ -82,7 +82,7 @@ const {
   loading: getTestsLoading,
 } = useGetTests();
 
-onMounted(async () => await getTests());
+onMounted(() => getTests());
 
 const {
   call: createTest,

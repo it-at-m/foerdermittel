@@ -166,7 +166,7 @@ const {
   domainKey: string;
   loading?: boolean;
   tableHeaders: TableColumnHeader<T>[];
-  items?: T[];
+  items?: readonly T[];
   itemsPerPage?: number;
   totalItems: number;
   enableActions?: boolean;
@@ -231,7 +231,7 @@ const openDelete = (item: T) => {
 };
 
 const saveItem = () => {
-  if (isEditing.value) {
+  if (isEditing.value && activeItem.value.id) {
     emit("update", activeItem.value);
   } else {
     emit("create", activeItem.value);
@@ -246,7 +246,7 @@ const deleteItem = () => {
 
 const closeDialog = () => {
   dialogMode.value = null;
-  activeItem.value = emptyItemTemplate;
+  activeItem.value = { ...emptyItemTemplate } as T;
 };
 
 defineExpose({

@@ -1,5 +1,3 @@
-import type { Ref } from "vue";
-
 import { readonly, ref } from "vue";
 
 /**
@@ -18,20 +16,20 @@ export default function useAPI<TRequest, TResponse = void>(
 
   const loading = readonly(loadingInternal);
   const error = readonly(errorInternal);
-  const data = readonly(dataInternal) as Readonly<Ref<TResponse>>;
+  const data = readonly(dataInternal);
 
   /**
    * Executes the API method and updates the state accordingly.
-   * @param params - The parameters for the API call.
-   * @returns A promise that resolves with the API response or `false` if an error occurs.
+   * @param params - The parameters for the API call as an object.
+   * @returns A promise that resolves when the call completes (check `data` state for retrieved data and `error` state for failures).
    */
-  const call = async (params: TRequest): Promise<void> => {
+  const call = async (params: TRequest) => {
     loadingInternal.value = true;
     errorInternal.value = false;
 
     try {
       dataInternal.value = await apiMethod(params);
-    } catch {
+    } catch (error) {
       console.debug(error);
       errorInternal.value = true;
     } finally {

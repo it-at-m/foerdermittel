@@ -4,7 +4,7 @@ import vuetify from "@/plugins/vuetify";
 
 export default createRulesPlugin(
   {
-    /* options */
+    aliases: {},
   },
   vuetify.locale
 );
