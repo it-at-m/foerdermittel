@@ -5,34 +5,24 @@
   >
     <fm-text-field
       v-model="modelValue.stringField"
-      label="String-Feld*"
-      :rules="[rules.required()]"
-      class="mb-3"
       :display-mode="displayMode"
+      :rules="[rules.required()]"
       disable-edit
+      label="String-Feld*"
+      class="mb-3"
     />
-    <!--    <v-number-input-->
-    <!--      v-model="modelValue.numberField"-->
-    <!--      :label="-->
-    <!--        isEdit-->
-    <!--          ? t('common.generics.readOnly', ['Nummern-Feld'])-->
-    <!--          : 'Nummern-Feld'-->
-    <!--      "-->
-    <!--      :readonly="readonly || isEdit"-->
-    <!--      :hide-details="readonly"-->
-    <!--      :variant="readonly ? 'plain' : undefined"-->
-    <!--      :control-variant="readonly ? 'hidden' : undefined"-->
-    <!--      :class="{ 'pointer-events-none': readonly || isEdit }"-->
-    <!--      class="mb-3"-->
-    <!--    />-->
-    <!--    <v-checkbox-->
-    <!--      v-model="modelValue.booleanField"-->
-    <!--      label="Boolsches Feld"-->
-    <!--      :readonly="readonly"-->
-    <!--      :hide-details="readonly"-->
-    <!--      :class="{ 'pointer-events-none': readonly }"-->
-    <!--      class="ml-n3 mt-n3"-->
-    <!--    />-->
+    <fm-number-input
+      v-model="modelValue.numberField"
+      :display-mode="displayMode"
+      label="Nummern-Feld"
+      class="mb-3"
+    />
+    <fm-checkbox
+      v-model="modelValue.booleanField"
+      :display-mode="displayMode"
+      label="Boolsches Feld"
+      class="ml-n3 mt-n3"
+    />
   </v-form>
 </template>
 
@@ -41,6 +31,8 @@ import type { Test } from "@/types/Test";
 
 import { useRules } from "vuetify/labs/rules";
 
+import FmCheckbox from "@/components/common/FmCheckbox.vue";
+import FmNumberInput from "@/components/common/FmNumberInput.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
