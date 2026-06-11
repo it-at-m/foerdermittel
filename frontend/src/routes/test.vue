@@ -25,11 +25,15 @@
         />
       </template>
       <template #[`item.booleanField`]="{ value }">
-        <v-checkbox-btn
-          readonly
-          hide-details
-          :model-value="value"
-          class="pointer-events-none ml-n3"
+        <v-icon
+          v-if="value"
+          :icon="mdiCheck"
+          color="success"
+        />
+        <v-icon
+          v-else
+          :icon="mdiClose"
+          color="error"
         />
       </template>
     </crud-card>
@@ -41,6 +45,7 @@ import type { DataTableOptions } from "@/types/DataTableOptions";
 import type { TableColumnHeader } from "@/types/TableColumnHeader";
 import type { Test } from "@/types/Test";
 
+import { mdiCheck, mdiClose } from "@mdi/js";
 import { computed, onMounted, ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -67,7 +72,7 @@ const isAdmin = useHasAnyRole(Role.ADMIN);
 const headers: TableColumnHeader<Test>[] = [
   { title: "String-Feld", value: "stringField", sortable: true },
   { title: "Nummern-Feld", value: "numberField" },
-  { title: "Boolsches Feld", value: "booleanField" },
+  { title: "Boolsches Feld", value: "booleanField", align: "center" },
 ];
 
 const EMPTY_ITEM_TEMPLATE: Test = {
