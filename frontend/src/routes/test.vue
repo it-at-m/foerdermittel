@@ -1,46 +1,42 @@
 <template>
-  <base-view domain-key="model.projekt.modelName">
-    <template #default="{ domainKey }">
-      <crud-card
-        ref="crudRef"
-        :empty-item-template="EMPTY_ITEM_TEMPLATE"
-        :loading="
-          getTestsLoading ||
-          createTestLoading ||
-          updateTestLoading ||
-          deleteTestLoading
-        "
-        :table-headers="headers"
-        :domain-key="domainKey ?? ''"
-        :enable-actions="isAdmin"
-        :items="testsData"
-        :total-items="testsData?.length ?? 0"
-        :items-per-page="4"
-        expandable
-        @delete="handleDelete"
-        @create="handleCreate"
-        @update="handleUpdate"
-      >
-        <template
-          #form="{ item, updateItem, updateValidity, inputDisplayMode }"
-        >
-          <test-form
-            :model-value="item"
-            :display-mode="inputDisplayMode"
-            @update:model-value="updateItem"
-            @is-valid="updateValidity"
-          />
-        </template>
-        <template #[`item.booleanField`]="{ value }">
-          <v-checkbox-btn
-            readonly
-            hide-details
-            :model-value="value"
-            class="pointer-events-none ml-n3"
-          />
-        </template>
-      </crud-card>
-    </template>
+  <base-view :domain-key="domainKey">
+    <crud-card
+      ref="crudRef"
+      :empty-item-template="EMPTY_ITEM_TEMPLATE"
+      :loading="
+        getTestsLoading ||
+        createTestLoading ||
+        updateTestLoading ||
+        deleteTestLoading
+      "
+      :table-headers="headers"
+      :domain-key="domainKey"
+      :enable-actions="isAdmin"
+      :items="testsData"
+      :total-items="testsData?.length ?? 0"
+      :items-per-page="4"
+      expandable
+      @delete="handleDelete"
+      @create="handleCreate"
+      @update="handleUpdate"
+    >
+      <template #form="{ item, updateItem, updateValidity, inputDisplayMode }">
+        <test-form
+          :model-value="item"
+          :display-mode="inputDisplayMode"
+          @update:model-value="updateItem"
+          @is-valid="updateValidity"
+        />
+      </template>
+      <template #[`item.booleanField`]="{ value }">
+        <v-checkbox-btn
+          readonly
+          hide-details
+          :model-value="value"
+          class="pointer-events-none ml-n3"
+        />
+      </template>
+    </crud-card>
   </base-view>
 </template>
 
@@ -66,6 +62,8 @@ import { useSnackbarStore } from "@/stores/snackbar";
 import { Role } from "@/types/Role";
 
 const { t } = useI18n();
+
+const domainKey = "model.projekt.modelName";
 
 const isAdmin = useHasAnyRole(Role.ADMIN);
 
@@ -110,27 +108,21 @@ onMounted(async () => await getTests());
 const handleCreate = async (test: Test) => {
   await createTest(test);
   if (!createTestError.value) {
-    await onSuccess(
-      t("common.message.created", [t("model.projekt.modelName")])
-    );
+    await onSuccess(t("common.message.created", [t(domainKey)]));
   }
 };
 
 const handleUpdate = async (test: Test) => {
   await updateTest(test);
   if (!updateTestError.value) {
-    await onSuccess(
-      t("common.message.updated", [t("model.projekt.modelName")])
-    );
+    await onSuccess(t("common.message.updated", [t(domainKey)]));
   }
 };
 
 const handleDelete = async (id: string) => {
   await deleteTest(id);
   if (!deleteTestError.value) {
-    await onSuccess(
-      t("common.message.deleted", [t("model.projekt.modelName")])
-    );
+    await onSuccess(t("common.message.deleted", [t(domainKey)]));
   }
 };
 
