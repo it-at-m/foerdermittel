@@ -112,7 +112,6 @@
               name="form"
               :item="item"
               :input-display-mode="InputDisplayMode.READ"
-              :update-item="undefined"
               :update-validity="undefined"
             />
           </div>
