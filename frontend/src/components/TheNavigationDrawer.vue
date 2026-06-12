@@ -1,9 +1,5 @@
 <template>
-  <v-navigation-drawer
-    permanent
-    width="400"
-    color="primary"
-  >
+  <v-navigation-drawer>
     <v-container>
       <div class="text-center mb-5">
         <p class="text-headline-small font-weight-bold">
@@ -20,10 +16,7 @@
         <div>
           <p class="mb-3">{{ t("component.theNavigationDrawer.loggedIn") }}</p>
 
-          <v-tooltip
-            :text="rolesText"
-            location="bottom"
-          >
+          <v-tooltip :text="rolesText">
             <template #activator="{ props }">
               <v-chip
                 label

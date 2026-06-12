@@ -1,9 +1,5 @@
 <template>
-  <v-snackbar-queue
-    v-model="snackbarStore.queue"
-    :timeout="5000"
-    :color="STATUS_INDICATORS.INFO"
-  >
+  <v-snackbar-queue v-model="snackbarStore.queue">
     <template #text="textData">
       <v-layout class="align-center">
         <v-icon
@@ -17,8 +13,6 @@
     <template #actions="{ props, item }">
       <v-btn
         v-if="item.color === STATUS_INDICATORS.ERROR"
-        color="primary"
-        variant="text"
         v-bind="props"
       >
         {{ t("common.action.close") }}
