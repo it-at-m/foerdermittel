@@ -16,11 +16,10 @@
       @update="handleUpdate"
       @updated-options="handleUpdatedOptions"
     >
-      <template #form="{ item, updateItem, updateValidity, inputDisplayMode }">
+      <template #form="{ item, updateValidity, inputDisplayMode }">
         <test-form
           :model-value="item"
           :display-mode="inputDisplayMode"
-          @update:model-value="updateItem"
           @is-valid="updateValidity"
         />
       </template>
