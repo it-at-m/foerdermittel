@@ -1,4 +1,3 @@
-// @ts-expect-error: "TS2307 cannot find module" is a false positive here
 import "vuetify/styles";
 
 import type { VueI18nAdapterParams } from "vuetify/locale/adapters/vue-i18n";
@@ -18,12 +17,50 @@ export default createVuetify({
       mdi,
     },
   },
+  defaults: {
+    VBtn: {
+      color: "secondary",
+      variant: "text",
+    },
+    VTextField: {
+      variant: "outlined",
+      persistentPlaceholder: true,
+    },
+    VNumberInput: {
+      variant: "outlined",
+      persistentPlaceholder: true,
+    },
+    VCard: {
+      class: "elevation-0",
+    },
+    VCardActions: {
+      class: "mb-2 mr-2",
+    },
+    VDialog: {
+      maxWidth: "800px",
+      width: "90%",
+      persistent: true,
+    },
+    VNavigationDrawer: {
+      permanent: true,
+      width: 400,
+      color: "secondary",
+    },
+    VTooltip: {
+      location: "bottom",
+    },
+    VSnackbar: {
+      timeout: 5000,
+      color: "info",
+    },
+  },
   theme: {
+    defaultTheme: "light",
     themes: {
       light: {
         colors: {
-          primary: "#333333",
-          secondary: "#FFCC00",
+          primary: "#FFCC00",
+          secondary: "#333333",
           accent: "#7BA4D9",
           success: "#69BE28",
           error: "#FF0000",

@@ -2,18 +2,44 @@
   "common": {
     "appName": "Fördermittel",
     "word": {
-      "yes": "Ja",
-      "no": "Nein",
       "management": "Verwaltung",
       "statistic": "Statistik | Statistiken",
       "report": "Bericht | Berichte",
-      "masterdata": "Stammdaten"
+      "masterdata": "Stammdaten",
+      "action": "Aktion | Aktionen"
     },
     "action": {
+      "cancel": "Abbrechen",
       "close": "Schließen",
-      "search": "Suchen"
+      "create": "Erstellen",
+      "delete": "Löschen",
+      "save": "Speichern",
+      "search": "Suchen",
+      "update": "Bearbeiten"
     },
-    "message": {}
+    "generics": {
+      "manage": "{0} verwalten",
+      "create": "{0} @.lower:common.action.create",
+      "update": "{0} @.lower:common.action.update",
+      "delete": "{0} @.lower:common.action.delete",
+      "readOnly": "{0} (schreibgeschützt)"
+    },
+    "message": {
+      "confirmDelete": "Möchten Sie den \"{0}\"-Eintrag endgültig löschen?",
+      "deleted": "{0} wurde gelöscht.",
+      "deletedError": "{0} konnte nicht gelöscht werden.",
+      "updated": "{0} wurde geändert.",
+      "updatedError": "{0} konnte nicht geändert werden.",
+      "created": "{0} wurde erstellt.",
+      "createdError": "{0} konnte nicht erstellt werden.",
+      "loading": "Lade {0}...",
+      "noData": "Keine {0} vorhanden"
+    },
+    "roles": {
+      "admin": "Administrator",
+      "sachbearbeitung": "Sachbearbeitung",
+      "sachbearbeitunghaushalt": "Sachbearbeitung Haushalt"
+    }
   },
   "model": {
     "projekt": {

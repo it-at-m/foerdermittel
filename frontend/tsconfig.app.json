@@ -3,6 +3,7 @@
   "include": [
     "env.d.ts",
     "declarations.d.ts",
+    "router.d.ts",
     "route-map.d.ts",
     "src/**/*",
     "src/**/*.vue"
@@ -12,7 +13,11 @@
     "composite": true,
     "tsBuildInfoFile": "./cache/tsconfig.app.tsbuildinfo",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@vue/shared": [
+        // Needs to be removed in future if TS2742: The inferred type of '__VLS_export' error does not occur anymore!
+        "./node_modules/@vue/shared"
+      ]
     },
     "allowSyntheticDefaultImports": true,
     "allowImportingTsExtensions": false,

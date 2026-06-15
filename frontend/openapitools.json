@@ -12,7 +12,6 @@
           "supportsES6": true,
           "enumPropertyNaming": "UPPERCASE",
           "disallowAdditionalPropertiesIfNotPresent": false,
-          "useSingleRequestParameter": false,
           "validationAttributes": true
         }
       }
