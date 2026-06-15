@@ -13,6 +13,114 @@ tags:
     description: Spring Boot Actuator Web API Documentation
     url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
 paths:
+  /bauprogramm/{id}:
+    get:
+      tags:
+      - bauprogramm-controller
+      operationId: getBauprogramm
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauprogrammResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - bauprogramm-controller
+      operationId: updateBauprogramm
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BauprogrammUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauprogrammResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - bauprogramm-controller
+      operationId: deleteBauprogramm
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /bauprogramm:
+    get:
+      tags:
+      - bauprogramm-controller
+      operationId: getBauprogrammeByPageAndSize
+      parameters:
+      - name: pageNumber
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelBauprogrammResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - bauprogramm-controller
+      operationId: saveBauprogramm
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BauprogrammCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauprogrammResponseDTO"
+      security:
+      - bearerAuth: []
   /actuator:
     get:
       tags:
@@ -156,6 +264,64 @@ paths:
                 type: object
 components:
   schemas:
+    BauprogrammUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 0
+          type: string
+    BauprogrammResponseDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        bauprogramm:
+          type: integer
+          format: int32
+        bezeichnung:
+          type: string
+    BauprogrammCreateDTO:
+      required:
+      - bauprogramm
+      - bezeichnung
+      type: object
+      properties:
+        bauprogramm:
+          maximum: 99
+          minimum: 1
+          type: integer
+          format: int32
+        bezeichnung:
+          maxLength: 200
+          minLength: 0
+          type: string
+    PageMetadata:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    PagedModelBauprogrammResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/BauprogrammResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
     Link:
       type: object
       properties:
