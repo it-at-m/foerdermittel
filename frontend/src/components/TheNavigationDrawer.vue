@@ -268,6 +268,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.bauprogramm.modelName", 2),
+        props: {
+          to: "/bauprogramm"
+        }
       },
       {
         title: t("model.foerderbereich.modelName", 2),
