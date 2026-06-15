@@ -58,4 +58,3 @@ public class BauprogrammService {
                 .orElseThrow(() -> new NotFoundException(String.format(MSG_NOT_FOUND, bauprogrammId)));
     }
 }
-

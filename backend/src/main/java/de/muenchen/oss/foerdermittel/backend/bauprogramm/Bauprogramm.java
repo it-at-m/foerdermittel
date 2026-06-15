@@ -1,7 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.bauprogramm;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
-import de.muenchen.oss.foerdermittel.backend.common.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -10,15 +8,11 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+
+import lombok.Data;
 
 /**
  * This class represents a Bauprogramm.
@@ -27,15 +21,9 @@ import java.math.BigDecimal;
  * </p>
  */
 @Entity
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
-@NoArgsConstructor
+@Data
 @Table(name = "bauprogramme")
 public class Bauprogramm implements Serializable {
-
-
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -45,15 +33,10 @@ public class Bauprogramm implements Serializable {
     // ========= //
 
     @Column(nullable = false, precision = 2)
-    @NotNull
     @Id
-    @Min(1)
-    @Max(99)
-    private BigDecimal bauprogramm;
+    @NotNull @Min(1) @Max(99) private BigDecimal bauprogramm;
 
     @Column(nullable = false, length = 200)
-    @NotNull
-    @Size(max = 200)
-    private String bezeichnung;
+    @NotNull @Size(max = 200) private String bezeichnung;
 
 }

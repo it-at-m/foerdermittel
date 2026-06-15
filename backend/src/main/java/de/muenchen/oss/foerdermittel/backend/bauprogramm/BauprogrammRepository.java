@@ -6,5 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BauprogrammRepository extends PagingAndSortingRepository<Bauprogramm, Integer>, CrudRepository<Bauprogramm, Integer> {
-    // Hier können zusätzliche Abfragen definiert werden, falls nötig
 }

@@ -1,4 +1,4 @@
 package de.muenchen.oss.foerdermittel.backend.bauprogramm.dto;
 
-public record BauprogrammResponseDTO(Integer id, Integer bauprogramm, String bezeichnung) {
+public record BauprogrammResponseDTO(String id, Integer bauprogramm, String bezeichnung) {
 }

@@ -14,7 +14,6 @@ public final class Authorities {
     public static final String HAS_ROLE_SACHBEARBEITUNG_HAUSHALT = "hasRole('sachbearbeitunghaushalt', 'admin')";
     public static final String HAS_ANY_ROLE = "hasAnyRole('admin', 'sachbearbeitung', 'sachbearbeitunghaushalt')";
 
-
     private Authorities() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }

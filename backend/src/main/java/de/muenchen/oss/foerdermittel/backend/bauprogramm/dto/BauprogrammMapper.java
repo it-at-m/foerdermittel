@@ -4,13 +4,16 @@ import de.muenchen.oss.foerdermittel.backend.bauprogramm.Bauprogramm;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper
 public interface BauprogrammMapper {
 
-    @Mapping(source = "bauprogramm", target = "id") // Mappt 'bauprogramm' auf 'id'
+    @Mapping(source = "bauprogramm", target = "id")
     @Mapping(source = "bauprogramm", target = "bauprogramm")
     BauprogrammResponseDTO toDTO(Bauprogramm bauprogramm);
 
-    @Mapping(source = "id", target = "bauprogramm") // Mappt 'id' auf 'bauprogramm'
-    Bauprogramm toEntity(BauprogrammRequestDTO bauprogrammRequestDTO);
+    Bauprogramm toEntity(BauprogrammCreateDTO bauprogrammCreateDTO);
+
+    @Mapping(target = "bauprogramm", ignore = true)
+    Bauprogramm toEntity(BauprogrammUpdateDTO bauprogrammUpdateDTO);
+
 }
