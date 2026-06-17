@@ -274,6 +274,10 @@ components:
           minLength: 0
           type: string
     BauprogrammResponseDTO:
+      required:
+      - bauprogramm
+      - bezeichnung
+      - id
       type: object
       properties:
         id:

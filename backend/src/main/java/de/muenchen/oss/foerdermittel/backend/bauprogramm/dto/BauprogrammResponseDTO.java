@@ -1,4 +1,6 @@
 package de.muenchen.oss.foerdermittel.backend.bauprogramm.dto;
 
-public record BauprogrammResponseDTO(String id, Integer bauprogramm, String bezeichnung) {
+import jakarta.validation.constraints.NotNull;
+
+public record BauprogrammResponseDTO(@NotNull String id, @NotNull Integer bauprogramm, @NotNull String bezeichnung) {
 }

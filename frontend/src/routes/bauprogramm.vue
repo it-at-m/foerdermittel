@@ -7,8 +7,8 @@
       :table-headers="headers"
       :domain-key="domainKey"
       :enable-actions="isAdmin"
-      :items="bauprogramme"
-      :total-items="testsData?.length ?? 0"
+      :items="bauprogramme?.content ?? []"
+      :total-items="bauprogramme?.page?.totalElements ?? 0"
       :items-per-page="dataTableOptions.itemsPerPage"
       expandable
       @delete="handleDelete"
@@ -16,15 +16,21 @@
       @update="handleUpdate"
       @updated-options="handleUpdatedOptions"
     >
+      <template #form="{ item, updateValidity, inputDisplayMode }">
+        <bauprogramm-form
+          :model-value="item"
+          :display-mode="inputDisplayMode"
+          @is-valid="updateValidity"
+        />
+      </template>
     </crud-card>
   </base-view>
 </template>
 
 <script setup lang="ts">
 import type {
-  BauprogrammCreateDTO,
   BauprogrammResponseDTO,
-  BauprogrammUpdateDTO,
+  GetBauprogrammeByPageAndSizeRequest,
 } from "@/api/generated/foerdermittel-backend";
 import type { DataTableOptions } from "@/types/DataTableOptions";
 import type { TableColumnHeader } from "@/types/TableColumnHeader";
@@ -34,6 +40,7 @@ import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
+import BauprogrammForm from "@/components/forms/BauprogrammForm.vue";
 import {
   useCreateBauprogramm,
   useDeleteBauprogramm,
@@ -56,14 +63,14 @@ const headers: TableColumnHeader<BauprogrammResponseDTO>[] = [
   { title: t("model.bauprogramm.bezeichnung"), value: "bezeichnung" },
 ];
 
-const EMPTY_ITEM_TEMPLATE: Partial<BauprogrammCreateDTO> = {
+const EMPTY_ITEM_TEMPLATE: Partial<BauprogrammResponseDTO> = {
   bauprogramm: undefined,
   bezeichnung: "",
 };
 
 const dataTableOptions = ref<DataTableOptions>({
   page: 1,
-  itemsPerPage: 12,
+  itemsPerPage: 1,
   sortBy: [],
 });
 
@@ -81,7 +88,12 @@ const {
   loading: getBauprogrammeLoading,
 } = useGetBauprogramme();
 
-onMounted(() => getBauprogramme({}));
+onMounted(() =>
+  getBauprogramme({
+    pageNumber: dataTableOptions.value.page,
+    pageSize: dataTableOptions.value.itemsPerPage,
+  } satisfies GetBauprogrammeByPageAndSizeRequest)
+);
 
 const {
   call: createBauprogramm,
@@ -89,9 +101,13 @@ const {
   error: createBauprogrammeError,
 } = useCreateBauprogramm();
 
-const handleCreate = async (bauprogrammCreateDTO: BauprogrammCreateDTO) => {
+const handleCreate = async (
+  bauprogrammCreateDTO: Partial<BauprogrammResponseDTO>
+) => {
+  // TODO: some type checking improvements
+  const model = bauprogrammCreateDTO as BauprogrammResponseDTO;
   await createBauprogramm({
-    bauprogrammCreateDTO,
+    bauprogrammCreateDTO: model,
   });
   if (!createBauprogrammeError.value) {
     await onSuccess(t("common.message.created", [t(domainKey)]));
@@ -106,10 +122,14 @@ const {
   error: updateBauprogrammError,
 } = useUpdateBauprogramm();
 
-const handleUpdate = async (bauprogrammUpdateDTO: BauprogrammUpdateDTO) => {
+const handleUpdate = async (
+  bauprogrammUpdateDTO: Partial<BauprogrammResponseDTO>
+) => {
+  // TODO: some type checking improvements
+  const model = bauprogrammUpdateDTO as BauprogrammResponseDTO;
   await updateBauprogramm({
-    id: bauprogrammUpdateDTO.id,
-    bauprogrammUpdateDTO: bauprogrammUpdateDTO,
+    id: model.id,
+    bauprogrammUpdateDTO: model,
   });
   if (!updateBauprogrammError.value) {
     await onSuccess(t("common.message.updated", [t(domainKey)]));
