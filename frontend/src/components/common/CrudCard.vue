@@ -14,7 +14,6 @@
       <slot
         name="form"
         :item="activeItem"
-        :update-item="updateActiveItem"
         :update-validity="updateFormValidity"
         :input-display-mode="
           isEditing ? InputDisplayMode.EDIT : InputDisplayMode.CREATE
@@ -113,7 +112,6 @@
               name="form"
               :item="item"
               :input-display-mode="InputDisplayMode.READ"
-              :update-item="undefined"
               :update-validity="undefined"
             />
           </div>
@@ -192,7 +190,7 @@ const tableHeadersWithActions = computed(() => [
   },
 ]);
 
-const activeItem = ref<T>({ ...emptyItemTemplate } as T);
+const activeItem = ref<T>({ ...emptyItemTemplate });
 const isEditing = computed<boolean>(() => !!activeItem.value.id);
 
 const isFormSlotValid = ref(false);
@@ -211,22 +209,21 @@ const updateFormValidity = (valid: boolean | null) => {
   isFormSlotValid.value = !!valid;
 };
 
-const updateActiveItem = (newValue: T) => {
-  activeItem.value = newValue;
-};
-
 const openCreate = () => {
-  activeItem.value = { ...emptyItemTemplate } as T;
+  activeItem.value = { ...emptyItemTemplate };
+  isFormSlotValid.value = false;
   dialogMode.value = "write";
 };
 
 const openEdit = (item: T) => {
-  activeItem.value = structuredClone(toRaw(item)) as T;
+  activeItem.value = structuredClone(toRaw(item));
+  isFormSlotValid.value = false;
   dialogMode.value = "write";
 };
 
 const openDelete = (item: T) => {
   activeItem.value = item;
+  isFormSlotValid.value = false;
   dialogMode.value = "delete";
 };
 
@@ -246,7 +243,7 @@ const deleteItem = () => {
 
 const closeDialog = () => {
   dialogMode.value = null;
-  activeItem.value = { ...emptyItemTemplate } as T;
+  activeItem.value = { ...emptyItemTemplate };
 };
 
 defineExpose({
