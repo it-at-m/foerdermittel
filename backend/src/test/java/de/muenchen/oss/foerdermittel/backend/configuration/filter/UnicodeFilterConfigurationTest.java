@@ -1,5 +1,5 @@
 /*
- * package de.muenchen.oss.refarch.backend.configuration.filter;
+ * package de.muenchen.oss.foerdermittel.backend.configuration.filter;
  *
  * import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_TEST_PROFILE;
  * import static org.junit.jupiter.api.Assertions.assertEquals;
