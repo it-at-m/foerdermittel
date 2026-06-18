@@ -12,7 +12,9 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * This class represents a Bauprogramm.
@@ -22,6 +24,8 @@ import lombok.Data;
  */
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "bauprogramme")
 public class Bauprogramm implements Serializable {
 
