@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping(value = "/bauprogramm", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/bauprogramme", produces = MediaType.APPLICATION_JSON_VALUE)
 @SecurityRequirement(name = OpenAPIDocumentationConfiguration.SECURITY_SCHEME_NAME)
 public class BauprogrammController {
 
