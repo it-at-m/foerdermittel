@@ -1,16 +1,16 @@
 package de.muenchen.oss.foerdermittel.backend.bauprogramm;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammMapper;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammUpdateDTO;
+import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-
-import java.math.BigDecimal;
 
 @AllArgsConstructor
 public class BauprogrammMapperTest {
