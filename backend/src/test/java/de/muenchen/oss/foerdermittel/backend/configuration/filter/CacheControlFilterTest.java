@@ -1,16 +1,17 @@
 /*
  * package de.muenchen.oss.foerdermittel.backend.configuration.filter;
  *
- * import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_NO_SECURITY_PROFILE;
  * import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_TEST_PROFILE;
  *
  * import de.muenchen.oss.foerdermittel.backend.FoerdermittelBackendApplication;
  * import de.muenchen.oss.foerdermittel.backend.TestConstants;
+ * import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
  * import org.junit.jupiter.api.Test;
  * import org.springframework.beans.factory.annotation.Autowired;
  * import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
  * import org.springframework.boot.test.context.SpringBootTest;
  * import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+ * import org.springframework.context.annotation.Import;
  * import org.springframework.http.HttpHeaders;
  * import org.springframework.test.context.ActiveProfiles;
  * import org.springframework.test.web.servlet.client.RestTestClient;
@@ -28,7 +29,9 @@
  *
  * @AutoConfigureRestTestClient
  *
- * @ActiveProfiles(profiles = { SPRING_TEST_PROFILE, SPRING_NO_SECURITY_PROFILE })
+ * @ActiveProfiles(profiles = { SPRING_TEST_PROFILE })
+ *
+ * @Import(TestSecurityConfiguration.class)
  * class CacheControlFilterTest {
  *
  * @Container
@@ -51,6 +54,7 @@
  * void givenEntityEndpoint_thenCacheControlHeadersPresent() {
  * restTestClient.get()
  * .uri(ENTITY_ENDPOINT_URL)
+ * .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
  * .exchange()
  * .expectStatus().isOk()
  * .expectHeader().exists(HttpHeaders.CACHE_CONTROL)
