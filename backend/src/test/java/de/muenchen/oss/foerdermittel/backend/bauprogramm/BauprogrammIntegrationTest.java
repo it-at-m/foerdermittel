@@ -24,6 +24,7 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.context.annotation.Import;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.client.RestTestClient;
@@ -161,18 +162,18 @@ class BauprogrammIntegrationTest {
             assertThat(entity.get().getBezeichnung()).isEqualTo(requestDTO.bezeichnung());
         }
 
-//        @Test
-//        void givenEntityAlreadyExists_thenReturnBadRequest() {
-//            final BauprogrammCreateDTO requestDTO = new BauprogrammCreateDTO(Integer.valueOf(ID), "Test");
-//
-//            restTestClient.post()
-//                    .uri("/bauprogramme")
-//                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
-//                    .body(requestDTO)
-//                    .accept(MediaType.APPLICATION_JSON)
-//                    .exchange()
-//                    .expectStatus().isBadRequest();
-//        }
+        @Test
+        void givenEntityAlreadyExists_thenReturnConflict() {
+            final BauprogrammCreateDTO requestDTO = new BauprogrammCreateDTO(Integer.valueOf(ID), "Test");
+
+            restTestClient.post()
+                    .uri("/bauprogramme")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                    .body(requestDTO)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isEqualTo(HttpStatus.CONFLICT);
+        }
 
         @Test
         void givenNotHavingAdminRole_thenReturnForbidden() {

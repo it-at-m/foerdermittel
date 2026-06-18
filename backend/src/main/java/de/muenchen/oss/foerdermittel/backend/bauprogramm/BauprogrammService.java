@@ -1,7 +1,9 @@
 package de.muenchen.oss.foerdermittel.backend.bauprogramm;
 
+import static de.muenchen.oss.foerdermittel.backend.common.ExceptionMessageConstants.MSG_ALREADY_EXISTS;
 import static de.muenchen.oss.foerdermittel.backend.common.ExceptionMessageConstants.MSG_NOT_FOUND;
 
+import de.muenchen.oss.foerdermittel.backend.common.AlreadyExistsException;
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +37,10 @@ public class BauprogrammService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Bauprogramm createBauprogramm(final Bauprogramm bauprogramm) {
         log.debug("Create Bauprogramm {}", bauprogramm);
+        final int bauprogrammId = bauprogramm.getBauprogramm().intValue();
+        if (bauprogrammRepository.existsById(bauprogrammId)) {
+            throw new AlreadyExistsException(String.format(MSG_ALREADY_EXISTS, bauprogrammId));
+        }
         return bauprogrammRepository.save(bauprogramm);
     }
 
