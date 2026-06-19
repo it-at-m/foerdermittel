@@ -1,8 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.common;
 
-import org.mapstruct.Named;
-
 import java.math.BigDecimal;
+import org.mapstruct.Named;
 
 public class NumberMapper {
 

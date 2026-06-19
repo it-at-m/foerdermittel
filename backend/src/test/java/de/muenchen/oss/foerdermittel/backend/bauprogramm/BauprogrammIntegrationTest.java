@@ -8,14 +8,12 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 import de.muenchen.oss.foerdermittel.backend.TestConstants;
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammCreateDTO;
-import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammUpdateDTO;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammResponseDTO;
-
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammUpdateDTO;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -100,8 +98,7 @@ class BauprogrammIntegrationTest {
             return Stream.of(
                     Arguments.of("admin", HttpStatus.OK),
                     Arguments.of("sachbearbeitung", HttpStatus.OK),
-                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.OK)
-            );
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.OK));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -158,8 +155,7 @@ class BauprogrammIntegrationTest {
             return Stream.of(
                     Arguments.of("admin", HttpStatus.OK),
                     Arguments.of("sachbearbeitung", HttpStatus.OK),
-                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.OK)
-            );
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.OK));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -225,13 +221,10 @@ class BauprogrammIntegrationTest {
             return Stream.of(
                     arguments(
                             "bauprogramm too high",
-                            new BauprogrammCreateDTO(100, "Test")
-                    ),
+                            new BauprogrammCreateDTO(100, "Test")),
                     arguments(
                             "bezeichnung too long",
-                            new BauprogrammCreateDTO(2, "a".repeat(201))
-                    )
-            );
+                            new BauprogrammCreateDTO(2, "a".repeat(201))));
         }
 
         @ParameterizedTest(name = "{0}")
@@ -253,8 +246,7 @@ class BauprogrammIntegrationTest {
             return Stream.of(
                     Arguments.of("admin", HttpStatus.CREATED),
                     Arguments.of("sachbearbeitung", HttpStatus.FORBIDDEN),
-                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN)
-            );
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -320,9 +312,7 @@ class BauprogrammIntegrationTest {
             return Stream.of(
                     arguments(
                             "bauprogramm too high",
-                            new BauprogrammUpdateDTO("a".repeat(201))
-                    )
-            );
+                            new BauprogrammUpdateDTO("a".repeat(201))));
         }
 
         @ParameterizedTest(name = "{0}")
@@ -343,8 +333,7 @@ class BauprogrammIntegrationTest {
             return Stream.of(
                     Arguments.of("admin", HttpStatus.OK),
                     Arguments.of("sachbearbeitung", HttpStatus.FORBIDDEN),
-                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN)
-            );
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -390,8 +379,7 @@ class BauprogrammIntegrationTest {
             return Stream.of(
                     Arguments.of("admin", HttpStatus.OK),
                     Arguments.of("sachbearbeitung", HttpStatus.FORBIDDEN),
-                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN)
-            );
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
