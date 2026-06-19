@@ -13,7 +13,7 @@ tags:
     description: Spring Boot Actuator Web API Documentation
     url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
 paths:
-  /bauprogramm/{id}:
+  /bauprogramme/{id}:
     get:
       tags:
       - bauprogramm-controller
@@ -73,7 +73,7 @@ paths:
           description: OK
       security:
       - bearerAuth: []
-  /bauprogramm:
+  /bauprogramme:
     get:
       tags:
       - bauprogramm-controller
