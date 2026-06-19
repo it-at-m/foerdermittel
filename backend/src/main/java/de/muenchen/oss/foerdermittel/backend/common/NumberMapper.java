@@ -3,7 +3,7 @@ package de.muenchen.oss.foerdermittel.backend.common;
 import java.math.BigDecimal;
 import org.mapstruct.Named;
 
-public class NumberMapper {
+public final class NumberMapper {
 
     private NumberMapper() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
