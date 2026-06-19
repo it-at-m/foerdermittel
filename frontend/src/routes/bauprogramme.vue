@@ -29,8 +29,7 @@
 
 <script setup lang="ts">
 import type {
-  BauprogrammResponseDTO,
-  GetBauprogrammeByPageAndSizeRequest,
+  BauprogrammResponseDTO
 } from "@/api/generated/foerdermittel-backend";
 import type { DataTableOptions } from "@/types/DataTableOptions";
 import type { TableColumnHeader } from "@/types/TableColumnHeader";
@@ -59,7 +58,7 @@ const isAdmin = useHasAnyRole(Role.ADMIN);
 const { t } = useI18n();
 
 const headers: TableColumnHeader<BauprogrammResponseDTO>[] = [
-  { title: t("model.bauprogramm.bauprogramm"), value: "bauprogramm" },
+  { title: t("model.bauprogramm.bauprogramm"), value: "bauprogramm", sortable: true, align: "center", width: 50 },
   { title: t("model.bauprogramm.bezeichnung"), value: "bezeichnung" },
 ];
 
@@ -70,16 +69,21 @@ const EMPTY_ITEM_TEMPLATE: Partial<BauprogrammResponseDTO> = {
 
 const dataTableOptions = ref<DataTableOptions>({
   page: 1,
-  itemsPerPage: 1,
+  itemsPerPage: 10,
   sortBy: [],
 });
 
+const pageable = computed(() => {
+  return {
+    page: dataTableOptions.value.page - 1,
+    size: dataTableOptions.value.itemsPerPage,
+    sort: dataTableOptions.value.sortBy.flatMap(({ key, order }) => [key, order])
+  };
+})
+
 const handleUpdatedOptions = async (newOptions: DataTableOptions) => {
   dataTableOptions.value = newOptions;
-  await getBauprogramme({
-    pageNumber: dataTableOptions.value.page,
-    pageSize: dataTableOptions.value.itemsPerPage,
-  });
+  await getBauprogramme(pageable.value);
 };
 
 const {
@@ -89,10 +93,7 @@ const {
 } = useGetBauprogramme();
 
 onMounted(() =>
-  getBauprogramme({
-    pageNumber: dataTableOptions.value.page,
-    pageSize: dataTableOptions.value.itemsPerPage,
-  } satisfies GetBauprogrammeByPageAndSizeRequest)
+  getBauprogramme(pageable.value)
 );
 
 const {
@@ -171,10 +172,7 @@ const onSuccess = async (msg: string) => {
   if (crudRef.value) {
     crudRef.value.closeDialog();
   }
-  await getBauprogramme({
-    pageNumber: dataTableOptions.value.page,
-    pageSize: dataTableOptions.value.itemsPerPage,
-  });
+  await getBauprogramme(pageable.value);
 };
 const onFailure = (msg: string) => {
   snackbarStore.push({ text: msg, color: STATUS_INDICATORS.ERROR });

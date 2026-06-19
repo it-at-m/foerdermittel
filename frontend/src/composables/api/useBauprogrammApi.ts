@@ -1,7 +1,7 @@
 import type {
   BauprogrammResponseDTO,
   DeleteBauprogrammRequest,
-  GetBauprogrammeByPageAndSizeRequest,
+  GetBauprogrammeByPageableRequest,
   GetBauprogrammRequest,
   PagedModelBauprogrammResponseDTO,
   SaveBauprogrammRequest,
@@ -32,9 +32,9 @@ export function useGetBauprogramme() {
   const api = ApiFactory.getInstance(BauprogrammControllerApi);
 
   return useAPI<
-    GetBauprogrammeByPageAndSizeRequest,
+    GetBauprogrammeByPageableRequest,
     PagedModelBauprogrammResponseDTO
-  >(() => api.getBauprogrammeByPageAndSize());
+  >((params) => api.getBauprogrammeByPageable(params));
 }
 
 export function useGetBauprogramm() {
