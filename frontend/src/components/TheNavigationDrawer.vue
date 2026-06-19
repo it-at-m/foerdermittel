@@ -269,7 +269,7 @@ const navigationItems: NavigationItem[] = [
       {
         title: t("model.bauprogramm.modelName", 2),
         props: {
-          to: "/bauprogramm",
+          to: "/bauprogramme",
         },
       },
       {
