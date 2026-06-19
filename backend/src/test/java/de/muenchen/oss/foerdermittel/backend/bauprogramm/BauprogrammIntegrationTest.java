@@ -3,6 +3,7 @@ package de.muenchen.oss.foerdermittel.backend.bauprogramm;
 import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_TEST_PROFILE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import de.muenchen.oss.foerdermittel.backend.TestConstants;
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
@@ -13,10 +14,15 @@ import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammResponse
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -90,6 +96,21 @@ class BauprogrammIntegrationTest {
                     .expectStatus().isNotFound();
         }
 
+        @ParameterizedTest(name = "role ''{0}'' is allowed")
+        @ValueSource(strings = {
+                "sachbearbeitung",
+                "sachbearbeitunghaushalt",
+                "admin"
+        })
+        void givenAllowedRole_thenReturnOk(String role) {
+            restTestClient
+                    .get()
+                    .uri("/bauprogramme/{id}", ID)
+                    .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
+                    .exchange()
+                    .expectStatus().isOk();
+        }
+
     }
 
     @Nested
@@ -129,10 +150,27 @@ class BauprogrammIntegrationTest {
                     }, content -> assertThat(content).isEmpty());
         }
 
+        @ParameterizedTest(name = "role ''{0}'' is allowed")
+        @ValueSource(strings = {
+                "sachbearbeitung",
+                "sachbearbeitunghaushalt",
+                "admin"
+        })
+        void givenAllowedRole_thenReturnOk(String role) {
+            restTestClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/bauprogramme")
+                            .queryParam("pageNumber", "0")
+                            .build())
+                    .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
+                    .exchange()
+                    .expectStatus().isOk();
+        }
+
     }
 
     @Nested
-    class SaveEntity {
+    class CreateBauprogramm {
 
         @Test
         void givenEntityNotExists_thenEntityIsSaved() {
@@ -175,18 +213,67 @@ class BauprogrammIntegrationTest {
                     .expectStatus().isEqualTo(HttpStatus.CONFLICT);
         }
 
-        @Test
-        void givenNotHavingAdminRole_thenReturnForbidden() {
-            final BauprogrammCreateDTO requestDTO = new BauprogrammCreateDTO(Integer.valueOf(ID), "Test");
+        private static Stream<Arguments> invalidInputRequests() {
+            return Stream.of(
+                    arguments(
+                            "bauprogramm too high",
+                            new BauprogrammCreateDTO(100, "Test")
+                    ),
+                    arguments(
+                            "bezeichnung too long",
+                            new BauprogrammCreateDTO(2, "a".repeat(201))
+                    )
+            );
+        }
+
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("invalidInputRequests")
+        void givenInvalidInput_thenReturnBadRequest(
+                String description,
+                BauprogrammCreateDTO requestDTO) {
 
             restTestClient.post()
                     .uri("/bauprogramme")
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                    .body(requestDTO)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isBadRequest();
+        }
+
+        @ParameterizedTest(name = "role ''{0}'' is forbidden")
+        @ValueSource(strings = {
+                "sachbearbeitung",
+                "sachbearbeitunghaushalt"
+        })
+        void givenDisallowedRole_thenReturnForbidden(String role) {
+            final BauprogrammCreateDTO requestDTO = new BauprogrammCreateDTO(5, "Test");
+
+            restTestClient.post()
+                    .uri("/bauprogramme")
+                    .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
                     .exchange()
                     .expectStatus().isForbidden();
         }
+
+        @ParameterizedTest(name = "role ''{0}'' is allowed")
+        @ValueSource(strings = {
+                "admin"
+        })
+        void givenAllowedRole_thenReturnCreated(String role) {
+            final BauprogrammCreateDTO requestDTO = new BauprogrammCreateDTO(5, "Test");
+
+            restTestClient.post()
+                    .uri("/bauprogramme")
+                    .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
+                    .body(requestDTO)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isCreated();
+        }
+
     }
 
 
