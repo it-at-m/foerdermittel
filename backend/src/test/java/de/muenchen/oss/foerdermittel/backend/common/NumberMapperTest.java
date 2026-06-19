@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class NumberMapperTest {
 
     @Test
-    void shouldReturnNullWhenInputIsNull() {
+    void givenNullInput_thenReturnNull() {
         // given
         final BigDecimal input = null;
 
@@ -20,7 +20,7 @@ public class NumberMapperTest {
     }
 
     @Test
-    void shouldRemoveDecimalPoints() {
+    void givenDecimalInput_thenRemoveDecimalPoints() {
         // given
         final BigDecimal input = new BigDecimal("10.7");
 
@@ -32,12 +32,12 @@ public class NumberMapperTest {
     }
 
     @Test
-    void shouldConvertWholeNumber() {
+    void givenWholeNumber_thenConvertToString() {
         // given
-        BigDecimal input = new BigDecimal("42");
+        final BigDecimal input = new BigDecimal("42");
 
         // when
-        String result = NumberMapper.bigDecimalToIntegerString(input);
+        final String result = NumberMapper.bigDecimalToIntegerString(input);
 
         // then
         assertThat(result).isEqualTo("42");

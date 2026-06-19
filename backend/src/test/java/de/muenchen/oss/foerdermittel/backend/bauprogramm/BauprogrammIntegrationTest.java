@@ -103,7 +103,7 @@ class BauprogrammIntegrationTest {
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
         @MethodSource("authorizationMappings")
-        void givenRole_thenReturnStatus(String role, HttpStatus httpStatus) {
+        void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             restTestClient
                     .get()
                     .uri("/bauprogramme/{id}", EXISTING_ID)
@@ -160,7 +160,7 @@ class BauprogrammIntegrationTest {
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
         @MethodSource("authorizationMappings")
-        void givenRole_thenReturnStatus(String role, HttpStatus httpStatus) {
+        void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/bauprogramme")
@@ -230,8 +230,8 @@ class BauprogrammIntegrationTest {
         @ParameterizedTest(name = "{0}")
         @MethodSource("invalidInputRequests")
         void givenInvalidInput_thenReturnBadRequest(
-                String description,
-                BauprogrammCreateDTO requestDTO) {
+                final String description,
+                final BauprogrammCreateDTO requestDTO) {
 
             restTestClient.post()
                     .uri("/bauprogramme")
@@ -251,7 +251,7 @@ class BauprogrammIntegrationTest {
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
         @MethodSource("authorizationMappings")
-        void givenRole_thenReturnStatus(String role, HttpStatus httpStatus) {
+        void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             final BauprogrammCreateDTO requestDTO = new BauprogrammCreateDTO(NON_EXISTING_ID, "Test");
 
             restTestClient.post()
@@ -318,8 +318,8 @@ class BauprogrammIntegrationTest {
         @ParameterizedTest(name = "{0}")
         @MethodSource("invalidInputRequests")
         void givenInvalidInput_thenReturnBadRequest(
-                String description,
-                BauprogrammUpdateDTO requestDTO) {
+                final String description,
+                final BauprogrammUpdateDTO requestDTO) {
             restTestClient.put()
                     .uri("/bauprogramme/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
@@ -338,7 +338,7 @@ class BauprogrammIntegrationTest {
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
         @MethodSource("authorizationMappings")
-        void givenRole_thenReturnStatus(String role, HttpStatus httpStatus) {
+        void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             final BauprogrammUpdateDTO requestDTO = new BauprogrammUpdateDTO("Test aktualisiert");
 
             restTestClient.put()
@@ -384,7 +384,7 @@ class BauprogrammIntegrationTest {
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
         @MethodSource("authorizationMappings")
-        void givenRole_thenReturnStatus(String role, HttpStatus httpStatus) {
+        void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             restTestClient.delete()
                     .uri("/bauprogramme/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
