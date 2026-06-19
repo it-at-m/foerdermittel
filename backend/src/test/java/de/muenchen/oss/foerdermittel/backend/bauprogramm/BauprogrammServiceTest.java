@@ -63,7 +63,7 @@ class BauprogrammServiceTest {
             // Then
             verify(bauprogrammRepository, times(1)).findById(id);
             assertThat(exception.getClass()).isEqualTo(NotFoundException.class);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with id %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
         }
     }
 
@@ -162,7 +162,7 @@ class BauprogrammServiceTest {
             verify(bauprogrammRepository, times(1)).findById(id);
             verify(bauprogrammRepository, times(0)).save(entityToUpdate);
             assertThat(exception.getClass()).isEqualTo(NotFoundException.class);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with id %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
         }
     }
 
@@ -172,13 +172,31 @@ class BauprogrammServiceTest {
         void givenIdExists_thenReturnVoid() {
             // Given
             final int id = 1;
+            when(bauprogrammRepository.existsById(id)).thenReturn(true);
             Mockito.doNothing().when(bauprogrammRepository).deleteById(id);
 
             // When
             unitUnderTest.deleteBauprogramm(id);
 
             // Then
-            verify(bauprogrammRepository).deleteById(id);
+            verify(bauprogrammRepository, times(1)).existsById(id);
+            verify(bauprogrammRepository, times(1)).deleteById(id);
+        }
+
+        @Test
+        void givenIdNotExists_thenThrowNotFoundException() {
+            // Given
+            final int id = 1;
+            when(bauprogrammRepository.existsById(id)).thenReturn(false);
+
+            // When
+            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.deleteBauprogramm(id));
+
+            // Then
+            verify(bauprogrammRepository, times(1)).existsById(id);
+            verify(bauprogrammRepository, times(0)).deleteById(id);
+            assertThat(exception.getClass()).isEqualTo(NotFoundException.class);
+            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
         }
     }
 }
