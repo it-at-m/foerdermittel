@@ -47,7 +47,7 @@ class BauprogrammServiceTest {
             final Bauprogramm result = unitUnderTest.getBauprogramm(id);
 
             // Then
-            verify(bauprogrammRepository).findById(id);
+            verify(bauprogrammRepository, times(1)).findById(id);
             assertThat(result).usingRecursiveComparison().isEqualTo(entity);
         }
 
