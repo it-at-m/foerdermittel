@@ -55,6 +55,9 @@ public class BauprogrammService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteBauprogramm(final Integer bauprogrammId) {
         log.debug("Delete Bauprogramm with ID {}", bauprogrammId);
+        if (!bauprogrammRepository.existsById(bauprogrammId)) {
+            throw new NotFoundException(String.format(MSG_NOT_FOUND, bauprogrammId));
+        }
         bauprogrammRepository.deleteById(bauprogrammId);
     }
 
