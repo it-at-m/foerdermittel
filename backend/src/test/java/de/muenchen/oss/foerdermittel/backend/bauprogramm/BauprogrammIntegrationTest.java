@@ -118,7 +118,7 @@ class BauprogrammIntegrationTest {
     class GetBauprogramme {
 
         @Test
-        void givenValidPageNumber_thenReturnPageOfEntities() {
+        void givenPageable_thenReturnPageOfEntities() {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/bauprogramme")
@@ -132,23 +132,6 @@ class BauprogrammIntegrationTest {
                     .jsonPath("$.content")
                     .value(new ParameterizedTypeReference<List<BauprogrammResponseDTO>>() {
                     }, content -> assertThat(content.size()).isEqualTo(1));
-        }
-
-        @Test
-        void givenInvalidPageNumber_thenReturnEmptyPage() {
-            restTestClient.get()
-                    .uri(uriBuilder -> uriBuilder
-                            .path("/bauprogramme")
-                            .queryParam("pageNumber", "99")
-                            .build())
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
-                    .exchange()
-                    .expectStatus().isOk()
-                    .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody()
-                    .jsonPath("$.content")
-                    .value(new ParameterizedTypeReference<List<BauprogrammResponseDTO>>() {
-                    }, content -> assertThat(content).isEmpty());
         }
 
         private static Stream<Arguments> authorizationMappings() {

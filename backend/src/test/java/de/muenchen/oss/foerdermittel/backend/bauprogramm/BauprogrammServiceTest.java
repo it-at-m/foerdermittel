@@ -70,24 +70,24 @@ class BauprogrammServiceTest {
     @Nested
     class GetAllBauprogramme {
         @Test
-        void givenPageNumberAndPageSize_thenReturnPageOfEntities() {
+        void givenPageable_thenReturnPageOfEntities() {
             // Given
             final int pageNumber = 0;
             final int pageSize = 10;
-            final Pageable pageRequest = PageRequest.of(pageNumber, pageSize);
+            final Pageable pageable = PageRequest.of(pageNumber, pageSize);
 
             final Bauprogramm entity1 = new Bauprogramm(BigDecimal.valueOf(1), "Test 1");
             final Bauprogramm entity2 = new Bauprogramm(BigDecimal.valueOf(2), "Test 2");
             final List<Bauprogramm> entities = Arrays.asList(entity1, entity2);
-            final Page<Bauprogramm> expectedPage = new PageImpl<>(entities, pageRequest, entities.size());
+            final Page<Bauprogramm> expectedPage = new PageImpl<>(entities, pageable, entities.size());
 
-            when(bauprogrammRepository.findAll(pageRequest)).thenReturn(expectedPage);
+            when(bauprogrammRepository.findAll(pageable)).thenReturn(expectedPage);
 
             // When
-            final Page<Bauprogramm> result = unitUnderTest.getAllBauprogramme(pageNumber, pageSize);
+            final Page<Bauprogramm> result = unitUnderTest.getAllBauprogramme(pageable);
 
             // Then
-            verify(bauprogrammRepository, times(1)).findAll(pageRequest);
+            verify(bauprogrammRepository, times(1)).findAll(pageable);
             assertThat(result).isEqualTo(expectedPage);
         }
     }
