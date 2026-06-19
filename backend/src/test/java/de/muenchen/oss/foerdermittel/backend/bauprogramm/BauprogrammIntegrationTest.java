@@ -363,18 +363,47 @@ class BauprogrammIntegrationTest {
 
     }
 
-//    @Nested
-//    class DeleteEntity {
-//        @Test
-//        void givenEntityId_thenEntityIsDeleted() {
-//            restTestClient.delete()
-//                    .uri("/theEntity/{theEntityID}", testEntityId)
-//                    .header(HttpHeaders.AUTHORIZATION, "Bearer writer")
-//                    .exchange()
-//                    .expectStatus().isOk();
-//
-//            assertThat(theEntityRepository.findById(testEntityId)).isEmpty();
-//        }
-//    }
+    @Nested
+    class DeleteBauprogramm {
+
+        @Test
+        void givenEntityIdExists_thenEntityIsDeleted() {
+            restTestClient.delete()
+                    .uri("/bauprogramme/{id}", EXISTING_ID)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                    .exchange()
+                    .expectStatus().isOk();
+
+            assertThat(bauprogrammRepository.findById(EXISTING_ID)).isEmpty();
+        }
+
+        @Test
+        void givenEntityIdNotExists_thenReturnNotFound() {
+            restTestClient.delete()
+                    .uri("/bauprogramme/{id}", NON_EXISTING_ID)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                    .exchange()
+                    .expectStatus().isNotFound();
+        }
+
+        private static Stream<Arguments> authorizationMappings() {
+            return Stream.of(
+                    Arguments.of("admin", HttpStatus.OK),
+                    Arguments.of("sachbearbeitung", HttpStatus.FORBIDDEN),
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN)
+            );
+        }
+
+        @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
+        @MethodSource("authorizationMappings")
+        void givenRole_thenReturnStatus(String role, HttpStatus httpStatus) {
+            restTestClient.delete()
+                    .uri("/bauprogramme/{id}", EXISTING_ID)
+                    .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
+                    .exchange()
+                    .expectStatus().isEqualTo(httpStatus);
+        }
+
+    }
 
 }
