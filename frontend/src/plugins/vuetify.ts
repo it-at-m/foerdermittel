@@ -29,12 +29,13 @@ export default createVuetify({
     VNumberInput: {
       variant: "outlined",
       persistentPlaceholder: true,
+      controlVariant: "stacked"
     },
     VCard: {
       class: "elevation-0",
     },
     VCardActions: {
-      class: "mb-2 mr-2",
+      class: "mb-4 mr-4 pt-0",
     },
     VDialog: {
       maxWidth: "800px",

@@ -12,7 +12,7 @@
       <v-spacer />
 
       <v-btn
-        class="mr-2"
+        class="mr-4"
         :text="t('common.action.cancel')"
         :disabled="loading"
         @click="cancel"

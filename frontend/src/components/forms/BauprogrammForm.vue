@@ -3,21 +3,26 @@
     :readonly="displayMode === InputDisplayMode.READ"
     @update:model-value="onValidityChanged"
   >
-    <fm-number-input
-      v-model="modelValue.bauprogramm"
-      :display-mode="displayMode"
-      :rules="[rules.required()]"
-      disable-edit
-      label="Bauprogramm"
-      class="mb-3"
-    />
-    <fm-text-field
-      v-model="modelValue.bezeichnung"
-      :display-mode="displayMode"
-      :rules="[rules.required()]"
-      label="Bezeichnung*"
-      class="mb-3"
-    />
+    <v-row>
+      <v-col cols="4">
+        <fm-number-input
+          v-model="modelValue.bauprogramm"
+          :display-mode="displayMode"
+          :rules="[rules.required(), rules.integer()]"
+          disable-edit
+          label="Bauprogramm"
+        />
+      </v-col>
+      <v-col cols="8">
+        <fm-text-field
+          v-model="modelValue.bezeichnung"
+          :display-mode="displayMode"
+          :rules="[rules.required(), rules.maxLength(200)]"
+          :counter="200"
+          label="Bezeichnung*"
+        />
+      </v-col>
+    </v-row>
   </v-form>
 </template>
 

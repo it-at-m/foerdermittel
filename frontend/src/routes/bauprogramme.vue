@@ -10,6 +10,7 @@
       :items="bauprogramme?.content ?? []"
       :total-items="bauprogramme?.page?.totalElements ?? 0"
       :items-per-page="dataTableOptions.itemsPerPage"
+      :dialog-width="DialogWidth.SMALL"
       expandable
       @delete="handleDelete"
       @create="handleCreate"
@@ -49,6 +50,7 @@ import {
 import useHasAnyRole from "@/composables/useHasAnyRole";
 import { STATUS_INDICATORS } from "@/constants";
 import { useSnackbarStore } from "@/stores/snackbar";
+import { DialogWidth } from "@/types/DialogWidth";
 import { Role } from "@/types/Role";
 
 const domainKey = "model.bauprogramm.modelName";
@@ -58,7 +60,7 @@ const isAdmin = useHasAnyRole(Role.ADMIN);
 const { t } = useI18n();
 
 const headers: TableColumnHeader<BauprogrammResponseDTO>[] = [
-  { title: t("model.bauprogramm.bauprogramm"), value: "bauprogramm", sortable: true, align: "center", width: 50 },
+  { title: t("model.bauprogramm.bauprogramm"), value: "bauprogramm", align: "center", width: 50 },
   { title: t("model.bauprogramm.bezeichnung"), value: "bezeichnung" },
 ];
 
@@ -77,7 +79,7 @@ const pageable = computed(() => {
   return {
     page: dataTableOptions.value.page - 1,
     size: dataTableOptions.value.itemsPerPage,
-    sort: dataTableOptions.value.sortBy.flatMap(({ key, order }) => [key, order])
+    sort: dataTableOptions.value.sortBy.map(sortOption => Object.values(sortOption).join(","))
   };
 })
 
