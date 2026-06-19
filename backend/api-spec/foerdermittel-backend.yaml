@@ -77,22 +77,13 @@ paths:
     get:
       tags:
       - bauprogramm-controller
-      operationId: getBauprogrammeByPageAndSize
+      operationId: getBauprogrammeByPageable
       parameters:
-      - name: pageNumber
+      - name: pageable
         in: query
-        required: false
+        required: true
         schema:
-          type: integer
-          format: int32
-          default: 0
-      - name: pageSize
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int32
-          default: 10
+          $ref: "#/components/schemas/Pageable"
       responses:
         "200":
           description: OK
@@ -302,6 +293,21 @@ components:
           maxLength: 200
           minLength: 0
           type: string
+    Pageable:
+      type: object
+      properties:
+        page:
+          minimum: 0
+          type: integer
+          format: int32
+        size:
+          minimum: 1
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            type: string
     PageMetadata:
       type: object
       properties:
