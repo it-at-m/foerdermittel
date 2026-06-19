@@ -22,7 +22,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -97,19 +96,23 @@ class BauprogrammIntegrationTest {
                     .expectStatus().isNotFound();
         }
 
-        @ParameterizedTest(name = "role ''{0}'' is allowed")
-        @ValueSource(strings = {
-                "sachbearbeitung",
-                "sachbearbeitunghaushalt",
-                "admin"
-        })
-        void givenAllowedRole_thenReturnOk(String role) {
+        private static Stream<Arguments> authorizationMappings() {
+            return Stream.of(
+                    Arguments.of("admin", HttpStatus.OK),
+                    Arguments.of("sachbearbeitung", HttpStatus.OK),
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.OK)
+            );
+        }
+
+        @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
+        @MethodSource("authorizationMappings")
+        void givenRole_thenReturnStatus(String role, HttpStatus httpStatus) {
             restTestClient
                     .get()
                     .uri("/bauprogramme/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()
-                    .expectStatus().isOk();
+                    .expectStatus().isEqualTo(httpStatus);
         }
 
     }
@@ -151,13 +154,17 @@ class BauprogrammIntegrationTest {
                     }, content -> assertThat(content).isEmpty());
         }
 
-        @ParameterizedTest(name = "role ''{0}'' is allowed")
-        @ValueSource(strings = {
-                "sachbearbeitung",
-                "sachbearbeitunghaushalt",
-                "admin"
-        })
-        void givenAllowedRole_thenReturnOk(String role) {
+        private static Stream<Arguments> authorizationMappings() {
+            return Stream.of(
+                    Arguments.of("admin", HttpStatus.OK),
+                    Arguments.of("sachbearbeitung", HttpStatus.OK),
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.OK)
+            );
+        }
+
+        @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
+        @MethodSource("authorizationMappings")
+        void givenRole_thenReturnStatus(String role, HttpStatus httpStatus) {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/bauprogramme")
@@ -165,7 +172,7 @@ class BauprogrammIntegrationTest {
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()
-                    .expectStatus().isOk();
+                    .expectStatus().isEqualTo(httpStatus);
         }
 
     }
@@ -242,11 +249,17 @@ class BauprogrammIntegrationTest {
                     .expectStatus().isBadRequest();
         }
 
-        @ParameterizedTest(name = "role ''{0}'' is allowed")
-        @ValueSource(strings = {
-                "admin"
-        })
-        void givenAllowedRole_thenReturnCreated(String role) {
+        private static Stream<Arguments> authorizationMappings() {
+            return Stream.of(
+                    Arguments.of("admin", HttpStatus.CREATED),
+                    Arguments.of("sachbearbeitung", HttpStatus.FORBIDDEN),
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN)
+            );
+        }
+
+        @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
+        @MethodSource("authorizationMappings")
+        void givenRole_thenReturnStatus(String role, HttpStatus httpStatus) {
             final BauprogrammCreateDTO requestDTO = new BauprogrammCreateDTO(NON_EXISTING_ID, "Test");
 
             restTestClient.post()
@@ -255,24 +268,7 @@ class BauprogrammIntegrationTest {
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
                     .exchange()
-                    .expectStatus().isCreated();
-        }
-
-        @ParameterizedTest(name = "role ''{0}'' is forbidden")
-        @ValueSource(strings = {
-                "sachbearbeitung",
-                "sachbearbeitunghaushalt"
-        })
-        void givenDisallowedRole_thenReturnForbidden(String role) {
-            final BauprogrammCreateDTO requestDTO = new BauprogrammCreateDTO(5, "Test");
-
-            restTestClient.post()
-                    .uri("/bauprogramme")
-                    .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
-                    .body(requestDTO)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .exchange()
-                    .expectStatus().isForbidden();
+                    .expectStatus().isEqualTo(httpStatus);
         }
 
     }
@@ -343,28 +339,17 @@ class BauprogrammIntegrationTest {
                     .expectStatus().isBadRequest();
         }
 
-        @ParameterizedTest(name = "role ''{0}'' is allowed")
-        @ValueSource(strings = {
-                "admin"
-        })
-        void givenAllowedRole_thenReturnOk(String role) {
-            final BauprogrammUpdateDTO requestDTO = new BauprogrammUpdateDTO("Test aktualisiert");
-
-            restTestClient.put()
-                    .uri("/bauprogramme/{id}", EXISTING_ID)
-                    .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
-                    .body(requestDTO)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .exchange()
-                    .expectStatus().isOk();
+        private static Stream<Arguments> authorizationMappings() {
+            return Stream.of(
+                    Arguments.of("admin", HttpStatus.OK),
+                    Arguments.of("sachbearbeitung", HttpStatus.FORBIDDEN),
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN)
+            );
         }
 
-        @ParameterizedTest(name = "role ''{0}'' is forbidden")
-        @ValueSource(strings = {
-                "sachbearbeitung",
-                "sachbearbeitunghaushalt"
-        })
-        void givenDisallowedRole_thenReturnForbidden(String role) {
+        @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
+        @MethodSource("authorizationMappings")
+        void givenRole_thenReturnStatus(String role, HttpStatus httpStatus) {
             final BauprogrammUpdateDTO requestDTO = new BauprogrammUpdateDTO("Test aktualisiert");
 
             restTestClient.put()
@@ -373,7 +358,7 @@ class BauprogrammIntegrationTest {
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
                     .exchange()
-                    .expectStatus().isForbidden();
+                    .expectStatus().isEqualTo(httpStatus);
         }
 
     }
