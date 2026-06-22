@@ -29,7 +29,7 @@ export default createVuetify({
     VNumberInput: {
       variant: "outlined",
       persistentPlaceholder: true,
-      controlVariant: "stacked"
+      controlVariant: "stacked",
     },
     VCard: {
       class: "elevation-0",
@@ -53,6 +53,13 @@ export default createVuetify({
     VSnackbar: {
       timeout: 5000,
       color: "info",
+    },
+    VDataTableServer: {
+      itemsPerPageOptions: [
+        { value: 25, title: "25" },
+        { value: 50, title: "50" },
+        { value: 100, title: "100" },
+      ],
     },
   },
   theme: {

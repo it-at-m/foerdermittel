@@ -23,7 +23,7 @@ export default function useAPI<TRequest, TResponse = void>(
    * @param params - The parameters for the API call as an object.
    * @returns A promise that resolves when the call completes (check `data` state for retrieved data and `error` state for failures).
    */
-  const call = async (params: TRequest) => {
+  const call = async <T extends TRequest>(params: T) => {
     loadingInternal.value = true;
     errorInternal.value = false;
 

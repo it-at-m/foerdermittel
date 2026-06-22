@@ -29,9 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import type {
-  BauprogrammResponseDTO
-} from "@/api/generated/foerdermittel-backend";
+import type { BauprogrammResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableOptions } from "@/types/DataTableOptions";
 import type { TableColumnHeader } from "@/types/TableColumnHeader";
 
@@ -60,7 +58,12 @@ const isAdmin = useHasAnyRole(Role.ADMIN);
 const { t } = useI18n();
 
 const headers: TableColumnHeader<BauprogrammResponseDTO>[] = [
-  { title: t("model.bauprogramm.bauprogramm"), value: "bauprogramm", align: "center", width: 50 },
+  {
+    title: t("model.bauprogramm.bauprogramm"),
+    value: "bauprogramm",
+    align: "center",
+    width: 50,
+  },
   { title: t("model.bauprogramm.bezeichnung"), value: "bezeichnung" },
 ];
 
@@ -71,7 +74,7 @@ const EMPTY_ITEM_TEMPLATE: Partial<BauprogrammResponseDTO> = {
 
 const dataTableOptions = ref<DataTableOptions>({
   page: 1,
-  itemsPerPage: 10,
+  itemsPerPage: 25,
   sortBy: [],
 });
 
@@ -79,9 +82,11 @@ const pageable = computed(() => {
   return {
     page: dataTableOptions.value.page - 1,
     size: dataTableOptions.value.itemsPerPage,
-    sort: dataTableOptions.value.sortBy.map(sortOption => Object.values(sortOption).join(","))
+    sort: dataTableOptions.value.sortBy.map((sortOption) =>
+      Object.values(sortOption).join(",")
+    ),
   };
-})
+});
 
 const handleUpdatedOptions = async (newOptions: DataTableOptions) => {
   dataTableOptions.value = newOptions;
@@ -94,9 +99,7 @@ const {
   loading: getBauprogrammeLoading,
 } = useGetBauprogramme();
 
-onMounted(() =>
-  getBauprogramme(pageable.value)
-);
+onMounted(() => getBauprogramme(pageable.value));
 
 const {
   call: createBauprogramm,

@@ -8,7 +8,12 @@
         <fm-number-input
           v-model="modelValue.bauprogramm"
           :display-mode="displayMode"
-          :rules="[rules.required(), rules.number(), rules['min']!(1), rules['max']!(99)]"
+          :rules="[
+            rules.required(),
+            rules.number(),
+            rules['min']!(1),
+            rules['max']!(99),
+          ]"
           disable-edit
           label="Bauprogramm"
         />
