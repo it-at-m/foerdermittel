@@ -1,6 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.bauprogramm;
 
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammCreateDTO;
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammMapper;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammUpdateDTO;
@@ -53,6 +54,12 @@ public class BauprogrammController {
                 .map(bauprogrammMapper::toDTO)
                 .toList();
         return new PageImpl<>(bauprogrammResponseDTOList, pageWithBauprogramm.getPageable(), pageWithBauprogramm.getTotalElements());
+    }
+
+    @GetMapping("/formContext")
+    @ResponseStatus(HttpStatus.OK)
+    public BauprogrammFormContextDTO getBauprogrammFormContext() {
+        return bauprogrammMapper.toDTO(bauprogrammService.getBauprogrammFormContext());
     }
 
     @PostMapping
