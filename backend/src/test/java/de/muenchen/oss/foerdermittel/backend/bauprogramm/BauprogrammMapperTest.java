@@ -9,7 +9,6 @@ import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammResponse
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammUpdateDTO;
 import java.math.BigDecimal;
 import java.util.List;
-
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
