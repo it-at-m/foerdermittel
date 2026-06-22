@@ -5,4 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 public record BauprogrammFormContextDTO(@NotNull List<Integer> bauprogramme) {
+    public BauprogrammFormContextDTO {
+        bauprogramme = List.copyOf(bauprogramme);
+    }
 }
