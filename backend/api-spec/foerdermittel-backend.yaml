@@ -79,11 +79,33 @@ paths:
       - bauprogramm-controller
       operationId: getBauprogrammeByPageable
       parameters:
-      - name: pageable
+      - name: page
         in: query
-        required: true
+        description: Zero-based page index (0..N)
+        required: false
         schema:
-          $ref: "#/components/schemas/Pageable"
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "bauprogramm,ASC"
       responses:
         "200":
           description: OK
@@ -293,21 +315,6 @@ components:
           maxLength: 200
           minLength: 0
           type: string
-    Pageable:
-      type: object
-      properties:
-        page:
-          minimum: 0
-          type: integer
-          format: int32
-        size:
-          minimum: 1
-          type: integer
-          format: int32
-        sort:
-          type: array
-          items:
-            type: string
     PageMetadata:
       type: object
       properties:

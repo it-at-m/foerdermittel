@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -44,7 +45,7 @@ public class BauprogrammController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<BauprogrammResponseDTO> getBauprogrammeByPageable(@PageableDefault(
+    public Page<BauprogrammResponseDTO> getBauprogrammeByPageable(@ParameterObject @PageableDefault(
             sort = "bauprogramm"
     ) final Pageable pageable) {
         final Page<Bauprogramm> pageWithBauprogramm = bauprogrammService.getAllBauprogramme(pageable);
