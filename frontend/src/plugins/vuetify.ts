@@ -7,6 +7,7 @@ import { createVuetify } from "vuetify";
 import { aliases, mdi } from "vuetify/iconsets/mdi-svg";
 import { createVueI18nAdapter } from "vuetify/locale/adapters/vue-i18n";
 
+import { ITEMS_PER_PAGE_OPTIONS } from "@/composables/usePagination";
 import i18n from "@/plugins/i18n";
 
 export default createVuetify({
@@ -55,11 +56,10 @@ export default createVuetify({
       color: "info",
     },
     VDataTableServer: {
-      itemsPerPageOptions: [
-        { value: 25, title: "25" },
-        { value: 50, title: "50" },
-        { value: 100, title: "100" },
-      ],
+      itemsPerPageOptions: ITEMS_PER_PAGE_OPTIONS.map((option) => ({
+        value: option,
+        title: String(option),
+      })),
     },
   },
   theme: {
