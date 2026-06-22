@@ -2,6 +2,7 @@
   <base-view :domain-key="domainKey">
     <crud-card
       ref="crudRef"
+      v-model="dataTableOptions"
       :empty-item-template="EMPTY_ITEM_TEMPLATE"
       :loading="loading"
       :table-headers="headers"
@@ -9,13 +10,11 @@
       :enable-actions="isAdmin"
       :items="bauprogramme?.content ?? []"
       :total-items="bauprogramme?.page?.totalElements ?? 0"
-      :items-per-page="dataTableOptions.itemsPerPage"
       :dialog-width="DialogWidth.MEDIUM"
       expandable
       @delete="handleDelete"
       @create="handleCreate"
       @update="handleUpdate"
-      @updated-options="handleUpdatedOptions"
     >
       <template #form="{ item, updateValidity, inputDisplayMode }">
         <bauprogramm-form
@@ -30,10 +29,9 @@
 
 <script setup lang="ts">
 import type { BauprogrammResponseDTO } from "@/api/generated/foerdermittel-backend";
-import type { DataTableOptions } from "@/types/DataTableOptions";
 import type { TableColumnHeader } from "@/types/TableColumnHeader";
 
-import { computed, onMounted, ref, useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -46,6 +44,7 @@ import {
   useUpdateBauprogramm,
 } from "@/composables/api/useBauprogrammApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
+import usePagination from "@/composables/usePagination";
 import { STATUS_INDICATORS } from "@/constants";
 import { useSnackbarStore } from "@/stores/snackbar";
 import { DialogWidth } from "@/types/DialogWidth";
@@ -72,34 +71,13 @@ const EMPTY_ITEM_TEMPLATE: Partial<BauprogrammResponseDTO> = {
   bezeichnung: "",
 };
 
-const dataTableOptions = ref<DataTableOptions>({
-  page: 1,
-  itemsPerPage: 25,
-  sortBy: [],
-});
-
-const pageable = computed(() => {
-  return {
-    page: dataTableOptions.value.page - 1,
-    size: dataTableOptions.value.itemsPerPage,
-    sort: dataTableOptions.value.sortBy.map((sortOption) =>
-      Object.values(sortOption).join(",")
-    ),
-  };
-});
-
-const handleUpdatedOptions = async (newOptions: DataTableOptions) => {
-  dataTableOptions.value = newOptions;
-  await getBauprogramme(pageable.value);
-};
-
 const {
   data: bauprogramme,
   call: getBauprogramme,
   loading: getBauprogrammeLoading,
 } = useGetBauprogramme();
 
-onMounted(() => getBauprogramme(pageable.value));
+const { dataTableOptions } = usePagination(getBauprogramme);
 
 const {
   call: createBauprogramm,
@@ -177,7 +155,7 @@ const onSuccess = async (msg: string) => {
   if (crudRef.value) {
     crudRef.value.closeDialog();
   }
-  await getBauprogramme(pageable.value);
+  // await getBauprogramme(pageable.value);
 };
 const onFailure = (msg: string) => {
   snackbarStore.push({ text: msg, color: STATUS_INDICATORS.ERROR });
