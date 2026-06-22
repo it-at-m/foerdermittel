@@ -1,8 +1,16 @@
 import type { Pageable } from "@/api/generated/foerdermittel-backend/models/Pageable";
 import type { DataTableOptions, SortOption } from "@/types/DataTableOptions";
 
+
+
 import { useRouteQuery } from "@vueuse/router";
-import { computed, watch } from "vue";
+import { computed, useTemplateRef, watch } from "vue";
+
+
+
+import { STATUS_INDICATORS } from "@/constants";
+import { useSnackbarStore } from "@/stores/snackbar";
+
 
 export const ITEMS_PER_PAGE_OPTIONS = [25, 50, 100];
 
@@ -118,7 +126,23 @@ export default function usePagination(
     { immediate: true }
   );
 
+  const crudRef = useTemplateRef("crudRef");
+  const snackbarStore = useSnackbarStore();
+  const onSuccess = async (msg: string) => {
+    snackbarStore.push({ text: msg, color: STATUS_INDICATORS.SUCCESS });
+    if (crudRef.value) {
+      // @ts-expect-error closeDialog method always exists on the CrudCard component
+      crudRef.value.closeDialog();
+    }
+    await getEntitiesFunction(pageable.value);
+  };
+  const onFailure = (msg: string) => {
+    snackbarStore.push({ text: msg, color: STATUS_INDICATORS.ERROR });
+  };
+
   return {
     dataTableOptions,
+    onSuccess,
+    onFailure
   };
 }

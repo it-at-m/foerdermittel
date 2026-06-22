@@ -31,7 +31,7 @@
 import type { BauprogrammResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { TableColumnHeader } from "@/types/TableColumnHeader";
 
-import { computed, useTemplateRef } from "vue";
+import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -45,8 +45,6 @@ import {
 } from "@/composables/api/useBauprogrammApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
 import usePagination from "@/composables/usePagination";
-import { STATUS_INDICATORS } from "@/constants";
-import { useSnackbarStore } from "@/stores/snackbar";
 import { DialogWidth } from "@/types/DialogWidth";
 import { Role } from "@/types/Role";
 
@@ -77,7 +75,7 @@ const {
   loading: getBauprogrammeLoading,
 } = useGetBauprogramme();
 
-const { dataTableOptions } = usePagination(getBauprogramme);
+const { dataTableOptions, onSuccess, onFailure } = usePagination(getBauprogramme);
 
 const {
   call: createBauprogramm,
@@ -146,18 +144,4 @@ const loading = computed(
     updateBauprogrammLoading.value ||
     deleteBauprogrammLoading.value
 );
-
-const snackbarStore = useSnackbarStore();
-
-const crudRef = useTemplateRef("crudRef");
-const onSuccess = async (msg: string) => {
-  snackbarStore.push({ text: msg, color: STATUS_INDICATORS.SUCCESS });
-  if (crudRef.value) {
-    crudRef.value.closeDialog();
-  }
-  // await getBauprogramme(pageable.value);
-};
-const onFailure = (msg: string) => {
-  snackbarStore.push({ text: msg, color: STATUS_INDICATORS.ERROR });
-};
 </script>
