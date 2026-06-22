@@ -8,6 +8,7 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 import de.muenchen.oss.foerdermittel.backend.TestConstants;
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammCreateDTO;
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammUpdateDTO;
 import java.math.BigDecimal;
@@ -370,6 +371,74 @@ class BauprogrammIntegrationTest {
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             restTestClient.delete()
                     .uri("/bauprogramme/{id}", EXISTING_ID)
+                    .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
+                    .exchange()
+                    .expectStatus().isEqualTo(httpStatus);
+        }
+
+    }
+
+    @Nested
+    class GetBauprogrammFormContext {
+
+        @Test
+        void givenNoEntitiesExist_thenReturnEmptyFormContext() {
+            // Given
+            bauprogrammRepository.deleteAll();
+
+            // When
+            final BauprogrammFormContextDTO result = restTestClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/bauprogramme/formContext")
+                            .build())
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                    .expectBody(BauprogrammFormContextDTO.class)
+                    .returnResult()
+                    .getResponseBody();
+
+            // Then
+            assertThat(result).isNotNull();
+            assertThat(result.bauprogramme()).isEmpty();
+        }
+
+        @Test
+        void givenEntitiesExist_thenReturnCorrectFormContext() {
+            // When
+            final BauprogrammFormContextDTO result = restTestClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/bauprogramme/formContext")
+                            .build())
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                    .expectBody(BauprogrammFormContextDTO.class)
+                    .returnResult()
+                    .getResponseBody();
+
+            // Then
+            assertThat(result).isNotNull();
+            assertThat(result.bauprogramme()).hasSize(1);
+            assertThat(result.bauprogramme().get(0)).isEqualByComparingTo(EXISTING_ID);
+        }
+
+        private static Stream<Arguments> authorizationMappings() {
+            return Stream.of(
+                    Arguments.of("admin", HttpStatus.OK),
+                    Arguments.of("sachbearbeitung", HttpStatus.FORBIDDEN),
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN));
+        }
+
+        @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
+        @MethodSource("authorizationMappings")
+        void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
+            restTestClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/bauprogramme/formContext")
+                            .build())
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()
                     .expectStatus().isEqualTo(httpStatus);

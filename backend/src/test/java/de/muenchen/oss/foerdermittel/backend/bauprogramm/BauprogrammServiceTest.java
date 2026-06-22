@@ -199,4 +199,23 @@ class BauprogrammServiceTest {
             assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
         }
     }
+
+    @Nested
+    class GetBauprogrammFormContext {
+
+        @Test
+        void givenEntitiesExists_thenReturnCorrectFormContext() {
+            // Given
+            final List<BigDecimal> allBauprogramme = List.of(BigDecimal.valueOf(2), BigDecimal.valueOf(3), BigDecimal.valueOf(4));
+            when(bauprogrammRepository.findAllBauprogramme()).thenReturn(allBauprogramme);
+
+            // When
+            final BauprogrammFormContext formContext = unitUnderTest.getBauprogrammFormContext();
+
+            // Then
+            verify(bauprogrammRepository, times(1)).findAllBauprogramme();
+            assertThat(formContext.bauprogramme()).isEqualTo(allBauprogramme);
+        }
+
+    }
 }

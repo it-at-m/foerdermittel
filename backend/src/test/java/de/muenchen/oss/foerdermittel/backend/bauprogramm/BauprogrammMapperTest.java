@@ -3,10 +3,13 @@ package de.muenchen.oss.foerdermittel.backend.bauprogramm;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammCreateDTO;
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammMapper;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammUpdateDTO;
 import java.math.BigDecimal;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -65,6 +68,27 @@ public class BauprogrammMapperTest {
             assertThat(entity).isNotNull();
             assertThat(entity.getBauprogramm()).isNull();
             assertThat(entity.getBezeichnung()).isEqualTo(dto.bezeichnung());
+        }
+
+    }
+
+    @Nested
+    class FormEntity {
+
+        @Test
+        void givenFormContext_thenReturnCorrectDTO() {
+            // given
+            BauprogrammFormContext formContext = new BauprogrammFormContext(List.of(BigDecimal.valueOf(1), BigDecimal.valueOf(2)));
+
+            // when
+            BauprogrammFormContextDTO dto = bauprogrammMapper.toDTO(formContext);
+
+            // then
+            assertThat(dto).isNotNull();
+            assertThat(dto.bauprogramme().stream()
+                    .map(BigDecimal::valueOf)
+                    .toList())
+                    .containsExactlyElementsOf(formContext.bauprogramme());
         }
 
     }
