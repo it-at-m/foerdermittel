@@ -1,9 +1,12 @@
 import { assert, describe, test } from "vitest";
 
-import { maxRule, minRule } from "../../src/plugins/rules";
+
+
+import { maxRule, minRule, uniqueRule } from "../../src/plugins/rules";
+
 
 describe("min rule tests", () => {
-  test("Throws error when too low", async () => {
+  test("Throws error when too low", () => {
     // given
     const num = 5;
     const validationRule = minRule(10);
@@ -15,7 +18,7 @@ describe("min rule tests", () => {
     assert.isString(result);
   });
 
-  test("Throws no error when high enough", async () => {
+  test("Throws no error when high enough", () => {
     // given
     const num = 10;
     const validationRule = minRule(10);
@@ -29,7 +32,7 @@ describe("min rule tests", () => {
 });
 
 describe("max rule tests", () => {
-  test("Throws error when too high", async () => {
+  test("Throws error when too high", () => {
     // given
     const num = 15;
     const validationRule = maxRule(10);
@@ -41,7 +44,7 @@ describe("max rule tests", () => {
     assert.isString(result);
   });
 
-  test("Throws no error when low enough", async () => {
+  test("Throws no error when low enough", () => {
     // given
     const num = 10;
     const validationRule = maxRule(10);
@@ -51,5 +54,46 @@ describe("max rule tests", () => {
 
     // then
     assert.isTrue(result);
+  });
+});
+
+describe("unique rule tests", () => {
+  test("Throws an error when value already exists and no currentValue", () => {
+    // given
+    const newValue = 10;
+    const existingValues = [5, 8, 10];
+    const validationRule = uniqueRule(existingValues, null);
+
+    // when
+    const result = validationRule(newValue);
+
+    // then
+    assert.isString(result);
+  });
+
+  test("Throws no error when value does not exists", () => {
+    // given
+    const newValue = 10;
+    const existingValues = [5, 8];
+    const validationRule = uniqueRule(existingValues, null);
+
+    // when
+    const result = validationRule(newValue);
+
+    // then
+    assert.isTrue(result);
+  });
+
+  test("Throws no error when value still exists and is currentValue", () => {
+    // given
+    const newValue = 10;
+    const existingValues = [5, 8, 10];
+    const validationRule = uniqueRule(existingValues, newValue);
+
+    // when
+    const result = validationRule(newValue);
+
+    // then
+    assert.isTrue(result)
   });
 });

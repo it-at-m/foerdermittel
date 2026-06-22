@@ -1,6 +1,9 @@
 import { createRulesPlugin } from "vuetify/labs/rules";
 
+
+
 import vuetify from "@/plugins/vuetify";
+
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type CustomRule = (...args: any[]) => (value: any) => string | boolean;
@@ -15,6 +18,14 @@ const maxRule: CustomRule = (maxNumber, err) => {
     v <= maxNumber || err || `Der Wert darf höchstens ${maxNumber} betragen.`;
 };
 
+const uniqueRule: CustomRule = (values, currentValue, err) => {
+  return (v) =>
+    v === currentValue ||
+    !values.includes(v) ||
+    err ||
+    `Der Wert ${v} ist bereits vorhanden.`;
+};
+
 export default createRulesPlugin(
   {
     aliases: {
@@ -25,4 +36,4 @@ export default createRulesPlugin(
   vuetify.locale
 );
 
-export { minRule, maxRule };
+export { minRule, maxRule, uniqueRule };
