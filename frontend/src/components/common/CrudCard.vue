@@ -57,14 +57,16 @@
     </template>
     <template #text>
       <v-data-table-server
+        v-model:items-per-page="itemsPerPage"
+        v-model:page="page"
+        v-model:sort-by="sortBy"
+        v-model:search="search"
         :headers="tableHeadersWithActions"
         :items="items"
         :items-length="totalItems"
-        :items-per-page="itemsPerPage"
         :loading="loading"
         :show-expand="expandable"
         expand-strategy="single"
-        @update:options="(data) => emit('updatedOptions', data)"
       >
         <template #loading>
           <p>{{ t("common.message.loading", [domainPlural]) }}</p>
@@ -133,6 +135,7 @@
 </template>
 
 <script setup lang="ts" generic="T extends { id?: string }">
+import type { DataTableOptions } from "@/types/DataTableOptions";
 import type { TableColumnHeader } from "@/types/TableColumnHeader";
 
 import { mdiDelete, mdiPencil, mdiPlus, mdiTrashCan } from "@mdi/js";
@@ -154,7 +157,6 @@ const {
   tableHeaders,
   emptyItemTemplate,
   loading = false,
-  itemsPerPage = 20,
   items = [],
   enableActions = true,
   expandable = false,
@@ -165,12 +167,53 @@ const {
   loading?: boolean;
   tableHeaders: TableColumnHeader<T>[];
   items?: readonly T[];
-  itemsPerPage?: number;
   totalItems: number;
   enableActions?: boolean;
   expandable?: boolean;
   dialogWidth?: DialogWidth;
 }>();
+
+const dataTableOptions = defineModel<DataTableOptions>({ required: true });
+
+const page = computed({
+  get: () => dataTableOptions.value.page,
+  set: (value) => {
+    dataTableOptions.value = {
+      ...dataTableOptions.value,
+      page: value,
+    };
+  },
+});
+
+const itemsPerPage = computed({
+  get: () => dataTableOptions.value.itemsPerPage,
+  set: (value) => {
+    dataTableOptions.value = {
+      ...dataTableOptions.value,
+      itemsPerPage: value,
+    };
+  },
+});
+
+const sortBy = computed({
+  get: () => dataTableOptions.value.sortBy,
+  set: (value) => {
+    dataTableOptions.value = {
+      ...dataTableOptions.value,
+      sortBy: value,
+    };
+  },
+});
+
+const search = computed({
+  get: () => dataTableOptions.value.search,
+  set: (value) => {
+    dataTableOptions.value = {
+      ...dataTableOptions.value,
+      search: value,
+    };
+  },
+});
 
 const domainSingular = computed(() => t(domainKey));
 const domainPlural = computed(() => t(domainKey, 2));
@@ -199,9 +242,6 @@ const emit = defineEmits<{
   create: [item: T];
   update: [item: T];
   delete: [id: string];
-  // Sadly there is no type for the emit of updatedOptions ...
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  updatedOptions: [options: any];
 }>();
 
 // --- Functions ---

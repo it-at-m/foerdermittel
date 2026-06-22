@@ -1,4 +1,4 @@
-interface SortOption {
+export interface SortOption {
   key: string;
   order: "asc" | "desc";
 }
