@@ -1,16 +1,11 @@
-import type { Pageable } from "@/api/generated/foerdermittel-backend/models/Pageable";
 import type { DataTableOptions, SortOption } from "@/types/DataTableOptions";
-
-
+import type { Pageable } from "@/types/Pageable";
 
 import { useRouteQuery } from "@vueuse/router";
 import { computed, useTemplateRef, watch } from "vue";
 
-
-
 import { STATUS_INDICATORS } from "@/constants";
 import { useSnackbarStore } from "@/stores/snackbar";
-
 
 export const ITEMS_PER_PAGE_OPTIONS = [25, 50, 100];
 
@@ -143,6 +138,6 @@ export default function usePagination(
   return {
     dataTableOptions,
     onSuccess,
-    onFailure
+    onFailure,
   };
 }

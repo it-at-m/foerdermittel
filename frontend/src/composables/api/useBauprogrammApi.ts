@@ -1,4 +1,5 @@
 import type {
+  BauprogrammFormContextDTO,
   BauprogrammResponseDTO,
   DeleteBauprogrammRequest,
   GetBauprogrammeByPageableRequest,
@@ -51,5 +52,14 @@ export function useDeleteBauprogramm() {
   // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
   return useAPI<DeleteBauprogrammRequest, void>((params) =>
     api.deleteBauprogramm(params)
+  );
+}
+
+export function useGetBauprogrammFormContext() {
+  const api = ApiFactory.getInstance(BauprogrammControllerApi);
+
+  // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+  return useAPI<void, BauprogrammFormContextDTO>(() =>
+    api.getBauprogrammFormContext()
   );
 }

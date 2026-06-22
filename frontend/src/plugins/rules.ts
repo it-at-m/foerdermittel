@@ -1,9 +1,6 @@
 import { createRulesPlugin } from "vuetify/labs/rules";
 
-
-
 import vuetify from "@/plugins/vuetify";
-
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type CustomRule = (...args: any[]) => (value: any) => string | boolean;

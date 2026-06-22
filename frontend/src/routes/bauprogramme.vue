@@ -75,7 +75,8 @@ const {
   loading: getBauprogrammeLoading,
 } = useGetBauprogramme();
 
-const { dataTableOptions, onSuccess, onFailure } = usePagination(getBauprogramme);
+const { dataTableOptions, onSuccess, onFailure } =
+  usePagination(getBauprogramme);
 
 const {
   call: createBauprogramm,

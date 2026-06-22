@@ -1,9 +1,6 @@
 import { assert, describe, test } from "vitest";
 
-
-
 import { maxRule, minRule, uniqueRule } from "../../src/plugins/rules";
-
 
 describe("min rule tests", () => {
   test("Throws error when too low", () => {
@@ -94,6 +91,6 @@ describe("unique rule tests", () => {
     const result = validationRule(newValue);
 
     // then
-    assert.isTrue(result)
+    assert.isTrue(result);
   });
 });
