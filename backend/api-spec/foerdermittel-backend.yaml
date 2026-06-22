@@ -134,6 +134,20 @@ paths:
                 $ref: "#/components/schemas/BauprogrammResponseDTO"
       security:
       - bearerAuth: []
+  /bauprogramme/formContext:
+    get:
+      tags:
+      - bauprogramm-controller
+      operationId: getBauprogrammFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauprogrammFormContextDTO"
+      security:
+      - bearerAuth: []
   /actuator:
     get:
       tags:
@@ -339,6 +353,16 @@ components:
             $ref: "#/components/schemas/BauprogrammResponseDTO"
         page:
           $ref: "#/components/schemas/PageMetadata"
+    BauprogrammFormContextDTO:
+      required:
+      - bauprogramme
+      type: object
+      properties:
+        bauprogramme:
+          type: array
+          items:
+            type: integer
+            format: int32
     Link:
       type: object
       properties:
