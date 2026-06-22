@@ -10,7 +10,7 @@
       :items="bauprogramme?.content ?? []"
       :total-items="bauprogramme?.page?.totalElements ?? 0"
       :items-per-page="dataTableOptions.itemsPerPage"
-      :dialog-width="DialogWidth.SMALL"
+      :dialog-width="DialogWidth.MEDIUM"
       expandable
       @delete="handleDelete"
       @create="handleCreate"
