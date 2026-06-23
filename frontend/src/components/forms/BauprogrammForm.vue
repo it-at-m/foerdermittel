@@ -13,6 +13,7 @@
             rules.number(),
             rules['min']!(1),
             rules['max']!(99),
+            rules['unique']!(bauprogrammFormContext.bauprogramme),
           ]"
           disable-edit
           label="Bauprogramm"
@@ -32,7 +33,10 @@
 </template>
 
 <script setup lang="ts">
-import type { BauprogrammResponseDTO } from "@/api/generated/foerdermittel-backend";
+import type {
+  BauprogrammFormContextDTO,
+  BauprogrammResponseDTO,
+} from "@/api/generated/foerdermittel-backend";
 
 import { useRules } from "vuetify/labs/rules";
 
@@ -44,9 +48,11 @@ const modelValue = defineModel<Partial<BauprogrammResponseDTO>>({
   required: true,
 });
 
-const { displayMode = InputDisplayMode.CREATE } = defineProps<{
-  displayMode?: InputDisplayMode;
-}>();
+const { bauprogrammFormContext, displayMode = InputDisplayMode.CREATE } =
+  defineProps<{
+    bauprogrammFormContext: Readonly<BauprogrammFormContextDTO>;
+    displayMode?: InputDisplayMode;
+  }>();
 
 const emit = defineEmits<{
   isValid: [boolean | null];

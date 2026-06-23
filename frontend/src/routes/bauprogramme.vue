@@ -18,8 +18,10 @@
     >
       <template #form="{ item, updateValidity, inputDisplayMode }">
         <bauprogramm-form
+          v-if="bauprogrammFormContext"
           :model-value="item"
           :display-mode="inputDisplayMode"
+          :bauprogramm-form-context="bauprogrammFormContext"
           @is-valid="updateValidity"
         />
       </template>
@@ -41,6 +43,7 @@ import {
   useCreateBauprogramm,
   useDeleteBauprogramm,
   useGetBauprogramme,
+  useGetBauprogrammFormContext,
   useUpdateBauprogramm,
 } from "@/composables/api/useBauprogrammApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
@@ -75,8 +78,16 @@ const {
   loading: getBauprogrammeLoading,
 } = useGetBauprogramme();
 
-const { dataTableOptions, onSuccess, onFailure } =
-  usePagination(getBauprogramme);
+const {
+  data: bauprogrammFormContext,
+  call: getBauprogrammFormContext,
+  loading: getBauprogrammFormContextLoading,
+} = useGetBauprogrammFormContext();
+
+const { dataTableOptions, onSuccess, onFailure } = usePagination(
+  getBauprogramme,
+  getBauprogrammFormContext
+);
 
 const {
   call: createBauprogramm,
@@ -141,6 +152,7 @@ const handleDelete = async (id: string) => {
 const loading = computed(
   () =>
     getBauprogrammeLoading.value ||
+    getBauprogrammFormContextLoading.value ||
     createBauprogrammLoading.value ||
     updateBauprogrammLoading.value ||
     deleteBauprogrammLoading.value

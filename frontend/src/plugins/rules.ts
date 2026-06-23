@@ -28,6 +28,7 @@ export default createRulesPlugin(
     aliases: {
       min: minRule,
       max: maxRule,
+      unique: uniqueRule,
     },
   },
   vuetify.locale

@@ -8,7 +8,10 @@ import { readonly, ref } from "vue";
  * @returns An object containing the state of the API call and a method to execute the call.
  */
 export default function useAPI<TRequest, TResponse = void>(
-  apiMethod: (params: TRequest) => Promise<TResponse>
+  // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+  apiMethod: TRequest extends void
+    ? () => Promise<TResponse>
+    : (params: TRequest) => Promise<TResponse>
 ) {
   const loadingInternal = ref(false);
   const errorInternal = ref(false);
@@ -23,7 +26,7 @@ export default function useAPI<TRequest, TResponse = void>(
    * @param params - The parameters for the API call as an object.
    * @returns A promise that resolves when the call completes (check `data` state for retrieved data and `error` state for failures).
    */
-  const call = async <T extends TRequest>(params: T) => {
+  const call = (async <T extends TRequest>(params: T) => {
     loadingInternal.value = true;
     errorInternal.value = false;
 
@@ -35,7 +38,10 @@ export default function useAPI<TRequest, TResponse = void>(
     } finally {
       loadingInternal.value = false;
     }
-  };
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+  }) as TRequest extends void
+    ? () => Promise<void>
+    : (params: TRequest) => Promise<void>;
 
   return {
     loading,

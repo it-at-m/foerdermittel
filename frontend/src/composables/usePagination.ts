@@ -2,7 +2,7 @@ import type { DataTableOptions, SortOption } from "@/types/DataTableOptions";
 import type { Pageable } from "@/types/Pageable";
 
 import { useRouteQuery } from "@vueuse/router";
-import { computed, useTemplateRef, watch } from "vue";
+import { computed, onMounted, useTemplateRef, watch } from "vue";
 
 import { STATUS_INDICATORS } from "@/constants";
 import { useSnackbarStore } from "@/stores/snackbar";
@@ -52,7 +52,8 @@ function urlDecodeSortOptions(sortOptionString: string) {
 }
 
 export default function usePagination(
-  getEntitiesFunction: (pageable: Pageable) => Promise<void>
+  getEntitiesFunction: (pageable: Pageable) => Promise<void>,
+  getFormContext?: () => Promise<void>
 ) {
   const page = useRouteQuery<string>("page", String(PAGINATION_DEFAULTS.page));
   const itemsPerPage = useRouteQuery<string>(
@@ -121,6 +122,12 @@ export default function usePagination(
     { immediate: true }
   );
 
+  onMounted(async () => {
+    if (getFormContext) {
+      await getFormContext();
+    }
+  });
+
   const crudRef = useTemplateRef("crudRef");
   const snackbarStore = useSnackbarStore();
   const onSuccess = async (msg: string) => {
@@ -130,6 +137,9 @@ export default function usePagination(
       crudRef.value.closeDialog();
     }
     await getEntitiesFunction(pageable.value);
+    if (getFormContext) {
+      await getFormContext();
+    }
   };
   const onFailure = (msg: string) => {
     snackbarStore.push({ text: msg, color: STATUS_INDICATORS.ERROR });
