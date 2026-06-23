@@ -35,7 +35,11 @@
 
   <v-card class="d-flex flex-column fill-height w-100">
     <v-card-title class="pa-0">
-      <v-row align-content="center" justify="center" class="mb-4">
+      <v-row
+        align-content="center"
+        justify="center"
+        class="mb-4"
+      >
         <v-col class="d-flex align-center justify-end">
           <v-btn
             v-if="enableActions"
