@@ -31,11 +31,11 @@ function normalizeItemsPerPage(value: string): number {
 function normalizePage(value: string): number {
   const parsed = Number(value);
 
-  if (!Number.isFinite(parsed)) {
+  if (!Number.isInteger(parsed) || parsed <= 0) {
     return PAGINATION_DEFAULTS.page;
   }
 
-  return parsed > 0 ? parsed : PAGINATION_DEFAULTS.page;
+  return parsed;
 }
 
 function urlEncodeSortOptions(sortOptions: DataTableSortItem[]) {
@@ -43,13 +43,16 @@ function urlEncodeSortOptions(sortOptions: DataTableSortItem[]) {
 }
 
 function urlDecodeSortOptions(sortOptionString: string) {
-  return sortOptionString.split(";").map((s): DataTableSortItem => {
-    const [key, order] = s.split(",");
-    return {
-      key: key as string,
-      order: order as "asc" | "desc",
-    };
-  });
+  return sortOptionString
+    .split(";")
+    .map((token) => {
+      const [key, order] = token.split(",");
+      if (!key || (order !== "asc" && order !== "desc")) {
+        return undefined;
+      }
+      return { key, order } as DataTableSortItem;
+    })
+    .filter((item): item is DataTableSortItem => item !== undefined);
 }
 
 export default function usePagination(

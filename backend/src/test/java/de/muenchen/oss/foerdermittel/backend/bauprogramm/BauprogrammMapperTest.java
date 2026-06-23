@@ -9,12 +9,10 @@ import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammResponse
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammUpdateDTO;
 import java.math.BigDecimal;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
-@AllArgsConstructor
 public class BauprogrammMapperTest {
 
     private final BauprogrammMapper bauprogrammMapper = Mappers.getMapper(BauprogrammMapper.class);
@@ -33,6 +31,7 @@ public class BauprogrammMapperTest {
             // then
             assertThat(dto).isNotNull();
             assertThat(dto.id()).isEqualTo(entity.getBauprogramm().toString());
+            assertThat(dto.bauprogramm()).isEqualTo(entity.getBauprogramm().intValueExact());
             assertThat(dto.bezeichnung()).isEqualTo(entity.getBezeichnung());
         }
 

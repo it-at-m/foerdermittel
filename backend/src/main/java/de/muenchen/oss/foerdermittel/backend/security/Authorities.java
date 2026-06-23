@@ -9,8 +9,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
  * (e.g. {@link PreAuthorize}).
  */
 public final class Authorities {
-    public static final String HAS_ROLE_ADMIN = "hasRole('admin')";
-    public static final String HAS_ROLE_SACHBEARBEITUNG_HAUSHALT = "hasRole('sachbearbeitunghaushalt', 'admin')";
+    public static final String HAS_ROLE_ADMIN = "hasAnyRole('admin')";
+    public static final String HAS_ROLE_SACHBEARBEITUNG_HAUSHALT = "hasAnyRole('sachbearbeitunghaushalt', 'admin')";
     public static final String HAS_ANY_ROLE = "hasAnyRole('admin', 'sachbearbeitung', 'sachbearbeitunghaushalt')";
 
     private Authorities() {

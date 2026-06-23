@@ -207,6 +207,9 @@ class BauprogrammIntegrationTest {
                             "bauprogramm too high",
                             new BauprogrammCreateDTO(100, "Test")),
                     arguments(
+                            "bezeichnung too short",
+                            new BauprogrammCreateDTO(100, "")),
+                    arguments(
                             "bezeichnung too long",
                             new BauprogrammCreateDTO(2, "a".repeat(201))));
         }
@@ -295,7 +298,10 @@ class BauprogrammIntegrationTest {
         private static Stream<Arguments> invalidInputRequests() {
             return Stream.of(
                     arguments(
-                            "bauprogramm too high",
+                            "bezeichnung too short",
+                            new BauprogrammUpdateDTO("")),
+                    arguments(
+                            "bezeichnung too long",
                             new BauprogrammUpdateDTO("a".repeat(201))));
         }
 

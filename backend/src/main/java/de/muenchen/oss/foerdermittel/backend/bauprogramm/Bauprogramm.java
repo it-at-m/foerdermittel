@@ -41,6 +41,6 @@ public class Bauprogramm implements Serializable {
     @NotNull @Min(1) @Max(99) private BigDecimal bauprogramm;
 
     @Column(nullable = false, length = 200)
-    @NotNull @Size(max = 200) private String bezeichnung;
+    @NotNull @Size(min = 1, max = 200) private String bezeichnung;
 
 }
