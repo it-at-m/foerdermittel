@@ -12,7 +12,6 @@
       :items="bauprogramme?.content ?? []"
       :total-items="bauprogramme?.page?.totalElements ?? 0"
       :dialog-width="DialogWidth.MEDIUM"
-      expandable
       @delete="handleDelete"
       @create="handleCreate"
       @update="handleUpdate"
