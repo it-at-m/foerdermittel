@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import type { BauprogrammResponseDTO } from "@/api/generated/foerdermittel-backend";
-import type { TableColumnHeader } from "@/types/TableColumnHeader";
+import type { DataTableHeader } from "vuetify/framework";
 
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
@@ -57,12 +57,12 @@ const isAdmin = useHasAnyRole(Role.ADMIN);
 
 const { t } = useI18n();
 
-const headers: TableColumnHeader<BauprogrammResponseDTO>[] = [
+const headers: DataTableHeader<BauprogrammResponseDTO>[] = [
   {
     title: t("model.bauprogramm.bauprogramm"),
     value: "bauprogramm",
     align: "center",
-    width: 50,
+    width: 100,
   },
   { title: t("model.bauprogramm.bezeichnung"), value: "bezeichnung" },
 ];

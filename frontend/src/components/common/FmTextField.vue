@@ -1,13 +1,21 @@
 <template>
   <v-text-field
+    v-if="displayMode !== InputDisplayMode.READ"
     :label="canNotEdit ? t('common.generics.readOnly', [label]) : label"
-    :readonly="displayMode === InputDisplayMode.READ || canNotEdit"
-    :hide-details="displayMode === InputDisplayMode.READ"
-    :variant="displayMode === InputDisplayMode.READ ? 'plain' : undefined"
+    :readonly="canNotEdit"
     :class="{
-      'pointer-events-none':
-        displayMode === InputDisplayMode.READ || canNotEdit,
+      'pointer-events-none': canNotEdit,
     }"
+    v-bind="$attrs"
+  />
+  <v-textarea
+    v-else
+    :label="label"
+    auto-grow
+    readonly
+    hide-details
+    variant="plain"
+    class="pointer-events-none"
     v-bind="$attrs"
   />
 </template>

@@ -1,5 +1,6 @@
 <template>
   <v-container
+    fluid
     class="d-flex flex-column fill-height pt-10 px-8 overflow-hidden"
   >
     <v-row class="justify-space-between align-center flex-0-0">

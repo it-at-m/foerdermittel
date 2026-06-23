@@ -1,5 +1,6 @@
-import type { DataTableOptions, SortOption } from "@/types/DataTableOptions";
+import type { DataTableOptions } from "@/types/DataTableOptions";
 import type { Pageable } from "@/types/Pageable";
+import type { DataTableSortItem } from "vuetify";
 
 import { useRouteQuery } from "@vueuse/router";
 import { computed, onMounted, useTemplateRef, watch } from "vue";
@@ -7,7 +8,7 @@ import { computed, onMounted, useTemplateRef, watch } from "vue";
 import { STATUS_INDICATORS } from "@/constants";
 import { useSnackbarStore } from "@/stores/snackbar";
 
-export const ITEMS_PER_PAGE_OPTIONS = [25, 50, 100];
+export const ITEMS_PER_PAGE_OPTIONS = [10, 25, 50, 100];
 
 export const PAGINATION_DEFAULTS: DataTableOptions = {
   page: 1,
@@ -37,12 +38,12 @@ function normalizePage(value: string): number {
   return parsed > 0 ? parsed : PAGINATION_DEFAULTS.page;
 }
 
-function urlEncodeSortOptions(sortOptions: SortOption[]) {
+function urlEncodeSortOptions(sortOptions: DataTableSortItem[]) {
   return sortOptions.map(({ key, order }) => `${key},${order}`).join(";");
 }
 
 function urlDecodeSortOptions(sortOptionString: string) {
-  return sortOptionString.split(";").map((s): SortOption => {
+  return sortOptionString.split(";").map((s): DataTableSortItem => {
     const [key, order] = s.split(",");
     return {
       key: key as string,

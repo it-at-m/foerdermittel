@@ -59,19 +59,21 @@
       </v-row>
     </v-card-title>
     <v-card-text class="pa-0">
-      <div class="d-flex flex-column h-100">
+      <div class="d-flex flex-column h-100 overflow-x-hidden">
         <v-data-table-server
           v-model:items-per-page="itemsPerPage"
           v-model:page="page"
           v-model:sort-by="sortBy"
           v-model:search="search"
+          fixed-header
           :headers="tableHeadersWithActions"
           :items="items"
           :items-length="totalItems"
           :loading="loading"
           :show-expand="expandable"
           expand-strategy="single"
-          class="flex-grow-1"
+          height="10"
+          class="flex-grow-1 w-100"
         >
           <template #loading>
             <p>{{ t("common.message.loading", [domainPlural]) }}</p>
@@ -81,33 +83,19 @@
           </template>
           <!-- Static actions for edit and delete -->
           <template #[`item.actions`]="{ item }">
-            <v-row align-content="center">
-              <v-col
-                class="pa-0"
-                cols="12"
-                sm="6"
-              >
-                <v-btn
-                  v-if="enableActions"
-                  size="small"
-                  :icon="mdiPencil"
-                  class="mr-1"
-                  @click="openEdit(item)"
-                />
-              </v-col>
-              <v-col
-                class="pa-0"
-                cols="12"
-                sm="6"
-              >
-                <v-btn
-                  v-if="enableActions"
-                  size="small"
-                  :icon="mdiDelete"
-                  @click="openDelete(item)"
-                />
-              </v-col>
-            </v-row>
+            <v-btn
+              v-if="enableActions"
+              size="small"
+              :icon="mdiPencil"
+              class="mr-1"
+              @click="openEdit(item)"
+            />
+            <v-btn
+              v-if="enableActions"
+              size="small"
+              :icon="mdiDelete"
+              @click="openDelete(item)"
+            />
           </template>
           <!-- Slot for rendering the expansion panel -->
           <template
@@ -142,7 +130,7 @@
 
 <script setup lang="ts" generic="T extends { id?: string }">
 import type { DataTableOptions } from "@/types/DataTableOptions";
-import type { TableColumnHeader } from "@/types/TableColumnHeader";
+import type { DataTableHeader } from "vuetify/framework";
 
 import { mdiDelete, mdiPencil, mdiPlus, mdiTrashCan } from "@mdi/js";
 import { computed, ref, toRaw } from "vue";
@@ -171,7 +159,7 @@ const {
   emptyItemTemplate: T;
   domainKey: string;
   loading?: boolean;
-  tableHeaders: TableColumnHeader<T>[];
+  tableHeaders: Readonly<DataTableHeader<T>>[];
   items?: readonly T[];
   totalItems: number;
   enableActions?: boolean;
@@ -235,8 +223,10 @@ const tableHeadersWithActions = computed(() => [
   {
     title: t("common.word.action", { count: 2 }),
     value: "actions",
-    width: 150,
-  },
+    width: "100",
+    align: "center",
+    cellProps: { class: "text-no-wrap" },
+  } satisfies DataTableHeader<T>,
 ]);
 
 const activeItem = ref<T>({ ...emptyItemTemplate });
@@ -296,3 +286,9 @@ defineExpose({
   closeDialog,
 });
 </script>
+
+<style scoped>
+:deep(table) {
+  table-layout: fixed;
+}
+</style>
