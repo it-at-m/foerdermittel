@@ -37,6 +37,7 @@ import type {
   BauprogrammFormContextDTO,
   BauprogrammResponseDTO,
 } from "@/api/generated/foerdermittel-backend";
+import type { DeepReadonly } from "vue";
 
 import { useRules } from "vuetify/labs/rules";
 
@@ -50,7 +51,7 @@ const modelValue = defineModel<Partial<BauprogrammResponseDTO>>({
 
 const { bauprogrammFormContext, displayMode = InputDisplayMode.CREATE } =
   defineProps<{
-    bauprogrammFormContext: Readonly<BauprogrammFormContextDTO>;
+    bauprogrammFormContext: DeepReadonly<BauprogrammFormContextDTO>;
     displayMode?: InputDisplayMode;
   }>();
 
