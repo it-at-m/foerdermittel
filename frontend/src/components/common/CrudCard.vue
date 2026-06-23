@@ -34,8 +34,8 @@
   </v-dialog>
 
   <v-card class="d-flex flex-column fill-height w-100">
-    <template #title>
-      <v-row align-content="center">
+    <v-card-title class="pa-0">
+      <v-row align-content="center" justify="center" class="mb-4">
         <v-col class="d-flex align-center justify-end">
           <v-btn
             v-if="enableActions"
@@ -44,7 +44,6 @@
             :append-icon="mdiPlus"
             :text="t('common.action.create')"
             :disabled="loading"
-            class="mb-4"
             @click="openCreate"
           />
         </v-col>
@@ -54,10 +53,8 @@
           <v-divider />
         </v-col>
       </v-row>
-    </template>
-    <template
-      #text
-    >
+    </v-card-title>
+    <v-card-text class="pa-0">
       <div class="d-flex flex-column h-100">
         <v-data-table-server
           v-model:items-per-page="itemsPerPage"
@@ -135,7 +132,7 @@
           </template>
         </v-data-table-server>
       </div>
-    </template>
+    </v-card-text>
   </v-card>
 </template>
 
