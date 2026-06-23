@@ -1,5 +1,6 @@
 <template>
   <base-view :domain-key="domainKey">
+    <!-- @vue-generic {Partial<BauprogrammResponseDTO>} -->
     <crud-card
       ref="crudRef"
       v-model="dataTableOptions"
@@ -57,7 +58,7 @@ const isAdmin = useHasAnyRole(Role.ADMIN);
 
 const { t } = useI18n();
 
-const headers: DataTableHeader<BauprogrammResponseDTO>[] = [
+const headers: DataTableHeader<Partial<BauprogrammResponseDTO>>[] = [
   {
     title: t("model.bauprogramm.bauprogramm"),
     value: "bauprogramm",
