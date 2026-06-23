@@ -1,14 +1,14 @@
 import { mdiShieldLock } from "@mdi/js";
 import { createRouter, createWebHistory } from "vue-router";
-import {
-  routes as fileBasedRoutes,
-  handleHotUpdate,
-} from "vue-router/auto-routes";
+import { routes as fileBasedRoutes, handleHotUpdate } from "vue-router/auto-routes";
+
+
 
 import { hasAnyRole } from "@/composables/useHasAnyRole";
 import { STATUS_INDICATORS } from "@/constants";
 import { useSnackbarStore } from "@/stores/snackbar";
 import { useUserInfoStore } from "@/stores/userinfo";
+
 
 const routes = [
   ...fileBasedRoutes,
@@ -18,11 +18,22 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  scrollBehavior() {
-    return {
-      top: 0,
-      left: 0,
-    };
+  scrollBehavior(to, from, savedPosition) {
+    // If the user used browser back/forward
+    if (savedPosition) {
+      return savedPosition;
+    }
+
+    // Scroll to top if the path changed
+    if (to.path !== from.path) {
+      return {
+        top: 0,
+        left: 0,
+      };
+    }
+
+    // Otherwise (query change etc.), keep current scroll
+    return false;
   },
 });
 
