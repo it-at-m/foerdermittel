@@ -208,7 +208,7 @@ class BauprogrammIntegrationTest {
                             new BauprogrammCreateDTO(100, "Test")),
                     arguments(
                             "bezeichnung too short",
-                            new BauprogrammCreateDTO(100, "")),
+                            new BauprogrammCreateDTO(2, "")),
                     arguments(
                             "bezeichnung too long",
                             new BauprogrammCreateDTO(2, "a".repeat(201))));
@@ -428,7 +428,7 @@ class BauprogrammIntegrationTest {
             // Then
             assertThat(result).isNotNull();
             assertThat(result.bauprogramme()).hasSize(1);
-            assertThat(result.bauprogramme().get(0)).isEqualByComparingTo(EXISTING_ID);
+            assertThat(result.bauprogramme().getFirst()).isEqualByComparingTo(EXISTING_ID);
         }
 
         private static Stream<Arguments> authorizationMappings() {
