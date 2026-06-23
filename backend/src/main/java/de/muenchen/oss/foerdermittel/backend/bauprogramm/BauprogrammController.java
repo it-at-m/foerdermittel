@@ -73,7 +73,8 @@ public class BauprogrammController {
     @ResponseStatus(HttpStatus.OK)
     public BauprogrammResponseDTO updateBauprogramm(@Valid @RequestBody final BauprogrammUpdateDTO bauprogrammUpdateDTO,
             @PathVariable("id") final String bauprogrammId) {
-        return bauprogrammMapper.toDTO(bauprogrammService.updateBauprogramm(bauprogrammMapper.toEntity(bauprogrammUpdateDTO), parseBauprogrammId(bauprogrammId)));
+        return bauprogrammMapper
+                .toDTO(bauprogrammService.updateBauprogramm(bauprogrammMapper.toEntity(bauprogrammUpdateDTO), parseBauprogrammId(bauprogrammId)));
     }
 
     @DeleteMapping("/{id}")
