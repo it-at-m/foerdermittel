@@ -13,7 +13,10 @@
             rules.number(),
             rules['min']!(1),
             rules['max']!(99),
-            rules['unique']!(bauprogrammFormContext.bauprogramme),
+            rules['unique']!(
+              bauprogrammFormContext.bauprogramme,
+              currentBauprogramm
+            ),
           ]"
           disable-edit
           label="Bauprogramm"
@@ -39,6 +42,7 @@ import type {
 } from "@/api/generated/foerdermittel-backend";
 import type { DeepReadonly } from "vue";
 
+import { ref } from "vue";
 import { useRules } from "vuetify/labs/rules";
 
 import FmNumberInput from "@/components/common/FmNumberInput.vue";
@@ -48,6 +52,7 @@ import { InputDisplayMode } from "@/types/InputDisplayMode";
 const modelValue = defineModel<Partial<BauprogrammResponseDTO>>({
   required: true,
 });
+const currentBauprogramm = ref(modelValue.value.bauprogramm);
 
 const { bauprogrammFormContext, displayMode = InputDisplayMode.CREATE } =
   defineProps<{
