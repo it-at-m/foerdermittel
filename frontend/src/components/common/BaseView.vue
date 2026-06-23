@@ -14,7 +14,7 @@
       </v-col>
     </v-row>
     <v-divider class="my-4" />
-    <v-row>
+    <v-row class="fill-height">
       <slot />
     </v-row>
   </v-container>

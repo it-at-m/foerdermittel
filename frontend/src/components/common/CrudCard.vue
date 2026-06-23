@@ -33,7 +33,7 @@
     />
   </v-dialog>
 
-  <v-card class="w-100">
+  <v-card class="d-flex flex-column fill-height w-100">
     <template #title>
       <v-row align-content="center">
         <v-col class="d-flex align-center justify-end">
@@ -55,81 +55,86 @@
         </v-col>
       </v-row>
     </template>
-    <template #text>
-      <v-data-table-server
-        v-model:items-per-page="itemsPerPage"
-        v-model:page="page"
-        v-model:sort-by="sortBy"
-        v-model:search="search"
-        :headers="tableHeadersWithActions"
-        :items="items"
-        :items-length="totalItems"
-        :loading="loading"
-        :show-expand="expandable"
-        expand-strategy="single"
-      >
-        <template #loading>
-          <p>{{ t("common.message.loading", [domainPlural]) }}</p>
-        </template>
-        <template #no-data>
-          <p>{{ t("common.message.noData", [domainPlural]) }}</p>
-        </template>
-        <!-- Static actions for edit and delete -->
-        <template #[`item.actions`]="{ item }">
-          <v-row align-content="center">
-            <v-col
-              class="pa-0"
-              cols="12"
-              sm="6"
-            >
-              <v-btn
-                v-if="enableActions"
-                size="small"
-                :icon="mdiPencil"
-                class="mr-1"
-                @click="openEdit(item)"
-              />
-            </v-col>
-            <v-col
-              class="pa-0"
-              cols="12"
-              sm="6"
-            >
-              <v-btn
-                v-if="enableActions"
-                size="small"
-                :icon="mdiDelete"
-                @click="openDelete(item)"
-              />
-            </v-col>
-          </v-row>
-        </template>
-        <!-- Slot for rendering the expansion panel -->
-        <template
-          v-if="expandable"
-          #expanded="{ item }"
+    <template
+      #text
+    >
+      <div class="d-flex flex-column h-100">
+        <v-data-table-server
+          v-model:items-per-page="itemsPerPage"
+          v-model:page="page"
+          v-model:sort-by="sortBy"
+          v-model:search="search"
+          :headers="tableHeadersWithActions"
+          :items="items"
+          :items-length="totalItems"
+          :loading="loading"
+          :show-expand="expandable"
+          expand-strategy="single"
+          class="flex-grow-1"
         >
-          <div class="pa-10 bg-grey-lighten-5">
+          <template #loading>
+            <p>{{ t("common.message.loading", [domainPlural]) }}</p>
+          </template>
+          <template #no-data>
+            <p>{{ t("common.message.noData", [domainPlural]) }}</p>
+          </template>
+          <!-- Static actions for edit and delete -->
+          <template #[`item.actions`]="{ item }">
+            <v-row align-content="center">
+              <v-col
+                class="pa-0"
+                cols="12"
+                sm="6"
+              >
+                <v-btn
+                  v-if="enableActions"
+                  size="small"
+                  :icon="mdiPencil"
+                  class="mr-1"
+                  @click="openEdit(item)"
+                />
+              </v-col>
+              <v-col
+                class="pa-0"
+                cols="12"
+                sm="6"
+              >
+                <v-btn
+                  v-if="enableActions"
+                  size="small"
+                  :icon="mdiDelete"
+                  @click="openDelete(item)"
+                />
+              </v-col>
+            </v-row>
+          </template>
+          <!-- Slot for rendering the expansion panel -->
+          <template
+            v-if="expandable"
+            #expanded="{ item }"
+          >
+            <div class="pa-10 bg-grey-lighten-5">
+              <slot
+                name="form"
+                :item="item"
+                :input-display-mode="InputDisplayMode.READ"
+                :update-validity="undefined"
+              />
+            </div>
+          </template>
+          <!-- Allow custom slots for other table columns -->
+          <template
+            v-for="(_, slotName) in $slots"
+            :key="slotName"
+            #[slotName]="slotProps"
+          >
             <slot
-              name="form"
-              :item="item"
-              :input-display-mode="InputDisplayMode.READ"
-              :update-validity="undefined"
+              :name="slotName"
+              v-bind="slotProps || {}"
             />
-          </div>
-        </template>
-        <!-- Allow custom slots for other table columns -->
-        <template
-          v-for="(_, slotName) in $slots"
-          :key="slotName"
-          #[slotName]="slotProps"
-        >
-          <slot
-            :name="slotName"
-            v-bind="slotProps || {}"
-          />
-        </template>
-      </v-data-table-server>
+          </template>
+        </v-data-table-server>
+      </div>
     </template>
   </v-card>
 </template>
