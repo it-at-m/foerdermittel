@@ -114,7 +114,6 @@ class BauprogrammServiceTest {
             // Given
             final int id = 1;
             final Bauprogramm entityToSave = new Bauprogramm(BigDecimal.valueOf(id), BEZEICHNUNG);
-            final Bauprogramm expectedEntity = new Bauprogramm(BigDecimal.valueOf(id), BEZEICHNUNG);
             when(bauprogrammRepository.existsById(id)).thenReturn(true);
 
             // When

@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @Slf4j
@@ -41,7 +42,7 @@ public class BauprogrammController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public BauprogrammResponseDTO getBauprogramm(@PathVariable("id") final String bauprogrammId) {
-        return bauprogrammMapper.toDTO(bauprogrammService.getBauprogramm(Integer.valueOf(bauprogrammId)));
+        return bauprogrammMapper.toDTO(bauprogrammService.getBauprogramm(parseBauprogrammId(bauprogrammId)));
     }
 
     @GetMapping
@@ -72,12 +73,21 @@ public class BauprogrammController {
     @ResponseStatus(HttpStatus.OK)
     public BauprogrammResponseDTO updateBauprogramm(@Valid @RequestBody final BauprogrammUpdateDTO bauprogrammUpdateDTO,
             @PathVariable("id") final String bauprogrammId) {
-        return bauprogrammMapper.toDTO(bauprogrammService.updateBauprogramm(bauprogrammMapper.toEntity(bauprogrammUpdateDTO), Integer.valueOf(bauprogrammId)));
+        return bauprogrammMapper.toDTO(bauprogrammService.updateBauprogramm(bauprogrammMapper.toEntity(bauprogrammUpdateDTO), parseBauprogrammId(bauprogrammId)));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteBauprogramm(@PathVariable("id") final String bauprogrammId) {
-        bauprogrammService.deleteBauprogramm(Integer.valueOf(bauprogrammId));
+        bauprogrammService.deleteBauprogramm(parseBauprogrammId(bauprogrammId));
     }
+
+    private Integer parseBauprogrammId(final String bauprogrammId) {
+        try {
+            return Integer.valueOf(bauprogrammId);
+        } catch (final NumberFormatException ex) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid bauprogramm ID: " + bauprogrammId, ex);
+        }
+    }
+
 }
