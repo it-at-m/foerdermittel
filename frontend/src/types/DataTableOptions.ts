@@ -1,11 +1,8 @@
-interface SortOption {
-  key: string;
-  order: "asc" | "desc";
-}
+import type { DataTableSortItem } from "vuetify";
 
 export interface DataTableOptions {
   page: number;
   itemsPerPage: number;
-  sortBy: SortOption[];
+  sortBy: DataTableSortItem[];
   search?: string;
 }

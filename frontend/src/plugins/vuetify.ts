@@ -7,6 +7,7 @@ import { createVuetify } from "vuetify";
 import { aliases, mdi } from "vuetify/iconsets/mdi-svg";
 import { createVueI18nAdapter } from "vuetify/locale/adapters/vue-i18n";
 
+import { ITEMS_PER_PAGE_OPTIONS } from "@/composables/usePagination";
 import i18n from "@/plugins/i18n";
 
 export default createVuetify({
@@ -29,12 +30,13 @@ export default createVuetify({
     VNumberInput: {
       variant: "outlined",
       persistentPlaceholder: true,
+      controlVariant: "stacked",
     },
     VCard: {
       class: "elevation-0",
     },
     VCardActions: {
-      class: "mb-2 mr-2",
+      class: "mb-4 mr-4 pt-0",
     },
     VDialog: {
       maxWidth: "800px",
@@ -52,6 +54,12 @@ export default createVuetify({
     VSnackbar: {
       timeout: 5000,
       color: "info",
+    },
+    VDataTableServer: {
+      itemsPerPageOptions: ITEMS_PER_PAGE_OPTIONS.map((option) => ({
+        value: option,
+        title: String(option),
+      })),
     },
   },
   theme: {
