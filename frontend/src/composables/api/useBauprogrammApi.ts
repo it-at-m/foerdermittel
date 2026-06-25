@@ -49,7 +49,6 @@ export function useGetBauprogramm() {
 export function useDeleteBauprogramm() {
   const api = ApiFactory.getInstance(BauprogrammControllerApi);
 
-  // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
   return useAPI<DeleteBauprogrammRequest, void>((params) =>
     api.deleteBauprogramm(params)
   );
@@ -58,7 +57,6 @@ export function useDeleteBauprogramm() {
 export function useGetBauprogrammFormContext() {
   const api = ApiFactory.getInstance(BauprogrammControllerApi);
 
-  // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
   return useAPI<void, BauprogrammFormContextDTO>(() =>
     api.getBauprogrammFormContext()
   );
