@@ -12,7 +12,9 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * This class represents a Siedlungsgebiet.
@@ -22,6 +24,8 @@ import lombok.Data;
  */
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "siedlungsgebiete")
 public class Siedlungsgebiet implements Serializable {
 
@@ -37,6 +41,6 @@ public class Siedlungsgebiet implements Serializable {
     @NotNull @Min(1) @Max(99) private BigDecimal siedlungsgebiet;
 
     @Column(nullable = false, length = 200)
-    @NotNull @Size(max = 200) private String bezeichnung;
+    @NotNull @Size(min = 1, max = 200) private String bezeichnung;
 
 }

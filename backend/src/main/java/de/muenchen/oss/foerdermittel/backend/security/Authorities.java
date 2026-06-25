@@ -10,9 +10,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
  */
 @SuppressWarnings("PMD.DataClass")
 public final class Authorities {
-    public static final String HAS_ROLE_ADMIN = "hasRole('admin')";
-    public static final String HAS_ROLE_SACHBEARBEITUNG = "hasRole('sachbearbeitung')";
-    public static final String HAS_ROLE_SACHBEARBEITUNG_HAUSHALT = "hasRole('sachbearbeitunghaushalt')";
+    public static final String HAS_ROLE_ADMIN = "hasAnyRole('admin')";
+    public static final String HAS_ROLE_SACHBEARBEITUNG_HAUSHALT = "hasAnyRole('sachbearbeitunghaushalt', 'admin')";
     public static final String HAS_ANY_ROLE = "hasAnyRole('admin', 'sachbearbeitung', 'sachbearbeitunghaushalt')";
 
     private Authorities() {

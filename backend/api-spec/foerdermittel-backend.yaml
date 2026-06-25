@@ -13,6 +13,114 @@ tags:
     description: Spring Boot Actuator Web API Documentation
     url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
 paths:
+  /siedlungsgebiet/{id}:
+    get:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: getSiedlungsgebiet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: updateSiedlungsgebiet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SiedlungsgebietUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: deleteSiedlungsgebiet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /siedlungsgebiet:
+    get:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: getSiedlungsgebieteByPageAndSize
+      parameters:
+      - name: pageNumber
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelSiedlungsgebietResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: saveSiedlungsgebiet
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SiedlungsgebietCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+      security:
+      - bearerAuth: []
   /actuator:
     get:
       tags:
@@ -156,6 +264,64 @@ paths:
                 type: object
 components:
   schemas:
+    SiedlungsgebietUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 0
+          type: string
+    SiedlungsgebietResponseDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        siedlungsgebiet:
+          type: integer
+          format: int32
+        bezeichnung:
+          type: string
+    SiedlungsgebietCreateDTO:
+      required:
+      - bezeichnung
+      - siedlungsgebiet
+      type: object
+      properties:
+        siedlungsgebiet:
+          maximum: 99
+          minimum: 1
+          type: integer
+          format: int32
+        bezeichnung:
+          maxLength: 200
+          minLength: 0
+          type: string
+    PageMetadata:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    PagedModelSiedlungsgebietResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
     Link:
       type: object
       properties:
