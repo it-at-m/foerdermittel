@@ -1,6 +1,5 @@
 <template>
   <v-number-input
-    :label="canNotEdit ? t('common.generics.readOnly', [label]) : label"
     :readonly="displayMode === InputDisplayMode.READ || canNotEdit"
     :hide-details="displayMode === InputDisplayMode.READ"
     :variant="displayMode === InputDisplayMode.READ ? 'plain' : undefined"
@@ -12,7 +11,17 @@
         displayMode === InputDisplayMode.READ || canNotEdit,
     }"
     v-bind="$attrs"
-  />
+  >
+    <template #label>
+      {{ label }}
+      <span
+        v-if="required && !canNotEdit && displayMode !== InputDisplayMode.READ"
+        class="text-red"
+        >{{ t("common.word.required") }}</span
+      >
+      <span v-if="canNotEdit">{{ t("common.word.readOnly") }}</span>
+    </template>
+  </v-number-input>
 </template>
 
 <script setup lang="ts">
@@ -21,12 +30,16 @@ import { useI18n } from "vue-i18n";
 
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
-const { displayMode = InputDisplayMode.CREATE, disableEdit = false } =
-  defineProps<{
-    label: string;
-    displayMode?: InputDisplayMode;
-    disableEdit?: boolean;
-  }>();
+const {
+  displayMode = InputDisplayMode.CREATE,
+  disableEdit = false,
+  required = false,
+} = defineProps<{
+  label: string;
+  displayMode?: InputDisplayMode;
+  disableEdit?: boolean;
+  required?: boolean;
+}>();
 
 const canNotEdit = computed(
   () => displayMode === InputDisplayMode.EDIT && disableEdit

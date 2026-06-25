@@ -1,13 +1,22 @@
 <template>
   <v-text-field
     v-if="displayMode !== InputDisplayMode.READ"
-    :label="canNotEdit ? t('common.generics.readOnly', [label]) : label"
     :readonly="canNotEdit"
     :class="{
       'pointer-events-none': canNotEdit,
     }"
     v-bind="$attrs"
-  />
+  >
+    <template #label>
+      {{ label }}
+      <span
+        v-if="required && !canNotEdit"
+        class="text-red"
+        >{{ t("common.word.required") }}</span
+      >
+      <span v-if="canNotEdit">{{ t("common.word.readOnly") }}</span>
+    </template>
+  </v-text-field>
   <v-textarea
     v-else
     :label="label"
@@ -26,15 +35,21 @@ import { useI18n } from "vue-i18n";
 
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
-const { displayMode = InputDisplayMode.CREATE, disableEdit = false } =
-  defineProps<{
-    label: string;
-    displayMode?: InputDisplayMode;
-    disableEdit?: boolean;
-  }>();
+const {
+  displayMode = InputDisplayMode.CREATE,
+  disableEdit = false,
+  required = false,
+} = defineProps<{
+  label: string;
+  displayMode?: InputDisplayMode;
+  disableEdit?: boolean;
+  required?: boolean;
+}>();
 
 const canNotEdit = computed(
-  () => displayMode === InputDisplayMode.EDIT && disableEdit
+  () =>
+    displayMode === InputDisplayMode.READ ||
+    (displayMode === InputDisplayMode.EDIT && disableEdit)
 );
 
 const { t } = useI18n();
