@@ -7,10 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import de.muenchen.oss.foerdermittel.backend.FoerdermittelBackendApplication;
 import de.muenchen.oss.foerdermittel.backend.TestConstants;
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
-import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
-import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietRepository;
-import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietCreateDTO;
-import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietResponseDTO;
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.Bauprogramm;
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammRepository;
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammCreateDTO;
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammResponseDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
@@ -41,7 +41,7 @@ class UnicodeFilterConfigurationTest {
     private static final PostgreSQLContainer POSTGRE_SQL_CONTAINER = new PostgreSQLContainer(
             DockerImageName.parse(TestConstants.TESTCONTAINERS_POSTGRES_IMAGE));
 
-    private static final String ENTITY_ENDPOINT_URL = "/siedlungsgebiete";
+    private static final String ENTITY_ENDPOINT_URL = "/bauprogramme";
 
     /**
      * Decomposed string:
@@ -59,28 +59,28 @@ class UnicodeFilterConfigurationTest {
     private RestTestClient restTestClient;
 
     @Autowired
-    private SiedlungsgebietRepository siedlungsgebietRepository;
+    private BauprogrammRepository bauprogrammRepository;
 
     @Test
     void givenDecomposedString_thenConvertToNfcNormalized() {
         // Given
         // Persist entity with decomposed string.
-        final SiedlungsgebietCreateDTO requestDTO = new SiedlungsgebietCreateDTO(1, TEXT_ATTRIBUTE_DECOMPOSED);
+        final BauprogrammCreateDTO requestDTO = new BauprogrammCreateDTO(1, TEXT_ATTRIBUTE_DECOMPOSED);
 
         // When
-        final SiedlungsgebietResponseDTO responseDTO = restTestClient.post()
+        final BauprogrammResponseDTO responseDTO = restTestClient.post()
                 .uri(ENTITY_ENDPOINT_URL)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                 .body(requestDTO)
                 .exchange()
                 .expectStatus().isCreated()
-                .expectBody(SiedlungsgebietResponseDTO.class)
+                .expectBody(BauprogrammResponseDTO.class)
                 .returnResult()
                 .getResponseBody();
 
         assertNotNull(responseDTO);
 
-        final Siedlungsgebiet entity = siedlungsgebietRepository.findById(Integer.valueOf(responseDTO.id())).orElse(null);
+        final Bauprogramm entity = bauprogrammRepository.findById(Integer.valueOf(responseDTO.id())).orElse(null);
 
         // Then
         // Check whether response contains a composed string.

@@ -85,7 +85,9 @@
       "modelName": "Bauleitung | Bauleitungen"
     },
     "bauprogramm": {
-      "modelName": "Bauprogramm | Bauprogramme"
+      "modelName": "Bauprogramm | Bauprogramme",
+      "bauprogramm": "Bauprogramm",
+      "bezeichnung": "Bezeichnung"
     },
     "foerderbereich": {
       "modelName": "Förderbereich | Förderbereiche"

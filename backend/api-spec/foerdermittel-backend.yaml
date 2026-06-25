@@ -13,11 +13,11 @@ tags:
     description: Spring Boot Actuator Web API Documentation
     url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
 paths:
-  /siedlungsgebiet/{id}:
+  /bauprogramme/{id}:
     get:
       tags:
-      - siedlungsgebiet-controller
-      operationId: getSiedlungsgebiet
+      - bauprogramm-controller
+      operationId: getBauprogramm
       parameters:
       - name: id
         in: path
@@ -30,13 +30,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+                $ref: "#/components/schemas/BauprogrammResponseDTO"
       security:
       - bearerAuth: []
     put:
       tags:
-      - siedlungsgebiet-controller
-      operationId: updateSiedlungsgebiet
+      - bauprogramm-controller
+      operationId: updateBauprogramm
       parameters:
       - name: id
         in: path
@@ -47,7 +47,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SiedlungsgebietUpdateDTO"
+              $ref: "#/components/schemas/BauprogrammUpdateDTO"
         required: true
       responses:
         "200":
@@ -55,13 +55,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+                $ref: "#/components/schemas/BauprogrammResponseDTO"
       security:
       - bearerAuth: []
     delete:
       tags:
-      - siedlungsgebiet-controller
-      operationId: deleteSiedlungsgebiet
+      - bauprogramm-controller
+      operationId: deleteBauprogramm
       parameters:
       - name: id
         in: path
@@ -73,44 +73,57 @@ paths:
           description: OK
       security:
       - bearerAuth: []
-  /siedlungsgebiet:
+  /bauprogramme:
     get:
       tags:
-      - siedlungsgebiet-controller
-      operationId: getSiedlungsgebieteByPageAndSize
+      - bauprogramm-controller
+      operationId: getBauprogrammeByPageable
       parameters:
-      - name: pageNumber
+      - name: page
         in: query
+        description: Zero-based page index (0..N)
         required: false
         schema:
+          minimum: 0
           type: integer
-          format: int32
           default: 0
-      - name: pageSize
+      - name: size
         in: query
+        description: The size of the page to be returned
         required: false
         schema:
+          minimum: 1
           type: integer
-          format: int32
           default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "bauprogramm,ASC"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PagedModelSiedlungsgebietResponseDTO"
+                $ref: "#/components/schemas/PagedModelBauprogrammResponseDTO"
       security:
       - bearerAuth: []
     post:
       tags:
-      - siedlungsgebiet-controller
-      operationId: saveSiedlungsgebiet
+      - bauprogramm-controller
+      operationId: saveBauprogramm
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SiedlungsgebietCreateDTO"
+              $ref: "#/components/schemas/BauprogrammCreateDTO"
         required: true
       responses:
         "201":
@@ -118,7 +131,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+                $ref: "#/components/schemas/BauprogrammResponseDTO"
+      security:
+      - bearerAuth: []
+  /bauprogramme/formContext:
+    get:
+      tags:
+      - bauprogramm-controller
+      operationId: getBauprogrammFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauprogrammFormContextDTO"
       security:
       - bearerAuth: []
   /actuator:
@@ -264,39 +291,43 @@ paths:
                 type: object
 components:
   schemas:
-    SiedlungsgebietUpdateDTO:
+    BauprogrammUpdateDTO:
       required:
       - bezeichnung
       type: object
       properties:
         bezeichnung:
           maxLength: 200
-          minLength: 0
+          minLength: 1
           type: string
-    SiedlungsgebietResponseDTO:
+    BauprogrammResponseDTO:
+      required:
+      - bauprogramm
+      - bezeichnung
+      - id
       type: object
       properties:
         id:
           type: string
-        siedlungsgebiet:
+        bauprogramm:
           type: integer
           format: int32
         bezeichnung:
           type: string
-    SiedlungsgebietCreateDTO:
+    BauprogrammCreateDTO:
       required:
+      - bauprogramm
       - bezeichnung
-      - siedlungsgebiet
       type: object
       properties:
-        siedlungsgebiet:
+        bauprogramm:
           maximum: 99
           minimum: 1
           type: integer
           format: int32
         bezeichnung:
           maxLength: 200
-          minLength: 0
+          minLength: 1
           type: string
     PageMetadata:
       type: object
@@ -313,15 +344,25 @@ components:
         totalPages:
           type: integer
           format: int64
-    PagedModelSiedlungsgebietResponseDTO:
+    PagedModelBauprogrammResponseDTO:
       type: object
       properties:
         content:
           type: array
           items:
-            $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+            $ref: "#/components/schemas/BauprogrammResponseDTO"
         page:
           $ref: "#/components/schemas/PageMetadata"
+    BauprogrammFormContextDTO:
+      required:
+      - bauprogramme
+      type: object
+      properties:
+        bauprogramme:
+          type: array
+          items:
+            type: integer
+            format: int32
     Link:
       type: object
       properties:
