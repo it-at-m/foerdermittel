@@ -1,5 +1,5 @@
 import type {
-  BauprogrammFormContextDTO,
+  BauprogrammFormContext,
   BauprogrammResponseDTO,
   DeleteBauprogrammRequest,
   GetBauprogrammeByPageableRequest,
@@ -57,7 +57,7 @@ export function useDeleteBauprogramm() {
 export function useGetBauprogrammFormContext() {
   const api = ApiFactory.getInstance(BauprogrammControllerApi);
 
-  return useAPI<void, BauprogrammFormContextDTO>(() =>
+  return useAPI<void, BauprogrammFormContext>(() =>
     api.getBauprogrammFormContext()
   );
 }

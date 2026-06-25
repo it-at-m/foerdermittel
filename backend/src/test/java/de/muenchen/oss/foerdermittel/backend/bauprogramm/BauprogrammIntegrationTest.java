@@ -8,7 +8,6 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 import de.muenchen.oss.foerdermittel.backend.TestConstants;
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammCreateDTO;
-import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammUpdateDTO;
 import java.math.BigDecimal;
@@ -393,7 +392,7 @@ class BauprogrammIntegrationTest {
             bauprogrammRepository.deleteAll();
 
             // When
-            final BauprogrammFormContextDTO result = restTestClient.get()
+            final BauprogrammFormContext result = restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/bauprogramme/form-context")
                             .build())
@@ -401,7 +400,7 @@ class BauprogrammIntegrationTest {
                     .exchange()
                     .expectStatus().isOk()
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(BauprogrammFormContextDTO.class)
+                    .expectBody(BauprogrammFormContext.class)
                     .returnResult()
                     .getResponseBody();
 
@@ -413,7 +412,7 @@ class BauprogrammIntegrationTest {
         @Test
         void givenEntitiesExist_thenReturnCorrectFormContext() {
             // When
-            final BauprogrammFormContextDTO result = restTestClient.get()
+            final BauprogrammFormContext result = restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/bauprogramme/form-context")
                             .build())
@@ -421,14 +420,14 @@ class BauprogrammIntegrationTest {
                     .exchange()
                     .expectStatus().isOk()
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(BauprogrammFormContextDTO.class)
+                    .expectBody(BauprogrammFormContext.class)
                     .returnResult()
                     .getResponseBody();
 
             // Then
             assertThat(result).isNotNull();
             assertThat(result.bauprogramme()).hasSize(1);
-            assertThat(result.bauprogramme().getFirst()).isEqualByComparingTo(EXISTING_ID);
+            assertThat(result.bauprogramme().getFirst()).isEqualByComparingTo(String.valueOf(EXISTING_ID));
         }
 
         private static Stream<Arguments> authorizationMappings() {

@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 import type {
-  BauprogrammFormContextDTO,
+  BauprogrammFormContext,
   BauprogrammResponseDTO,
 } from "@/api/generated/foerdermittel-backend";
 import type { DeepReadonly } from "vue";
@@ -61,7 +61,7 @@ const currentBauprogramm = ref(modelValue.value.bauprogramm);
 
 const { bauprogrammFormContext, displayMode = InputDisplayMode.CREATE } =
   defineProps<{
-    bauprogrammFormContext: DeepReadonly<BauprogrammFormContextDTO>;
+    bauprogrammFormContext: DeepReadonly<BauprogrammFormContext>;
     displayMode?: InputDisplayMode;
   }>();
 
