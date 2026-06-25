@@ -6,7 +6,9 @@
       "statistic": "Statistik | Statistiken",
       "report": "Bericht | Berichte",
       "masterdata": "Stammdaten",
-      "action": "Aktion | Aktionen"
+      "action": "Aktion | Aktionen",
+      "readOnly": "(schreibgeschützt)",
+      "required": "*"
     },
     "action": {
       "cancel": "Abbrechen",
@@ -21,8 +23,7 @@
       "manage": "{0} verwalten",
       "create": "{0} @.lower:common.action.create",
       "update": "{0} @.lower:common.action.update",
-      "delete": "{0} @.lower:common.action.delete",
-      "readOnly": "{0} (schreibgeschützt)"
+      "delete": "{0} @.lower:common.action.delete"
     },
     "message": {
       "confirmDelete": "Möchten Sie den \"{0}\"-Eintrag endgültig löschen?",
