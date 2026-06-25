@@ -57,7 +57,7 @@ public class BauprogrammController {
         return new PageImpl<>(bauprogrammResponseDTOList, pageWithBauprogramm.getPageable(), pageWithBauprogramm.getTotalElements());
     }
 
-    @GetMapping("/formContext")
+    @GetMapping("/form-context")
     @ResponseStatus(HttpStatus.OK)
     public BauprogrammFormContextDTO getBauprogrammFormContext() {
         return bauprogrammMapper.toDTO(bauprogrammService.getBauprogrammFormContext());

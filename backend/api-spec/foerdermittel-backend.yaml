@@ -134,7 +134,7 @@ paths:
                 $ref: "#/components/schemas/BauprogrammResponseDTO"
       security:
       - bearerAuth: []
-  /bauprogramme/formContext:
+  /bauprogramme/form-context:
     get:
       tags:
       - bauprogramm-controller

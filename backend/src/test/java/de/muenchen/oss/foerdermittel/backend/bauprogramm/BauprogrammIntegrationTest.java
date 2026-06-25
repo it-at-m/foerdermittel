@@ -395,7 +395,7 @@ class BauprogrammIntegrationTest {
             // When
             final BauprogrammFormContextDTO result = restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/bauprogramme/formContext")
+                            .path("/bauprogramme/form-context")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
@@ -415,7 +415,7 @@ class BauprogrammIntegrationTest {
             // When
             final BauprogrammFormContextDTO result = restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/bauprogramme/formContext")
+                            .path("/bauprogramme/form-context")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
@@ -443,7 +443,7 @@ class BauprogrammIntegrationTest {
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/bauprogramme/formContext")
+                            .path("/bauprogramme/form-context")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()
