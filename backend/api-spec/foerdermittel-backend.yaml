@@ -13,6 +13,141 @@ tags:
     description: Spring Boot Actuator Web API Documentation
     url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
 paths:
+  /bauprogramme/{id}:
+    get:
+      tags:
+      - bauprogramm-controller
+      operationId: getBauprogramm
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauprogrammResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - bauprogramm-controller
+      operationId: updateBauprogramm
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BauprogrammUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauprogrammResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - bauprogramm-controller
+      operationId: deleteBauprogramm
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /bauprogramme:
+    get:
+      tags:
+      - bauprogramm-controller
+      operationId: getBauprogrammeByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "bauprogramm,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelBauprogrammResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - bauprogramm-controller
+      operationId: saveBauprogramm
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BauprogrammCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauprogrammResponseDTO"
+      security:
+      - bearerAuth: []
+  /bauprogramme/formContext:
+    get:
+      tags:
+      - bauprogramm-controller
+      operationId: getBauprogrammFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauprogrammFormContextDTO"
+      security:
+      - bearerAuth: []
   /actuator:
     get:
       tags:
@@ -156,6 +291,78 @@ paths:
                 type: object
 components:
   schemas:
+    BauprogrammUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    BauprogrammResponseDTO:
+      required:
+      - bauprogramm
+      - bezeichnung
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        bauprogramm:
+          type: integer
+          format: int32
+        bezeichnung:
+          type: string
+    BauprogrammCreateDTO:
+      required:
+      - bauprogramm
+      - bezeichnung
+      type: object
+      properties:
+        bauprogramm:
+          maximum: 99
+          minimum: 1
+          type: integer
+          format: int32
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    PageMetadata:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    PagedModelBauprogrammResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/BauprogrammResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    BauprogrammFormContextDTO:
+      required:
+      - bauprogramme
+      type: object
+      properties:
+        bauprogramme:
+          type: array
+          items:
+            type: integer
+            format: int32
     Link:
       type: object
       properties:

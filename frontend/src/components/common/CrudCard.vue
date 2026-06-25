@@ -33,9 +33,13 @@
     />
   </v-dialog>
 
-  <v-card class="w-100">
-    <template #title>
-      <v-row align-content="center">
+  <v-card class="d-flex flex-column fill-height w-100">
+    <v-card-title class="pa-0">
+      <v-row
+        align-content="center"
+        justify="center"
+        class="mb-4"
+      >
         <v-col class="d-flex align-center justify-end">
           <v-btn
             v-if="enableActions"
@@ -44,7 +48,6 @@
             :append-icon="mdiPlus"
             :text="t('common.action.create')"
             :disabled="loading"
-            class="mb-4"
             @click="openCreate"
           />
         </v-col>
@@ -54,86 +57,80 @@
           <v-divider />
         </v-col>
       </v-row>
-    </template>
-    <template #text>
-      <v-data-table-server
-        :headers="tableHeadersWithActions"
-        :items="items"
-        :items-length="totalItems"
-        :items-per-page="itemsPerPage"
-        :loading="loading"
-        :show-expand="expandable"
-        expand-strategy="single"
-        @update:options="(data) => emit('updatedOptions', data)"
-      >
-        <template #loading>
-          <p>{{ t("common.message.loading", [domainPlural]) }}</p>
-        </template>
-        <template #no-data>
-          <p>{{ t("common.message.noData", [domainPlural]) }}</p>
-        </template>
-        <!-- Static actions for edit and delete -->
-        <template #[`item.actions`]="{ item }">
-          <v-row align-content="center">
-            <v-col
-              class="pa-0"
-              cols="12"
-              sm="6"
-            >
-              <v-btn
-                v-if="enableActions"
-                size="small"
-                :icon="mdiPencil"
-                class="mr-1"
-                @click="openEdit(item)"
-              />
-            </v-col>
-            <v-col
-              class="pa-0"
-              cols="12"
-              sm="6"
-            >
-              <v-btn
-                v-if="enableActions"
-                size="small"
-                :icon="mdiDelete"
-                @click="openDelete(item)"
-              />
-            </v-col>
-          </v-row>
-        </template>
-        <!-- Slot for rendering the expansion panel -->
-        <template
-          v-if="expandable"
-          #expanded="{ item }"
+    </v-card-title>
+    <v-card-text class="pa-0">
+      <div class="d-flex flex-column h-100 overflow-x-hidden">
+        <v-data-table-server
+          v-model:items-per-page="itemsPerPage"
+          v-model:page="page"
+          v-model:sort-by="sortBy"
+          v-model:search="search"
+          fixed-header
+          :headers="tableHeadersWithActions"
+          :items="items"
+          :items-length="totalItems"
+          :loading="loading"
+          :show-expand="expandable"
+          expand-strategy="single"
+          height="10"
+          class="flex-grow-1 w-100"
         >
-          <div class="pa-10 bg-grey-lighten-5">
-            <slot
-              name="form"
-              :item="item"
-              :input-display-mode="InputDisplayMode.READ"
-              :update-validity="undefined"
+          <template #loading>
+            <p>{{ t("common.message.loading", [domainPlural]) }}</p>
+          </template>
+          <template #no-data>
+            <p>{{ t("common.message.noData", [domainPlural]) }}</p>
+          </template>
+          <!-- Static actions for edit and delete -->
+          <template #[`item.actions`]="{ item }">
+            <v-btn
+              v-if="enableActions"
+              size="small"
+              :icon="mdiPencil"
+              class="mr-1"
+              @click="openEdit(item)"
             />
-          </div>
-        </template>
-        <!-- Allow custom slots for other table columns -->
-        <template
-          v-for="(_, slotName) in $slots"
-          :key="slotName"
-          #[slotName]="slotProps"
-        >
-          <slot
-            :name="slotName"
-            v-bind="slotProps || {}"
-          />
-        </template>
-      </v-data-table-server>
-    </template>
+            <v-btn
+              v-if="enableActions"
+              size="small"
+              :icon="mdiDelete"
+              @click="openDelete(item)"
+            />
+          </template>
+          <!-- Slot for rendering the expansion panel -->
+          <template
+            v-if="expandable"
+            #expanded="{ item }"
+          >
+            <div class="pa-10 bg-grey-lighten-5">
+              <slot
+                name="form"
+                :item="item"
+                :input-display-mode="InputDisplayMode.READ"
+                :update-validity="undefined"
+              />
+            </div>
+          </template>
+          <!-- Allow custom slots for other table columns -->
+          <template
+            v-for="(_, slotName) in $slots"
+            :key="slotName"
+            #[slotName]="slotProps"
+          >
+            <slot
+              :name="slotName"
+              v-bind="slotProps || {}"
+            />
+          </template>
+        </v-data-table-server>
+      </div>
+    </v-card-text>
   </v-card>
 </template>
 
 <script setup lang="ts" generic="T extends { id?: string }">
-import type { TableColumnHeader } from "@/types/TableColumnHeader";
+import type { DataTableOptions } from "@/types/DataTableOptions";
+import type { DataTableHeader } from "vuetify/framework";
 
 import { mdiDelete, mdiPencil, mdiPlus, mdiTrashCan } from "@mdi/js";
 import { computed, ref, toRaw } from "vue";
@@ -154,7 +151,6 @@ const {
   tableHeaders,
   emptyItemTemplate,
   loading = false,
-  itemsPerPage = 20,
   items = [],
   enableActions = true,
   expandable = false,
@@ -163,14 +159,55 @@ const {
   emptyItemTemplate: T;
   domainKey: string;
   loading?: boolean;
-  tableHeaders: TableColumnHeader<T>[];
+  tableHeaders: Readonly<DataTableHeader<T>>[];
   items?: readonly T[];
-  itemsPerPage?: number;
   totalItems: number;
   enableActions?: boolean;
   expandable?: boolean;
   dialogWidth?: DialogWidth;
 }>();
+
+const dataTableOptions = defineModel<DataTableOptions>({ required: true });
+
+const page = computed({
+  get: () => dataTableOptions.value.page,
+  set: (value) => {
+    dataTableOptions.value = {
+      ...dataTableOptions.value,
+      page: value,
+    };
+  },
+});
+
+const itemsPerPage = computed({
+  get: () => dataTableOptions.value.itemsPerPage,
+  set: (value) => {
+    dataTableOptions.value = {
+      ...dataTableOptions.value,
+      itemsPerPage: value,
+    };
+  },
+});
+
+const sortBy = computed({
+  get: () => dataTableOptions.value.sortBy,
+  set: (value) => {
+    dataTableOptions.value = {
+      ...dataTableOptions.value,
+      sortBy: value,
+    };
+  },
+});
+
+const search = computed({
+  get: () => dataTableOptions.value.search,
+  set: (value) => {
+    dataTableOptions.value = {
+      ...dataTableOptions.value,
+      search: value,
+    };
+  },
+});
 
 const domainSingular = computed(() => t(domainKey));
 const domainPlural = computed(() => t(domainKey, 2));
@@ -186,8 +223,10 @@ const tableHeadersWithActions = computed(() => [
   {
     title: t("common.word.action", { count: 2 }),
     value: "actions",
-    width: 150,
-  },
+    width: "100",
+    align: "center",
+    cellProps: { class: "text-no-wrap" },
+  } satisfies DataTableHeader<T>,
 ]);
 
 const activeItem = ref<T>({ ...emptyItemTemplate });
@@ -199,9 +238,6 @@ const emit = defineEmits<{
   create: [item: T];
   update: [item: T];
   delete: [id: string];
-  // Sadly there is no type for the emit of updatedOptions ...
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  updatedOptions: [options: any];
 }>();
 
 // --- Functions ---
@@ -250,3 +286,9 @@ defineExpose({
   closeDialog,
 });
 </script>
+
+<style scoped>
+:deep(table) {
+  table-layout: fixed;
+}
+</style>

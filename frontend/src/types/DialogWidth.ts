@@ -1,5 +1,5 @@
 export enum DialogWidth {
-  SMALL = "800px",
+  SMALL = "600px",
   MEDIUM = "1200px",
-  LARGE = "1600px",
+  LARGE = "1800px",
 }
