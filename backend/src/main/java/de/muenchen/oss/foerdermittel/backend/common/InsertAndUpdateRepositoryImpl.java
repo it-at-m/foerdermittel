@@ -6,13 +6,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 
 @RequiredArgsConstructor
-public class InsertAndUpdateRepositoryImpl<T, ID> implements InsertAndUpdateRepository<T, ID> {
+public class InsertAndUpdateRepositoryImpl<T, I> implements InsertAndUpdateRepository<T> {
 
     private final EntityManager entityManager;
-    private final JpaEntityInformation<T, ID> entityInformation;
+    private final JpaEntityInformation<T, I> entityInformation;
 
     @Override
-    public T insert(T entity, boolean flush) {
+    public T insert(final T entity, final boolean flush) {
         entityManager.persist(entity);
         if (flush) {
             entityManager.flush();
@@ -21,20 +21,20 @@ public class InsertAndUpdateRepositoryImpl<T, ID> implements InsertAndUpdateRepo
     }
 
     @Override
-    public T insert(T entity) {
+    public T insert(final T entity) {
         return insert(entity, false);
     }
 
     @Override
-    public T update(T entity, boolean flush) {
-        ID id = entityInformation.getId(entity);
+    public T update(final T entity, final boolean flush) {
+        final I id = entityInformation.getId(entity);
 
         if (entityManager.find(entityInformation.getJavaType(), id) == null) {
             throw new EntityNotFoundException(
-                    "Entity does not exist: " + id);
+                    String.format("%s does not exist: %s", entityInformation.getJavaType().getCanonicalName(), id));
         }
 
-        T updated = entityManager.merge(entity);
+        final T updated = entityManager.merge(entity);
 
         if (flush) {
             entityManager.flush();
@@ -44,7 +44,7 @@ public class InsertAndUpdateRepositoryImpl<T, ID> implements InsertAndUpdateRepo
     }
 
     @Override
-    public T update(T entity) {
+    public T update(final T entity) {
         return update(entity, false);
     }
 }
