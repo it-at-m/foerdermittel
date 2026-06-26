@@ -8,7 +8,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BauprogrammRepository extends PagingAndSortingRepository<Bauprogramm, Integer>, CrudRepository<Bauprogramm, Integer> {
+public interface BauprogrammRepository extends PagingAndSortingRepository<Bauprogramm, BigDecimal>, CrudRepository<Bauprogramm, BigDecimal> {
 
     @Query("SELECT b.bauprogramm FROM Bauprogramm b")
     List<BigDecimal> findAllBauprogramme();

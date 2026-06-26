@@ -6,6 +6,7 @@ import static de.muenchen.oss.foerdermittel.backend.common.ExceptionMessageConst
 import de.muenchen.oss.foerdermittel.backend.common.AlreadyExistsException;
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,7 +22,7 @@ public class BauprogrammService {
     private final BauprogrammRepository bauprogrammRepository;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
-    public Bauprogramm getBauprogramm(final Integer bauprogrammId) {
+    public Bauprogramm getBauprogramm(final BigDecimal bauprogrammId) {
         log.info("Get Bauprogramm with ID {}", bauprogrammId);
         return getBauprogrammOrThrowException(bauprogrammId);
     }
@@ -41,7 +42,7 @@ public class BauprogrammService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Bauprogramm createBauprogramm(final Bauprogramm bauprogramm) {
         log.debug("Create Bauprogramm {}", bauprogramm);
-        final int bauprogrammId = bauprogramm.getBauprogramm().intValue();
+        final BigDecimal bauprogrammId = bauprogramm.getBauprogramm();
         if (bauprogrammRepository.existsById(bauprogrammId)) {
             throw new AlreadyExistsException(String.format(MSG_ALREADY_EXISTS, bauprogrammId));
         }
@@ -49,7 +50,7 @@ public class BauprogrammService {
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    public Bauprogramm updateBauprogramm(final Bauprogramm bauprogramm, final Integer bauprogrammId) {
+    public Bauprogramm updateBauprogramm(final Bauprogramm bauprogramm, final BigDecimal bauprogrammId) {
         final Bauprogramm foundBauprogramm = getBauprogrammOrThrowException(bauprogrammId);
         foundBauprogramm.setBezeichnung(bauprogramm.getBezeichnung());
         log.debug("Update Bauprogramm {}", foundBauprogramm);
@@ -57,7 +58,7 @@ public class BauprogrammService {
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    public void deleteBauprogramm(final Integer bauprogrammId) {
+    public void deleteBauprogramm(final BigDecimal bauprogrammId) {
         log.debug("Delete Bauprogramm with ID {}", bauprogrammId);
         if (!bauprogrammRepository.existsById(bauprogrammId)) {
             throw new NotFoundException(String.format(MSG_NOT_FOUND, bauprogrammId));
@@ -65,7 +66,7 @@ public class BauprogrammService {
         bauprogrammRepository.deleteById(bauprogrammId);
     }
 
-    private Bauprogramm getBauprogrammOrThrowException(final Integer bauprogrammId) {
+    private Bauprogramm getBauprogrammOrThrowException(final BigDecimal bauprogrammId) {
         return bauprogrammRepository
                 .findById(bauprogrammId)
                 .orElseThrow(() -> new NotFoundException(String.format(MSG_NOT_FOUND, bauprogrammId)));

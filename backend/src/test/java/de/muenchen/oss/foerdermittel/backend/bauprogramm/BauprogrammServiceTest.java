@@ -40,8 +40,8 @@ class BauprogrammServiceTest {
         @Test
         void givenIdExists_thenReturnEntity() {
             // Given
-            final int id = 1;
-            final Bauprogramm entity = new Bauprogramm(BigDecimal.valueOf(id), BEZEICHNUNG);
+            final BigDecimal id = BigDecimal.valueOf(1);
+            final Bauprogramm entity = new Bauprogramm(id, BEZEICHNUNG);
             when(bauprogrammRepository.findById(id)).thenReturn(Optional.of(entity));
 
             // When
@@ -55,7 +55,7 @@ class BauprogrammServiceTest {
         @Test
         void givenIdNotExists_thenThrowNotFoundException() {
             // Given
-            final int id = 1;
+            final BigDecimal id = BigDecimal.valueOf(1);
             when(bauprogrammRepository.findById(id)).thenReturn(Optional.empty());
 
             // When
@@ -112,8 +112,8 @@ class BauprogrammServiceTest {
         @Test
         void givenBauprogrammAlreadyExists_thenThrowAlreadyExistsException() {
             // Given
-            final int id = 1;
-            final Bauprogramm entityToSave = new Bauprogramm(BigDecimal.valueOf(id), BEZEICHNUNG);
+            final BigDecimal id = BigDecimal.valueOf(1);
+            final Bauprogramm entityToSave = new Bauprogramm(id, BEZEICHNUNG);
             when(bauprogrammRepository.existsById(id)).thenReturn(true);
 
             // When
@@ -131,9 +131,9 @@ class BauprogrammServiceTest {
         @Test
         void givenEntityExists_thenReturnEntity() {
             // Given
-            final int id = 1;
-            final Bauprogramm entityToUpdate = new Bauprogramm(BigDecimal.valueOf(id), BEZEICHNUNG);
-            final Bauprogramm expectedEntity = new Bauprogramm(BigDecimal.valueOf(id), BEZEICHNUNG);
+            final BigDecimal id = BigDecimal.valueOf(1);
+            final Bauprogramm entityToUpdate = new Bauprogramm(id, BEZEICHNUNG);
+            final Bauprogramm expectedEntity = new Bauprogramm(id, BEZEICHNUNG);
             when(bauprogrammRepository.save(entityToUpdate)).thenReturn(expectedEntity);
             when(bauprogrammRepository.findById(id)).thenReturn(Optional.of(entityToUpdate));
 
@@ -149,8 +149,8 @@ class BauprogrammServiceTest {
         @Test
         void givenEntityNotExists_thenThrowNotFoundException() {
             // Given
-            final int id = 1;
-            final Bauprogramm entityToUpdate = new Bauprogramm(BigDecimal.valueOf(id), BEZEICHNUNG);
+            final BigDecimal id = BigDecimal.valueOf(1);
+            final Bauprogramm entityToUpdate = new Bauprogramm(id, BEZEICHNUNG);
             when(bauprogrammRepository.findById(id)).thenReturn(Optional.empty());
 
             // When
@@ -168,7 +168,7 @@ class BauprogrammServiceTest {
         @Test
         void givenIdExists_thenReturnVoid() {
             // Given
-            final int id = 1;
+            final BigDecimal id = BigDecimal.valueOf(1);
             when(bauprogrammRepository.existsById(id)).thenReturn(true);
             Mockito.doNothing().when(bauprogrammRepository).deleteById(id);
 
@@ -183,7 +183,7 @@ class BauprogrammServiceTest {
         @Test
         void givenIdNotExists_thenThrowNotFoundException() {
             // Given
-            final int id = 1;
+            final BigDecimal id = BigDecimal.valueOf(1);
             when(bauprogrammRepository.existsById(id)).thenReturn(false);
 
             // When

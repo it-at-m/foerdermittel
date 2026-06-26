@@ -181,7 +181,7 @@ class BauprogrammIntegrationTest {
                     .getResponseBody();
 
             assertThat(responseDTO).isNotNull();
-            final Optional<Bauprogramm> entity = bauprogrammRepository.findById(Integer.valueOf(responseDTO.id()));
+            final Optional<Bauprogramm> entity = bauprogrammRepository.findById(BigDecimal.valueOf(Integer.parseInt(responseDTO.id())));
             assertThat(entity).isPresent();
             assertThat(entity.get().getBauprogramm().intValue()).isEqualTo(requestDTO.bauprogramm());
             assertThat(entity.get().getBezeichnung()).isEqualTo(requestDTO.bezeichnung());
@@ -276,7 +276,7 @@ class BauprogrammIntegrationTest {
                     .getResponseBody();
 
             assertThat(responseDTO).isNotNull();
-            final Optional<Bauprogramm> entity = bauprogrammRepository.findById(EXISTING_ID);
+            final Optional<Bauprogramm> entity = bauprogrammRepository.findById(BigDecimal.valueOf(EXISTING_ID));
             assertThat(entity).isPresent();
             assertThat(entity.get().getBezeichnung()).isEqualTo(requestDTO.bezeichnung());
         }
@@ -352,7 +352,7 @@ class BauprogrammIntegrationTest {
                     .exchange()
                     .expectStatus().isOk();
 
-            assertThat(bauprogrammRepository.findById(EXISTING_ID)).isEmpty();
+            assertThat(bauprogrammRepository.findById(BigDecimal.valueOf(EXISTING_ID))).isEmpty();
         }
 
         @Test

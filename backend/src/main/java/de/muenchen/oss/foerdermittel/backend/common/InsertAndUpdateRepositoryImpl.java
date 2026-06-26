@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 
 @RequiredArgsConstructor
-public class InsertAndUpdateRepositoryImpl<T, I> implements InsertAndUpdateRepository<T> {
+public class InsertAndUpdateRepositoryImpl<T, I> implements InsertAndUpdateRepository<T, I> {
 
     private final EntityManager entityManager;
     private final JpaEntityInformation<T, I> entityInformation;

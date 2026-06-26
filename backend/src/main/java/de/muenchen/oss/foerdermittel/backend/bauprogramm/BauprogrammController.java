@@ -7,6 +7,8 @@ import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammUpdateDT
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+
+import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -82,9 +84,9 @@ public class BauprogrammController {
         bauprogrammService.deleteBauprogramm(parseBauprogrammId(bauprogrammId));
     }
 
-    private Integer parseBauprogrammId(final String bauprogrammId) {
+    private BigDecimal parseBauprogrammId(final String bauprogrammId) {
         try {
-            return Integer.valueOf(bauprogrammId);
+            return BigDecimal.valueOf(Integer.parseInt(bauprogrammId));
         } catch (final NumberFormatException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid bauprogramm ID: " + bauprogrammId, ex);
         }
