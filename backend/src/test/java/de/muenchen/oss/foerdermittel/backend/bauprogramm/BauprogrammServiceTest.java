@@ -1,6 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.bauprogramm;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -62,7 +63,6 @@ class BauprogrammServiceTest {
 
             // Then
             verify(bauprogrammRepository, times(1)).findById(id);
-            assertThat(exception.getClass()).isEqualTo(NotFoundException.class);
             assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
         }
     }
@@ -121,8 +121,7 @@ class BauprogrammServiceTest {
 
             // Then
             verify(bauprogrammRepository, times(1)).existsById(id);
-            verify(bauprogrammRepository, times(0)).save(entityToSave);
-            assertThat(exception.getClass()).isEqualTo(AlreadyExistsException.class);
+            verify(bauprogrammRepository, never()).save(entityToSave);
             assertThat(exception.getMessage()).isEqualTo(String.format("409 CONFLICT \"Entity with ID %s already exists\"", id));
         }
     }
@@ -159,8 +158,7 @@ class BauprogrammServiceTest {
 
             // Then
             verify(bauprogrammRepository, times(1)).findById(id);
-            verify(bauprogrammRepository, times(0)).save(entityToUpdate);
-            assertThat(exception.getClass()).isEqualTo(NotFoundException.class);
+            verify(bauprogrammRepository, never()).save(entityToUpdate);
             assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
         }
     }
@@ -193,8 +191,7 @@ class BauprogrammServiceTest {
 
             // Then
             verify(bauprogrammRepository, times(1)).existsById(id);
-            verify(bauprogrammRepository, times(0)).deleteById(id);
-            assertThat(exception.getClass()).isEqualTo(NotFoundException.class);
+            verify(bauprogrammRepository, never()).deleteById(id);
             assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
         }
     }
