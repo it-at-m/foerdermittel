@@ -1,8 +1,15 @@
 package de.muenchen.oss.foerdermittel.backend.common;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.Bauprogramm;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
+import java.math.BigDecimal;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -12,31 +19,23 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 
-import java.math.BigDecimal;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
 public class InsertAndUpdateRepositoryÎmplTest {
 
     @Mock
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     @Mock
-    JpaEntityInformation<Bauprogramm, BigDecimal> entityInformation;
+    private JpaEntityInformation<Bauprogramm, BigDecimal> entityInformation;
 
     @InjectMocks
-    InsertAndUpdateRepositoryImpl<Bauprogramm, BigDecimal> repository;
+    private InsertAndUpdateRepositoryImpl<Bauprogramm, BigDecimal> repository;
 
     @Nested
     class Insert {
 
         @Test
-        void givenInsertWithNoFlush_shouldPersistWithoutFlush() {
+        void givenInsertWithNoFlush_thenPersistWithoutFlush() {
             // given
             final Bauprogramm entity = new Bauprogramm();
 
@@ -49,7 +48,7 @@ public class InsertAndUpdateRepositoryÎmplTest {
         }
 
         @Test
-        void givenInsertWithFlush_shouldPersistWithFlush() {
+        void givenInsertWithFlush_thenPersistWithFlush() {
             // given
             final Bauprogramm entity = new Bauprogramm();
 
@@ -67,7 +66,7 @@ public class InsertAndUpdateRepositoryÎmplTest {
     class Update {
 
         @Test
-        void givenUpdateWithNoFlush_shouldMergeWithoutFlush() {
+        void givenUpdateWithNoFlush_thenMergeWithoutFlush() {
             // given
             final Bauprogramm entity = new Bauprogramm();
             final BigDecimal id = BigDecimal.valueOf(42);
@@ -86,7 +85,7 @@ public class InsertAndUpdateRepositoryÎmplTest {
         }
 
         @Test
-        void givenUpdateWithFlush_shouldMergeWithFlush() {
+        void givenUpdateWithFlush_thenMergeWithFlush() {
             // given
             Bauprogramm entity = new Bauprogramm();
             final BigDecimal id = BigDecimal.valueOf(42);
@@ -105,7 +104,7 @@ public class InsertAndUpdateRepositoryÎmplTest {
         }
 
         @Test
-        void givenUpdateWhenNonExistent_shouldThrowException() {
+        void givenUpdateWhenNonExistent_thenThrowException() {
             // given
             Bauprogramm entity = new Bauprogramm();
             final BigDecimal id = BigDecimal.valueOf(42);
@@ -118,7 +117,7 @@ public class InsertAndUpdateRepositoryÎmplTest {
 
             // then
             verify(entityManager, never()).merge(entity);
-            assertThat(exception.getMessage()).isEqualTo(String.format("Entity does not exist: %s", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("%s does not exist: %s", entity.getClass().getCanonicalName(), id));
         }
 
     }
