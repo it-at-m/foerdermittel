@@ -15,8 +15,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.data.jpa.repository.support.JpaEntityInformation;
-import org.springframework.data.jpa.repository.support.JpaMetamodelEntityInformation;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
@@ -29,7 +27,7 @@ public class InsertAndUpdateRepositoryImplIntegrationTest {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private InsertAndUpdateRepositoryImpl<Bauprogramm, BigDecimal> repository;
+    private InsertAndUpdateRepositoryImpl<Bauprogramm> repository;
 
     @Container
     @ServiceConnection
@@ -39,12 +37,7 @@ public class InsertAndUpdateRepositoryImplIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        JpaEntityInformation<Bauprogramm, BigDecimal> info = new JpaMetamodelEntityInformation<>(
-                Bauprogramm.class,
-                entityManager.getMetamodel(),
-                entityManager.getEntityManagerFactory().getPersistenceUnitUtil());
-
-        repository = new InsertAndUpdateRepositoryImpl<>(entityManager, info);
+        repository = new InsertAndUpdateRepositoryImpl<>(entityManager);
     }
 
     @Nested
