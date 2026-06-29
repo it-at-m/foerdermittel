@@ -118,7 +118,7 @@ paths:
     post:
       tags:
       - bauprogramm-controller
-      operationId: saveBauprogramm
+      operationId: createBauprogramm
       requestBody:
         content:
           application/json:

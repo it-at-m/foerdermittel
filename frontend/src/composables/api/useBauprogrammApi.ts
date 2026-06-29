@@ -5,7 +5,7 @@ import type {
   GetBauprogrammeByPageableRequest,
   GetBauprogrammRequest,
   PagedModelBauprogrammResponseDTO,
-  SaveBauprogrammRequest,
+  CreateBauprogrammRequest,
   UpdateBauprogrammRequest,
 } from "@/api/generated/foerdermittel-backend";
 
@@ -16,8 +16,8 @@ import useAPI from "@/composables/useAPI";
 export function useCreateBauprogramm() {
   const api = ApiFactory.getInstance(BauprogrammControllerApi);
 
-  return useAPI<SaveBauprogrammRequest, BauprogrammResponseDTO>((params) =>
-    api.saveBauprogramm(params)
+  return useAPI<CreateBauprogrammRequest, BauprogrammResponseDTO>((params) =>
+    api.createBauprogramm(params)
   );
 }
 

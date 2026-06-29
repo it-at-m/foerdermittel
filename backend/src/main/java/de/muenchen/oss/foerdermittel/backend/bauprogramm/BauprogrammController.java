@@ -66,7 +66,7 @@ public class BauprogrammController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BauprogrammResponseDTO saveBauprogramm(@Valid @RequestBody final BauprogrammCreateDTO bauprogrammCreateDTO) {
+    public BauprogrammResponseDTO createBauprogramm(@Valid @RequestBody final BauprogrammCreateDTO bauprogrammCreateDTO) {
         return bauprogrammMapper.toDTO(bauprogrammService.createBauprogramm(bauprogrammMapper.toEntity(bauprogrammCreateDTO)));
     }
 
