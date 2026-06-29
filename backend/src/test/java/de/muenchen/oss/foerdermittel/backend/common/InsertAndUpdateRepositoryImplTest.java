@@ -24,6 +24,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 @ExtendWith(MockitoExtension.class)
 public class InsertAndUpdateRepositoryImplTest {
@@ -81,17 +83,18 @@ public class InsertAndUpdateRepositoryImplTest {
     }
 
     @Nested
+    @MockitoSettings(strictness = Strictness.LENIENT)
     class Update {
 
         @BeforeEach
         void setUp() {
-            lenient().when(entityManager.getEntityManagerFactory()).thenReturn(entityManagerFactory);
-            lenient().when(entityManagerFactory.getPersistenceUnitUtil()).thenReturn(persistenceUnitUtil);
-            lenient().when(entityManager.getMetamodel()).thenReturn(metamodel);
+            when(entityManager.getEntityManagerFactory()).thenReturn(entityManagerFactory);
+            when(entityManagerFactory.getPersistenceUnitUtil()).thenReturn(persistenceUnitUtil);
+            when(entityManager.getMetamodel()).thenReturn(metamodel);
 
-            lenient().when(metamodel.entity(Bauprogramm.class)).thenReturn(entityType);
-            lenient().when(entityType.getIdType()).thenReturn((Type) idType);
-            lenient().when(idType.getJavaType()).thenReturn(BigDecimal.class);
+            when(metamodel.entity(Bauprogramm.class)).thenReturn(entityType);
+            when(entityType.getIdType()).thenReturn((Type) idType);
+            when(idType.getJavaType()).thenReturn(BigDecimal.class);
         }
 
         @Test
