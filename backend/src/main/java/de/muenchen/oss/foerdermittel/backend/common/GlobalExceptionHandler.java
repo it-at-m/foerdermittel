@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ProblemDetail handleDataIntegrityViolationException(final DataIntegrityViolationException ex) {
-        Throwable cause = ex.getCause();
+        final Throwable cause = ex.getCause();
 
         return switch (cause) {
         case ConstraintViolationException cve ->
