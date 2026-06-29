@@ -289,6 +289,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.siedlungsgebiet.modelName", 2),
+        props: {
+          to: "/siedlungsgebiete",
+        },
       },
       {
         title: t("model.stadtbezirk.modelName", 2),
