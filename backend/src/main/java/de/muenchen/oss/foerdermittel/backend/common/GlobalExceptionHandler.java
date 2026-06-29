@@ -17,13 +17,14 @@ public class GlobalExceptionHandler {
         Throwable cause = ex.getCause();
 
         return switch (cause) {
-            case ConstraintViolationException cve ->
-                    ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, cve.getMessage());
-            case PropertyValueException pve ->
-                    ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, String.format("Missing required field '%s' for entity '%s'", pve.getPropertyName(), pve.getEntityName()));
-            case DataException de ->
-                    ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, String.format("Invalid field value: %s", de.getMessage()));
-            case null, default -> ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        case ConstraintViolationException cve ->
+            ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, cve.getMessage());
+        case PropertyValueException pve ->
+            ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+                    String.format("Missing required field '%s' for entity '%s'", pve.getPropertyName(), pve.getEntityName()));
+        case DataException de ->
+            ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, String.format("Invalid field value: %s", de.getMessage()));
+        case null, default -> ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         };
     }
 
