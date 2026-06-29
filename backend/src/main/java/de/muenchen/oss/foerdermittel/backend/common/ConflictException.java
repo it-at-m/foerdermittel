@@ -3,15 +3,15 @@ package de.muenchen.oss.foerdermittel.backend.common;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-/** Exception if data cannot be found. */
+/** Exception if data is in conflict with existing data. */
 @SuppressWarnings("PMD.MissingSerialVersionUID")
-public class AlreadyExistsException extends ResponseStatusException {
+public class ConflictException extends ResponseStatusException {
     /**
-     * NotFoundException constructor
+     * ConflictException constructor
      *
      * @param message Exception message
      */
-    public AlreadyExistsException(final String message) {
+    public ConflictException(final String message) {
         super(HttpStatus.CONFLICT, message);
     }
 }
