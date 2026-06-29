@@ -6,7 +6,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import de.muenchen.oss.foerdermittel.backend.common.AlreadyExistsException;
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -95,34 +94,18 @@ class BauprogrammServiceTest {
     @Nested
     class CreateBauprogramm {
         @Test
-        void givenBauprogrammNotExists_thenReturnEntity() {
+        void givenBauprogramm_thenCallInsertEntity() {
             // Given
-            final Bauprogramm entityToSave = new Bauprogramm(BigDecimal.valueOf(1), BEZEICHNUNG);
+            final Bauprogramm entityToInsert = new Bauprogramm(BigDecimal.valueOf(1), BEZEICHNUNG);
             final Bauprogramm expectedEntity = new Bauprogramm(BigDecimal.valueOf(1), BEZEICHNUNG);
-            when(bauprogrammRepository.save(entityToSave)).thenReturn(expectedEntity);
+            when(bauprogrammRepository.insert(entityToInsert)).thenReturn(expectedEntity);
 
             // When
-            final Bauprogramm result = unitUnderTest.createBauprogramm(entityToSave);
+            final Bauprogramm result = unitUnderTest.createBauprogramm(entityToInsert);
 
             // Then
-            verify(bauprogrammRepository, times(1)).save(entityToSave);
+            verify(bauprogrammRepository, times(1)).insert(entityToInsert);
             assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
-        }
-
-        @Test
-        void givenBauprogrammAlreadyExists_thenThrowAlreadyExistsException() {
-            // Given
-            final BigDecimal id = BigDecimal.valueOf(1);
-            final Bauprogramm entityToSave = new Bauprogramm(id, BEZEICHNUNG);
-            when(bauprogrammRepository.existsById(id)).thenReturn(true);
-
-            // When
-            final Exception exception = Assertions.assertThrows(AlreadyExistsException.class, () -> unitUnderTest.createBauprogramm(entityToSave));
-
-            // Then
-            verify(bauprogrammRepository, times(1)).existsById(id);
-            verify(bauprogrammRepository, never()).save(entityToSave);
-            assertThat(exception.getMessage()).isEqualTo(String.format("409 CONFLICT \"Entity with ID %s already exists\"", id));
         }
     }
 
@@ -134,7 +117,7 @@ class BauprogrammServiceTest {
             final BigDecimal id = BigDecimal.valueOf(1);
             final Bauprogramm entityToUpdate = new Bauprogramm(id, BEZEICHNUNG);
             final Bauprogramm expectedEntity = new Bauprogramm(id, BEZEICHNUNG);
-            when(bauprogrammRepository.save(entityToUpdate)).thenReturn(expectedEntity);
+            when(bauprogrammRepository.update(entityToUpdate)).thenReturn(expectedEntity);
             when(bauprogrammRepository.findById(id)).thenReturn(Optional.of(entityToUpdate));
 
             // When
@@ -142,7 +125,7 @@ class BauprogrammServiceTest {
 
             // Then
             verify(bauprogrammRepository, times(1)).findById(id);
-            verify(bauprogrammRepository, times(1)).save(entityToUpdate);
+            verify(bauprogrammRepository, times(1)).update(entityToUpdate);
             assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
         }
 
@@ -158,7 +141,7 @@ class BauprogrammServiceTest {
 
             // Then
             verify(bauprogrammRepository, times(1)).findById(id);
-            verify(bauprogrammRepository, never()).save(entityToUpdate);
+            verify(bauprogrammRepository, never()).update(entityToUpdate);
             assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
         }
     }
