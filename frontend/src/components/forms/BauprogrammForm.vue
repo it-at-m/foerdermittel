@@ -1,5 +1,6 @@
 <template>
   <v-form
+    ref="form"
     :readonly="displayMode === InputDisplayMode.READ"
     @update:model-value="onValidityChanged"
   >
@@ -43,8 +44,9 @@ import type {
   BauprogrammResponseDTO,
 } from "@/api/generated/foerdermittel-backend";
 import type { DeepReadonly } from "vue";
+import type { VForm } from "vuetify/components";
 
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRules } from "vuetify/labs/rules";
 
@@ -69,9 +71,19 @@ const emit = defineEmits<{
   isValid: [boolean | null];
 }>();
 
-const onValidityChanged = (newIsValid: boolean | null) => {
+function onValidityChanged(newIsValid: boolean | null) {
   emit("isValid", newIsValid);
-};
+}
 
 const rules = useRules();
+
+const formRef = useTemplateRef<VForm>("form");
+async function validate() {
+  if (formRef.value) {
+    await formRef.value.validate();
+  }
+}
+defineExpose({
+  validate,
+});
 </script>
