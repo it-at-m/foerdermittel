@@ -27,17 +27,17 @@ public class InsertAndUpdateRepositoryImpl<T> implements InsertAndUpdateReposito
 
     @Override
     public T update(final T entity, final boolean flush) {
-        PersistenceUnitUtil persistenceUnitUtil = entityManager.getEntityManagerFactory().getPersistenceUnitUtil();
+        final PersistenceUnitUtil persistenceUnitUtil = entityManager.getEntityManagerFactory().getPersistenceUnitUtil();
 
-        Object id = persistenceUnitUtil.getIdentifier(entity);
+        final Object id = persistenceUnitUtil.getIdentifier(entity);
 
         if (id == null) {
             throw new IllegalStateException("Entity ID must not be null");
         }
 
-        Class<?> entityClass = entity.getClass();
-        EntityType<?> entityType = entityManager.getMetamodel().entity(entityClass);
-        Class<?> idType = entityType.getIdType().getJavaType();
+        final Class<?> entityClass = entity.getClass();
+        final EntityType<?> entityType = entityManager.getMetamodel().entity(entityClass);
+        final Class<?> idType = entityType.getIdType().getJavaType();
 
         if (!idType.isInstance(id)) {
             throw new IllegalStateException("Unexpected ID type: " + id.getClass());
