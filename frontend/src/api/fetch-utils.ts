@@ -136,9 +136,12 @@ export function defaultCatchHandler(
  * @returns {Headers}
  */
 export function getHeaders(): Headers {
-  return new Headers({
-    "X-XSRF-TOKEN": getXSRFToken(),
-  });
+  const headers = new Headers();
+  const csrfCookie = getXSRFToken();
+  if (csrfCookie) {
+    headers.append("X-XSRF-TOKEN", csrfCookie);
+  }
+  return headers;
 }
 
 /**

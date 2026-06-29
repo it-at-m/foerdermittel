@@ -115,17 +115,18 @@ class BauprogrammServiceTest {
         void givenEntityExists_thenReturnEntity() {
             // Given
             final BigDecimal id = BigDecimal.valueOf(1);
-            final Bauprogramm entityToUpdate = new Bauprogramm(id, BEZEICHNUNG);
-            final Bauprogramm expectedEntity = new Bauprogramm(id, BEZEICHNUNG);
-            when(bauprogrammRepository.update(entityToUpdate)).thenReturn(expectedEntity);
-            when(bauprogrammRepository.findById(id)).thenReturn(Optional.of(entityToUpdate));
+            final Bauprogramm entityToUpdate = new Bauprogramm(id, "updated");
+            final Bauprogramm foundEntity = new Bauprogramm(id, BEZEICHNUNG);
+            final Bauprogramm expectedEntity = new Bauprogramm(id, "updated");
+            when(bauprogrammRepository.findById(id)).thenReturn(Optional.of(foundEntity));
+            when(bauprogrammRepository.update(foundEntity)).thenReturn(expectedEntity);
 
             // When
             final Bauprogramm result = unitUnderTest.updateBauprogramm(entityToUpdate, id);
 
             // Then
             verify(bauprogrammRepository, times(1)).findById(id);
-            verify(bauprogrammRepository, times(1)).update(entityToUpdate);
+            verify(bauprogrammRepository, times(1)).update(foundEntity);
             assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
         }
 
