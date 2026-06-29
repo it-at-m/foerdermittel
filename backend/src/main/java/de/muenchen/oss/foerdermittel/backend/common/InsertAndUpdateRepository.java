@@ -1,11 +1,6 @@
 package de.muenchen.oss.foerdermittel.backend.common;
 
-import org.springframework.data.repository.NoRepositoryBean;
-import org.springframework.data.repository.Repository;
-
-@NoRepositoryBean
-public interface InsertAndUpdateRepository<T, I> extends Repository<T, I> {
-
+public interface InsertAndUpdateRepository<T> {
     T insert(T entity);
 
     T insert(T entity, boolean flush);

@@ -2,14 +2,14 @@ package de.muenchen.oss.foerdermittel.backend.common;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceUnitUtil;
+import jakarta.persistence.metamodel.EntityType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 
 @RequiredArgsConstructor
-public class InsertAndUpdateRepositoryImpl<T, I> implements InsertAndUpdateRepository<T, I> {
+public class InsertAndUpdateRepositoryImpl<T> implements InsertAndUpdateRepository<T> {
 
     private final EntityManager entityManager;
-    private final JpaEntityInformation<T, I> entityInformation;
 
     @Override
     public T insert(final T entity, final boolean flush) {
@@ -27,11 +27,25 @@ public class InsertAndUpdateRepositoryImpl<T, I> implements InsertAndUpdateRepos
 
     @Override
     public T update(final T entity, final boolean flush) {
-        final I id = entityInformation.getId(entity);
+        PersistenceUnitUtil persistenceUnitUtil = entityManager.getEntityManagerFactory().getPersistenceUnitUtil();
 
-        if (entityManager.find(entityInformation.getJavaType(), id) == null) {
+        Object id = persistenceUnitUtil.getIdentifier(entity);
+
+        if (id == null) {
+            throw new IllegalStateException("Entity ID must not be null");
+        }
+
+        Class<?> entityClass = entity.getClass();
+        EntityType<?> entityType = entityManager.getMetamodel().entity(entityClass);
+        Class<?> idType = entityType.getIdType().getJavaType();
+
+        if (!idType.isInstance(id)) {
+            throw new IllegalStateException("Unexpected ID type: " + id.getClass());
+        }
+
+        if (entityManager.find(entityClass, id) == null) {
             throw new EntityNotFoundException(
-                    String.format("%s does not exist: %s", entityInformation.getJavaType().getCanonicalName(), id));
+                    String.format("%s does not exist: %s", entity.getClass().getCanonicalName(), id));
         }
 
         final T updated = entityManager.merge(entity);
