@@ -90,6 +90,7 @@ const bauprogrammFormRef =
   useTemplateRef<BauprogrammFormType>("bauprogrammForm");
 
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
+  computed(() => bauprogramme.value?.page?.totalPages),
   getBauprogramme,
   getBauprogrammFormContext,
   () => bauprogrammFormRef.value?.validate()
