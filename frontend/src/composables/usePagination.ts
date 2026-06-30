@@ -1,5 +1,6 @@
 import type { DataTableOptions } from "@/types/DataTableOptions";
 import type { Pageable } from "@/types/Pageable";
+import type { Ref } from "vue";
 import type { DataTableSortItem } from "vuetify";
 
 import { useRouteQuery } from "@vueuse/router";
@@ -56,6 +57,7 @@ function urlDecodeSortOptions(sortOptionString: string) {
 }
 
 export default function usePagination(
+  totalPages: Ref<number | undefined>,
   getEntitiesFunction: (pageable: Pageable) => Promise<void>,
   getFormContext?: () => void | Promise<void>,
   validate?: () => void | Promise<void>
@@ -83,12 +85,21 @@ export default function usePagination(
   );
 
   watch(
-    page,
-    (newValue) => {
-      const normalized = normalizePage(newValue);
+    [page, totalPages],
+    ([newPage, newTotalPages]) => {
+      const normalized = normalizePage(newPage);
 
-      if (String(normalized) !== newValue) {
-        page.value = String(normalized);
+      if (newTotalPages == null) {
+        if (String(normalized) !== newPage) {
+          page.value = String(normalized);
+        }
+        return;
+      }
+
+      const clamped = Math.min(normalized, newTotalPages);
+
+      if (String(clamped) !== newPage) {
+        page.value = String(clamped);
       }
     },
     { immediate: true }
