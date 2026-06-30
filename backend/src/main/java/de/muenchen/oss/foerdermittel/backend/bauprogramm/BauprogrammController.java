@@ -1,13 +1,14 @@
 package de.muenchen.oss.foerdermittel.backend.bauprogramm;
 
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammCreateDTO;
-import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammMapper;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammUpdateDTO;
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+
+import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,15 +58,15 @@ public class BauprogrammController {
         return new PageImpl<>(bauprogrammResponseDTOList, pageWithBauprogramm.getPageable(), pageWithBauprogramm.getTotalElements());
     }
 
-    @GetMapping("/formContext")
+    @GetMapping("/form-context")
     @ResponseStatus(HttpStatus.OK)
-    public BauprogrammFormContextDTO getBauprogrammFormContext() {
-        return bauprogrammMapper.toDTO(bauprogrammService.getBauprogrammFormContext());
+    public BauprogrammFormContext getBauprogrammFormContext() {
+        return bauprogrammService.getBauprogrammFormContext();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BauprogrammResponseDTO saveBauprogramm(@Valid @RequestBody final BauprogrammCreateDTO bauprogrammCreateDTO) {
+    public BauprogrammResponseDTO createBauprogramm(@Valid @RequestBody final BauprogrammCreateDTO bauprogrammCreateDTO) {
         return bauprogrammMapper.toDTO(bauprogrammService.createBauprogramm(bauprogrammMapper.toEntity(bauprogrammCreateDTO)));
     }
 
@@ -83,9 +84,9 @@ public class BauprogrammController {
         bauprogrammService.deleteBauprogramm(parseBauprogrammId(bauprogrammId));
     }
 
-    private Integer parseBauprogrammId(final String bauprogrammId) {
+    private BigDecimal parseBauprogrammId(final String bauprogrammId) {
         try {
-            return Integer.valueOf(bauprogrammId);
+            return BigDecimal.valueOf(Integer.parseInt(bauprogrammId));
         } catch (final NumberFormatException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid bauprogramm ID: " + bauprogrammId, ex);
         }

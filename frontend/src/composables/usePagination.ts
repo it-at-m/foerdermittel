@@ -57,7 +57,8 @@ function urlDecodeSortOptions(sortOptionString: string) {
 
 export default function usePagination(
   getEntitiesFunction: (pageable: Pageable) => Promise<void>,
-  getFormContext?: () => Promise<void>
+  getFormContext?: () => void | Promise<void>,
+  validate?: () => void | Promise<void>
 ) {
   const page = useRouteQuery<string>("page", String(PAGINATION_DEFAULTS.page));
   const itemsPerPage = useRouteQuery<string>(
@@ -145,8 +146,14 @@ export default function usePagination(
       await getFormContext();
     }
   };
-  const onFailure = (msg: string) => {
+  const onFailure = async (msg: string) => {
     snackbarStore.push({ text: msg, color: STATUS_INDICATORS.ERROR });
+    if (getFormContext) {
+      await getFormContext();
+    }
+    if (validate) {
+      await validate();
+    }
   };
 
   return {
