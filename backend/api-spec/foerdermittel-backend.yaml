@@ -13,6 +13,66 @@ tags:
     description: Spring Boot Actuator Web API Documentation
     url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
 paths:
+  /krankenhaeuser/{id}:
+    get:
+      tags:
+      - krankenhaus-controller
+      operationId: getKrankenhaus
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KrankenhausResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - krankenhaus-controller
+      operationId: updateKrankenhaus
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KrankenhausUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KrankenhausResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - krankenhaus-controller
+      operationId: deleteKrankenhaus
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /bauprogramme/{id}:
     get:
       tags:
@@ -71,6 +131,67 @@ paths:
       responses:
         "200":
           description: OK
+      security:
+      - bearerAuth: []
+  /krankenhaeuser:
+    get:
+      tags:
+      - krankenhaus-controller
+      operationId: getKrankenhaeuserByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "krhname,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelKrankenhausResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - krankenhaus-controller
+      operationId: createKrankenhaus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KrankenhausCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KrankenhausResponseDTO"
       security:
       - bearerAuth: []
   /bauprogramme:
@@ -132,6 +253,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BauprogrammResponseDTO"
+      security:
+      - bearerAuth: []
+  /krankenhaeuser/form-context:
+    get:
+      tags:
+      - krankenhaus-controller
+      operationId: getKrankenhausFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KrankenhausFormContext"
       security:
       - bearerAuth: []
   /bauprogramme/form-context:
@@ -291,6 +426,28 @@ paths:
                 type: object
 components:
   schemas:
+    KrankenhausUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    KrankenhausResponseDTO:
+      required:
+      - bezeichnung
+      - id
+      - krhname
+      type: object
+      properties:
+        id:
+          type: string
+        krhname:
+          type: string
+        bezeichnung:
+          type: string
     BauprogrammUpdateDTO:
       required:
       - bezeichnung
@@ -313,6 +470,19 @@ components:
           type: integer
           format: int32
         bezeichnung:
+          type: string
+    KrankenhausCreateDTO:
+      required:
+      - bezeichnung
+      - krhname
+      type: object
+      properties:
+        krhname:
+          pattern: "^[A-Z]+$"
+          type: string
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
           type: string
     BauprogrammCreateDTO:
       required:
@@ -344,6 +514,24 @@ components:
         totalPages:
           type: integer
           format: int64
+    PagedModelKrankenhausResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/KrankenhausResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    KrankenhausFormContext:
+      required:
+      - krhNamen
+      type: object
+      properties:
+        krhNamen:
+          type: array
+          items:
+            type: string
     PagedModelBauprogrammResponseDTO:
       type: object
       properties:
