@@ -1,13 +1,12 @@
 package de.muenchen.oss.foerdermittel.backend.krankenhaus;
 
+import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
 import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausMapper;
 import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausUpdateDTO;
-import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -71,7 +70,7 @@ public class KrankenhausController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public KrankenhausResponseDTO updateKrankenhaus(@Valid @RequestBody final KrankenhausUpdateDTO krankenhausUpdateDTO,
-                                                    @PathVariable("id") final String krankenhausId) {
+            @PathVariable("id") final String krankenhausId) {
         return krankenhausMapper
                 .toDTO(krankenhausService.updateKrankenhaus(krankenhausMapper.toEntity(krankenhausUpdateDTO), krankenhausId));
     }

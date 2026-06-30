@@ -4,7 +4,6 @@ import static de.muenchen.oss.foerdermittel.backend.common.ExceptionMessageConst
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
-import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
