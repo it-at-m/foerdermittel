@@ -5,6 +5,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public interface KrankenhausMapper {
 
     @Mapping(source = "krhname", target = "id")
