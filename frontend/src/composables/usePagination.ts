@@ -96,7 +96,10 @@ export default function usePagination(
         return;
       }
 
-      const clamped = Math.min(normalized, newTotalPages);
+      const clamped = Math.max(
+        PAGINATION_DEFAULTS.page,
+        Math.min(normalized, newTotalPages)
+      );
 
       if (String(clamped) !== newPage) {
         page.value = String(clamped);
