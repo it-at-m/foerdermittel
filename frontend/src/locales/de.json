@@ -94,7 +94,9 @@
       "modelName": "Förderbereich | Förderbereiche"
     },
     "krankenhaus": {
-      "modelName": "Krankenhaus | Krankenhäuser"
+      "modelName": "Krankenhaus | Krankenhäuser",
+      "krhname": "Kurzform",
+      "bezeichnung": "Bezeichnung"
     },
     "kurzbezeichnung": {
       "modelName": "Kurzbezeichnung | Kurzbezeichnungen"
