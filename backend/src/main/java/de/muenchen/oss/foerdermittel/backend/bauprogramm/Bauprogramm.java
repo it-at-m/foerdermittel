@@ -36,11 +36,11 @@ public class Bauprogramm implements Serializable {
     // Variables //
     // ========= //
 
-    @Column(nullable = false, precision = 2)
+    @Column(nullable = false)
     @Id
     @NotNull @Min(1) @Max(99) private BigDecimal bauprogramm;
 
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false)
     @NotNull @Size(min = 1, max = 200) private String bezeichnung;
 
 }

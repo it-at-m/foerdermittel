@@ -13,7 +13,6 @@ import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
 /**
  * This class represents a Krankenhaus.
@@ -37,9 +36,9 @@ public class Krankenhaus implements Serializable {
 
     @Column(nullable = false)
     @Id
-    @NotNull @Length(min = 1, max = 1) @Pattern(regexp = "^[A-Z]+$") private String krhname;
+    @NotNull @Size(min = 1, max = 1) @Pattern(regexp = "^[A-Z]+$") private String krhname;
 
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false)
     @NotNull @Size(min = 1, max = 200) private String bezeichnung;
 
 }

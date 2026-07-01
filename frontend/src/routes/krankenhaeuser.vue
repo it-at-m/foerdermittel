@@ -120,7 +120,7 @@ const handleCreate = async (
 const {
   call: updateKrankenhaus,
   loading: updateKrankenhausLoading,
-  error: updateKrankenhaeuserrror,
+  error: updateKrankenhaeuserError,
 } = useUpdateKrankenhaus();
 
 const handleUpdate = async (
@@ -132,7 +132,7 @@ const handleUpdate = async (
     id: model.id,
     krankenhausUpdateDTO: model,
   });
-  if (!updateKrankenhaeuserrror.value) {
+  if (!updateKrankenhaeuserError.value) {
     await onSuccess(t("common.message.updated", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.updatedError", [t(domainKey)]));
@@ -142,14 +142,14 @@ const handleUpdate = async (
 const {
   call: deleteKrankenhaus,
   loading: deleteKrankenhausLoading,
-  error: deleteKrankenhaeuserrror,
+  error: deleteKrankenhaeuserError,
 } = useDeleteKrankenhaus();
 
 const handleDelete = async (id: string) => {
   await deleteKrankenhaus({
     id,
   });
-  if (!deleteKrankenhaeuserrror.value) {
+  if (!deleteKrankenhaeuserError.value) {
     await onSuccess(t("common.message.deleted", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.deletedError", [t(domainKey)]));
