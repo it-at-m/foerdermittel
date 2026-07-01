@@ -11,6 +11,7 @@ import de.muenchen.oss.foerdermittel.backend.bauprogramm.Bauprogramm;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammRepository;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammResponseDTO;
+import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
@@ -80,7 +81,7 @@ class UnicodeFilterConfigurationTest {
 
         assertNotNull(responseDTO);
 
-        final Bauprogramm entity = bauprogrammRepository.findById(Integer.valueOf(responseDTO.id())).orElse(null);
+        final Bauprogramm entity = bauprogrammRepository.findById(BigDecimal.valueOf(Integer.parseInt(responseDTO.id()))).orElse(null);
 
         // Then
         // Check whether response contains a composed string.

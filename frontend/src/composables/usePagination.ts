@@ -1,5 +1,6 @@
 import type { DataTableOptions } from "@/types/DataTableOptions";
 import type { Pageable } from "@/types/Pageable";
+import type { Ref } from "vue";
 import type { DataTableSortItem } from "vuetify";
 
 import { useRouteQuery } from "@vueuse/router";
@@ -56,8 +57,10 @@ function urlDecodeSortOptions(sortOptionString: string) {
 }
 
 export default function usePagination(
+  totalPages: Ref<number | undefined>,
   getEntitiesFunction: (pageable: Pageable) => Promise<void>,
-  getFormContext?: () => Promise<void>
+  getFormContext?: () => void | Promise<void>,
+  validate?: () => void | Promise<void>
 ) {
   const page = useRouteQuery<string>("page", String(PAGINATION_DEFAULTS.page));
   const itemsPerPage = useRouteQuery<string>(
@@ -82,12 +85,24 @@ export default function usePagination(
   );
 
   watch(
-    page,
-    (newValue) => {
-      const normalized = normalizePage(newValue);
+    [page, totalPages],
+    ([newPage, newTotalPages]) => {
+      const normalized = normalizePage(newPage);
 
-      if (String(normalized) !== newValue) {
-        page.value = String(normalized);
+      if (newTotalPages == null) {
+        if (String(normalized) !== newPage) {
+          page.value = String(normalized);
+        }
+        return;
+      }
+
+      const clamped = Math.max(
+        PAGINATION_DEFAULTS.page,
+        Math.min(normalized, newTotalPages)
+      );
+
+      if (String(clamped) !== newPage) {
+        page.value = String(clamped);
       }
     },
     { immediate: true }
@@ -145,8 +160,14 @@ export default function usePagination(
       await getFormContext();
     }
   };
-  const onFailure = (msg: string) => {
+  const onFailure = async (msg: string) => {
     snackbarStore.push({ text: msg, color: STATUS_INDICATORS.ERROR });
+    if (getFormContext) {
+      await getFormContext();
+    }
+    if (validate) {
+      await validate();
+    }
   };
 
   return {

@@ -1,11 +1,11 @@
 import type {
-  BauprogrammFormContextDTO,
+  BauprogrammFormContext,
   BauprogrammResponseDTO,
+  CreateBauprogrammRequest,
   DeleteBauprogrammRequest,
   GetBauprogrammeByPageableRequest,
   GetBauprogrammRequest,
   PagedModelBauprogrammResponseDTO,
-  SaveBauprogrammRequest,
   UpdateBauprogrammRequest,
 } from "@/api/generated/foerdermittel-backend";
 
@@ -16,8 +16,8 @@ import useAPI from "@/composables/useAPI";
 export function useCreateBauprogramm() {
   const api = ApiFactory.getInstance(BauprogrammControllerApi);
 
-  return useAPI<SaveBauprogrammRequest, BauprogrammResponseDTO>((params) =>
-    api.saveBauprogramm(params)
+  return useAPI<CreateBauprogrammRequest, BauprogrammResponseDTO>((params) =>
+    api.createBauprogramm(params)
   );
 }
 
@@ -49,7 +49,6 @@ export function useGetBauprogramm() {
 export function useDeleteBauprogramm() {
   const api = ApiFactory.getInstance(BauprogrammControllerApi);
 
-  // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
   return useAPI<DeleteBauprogrammRequest, void>((params) =>
     api.deleteBauprogramm(params)
   );
@@ -58,8 +57,7 @@ export function useDeleteBauprogramm() {
 export function useGetBauprogrammFormContext() {
   const api = ApiFactory.getInstance(BauprogrammControllerApi);
 
-  // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-  return useAPI<void, BauprogrammFormContextDTO>(() =>
+  return useAPI<void, BauprogrammFormContext>(() =>
     api.getBauprogrammFormContext()
   );
 }

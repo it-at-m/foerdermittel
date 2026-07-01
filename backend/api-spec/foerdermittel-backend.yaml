@@ -118,7 +118,7 @@ paths:
     post:
       tags:
       - bauprogramm-controller
-      operationId: saveBauprogramm
+      operationId: createBauprogramm
       requestBody:
         content:
           application/json:
@@ -134,7 +134,7 @@ paths:
                 $ref: "#/components/schemas/BauprogrammResponseDTO"
       security:
       - bearerAuth: []
-  /bauprogramme/formContext:
+  /bauprogramme/form-context:
     get:
       tags:
       - bauprogramm-controller
@@ -145,7 +145,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BauprogrammFormContextDTO"
+                $ref: "#/components/schemas/BauprogrammFormContext"
       security:
       - bearerAuth: []
   /actuator:
@@ -353,7 +353,7 @@ components:
             $ref: "#/components/schemas/BauprogrammResponseDTO"
         page:
           $ref: "#/components/schemas/PageMetadata"
-    BauprogrammFormContextDTO:
+    BauprogrammFormContext:
       required:
       - bauprogramme
       type: object
@@ -361,8 +361,7 @@ components:
         bauprogramme:
           type: array
           items:
-            type: integer
-            format: int32
+            type: number
     Link:
       type: object
       properties:

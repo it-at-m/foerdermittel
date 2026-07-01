@@ -47,6 +47,7 @@ export default defineConfigWithVueTs(
           ignores: ["/^common\\.roles\\./"],
         },
       ],
+      "@typescript-eslint/no-invalid-void-type": "off",
     },
     settings: {
       "vue-i18n": {
