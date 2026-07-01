@@ -1,6 +1,7 @@
 <template>
   <v-text-field
     v-if="displayMode !== InputDisplayMode.READ"
+    ref="textField"
     :model-value="model"
     :readonly="canNotEdit"
     :class="{
@@ -32,7 +33,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import type { VTextField } from "vuetify/components";
+
+import { computed, nextTick, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import { InputDisplayMode } from "@/types/InputDisplayMode";
@@ -57,9 +60,21 @@ const canNotEdit = computed(
 );
 
 const model = defineModel<string>();
+const textFieldRef = useTemplateRef<VTextField>("textField");
 
-function updateModel(newModelValue: string) {
+async function updateModel(newModelValue: string) {
+  const input = textFieldRef.value?.$el.querySelector(
+    "input"
+  ) as HTMLInputElement;
+
+  const start = input?.selectionStart;
+  const end = input?.selectionEnd;
+
   model.value = uppercase ? newModelValue.toUpperCase() : newModelValue;
+
+  await nextTick();
+
+  input?.setSelectionRange(start, end);
 }
 
 const { t } = useI18n();
