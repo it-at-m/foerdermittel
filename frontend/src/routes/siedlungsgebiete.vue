@@ -62,7 +62,7 @@ const headers: DataTableHeader<Partial<SiedlungsgebietResponseDTO>>[] = [
     title: t("model.siedlungsgebiet.siedlungsgebiet"),
     value: "siedlungsgebiet",
     align: "center",
-    width: 100,
+    width: 120,
   },
   { title: t("model.siedlungsgebiet.bezeichnung"), value: "bezeichnung" },
 ];
