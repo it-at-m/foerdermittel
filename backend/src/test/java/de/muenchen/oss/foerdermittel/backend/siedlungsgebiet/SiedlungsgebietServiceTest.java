@@ -1,11 +1,11 @@
 package de.muenchen.oss.foerdermittel.backend.siedlungsgebiet;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import de.muenchen.oss.foerdermittel.backend.common.AlreadyExistsException;
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -39,8 +39,8 @@ class SiedlungsgebietServiceTest {
         @Test
         void givenIdExists_thenReturnEntity() {
             // Given
-            final int id = 1;
-            final Siedlungsgebiet entity = new Siedlungsgebiet(BigDecimal.valueOf(id), BEZEICHNUNG);
+            final BigDecimal id = BigDecimal.valueOf(1);
+            final Siedlungsgebiet entity = new Siedlungsgebiet(id, BEZEICHNUNG);
             when(siedlungsgebietRepository.findById(id)).thenReturn(Optional.of(entity));
 
             // When
@@ -54,7 +54,7 @@ class SiedlungsgebietServiceTest {
         @Test
         void givenIdNotExists_thenThrowNotFoundException() {
             // Given
-            final int id = 1;
+            final BigDecimal id = BigDecimal.valueOf(1);
             when(siedlungsgebietRepository.findById(id)).thenReturn(Optional.empty());
 
             // When
@@ -62,7 +62,6 @@ class SiedlungsgebietServiceTest {
 
             // Then
             verify(siedlungsgebietRepository, times(1)).findById(id);
-            assertThat(exception.getClass()).isEqualTo(NotFoundException.class);
             assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
         }
     }
@@ -95,35 +94,18 @@ class SiedlungsgebietServiceTest {
     @Nested
     class CreateSiedlungsgebiet {
         @Test
-        void givenSiedlungsgebietNotExists_thenReturnEntity() {
+        void givenSiedlungsgebiet_thenCallInsertEntity() {
             // Given
-            final Siedlungsgebiet entityToSave = new Siedlungsgebiet(BigDecimal.valueOf(1), BEZEICHNUNG);
+            final Siedlungsgebiet entityToInsert = new Siedlungsgebiet(BigDecimal.valueOf(1), BEZEICHNUNG);
             final Siedlungsgebiet expectedEntity = new Siedlungsgebiet(BigDecimal.valueOf(1), BEZEICHNUNG);
-            when(siedlungsgebietRepository.save(entityToSave)).thenReturn(expectedEntity);
+            when(siedlungsgebietRepository.insert(entityToInsert)).thenReturn(expectedEntity);
 
             // When
-            final Siedlungsgebiet result = unitUnderTest.createSiedlungsgebiet(entityToSave);
+            final Siedlungsgebiet result = unitUnderTest.createSiedlungsgebiet(entityToInsert);
 
             // Then
-            verify(siedlungsgebietRepository, times(1)).save(entityToSave);
+            verify(siedlungsgebietRepository, times(1)).insert(entityToInsert);
             assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
-        }
-
-        @Test
-        void givenSiedlungsgebietAlreadyExists_thenThrowAlreadyExistsException() {
-            // Given
-            final int id = 1;
-            final Siedlungsgebiet entityToSave = new Siedlungsgebiet(BigDecimal.valueOf(id), BEZEICHNUNG);
-            when(siedlungsgebietRepository.existsById(id)).thenReturn(true);
-
-            // When
-            final Exception exception = Assertions.assertThrows(AlreadyExistsException.class, () -> unitUnderTest.createSiedlungsgebiet(entityToSave));
-
-            // Then
-            verify(siedlungsgebietRepository, times(1)).existsById(id);
-            verify(siedlungsgebietRepository, times(0)).save(entityToSave);
-            assertThat(exception.getClass()).isEqualTo(AlreadyExistsException.class);
-            assertThat(exception.getMessage()).isEqualTo(String.format("409 CONFLICT \"Entity with ID %s already exists\"", id));
         }
     }
 
@@ -132,26 +114,27 @@ class SiedlungsgebietServiceTest {
         @Test
         void givenEntityExists_thenReturnEntity() {
             // Given
-            final int id = 1;
-            final Siedlungsgebiet entityToUpdate = new Siedlungsgebiet(BigDecimal.valueOf(id), BEZEICHNUNG);
-            final Siedlungsgebiet expectedEntity = new Siedlungsgebiet(BigDecimal.valueOf(id), BEZEICHNUNG);
-            when(siedlungsgebietRepository.save(entityToUpdate)).thenReturn(expectedEntity);
-            when(siedlungsgebietRepository.findById(id)).thenReturn(Optional.of(entityToUpdate));
+            final BigDecimal id = BigDecimal.valueOf(1);
+            final Siedlungsgebiet entityToUpdate = new Siedlungsgebiet(id, "updated");
+            final Siedlungsgebiet foundEntity = new Siedlungsgebiet(id, BEZEICHNUNG);
+            final Siedlungsgebiet expectedEntity = new Siedlungsgebiet(id, "updated");
+            when(siedlungsgebietRepository.findById(id)).thenReturn(Optional.of(foundEntity));
+            when(siedlungsgebietRepository.update(foundEntity)).thenReturn(expectedEntity);
 
             // When
             final Siedlungsgebiet result = unitUnderTest.updateSiedlungsgebiet(entityToUpdate, id);
 
             // Then
             verify(siedlungsgebietRepository, times(1)).findById(id);
-            verify(siedlungsgebietRepository, times(1)).save(entityToUpdate);
+            verify(siedlungsgebietRepository, times(1)).update(foundEntity);
             assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
         }
 
         @Test
         void givenEntityNotExists_thenThrowNotFoundException() {
             // Given
-            final int id = 1;
-            final Siedlungsgebiet entityToUpdate = new Siedlungsgebiet(BigDecimal.valueOf(id), BEZEICHNUNG);
+            final BigDecimal id = BigDecimal.valueOf(1);
+            final Siedlungsgebiet entityToUpdate = new Siedlungsgebiet(id, BEZEICHNUNG);
             when(siedlungsgebietRepository.findById(id)).thenReturn(Optional.empty());
 
             // When
@@ -159,8 +142,7 @@ class SiedlungsgebietServiceTest {
 
             // Then
             verify(siedlungsgebietRepository, times(1)).findById(id);
-            verify(siedlungsgebietRepository, times(0)).save(entityToUpdate);
-            assertThat(exception.getClass()).isEqualTo(NotFoundException.class);
+            verify(siedlungsgebietRepository, never()).update(entityToUpdate);
             assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
         }
     }
@@ -170,7 +152,7 @@ class SiedlungsgebietServiceTest {
         @Test
         void givenIdExists_thenReturnVoid() {
             // Given
-            final int id = 1;
+            final BigDecimal id = BigDecimal.valueOf(1);
             when(siedlungsgebietRepository.existsById(id)).thenReturn(true);
             Mockito.doNothing().when(siedlungsgebietRepository).deleteById(id);
 
@@ -185,7 +167,7 @@ class SiedlungsgebietServiceTest {
         @Test
         void givenIdNotExists_thenThrowNotFoundException() {
             // Given
-            final int id = 1;
+            final BigDecimal id = BigDecimal.valueOf(1);
             when(siedlungsgebietRepository.existsById(id)).thenReturn(false);
 
             // When
@@ -193,8 +175,7 @@ class SiedlungsgebietServiceTest {
 
             // Then
             verify(siedlungsgebietRepository, times(1)).existsById(id);
-            verify(siedlungsgebietRepository, times(0)).deleteById(id);
-            assertThat(exception.getClass()).isEqualTo(NotFoundException.class);
+            verify(siedlungsgebietRepository, never()).deleteById(id);
             assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
         }
     }

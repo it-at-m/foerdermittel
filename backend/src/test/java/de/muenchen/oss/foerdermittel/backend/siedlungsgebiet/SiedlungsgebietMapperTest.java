@@ -3,12 +3,10 @@ package de.muenchen.oss.foerdermittel.backend.siedlungsgebiet;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietCreateDTO;
-import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietMapper;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietUpdateDTO;
 import java.math.BigDecimal;
-import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -66,27 +64,6 @@ public class SiedlungsgebietMapperTest {
             assertThat(entity).isNotNull();
             assertThat(entity.getSiedlungsgebiet()).isNull();
             assertThat(entity.getBezeichnung()).isEqualTo(dto.bezeichnung());
-        }
-
-    }
-
-    @Nested
-    class FormEntity {
-
-        @Test
-        void givenFormContext_thenReturnCorrectDTO() {
-            // given
-            SiedlungsgebietFormContext formContext = new SiedlungsgebietFormContext(List.of(BigDecimal.valueOf(1), BigDecimal.valueOf(2)));
-
-            // when
-            SiedlungsgebietFormContextDTO dto = siedlungsgebietMapper.toDTO(formContext);
-
-            // then
-            assertThat(dto).isNotNull();
-            assertThat(dto.siedlungsgebiete().stream()
-                    .map(BigDecimal::valueOf)
-                    .toList())
-                    .containsExactlyElementsOf(formContext.siedlungsgebiete());
         }
 
     }

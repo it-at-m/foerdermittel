@@ -1,13 +1,14 @@
 package de.muenchen.oss.foerdermittel.backend.siedlungsgebiet;
 
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietCreateDTO;
-import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietMapper;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietUpdateDTO;
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+
+import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,22 +58,22 @@ public class SiedlungsgebietController {
         return new PageImpl<>(siedlungsgebietResponseDTOList, pageWithSiedlungsgebiet.getPageable(), pageWithSiedlungsgebiet.getTotalElements());
     }
 
-    @GetMapping("/formContext")
+    @GetMapping("/form-context")
     @ResponseStatus(HttpStatus.OK)
-    public SiedlungsgebietFormContextDTO getSiedlungsgebietFormContext() {
-        return siedlungsgebietMapper.toDTO(siedlungsgebietService.getSiedlungsgebietFormContext());
+    public SiedlungsgebietFormContext getSiedlungsgebietFormContext() {
+        return siedlungsgebietService.getSiedlungsgebietFormContext();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public SiedlungsgebietResponseDTO saveSiedlungsgebiet(@Valid @RequestBody final SiedlungsgebietCreateDTO siedlungsgebietCreateDTO) {
+    public SiedlungsgebietResponseDTO createSiedlungsgebiet(@Valid @RequestBody final SiedlungsgebietCreateDTO siedlungsgebietCreateDTO) {
         return siedlungsgebietMapper.toDTO(siedlungsgebietService.createSiedlungsgebiet(siedlungsgebietMapper.toEntity(siedlungsgebietCreateDTO)));
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public SiedlungsgebietResponseDTO updateSiedlungsgebiet(@Valid @RequestBody final SiedlungsgebietUpdateDTO siedlungsgebietUpdateDTO,
-                                                            @PathVariable("id") final String siedlungsgebietId) {
+                                                    @PathVariable("id") final String siedlungsgebietId) {
         return siedlungsgebietMapper
                 .toDTO(siedlungsgebietService.updateSiedlungsgebiet(siedlungsgebietMapper.toEntity(siedlungsgebietUpdateDTO), parseSiedlungsgebietId(siedlungsgebietId)));
     }
@@ -83,9 +84,9 @@ public class SiedlungsgebietController {
         siedlungsgebietService.deleteSiedlungsgebiet(parseSiedlungsgebietId(siedlungsgebietId));
     }
 
-    private Integer parseSiedlungsgebietId(final String siedlungsgebietId) {
+    private BigDecimal parseSiedlungsgebietId(final String siedlungsgebietId) {
         try {
-            return Integer.valueOf(siedlungsgebietId);
+            return BigDecimal.valueOf(Integer.parseInt(siedlungsgebietId));
         } catch (final NumberFormatException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid siedlungsgebiet ID: " + siedlungsgebietId, ex);
         }

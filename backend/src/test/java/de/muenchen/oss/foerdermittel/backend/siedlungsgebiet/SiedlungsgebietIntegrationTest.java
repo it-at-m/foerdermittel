@@ -8,7 +8,6 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 import de.muenchen.oss.foerdermittel.backend.TestConstants;
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietCreateDTO;
-import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietUpdateDTO;
 import java.math.BigDecimal;
@@ -182,7 +181,7 @@ class SiedlungsgebietIntegrationTest {
                     .getResponseBody();
 
             assertThat(responseDTO).isNotNull();
-            final Optional<Siedlungsgebiet> entity = siedlungsgebietRepository.findById(Integer.valueOf(responseDTO.id()));
+            final Optional<Siedlungsgebiet> entity = siedlungsgebietRepository.findById(BigDecimal.valueOf(Integer.parseInt(responseDTO.id())));
             assertThat(entity).isPresent();
             assertThat(entity.get().getSiedlungsgebiet().intValue()).isEqualTo(requestDTO.siedlungsgebiet());
             assertThat(entity.get().getBezeichnung()).isEqualTo(requestDTO.bezeichnung());
@@ -218,7 +217,7 @@ class SiedlungsgebietIntegrationTest {
         @MethodSource("invalidInputRequests")
         void givenInvalidInput_thenReturnBadRequest(
                 final String description,
-                        final SiedlungsgebietCreateDTO requestDTO) {
+                final SiedlungsgebietCreateDTO requestDTO) {
 
             restTestClient.post()
                     .uri("/siedlungsgebiete")
@@ -277,7 +276,7 @@ class SiedlungsgebietIntegrationTest {
                     .getResponseBody();
 
             assertThat(responseDTO).isNotNull();
-            final Optional<Siedlungsgebiet> entity = siedlungsgebietRepository.findById(EXISTING_ID);
+            final Optional<Siedlungsgebiet> entity = siedlungsgebietRepository.findById(BigDecimal.valueOf(EXISTING_ID));
             assertThat(entity).isPresent();
             assertThat(entity.get().getBezeichnung()).isEqualTo(requestDTO.bezeichnung());
         }
@@ -309,7 +308,7 @@ class SiedlungsgebietIntegrationTest {
         @MethodSource("invalidInputRequests")
         void givenInvalidInput_thenReturnBadRequest(
                 final String description,
-                        final SiedlungsgebietUpdateDTO requestDTO) {
+                final SiedlungsgebietUpdateDTO requestDTO) {
             restTestClient.put()
                     .uri("/siedlungsgebiete/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
@@ -353,7 +352,7 @@ class SiedlungsgebietIntegrationTest {
                     .exchange()
                     .expectStatus().isOk();
 
-            assertThat(siedlungsgebietRepository.findById(EXISTING_ID)).isEmpty();
+            assertThat(siedlungsgebietRepository.findById(BigDecimal.valueOf(EXISTING_ID))).isEmpty();
         }
 
         @Test
@@ -393,15 +392,15 @@ class SiedlungsgebietIntegrationTest {
             siedlungsgebietRepository.deleteAll();
 
             // When
-            final SiedlungsgebietFormContextDTO result = restTestClient.get()
+            final SiedlungsgebietFormContext result = restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/siedlungsgebiete/formContext")
+                            .path("/siedlungsgebiete/form-context")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus().isOk()
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(SiedlungsgebietFormContextDTO.class)
+                    .expectBody(SiedlungsgebietFormContext.class)
                     .returnResult()
                     .getResponseBody();
 
@@ -413,22 +412,22 @@ class SiedlungsgebietIntegrationTest {
         @Test
         void givenEntitiesExist_thenReturnCorrectFormContext() {
             // When
-            final SiedlungsgebietFormContextDTO result = restTestClient.get()
+            final SiedlungsgebietFormContext result = restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/siedlungsgebiete/formContext")
+                            .path("/siedlungsgebiete/form-context")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus().isOk()
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(SiedlungsgebietFormContextDTO.class)
+                    .expectBody(SiedlungsgebietFormContext.class)
                     .returnResult()
                     .getResponseBody();
 
             // Then
             assertThat(result).isNotNull();
             assertThat(result.siedlungsgebiete()).hasSize(1);
-            assertThat(result.siedlungsgebiete().getFirst()).isEqualByComparingTo(EXISTING_ID);
+            assertThat(result.siedlungsgebiete().getFirst()).isEqualByComparingTo(String.valueOf(EXISTING_ID));
         }
 
         private static Stream<Arguments> authorizationMappings() {
@@ -443,7 +442,7 @@ class SiedlungsgebietIntegrationTest {
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/siedlungsgebiete/formContext")
+                            .path("/siedlungsgebiete/form-context")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()

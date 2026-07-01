@@ -1,11 +1,11 @@
 import type {
-  SiedlungsgebietFormContextDTO,
+  SiedlungsgebietFormContext,
   SiedlungsgebietResponseDTO,
+  CreateSiedlungsgebietRequest,
   DeleteSiedlungsgebietRequest,
   GetSiedlungsgebieteByPageableRequest,
   GetSiedlungsgebietRequest,
   PagedModelSiedlungsgebietResponseDTO,
-  SaveSiedlungsgebietRequest,
   UpdateSiedlungsgebietRequest,
 } from "@/api/generated/foerdermittel-backend";
 
@@ -16,8 +16,8 @@ import useAPI from "@/composables/useAPI";
 export function useCreateSiedlungsgebiet() {
   const api = ApiFactory.getInstance(SiedlungsgebietControllerApi);
 
-  return useAPI<SaveSiedlungsgebietRequest, SiedlungsgebietResponseDTO>((params) =>
-    api.saveSiedlungsgebiet(params)
+  return useAPI<CreateSiedlungsgebietRequest, SiedlungsgebietResponseDTO>((params) =>
+    api.createSiedlungsgebiet(params)
   );
 }
 
@@ -49,7 +49,6 @@ export function useGetSiedlungsgebiet() {
 export function useDeleteSiedlungsgebiet() {
   const api = ApiFactory.getInstance(SiedlungsgebietControllerApi);
 
-  // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
   return useAPI<DeleteSiedlungsgebietRequest, void>((params) =>
     api.deleteSiedlungsgebiet(params)
   );
@@ -58,8 +57,7 @@ export function useDeleteSiedlungsgebiet() {
 export function useGetSiedlungsgebietFormContext() {
   const api = ApiFactory.getInstance(SiedlungsgebietControllerApi);
 
-  // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-  return useAPI<void, SiedlungsgebietFormContextDTO>(() =>
+  return useAPI<void, SiedlungsgebietFormContext>(() =>
     api.getSiedlungsgebietFormContext()
   );
 }

@@ -2,27 +2,28 @@
   <base-view :domain-key="domainKey">
     <!-- @vue-generic {Partial<SiedlungsgebietResponseDTO>} -->
     <crud-card
-      ref="crudRef"
-      v-model="dataTableOptions"
-      :empty-item-template="EMPTY_ITEM_TEMPLATE"
-      :loading="loading"
-      :table-headers="headers"
-      :domain-key="domainKey"
-      :enable-actions="isAdmin"
-      :items="siedlungsgebiete?.content ?? []"
-      :total-items="siedlungsgebiete?.page?.totalElements ?? 0"
-      :dialog-width="DialogWidth.MEDIUM"
-      @delete="handleDelete"
-      @create="handleCreate"
-      @update="handleUpdate"
+        ref="crudRef"
+        v-model="dataTableOptions"
+        :empty-item-template="EMPTY_ITEM_TEMPLATE"
+        :loading="loading"
+        :table-headers="headers"
+        :domain-key="domainKey"
+        :enable-actions="isAdmin"
+        :items="siedlungsgebiete?.content ?? []"
+        :total-items="siedlungsgebiete?.page?.totalElements ?? 0"
+        :dialog-width="DialogWidth.MEDIUM"
+        @delete="handleDelete"
+        @create="handleCreate"
+        @update="handleUpdate"
     >
       <template #form="{ item, updateValidity, inputDisplayMode }">
         <siedlungsgebiet-form
-          v-if="siedlungsgebietFormContext"
-          :model-value="item"
-          :display-mode="inputDisplayMode"
-          :siedlungsgebiet-form-context="siedlungsgebietFormContext"
-          @is-valid="updateValidity"
+            v-if="siedlungsgebietFormContext"
+            ref="siedlungsgebietForm"
+            :model-value="item"
+            :display-mode="inputDisplayMode"
+            :siedlungsgebiet-form-context="siedlungsgebietFormContext"
+            @is-valid="updateValidity"
         />
       </template>
     </crud-card>
@@ -33,7 +34,7 @@
 import type { SiedlungsgebietResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { computed } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -62,7 +63,7 @@ const headers: DataTableHeader<Partial<SiedlungsgebietResponseDTO>>[] = [
     title: t("model.siedlungsgebiet.siedlungsgebiet"),
     value: "siedlungsgebiet",
     align: "center",
-    width: 120,
+    width: 100,
   },
   { title: t("model.siedlungsgebiet.bezeichnung"), value: "bezeichnung" },
 ];
@@ -84,9 +85,15 @@ const {
   loading: getSiedlungsgebietFormContextLoading,
 } = useGetSiedlungsgebietFormContext();
 
+type SiedlungsgebietFormType = InstanceType<typeof SiedlungsgebietForm>;
+const siedlungsgebietFormRef =
+    useTemplateRef<SiedlungsgebietFormType>("siedlungsgebietForm");
+
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
-  getSiedlungsgebiete,
-  getSiedlungsgebietFormContext
+    computed(() => siedlungsgebiete.value?.page?.totalPages),
+    getSiedlungsgebiete,
+    getSiedlungsgebietFormContext,
+    () => siedlungsgebietFormRef.value?.validate()
 );
 
 const {
@@ -96,7 +103,7 @@ const {
 } = useCreateSiedlungsgebiet();
 
 const handleCreate = async (
-  siedlungsgebietCreateDTO: Partial<SiedlungsgebietResponseDTO>
+    siedlungsgebietCreateDTO: Partial<SiedlungsgebietResponseDTO>
 ) => {
   // TODO: some type checking improvements
   const model = siedlungsgebietCreateDTO as SiedlungsgebietResponseDTO;
@@ -106,7 +113,7 @@ const handleCreate = async (
   if (!createSiedlungsgebieteError.value) {
     await onSuccess(t("common.message.created", [t(domainKey)]));
   } else {
-    onFailure(t("common.message.createdError", [t(domainKey)]));
+    await onFailure(t("common.message.createdError", [t(domainKey)]));
   }
 };
 
@@ -117,7 +124,7 @@ const {
 } = useUpdateSiedlungsgebiet();
 
 const handleUpdate = async (
-  siedlungsgebietUpdateDTO: Partial<SiedlungsgebietResponseDTO>
+    siedlungsgebietUpdateDTO: Partial<SiedlungsgebietResponseDTO>
 ) => {
   // TODO: some type checking improvements
   const model = siedlungsgebietUpdateDTO as SiedlungsgebietResponseDTO;
@@ -128,7 +135,7 @@ const handleUpdate = async (
   if (!updateSiedlungsgebietError.value) {
     await onSuccess(t("common.message.updated", [t(domainKey)]));
   } else {
-    onFailure(t("common.message.updatedError", [t(domainKey)]));
+    await onFailure(t("common.message.updatedError", [t(domainKey)]));
   }
 };
 
@@ -145,16 +152,16 @@ const handleDelete = async (id: string) => {
   if (!deleteSiedlungsgebietError.value) {
     await onSuccess(t("common.message.deleted", [t(domainKey)]));
   } else {
-    onFailure(t("common.message.deletedError", [t(domainKey)]));
+    await onFailure(t("common.message.deletedError", [t(domainKey)]));
   }
 };
 
 const loading = computed(
-  () =>
-    getSiedlungsgebieteLoading.value ||
-    getSiedlungsgebietFormContextLoading.value ||
-    createSiedlungsgebietLoading.value ||
-    updateSiedlungsgebietLoading.value ||
-    deleteSiedlungsgebietLoading.value
+    () =>
+        getSiedlungsgebieteLoading.value ||
+        getSiedlungsgebietFormContextLoading.value ||
+        createSiedlungsgebietLoading.value ||
+        updateSiedlungsgebietLoading.value ||
+        deleteSiedlungsgebietLoading.value
 );
 </script>
