@@ -19,6 +19,7 @@
       <template #form="{ item, updateValidity, inputDisplayMode }">
         <bauprogramm-form
           v-if="bauprogrammFormContext"
+          ref="bauprogrammForm"
           :model-value="item"
           :display-mode="inputDisplayMode"
           :bauprogramm-form-context="bauprogrammFormContext"
@@ -33,7 +34,7 @@
 import type { BauprogrammResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { computed } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -84,9 +85,15 @@ const {
   loading: getBauprogrammFormContextLoading,
 } = useGetBauprogrammFormContext();
 
+type BauprogrammFormType = InstanceType<typeof BauprogrammForm>;
+const bauprogrammFormRef =
+  useTemplateRef<BauprogrammFormType>("bauprogrammForm");
+
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
+  computed(() => bauprogramme.value?.page?.totalPages),
   getBauprogramme,
-  getBauprogrammFormContext
+  getBauprogrammFormContext,
+  () => bauprogrammFormRef.value?.validate()
 );
 
 const {
@@ -106,7 +113,7 @@ const handleCreate = async (
   if (!createBauprogrammeError.value) {
     await onSuccess(t("common.message.created", [t(domainKey)]));
   } else {
-    onFailure(t("common.message.createdError", [t(domainKey)]));
+    await onFailure(t("common.message.createdError", [t(domainKey)]));
   }
 };
 
@@ -128,7 +135,7 @@ const handleUpdate = async (
   if (!updateBauprogrammError.value) {
     await onSuccess(t("common.message.updated", [t(domainKey)]));
   } else {
-    onFailure(t("common.message.updatedError", [t(domainKey)]));
+    await onFailure(t("common.message.updatedError", [t(domainKey)]));
   }
 };
 
@@ -145,7 +152,7 @@ const handleDelete = async (id: string) => {
   if (!deleteBauprogrammError.value) {
     await onSuccess(t("common.message.deleted", [t(domainKey)]));
   } else {
-    onFailure(t("common.message.deletedError", [t(domainKey)]));
+    await onFailure(t("common.message.deletedError", [t(domainKey)]));
   }
 };
 
