@@ -208,6 +208,9 @@ class KrankenhausIntegrationTest {
                             "krhName not A-Z",
                             new KrankenhausCreateDTO("9", "Test")),
                     arguments(
+                            "krhName too long",
+                            new KrankenhausCreateDTO("AB", "Test")),
+                    arguments(
                             "bezeichnung too short",
                             new KrankenhausCreateDTO("9", "")),
                     arguments(

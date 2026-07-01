@@ -478,6 +478,8 @@ components:
       type: object
       properties:
         krhname:
+          maxLength: 1
+          minLength: 1
           pattern: "^[A-Z]+$"
           type: string
         bezeichnung:
