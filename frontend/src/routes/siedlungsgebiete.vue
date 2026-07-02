@@ -86,8 +86,9 @@ const {
 } = useGetSiedlungsgebietFormContext();
 
 type SiedlungsgebietFormType = InstanceType<typeof SiedlungsgebietForm>;
-const siedlungsgebietFormRef =
-  useTemplateRef<SiedlungsgebietFormType>("siedlungsgebietForm");
+const siedlungsgebietFormRef = useTemplateRef<SiedlungsgebietFormType>(
+  "siedlungsgebietForm"
+);
 
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => siedlungsgebiete.value?.page?.totalPages),
