@@ -39,14 +39,14 @@ import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
-import siedlungsgebietForm from "@/components/forms/siedlungsgebietForm.vue";
+import SiedlungsgebietForm from "@/components/forms/SiedlungsgebietForm.vue";
 import {
-  useCreatesiedlungsgebiet,
-  useDeletesiedlungsgebiet,
-  useGetsiedlungsgebiete,
-  useGetsiedlungsgebietFormContext,
-  useUpdatesiedlungsgebiet,
-} from "@/composables/api/usesiedlungsgebietApi";
+  useCreateSiedlungsgebiet,
+  useDeleteSiedlungsgebiet,
+  useGetSiedlungsgebiete,
+  useGetSiedlungsgebietFormContext,
+  useUpdateSiedlungsgebiet,
+} from "@/composables/api/useSiedlungsgebietApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
 import usePagination from "@/composables/usePagination";
 import { DialogWidth } from "@/types/DialogWidth";
@@ -58,60 +58,59 @@ const isAdmin = useHasAnyRole(Role.ADMIN);
 
 const { t } = useI18n();
 
-const headers: DataTableHeader<Partial<siedlungsgebietResponseDTO>>[] = [
+const headers: DataTableHeader<Partial<SiedlungsgebietResponseDTO>>[] = [
   {
     title: t("model.siedlungsgebiet.siedlungsgebiet"),
     value: "siedlungsgebiet",
     align: "center",
-    width: 100,
+    width: 120,
   },
   { title: t("model.siedlungsgebiet.bezeichnung"), value: "bezeichnung" },
 ];
 
-const EMPTY_ITEM_TEMPLATE: Partial<siedlungsgebietResponseDTO> = {
+const EMPTY_ITEM_TEMPLATE: Partial<SiedlungsgebietResponseDTO> = {
   siedlungsgebiet: undefined,
   bezeichnung: "",
 };
 
 const {
   data: siedlungsgebiete,
-  call: getsiedlungsgebiete,
-  loading: getsiedlungsgebieteLoading,
-} = useGetsiedlungsgebiete();
+  call: getSiedlungsgebiete,
+  loading: getSiedlungsgebieteLoading,
+} = useGetSiedlungsgebiete();
 
 const {
   data: siedlungsgebietFormContext,
-  call: getsiedlungsgebietFormContext,
-  loading: getsiedlungsgebietFormContextLoading,
-} = useGetsiedlungsgebietFormContext();
+  call: getSiedlungsgebietFormContext,
+  loading: getSiedlungsgebietFormContextLoading,
+} = useGetSiedlungsgebietFormContext();
 
-type siedlungsgebietFormType = InstanceType<typeof siedlungsgebietForm>;
-const siedlungsgebietFormRef = useTemplateRef<siedlungsgebietFormType>(
-  "siedlungsgebietForm"
-);
+type SiedlungsgebietFormType = InstanceType<typeof SiedlungsgebietForm>;
+const siedlungsgebietFormRef =
+  useTemplateRef<SiedlungsgebietFormType>("siedlungsgebietForm");
 
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => siedlungsgebiete.value?.page?.totalPages),
-  getsiedlungsgebiete,
-  getsiedlungsgebietFormContext,
+  getSiedlungsgebiete,
+  getSiedlungsgebietFormContext,
   () => siedlungsgebietFormRef.value?.validate()
 );
 
 const {
-  call: createsiedlungsgebiet,
-  loading: createsiedlungsgebietLoading,
-  error: createsiedlungsgebieteError,
-} = useCreatesiedlungsgebiet();
+  call: createSiedlungsgebiet,
+  loading: createSiedlungsgebietLoading,
+  error: createSiedlungsgebieteError,
+} = useCreateSiedlungsgebiet();
 
 const handleCreate = async (
-  siedlungsgebietCreateDTO: Partial<siedlungsgebietResponseDTO>
+  siedlungsgebietCreateDTO: Partial<SiedlungsgebietResponseDTO>
 ) => {
   // TODO: some type checking improvements
-  const model = siedlungsgebietCreateDTO as siedlungsgebietResponseDTO;
-  await createsiedlungsgebiet({
+  const model = siedlungsgebietCreateDTO as SiedlungsgebietResponseDTO;
+  await createSiedlungsgebiet({
     siedlungsgebietCreateDTO: model,
   });
-  if (!createsiedlungsgebieteError.value) {
+  if (!createSiedlungsgebieteError.value) {
     await onSuccess(t("common.message.created", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.createdError", [t(domainKey)]));
@@ -119,21 +118,21 @@ const handleCreate = async (
 };
 
 const {
-  call: updatesiedlungsgebiet,
-  loading: updatesiedlungsgebietLoading,
-  error: updatesiedlungsgebietError,
-} = useUpdatesiedlungsgebiet();
+  call: updateSiedlungsgebiet,
+  loading: updateSiedlungsgebietLoading,
+  error: updateSiedlungsgebietError,
+} = useUpdateSiedlungsgebiet();
 
 const handleUpdate = async (
-  siedlungsgebietUpdateDTO: Partial<siedlungsgebietResponseDTO>
+  siedlungsgebietUpdateDTO: Partial<SiedlungsgebietResponseDTO>
 ) => {
   // TODO: some type checking improvements
-  const model = siedlungsgebietUpdateDTO as siedlungsgebietResponseDTO;
-  await updatesiedlungsgebiet({
+  const model = siedlungsgebietUpdateDTO as SiedlungsgebietResponseDTO;
+  await updateSiedlungsgebiet({
     id: model.id,
     siedlungsgebietUpdateDTO: model,
   });
-  if (!updatesiedlungsgebietError.value) {
+  if (!updateSiedlungsgebietError.value) {
     await onSuccess(t("common.message.updated", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.updatedError", [t(domainKey)]));
@@ -141,16 +140,16 @@ const handleUpdate = async (
 };
 
 const {
-  call: deletesiedlungsgebiet,
-  loading: deletesiedlungsgebietLoading,
-  error: deletesiedlungsgebietError,
-} = useDeletesiedlungsgebiet();
+  call: deleteSiedlungsgebiet,
+  loading: deleteSiedlungsgebietLoading,
+  error: deleteSiedlungsgebietError,
+} = useDeleteSiedlungsgebiet();
 
 const handleDelete = async (id: string) => {
-  await deletesiedlungsgebiet({
+  await deleteSiedlungsgebiet({
     id,
   });
-  if (!deletesiedlungsgebietError.value) {
+  if (!deleteSiedlungsgebietError.value) {
     await onSuccess(t("common.message.deleted", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.deletedError", [t(domainKey)]));
@@ -159,10 +158,10 @@ const handleDelete = async (id: string) => {
 
 const loading = computed(
   () =>
-    getsiedlungsgebieteLoading.value ||
-    getsiedlungsgebietFormContextLoading.value ||
-    createsiedlungsgebietLoading.value ||
-    updatesiedlungsgebietLoading.value ||
-    deletesiedlungsgebietLoading.value
+    getSiedlungsgebieteLoading.value ||
+    getSiedlungsgebietFormContextLoading.value ||
+    createSiedlungsgebietLoading.value ||
+    updateSiedlungsgebietLoading.value ||
+    deleteSiedlungsgebietLoading.value
 );
 </script>
