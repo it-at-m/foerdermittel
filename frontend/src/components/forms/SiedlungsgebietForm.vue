@@ -38,7 +38,6 @@
 <script setup lang="ts">
 import type {
   SiedlungsgebietFormContext,
-  SiedlungsgebietFormContextDTO,
   SiedlungsgebietResponseDTO,
 } from "@/api/generated/foerdermittel-backend";
 import type { DeepReadonly } from "vue";
