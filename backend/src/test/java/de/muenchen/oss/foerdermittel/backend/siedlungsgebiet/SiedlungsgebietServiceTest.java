@@ -107,6 +107,7 @@ class SiedlungsgebietServiceTest {
             verify(siedlungsgebietRepository, times(1)).insert(entityToInsert);
             assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
         }
+
     }
 
     @Nested

@@ -1,7 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto;
 
-import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
 import de.muenchen.oss.foerdermittel.backend.common.NumberMapper;
+import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

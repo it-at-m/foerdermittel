@@ -1,13 +1,12 @@
 package de.muenchen.oss.foerdermittel.backend.siedlungsgebiet;
 
+import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietMapper;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietUpdateDTO;
-import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -73,9 +72,10 @@ public class SiedlungsgebietController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public SiedlungsgebietResponseDTO updateSiedlungsgebiet(@Valid @RequestBody final SiedlungsgebietUpdateDTO siedlungsgebietUpdateDTO,
-                                                    @PathVariable("id") final String siedlungsgebietId) {
+            @PathVariable("id") final String siedlungsgebietId) {
         return siedlungsgebietMapper
-                .toDTO(siedlungsgebietService.updateSiedlungsgebiet(siedlungsgebietMapper.toEntity(siedlungsgebietUpdateDTO), parseSiedlungsgebietId(siedlungsgebietId)));
+                .toDTO(siedlungsgebietService.updateSiedlungsgebiet(siedlungsgebietMapper.toEntity(siedlungsgebietUpdateDTO),
+                        parseSiedlungsgebietId(siedlungsgebietId)));
     }
 
     @DeleteMapping("/{id}")
