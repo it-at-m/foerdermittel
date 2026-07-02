@@ -6,23 +6,20 @@
   >
     <v-row>
       <v-col cols="3">
-        <fm-number-input
-          v-model="modelValue.bauprogramm"
+        <fm-text-field
+          v-model="modelValue.krhname"
           :display-mode="displayMode"
           disable-edit
           required
-          :counter="2"
+          uppercase
+          :counter="1"
           :rules="[
             rules.required(),
-            rules.number(),
-            rules['min']!(1),
-            rules['max']!(99),
-            rules['unique']!(
-              bauprogrammFormContext.bauprogramme,
-              currentBauprogramm
-            ),
+            rules.strictLength(1),
+            rules.pattern(/^[A-Z]+$/),
+            rules['unique']!(krankenhausFormContext.krhNamen, currentKrhName),
           ]"
-          :label="t('model.bauprogramm.bauprogramm')"
+          :label="t('model.krankenhaus.krhname')"
         />
       </v-col>
       <v-col cols="9">
@@ -32,7 +29,7 @@
           required
           :counter="200"
           :rules="[rules.required(), rules.maxLength(200)]"
-          :label="t('model.bauprogramm.bezeichnung')"
+          :label="t('model.krankenhaus.bezeichnung')"
         />
       </v-col>
     </v-row>
@@ -41,8 +38,8 @@
 
 <script setup lang="ts">
 import type {
-  BauprogrammFormContext,
-  BauprogrammResponseDTO,
+  KrankenhausFormContext,
+  KrankenhausResponseDTO,
 } from "@/api/generated/foerdermittel-backend";
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
@@ -51,20 +48,19 @@ import { ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRules } from "vuetify/labs/rules";
 
-import FmNumberInput from "@/components/common/FmNumberInput.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
 const { t } = useI18n();
 
-const modelValue = defineModel<Partial<BauprogrammResponseDTO>>({
+const modelValue = defineModel<Partial<KrankenhausResponseDTO>>({
   required: true,
 });
-const currentBauprogramm = ref(modelValue.value.bauprogramm);
+const currentKrhName = ref(modelValue.value.krhname);
 
-const { bauprogrammFormContext, displayMode = InputDisplayMode.CREATE } =
+const { krankenhausFormContext, displayMode = InputDisplayMode.CREATE } =
   defineProps<{
-    bauprogrammFormContext: DeepReadonly<BauprogrammFormContext>;
+    krankenhausFormContext: DeepReadonly<KrankenhausFormContext>;
     displayMode?: InputDisplayMode;
   }>();
 
