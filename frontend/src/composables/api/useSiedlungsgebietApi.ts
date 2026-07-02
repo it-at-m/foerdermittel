@@ -1,11 +1,11 @@
 import type {
-  SiedlungsgebietFormContext,
-  SiedlungsgebietResponseDTO,
   CreateSiedlungsgebietRequest,
   DeleteSiedlungsgebietRequest,
   GetSiedlungsgebieteByPageableRequest,
   GetSiedlungsgebietRequest,
   PagedModelSiedlungsgebietResponseDTO,
+  SiedlungsgebietFormContext,
+  SiedlungsgebietResponseDTO,
   UpdateSiedlungsgebietRequest,
 } from "@/api/generated/foerdermittel-backend";
 
@@ -16,16 +16,16 @@ import useAPI from "@/composables/useAPI";
 export function useCreateSiedlungsgebiet() {
   const api = ApiFactory.getInstance(SiedlungsgebietControllerApi);
 
-  return useAPI<CreateSiedlungsgebietRequest, SiedlungsgebietResponseDTO>((params) =>
-    api.createSiedlungsgebiet(params)
+  return useAPI<CreateSiedlungsgebietRequest, SiedlungsgebietResponseDTO>(
+    (params) => api.createSiedlungsgebiet(params)
   );
 }
 
 export function useUpdateSiedlungsgebiet() {
   const api = ApiFactory.getInstance(SiedlungsgebietControllerApi);
 
-  return useAPI<UpdateSiedlungsgebietRequest, SiedlungsgebietResponseDTO>((params) =>
-    api.updateSiedlungsgebiet(params)
+  return useAPI<UpdateSiedlungsgebietRequest, SiedlungsgebietResponseDTO>(
+    (params) => api.updateSiedlungsgebiet(params)
   );
 }
 
@@ -41,8 +41,8 @@ export function useGetSiedlungsgebiete() {
 export function useGetSiedlungsgebiet() {
   const api = ApiFactory.getInstance(SiedlungsgebietControllerApi);
 
-  return useAPI<GetSiedlungsgebietRequest, SiedlungsgebietResponseDTO>((params) =>
-    api.getSiedlungsgebiet(params)
+  return useAPI<GetSiedlungsgebietRequest, SiedlungsgebietResponseDTO>(
+    (params) => api.getSiedlungsgebiet(params)
   );
 }
 

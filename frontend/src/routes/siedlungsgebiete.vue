@@ -2,28 +2,28 @@
   <base-view :domain-key="domainKey">
     <!-- @vue-generic {Partial<SiedlungsgebietResponseDTO>} -->
     <crud-card
-        ref="crudRef"
-        v-model="dataTableOptions"
-        :empty-item-template="EMPTY_ITEM_TEMPLATE"
-        :loading="loading"
-        :table-headers="headers"
-        :domain-key="domainKey"
-        :enable-actions="isAdmin"
-        :items="siedlungsgebiete?.content ?? []"
-        :total-items="siedlungsgebiete?.page?.totalElements ?? 0"
-        :dialog-width="DialogWidth.MEDIUM"
-        @delete="handleDelete"
-        @create="handleCreate"
-        @update="handleUpdate"
+      ref="crudRef"
+      v-model="dataTableOptions"
+      :empty-item-template="EMPTY_ITEM_TEMPLATE"
+      :loading="loading"
+      :table-headers="headers"
+      :domain-key="domainKey"
+      :enable-actions="isAdmin"
+      :items="siedlungsgebiete?.content ?? []"
+      :total-items="siedlungsgebiete?.page?.totalElements ?? 0"
+      :dialog-width="DialogWidth.MEDIUM"
+      @delete="handleDelete"
+      @create="handleCreate"
+      @update="handleUpdate"
     >
       <template #form="{ item, updateValidity, inputDisplayMode }">
         <siedlungsgebiet-form
-            v-if="siedlungsgebietFormContext"
-            ref="siedlungsgebietForm"
-            :model-value="item"
-            :display-mode="inputDisplayMode"
-            :siedlungsgebiet-form-context="siedlungsgebietFormContext"
-            @is-valid="updateValidity"
+          v-if="siedlungsgebietFormContext"
+          ref="siedlungsgebietForm"
+          :model-value="item"
+          :display-mode="inputDisplayMode"
+          :siedlungsgebiet-form-context="siedlungsgebietFormContext"
+          @is-valid="updateValidity"
         />
       </template>
     </crud-card>
@@ -86,14 +86,15 @@ const {
 } = useGetSiedlungsgebietFormContext();
 
 type SiedlungsgebietFormType = InstanceType<typeof SiedlungsgebietForm>;
-const siedlungsgebietFormRef =
-    useTemplateRef<SiedlungsgebietFormType>("siedlungsgebietForm");
+const siedlungsgebietFormRef = useTemplateRef<SiedlungsgebietFormType>(
+  "siedlungsgebietForm"
+);
 
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
-    computed(() => siedlungsgebiete.value?.page?.totalPages),
-    getSiedlungsgebiete,
-    getSiedlungsgebietFormContext,
-    () => siedlungsgebietFormRef.value?.validate()
+  computed(() => siedlungsgebiete.value?.page?.totalPages),
+  getSiedlungsgebiete,
+  getSiedlungsgebietFormContext,
+  () => siedlungsgebietFormRef.value?.validate()
 );
 
 const {
@@ -103,7 +104,7 @@ const {
 } = useCreateSiedlungsgebiet();
 
 const handleCreate = async (
-    siedlungsgebietCreateDTO: Partial<SiedlungsgebietResponseDTO>
+  siedlungsgebietCreateDTO: Partial<SiedlungsgebietResponseDTO>
 ) => {
   // TODO: some type checking improvements
   const model = siedlungsgebietCreateDTO as SiedlungsgebietResponseDTO;
@@ -124,7 +125,7 @@ const {
 } = useUpdateSiedlungsgebiet();
 
 const handleUpdate = async (
-    siedlungsgebietUpdateDTO: Partial<SiedlungsgebietResponseDTO>
+  siedlungsgebietUpdateDTO: Partial<SiedlungsgebietResponseDTO>
 ) => {
   // TODO: some type checking improvements
   const model = siedlungsgebietUpdateDTO as SiedlungsgebietResponseDTO;
@@ -157,11 +158,11 @@ const handleDelete = async (id: string) => {
 };
 
 const loading = computed(
-    () =>
-        getSiedlungsgebieteLoading.value ||
-        getSiedlungsgebietFormContextLoading.value ||
-        createSiedlungsgebietLoading.value ||
-        updateSiedlungsgebietLoading.value ||
-        deleteSiedlungsgebietLoading.value
+  () =>
+    getSiedlungsgebieteLoading.value ||
+    getSiedlungsgebietFormContextLoading.value ||
+    createSiedlungsgebietLoading.value ||
+    updateSiedlungsgebietLoading.value ||
+    deleteSiedlungsgebietLoading.value
 );
 </script>
