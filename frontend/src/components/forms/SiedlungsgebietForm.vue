@@ -37,6 +37,7 @@
 
 <script setup lang="ts">
 import type {
+  SiedlungsgebietFormContext,
   SiedlungsgebietFormContextDTO,
   SiedlungsgebietResponseDTO,
 } from "@/api/generated/foerdermittel-backend";
@@ -56,7 +57,7 @@ const currentSiedlungsgebiet = ref(modelValue.value.siedlungsgebiet);
 
 const { siedlungsgebietFormContext, displayMode = InputDisplayMode.CREATE } =
   defineProps<{
-    siedlungsgebietFormContext: DeepReadonly<SiedlungsgebietFormContextDTO>;
+    siedlungsgebietFormContext: DeepReadonly<SiedlungsgebietFormContext>;
     displayMode?: InputDisplayMode;
   }>();
 
