@@ -1,6 +1,6 @@
 <template>
   <base-view :domain-key="domainKey">
-    <!-- @vue-generic {Partial<siedlungsgebietResponseDTO>} -->
+    <!-- @vue-generic {Partial<SiedlungsgebietResponseDTO>} -->
     <crud-card
       ref="crudRef"
       v-model="dataTableOptions"
@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import type { siedlungsgebietResponseDTO } from "@/api/generated/foerdermittel-backend";
+import type { SiedlungsgebietResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
 import { computed, useTemplateRef } from "vue";
