@@ -1,10 +1,10 @@
 import type {
+  CreateTraegerRequest,
   DeleteTraegerRequest,
   GetTraegerByPageableRequest,
   GetTraegerRequest,
   PagedModelTraegerResponseDTO,
-  SaveTraegerRequest,
-  TraegerFormContextDTO,
+  TraegerFormContext,
   TraegerResponseDTO,
   UpdateTraegerRequest,
 } from "@/api/generated/foerdermittel-backend";
@@ -29,11 +29,19 @@ export function useUpdateTraeger() {
   );
 }
 
-export function useGetTraeger() {
+export function useGetTraeger1() {
   const api = ApiFactory.getInstance(TraegerControllerApi);
 
   return useAPI<GetTraegerByPageableRequest, PagedModelTraegerResponseDTO>(
     (params) => api.getTraegerByPageable(params)
+  );
+}
+
+export function useGetTraeger() {
+  const api = ApiFactory.getInstance(TraegerControllerApi);
+
+  return useAPI<GetTraegerRequest, TraegerResponseDTO>((params) =>
+    api.getTraeger(params)
   );
 }
 
@@ -48,5 +56,5 @@ export function useDeleteTraeger() {
 export function useGetTraegerFormContext() {
   const api = ApiFactory.getInstance(TraegerControllerApi);
 
-  return useAPI<void, TraegerFormContextDTO>(() => api.getTraegerFormContext());
+  return useAPI<void, TraegerFormContext>(() => api.getTraegerFormContext());
 }

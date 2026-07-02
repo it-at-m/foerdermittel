@@ -19,6 +19,7 @@
       <template #form="{ item, updateValidity, inputDisplayMode }">
         <traeger-form
           v-if="traegerFormContext"
+          ref="traegerForm"
           :model-value="item"
           :display-mode="inputDisplayMode"
           :traeger-form-context="traegerFormContext"
@@ -33,7 +34,7 @@
 import type { TraegerResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { computed } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -42,7 +43,7 @@ import TraegerForm from "@/components/forms/TraegerForm.vue";
 import {
   useCreateTraeger,
   useDeleteTraeger,
-  useGetTraeger,
+  useGetTraeger1,
   useGetTraegerFormContext,
   useUpdateTraeger,
 } from "@/composables/api/useTraegerApi";
@@ -76,7 +77,7 @@ const {
   data: traeger,
   call: getTraeger,
   loading: getTraegerLoading,
-} = useGetTraeger();
+} = useGetTraeger1();
 
 const {
   data: traegerFormContext,
@@ -84,13 +85,21 @@ const {
   loading: getTraegerFormContextLoading,
 } = useGetTraegerFormContext();
 
+type TraegerFormType = InstanceType<typeof TraegerForm>;
+const traegerFormRef = useTemplateRef<TraegerFormType>("TraegerForm");
+
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
+  computed(() => traeger.value?.page?.totalPages),
   getTraeger,
-  getTraegerFormContext
+  getTraegerFormContext,
+  () => traegerFormRef.value?.validate()
 );
 
-const { call: createTraeger, loading: createTraegerLoading } =
-  useCreateTraeger();
+const {
+  call: createTraeger,
+  loading: createTraegerLoading,
+  error: createTraegerError,
+} = useCreateTraeger();
 
 const handleCreate = async (traegerCreateDTO: Partial<TraegerResponseDTO>) => {
   // TODO: some type checking improvements
