@@ -1,6 +1,6 @@
 <template>
   <base-view :domain-key="domainKey">
-    <!-- @vue-generic {Partial<SiedlungsgebietResponseDTO>} -->
+    <!-- @vue-generic {Partial<siedlungsgebietResponseDTO>} -->
     <crud-card
       ref="crudRef"
       v-model="dataTableOptions"
@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import type { SiedlungsgebietResponseDTO } from "@/api/generated/foerdermittel-backend";
+import type { siedlungsgebietResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
 import { computed, useTemplateRef } from "vue";
@@ -39,14 +39,14 @@ import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
-import SiedlungsgebietForm from "@/components/forms/SiedlungsgebietForm.vue";
+import siedlungsgebietForm from "@/components/forms/siedlungsgebietForm.vue";
 import {
-  useCreateSiedlungsgebiet,
-  useDeleteSiedlungsgebiet,
-  useGetSiedlungsgebiete,
-  useGetSiedlungsgebietFormContext,
-  useUpdateSiedlungsgebiet,
-} from "@/composables/api/useSiedlungsgebietApi";
+  useCreatesiedlungsgebiet,
+  useDeletesiedlungsgebiet,
+  useGetsiedlungsgebiete,
+  useGetsiedlungsgebietFormContext,
+  useUpdatesiedlungsgebiet,
+} from "@/composables/api/usesiedlungsgebietApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
 import usePagination from "@/composables/usePagination";
 import { DialogWidth } from "@/types/DialogWidth";
@@ -58,7 +58,7 @@ const isAdmin = useHasAnyRole(Role.ADMIN);
 
 const { t } = useI18n();
 
-const headers: DataTableHeader<Partial<SiedlungsgebietResponseDTO>>[] = [
+const headers: DataTableHeader<Partial<siedlungsgebietResponseDTO>>[] = [
   {
     title: t("model.siedlungsgebiet.siedlungsgebiet"),
     value: "siedlungsgebiet",
@@ -68,50 +68,49 @@ const headers: DataTableHeader<Partial<SiedlungsgebietResponseDTO>>[] = [
   { title: t("model.siedlungsgebiet.bezeichnung"), value: "bezeichnung" },
 ];
 
-const EMPTY_ITEM_TEMPLATE: Partial<SiedlungsgebietResponseDTO> = {
+const EMPTY_ITEM_TEMPLATE: Partial<siedlungsgebietResponseDTO> = {
   siedlungsgebiet: undefined,
   bezeichnung: "",
 };
 
 const {
   data: siedlungsgebiete,
-  call: getSiedlungsgebiete,
-  loading: getSiedlungsgebieteLoading,
-} = useGetSiedlungsgebiete();
+  call: getsiedlungsgebiete,
+  loading: getsiedlungsgebieteLoading,
+} = useGetsiedlungsgebiete();
 
 const {
   data: siedlungsgebietFormContext,
-  call: getSiedlungsgebietFormContext,
-  loading: getSiedlungsgebietFormContextLoading,
-} = useGetSiedlungsgebietFormContext();
+  call: getsiedlungsgebietFormContext,
+  loading: getsiedlungsgebietFormContextLoading,
+} = useGetsiedlungsgebietFormContext();
 
-type SiedlungsgebietFormType = InstanceType<typeof SiedlungsgebietForm>;
-const siedlungsgebietFormRef = useTemplateRef<SiedlungsgebietFormType>(
-  "siedlungsgebietForm"
-);
+type siedlungsgebietFormType = InstanceType<typeof siedlungsgebietForm>;
+const siedlungsgebietFormRef =
+  useTemplateRef<siedlungsgebietFormType>("siedlungsgebietForm");
 
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => siedlungsgebiete.value?.page?.totalPages),
-  getSiedlungsgebiete,
-  getSiedlungsgebietFormContext,
+  getsiedlungsgebiete,
+  getsiedlungsgebietFormContext,
   () => siedlungsgebietFormRef.value?.validate()
 );
 
 const {
-  call: createSiedlungsgebiet,
-  loading: createSiedlungsgebietLoading,
-  error: createSiedlungsgebieteError,
-} = useCreateSiedlungsgebiet();
+  call: createsiedlungsgebiet,
+  loading: createsiedlungsgebietLoading,
+  error: createsiedlungsgebieteError,
+} = useCreatesiedlungsgebiet();
 
 const handleCreate = async (
-  siedlungsgebietCreateDTO: Partial<SiedlungsgebietResponseDTO>
+  siedlungsgebietCreateDTO: Partial<siedlungsgebietResponseDTO>
 ) => {
   // TODO: some type checking improvements
-  const model = siedlungsgebietCreateDTO as SiedlungsgebietResponseDTO;
-  await createSiedlungsgebiet({
+  const model = siedlungsgebietCreateDTO as siedlungsgebietResponseDTO;
+  await createsiedlungsgebiet({
     siedlungsgebietCreateDTO: model,
   });
-  if (!createSiedlungsgebieteError.value) {
+  if (!createsiedlungsgebieteError.value) {
     await onSuccess(t("common.message.created", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.createdError", [t(domainKey)]));
@@ -119,21 +118,21 @@ const handleCreate = async (
 };
 
 const {
-  call: updateSiedlungsgebiet,
-  loading: updateSiedlungsgebietLoading,
-  error: updateSiedlungsgebietError,
-} = useUpdateSiedlungsgebiet();
+  call: updatesiedlungsgebiet,
+  loading: updatesiedlungsgebietLoading,
+  error: updatesiedlungsgebietError,
+} = useUpdatesiedlungsgebiet();
 
 const handleUpdate = async (
-  siedlungsgebietUpdateDTO: Partial<SiedlungsgebietResponseDTO>
+  siedlungsgebietUpdateDTO: Partial<siedlungsgebietResponseDTO>
 ) => {
   // TODO: some type checking improvements
-  const model = siedlungsgebietUpdateDTO as SiedlungsgebietResponseDTO;
-  await updateSiedlungsgebiet({
+  const model = siedlungsgebietUpdateDTO as siedlungsgebietResponseDTO;
+  await updatesiedlungsgebiet({
     id: model.id,
     siedlungsgebietUpdateDTO: model,
   });
-  if (!updateSiedlungsgebietError.value) {
+  if (!updatesiedlungsgebietError.value) {
     await onSuccess(t("common.message.updated", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.updatedError", [t(domainKey)]));
@@ -141,16 +140,16 @@ const handleUpdate = async (
 };
 
 const {
-  call: deleteSiedlungsgebiet,
-  loading: deleteSiedlungsgebietLoading,
-  error: deleteSiedlungsgebietError,
-} = useDeleteSiedlungsgebiet();
+  call: deletesiedlungsgebiet,
+  loading: deletesiedlungsgebietLoading,
+  error: deletesiedlungsgebietError,
+} = useDeletesiedlungsgebiet();
 
 const handleDelete = async (id: string) => {
-  await deleteSiedlungsgebiet({
+  await deletesiedlungsgebiet({
     id,
   });
-  if (!deleteSiedlungsgebietError.value) {
+  if (!deletesiedlungsgebietError.value) {
     await onSuccess(t("common.message.deleted", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.deletedError", [t(domainKey)]));
@@ -159,10 +158,10 @@ const handleDelete = async (id: string) => {
 
 const loading = computed(
   () =>
-    getSiedlungsgebieteLoading.value ||
-    getSiedlungsgebietFormContextLoading.value ||
-    createSiedlungsgebietLoading.value ||
-    updateSiedlungsgebietLoading.value ||
-    deleteSiedlungsgebietLoading.value
+    getsiedlungsgebieteLoading.value ||
+    getsiedlungsgebietFormContextLoading.value ||
+    createsiedlungsgebietLoading.value ||
+    updatesiedlungsgebietLoading.value ||
+    deletesiedlungsgebietLoading.value
 );
 </script>
