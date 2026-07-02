@@ -106,7 +106,9 @@
       "modelName": "Referat | Referate"
     },
     "siedlungsgebiet": {
-      "modelName": "Siedlungsgebiet | Siedlungsgebiete"
+      "modelName": "Siedlungsgebiet | Siedlungsgebiete",
+      "siedlungsgebiet": "Siedlungsgebiet",
+      "bezeichnung": "Bezeichnung"
     },
     "stadtbezirk": {
       "modelName": "Stadtbezirk | Stadtbezirke"

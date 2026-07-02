@@ -13,6 +13,66 @@ tags:
     description: Spring Boot Actuator Web API Documentation
     url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
 paths:
+  /siedlungsgebiete/{id}:
+    get:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: getSiedlungsgebiet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: updateSiedlungsgebiet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SiedlungsgebietUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: deleteSiedlungsgebiet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /bauprogramme/{id}:
     get:
       tags:
@@ -71,6 +131,67 @@ paths:
       responses:
         "200":
           description: OK
+      security:
+      - bearerAuth: []
+  /siedlungsgebiete:
+    get:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: getSiedlungsgebieteByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "siedlungsgebiet,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelSiedlungsgebietResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: createSiedlungsgebiet
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SiedlungsgebietCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
       security:
       - bearerAuth: []
   /bauprogramme:
@@ -132,6 +253,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BauprogrammResponseDTO"
+      security:
+      - bearerAuth: []
+  /siedlungsgebiete/form-context:
+    get:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: getSiedlungsgebietFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiedlungsgebietFormContext"
       security:
       - bearerAuth: []
   /bauprogramme/form-context:
@@ -291,6 +426,29 @@ paths:
                 type: object
 components:
   schemas:
+    SiedlungsgebietUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    SiedlungsgebietResponseDTO:
+      required:
+      - bezeichnung
+      - id
+      - siedlungsgebiet
+      type: object
+      properties:
+        id:
+          type: string
+        siedlungsgebiet:
+          type: integer
+          format: int32
+        bezeichnung:
+          type: string
     BauprogrammUpdateDTO:
       required:
       - bezeichnung
@@ -313,6 +471,21 @@ components:
           type: integer
           format: int32
         bezeichnung:
+          type: string
+    SiedlungsgebietCreateDTO:
+      required:
+      - bezeichnung
+      - siedlungsgebiet
+      type: object
+      properties:
+        siedlungsgebiet:
+          maximum: 99
+          minimum: 1
+          type: integer
+          format: int32
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
           type: string
     BauprogrammCreateDTO:
       required:
@@ -344,6 +517,24 @@ components:
         totalPages:
           type: integer
           format: int64
+    PagedModelSiedlungsgebietResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    SiedlungsgebietFormContext:
+      required:
+      - siedlungsgebiete
+      type: object
+      properties:
+        siedlungsgebiete:
+          type: array
+          items:
+            type: number
     PagedModelBauprogrammResponseDTO:
       type: object
       properties:
