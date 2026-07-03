@@ -71,7 +71,6 @@ public class SiedlungsgebietService {
                 siedlungsgebietId,
                 siedlungsgebietRepository.findById(siedlungsgebietId),
                 MSG_NOT_FOUND,
-                siedlungsgebietId
-        );
+                siedlungsgebietId);
     }
 }
