@@ -70,7 +70,6 @@ public class SiedlungsgebietService {
         return ServiceUtils.getEntityOrThrowException(
                 siedlungsgebietId,
                 siedlungsgebietRepository.findById(siedlungsgebietId),
-                MSG_NOT_FOUND,
-                siedlungsgebietId);
+                MSG_NOT_FOUND);
     }
 }

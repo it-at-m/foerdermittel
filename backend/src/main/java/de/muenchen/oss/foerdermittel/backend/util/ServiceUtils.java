@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public class ServiceUtils {
 
-    public static <T, ID> T getEntityOrThrowException(ID id, Optional<T> entityOptional, String messageFormat, Object... args) {
-        return entityOptional.orElseThrow(() -> new NotFoundException(String.format(messageFormat, args)));
+    public static <T, ID> T getEntityOrThrowException(ID id, Optional<T> entityOptional, String messageFormat) {
+        return entityOptional.orElseThrow(() -> new NotFoundException(String.format(messageFormat, id)));
     }
 }
