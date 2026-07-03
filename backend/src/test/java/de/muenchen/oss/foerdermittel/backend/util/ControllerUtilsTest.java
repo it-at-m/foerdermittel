@@ -11,14 +11,14 @@ import org.springframework.web.server.ResponseStatusException;
 class ControllerUtilsTest {
 
     @Test
-    void testConvertStringToBigDecimal_validInput() {
+    void givenValidStringInput_thenConversionSucceeds() {
         String input = "123";
         BigDecimal result = ControllerUtils.convertStringToBigDecimal(input);
         assertEquals(BigDecimal.valueOf(123), result);
     }
 
     @Test
-    void testConvertStringToBigDecimal_invalidInput() {
+    void givenInvalidStringInput_thenConversionFails() {
         String input = "abc";
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             ControllerUtils.convertStringToBigDecimal(input);
