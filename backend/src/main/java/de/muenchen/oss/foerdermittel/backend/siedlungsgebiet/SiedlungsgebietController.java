@@ -5,6 +5,7 @@ import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.Siedlungsgebiet
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietMapper;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietUpdateDTO;
+import de.muenchen.oss.foerdermittel.backend.util.ControllerUtils;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import java.math.BigDecimal;
@@ -42,7 +43,7 @@ public class SiedlungsgebietController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public SiedlungsgebietResponseDTO getSiedlungsgebiet(@PathVariable("id") final String siedlungsgebietId) {
-        return siedlungsgebietMapper.toDTO(siedlungsgebietService.getSiedlungsgebiet(parseSiedlungsgebietId(siedlungsgebietId)));
+        return siedlungsgebietMapper.toDTO(siedlungsgebietService.getSiedlungsgebiet(ControllerUtils.convertStringToBigDecimal(siedlungsgebietId)));
     }
 
     @GetMapping
@@ -75,21 +76,13 @@ public class SiedlungsgebietController {
             @PathVariable("id") final String siedlungsgebietId) {
         return siedlungsgebietMapper
                 .toDTO(siedlungsgebietService.updateSiedlungsgebiet(siedlungsgebietMapper.toEntity(siedlungsgebietUpdateDTO),
-                        parseSiedlungsgebietId(siedlungsgebietId)));
+                        ControllerUtils.convertStringToBigDecimal(siedlungsgebietId)));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteSiedlungsgebiet(@PathVariable("id") final String siedlungsgebietId) {
-        siedlungsgebietService.deleteSiedlungsgebiet(parseSiedlungsgebietId(siedlungsgebietId));
-    }
-
-    private BigDecimal parseSiedlungsgebietId(final String siedlungsgebietId) {
-        try {
-            return BigDecimal.valueOf(Integer.parseInt(siedlungsgebietId));
-        } catch (final NumberFormatException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid siedlungsgebiet ID: " + siedlungsgebietId, ex);
-        }
+        siedlungsgebietService.deleteSiedlungsgebiet(ControllerUtils.convertStringToBigDecimal(siedlungsgebietId));
     }
 
 }

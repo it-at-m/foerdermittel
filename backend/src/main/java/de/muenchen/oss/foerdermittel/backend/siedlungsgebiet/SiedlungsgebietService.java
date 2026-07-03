@@ -4,6 +4,7 @@ import static de.muenchen.oss.foerdermittel.backend.common.ExceptionMessageConst
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -66,8 +67,11 @@ public class SiedlungsgebietService {
     }
 
     private Siedlungsgebiet getSiedlungsgebietOrThrowException(final BigDecimal siedlungsgebietId) {
-        return siedlungsgebietRepository
-                .findById(siedlungsgebietId)
-                .orElseThrow(() -> new NotFoundException(String.format(MSG_NOT_FOUND, siedlungsgebietId)));
+        return ServiceUtils.getEntityOrThrowException(
+                siedlungsgebietId,
+                siedlungsgebietRepository.findById(siedlungsgebietId),
+                MSG_NOT_FOUND,
+                siedlungsgebietId
+        );
     }
 }

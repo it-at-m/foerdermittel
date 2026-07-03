@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface SiedlungsgebietRepository extends PagingAndSortingRepository<Siedlungsgebiet, BigDecimal>, CrudRepository<Siedlungsgebiet, BigDecimal>,
         InsertAndUpdateRepository<Siedlungsgebiet> {
 
-    @Query("SELECT b.siedlungsgebiet FROM Siedlungsgebiet b")
+    @Query("SELECT s.siedlungsgebiet FROM Siedlungsgebiet s")
     List<BigDecimal> findAllSiedlungsgebiete();
 
 }

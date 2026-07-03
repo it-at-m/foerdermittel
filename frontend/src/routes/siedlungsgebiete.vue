@@ -11,7 +11,6 @@
       :enable-actions="isAdmin"
       :items="siedlungsgebiete?.content ?? []"
       :total-items="siedlungsgebiete?.page?.totalElements ?? 0"
-      :dialog-width="DialogWidth.MEDIUM"
       @delete="handleDelete"
       @create="handleCreate"
       @update="handleUpdate"
