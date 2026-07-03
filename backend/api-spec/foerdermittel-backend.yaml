@@ -1,0 +1,758 @@
+openapi: 3.0.1
+info:
+  title: foerdermittel-backend
+  description: Backend component for the application foerdermittel
+  version: 0.0.1-SNAPSHOT
+servers:
+- url: http://localhost:8086
+  description: Generated server url
+tags:
+- name: Actuator
+  description: Monitor and interact
+  externalDocs:
+    description: Spring Boot Actuator Web API Documentation
+    url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
+paths:
+  /siedlungsgebiete/{id}:
+    get:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: getSiedlungsgebiet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: updateSiedlungsgebiet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SiedlungsgebietUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: deleteSiedlungsgebiet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /krankenhaeuser/{id}:
+    get:
+      tags:
+      - krankenhaus-controller
+      operationId: getKrankenhaus
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KrankenhausResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - krankenhaus-controller
+      operationId: updateKrankenhaus
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KrankenhausUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KrankenhausResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - krankenhaus-controller
+      operationId: deleteKrankenhaus
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /bauprogramme/{id}:
+    get:
+      tags:
+      - bauprogramm-controller
+      operationId: getBauprogramm
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauprogrammResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - bauprogramm-controller
+      operationId: updateBauprogramm
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BauprogrammUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauprogrammResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - bauprogramm-controller
+      operationId: deleteBauprogramm
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /siedlungsgebiete:
+    get:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: getSiedlungsgebieteByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "siedlungsgebiet,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelSiedlungsgebietResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: createSiedlungsgebiet
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SiedlungsgebietCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+      security:
+      - bearerAuth: []
+  /krankenhaeuser:
+    get:
+      tags:
+      - krankenhaus-controller
+      operationId: getKrankenhaeuserByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "krhname,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelKrankenhausResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - krankenhaus-controller
+      operationId: createKrankenhaus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KrankenhausCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KrankenhausResponseDTO"
+      security:
+      - bearerAuth: []
+  /bauprogramme:
+    get:
+      tags:
+      - bauprogramm-controller
+      operationId: getBauprogrammeByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "bauprogramm,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelBauprogrammResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - bauprogramm-controller
+      operationId: createBauprogramm
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BauprogrammCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauprogrammResponseDTO"
+      security:
+      - bearerAuth: []
+  /siedlungsgebiete/form-context:
+    get:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: getSiedlungsgebietFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiedlungsgebietFormContext"
+      security:
+      - bearerAuth: []
+  /krankenhaeuser/form-context:
+    get:
+      tags:
+      - krankenhaus-controller
+      operationId: getKrankenhausFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KrankenhausFormContext"
+      security:
+      - bearerAuth: []
+  /bauprogramme/form-context:
+    get:
+      tags:
+      - bauprogramm-controller
+      operationId: getBauprogrammFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauprogrammFormContext"
+      security:
+      - bearerAuth: []
+  /actuator:
+    get:
+      tags:
+      - Actuator
+      summary: Actuator root web endpoint
+      operationId: links
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/Link"
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/Link"
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/Link"
+  /actuator/sbom:
+    get:
+      tags:
+      - Actuator
+      summary: Actuator web endpoint 'sbom'
+      operationId: sboms
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+  /actuator/sbom/{id}:
+    get:
+      tags:
+      - Actuator
+      summary: Actuator web endpoint 'sbom-id'
+      operationId: sbom
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                type: object
+        "404":
+          description: Not Found
+  /actuator/metrics:
+    get:
+      tags:
+      - Actuator
+      summary: Actuator web endpoint 'prometheus'
+      operationId: scrape
+      parameters:
+      - name: format
+        in: query
+        schema:
+          type: string
+          enum:
+          - CONTENT_TYPE_004
+          - CONTENT_TYPE_OPENMETRICS_100
+          - CONTENT_TYPE_PROTOBUF
+      - name: includedNames
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain;version=0.0.4;charset=utf-8:
+              schema:
+                type: object
+            application/openmetrics-text;version=1.0.0;charset=utf-8:
+              schema:
+                type: object
+            application/vnd.google.protobuf;proto=io.prometheus.client.MetricFamily;encoding=delimited:
+              schema:
+                type: object
+  /actuator/info:
+    get:
+      tags:
+      - Actuator
+      summary: Actuator web endpoint 'info'
+      operationId: info
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+  /actuator/health:
+    get:
+      tags:
+      - Actuator
+      summary: Actuator web endpoint 'health'
+      operationId: health
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+components:
+  schemas:
+    SiedlungsgebietUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    SiedlungsgebietResponseDTO:
+      required:
+      - bezeichnung
+      - id
+      - siedlungsgebiet
+      type: object
+      properties:
+        id:
+          type: string
+        siedlungsgebiet:
+          type: integer
+          format: int32
+        bezeichnung:
+          type: string
+    KrankenhausUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    KrankenhausResponseDTO:
+      required:
+      - bezeichnung
+      - id
+      - krhname
+      type: object
+      properties:
+        id:
+          type: string
+        krhname:
+          type: string
+        bezeichnung:
+          type: string
+    BauprogrammUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    BauprogrammResponseDTO:
+      required:
+      - bauprogramm
+      - bezeichnung
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        bauprogramm:
+          type: integer
+          format: int32
+        bezeichnung:
+          type: string
+    SiedlungsgebietCreateDTO:
+      required:
+      - bezeichnung
+      - siedlungsgebiet
+      type: object
+      properties:
+        siedlungsgebiet:
+          maximum: 99
+          minimum: 1
+          type: integer
+          format: int32
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    KrankenhausCreateDTO:
+      required:
+      - bezeichnung
+      - krhname
+      type: object
+      properties:
+        krhname:
+          maxLength: 1
+          minLength: 1
+          pattern: "^[A-Z]+$"
+          type: string
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    BauprogrammCreateDTO:
+      required:
+      - bauprogramm
+      - bezeichnung
+      type: object
+      properties:
+        bauprogramm:
+          maximum: 99
+          minimum: 1
+          type: integer
+          format: int32
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    PageMetadata:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    PagedModelSiedlungsgebietResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    SiedlungsgebietFormContext:
+      required:
+      - siedlungsgebiete
+      type: object
+      properties:
+        siedlungsgebiete:
+          type: array
+          items:
+            type: number
+    PagedModelKrankenhausResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/KrankenhausResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    KrankenhausFormContext:
+      required:
+      - krhNamen
+      type: object
+      properties:
+        krhNamen:
+          type: array
+          items:
+            type: string
+    PagedModelBauprogrammResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/BauprogrammResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    BauprogrammFormContext:
+      required:
+      - bauprogramme
+      type: object
+      properties:
+        bauprogramme:
+          type: array
+          items:
+            type: number
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+        templated:
+          type: boolean
+  securitySchemes:
+    bearerAuth:
+      type: http
+      name: bearerAuth
+      scheme: bearer
+      bearerFormat: JWT
