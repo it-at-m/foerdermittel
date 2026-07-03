@@ -1,23 +1,21 @@
-package de.muenchen.oss.foerdermittel.backend.bauprogramm;
+package de.muenchen.oss.foerdermittel.backend.krankenhaus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * This class represents a Bauprogramm.
+ * This class represents a Krankenhaus.
  * <p>
  * The entity's attributes are mapped to the corresponding database columns.
  * </p>
@@ -26,8 +24,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "bauprogramme")
-public class Bauprogramm implements Serializable {
+@Table(name = "krankenhaeuser")
+public class Krankenhaus implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -38,7 +36,7 @@ public class Bauprogramm implements Serializable {
 
     @Column(nullable = false)
     @Id
-    @NotNull @Min(1) @Max(99) private BigDecimal bauprogramm;
+    @NotNull @Size(min = 1, max = 1) @Pattern(regexp = "^[A-Z]+$") private String krhname;
 
     @Column(nullable = false)
     @NotNull @Size(min = 1, max = 200) private String bezeichnung;
