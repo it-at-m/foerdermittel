@@ -13,11 +13,11 @@ tags:
     description: Spring Boot Actuator Web API Documentation
     url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
 paths:
-  /traeger/{id}:
+  /krankenhaeuser/{id}:
     get:
       tags:
-      - traeger-controller
-      operationId: getTraeger
+      - krankenhaus-controller
+      operationId: getKrankenhaus
       parameters:
       - name: id
         in: path
@@ -30,13 +30,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TraegerResponseDTO"
+                $ref: "#/components/schemas/KrankenhausResponseDTO"
       security:
       - bearerAuth: []
     put:
       tags:
-      - traeger-controller
-      operationId: updateTraeger
+      - krankenhaus-controller
+      operationId: updateKrankenhaus
       parameters:
       - name: id
         in: path
@@ -47,7 +47,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TraegerUpdateDTO"
+              $ref: "#/components/schemas/KrankenhausUpdateDTO"
         required: true
       responses:
         "200":
@@ -55,13 +55,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TraegerResponseDTO"
+                $ref: "#/components/schemas/KrankenhausResponseDTO"
       security:
       - bearerAuth: []
     delete:
       tags:
-      - traeger-controller
-      operationId: deleteTraeger
+      - krankenhaus-controller
+      operationId: deleteKrankenhaus
       parameters:
       - name: id
         in: path
@@ -133,11 +133,11 @@ paths:
           description: OK
       security:
       - bearerAuth: []
-  /traeger:
+  /krankenhaeuser:
     get:
       tags:
-      - traeger-controller
-      operationId: getTraegerByPageable
+      - krankenhaus-controller
+      operationId: getKrankenhaeuserByPageable
       parameters:
       - name: page
         in: query
@@ -165,25 +165,25 @@ paths:
           items:
             type: string
           default:
-          - "kurzform,ASC"
+          - "krhname,ASC"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PagedModelTraegerResponseDTO"
+                $ref: "#/components/schemas/PagedModelKrankenhausResponseDTO"
       security:
       - bearerAuth: []
     post:
       tags:
-      - traeger-controller
-      operationId: createTraeger
+      - krankenhaus-controller
+      operationId: createKrankenhaus
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TraegerCreateDTO"
+              $ref: "#/components/schemas/KrankenhausCreateDTO"
         required: true
       responses:
         "201":
@@ -191,7 +191,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TraegerResponseDTO"
+                $ref: "#/components/schemas/KrankenhausResponseDTO"
       security:
       - bearerAuth: []
   /bauprogramme:
@@ -255,18 +255,18 @@ paths:
                 $ref: "#/components/schemas/BauprogrammResponseDTO"
       security:
       - bearerAuth: []
-  /traeger/formContext:
+  /krankenhaeuser/form-context:
     get:
       tags:
-      - traeger-controller
-      operationId: getTraegerFormContext
+      - krankenhaus-controller
+      operationId: getKrankenhausFormContext
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TraegerFormContext"
+                $ref: "#/components/schemas/KrankenhausFormContext"
       security:
       - bearerAuth: []
   /bauprogramme/form-context:
@@ -426,7 +426,7 @@ paths:
                 type: object
 components:
   schemas:
-    TraegerUpdateDTO:
+    KrankenhausUpdateDTO:
       required:
       - bezeichnung
       type: object
@@ -435,18 +435,17 @@ components:
           maxLength: 200
           minLength: 1
           type: string
-    TraegerResponseDTO:
+    KrankenhausResponseDTO:
       required:
       - bezeichnung
       - id
-      - kurzform
+      - krhname
       type: object
       properties:
         id:
           type: string
-        kurzform:
-          type: integer
-          format: int32
+        krhname:
+          type: string
         bezeichnung:
           type: string
     BauprogrammUpdateDTO:
@@ -472,17 +471,17 @@ components:
           format: int32
         bezeichnung:
           type: string
-    TraegerCreateDTO:
+    KrankenhausCreateDTO:
       required:
       - bezeichnung
-      - kurzform
+      - krhname
       type: object
       properties:
-        kurzform:
-          maximum: 99
-          minimum: 1
-          type: integer
-          format: int32
+        krhname:
+          maxLength: 1
+          minLength: 1
+          pattern: "^[A-Z]+$"
+          type: string
         bezeichnung:
           maxLength: 200
           minLength: 1
@@ -517,24 +516,24 @@ components:
         totalPages:
           type: integer
           format: int64
-    PagedModelTraegerResponseDTO:
+    PagedModelKrankenhausResponseDTO:
       type: object
       properties:
         content:
           type: array
           items:
-            $ref: "#/components/schemas/TraegerResponseDTO"
+            $ref: "#/components/schemas/KrankenhausResponseDTO"
         page:
           $ref: "#/components/schemas/PageMetadata"
-    TraegerFormContext:
+    KrankenhausFormContext:
       required:
-      - traeger
+      - krhNamen
       type: object
       properties:
-        traeger:
+        krhNamen:
           type: array
           items:
-            type: number
+            type: string
     PagedModelBauprogrammResponseDTO:
       type: object
       properties:
