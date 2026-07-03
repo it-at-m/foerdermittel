@@ -48,7 +48,6 @@ import {
 } from "@/composables/api/useSiedlungsgebietApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
 import usePagination from "@/composables/usePagination";
-import { DialogWidth } from "@/types/DialogWidth";
 import { Role } from "@/types/Role";
 
 const domainKey = "model.siedlungsgebiet.modelName";
