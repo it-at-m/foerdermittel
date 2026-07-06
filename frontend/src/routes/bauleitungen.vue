@@ -84,8 +84,7 @@ const {
 } = useGetBauleitungFormContext();
 
 type BauleitungFormType = InstanceType<typeof BauleitungForm>;
-const bauleitungFormRef =
-  useTemplateRef<BauleitungFormType>("bauleitungForm");
+const bauleitungFormRef = useTemplateRef<BauleitungFormType>("bauleitungForm");
 
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => bauleitungen.value?.page?.totalPages),
