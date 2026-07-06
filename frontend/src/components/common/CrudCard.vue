@@ -7,8 +7,8 @@
       v-if="dialogMode === 'write'"
       :title="dialogTitle"
       :loading="loading"
-      :disable-confirm="!isFormSlotValid"
-      @cancel="closeDialog"
+      :disable-confirm="!isFormSlotValid || !isDirty"
+      @cancel="requestCloseDialog"
       @confirm="saveItem"
     >
       <slot
@@ -31,6 +31,33 @@
       @cancel="closeDialog"
       @confirm="deleteItem"
     />
+  </v-dialog>
+
+  <v-dialog
+    :model-value="showUnsavedChangesDialog"
+    max-width="500"
+    persistent
+  >
+    <v-card
+      :title="t('common.unsavedChanges.title')"
+      :text="t('common.unsavedChanges.text')"
+    >
+      <template #actions>
+        <v-spacer />
+        <v-btn
+          :text="t('common.action.discardChanges')"
+          :disabled="loading"
+          @click="discardChanges"
+        />
+        <v-btn
+          color="primary"
+          variant="flat"
+          :text="t('common.action.back')"
+          :disabled="loading"
+          @click="backToEditing"
+        />
+      </template>
+    </v-card>
   </v-dialog>
 
   <v-card class="d-flex flex-column fill-height w-100">
@@ -130,11 +157,14 @@
 
 <script setup lang="ts" generic="T extends { id?: string }">
 import type { DataTableOptions } from "@/types/DataTableOptions";
+import type { NavigationGuardNext } from "vue-router";
 import type { DataTableHeader } from "vuetify/framework";
 
 import { mdiDelete, mdiPencil, mdiPlus, mdiTrashCan } from "@mdi/js";
-import { computed, ref, toRaw } from "vue";
+import equal from "fast-deep-equal";
+import { computed, onMounted, onUnmounted, ref, toRaw } from "vue";
 import { useI18n } from "vue-i18n";
+import { onBeforeRouteLeave } from "vue-router";
 
 import ConfirmCard from "@/components/common/ConfirmCard.vue";
 import { DialogWidth } from "@/types/DialogWidth";
@@ -230,7 +260,16 @@ const tableHeadersWithActions = computed(() => [
 ]);
 
 const activeItem = ref<T>({ ...emptyItemTemplate });
+const initialItem = ref<T | null>(null);
 const isEditing = computed<boolean>(() => !!activeItem.value.id);
+const isDirty = computed(
+  () =>
+    dialogMode.value === "write" &&
+    initialItem.value != null &&
+    !equal(initialItem.value, activeItem.value)
+);
+const showUnsavedChangesDialog = ref(false);
+const pendingRouteNext = ref<NavigationGuardNext | null>(null);
 
 const isFormSlotValid = ref(false);
 
@@ -245,20 +284,25 @@ const updateFormValidity = (valid: boolean | null) => {
   isFormSlotValid.value = !!valid;
 };
 
+const cloneItem = (item: T): T => structuredClone(toRaw(item));
+
 const openCreate = () => {
-  activeItem.value = { ...emptyItemTemplate };
+  activeItem.value = cloneItem(emptyItemTemplate);
+  initialItem.value = cloneItem(activeItem.value);
   isFormSlotValid.value = false;
   dialogMode.value = "write";
 };
 
 const openEdit = (item: T) => {
-  activeItem.value = structuredClone(toRaw(item));
+  activeItem.value = cloneItem(item);
+  initialItem.value = cloneItem(activeItem.value);
   isFormSlotValid.value = false;
   dialogMode.value = "write";
 };
 
 const openDelete = (item: T) => {
   activeItem.value = item;
+  initialItem.value = null;
   isFormSlotValid.value = false;
   dialogMode.value = "delete";
 };
@@ -279,8 +323,62 @@ const deleteItem = () => {
 
 const closeDialog = () => {
   dialogMode.value = null;
-  activeItem.value = { ...emptyItemTemplate };
+  showUnsavedChangesDialog.value = false;
+  activeItem.value = cloneItem(emptyItemTemplate);
+  initialItem.value = null;
+  const next = pendingRouteNext.value;
+  pendingRouteNext.value = null;
+  next?.();
 };
+
+const requestCloseDialog = () => {
+  if (isDirty.value) {
+    showUnsavedChangesDialog.value = true;
+    return;
+  }
+  closeDialog();
+};
+
+const backToEditing = () => {
+  showUnsavedChangesDialog.value = false;
+  if (pendingRouteNext.value != null) {
+    pendingRouteNext.value(false);
+    pendingRouteNext.value = null;
+  }
+};
+
+const discardChanges = () => {
+  closeDialog();
+};
+
+const onBeforeUnload = (event: BeforeUnloadEvent) => {
+  if (!isDirty.value) {
+    return;
+  }
+
+  showUnsavedChangesDialog.value = true;
+
+  event.preventDefault();
+  event.returnValue = "";
+};
+
+onBeforeRouteLeave((_to, _from, next) => {
+  if (!isDirty.value) {
+    next();
+    return;
+  }
+
+  pendingRouteNext.value = next;
+  showUnsavedChangesDialog.value = true;
+});
+
+onMounted(() => {
+  window.addEventListener("beforeunload", onBeforeUnload);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("beforeunload", onBeforeUnload);
+});
 
 defineExpose({
   closeDialog,

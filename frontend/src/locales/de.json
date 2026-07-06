@@ -11,10 +11,12 @@
       "required": "*"
     },
     "action": {
+      "back": "Zurück",
       "cancel": "Abbrechen",
       "close": "Schließen",
       "create": "Erstellen",
       "delete": "Löschen",
+      "discardChanges": "Änderungen verwerfen",
       "save": "Speichern",
       "search": "Suchen",
       "update": "Bearbeiten"
@@ -35,6 +37,10 @@
       "createdError": "{0} konnte nicht erstellt werden.",
       "loading": "Lade {0}...",
       "noData": "Keine {0} vorhanden"
+    },
+    "unsavedChanges": {
+      "title": "Ungespeicherte Änderungen",
+      "text": "Es sind ungespeicherte Änderungen vorhanden. Möchten Sie zurückgehen oder die Änderungen verwerfen?"
     },
     "roles": {
       "admin": "Administrator",
