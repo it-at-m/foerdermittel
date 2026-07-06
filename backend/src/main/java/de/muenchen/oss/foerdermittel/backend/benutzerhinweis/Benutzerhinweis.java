@@ -38,12 +38,12 @@ public class Benutzerhinweis implements Serializable {
     @NotNull @Size(min = 1, max = 30) private String viewId;
 
     @Column(nullable = false)
-    @NotNull private String funktionsbeschreibung;
+    @NotNull @Size(max = 4000) private String funktionsbeschreibung;
 
     @Column(nullable = false)
-    @NotNull private String bedienung;
+    @NotNull @Size(max = 4000) private String bedienung;
 
     @Column(nullable = false)
-    @NotNull private String pruefungVorgaben;
+    @NotNull @Size(max = 4000) private String pruefungVorgaben;
 
 }
