@@ -4,6 +4,7 @@ import static de.muenchen.oss.foerdermittel.backend.common.ExceptionMessageConst
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ public class TraegerService {
     @Transactional(readOnly = true)
     public Traeger getTraeger(final BigDecimal traegerId) {
         log.info("Get Traeger with ID {}", traegerId);
-        return getTraegerOrThrowException(traegerId);
+        return ServiceUtils.getEntityOrThrowNotFoundException(traegerId, traegerRepository);
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
@@ -50,7 +51,9 @@ public class TraegerService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Traeger updateTraeger(final Traeger traeger, final BigDecimal traegerId) {
-        final Traeger foundTraeger = getTraegerOrThrowException(traegerId);
+        final Traeger foundTraeger = ServiceUtils.getEntityOrThrowNotFoundException(
+                traegerId, traegerRepository);
+
         foundTraeger.setBezeichnung(traeger.getBezeichnung());
         log.debug("Update Traeger {}", foundTraeger);
         return traegerRepository.update(foundTraeger);
@@ -64,11 +67,4 @@ public class TraegerService {
         }
         traegerRepository.deleteById(traegerId);
     }
-
-    private Traeger getTraegerOrThrowException(final BigDecimal traegerId) {
-        return traegerRepository
-                .findById(traegerId)
-                .orElseThrow(() -> new NotFoundException(String.format(MSG_NOT_FOUND, traegerId)));
-    }
-
 }
