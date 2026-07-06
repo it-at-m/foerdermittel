@@ -27,7 +27,7 @@ public class BauleitungMapperTest {
 
             // then
             assertThat(dto).isNotNull();
-            assertThat(dto.id()).isEqualTo(entity.getBauleitung().toString());
+            assertThat(dto.id()).isEqualTo(entity.getBauleitung());
             assertThat(dto.bauleitung()).isEqualTo(entity.getBauleitung());
             assertThat(dto.bezeichnung()).isEqualTo(entity.getBezeichnung());
         }
