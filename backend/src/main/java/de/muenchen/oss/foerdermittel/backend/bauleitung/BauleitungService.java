@@ -64,10 +64,4 @@ public class BauleitungService {
         }
         bauleitungRepository.deleteById(bauleitungId);
     }
-
-    private Bauleitung getBauleitungOrThrowException(final String bauleitungId) {
-        return bauleitungRepository
-                .findById(bauleitungId)
-                .orElseThrow(() -> new NotFoundException(String.format(MSG_NOT_FOUND, bauleitungId)));
-    }
 }
