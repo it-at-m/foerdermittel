@@ -4,11 +4,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 import java.io.Serial;
 import java.io.Serializable;
-
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,7 +37,8 @@ public class Bauleitung implements Serializable {
 
     @Column(nullable = false)
     @Id
-    @NotNull @Size(min = 1, max = 1) @Pattern(regexp = "^(?:[1-9]|[1-9][0-9])$") private String bauleitung;
+    @NotNull @Size(min = 1, max = 1) @Pattern(regexp = "^(?:[1-9]|[1-9][0-9])$")
+    private String bauleitung;
 
     @Column(nullable = false)
     @NotNull @Size(min = 1, max = 200) private String bezeichnung;

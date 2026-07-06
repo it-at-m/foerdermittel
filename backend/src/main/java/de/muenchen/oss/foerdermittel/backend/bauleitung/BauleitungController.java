@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @Slf4j
@@ -72,7 +71,7 @@ public class BauleitungController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public BauleitungResponseDTO updateBauleitung(@Valid @RequestBody final BauleitungUpdateDTO bauleitungUpdateDTO,
-                                                    @PathVariable("id") final String bauleitungId) {
+            @PathVariable("id") final String bauleitungId) {
         return bauleitungMapper
                 .toDTO(bauleitungService.updateBauleitung(bauleitungMapper.toEntity(bauleitungUpdateDTO), bauleitungId));
     }
@@ -82,6 +81,5 @@ public class BauleitungController {
     public void deleteBauleitung(@PathVariable("id") final String bauleitungId) {
         bauleitungService.deleteBauleitung(bauleitungId);
     }
-
 
 }
