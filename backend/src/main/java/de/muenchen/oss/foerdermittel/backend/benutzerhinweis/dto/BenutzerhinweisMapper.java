@@ -8,8 +8,6 @@ import org.mapstruct.Mapping;
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public interface BenutzerhinweisMapper {
 
-    @Mapping(source = "viewId", target = "id")
-    @Mapping(source = "viewId", target = "viewId")
     BenutzerhinweisResponseDTO toDTO(Benutzerhinweis benutzerhinweis);
 
     Benutzerhinweis toEntity(BenutzerhinweisCreateDTO benutzerhinweisCreateDTO);
