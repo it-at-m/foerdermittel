@@ -30,9 +30,9 @@ public class Referat implements Serializable {
     // ========= //
 
     @Id
-    @Column(name = "refnr", nullable = false, precision = 2)
+    @Column(nullable = false)
     @Min(1) @Max(99) private BigDecimal refnr;
 
-    @Column(name = "bezeichnung", nullable = false, length = 200)
+    @Column(nullable = false)
     @NotNull @Size(min = 1, max = 200) private String bezeichnung;
 }

@@ -409,7 +409,7 @@ class ReferatIntegrationTest {
 
             // Then
             assertThat(result).isNotNull();
-            assertThat(result.referatIds()).isEmpty();
+            assertThat(result.refNrs()).isEmpty();
         }
 
         @Test
@@ -429,8 +429,8 @@ class ReferatIntegrationTest {
 
             // Then
             assertThat(result).isNotNull();
-            assertThat(result.referatIds()).hasSize(1);
-            assertThat(result.referatIds().getFirst()).isEqualByComparingTo(String.valueOf(EXISTING_ID));
+            assertThat(result.refNrs()).hasSize(1);
+            assertThat(result.refNrs().getFirst()).isEqualByComparingTo(String.valueOf(EXISTING_ID));
         }
 
         private static Stream<Arguments> authorizationMappings() {

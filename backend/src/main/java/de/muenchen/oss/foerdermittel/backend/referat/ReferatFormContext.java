@@ -5,8 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 
-public record ReferatFormContext(@NotNull List<BigDecimal> referatIds) {
+public record ReferatFormContext(@NotNull List<BigDecimal> refNrs) {
     public ReferatFormContext {
-        referatIds = List.copyOf(referatIds);
+        refNrs = List.copyOf(refNrs);
     }
 }

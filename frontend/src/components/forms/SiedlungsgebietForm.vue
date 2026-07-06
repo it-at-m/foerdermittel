@@ -61,7 +61,7 @@ const modelValue = defineModel<Partial<SiedlungsgebietResponseDTO>>({
   required: true,
 });
 
-// Reactivity is intentionally dropped here.
+// Reactivity is intentionally dropped here to maintain the initial state when form gets mounted.
 const currentSiedlungsgebiet = ref(modelValue.value.siedlungsgebiet);
 
 const { siedlungsgebietFormContext, displayMode = InputDisplayMode.CREATE } =

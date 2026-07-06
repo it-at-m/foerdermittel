@@ -11,6 +11,7 @@
           :display-mode="displayMode"
           disable-edit
           required
+          :counter="2"
           :rules="[
             rules.required(),
             rules.number(),
@@ -57,7 +58,7 @@ const modelValue = defineModel<Partial<ReferatResponseDTO>>({
   required: true,
 });
 
-// Reactivity is intentionally dropped here.
+// Reactivity is intentionally dropped here to maintain the initial state when form gets mounted.
 const currentReferat = ref(modelValue.value.refnr);
 
 const { referatFormContext, displayMode = InputDisplayMode.CREATE } =

@@ -57,7 +57,7 @@ const modelValue = defineModel<Partial<KrankenhausResponseDTO>>({
   required: true,
 });
 
-// Reactivity is intentionally dropped here.
+// Reactivity is intentionally dropped here to maintain the initial state when form gets mounted.
 const currentKrhName = ref(modelValue.value.krhname);
 
 const { krankenhausFormContext, displayMode = InputDisplayMode.CREATE } =

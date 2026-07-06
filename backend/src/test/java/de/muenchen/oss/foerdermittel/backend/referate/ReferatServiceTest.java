@@ -191,14 +191,14 @@ class ReferatServiceTest {
         void givenEntitiesExists_thenReturnCorrectFormContext() {
             // Given
             final List<BigDecimal> allReferate = List.of(BigDecimal.valueOf(2), BigDecimal.valueOf(3), BigDecimal.valueOf(4));
-            when(referatRepository.findAllIds()).thenReturn(allReferate);
+            when(referatRepository.findAllRefNr()).thenReturn(allReferate);
 
             // When
             final ReferatFormContext formContext = unitUnderTest.getReferatFormContext();
 
             // Then
-            verify(referatRepository, times(1)).findAllIds();
-            assertThat(formContext.referatIds()).isEqualTo(allReferate);
+            verify(referatRepository, times(1)).findAllRefNr();
+            assertThat(formContext.refNrs()).isEqualTo(allReferate);
         }
 
     }

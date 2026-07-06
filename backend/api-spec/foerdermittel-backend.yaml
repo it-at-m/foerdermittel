@@ -891,10 +891,10 @@ components:
           $ref: "#/components/schemas/PageMetadata"
     ReferatFormContext:
       required:
-      - referatIds
+      - refNrs
       type: object
       properties:
-        referatIds:
+        refNrs:
           type: array
           items:
             type: number

@@ -13,6 +13,6 @@ public interface ReferatRepository extends PagingAndSortingRepository<Referat, B
         InsertAndUpdateRepository<Referat> {
 
     @Query("SELECT r.refnr FROM Referat r ORDER BY r.refnr")
-    List<BigDecimal> findAllIds();
+    List<BigDecimal> findAllRefNr();
 
 }

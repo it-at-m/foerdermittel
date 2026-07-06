@@ -4,6 +4,7 @@ import static de.muenchen.oss.foerdermittel.backend.common.ExceptionMessageConst
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ public class ReferatService {
     @Transactional(readOnly = true)
     public Referat getReferat(final BigDecimal referatId) {
         log.info("Get Referat with ID {}", referatId);
-        return getReferatOrThrowException(referatId);
+        return ServiceUtils.getEntityOrThrowNotFoundException(referatId, referatRepository);
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
@@ -39,7 +40,7 @@ public class ReferatService {
     @Transactional(readOnly = true)
     public ReferatFormContext getReferatFormContext() {
         log.info("Get Referat form context");
-        return new ReferatFormContext(referatRepository.findAllIds());
+        return new ReferatFormContext(referatRepository.findAllRefNr());
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
@@ -50,7 +51,7 @@ public class ReferatService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Referat updateReferat(final Referat referat, final BigDecimal referatId) {
-        final Referat foundReferat = getReferatOrThrowException(referatId);
+        final Referat foundReferat = ServiceUtils.getEntityOrThrowNotFoundException(referatId, referatRepository);
         foundReferat.setBezeichnung(referat.getBezeichnung());
         log.debug("Update Referat {}", foundReferat);
         return referatRepository.update(foundReferat);
@@ -63,12 +64,6 @@ public class ReferatService {
             throw new NotFoundException(String.format(MSG_NOT_FOUND, referatId));
         }
         referatRepository.deleteById(referatId);
-    }
-
-    private Referat getReferatOrThrowException(final BigDecimal referatId) {
-        return referatRepository
-                .findById(referatId)
-                .orElseThrow(() -> new NotFoundException(String.format(MSG_NOT_FOUND, referatId)));
     }
 
 }
