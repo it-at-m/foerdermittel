@@ -4,9 +4,13 @@ import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 
 import java.util.Optional;
 
-public class ServiceUtils {
+public final class ServiceUtils {
 
-    public static <T, ID> T getEntityOrThrowException(ID id, Optional<T> entityOptional, String messageFormat) {
+    private ServiceUtils() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
+
+    public static <T, I> T getEntityOrThrowException(final I id, final Optional<T> entityOptional, final String messageFormat) {
         return entityOptional.orElseThrow(() -> new NotFoundException(String.format(messageFormat, id)));
     }
 }
