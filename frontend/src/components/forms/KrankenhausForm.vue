@@ -56,6 +56,8 @@ const { t } = useI18n();
 const modelValue = defineModel<Partial<KrankenhausResponseDTO>>({
   required: true,
 });
+
+// Reactivity is intentionally dropped here.
 const currentKrhName = ref(modelValue.value.krhname);
 
 const { krankenhausFormContext, displayMode = InputDisplayMode.CREATE } =

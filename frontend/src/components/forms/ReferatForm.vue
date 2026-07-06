@@ -56,6 +56,8 @@ const { t } = useI18n();
 const modelValue = defineModel<Partial<ReferatResponseDTO>>({
   required: true,
 });
+
+// Reactivity is intentionally dropped here.
 const currentReferat = ref(modelValue.value.refnr);
 
 const { referatFormContext, displayMode = InputDisplayMode.CREATE } =

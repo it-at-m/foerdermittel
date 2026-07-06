@@ -60,6 +60,8 @@ const { t } = useI18n();
 const modelValue = defineModel<Partial<SiedlungsgebietResponseDTO>>({
   required: true,
 });
+
+// Reactivity is intentionally dropped here.
 const currentSiedlungsgebiet = ref(modelValue.value.siedlungsgebiet);
 
 const { siedlungsgebietFormContext, displayMode = InputDisplayMode.CREATE } =
