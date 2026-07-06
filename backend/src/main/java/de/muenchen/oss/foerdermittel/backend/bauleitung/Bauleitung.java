@@ -37,8 +37,7 @@ public class Bauleitung implements Serializable {
 
     @Column(nullable = false)
     @Id
-    @NotNull @Size(min = 1, max = 1) @Pattern(regexp = "^[A-Z1-9]+$")
-    private String bauleitung;
+    @NotNull @Size(min = 1, max = 1) @Pattern(regexp = "^[A-Z1-9]+$") private String bauleitung;
 
     @Column(nullable = false)
     @NotNull @Size(min = 1, max = 200) private String bezeichnung;
