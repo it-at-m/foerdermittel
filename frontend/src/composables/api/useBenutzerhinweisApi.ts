@@ -12,23 +12,23 @@ import useAPI from "@/composables/useAPI";
 export function useCreateBenutzerhinweis() {
   const api = ApiFactory.getInstance(BenutzerhinweisControllerApi);
 
-  return useAPI<CreateBenutzerhinweisRequest, BenutzerhinweisResponseDTO>((params) =>
-    api.createBenutzerhinweis(params)
+  return useAPI<CreateBenutzerhinweisRequest, BenutzerhinweisResponseDTO>(
+    (params) => api.createBenutzerhinweis(params)
   );
 }
 
 export function useUpdateBenutzerhinweis() {
   const api = ApiFactory.getInstance(BenutzerhinweisControllerApi);
 
-  return useAPI<UpdateBenutzerhinweisRequest, BenutzerhinweisResponseDTO>((params) =>
-    api.updateBenutzerhinweis(params)
+  return useAPI<UpdateBenutzerhinweisRequest, BenutzerhinweisResponseDTO>(
+    (params) => api.updateBenutzerhinweis(params)
   );
 }
 
 export function useGetBenutzerhinweis() {
   const api = ApiFactory.getInstance(BenutzerhinweisControllerApi);
 
-  return useAPI<GetBenutzerhinweisRequest, BenutzerhinweisResponseDTO>((params) =>
-    api.getBenutzerhinweis(params)
+  return useAPI<GetBenutzerhinweisRequest, BenutzerhinweisResponseDTO>(
+    (params) => api.getBenutzerhinweis(params)
   );
 }
