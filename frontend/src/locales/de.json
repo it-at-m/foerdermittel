@@ -134,7 +134,10 @@
       "modelName": "Unterabschnitt | Unterabschnitte"
     },
     "benutzerhinweis": {
-      "modelName": "Benutzerhinweis | Benutzerhinweise"
+      "modelName": "Benutzerhinweis | Benutzerhinweise",
+      "funktionsbeschreibung": "Funktionsbeschreibung dieser Ansicht",
+      "bedienung": "Hinweise zur Bedienung",
+      "pruefungVorgaben": "Prüfungen und Vorgaben"
     }
   },
   "domain": {
