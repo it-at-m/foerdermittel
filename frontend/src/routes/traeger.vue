@@ -86,7 +86,7 @@ const {
 } = useGetTraegerFormContext();
 
 type TraegerFormType = InstanceType<typeof TraegerForm>;
-const traegerFormRef = useTemplateRef<TraegerFormType>("TraegerForm");
+const traegerFormRef = useTemplateRef<TraegerFormType>("traegerForm");
 
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => traeger.value?.page?.totalPages),
