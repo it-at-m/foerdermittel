@@ -4,6 +4,7 @@ import static de.muenchen.oss.foerdermittel.backend.common.ExceptionMessageConst
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,7 +25,7 @@ public class KrankenhausService {
     @Transactional(readOnly = true)
     public Krankenhaus getKrankenhaus(final String krhName) {
         log.info("Get Krankenhaus with ID {}", krhName);
-        return getKrankenhausOrThrowException(krhName);
+        return ServiceUtils.getEntityOrThrowNotFoundException(krhName, krankenhausRepository);
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
@@ -49,7 +50,7 @@ public class KrankenhausService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Krankenhaus updateKrankenhaus(final Krankenhaus krankenhaus, final String krhName) {
-        final Krankenhaus foundKrankenhaus = getKrankenhausOrThrowException(krhName);
+        final Krankenhaus foundKrankenhaus = ServiceUtils.getEntityOrThrowNotFoundException(krhName, krankenhausRepository);
         foundKrankenhaus.setBezeichnung(krankenhaus.getBezeichnung());
         log.debug("Update Krankenhaus {}", foundKrankenhaus);
         return krankenhausRepository.update(foundKrankenhaus);
@@ -62,11 +63,5 @@ public class KrankenhausService {
             throw new NotFoundException(String.format(MSG_NOT_FOUND, krhName));
         }
         krankenhausRepository.deleteById(krhName);
-    }
-
-    private Krankenhaus getKrankenhausOrThrowException(final String krhName) {
-        return krankenhausRepository
-                .findById(krhName)
-                .orElseThrow(() -> new NotFoundException(String.format(MSG_NOT_FOUND, krhName)));
     }
 }

@@ -4,6 +4,7 @@ import static de.muenchen.oss.foerdermittel.backend.common.ExceptionMessageConst
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ public class BauprogrammService {
     @Transactional(readOnly = true)
     public Bauprogramm getBauprogramm(final BigDecimal bauprogrammId) {
         log.info("Get Bauprogramm with ID {}", bauprogrammId);
-        return getBauprogrammOrThrowException(bauprogrammId);
+        return ServiceUtils.getEntityOrThrowNotFoundException(bauprogrammId, bauprogrammRepository);
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
@@ -50,7 +51,7 @@ public class BauprogrammService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Bauprogramm updateBauprogramm(final Bauprogramm bauprogramm, final BigDecimal bauprogrammId) {
-        final Bauprogramm foundBauprogramm = getBauprogrammOrThrowException(bauprogrammId);
+        final Bauprogramm foundBauprogramm = ServiceUtils.getEntityOrThrowNotFoundException(bauprogrammId, bauprogrammRepository);
         foundBauprogramm.setBezeichnung(bauprogramm.getBezeichnung());
         log.debug("Update Bauprogramm {}", foundBauprogramm);
         return bauprogrammRepository.update(foundBauprogramm);
@@ -65,9 +66,4 @@ public class BauprogrammService {
         bauprogrammRepository.deleteById(bauprogrammId);
     }
 
-    private Bauprogramm getBauprogrammOrThrowException(final BigDecimal bauprogrammId) {
-        return bauprogrammRepository
-                .findById(bauprogrammId)
-                .orElseThrow(() -> new NotFoundException(String.format(MSG_NOT_FOUND, bauprogrammId)));
-    }
 }
