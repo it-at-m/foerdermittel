@@ -18,13 +18,17 @@
     </v-row>
     <v-divider class="my-4" />
     <v-row class="flex-grow-1 overflow-auto">
-      <slot />
+      <slot :base-view-loading="loading" />
     </v-row>
   </v-container>
 </template>
 
 <script setup lang="ts">
+import { computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRoute } from "vue-router";
+
+import { useGetBenutzerhinweis } from "@/composables/api/useBenutzerhinweisApi";
 
 const { domainKey } = defineProps<{
   title?: string;
@@ -32,4 +36,25 @@ const { domainKey } = defineProps<{
 }>();
 
 const { t } = useI18n();
+
+const route = useRoute();
+const routeName = computed(() => route.name.replace("/", ""));
+
+const {
+  data: benutzerhinweis,
+  call: getBenutzerhinweis,
+  loading,
+} = useGetBenutzerhinweis();
+
+watch(
+  routeName,
+  async (newRouteName) => {
+    if (newRouteName) {
+      await getBenutzerhinweis({
+        id: newRouteName,
+      });
+    }
+  },
+  { immediate: true }
+);
 </script>
