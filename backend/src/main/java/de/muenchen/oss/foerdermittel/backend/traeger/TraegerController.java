@@ -5,9 +5,9 @@ import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerMapper;
 import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerUpdateDTO;
+import de.muenchen.oss.foerdermittel.backend.util.ControllerUtils;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @Slf4j
@@ -42,7 +41,7 @@ public class TraegerController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TraegerResponseDTO getTraeger(@PathVariable("id") final String traegerId) {
-        return traegerMapper.toDTO(traegerService.getTraeger(parseTraegerId(traegerId)));
+        return traegerMapper.toDTO(traegerService.getTraeger(ControllerUtils.convertStringToBigDecimal(traegerId)));
     }
 
     @GetMapping
@@ -73,20 +72,14 @@ public class TraegerController {
     @ResponseStatus(HttpStatus.OK)
     public TraegerResponseDTO updateTraeger(@Valid @RequestBody final TraegerUpdateDTO traegerUpdateDTO, @PathVariable("id") final String traegerId) {
         return traegerMapper
-                .toDTO(traegerService.updateTraeger(traegerMapper.toEntity(traegerUpdateDTO), parseTraegerId(traegerId)));
+                .toDTO(traegerService.updateTraeger(traegerMapper.toEntity(traegerUpdateDTO),
+                        ControllerUtils.convertStringToBigDecimal(traegerId)));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteTraeger(@PathVariable("id") final String traegerId) {
-        traegerService.deleteTraeger(parseTraegerId(traegerId));
+        traegerService.deleteTraeger(ControllerUtils.convertStringToBigDecimal(traegerId));
     }
 
-    private BigDecimal parseTraegerId(final String traegerId) {
-        try {
-            return BigDecimal.valueOf(Integer.parseInt(traegerId));
-        } catch (final NumberFormatException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Traeger ID: " + traegerId, ex);
-        }
-    }
 }
