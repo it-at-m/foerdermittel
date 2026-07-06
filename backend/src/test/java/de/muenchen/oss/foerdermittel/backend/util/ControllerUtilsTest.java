@@ -1,12 +1,11 @@
 package de.muenchen.oss.foerdermittel.backend.util;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 class ControllerUtilsTest {
@@ -15,7 +14,7 @@ class ControllerUtilsTest {
     void givenValidStringInput_thenConversionSucceeds() {
         String input = "123";
         BigDecimal result = ControllerUtils.convertStringToBigDecimal(input);
-        assertThat(result, is(BigDecimal.valueOf(123)));
+        assertThat(result).isEqualTo(BigDecimal.valueOf(123));
     }
 
     @Test
@@ -24,7 +23,8 @@ class ControllerUtilsTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             ControllerUtils.convertStringToBigDecimal(input);
         });
-        assertThat(exception.getReason(), containsString("Invalid ID"));
+        assertThat(exception.getMessage()).isEqualTo(String.format(String.format("400 BAD_REQUEST \"Invalid ID: %s\"", input)));
+        assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
 }
