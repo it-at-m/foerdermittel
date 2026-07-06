@@ -1,6 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.traeger;
 
-import de.muenchen.oss.foerdermittel.backend.traeger.Traeger;
 import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerMapper;
 import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerResponseDTO;

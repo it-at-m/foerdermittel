@@ -17,6 +17,7 @@ import static de.muenchen.oss.foerdermittel.backend.common.ExceptionMessageConst
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class TraegerService {
 
     private final TraegerRepository traegerRepository;
@@ -45,7 +46,7 @@ public class TraegerService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Traeger createTraeger(final Traeger traeger) {
         log.debug("Create Traeger {}", traeger);
-        return traegerRepository.save(traeger);
+        return traegerRepository.insert(traeger);
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
@@ -53,7 +54,7 @@ public class TraegerService {
         final Traeger foundTraeger = getTraegerOrThrowException(traegerId);
         foundTraeger.setBezeichnung(traeger.getBezeichnung());
         log.debug("Update Traeger {}", foundTraeger);
-        return traegerRepository.save(foundTraeger);
+        return traegerRepository.update(foundTraeger);
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)

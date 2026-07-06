@@ -47,7 +47,7 @@ public class TraegerController {
         return new PageImpl<>(traegerResponseDTOList, pageWithTraeger.getPageable(), pageWithTraeger.getTotalElements());
     }
 
-    @GetMapping("/formContext")
+    @GetMapping("/form-context")
     @ResponseStatus(HttpStatus.OK)
     public TraegerFormContext getTraegerFormContext() {return traegerService.getTraegerFormContext();}
 
@@ -59,8 +59,7 @@ public class TraegerController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TraegerResponseDTO updateTraeger(@Valid @RequestBody final TraegerUpdateDTO traegerUpdateDTO,
-                                                    @PathVariable("id") final String traegerId) {
+    public TraegerResponseDTO updateTraeger(@Valid @RequestBody final TraegerUpdateDTO traegerUpdateDTO, @PathVariable("id") final String traegerId) {
         return traegerMapper
                 .toDTO(traegerService.updateTraeger(traegerMapper.toEntity(traegerUpdateDTO), parseTraegerId(traegerId)));
     }
