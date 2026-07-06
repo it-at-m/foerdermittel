@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausCreateDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -205,16 +204,16 @@ class BauleitungIntegrationTest {
             return Stream.of(
                     arguments(
                             "bauleitung not uppercase",
-                            new KrankenhausCreateDTO("a", "Test")),
+                            new BauleitungCreateDTO("a", "Test")),
                     arguments(
                             "bauleitung too long",
-                            new KrankenhausCreateDTO("AB", "Test")),
+                            new BauleitungCreateDTO("AB", "Test")),
                     arguments(
                             "bezeichnung too short",
-                            new KrankenhausCreateDTO("9", "")),
+                            new BauleitungCreateDTO("9", "")),
                     arguments(
                             "bezeichnung too long",
-                            new KrankenhausCreateDTO("A", "a".repeat(201))));
+                            new BauleitungCreateDTO("A", "a".repeat(201))));
         }
 
         @ParameterizedTest(name = "{0}")
