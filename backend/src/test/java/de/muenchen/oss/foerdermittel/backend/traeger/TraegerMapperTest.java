@@ -1,16 +1,15 @@
 package de.muenchen.oss.foerdermittel.backend.traeger;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerMapper;
 import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerUpdateDTO;
+import java.math.BigDecimal;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-
-import java.math.BigDecimal;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class TraegerMapperTest {
 

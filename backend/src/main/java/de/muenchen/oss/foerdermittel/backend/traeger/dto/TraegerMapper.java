@@ -6,6 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(uses = NumberMapper.class)
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public interface TraegerMapper {
 
     @Mapping(source = "kurzform", target = "id", qualifiedByName = "bigDecimalToIntegerString")

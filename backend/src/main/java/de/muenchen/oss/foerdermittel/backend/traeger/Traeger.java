@@ -27,20 +27,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "traeger")
-public class Traeger implements Serializable{
+public class Traeger implements Serializable {
 
-        @Serial
-        private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-        // ========= //
-        // Variables //
-        // ========= //
+    // ========= //
+    // Variables //
+    // ========= //
 
-        @Column(nullable = false)
-        @Id
-        @NotNull @Min(1) @Max(99) private BigDecimal kurzform;
+    @Column(nullable = false)
+    @Id
+    @NotNull @Min(1) @Max(99) private BigDecimal kurzform;
 
-        @Column(nullable = false)
-        @NotNull @Size(min = 1, max = 200) private String bezeichnung;
+    @Column(nullable = false)
+    @NotNull @Size(min = 1, max = 200) private String bezeichnung;
 
 }
