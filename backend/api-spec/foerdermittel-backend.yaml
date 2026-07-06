@@ -13,11 +13,11 @@ tags:
     description: Spring Boot Actuator Web API Documentation
     url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
 paths:
-  /traeger/{id}:
+  /siedlungsgebiete/{id}:
     get:
       tags:
-      - traeger-controller
-      operationId: getTraeger
+      - siedlungsgebiet-controller
+      operationId: getSiedlungsgebiet
       parameters:
       - name: id
         in: path
@@ -30,13 +30,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TraegerResponseDTO"
+                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
       security:
       - bearerAuth: []
     put:
       tags:
-      - traeger-controller
-      operationId: updateTraeger
+      - siedlungsgebiet-controller
+      operationId: updateSiedlungsgebiet
       parameters:
       - name: id
         in: path
@@ -47,7 +47,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TraegerUpdateDTO"
+              $ref: "#/components/schemas/SiedlungsgebietUpdateDTO"
         required: true
       responses:
         "200":
@@ -55,13 +55,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TraegerResponseDTO"
+                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
       security:
       - bearerAuth: []
     delete:
       tags:
-      - traeger-controller
-      operationId: deleteTraeger
+      - siedlungsgebiet-controller
+      operationId: deleteSiedlungsgebiet
       parameters:
       - name: id
         in: path
@@ -193,11 +193,11 @@ paths:
           description: OK
       security:
       - bearerAuth: []
-  /traeger:
+  /siedlungsgebiete:
     get:
       tags:
-      - traeger-controller
-      operationId: getTraegerByPageable
+      - siedlungsgebiet-controller
+      operationId: getSiedlungsgebieteByPageable
       parameters:
       - name: page
         in: query
@@ -225,25 +225,25 @@ paths:
           items:
             type: string
           default:
-          - "kurzform,ASC"
+          - "siedlungsgebiet,ASC"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PagedModelTraegerResponseDTO"
+                $ref: "#/components/schemas/PagedModelSiedlungsgebietResponseDTO"
       security:
       - bearerAuth: []
     post:
       tags:
-      - traeger-controller
-      operationId: createTraeger
+      - siedlungsgebiet-controller
+      operationId: createSiedlungsgebiet
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TraegerCreateDTO"
+              $ref: "#/components/schemas/SiedlungsgebietCreateDTO"
         required: true
       responses:
         "201":
@@ -251,7 +251,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TraegerResponseDTO"
+                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
       security:
       - bearerAuth: []
   /krankenhaeuser:
@@ -376,18 +376,18 @@ paths:
                 $ref: "#/components/schemas/BauprogrammResponseDTO"
       security:
       - bearerAuth: []
-  /traeger/form-context:
+  /siedlungsgebiete/form-context:
     get:
       tags:
-      - traeger-controller
-      operationId: getTraegerFormContext
+      - siedlungsgebiet-controller
+      operationId: getSiedlungsgebietFormContext
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TraegerFormContext"
+                $ref: "#/components/schemas/SiedlungsgebietFormContext"
       security:
       - bearerAuth: []
   /krankenhaeuser/form-context:
@@ -561,7 +561,7 @@ paths:
                 type: object
 components:
   schemas:
-    TraegerUpdateDTO:
+    SiedlungsgebietUpdateDTO:
       required:
       - bezeichnung
       type: object
@@ -570,16 +570,16 @@ components:
           maxLength: 200
           minLength: 1
           type: string
-    TraegerResponseDTO:
+    SiedlungsgebietResponseDTO:
       required:
       - bezeichnung
       - id
-      - kurzform
+      - siedlungsgebiet
       type: object
       properties:
         id:
           type: string
-        kurzform:
+        siedlungsgebiet:
           type: integer
           format: int32
         bezeichnung:
@@ -629,13 +629,13 @@ components:
           format: int32
         bezeichnung:
           type: string
-    TraegerCreateDTO:
+    SiedlungsgebietCreateDTO:
       required:
       - bezeichnung
-      - kurzform
+      - siedlungsgebiet
       type: object
       properties:
-        kurzform:
+        siedlungsgebiet:
           maximum: 99
           minimum: 1
           type: integer
@@ -689,21 +689,21 @@ components:
         totalPages:
           type: integer
           format: int64
-    PagedModelTraegerResponseDTO:
+    PagedModelSiedlungsgebietResponseDTO:
       type: object
       properties:
         content:
           type: array
           items:
-            $ref: "#/components/schemas/TraegerResponseDTO"
+            $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
         page:
           $ref: "#/components/schemas/PageMetadata"
-    TraegerFormContext:
+    SiedlungsgebietFormContext:
       required:
-      - traeger
+      - siedlungsgebiete
       type: object
       properties:
-        traeger:
+        siedlungsgebiete:
           type: array
           items:
             type: number
