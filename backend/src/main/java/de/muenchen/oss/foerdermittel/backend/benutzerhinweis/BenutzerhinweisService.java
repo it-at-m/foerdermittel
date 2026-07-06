@@ -1,9 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.benutzerhinweis;
 
-import static de.muenchen.oss.foerdermittel.backend.common.ExceptionMessageConstants.MSG_NOT_FOUND;
-
-import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +20,7 @@ public class BenutzerhinweisService {
     @Transactional(readOnly = true)
     public Benutzerhinweis getBenutzerhinweis(final String viewId) {
         log.info("Get Benutzerhinweis with ID {}", viewId);
-        return getBenutzerhinweisOrThrowException(viewId);
+        return ServiceUtils.getEntityOrThrowNotFoundException(viewId, benutzerhinweisRepository);
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
@@ -33,7 +31,7 @@ public class BenutzerhinweisService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Benutzerhinweis updateBenutzerhinweis(final Benutzerhinweis benutzerhinweis, final String viewId) {
-        final Benutzerhinweis foundBenutzerhinweis = getBenutzerhinweisOrThrowException(viewId);
+        final Benutzerhinweis foundBenutzerhinweis = ServiceUtils.getEntityOrThrowNotFoundException(viewId, benutzerhinweisRepository);
         foundBenutzerhinweis.setFunktionsbeschreibung(benutzerhinweis.getFunktionsbeschreibung());
         foundBenutzerhinweis.setBedienung(benutzerhinweis.getBedienung());
         foundBenutzerhinweis.setPruefungVorgaben(benutzerhinweis.getPruefungVorgaben());
@@ -41,9 +39,4 @@ public class BenutzerhinweisService {
         return benutzerhinweisRepository.update(foundBenutzerhinweis);
     }
 
-    private Benutzerhinweis getBenutzerhinweisOrThrowException(final String viewId) {
-        return benutzerhinweisRepository
-                .findById(viewId)
-                .orElseThrow(() -> new NotFoundException(String.format(MSG_NOT_FOUND, viewId)));
-    }
 }
