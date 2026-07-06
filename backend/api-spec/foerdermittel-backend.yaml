@@ -13,6 +13,66 @@ tags:
     description: Spring Boot Actuator Web API Documentation
     url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
 paths:
+  /siedlungsgebiete/{id}:
+    get:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: getSiedlungsgebiet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: updateSiedlungsgebiet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SiedlungsgebietUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: deleteSiedlungsgebiet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /krankenhaeuser/{id}:
     get:
       tags:
@@ -133,64 +193,65 @@ paths:
           description: OK
       security:
       - bearerAuth: []
-  /bauleitungen/{id}:
+  /siedlungsgebiete:
     get:
       tags:
-      - bauleitung-controller
-      operationId: getBauleitung
+      - siedlungsgebiet-controller
+      operationId: getSiedlungsgebieteByPageable
       parameters:
-      - name: id
-        in: path
-        required: true
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
         schema:
-          type: string
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "siedlungsgebiet,ASC"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BauleitungResponseDTO"
+                $ref: "#/components/schemas/PagedModelSiedlungsgebietResponseDTO"
       security:
       - bearerAuth: []
-    put:
+    post:
       tags:
-      - bauleitung-controller
-      operationId: updateBauleitung
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+      - siedlungsgebiet-controller
+      operationId: createSiedlungsgebiet
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/BauleitungUpdateDTO"
+              $ref: "#/components/schemas/SiedlungsgebietCreateDTO"
         required: true
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BauleitungResponseDTO"
-      security:
-      - bearerAuth: []
-    delete:
-      tags:
-      - bauleitung-controller
-      operationId: deleteBauleitung
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
+                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
       security:
       - bearerAuth: []
   /krankenhaeuser:
@@ -315,65 +376,18 @@ paths:
                 $ref: "#/components/schemas/BauprogrammResponseDTO"
       security:
       - bearerAuth: []
-  /bauleitungen:
+  /siedlungsgebiete/form-context:
     get:
       tags:
-      - bauleitung-controller
-      operationId: getBauleitungenByPageable
-      parameters:
-      - name: page
-        in: query
-        description: Zero-based page index (0..N)
-        required: false
-        schema:
-          minimum: 0
-          type: integer
-          default: 0
-      - name: size
-        in: query
-        description: The size of the page to be returned
-        required: false
-        schema:
-          minimum: 1
-          type: integer
-          default: 10
-      - name: sort
-        in: query
-        description: "Sorting criteria in the format: property,(asc|desc). Default\
-          \ sort order is ascending. Multiple sort criteria are supported."
-        required: false
-        schema:
-          type: array
-          items:
-            type: string
-          default:
-          - "bauleitung,ASC"
+      - siedlungsgebiet-controller
+      operationId: getSiedlungsgebietFormContext
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PagedModelBauleitungResponseDTO"
-      security:
-      - bearerAuth: []
-    post:
-      tags:
-      - bauleitung-controller
-      operationId: createBauleitung
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/BauleitungCreateDTO"
-        required: true
-      responses:
-        "201":
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BauleitungResponseDTO"
+                $ref: "#/components/schemas/SiedlungsgebietFormContext"
       security:
       - bearerAuth: []
   /krankenhaeuser/form-context:
@@ -402,20 +416,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BauprogrammFormContext"
-      security:
-      - bearerAuth: []
-  /bauleitungen/form-context:
-    get:
-      tags:
-      - bauleitung-controller
-      operationId: getBauleitungFormContext
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BauleitungFormContext"
       security:
       - bearerAuth: []
   /actuator:
@@ -561,6 +561,29 @@ paths:
                 type: object
 components:
   schemas:
+    SiedlungsgebietUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    SiedlungsgebietResponseDTO:
+      required:
+      - bezeichnung
+      - id
+      - siedlungsgebiet
+      type: object
+      properties:
+        id:
+          type: string
+        siedlungsgebiet:
+          type: integer
+          format: int32
+        bezeichnung:
+          type: string
     KrankenhausUpdateDTO:
       required:
       - bezeichnung
@@ -606,27 +629,20 @@ components:
           format: int32
         bezeichnung:
           type: string
-    BauleitungUpdateDTO:
+    SiedlungsgebietCreateDTO:
       required:
       - bezeichnung
+      - siedlungsgebiet
       type: object
       properties:
+        siedlungsgebiet:
+          maximum: 99
+          minimum: 1
+          type: integer
+          format: int32
         bezeichnung:
           maxLength: 200
           minLength: 1
-          type: string
-    BauleitungResponseDTO:
-      required:
-      - bauleitung
-      - bezeichnung
-      - id
-      type: object
-      properties:
-        id:
-          type: string
-        bauleitung:
-          type: string
-        bezeichnung:
           type: string
     KrankenhausCreateDTO:
       required:
@@ -658,18 +674,6 @@ components:
           maxLength: 200
           minLength: 1
           type: string
-    BauleitungCreateDTO:
-      required:
-      - bauleitung
-      - bezeichnung
-      type: object
-      properties:
-        bauleitung:
-          type: string
-        bezeichnung:
-          maxLength: 200
-          minLength: 1
-          type: string
     PageMetadata:
       type: object
       properties:
@@ -685,6 +689,24 @@ components:
         totalPages:
           type: integer
           format: int64
+    PagedModelSiedlungsgebietResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    SiedlungsgebietFormContext:
+      required:
+      - siedlungsgebiete
+      type: object
+      properties:
+        siedlungsgebiete:
+          type: array
+          items:
+            type: number
     PagedModelKrankenhausResponseDTO:
       type: object
       properties:
@@ -721,24 +743,6 @@ components:
           type: array
           items:
             type: number
-    PagedModelBauleitungResponseDTO:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: "#/components/schemas/BauleitungResponseDTO"
-        page:
-          $ref: "#/components/schemas/PageMetadata"
-    BauleitungFormContext:
-      required:
-      - bauleitungen
-      type: object
-      properties:
-        bauleitungen:
-          type: array
-          items:
-            type: string
     Link:
       type: object
       properties:

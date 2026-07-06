@@ -5,10 +5,10 @@ import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammMapper;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammUpdateDTO;
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
+import de.muenchen.oss.foerdermittel.backend.util.ControllerUtils;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
-import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @Slf4j
@@ -43,7 +42,7 @@ public class BauprogrammController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public BauprogrammResponseDTO getBauprogramm(@PathVariable("id") final String bauprogrammId) {
-        return bauprogrammMapper.toDTO(bauprogrammService.getBauprogramm(parseBauprogrammId(bauprogrammId)));
+        return bauprogrammMapper.toDTO(bauprogrammService.getBauprogramm(ControllerUtils.convertStringToBigDecimal(bauprogrammId)));
     }
 
     @GetMapping
@@ -75,21 +74,14 @@ public class BauprogrammController {
     public BauprogrammResponseDTO updateBauprogramm(@Valid @RequestBody final BauprogrammUpdateDTO bauprogrammUpdateDTO,
             @PathVariable("id") final String bauprogrammId) {
         return bauprogrammMapper
-                .toDTO(bauprogrammService.updateBauprogramm(bauprogrammMapper.toEntity(bauprogrammUpdateDTO), parseBauprogrammId(bauprogrammId)));
+                .toDTO(bauprogrammService.updateBauprogramm(bauprogrammMapper.toEntity(bauprogrammUpdateDTO),
+                        ControllerUtils.convertStringToBigDecimal(bauprogrammId)));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteBauprogramm(@PathVariable("id") final String bauprogrammId) {
-        bauprogrammService.deleteBauprogramm(parseBauprogrammId(bauprogrammId));
-    }
-
-    private BigDecimal parseBauprogrammId(final String bauprogrammId) {
-        try {
-            return BigDecimal.valueOf(Integer.parseInt(bauprogrammId));
-        } catch (final NumberFormatException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid bauprogramm ID: " + bauprogrammId, ex);
-        }
+        bauprogrammService.deleteBauprogramm(ControllerUtils.convertStringToBigDecimal(bauprogrammId));
     }
 
 }
