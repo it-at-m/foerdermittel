@@ -37,7 +37,7 @@ public class Bauleitung implements Serializable {
 
     @Column(nullable = false)
     @Id
-    @NotNull @Size(min = 1, max = 1) @Pattern(regexp = "^(?:[1-9]|[1-9][0-9])$")
+    @NotNull @Size(min = 1, max = 1) @Pattern(regexp = "^[A-Z1-9]+$")
     private String bauleitung;
 
     @Column(nullable = false)

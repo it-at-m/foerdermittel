@@ -6,17 +6,16 @@
   >
     <v-row>
       <v-col cols="3">
-        <fm-number-input
+        <fm-text-field
           v-model="modelValue.bauleitung"
           :display-mode="displayMode"
           disable-edit
           required
-          :counter="2"
+          uppercase
+          :counter="1"
           :rules="[
             rules.required(),
-            rules.number(),
-            rules['min']!(1),
-            rules['max']!(99),
+            rules.strictLength(1),
             rules['unique']!(
               bauleitungFormContext.bauleitungen,
               currentBauleitung
@@ -51,7 +50,6 @@ import { ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRules } from "vuetify/labs/rules";
 
-import FmNumberInput from "@/components/common/FmNumberInput.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 

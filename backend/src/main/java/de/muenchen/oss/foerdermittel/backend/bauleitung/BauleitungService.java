@@ -4,6 +4,7 @@ import static de.muenchen.oss.foerdermittel.backend.common.ExceptionMessageConst
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,7 +25,7 @@ public class BauleitungService {
     @Transactional(readOnly = true)
     public Bauleitung getBauleitung(final String bauleitungId) {
         log.info("Get Bauleitung with ID {}", bauleitungId);
-        return getBauleitungOrThrowException(bauleitungId);
+        return ServiceUtils.getEntityOrThrowNotFoundException(bauleitungId, bauleitungRepository);
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
@@ -49,7 +50,7 @@ public class BauleitungService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Bauleitung updateBauleitung(final Bauleitung bauleitung, final String bauleitungId) {
-        final Bauleitung foundBauleitung = getBauleitungOrThrowException(bauleitungId);
+        final Bauleitung foundBauleitung = ServiceUtils.getEntityOrThrowNotFoundException(bauleitungId, bauleitungRepository);
         foundBauleitung.setBezeichnung(bauleitung.getBezeichnung());
         log.debug("Update Bauleitung {}", foundBauleitung);
         return bauleitungRepository.update(foundBauleitung);

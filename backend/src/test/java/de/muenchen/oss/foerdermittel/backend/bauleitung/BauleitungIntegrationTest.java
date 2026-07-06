@@ -13,6 +13,8 @@ import de.muenchen.oss.foerdermittel.backend.bauleitung.dto.BauleitungUpdateDTO;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausCreateDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -121,7 +123,7 @@ class BauleitungIntegrationTest {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/bauleitungen")
-                            .queryParam("pageNumber", "0")
+                            .queryParam("page", "0")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
                     .exchange()
@@ -146,7 +148,7 @@ class BauleitungIntegrationTest {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/bauleitungen")
-                            .queryParam("pageNumber", "0")
+                            .queryParam("page", "0")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()
@@ -202,14 +204,17 @@ class BauleitungIntegrationTest {
         private static Stream<Arguments> invalidInputRequests() {
             return Stream.of(
                     arguments(
-                            "bauleitung too high",
-                            new BauleitungCreateDTO("100", "Test")),
+                            "bauleitung not uppercase",
+                            new KrankenhausCreateDTO("a", "Test")),
+                    arguments(
+                            "bauleitung too long",
+                            new KrankenhausCreateDTO("AB", "Test")),
                     arguments(
                             "bezeichnung too short",
-                            new BauleitungCreateDTO("2", "")),
+                            new KrankenhausCreateDTO("9", "")),
                     arguments(
                             "bezeichnung too long",
-                            new BauleitungCreateDTO("2", "a".repeat(201))));
+                            new KrankenhausCreateDTO("A", "a".repeat(201))));
         }
 
         @ParameterizedTest(name = "{0}")
