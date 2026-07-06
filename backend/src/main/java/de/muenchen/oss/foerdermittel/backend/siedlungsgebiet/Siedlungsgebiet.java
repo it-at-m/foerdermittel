@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.bauprogramm;
+package de.muenchen.oss.foerdermittel.backend.siedlungsgebiet;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,7 +17,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * This class represents a Bauprogramm.
+ * This class represents a Siedlungsgebiet.
  * <p>
  * The entity's attributes are mapped to the corresponding database columns.
  * </p>
@@ -26,8 +26,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "bauprogramme")
-public class Bauprogramm implements Serializable {
+@Table(name = "siedlungsgebiete")
+public class Siedlungsgebiet implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -38,7 +38,7 @@ public class Bauprogramm implements Serializable {
 
     @Column(nullable = false)
     @Id
-    @NotNull @Min(1) @Max(99) private BigDecimal bauprogramm;
+    @NotNull @Min(1) @Max(99) private BigDecimal siedlungsgebiet;
 
     @Column(nullable = false)
     @NotNull @Size(min = 1, max = 200) private String bezeichnung;

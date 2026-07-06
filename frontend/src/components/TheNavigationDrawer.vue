@@ -277,6 +277,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.krankenhaus.modelName", 2),
+        props: {
+          to: "/krankenhaeuser",
+        },
       },
       {
         title: t("model.kurzbezeichnung.modelName", 2),
@@ -292,6 +295,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.siedlungsgebiet.modelName", 2),
+        props: {
+          to: "/siedlungsgebiete",
+        },
       },
       {
         title: t("model.stadtbezirk.modelName", 2),

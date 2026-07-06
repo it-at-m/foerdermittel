@@ -7,7 +7,7 @@
     <v-row>
       <v-col cols="3">
         <fm-number-input
-          v-model="modelValue.bauprogramm"
+          v-model="modelValue.siedlungsgebiet"
           :display-mode="displayMode"
           disable-edit
           required
@@ -18,11 +18,11 @@
             rules['min']!(1),
             rules['max']!(99),
             rules['unique']!(
-              bauprogrammFormContext.bauprogramme,
-              currentBauprogramm
+              siedlungsgebietFormContext.siedlungsgebiete,
+              currentSiedlungsgebiet
             ),
           ]"
-          :label="t('model.bauprogramm.bauprogramm')"
+          :label="t('model.siedlungsgebiet.siedlungsgebiet')"
         />
       </v-col>
       <v-col cols="9">
@@ -32,7 +32,7 @@
           required
           :counter="200"
           :rules="[rules.required(), rules.maxLength(200)]"
-          :label="t('model.bauprogramm.bezeichnung')"
+          :label="t('model.siedlungsgebiet.bezeichnung')"
         />
       </v-col>
     </v-row>
@@ -41,8 +41,8 @@
 
 <script setup lang="ts">
 import type {
-  BauprogrammFormContext,
-  BauprogrammResponseDTO,
+  SiedlungsgebietFormContext,
+  SiedlungsgebietResponseDTO,
 } from "@/api/generated/foerdermittel-backend";
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
@@ -57,14 +57,14 @@ import { InputDisplayMode } from "@/types/InputDisplayMode";
 
 const { t } = useI18n();
 
-const modelValue = defineModel<Partial<BauprogrammResponseDTO>>({
+const modelValue = defineModel<Partial<SiedlungsgebietResponseDTO>>({
   required: true,
 });
-const currentBauprogramm = ref(modelValue.value.bauprogramm);
+const currentSiedlungsgebiet = ref(modelValue.value.siedlungsgebiet);
 
-const { bauprogrammFormContext, displayMode = InputDisplayMode.CREATE } =
+const { siedlungsgebietFormContext, displayMode = InputDisplayMode.CREATE } =
   defineProps<{
-    bauprogrammFormContext: DeepReadonly<BauprogrammFormContext>;
+    siedlungsgebietFormContext: DeepReadonly<SiedlungsgebietFormContext>;
     displayMode?: InputDisplayMode;
   }>();
 

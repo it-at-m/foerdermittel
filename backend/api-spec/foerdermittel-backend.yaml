@@ -13,11 +13,11 @@ tags:
     description: Spring Boot Actuator Web API Documentation
     url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
 paths:
-  /referate/{id}:
+  /siedlungsgebiete/{id}:
     get:
       tags:
-      - referat-controller
-      operationId: getReferat
+      - siedlungsgebiet-controller
+      operationId: getSiedlungsgebiet
       parameters:
       - name: id
         in: path
@@ -30,13 +30,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ReferatResponseDTO"
+                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
       security:
       - bearerAuth: []
     put:
       tags:
-      - referat-controller
-      operationId: updateReferat
+      - siedlungsgebiet-controller
+      operationId: updateSiedlungsgebiet
       parameters:
       - name: id
         in: path
@@ -47,7 +47,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ReferatUpdateDTO"
+              $ref: "#/components/schemas/SiedlungsgebietUpdateDTO"
         required: true
       responses:
         "200":
@@ -55,13 +55,73 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ReferatResponseDTO"
+                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
       security:
       - bearerAuth: []
     delete:
       tags:
-      - referat-controller
-      operationId: deleteReferat
+      - siedlungsgebiet-controller
+      operationId: deleteSiedlungsgebiet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /krankenhaeuser/{id}:
+    get:
+      tags:
+      - krankenhaus-controller
+      operationId: getKrankenhaus
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KrankenhausResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - krankenhaus-controller
+      operationId: updateKrankenhaus
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KrankenhausUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KrankenhausResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - krankenhaus-controller
+      operationId: deleteKrankenhaus
       parameters:
       - name: id
         in: path
@@ -133,11 +193,11 @@ paths:
           description: OK
       security:
       - bearerAuth: []
-  /referate:
+  /siedlungsgebiete:
     get:
       tags:
-      - referat-controller
-      operationId: getReferateByPageable
+      - siedlungsgebiet-controller
+      operationId: getSiedlungsgebieteByPageable
       parameters:
       - name: page
         in: query
@@ -165,25 +225,25 @@ paths:
           items:
             type: string
           default:
-          - "refnr,ASC"
+          - "siedlungsgebiet,ASC"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PagedModelReferatResponseDTO"
+                $ref: "#/components/schemas/PagedModelSiedlungsgebietResponseDTO"
       security:
       - bearerAuth: []
     post:
       tags:
-      - referat-controller
-      operationId: createReferat
+      - siedlungsgebiet-controller
+      operationId: createSiedlungsgebiet
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ReferatCreateDTO"
+              $ref: "#/components/schemas/SiedlungsgebietCreateDTO"
         required: true
       responses:
         "201":
@@ -191,7 +251,68 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ReferatResponseDTO"
+                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+      security:
+      - bearerAuth: []
+  /krankenhaeuser:
+    get:
+      tags:
+      - krankenhaus-controller
+      operationId: getKrankenhaeuserByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "krhname,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelKrankenhausResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - krankenhaus-controller
+      operationId: createKrankenhaus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KrankenhausCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KrankenhausResponseDTO"
       security:
       - bearerAuth: []
   /bauprogramme:
@@ -255,18 +376,32 @@ paths:
                 $ref: "#/components/schemas/BauprogrammResponseDTO"
       security:
       - bearerAuth: []
-  /referate/form-context:
+  /siedlungsgebiete/form-context:
     get:
       tags:
-      - referat-controller
-      operationId: getReferatFormContext
+      - siedlungsgebiet-controller
+      operationId: getSiedlungsgebietFormContext
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ReferatFormContext"
+                $ref: "#/components/schemas/SiedlungsgebietFormContext"
+      security:
+      - bearerAuth: []
+  /krankenhaeuser/form-context:
+    get:
+      tags:
+      - krankenhaus-controller
+      operationId: getKrankenhausFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KrankenhausFormContext"
       security:
       - bearerAuth: []
   /bauprogramme/form-context:
@@ -426,7 +561,7 @@ paths:
                 type: object
 components:
   schemas:
-    ReferatUpdateDTO:
+    SiedlungsgebietUpdateDTO:
       required:
       - bezeichnung
       type: object
@@ -435,18 +570,40 @@ components:
           maxLength: 200
           minLength: 1
           type: string
-    ReferatResponseDTO:
+    SiedlungsgebietResponseDTO:
       required:
       - bezeichnung
       - id
-      - refnr
+      - siedlungsgebiet
       type: object
       properties:
         id:
           type: string
-        refnr:
+        siedlungsgebiet:
           type: integer
           format: int32
+        bezeichnung:
+          type: string
+    KrankenhausUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    KrankenhausResponseDTO:
+      required:
+      - bezeichnung
+      - id
+      - krhname
+      type: object
+      properties:
+        id:
+          type: string
+        krhname:
+          type: string
         bezeichnung:
           type: string
     BauprogrammUpdateDTO:
@@ -472,17 +629,32 @@ components:
           format: int32
         bezeichnung:
           type: string
-    ReferatCreateDTO:
+    SiedlungsgebietCreateDTO:
       required:
       - bezeichnung
-      - refnr
+      - siedlungsgebiet
       type: object
       properties:
-        refnr:
+        siedlungsgebiet:
           maximum: 99
           minimum: 1
           type: integer
           format: int32
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    KrankenhausCreateDTO:
+      required:
+      - bezeichnung
+      - krhname
+      type: object
+      properties:
+        krhname:
+          maxLength: 1
+          minLength: 1
+          pattern: "^[A-Z]+$"
+          type: string
         bezeichnung:
           maxLength: 200
           minLength: 1
@@ -517,24 +689,42 @@ components:
         totalPages:
           type: integer
           format: int64
-    PagedModelReferatResponseDTO:
+    PagedModelSiedlungsgebietResponseDTO:
       type: object
       properties:
         content:
           type: array
           items:
-            $ref: "#/components/schemas/ReferatResponseDTO"
+            $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
         page:
           $ref: "#/components/schemas/PageMetadata"
-    ReferatFormContext:
+    SiedlungsgebietFormContext:
       required:
-      - referatIds
+      - siedlungsgebiete
       type: object
       properties:
-        referatIds:
+        siedlungsgebiete:
           type: array
           items:
             type: number
+    PagedModelKrankenhausResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/KrankenhausResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    KrankenhausFormContext:
+      required:
+      - krhNamen
+      type: object
+      properties:
+        krhNamen:
+          type: array
+          items:
+            type: string
     PagedModelBauprogrammResponseDTO:
       type: object
       properties:
