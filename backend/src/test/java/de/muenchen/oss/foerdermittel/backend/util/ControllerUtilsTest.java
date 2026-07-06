@@ -1,8 +1,9 @@
 package de.muenchen.oss.foerdermittel.backend.util;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ class ControllerUtilsTest {
     void givenValidStringInput_thenConversionSucceeds() {
         String input = "123";
         BigDecimal result = ControllerUtils.convertStringToBigDecimal(input);
-        assertEquals(BigDecimal.valueOf(123), result);
+        assertThat(result, is(BigDecimal.valueOf(123)));
     }
 
     @Test
@@ -23,6 +24,7 @@ class ControllerUtilsTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             ControllerUtils.convertStringToBigDecimal(input);
         });
-        assertTrue(exception.getReason().contains("Invalid ID"));
+        assertThat(exception.getReason(), containsString("Invalid ID"));
     }
+
 }

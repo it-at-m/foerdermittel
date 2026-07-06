@@ -26,7 +26,7 @@ public class SiedlungsgebietService {
     @Transactional(readOnly = true)
     public Siedlungsgebiet getSiedlungsgebiet(final BigDecimal siedlungsgebietId) {
         log.info("Get Siedlungsgebiet with ID {}", siedlungsgebietId);
-        return getSiedlungsgebietOrThrowException(siedlungsgebietId);
+        return ServiceUtils.getEntityOrThrowNotFoundException(siedlungsgebietId, siedlungsgebietRepository);
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
@@ -51,7 +51,9 @@ public class SiedlungsgebietService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Siedlungsgebiet updateSiedlungsgebiet(final Siedlungsgebiet siedlungsgebiet, final BigDecimal siedlungsgebietId) {
-        final Siedlungsgebiet foundSiedlungsgebiet = getSiedlungsgebietOrThrowException(siedlungsgebietId);
+        final Siedlungsgebiet foundSiedlungsgebiet = ServiceUtils.getEntityOrThrowNotFoundException(
+                siedlungsgebietId, siedlungsgebietRepository);
+
         foundSiedlungsgebiet.setBezeichnung(siedlungsgebiet.getBezeichnung());
         log.debug("Update Siedlungsgebiet {}", foundSiedlungsgebiet);
         return siedlungsgebietRepository.update(foundSiedlungsgebiet);
@@ -64,12 +66,5 @@ public class SiedlungsgebietService {
             throw new NotFoundException(String.format(MSG_NOT_FOUND, siedlungsgebietId));
         }
         siedlungsgebietRepository.deleteById(siedlungsgebietId);
-    }
-
-    private Siedlungsgebiet getSiedlungsgebietOrThrowException(final BigDecimal siedlungsgebietId) {
-        return ServiceUtils.getEntityOrThrowException(
-                siedlungsgebietId,
-                siedlungsgebietRepository.findById(siedlungsgebietId),
-                MSG_NOT_FOUND);
     }
 }
