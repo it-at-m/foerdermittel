@@ -133,6 +133,51 @@ paths:
           description: OK
       security:
       - bearerAuth: []
+  /benutzerhinweise/{id}:
+    get:
+      tags:
+      - benutzerhinweis-controller
+      operationId: getBenutzerhinweis
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BenutzerhinweisResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - benutzerhinweis-controller
+      operationId: updateBenutzerhinweis
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BenutzerhinweisUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BenutzerhinweisResponseDTO"
+      security:
+      - bearerAuth: []
   /bauprogramme/{id}:
     get:
       tags:
@@ -313,6 +358,26 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/KrankenhausResponseDTO"
+      security:
+      - bearerAuth: []
+  /benutzerhinweise:
+    post:
+      tags:
+      - benutzerhinweis-controller
+      operationId: createBenutzerhinweis
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BenutzerhinweisCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BenutzerhinweisResponseDTO"
       security:
       - bearerAuth: []
   /bauprogramme:
@@ -606,6 +671,41 @@ components:
           type: string
         bezeichnung:
           type: string
+    BenutzerhinweisUpdateDTO:
+      required:
+      - bedienung
+      - funktionsbeschreibung
+      - pruefungVorgaben
+      type: object
+      properties:
+        funktionsbeschreibung:
+          maxLength: 4000
+          minLength: 0
+          type: string
+        bedienung:
+          maxLength: 4000
+          minLength: 0
+          type: string
+        pruefungVorgaben:
+          maxLength: 4000
+          minLength: 0
+          type: string
+    BenutzerhinweisResponseDTO:
+      required:
+      - bedienung
+      - funktionsbeschreibung
+      - pruefungVorgaben
+      - viewId
+      type: object
+      properties:
+        viewId:
+          type: string
+        funktionsbeschreibung:
+          type: string
+        bedienung:
+          type: string
+        pruefungVorgaben:
+          type: string
     BauprogrammUpdateDTO:
       required:
       - bezeichnung
@@ -658,6 +758,30 @@ components:
         bezeichnung:
           maxLength: 200
           minLength: 1
+          type: string
+    BenutzerhinweisCreateDTO:
+      required:
+      - bedienung
+      - funktionsbeschreibung
+      - pruefungVorgaben
+      - viewId
+      type: object
+      properties:
+        viewId:
+          maxLength: 30
+          minLength: 1
+          type: string
+        funktionsbeschreibung:
+          maxLength: 4000
+          minLength: 0
+          type: string
+        bedienung:
+          maxLength: 4000
+          minLength: 0
+          type: string
+        pruefungVorgaben:
+          maxLength: 4000
+          minLength: 0
           type: string
     BauprogrammCreateDTO:
       required:
