@@ -35,8 +35,7 @@
 
   <v-dialog
     :model-value="showUnsavedChangesDialog"
-    max-width="600"
-    persistent
+    :max-width="DialogWidth.SMALL"
   >
     <confirm-card
       :title="t('common.unsavedChanges.title')"
@@ -45,7 +44,7 @@
       :confirm-icon="mdiPencil"
       :confirm-text="t('common.action.continueEditing')"
       :cancel-text="t('common.action.discardChanges')"
-      @cancel="discardChanges"
+      @cancel="discardDialogChanges"
       @confirm="continueEditing"
     />
   </v-dialog>
@@ -147,16 +146,14 @@
 
 <script setup lang="ts" generic="T extends { id?: string }">
 import type { DataTableOptions } from "@/types/DataTableOptions";
-import type { NavigationGuardNext } from "vue-router";
 import type { DataTableHeader } from "vuetify/framework";
 
 import { mdiDelete, mdiPencil, mdiPlus, mdiTrashCan } from "@mdi/js";
-import equal from "fast-deep-equal";
-import { computed, onMounted, onUnmounted, ref, toRaw } from "vue";
+import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { onBeforeRouteLeave } from "vue-router";
 
 import ConfirmCard from "@/components/common/ConfirmCard.vue";
+import { useDirtyFlag } from "@/composables/useDirtyFlag";
 import { DialogWidth } from "@/types/DialogWidth";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
@@ -249,17 +246,21 @@ const tableHeadersWithActions = computed(() => [
   } satisfies DataTableHeader<T>,
 ]);
 
-const activeItem = ref<T>({ ...emptyItemTemplate });
-const initialItem = ref<T | null>(null);
-const isEditing = computed<boolean>(() => !!activeItem.value.id);
-const isDirty = computed(
-  () =>
-    dialogMode.value === "write" &&
-    initialItem.value != null &&
-    !equal(initialItem.value, activeItem.value)
+const {
+  currentValue: activeItem,
+  isDirty,
+  showUnsavedChangesDialog,
+  reset,
+  track,
+  requestClose,
+  continueEditing,
+  continuePendingNavigation,
+  discardChanges,
+} = useDirtyFlag<T>(
+  emptyItemTemplate,
+  computed(() => dialogMode.value === "write")
 );
-const showUnsavedChangesDialog = ref(false);
-const pendingRouteNext = ref<NavigationGuardNext | null>(null);
+const isEditing = computed<boolean>(() => !!activeItem.value.id);
 
 const isFormSlotValid = ref(false);
 
@@ -274,25 +275,20 @@ const updateFormValidity = (valid: boolean | null) => {
   isFormSlotValid.value = !!valid;
 };
 
-const cloneItem = (item: T): T => structuredClone(toRaw(item));
-
 const openCreate = () => {
-  activeItem.value = cloneItem(emptyItemTemplate);
-  initialItem.value = cloneItem(activeItem.value);
+  track(emptyItemTemplate);
   isFormSlotValid.value = false;
   dialogMode.value = "write";
 };
 
 const openEdit = (item: T) => {
-  activeItem.value = cloneItem(item);
-  initialItem.value = cloneItem(activeItem.value);
+  track(item);
   isFormSlotValid.value = false;
   dialogMode.value = "write";
 };
 
 const openDelete = (item: T) => {
-  activeItem.value = item;
-  initialItem.value = null;
+  reset(item);
   isFormSlotValid.value = false;
   dialogMode.value = "delete";
 };
@@ -313,60 +309,18 @@ const deleteItem = () => {
 
 const closeDialog = () => {
   dialogMode.value = null;
-  showUnsavedChangesDialog.value = false;
-  activeItem.value = cloneItem(emptyItemTemplate);
-  initialItem.value = null;
-  const next = pendingRouteNext.value;
-  pendingRouteNext.value = null;
-  next?.();
+  reset();
+  continuePendingNavigation();
 };
 
 const requestCloseDialog = () => {
-  if (isDirty.value) {
-    showUnsavedChangesDialog.value = true;
-    return;
-  }
-  closeDialog();
+  requestClose(closeDialog);
 };
 
-const continueEditing = () => {
-  showUnsavedChangesDialog.value = false;
-  if (pendingRouteNext.value != null) {
-    pendingRouteNext.value(false);
-    pendingRouteNext.value = null;
-  }
+const discardDialogChanges = () => {
+  dialogMode.value = null;
+  discardChanges();
 };
-
-const discardChanges = () => {
-  closeDialog();
-};
-
-const onBeforeUnload = (event: BeforeUnloadEvent) => {
-  if (!isDirty.value) {
-    return;
-  }
-
-  event.preventDefault();
-  event.returnValue = "";
-};
-
-onBeforeRouteLeave((_to, _from, next) => {
-  if (!isDirty.value) {
-    next();
-    return;
-  }
-
-  pendingRouteNext.value = next;
-  showUnsavedChangesDialog.value = true;
-});
-
-onMounted(() => {
-  window.addEventListener("beforeunload", onBeforeUnload);
-});
-
-onUnmounted(() => {
-  window.removeEventListener("beforeunload", onBeforeUnload);
-});
 
 defineExpose({
   closeDialog,
