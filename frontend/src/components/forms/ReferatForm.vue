@@ -15,7 +15,7 @@
           :rules="[
             rules.required(),
             rules.number(),
-            rules['min']!(1),
+            rules['min']!(0),
             rules['max']!(99),
             rules['unique']!(referatFormContext.refNrs, currentReferat),
           ]"

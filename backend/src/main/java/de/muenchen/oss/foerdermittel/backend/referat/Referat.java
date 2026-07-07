@@ -31,7 +31,7 @@ public class Referat implements Serializable {
 
     @Id
     @Column(nullable = false)
-    @Min(1) @Max(99) private BigDecimal refnr;
+    @Min(0) @Max(99) private BigDecimal refnr;
 
     @Column(nullable = false)
     @NotNull @Size(min = 1, max = 200) private String bezeichnung;
