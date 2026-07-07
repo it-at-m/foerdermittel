@@ -253,6 +253,66 @@ paths:
           description: OK
       security:
       - bearerAuth: []
+  /bauleitungen/{id}:
+    get:
+      tags:
+      - bauleitung-controller
+      operationId: getBauleitung
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauleitungResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - bauleitung-controller
+      operationId: updateBauleitung
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BauleitungUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauleitungResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - bauleitung-controller
+      operationId: deleteBauleitung
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /siedlungsgebiete:
     get:
       tags:
@@ -497,6 +557,67 @@ paths:
                 $ref: "#/components/schemas/BauprogrammResponseDTO"
       security:
       - bearerAuth: []
+  /bauleitungen:
+    get:
+      tags:
+      - bauleitung-controller
+      operationId: getBauleitungenByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "bauleitung,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelBauleitungResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - bauleitung-controller
+      operationId: createBauleitung
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BauleitungCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauleitungResponseDTO"
+      security:
+      - bearerAuth: []
   /siedlungsgebiete/form-context:
     get:
       tags:
@@ -551,6 +672,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BauprogrammFormContext"
+      security:
+      - bearerAuth: []
+  /bauleitungen/form-context:
+    get:
+      tags:
+      - bauleitung-controller
+      operationId: getBauleitungFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauleitungFormContext"
       security:
       - bearerAuth: []
   /actuator:
@@ -787,6 +922,28 @@ components:
           format: int32
         bezeichnung:
           type: string
+    BauleitungUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    BauleitungResponseDTO:
+      required:
+      - bauleitung
+      - bezeichnung
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        bauleitung:
+          type: string
+        bezeichnung:
+          type: string
     SiedlungsgebietCreateDTO:
       required:
       - bezeichnung
@@ -843,6 +1000,21 @@ components:
           minimum: 1
           type: integer
           format: int32
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    BauleitungCreateDTO:
+      required:
+      - bauleitung
+      - bezeichnung
+      type: object
+      properties:
+        bauleitung:
+          maxLength: 1
+          minLength: 1
+          pattern: "^[A-Z0-9]+$"
+          type: string
         bezeichnung:
           maxLength: 200
           minLength: 1
@@ -934,6 +1106,24 @@ components:
           type: array
           items:
             type: number
+    PagedModelBauleitungResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/BauleitungResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    BauleitungFormContext:
+      required:
+      - bauleitungen
+      type: object
+      properties:
+        bauleitungen:
+          type: array
+          items:
+            type: string
     Link:
       type: object
       properties:
