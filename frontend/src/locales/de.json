@@ -129,7 +129,9 @@
       "modelName": "Stichwortbereich | Stichwortbereiche"
     },
     "traeger": {
-      "modelName": "Träger"
+      "modelName": "Träger",
+      "kurzform": "Kurzform",
+      "bezeichnung": "Bezeichnung"
     },
     "hauptabschnitt": {
       "modelName": "Hauptabschnitt | Hauptabschnitte"
