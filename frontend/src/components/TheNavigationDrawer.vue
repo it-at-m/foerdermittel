@@ -319,6 +319,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.traeger.modelName"),
+        props: {
+          to: "/traeger",
+        },
       },
       {
         title: t("model.hauptabschnitt.modelName", 2),
