@@ -354,7 +354,7 @@ class BauleitungIntegrationTest {
                     .exchange()
                     .expectStatus().isOk();
 
-            assertThat(bauleitungRepository.findById(EXISTING_ID).isEmpty());
+            assertThat(bauleitungRepository.findById(EXISTING_ID).isEmpty()).isTrue();
         }
 
         @Test

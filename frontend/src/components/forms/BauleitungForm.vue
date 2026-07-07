@@ -16,6 +16,7 @@
           :rules="[
             rules.required(),
             rules.strictLength(1),
+            rules.pattern(/^[A-Z1-9]+$/),
             rules['unique']!(
               bauleitungFormContext.bauleitungen,
               currentBauleitung

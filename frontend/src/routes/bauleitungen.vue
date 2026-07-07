@@ -117,7 +117,7 @@ const handleCreate = async (
 const {
   call: updateBauleitung,
   loading: updateBauleitungLoading,
-  error: updateBauleitungenrror,
+  error: updateBauleitungerror,
 } = useUpdateBauleitung();
 
 const handleUpdate = async (
@@ -129,7 +129,7 @@ const handleUpdate = async (
     id: model.id,
     bauleitungUpdateDTO: model,
   });
-  if (!updateBauleitungenrror.value) {
+  if (!updateBauleitungerror.value) {
     await onSuccess(t("common.message.updated", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.updatedError", [t(domainKey)]));
