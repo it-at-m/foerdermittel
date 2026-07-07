@@ -188,14 +188,14 @@ class TraegerServiceTest {
         void givenEntitiesExists_thenReturnCorrectFormContext() {
             // Given
             final List<BigDecimal> allTraeger = List.of(BigDecimal.valueOf(2), BigDecimal.valueOf(3), BigDecimal.valueOf(4));
-            when(traegerRepository.findAllTraeger()).thenReturn(allTraeger);
+            when(traegerRepository.findAllKurzformen()).thenReturn(allTraeger);
 
             // When
             final TraegerFormContext formContext = unitUnderTest.getTraegerFormContext();
 
             // Then
-            verify(traegerRepository, times(1)).findAllTraeger();
-            assertThat(formContext.traeger()).isEqualTo(allTraeger);
+            verify(traegerRepository, times(1)).findAllKurzformen();
+            assertThat(formContext.kurzformen()).isEqualTo(allTraeger);
         }
 
     }
