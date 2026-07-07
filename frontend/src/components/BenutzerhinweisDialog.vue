@@ -13,7 +13,7 @@
       @confirm="emit('save', activeItem)"
     >
       <benutzerhinweis-form
-        :model-value="activeItem"
+        v-model="activeItem"
         :display-mode="displayMode"
         @is-valid="updateFormValidity"
       />
@@ -51,12 +51,19 @@ const {
   loading?: boolean;
 }>();
 const activeItem = ref<Partial<BenutzerhinweisResponseDTO>>(benutzerhinweis);
+
 watch(
   () => benutzerhinweis,
   (newBenutzerhinweis) => {
-    activeItem.value = newBenutzerhinweis;
+    activeItem.value = { ...newBenutzerhinweis };
   }
 );
+
+watch(showDialog, (newShowDialog) => {
+  if (newShowDialog) {
+    activeItem.value = { ...benutzerhinweis };
+  }
+});
 
 const isFormValid = ref(false);
 

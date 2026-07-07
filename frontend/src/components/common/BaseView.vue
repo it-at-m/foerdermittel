@@ -1,15 +1,15 @@
 <template>
-  <benutzerhinweis-dialog
-    :loading="loading"
-    :benutzerhinweis="benutzerhinweis ?? EMPTY_ITEM_TEMPLATE"
-    :display-mode="displayMode"
-    @close="showBenutzerhinweisDialog = false"
-    @save="handleSave"
-  />
   <v-container
     fluid
     class="d-flex flex-column fill-height pt-10 px-8 overflow-hidden"
   >
+    <benutzerhinweis-dialog
+      :loading="loading"
+      :benutzerhinweis="benutzerhinweis ?? EMPTY_ITEM_TEMPLATE"
+      :display-mode="displayMode"
+      @close="showBenutzerhinweisDialog = false"
+      @save="handleSave"
+    />
     <v-row class="justify-space-between align-center flex-0-0">
       <v-col cols="auto">
         <h1
