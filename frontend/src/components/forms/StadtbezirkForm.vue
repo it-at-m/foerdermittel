@@ -1,18 +1,18 @@
 <template>
   <v-form
-      ref="form"
-      :readonly="displayMode === InputDisplayMode.READ"
-      @update:model-value="onValidityChanged"
+    ref="form"
+    :readonly="displayMode === InputDisplayMode.READ"
+    @update:model-value="onValidityChanged"
   >
     <v-row>
       <v-col cols="3">
         <fm-number-input
-            v-model="modelValue.stadtbezirk"
-            :display-mode="displayMode"
-            disable-edit
-            required
-            :counter="2"
-            :rules="[
+          v-model="modelValue.stadtbezirk"
+          :display-mode="displayMode"
+          disable-edit
+          required
+          :counter="2"
+          :rules="[
             rules.required(),
             rules.number(),
             rules['min']!(1),
@@ -22,17 +22,17 @@
               currentStadtbezirk
             ),
           ]"
-            :label="t('model.stadtbezirk.stadtbezirk')"
+          :label="t('model.stadtbezirk.stadtbezirk')"
         />
       </v-col>
       <v-col cols="9">
         <fm-text-field
-            v-model="modelValue.bezeichnung"
-            :display-mode="displayMode"
-            required
-            :counter="200"
-            :rules="[rules.required(), rules.maxLength(200)]"
-            :label="t('model.stadtbezirk.bezeichnung')"
+          v-model="modelValue.bezeichnung"
+          :display-mode="displayMode"
+          required
+          :counter="200"
+          :rules="[rules.required(), rules.maxLength(200)]"
+          :label="t('model.stadtbezirk.bezeichnung')"
         />
       </v-col>
     </v-row>
@@ -65,10 +65,10 @@ const modelValue = defineModel<Partial<StadtbezirkResponseDTO>>({
 const currentStadtbezirk = ref(modelValue.value.stadtbezirk);
 
 const { stadtbezirkFormContext, displayMode = InputDisplayMode.CREATE } =
-    defineProps<{
-      stadtbezirkFormContext: DeepReadonly<StadtbezirkFormContext>;
-      displayMode?: InputDisplayMode;
-    }>();
+  defineProps<{
+    stadtbezirkFormContext: DeepReadonly<StadtbezirkFormContext>;
+    displayMode?: InputDisplayMode;
+  }>();
 
 const emit = defineEmits<{
   isValid: [boolean | null];

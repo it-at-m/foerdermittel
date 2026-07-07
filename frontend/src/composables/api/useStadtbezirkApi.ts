@@ -16,16 +16,16 @@ import useAPI from "@/composables/useAPI";
 export function useCreateStadtbezirk() {
   const api = ApiFactory.getInstance(StadtbezirkControllerApi);
 
-  return useAPI<CreateStadtbezirkRequest, StadtbezirkResponseDTO>(
-    (params) => api.createStadtbezirk(params)
+  return useAPI<CreateStadtbezirkRequest, StadtbezirkResponseDTO>((params) =>
+    api.createStadtbezirk(params)
   );
 }
 
 export function useUpdateStadtbezirk() {
   const api = ApiFactory.getInstance(StadtbezirkControllerApi);
 
-  return useAPI<UpdateStadtbezirkRequest, StadtbezirkResponseDTO>(
-    (params) => api.updateStadtbezirk(params)
+  return useAPI<UpdateStadtbezirkRequest, StadtbezirkResponseDTO>((params) =>
+    api.updateStadtbezirk(params)
   );
 }
 
@@ -41,8 +41,8 @@ export function useGetStadtbezirke() {
 export function useGetStadtbezirk() {
   const api = ApiFactory.getInstance(StadtbezirkControllerApi);
 
-  return useAPI<GetStadtbezirkRequest, StadtbezirkResponseDTO>(
-    (params) => api.getStadtbezirk(params)
+  return useAPI<GetStadtbezirkRequest, StadtbezirkResponseDTO>((params) =>
+    api.getStadtbezirk(params)
   );
 }
 

@@ -84,9 +84,8 @@ const {
 } = useGetStadtbezirkFormContext();
 
 type StadtbezirkFormType = InstanceType<typeof StadtbezirkForm>;
-const stadtbezirkFormRef = useTemplateRef<StadtbezirkFormType>(
-  "stadtbezirkForm"
-);
+const stadtbezirkFormRef =
+  useTemplateRef<StadtbezirkFormType>("stadtbezirkForm");
 
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => stadtbezirke.value?.page?.totalPages),
