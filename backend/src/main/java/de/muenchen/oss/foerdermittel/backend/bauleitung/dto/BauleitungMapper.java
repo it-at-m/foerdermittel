@@ -5,7 +5,7 @@ import de.muenchen.oss.foerdermittel.backend.common.NumberMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(uses = NumberMapper.class)
+@Mapper
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public interface BauleitungMapper {
 
