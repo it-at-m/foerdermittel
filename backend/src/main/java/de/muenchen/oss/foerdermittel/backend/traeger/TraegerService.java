@@ -37,7 +37,7 @@ public class TraegerService {
     @Transactional(readOnly = true)
     public TraegerFormContext getTraegerFormContext() {
         log.info("Get Traeger form context");
-        return new TraegerFormContext(traegerRepository.findAllTraeger());
+        return new TraegerFormContext(traegerRepository.findAllKurzformen());
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
