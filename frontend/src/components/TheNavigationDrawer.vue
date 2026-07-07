@@ -309,7 +309,7 @@ const navigationItems: NavigationItem[] = [
         title: t("model.stichwortbereich.modelName", 2),
       },
       {
-        title: t("model.traeger.modelName", 2),
+        title: t("model.traeger.modelName"),
         props: {
           to: "/traeger",
         },

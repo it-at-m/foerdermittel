@@ -67,7 +67,7 @@ class TraegerServiceTest {
     }
 
     @Nested
-    class GetAllTraeger1 {
+    class GetPaginatedTraeger {
         @Test
         void givenPageable_thenReturnPageOfEntities() {
             // Given

@@ -11,7 +11,7 @@
           :display-mode="displayMode"
           disable-edit
           required
-          :counter="2"
+          :counter="1"
           :rules="[
             rules.required(),
             rules.number(),

@@ -13,6 +13,6 @@ public interface TraegerRepository extends PagingAndSortingRepository<Traeger, B
         InsertAndUpdateRepository<Traeger> {
 
     @Query("SELECT t.kurzform FROM Traeger t")
-    List<BigDecimal> findAllTraeger();
+    List<BigDecimal> findAllKurzformen();
 
 }

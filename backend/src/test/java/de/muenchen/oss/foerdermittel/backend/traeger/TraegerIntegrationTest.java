@@ -115,14 +115,14 @@ class TraegerIntegrationTest {
     }
 
     @Nested
-    class GetTraeger1 {
+    class GetPaginatedTraeger {
 
         @Test
         void givenPageable_thenReturnPageOfEntities() {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/traeger")
-                            .queryParam("pageNumber", "0")
+                            .queryParam("page", "0")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
                     .exchange()
@@ -147,7 +147,7 @@ class TraegerIntegrationTest {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/traeger")
-                            .queryParam("pageNumber", "0")
+                            .queryParam("page", "0")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()
@@ -204,7 +204,7 @@ class TraegerIntegrationTest {
             return Stream.of(
                     arguments(
                             "traeger too high",
-                            new TraegerCreateDTO(100, "Test")),
+                            new TraegerCreateDTO(10, "Test")),
                     arguments(
                             "bezeichnung too short",
                             new TraegerCreateDTO(2, "")),

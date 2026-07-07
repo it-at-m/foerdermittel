@@ -26,7 +26,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "traeger")
 public class Traeger implements Serializable {
 
     @Serial

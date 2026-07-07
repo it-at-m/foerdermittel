@@ -5,8 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 
-public record TraegerFormContext(@NotNull List<BigDecimal> traeger) {
+public record TraegerFormContext(@NotNull List<BigDecimal> kurzformen) {
     public TraegerFormContext {
-        traeger = List.copyOf(traeger);
+        kurzformen = List.copyOf(kurzformen);
     }
 }
