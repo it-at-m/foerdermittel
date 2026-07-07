@@ -11,8 +11,8 @@
       "required": "*"
     },
     "action": {
-      "back": "Zurück",
       "cancel": "Abbrechen",
+      "continueEditing": "Bearbeitung fortsetzen",
       "close": "Schließen",
       "create": "Erstellen",
       "delete": "Löschen",
@@ -40,7 +40,7 @@
     },
     "unsavedChanges": {
       "title": "Ungespeicherte Änderungen",
-      "text": "Es sind ungespeicherte Änderungen vorhanden. Möchten Sie zurückgehen oder die Änderungen verwerfen?"
+      "text": "Es sind ungespeicherte Änderungen vorhanden. Möchten Sie die Bearbeitung fortsetzen oder die Änderungen verwerfen?"
     },
     "roles": {
       "admin": "Administrator",

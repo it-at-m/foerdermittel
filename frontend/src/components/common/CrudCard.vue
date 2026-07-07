@@ -47,14 +47,15 @@
         <v-btn
           :text="t('common.action.discardChanges')"
           :disabled="loading"
+          class="mr-4"
           @click="discardChanges"
         />
         <v-btn
           color="primary"
           variant="flat"
-          :text="t('common.action.back')"
+          :text="t('common.action.continueEditing')"
           :disabled="loading"
-          @click="backToEditing"
+          @click="continueEditing"
         />
       </template>
     </v-card>
@@ -339,7 +340,7 @@ const requestCloseDialog = () => {
   closeDialog();
 };
 
-const backToEditing = () => {
+const continueEditing = () => {
   showUnsavedChangesDialog.value = false;
   if (pendingRouteNext.value != null) {
     pendingRouteNext.value(false);
@@ -355,8 +356,6 @@ const onBeforeUnload = (event: BeforeUnloadEvent) => {
   if (!isDirty.value) {
     return;
   }
-
-  showUnsavedChangesDialog.value = true;
 
   event.preventDefault();
   event.returnValue = "";
