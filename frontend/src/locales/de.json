@@ -82,12 +82,14 @@
     "ablageindex": {
       "modelName": "Stichwort | Stichworte"
     },
-    "bauleitung": {
-      "modelName": "Bauleitung | Bauleitungen"
-    },
     "bauprogramm": {
       "modelName": "Bauprogramm | Bauprogramme",
       "bauprogramm": "Bauprogramm",
+      "bezeichnung": "Bezeichnung"
+    },
+    "bauleitung": {
+      "modelName": "Bauleitung | Bauleitungen",
+      "bauleitung": "Bauleitung",
       "bezeichnung": "Bezeichnung"
     },
     "foerderbereich": {
