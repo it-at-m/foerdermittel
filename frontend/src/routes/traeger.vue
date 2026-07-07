@@ -12,7 +12,6 @@
         :enable-actions="isAdmin"
         :items="traeger?.content ?? []"
         :total-items="traeger?.page?.totalElements ?? 0"
-        :dialog-width="DialogWidth.MEDIUM"
         @delete="handleDelete"
         @create="handleCreate"
         @update="handleUpdate"
@@ -51,7 +50,6 @@ import {
 } from "@/composables/api/useTraegerApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
 import usePagination from "@/composables/usePagination";
-import { DialogWidth } from "@/types/DialogWidth";
 import { Role } from "@/types/Role";
 
 const domainKey = "model.traeger.modelName";

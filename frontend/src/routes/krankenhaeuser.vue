@@ -12,7 +12,6 @@
         :enable-actions="isAdmin"
         :items="krankenhaeuser?.content ?? []"
         :total-items="krankenhaeuser?.page?.totalElements ?? 0"
-        :dialog-width="DialogWidth.MEDIUM"
         @delete="handleDelete"
         @create="handleCreate"
         @update="handleUpdate"
@@ -51,7 +50,6 @@ import {
 } from "@/composables/api/useKrankenhausApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
 import usePagination from "@/composables/usePagination";
-import { DialogWidth } from "@/types/DialogWidth";
 import { Role } from "@/types/Role";
 
 const domainKey = "model.krankenhaus.modelName";

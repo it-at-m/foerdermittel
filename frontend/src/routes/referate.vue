@@ -12,7 +12,6 @@
         :enable-actions="isAdmin"
         :items="referate?.content ?? []"
         :total-items="referate?.page?.totalElements ?? 0"
-        :dialog-width="DialogWidth.MEDIUM"
         @delete="handleDelete"
         @create="handleCreate"
         @update="handleUpdate"
@@ -51,7 +50,6 @@ import {
 } from "@/composables/api/useReferatApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
 import usePagination from "@/composables/usePagination";
-import { DialogWidth } from "@/types/DialogWidth";
 import { Role } from "@/types/Role";
 
 const domainKey = "model.referat.modelName";
