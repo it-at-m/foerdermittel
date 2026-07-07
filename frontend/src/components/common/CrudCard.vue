@@ -35,30 +35,19 @@
 
   <v-dialog
     :model-value="showUnsavedChangesDialog"
-    max-width="500"
+    max-width="600"
     persistent
   >
-    <v-card
+    <confirm-card
       :title="t('common.unsavedChanges.title')"
       :text="t('common.unsavedChanges.text')"
-    >
-      <template #actions>
-        <v-spacer />
-        <v-btn
-          :text="t('common.action.discardChanges')"
-          :disabled="loading"
-          class="mr-4"
-          @click="discardChanges"
-        />
-        <v-btn
-          color="primary"
-          variant="flat"
-          :text="t('common.action.continueEditing')"
-          :disabled="loading"
-          @click="continueEditing"
-        />
-      </template>
-    </v-card>
+      :loading="loading"
+      :confirm-icon="mdiPencil"
+      :confirm-text="t('common.action.continueEditing')"
+      :cancel-text="t('common.action.discardChanges')"
+      @cancel="discardChanges"
+      @confirm="continueEditing"
+    />
   </v-dialog>
 
   <v-card class="d-flex flex-column fill-height w-100">

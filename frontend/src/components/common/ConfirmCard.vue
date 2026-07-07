@@ -13,7 +13,7 @@
 
       <v-btn
         class="mr-4"
-        :text="t('common.action.cancel')"
+        :text="cancelText ?? t('common.action.cancel')"
         :disabled="loading"
         @click="cancel"
       />
@@ -44,6 +44,7 @@ const {
   text?: string;
   confirmText?: string;
   confirmIcon?: string;
+  cancelText?: string;
   loading?: boolean;
   disableConfirm?: boolean;
 }>();
