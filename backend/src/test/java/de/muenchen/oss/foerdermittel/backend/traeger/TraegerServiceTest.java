@@ -153,14 +153,15 @@ class TraegerServiceTest {
         void givenIdExists_thenReturnVoid() {
             // Given
             final BigDecimal id = BigDecimal.valueOf(1);
-            when(traegerRepository.existsById(id)).thenReturn(true);
+            final Traeger existingTraeger = new Traeger(id, "delete");
+            when(traegerRepository.findById(id)).thenReturn(Optional.of(existingTraeger));
             Mockito.doNothing().when(traegerRepository).deleteById(id);
 
             // When
             unitUnderTest.deleteTraeger(id);
 
             // Then
-            verify(traegerRepository, times(1)).existsById(id);
+            verify(traegerRepository, times(1)).findById(id);
             verify(traegerRepository, times(1)).deleteById(id);
         }
 
@@ -168,13 +169,13 @@ class TraegerServiceTest {
         void givenIdNotExists_thenThrowNotFoundException() {
             // Given
             final BigDecimal id = BigDecimal.valueOf(1);
-            when(traegerRepository.existsById(id)).thenReturn(false);
+            when(traegerRepository.findById(id)).thenReturn(Optional.empty());
 
             // When
             final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.deleteTraeger(id));
 
             // Then
-            verify(traegerRepository, times(1)).existsById(id);
+            verify(traegerRepository, times(1)).findById(id);
             verify(traegerRepository, never()).deleteById(id);
             assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
         }

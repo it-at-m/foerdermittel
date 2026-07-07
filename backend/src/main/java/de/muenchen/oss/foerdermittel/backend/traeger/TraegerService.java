@@ -1,8 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.traeger;
 
-import static de.muenchen.oss.foerdermittel.backend.common.ExceptionMessageConstants.MSG_NOT_FOUND;
-
-import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.math.BigDecimal;
@@ -62,9 +59,7 @@ public class TraegerService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteTraeger(final BigDecimal traegerId) {
         log.debug("Delete Traeger with ID {}", traegerId);
-        if (!traegerRepository.existsById(traegerId)) {
-            throw new NotFoundException(String.format(MSG_NOT_FOUND, traegerId));
-        }
+        ServiceUtils.getEntityOrThrowNotFoundException(traegerId, traegerRepository);
         traegerRepository.deleteById(traegerId);
     }
 }
