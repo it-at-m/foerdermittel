@@ -153,14 +153,14 @@ class BauprogrammServiceTest {
         void givenIdExists_thenReturnVoid() {
             // Given
             final BigDecimal id = BigDecimal.valueOf(1);
-            when(bauprogrammRepository.existsById(id)).thenReturn(true);
+            when(bauprogrammRepository.findById(id)).thenReturn(Optional.of(new Bauprogramm()));
             Mockito.doNothing().when(bauprogrammRepository).deleteById(id);
 
             // When
             unitUnderTest.deleteBauprogramm(id);
 
             // Then
-            verify(bauprogrammRepository, times(1)).existsById(id);
+            verify(bauprogrammRepository, times(1)).findById(id);
             verify(bauprogrammRepository, times(1)).deleteById(id);
         }
 
@@ -168,13 +168,13 @@ class BauprogrammServiceTest {
         void givenIdNotExists_thenThrowNotFoundException() {
             // Given
             final BigDecimal id = BigDecimal.valueOf(1);
-            when(bauprogrammRepository.existsById(id)).thenReturn(false);
+            when(bauprogrammRepository.findById(id)).thenReturn(Optional.empty());
 
             // When
             final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.deleteBauprogramm(id));
 
             // Then
-            verify(bauprogrammRepository, times(1)).existsById(id);
+            verify(bauprogrammRepository, times(1)).findById(id);
             verify(bauprogrammRepository, never()).deleteById(id);
             assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
         }

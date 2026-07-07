@@ -1,8 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.siedlungsgebiet;
 
-import static de.muenchen.oss.foerdermittel.backend.common.ExceptionMessageConstants.MSG_NOT_FOUND;
-
-import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.math.BigDecimal;
@@ -62,9 +59,7 @@ public class SiedlungsgebietService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteSiedlungsgebiet(final BigDecimal siedlungsgebietId) {
         log.debug("Delete Siedlungsgebiet with ID {}", siedlungsgebietId);
-        if (!siedlungsgebietRepository.existsById(siedlungsgebietId)) {
-            throw new NotFoundException(String.format(MSG_NOT_FOUND, siedlungsgebietId));
-        }
+        ServiceUtils.getEntityOrThrowNotFoundException(siedlungsgebietId, siedlungsgebietRepository);
         siedlungsgebietRepository.deleteById(siedlungsgebietId);
     }
 }

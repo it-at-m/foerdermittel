@@ -1,8 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.referat;
 
-import static de.muenchen.oss.foerdermittel.backend.common.ExceptionMessageConstants.MSG_NOT_FOUND;
-
-import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.math.BigDecimal;
@@ -60,9 +57,7 @@ public class ReferatService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteReferat(final BigDecimal referatId) {
         log.debug("Delete Referat with ID {}", referatId);
-        if (!referatRepository.existsById(referatId)) {
-            throw new NotFoundException(String.format(MSG_NOT_FOUND, referatId));
-        }
+        ServiceUtils.getEntityOrThrowNotFoundException(referatId, referatRepository);
         referatRepository.deleteById(referatId);
     }
 

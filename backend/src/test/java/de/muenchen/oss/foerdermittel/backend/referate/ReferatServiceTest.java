@@ -157,14 +157,14 @@ class ReferatServiceTest {
         void givenIdExists_thenReturnVoid() {
             // Given
             final BigDecimal id = BigDecimal.valueOf(1);
-            when(referatRepository.existsById(id)).thenReturn(true);
+            when(referatRepository.findById(id)).thenReturn(Optional.of(new Referat()));
             Mockito.doNothing().when(referatRepository).deleteById(id);
 
             // When
             unitUnderTest.deleteReferat(id);
 
             // Then
-            verify(referatRepository, times(1)).existsById(id);
+            verify(referatRepository, times(1)).findById(id);
             verify(referatRepository, times(1)).deleteById(id);
         }
 
@@ -172,13 +172,13 @@ class ReferatServiceTest {
         void givenIdNotExists_thenThrowNotFoundException() {
             // Given
             final BigDecimal id = BigDecimal.valueOf(1);
-            when(referatRepository.existsById(id)).thenReturn(false);
+            when(referatRepository.findById(id)).thenReturn(Optional.empty());
 
             // When
             final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.deleteReferat(id));
 
             // Then
-            verify(referatRepository, times(1)).existsById(id);
+            verify(referatRepository, times(1)).findById(id);
             verify(referatRepository, never()).deleteById(id);
             assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
         }
