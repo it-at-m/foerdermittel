@@ -1,7 +1,6 @@
 package de.muenchen.oss.foerdermittel.backend.bauleitung.dto;
 
 import de.muenchen.oss.foerdermittel.backend.bauleitung.Bauleitung;
-import de.muenchen.oss.foerdermittel.backend.common.NumberMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
