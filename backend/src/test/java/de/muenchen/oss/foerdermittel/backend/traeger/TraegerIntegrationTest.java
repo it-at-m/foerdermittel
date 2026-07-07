@@ -406,7 +406,7 @@ class TraegerIntegrationTest {
 
             // Then
             assertThat(result).isNotNull();
-            assertThat(result.traeger()).isEmpty();
+            assertThat(result.kurzformen()).isEmpty();
         }
 
         @Test
@@ -426,8 +426,8 @@ class TraegerIntegrationTest {
 
             // Then
             assertThat(result).isNotNull();
-            assertThat(result.traeger()).hasSize(1);
-            assertThat(result.traeger().getFirst()).isEqualByComparingTo(String.valueOf(EXISTING_ID));
+            assertThat(result.kurzformen()).hasSize(1);
+            assertThat(result.kurzformen().getFirst()).isEqualByComparingTo(String.valueOf(EXISTING_ID));
         }
 
         private static Stream<Arguments> authorizationMappings() {
