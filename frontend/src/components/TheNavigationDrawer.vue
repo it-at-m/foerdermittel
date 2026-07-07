@@ -292,6 +292,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.referat.modelName", 2),
+        props: {
+          to: "/referate",
+        },
       },
       {
         title: t("model.siedlungsgebiet.modelName", 2),
