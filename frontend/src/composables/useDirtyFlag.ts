@@ -5,17 +5,22 @@ import equal from "fast-deep-equal";
 import { computed, onMounted, onUnmounted, ref, toRaw } from "vue";
 import { onBeforeRouteLeave } from "vue-router";
 
-export function useDirtyFlag<T>(defaultValue: T, enabled?: Ref<boolean>) {
-  const cloneValue = (value: T): T => structuredClone(toRaw(value));
+function cloneValue<T>(value: T): T {
+  return structuredClone(toRaw(value));
+}
 
+export function useDirtyFlag<T>(
+  defaultValue: T,
+  enabled: Ref<boolean> = ref(true)
+) {
   const currentValue = ref(cloneValue(defaultValue));
   const initialValue = ref(null) as Ref<T | null>;
   const showUnsavedChangesDialog = ref(false);
   const pendingRouteNext = ref<NavigationGuardNext | null>(null);
 
-  const isDirty = computed(
+  const isDirty = computed<boolean>(
     () =>
-      enabled?.value &&
+      enabled.value &&
       initialValue.value != null &&
       !equal(initialValue.value, currentValue.value)
   );
@@ -32,7 +37,7 @@ export function useDirtyFlag<T>(defaultValue: T, enabled?: Ref<boolean>) {
 
   const track = (value: T) => {
     currentValue.value = cloneValue(value);
-    initialValue.value = cloneValue(currentValue.value);
+    initialValue.value = cloneValue(value);
     showUnsavedChangesDialog.value = false;
   };
 
