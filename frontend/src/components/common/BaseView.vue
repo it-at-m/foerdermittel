@@ -29,6 +29,7 @@
             <v-btn
               :icon="mdiHelpCircle"
               v-bind="props"
+              :aria-label="t('common.generics.show', [benutzerhinweiseDomain])"
               @click="showBenutzerhinweisDialog = true"
             />
           </template>
@@ -143,16 +144,21 @@ async function handleSave(
     await createBenutzerhinweis({
       benutzerhinweisCreateDTO: benutzerhinweis as BenutzerhinweisCreateDTO,
     });
+    if (!createBenutzerhinweisError.value) {
+      await onSuccess(t("common.message.updated", [benutzerhinweiseDomain]));
+    } else {
+      onFailure(t("common.message.updatedError", [benutzerhinweiseDomain]));
+    }
   } else if (displayMode.value === InputDisplayMode.EDIT) {
     await updateBenutzerhinweis({
       benutzerhinweisUpdateDTO: benutzerhinweis as BenutzerhinweisUpdateDTO,
       id: routeName.value,
     });
-  }
-  if (!createBenutzerhinweisError.value && !updateBenutzerhinweisError.value) {
-    await onSuccess(t("common.message.updated", [benutzerhinweiseDomain]));
-  } else {
-    onFailure(t("common.message.updatedError", [benutzerhinweiseDomain]));
+    if (!updateBenutzerhinweisError.value) {
+      await onSuccess(t("common.message.updated", [benutzerhinweiseDomain]));
+    } else {
+      onFailure(t("common.message.updatedError", [benutzerhinweiseDomain]));
+    }
   }
 }
 

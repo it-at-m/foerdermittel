@@ -50,7 +50,9 @@ const {
   displayMode?: InputDisplayMode;
   loading?: boolean;
 }>();
-const activeItem = ref<Partial<BenutzerhinweisResponseDTO>>(benutzerhinweis);
+const activeItem = ref<Partial<BenutzerhinweisResponseDTO>>({
+  ...benutzerhinweis,
+} as Partial<BenutzerhinweisResponseDTO>);
 
 watch(
   () => benutzerhinweis,
