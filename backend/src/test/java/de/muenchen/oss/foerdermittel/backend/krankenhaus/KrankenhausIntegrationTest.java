@@ -121,7 +121,7 @@ class KrankenhausIntegrationTest {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/krankenhaeuser")
-                            .queryParam("pageNumber", "0")
+                            .queryParam("page", "0")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
                     .exchange()
@@ -146,7 +146,7 @@ class KrankenhausIntegrationTest {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/krankenhaeuser")
-                            .queryParam("pageNumber", "0")
+                            .queryParam("page", "0")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()

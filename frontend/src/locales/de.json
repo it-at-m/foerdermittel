@@ -106,7 +106,9 @@
       "modelName": "Publikation | Publikationen"
     },
     "referat": {
-      "modelName": "Referat | Referate"
+      "modelName": "Referat | Referate",
+      "refnr": "Referat-Nr.",
+      "bezeichnung": "Bezeichnung"
     },
     "siedlungsgebiet": {
       "modelName": "Siedlungsgebiet | Siedlungsgebiete",
