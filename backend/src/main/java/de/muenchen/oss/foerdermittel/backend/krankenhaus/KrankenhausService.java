@@ -1,8 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.krankenhaus;
 
-import static de.muenchen.oss.foerdermittel.backend.common.ExceptionMessageConstants.MSG_NOT_FOUND;
-
-import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import lombok.RequiredArgsConstructor;
@@ -59,9 +56,7 @@ public class KrankenhausService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteKrankenhaus(final String krhName) {
         log.debug("Delete Krankenhaus with ID {}", krhName);
-        if (!krankenhausRepository.existsById(krhName)) {
-            throw new NotFoundException(String.format(MSG_NOT_FOUND, krhName));
-        }
+        ServiceUtils.getEntityOrThrowNotFoundException(krhName, krankenhausRepository);
         krankenhausRepository.deleteById(krhName);
     }
 }

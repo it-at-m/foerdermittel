@@ -6,20 +6,20 @@
   >
     <v-row>
       <v-col cols="3">
-        <fm-text-field
-          v-model="modelValue.krhname"
+        <fm-number-input
+          v-model="modelValue.refnr"
           :display-mode="displayMode"
           disable-edit
           required
-          uppercase
-          :counter="1"
+          :counter="2"
           :rules="[
             rules.required(),
-            rules.strictLength(1),
-            rules.pattern(/^[A-Z]+$/),
-            rules['unique']!(krankenhausFormContext.krhNamen, currentKrhName),
+            rules.number(),
+            rules['min']!(0),
+            rules['max']!(99),
+            rules['unique']!(referatFormContext.refNrs, currentReferat),
           ]"
-          :label="t('model.krankenhaus.krhname')"
+          :label="t('model.referat.refnr')"
         />
       </v-col>
       <v-col cols="9">
@@ -29,7 +29,7 @@
           required
           :counter="200"
           :rules="[rules.required(), rules.maxLength(200)]"
-          :label="t('model.krankenhaus.bezeichnung')"
+          :label="t('model.referat.bezeichnung')"
         />
       </v-col>
     </v-row>
@@ -38,8 +38,8 @@
 
 <script setup lang="ts">
 import type {
-  KrankenhausFormContext,
-  KrankenhausResponseDTO,
+  ReferatFormContext,
+  ReferatResponseDTO,
 } from "@/api/generated/foerdermittel-backend";
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
@@ -48,21 +48,22 @@ import { ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRules } from "vuetify/labs/rules";
 
+import FmNumberInput from "@/components/common/FmNumberInput.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
 const { t } = useI18n();
 
-const modelValue = defineModel<Partial<KrankenhausResponseDTO>>({
+const modelValue = defineModel<Partial<ReferatResponseDTO>>({
   required: true,
 });
 
 // Reactivity is intentionally dropped here to maintain the initial state when form gets mounted.
-const currentKrhName = ref(modelValue.value.krhname);
+const currentReferat = ref(modelValue.value.refnr);
 
-const { krankenhausFormContext, displayMode = InputDisplayMode.CREATE } =
+const { referatFormContext, displayMode = InputDisplayMode.CREATE } =
   defineProps<{
-    krankenhausFormContext: DeepReadonly<KrankenhausFormContext>;
+    referatFormContext: DeepReadonly<ReferatFormContext>;
     displayMode?: InputDisplayMode;
   }>();
 
