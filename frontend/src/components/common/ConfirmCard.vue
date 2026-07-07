@@ -13,11 +13,12 @@
 
       <v-btn
         class="mr-4"
-        :text="t('common.action.cancel')"
+        :text="hideConfirm ? t('common.action.close') : t('common.action.cancel')"
         :disabled="loading"
         @click="cancel"
       />
       <v-btn
+        v-if="!hideConfirm"
         color="primary"
         variant="flat"
         :append-icon="confirmIcon"
@@ -39,6 +40,7 @@ const {
   loading = false,
   disableConfirm = false,
   confirmIcon = mdiContentSave,
+  hideConfirm = false
 } = defineProps<{
   title: string;
   text?: string;
@@ -46,6 +48,7 @@ const {
   confirmIcon?: string;
   loading?: boolean;
   disableConfirm?: boolean;
+  hideConfirm?: boolean;
 }>();
 
 const emit = defineEmits<{
