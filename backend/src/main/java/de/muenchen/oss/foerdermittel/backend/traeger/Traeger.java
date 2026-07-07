@@ -3,7 +3,6 @@ package de.muenchen.oss.foerdermittel.backend.traeger;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -37,7 +36,7 @@ public class Traeger implements Serializable {
 
     @Column(nullable = false)
     @Id
-    @NotNull @Min(1) @Max(99) private BigDecimal kurzform;
+    @NotNull @Min(0) @Max(9) private BigDecimal kurzform;
 
     @Column(nullable = false)
     @NotNull @Size(min = 1, max = 200) private String bezeichnung;

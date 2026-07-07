@@ -15,9 +15,9 @@
           :rules="[
             rules.required(),
             rules.number(),
-            rules['min']!(1),
-            rules['max']!(99),
-            rules['unique']!(traegerFormContext.traeger, currentTraeger),
+            rules['min']!(0),
+            rules['max']!(9),
+            rules['unique']!(traegerFormContext.kurzformen, currentTraeger),
           ]"
           :label="t('model.traeger.kurzform')"
         />
