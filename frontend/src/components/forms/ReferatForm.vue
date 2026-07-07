@@ -17,7 +17,7 @@
             rules.number(),
             rules['min']!(1),
             rules['max']!(99),
-            rules['unique']!(referatFormContext.referatIds, currentReferat),
+            rules['unique']!(referatFormContext.refNrs, currentReferat),
           ]"
           :label="t('model.referat.refnr')"
         />
