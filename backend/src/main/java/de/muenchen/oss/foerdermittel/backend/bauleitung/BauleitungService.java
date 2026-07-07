@@ -59,9 +59,7 @@ public class BauleitungService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteBauleitung(final String bauleitungId) {
         log.debug("Delete Bauleitung with ID {}", bauleitungId);
-        if (!bauleitungRepository.existsById(bauleitungId)) {
-            throw new NotFoundException(String.format(MSG_NOT_FOUND, bauleitungId));
-        }
+        ServiceUtils.getEntityOrThrowNotFoundException(bauleitungId, bauleitungRepository);
         bauleitungRepository.deleteById(bauleitungId);
     }
 }
