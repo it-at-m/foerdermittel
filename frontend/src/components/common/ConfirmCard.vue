@@ -12,8 +12,10 @@
       <v-spacer />
 
       <v-btn
-        class="mr-4"
-        :text="hideConfirm ? t('common.action.close') : t('common.action.cancel')"
+        :class="{ 'mr-4': !hideConfirm }"
+        :text="
+          hideConfirm ? t('common.action.close') : t('common.action.cancel')
+        "
         :disabled="loading"
         @click="cancel"
       />
@@ -40,7 +42,7 @@ const {
   loading = false,
   disableConfirm = false,
   confirmIcon = mdiContentSave,
-  hideConfirm = false
+  hideConfirm = false,
 } = defineProps<{
   title: string;
   text?: string;
