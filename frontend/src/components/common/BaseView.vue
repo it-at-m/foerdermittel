@@ -74,7 +74,8 @@ const { domainKey } = defineProps<{
 const { t } = useI18n();
 
 const route = useRoute();
-const routeName = computed(() => route.name.replace("/", ""));
+// always contains a valid route name, implemented fallback only to make vue-tsc happy without building to generate route-map.d.ts
+const routeName = computed(() => route.name?.replace("/", "") ?? "");
 
 const {
   data: benutzerhinweis,
