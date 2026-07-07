@@ -20,6 +20,7 @@
       "update": "Bearbeiten"
     },
     "generics": {
+      "show": "{0} anzeigen",
       "manage": "{0} verwalten",
       "create": "{0} @.lower:common.action.create",
       "update": "{0} @.lower:common.action.update",
