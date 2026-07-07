@@ -152,14 +152,14 @@ class BauleitungServiceTest {
         void givenIdExists_thenReturnVoid() {
             // Given
             final String id = "1";
-            when(bauleitungRepository.existsById(id)).thenReturn(true);
+            when(bauleitungRepository.findById(id)).thenReturn(Optional.of(new Bauleitung()));
             Mockito.doNothing().when(bauleitungRepository).deleteById(id);
 
             // When
             unitUnderTest.deleteBauleitung(id);
 
             // Then
-            verify(bauleitungRepository, times(1)).existsById(id);
+            verify(bauleitungRepository, times(1)).findById(id);
             verify(bauleitungRepository, times(1)).deleteById(id);
         }
 
@@ -167,13 +167,13 @@ class BauleitungServiceTest {
         void givenIdNotExists_thenThrowNotFoundException() {
             // Given
             final String id = "1";
-            when(bauleitungRepository.existsById(id)).thenReturn(false);
+            when(bauleitungRepository.findById(id)).thenReturn(Optional.empty());
 
             // When
             final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.deleteBauleitung(id));
 
             // Then
-            verify(bauleitungRepository, times(1)).existsById(id);
+            verify(bauleitungRepository, times(1)).findById(id);
             verify(bauleitungRepository, never()).deleteById(id);
             assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
         }
