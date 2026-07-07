@@ -1,8 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.bauleitung;
 
-import static de.muenchen.oss.foerdermittel.backend.common.ExceptionMessageConstants.MSG_NOT_FOUND;
-
-import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import lombok.RequiredArgsConstructor;
