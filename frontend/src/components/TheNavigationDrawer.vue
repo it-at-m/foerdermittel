@@ -265,6 +265,9 @@ const navigationItems: NavigationItem[] = [
     children: [
       {
         title: t("model.bauleitung.modelName", 2),
+        props: {
+          to: "/bauleitungen",
+        },
       },
       {
         title: t("model.bauprogramm.modelName", 2),
@@ -289,6 +292,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.referat.modelName", 2),
+        props: {
+          to: "/referate",
+        },
       },
       {
         title: t("model.siedlungsgebiet.modelName", 2),

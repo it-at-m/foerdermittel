@@ -154,14 +154,14 @@ class SiedlungsgebietServiceTest {
         void givenIdExists_thenReturnVoid() {
             // Given
             final BigDecimal id = BigDecimal.valueOf(1);
-            when(siedlungsgebietRepository.existsById(id)).thenReturn(true);
+            when(siedlungsgebietRepository.findById(id)).thenReturn(Optional.of(new Siedlungsgebiet()));
             Mockito.doNothing().when(siedlungsgebietRepository).deleteById(id);
 
             // When
             unitUnderTest.deleteSiedlungsgebiet(id);
 
             // Then
-            verify(siedlungsgebietRepository, times(1)).existsById(id);
+            verify(siedlungsgebietRepository, times(1)).findById(id);
             verify(siedlungsgebietRepository, times(1)).deleteById(id);
         }
 
@@ -169,13 +169,13 @@ class SiedlungsgebietServiceTest {
         void givenIdNotExists_thenThrowNotFoundException() {
             // Given
             final BigDecimal id = BigDecimal.valueOf(1);
-            when(siedlungsgebietRepository.existsById(id)).thenReturn(false);
+            when(siedlungsgebietRepository.findById(id)).thenReturn(Optional.empty());
 
             // When
             final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.deleteSiedlungsgebiet(id));
 
             // Then
-            verify(siedlungsgebietRepository, times(1)).existsById(id);
+            verify(siedlungsgebietRepository, times(1)).findById(id);
             verify(siedlungsgebietRepository, never()).deleteById(id);
             assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
         }

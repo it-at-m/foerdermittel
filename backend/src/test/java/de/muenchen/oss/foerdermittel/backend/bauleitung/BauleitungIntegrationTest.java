@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.bauprogramm;
+package de.muenchen.oss.foerdermittel.backend.bauleitung;
 
 import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_TEST_PROFILE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -7,10 +7,9 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import de.muenchen.oss.foerdermittel.backend.TestConstants;
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
-import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammCreateDTO;
-import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammResponseDTO;
-import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammUpdateDTO;
-import java.math.BigDecimal;
+import de.muenchen.oss.foerdermittel.backend.bauleitung.dto.BauleitungCreateDTO;
+import de.muenchen.oss.foerdermittel.backend.bauleitung.dto.BauleitungResponseDTO;
+import de.muenchen.oss.foerdermittel.backend.bauleitung.dto.BauleitungUpdateDTO;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -41,7 +40,7 @@ import org.testcontainers.utility.DockerImageName;
 @AutoConfigureRestTestClient
 @ActiveProfiles(profiles = { SPRING_TEST_PROFILE })
 @Import(TestSecurityConfiguration.class)
-class BauprogrammIntegrationTest {
+class BauleitungIntegrationTest {
 
     @Autowired
     private RestTestClient restTestClient;
@@ -52,35 +51,35 @@ class BauprogrammIntegrationTest {
     private static final PostgreSQLContainer POSTGRE_SQL_CONTAINER = new PostgreSQLContainer(
             DockerImageName.parse(TestConstants.TESTCONTAINERS_POSTGRES_IMAGE));
 
-    private static final int EXISTING_ID = 1;
-    private static final int NON_EXISTING_ID = 2;
+    private static final String EXISTING_ID = "1";
+    private static final String NON_EXISTING_ID = "2";
 
     @Autowired
-    private BauprogrammRepository bauprogrammRepository;
+    private BauleitungRepository bauleitungRepository;
 
     @BeforeEach
     public void setUp() {
-        bauprogrammRepository.deleteAll();
-        final Bauprogramm exampleEntity = new Bauprogramm(new BigDecimal(EXISTING_ID), "Test");
-        bauprogrammRepository.save(exampleEntity);
+        bauleitungRepository.deleteAll();
+        final Bauleitung exampleEntity = new Bauleitung(EXISTING_ID, "Test");
+        bauleitungRepository.save(exampleEntity);
     }
 
     @Nested
-    class GetBauprogramm {
+    class GetBauleitung {
 
         @Test
         void givenEntityExists_thenReturnEntity() {
             restTestClient
                     .get()
-                    .uri("/bauprogramme/{id}", EXISTING_ID)
+                    .uri("/bauleitungen/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
                     .exchange()
                     .expectStatus().isOk()
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(BauprogrammResponseDTO.class)
+                    .expectBody(BauleitungResponseDTO.class)
                     .value(responseDTO -> {
                         assertNotNull(responseDTO);
-                        assertThat(responseDTO.id()).isEqualTo(String.valueOf(EXISTING_ID));
+                        assertThat(responseDTO.id()).isEqualTo(EXISTING_ID);
                     });
         }
 
@@ -88,7 +87,7 @@ class BauprogrammIntegrationTest {
         void givenEntityNotExists_thenReturnNotFound() {
             restTestClient
                     .get()
-                    .uri("/bauprogramme/{id}", NON_EXISTING_ID)
+                    .uri("/bauleitungen/{id}", NON_EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
                     .exchange()
                     .expectStatus().isNotFound();
@@ -106,7 +105,7 @@ class BauprogrammIntegrationTest {
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             restTestClient
                     .get()
-                    .uri("/bauprogramme/{id}", EXISTING_ID)
+                    .uri("/bauleitungen/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()
                     .expectStatus().isEqualTo(httpStatus);
@@ -115,13 +114,13 @@ class BauprogrammIntegrationTest {
     }
 
     @Nested
-    class GetBauprogramme {
+    class GetBauleitungen {
 
         @Test
         void givenPageable_thenReturnPageOfEntities() {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/bauprogramme")
+                            .path("/bauleitungen")
                             .queryParam("page", "0")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
@@ -130,7 +129,7 @@ class BauprogrammIntegrationTest {
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
                     .expectBody()
                     .jsonPath("$.content")
-                    .value(new ParameterizedTypeReference<List<BauprogrammResponseDTO>>() {
+                    .value(new ParameterizedTypeReference<List<BauleitungResponseDTO>>() {
                     }, content -> assertThat(content.size()).isEqualTo(1));
         }
 
@@ -146,7 +145,7 @@ class BauprogrammIntegrationTest {
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/bauprogramme")
+                            .path("/bauleitungen")
                             .queryParam("page", "0")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
@@ -157,42 +156,42 @@ class BauprogrammIntegrationTest {
     }
 
     @Nested
-    class CreateBauprogramm {
+    class CreateBauleitung {
 
         @Test
         void givenEntityNotExists_thenEntityIsSaved() {
-            final BauprogrammCreateDTO requestDTO = new BauprogrammCreateDTO(NON_EXISTING_ID, "Test");
+            final BauleitungCreateDTO requestDTO = new BauleitungCreateDTO(NON_EXISTING_ID, "Test");
 
-            final BauprogrammResponseDTO responseDTO = restTestClient.post()
-                    .uri("/bauprogramme")
+            final BauleitungResponseDTO responseDTO = restTestClient.post()
+                    .uri("/bauleitungen")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
                     .exchange()
                     .expectStatus().isCreated()
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(BauprogrammResponseDTO.class)
+                    .expectBody(BauleitungResponseDTO.class)
                     .value(response -> {
                         assertThat(response).isNotNull();
-                        assertThat(response.bauprogramm()).isEqualTo(requestDTO.bauprogramm());
+                        assertThat(response.bauleitung()).isEqualTo(requestDTO.bauleitung());
                         assertThat(response.bezeichnung()).isEqualTo(requestDTO.bezeichnung());
                     })
                     .returnResult()
                     .getResponseBody();
 
             assertThat(responseDTO).isNotNull();
-            final Optional<Bauprogramm> entity = bauprogrammRepository.findById(BigDecimal.valueOf(Integer.parseInt(responseDTO.id())));
+            final Optional<Bauleitung> entity = bauleitungRepository.findById(responseDTO.id());
             assertThat(entity).isPresent();
-            assertThat(entity.get().getBauprogramm().intValue()).isEqualTo(requestDTO.bauprogramm());
+            assertThat(entity.get().getBauleitung()).isEqualTo(requestDTO.bauleitung());
             assertThat(entity.get().getBezeichnung()).isEqualTo(requestDTO.bezeichnung());
         }
 
         @Test
         void givenEntityAlreadyExists_thenReturnConflict() {
-            final BauprogrammCreateDTO requestDTO = new BauprogrammCreateDTO(EXISTING_ID, "Test");
+            final BauleitungCreateDTO requestDTO = new BauleitungCreateDTO(EXISTING_ID, "Test");
 
             restTestClient.post()
-                    .uri("/bauprogramme")
+                    .uri("/bauleitungen")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -203,24 +202,27 @@ class BauprogrammIntegrationTest {
         private static Stream<Arguments> invalidInputRequests() {
             return Stream.of(
                     arguments(
-                            "bauprogramm too high",
-                            new BauprogrammCreateDTO(100, "Test")),
+                            "bauleitung not uppercase",
+                            new BauleitungCreateDTO("a", "Test")),
+                    arguments(
+                            "bauleitung too long",
+                            new BauleitungCreateDTO("AB", "Test")),
                     arguments(
                             "bezeichnung too short",
-                            new BauprogrammCreateDTO(2, "")),
+                            new BauleitungCreateDTO("9", "")),
                     arguments(
                             "bezeichnung too long",
-                            new BauprogrammCreateDTO(2, "a".repeat(201))));
+                            new BauleitungCreateDTO("A", "a".repeat(201))));
         }
 
         @ParameterizedTest(name = "{0}")
         @MethodSource("invalidInputRequests")
         void givenInvalidInput_thenReturnBadRequest(
                 final String description,
-                final BauprogrammCreateDTO requestDTO) {
+                final BauleitungCreateDTO requestDTO) {
 
             restTestClient.post()
-                    .uri("/bauprogramme")
+                    .uri("/bauleitungen")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -238,10 +240,10 @@ class BauprogrammIntegrationTest {
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
         @MethodSource("authorizationMappings")
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
-            final BauprogrammCreateDTO requestDTO = new BauprogrammCreateDTO(NON_EXISTING_ID, "Test");
+            final BauleitungCreateDTO requestDTO = new BauleitungCreateDTO(NON_EXISTING_ID, "Test");
 
             restTestClient.post()
-                    .uri("/bauprogramme")
+                    .uri("/bauleitungen")
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -252,41 +254,41 @@ class BauprogrammIntegrationTest {
     }
 
     @Nested
-    class UpdateBauprogramm {
+    class UpdateBauleitung {
 
         @Test
         void givenEntityExists_thenEntityIsUpdated() {
-            final BauprogrammUpdateDTO requestDTO = new BauprogrammUpdateDTO("Test aktualisiert");
+            final BauleitungUpdateDTO requestDTO = new BauleitungUpdateDTO("Test aktualisiert");
 
-            final BauprogrammResponseDTO responseDTO = restTestClient.put()
-                    .uri("/bauprogramme/{id}", EXISTING_ID)
+            final BauleitungResponseDTO responseDTO = restTestClient.put()
+                    .uri("/bauleitungen/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
                     .exchange()
                     .expectStatus().isOk()
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(BauprogrammResponseDTO.class)
+                    .expectBody(BauleitungResponseDTO.class)
                     .value(theEntityResponseDTO -> {
                         assertNotNull(theEntityResponseDTO);
-                        assertThat(theEntityResponseDTO.id()).isEqualTo(String.valueOf(EXISTING_ID));
+                        assertThat(theEntityResponseDTO.id()).isEqualTo(EXISTING_ID);
                         assertThat(theEntityResponseDTO.bezeichnung()).isEqualTo(requestDTO.bezeichnung());
                     })
                     .returnResult()
                     .getResponseBody();
 
             assertThat(responseDTO).isNotNull();
-            final Optional<Bauprogramm> entity = bauprogrammRepository.findById(BigDecimal.valueOf(EXISTING_ID));
+            final Optional<Bauleitung> entity = bauleitungRepository.findById(EXISTING_ID);
             assertThat(entity).isPresent();
             assertThat(entity.get().getBezeichnung()).isEqualTo(requestDTO.bezeichnung());
         }
 
         @Test
         void givenEntityNotExists_thenReturnNotFound() {
-            final BauprogrammUpdateDTO requestDTO = new BauprogrammUpdateDTO("Test aktualisiert");
+            final BauleitungUpdateDTO requestDTO = new BauleitungUpdateDTO("Test aktualisiert");
 
             restTestClient.put()
-                    .uri("/bauprogramme/{id}", NON_EXISTING_ID)
+                    .uri("/bauleitungen/{id}", NON_EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -298,19 +300,19 @@ class BauprogrammIntegrationTest {
             return Stream.of(
                     arguments(
                             "bezeichnung too short",
-                            new BauprogrammUpdateDTO("")),
+                            new BauleitungUpdateDTO("")),
                     arguments(
                             "bezeichnung too long",
-                            new BauprogrammUpdateDTO("a".repeat(201))));
+                            new BauleitungUpdateDTO("a".repeat(201))));
         }
 
         @ParameterizedTest(name = "{0}")
         @MethodSource("invalidInputRequests")
         void givenInvalidInput_thenReturnBadRequest(
                 final String description,
-                final BauprogrammUpdateDTO requestDTO) {
+                final BauleitungUpdateDTO requestDTO) {
             restTestClient.put()
-                    .uri("/bauprogramme/{id}", EXISTING_ID)
+                    .uri("/bauleitungen/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -328,10 +330,10 @@ class BauprogrammIntegrationTest {
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
         @MethodSource("authorizationMappings")
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
-            final BauprogrammUpdateDTO requestDTO = new BauprogrammUpdateDTO("Test aktualisiert");
+            final BauleitungUpdateDTO requestDTO = new BauleitungUpdateDTO("Test aktualisiert");
 
             restTestClient.put()
-                    .uri("/bauprogramme/{id}", EXISTING_ID)
+                    .uri("/bauleitungen/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -342,23 +344,23 @@ class BauprogrammIntegrationTest {
     }
 
     @Nested
-    class DeleteBauprogramm {
+    class DeleteBauleitung {
 
         @Test
         void givenEntityIdExists_thenEntityIsDeleted() {
             restTestClient.delete()
-                    .uri("/bauprogramme/{id}", EXISTING_ID)
+                    .uri("/bauleitungen/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus().isOk();
 
-            assertThat(bauprogrammRepository.findById(BigDecimal.valueOf(EXISTING_ID))).isEmpty();
+            assertThat(bauleitungRepository.findById(EXISTING_ID).isEmpty()).isTrue();
         }
 
         @Test
         void givenEntityIdNotExists_thenReturnNotFound() {
             restTestClient.delete()
-                    .uri("/bauprogramme/{id}", NON_EXISTING_ID)
+                    .uri("/bauleitungen/{id}", NON_EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus().isNotFound();
@@ -375,7 +377,7 @@ class BauprogrammIntegrationTest {
         @MethodSource("authorizationMappings")
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             restTestClient.delete()
-                    .uri("/bauprogramme/{id}", EXISTING_ID)
+                    .uri("/bauleitungen/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()
                     .expectStatus().isEqualTo(httpStatus);
@@ -384,50 +386,50 @@ class BauprogrammIntegrationTest {
     }
 
     @Nested
-    class GetBauprogrammFormContext {
+    class GetBauleitungFormContext {
 
         @Test
         void givenNoEntitiesExist_thenReturnEmptyFormContext() {
             // Given
-            bauprogrammRepository.deleteAll();
+            bauleitungRepository.deleteAll();
 
             // When
-            final BauprogrammFormContext result = restTestClient.get()
+            final BauleitungFormContext result = restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/bauprogramme/form-context")
+                            .path("/bauleitungen/form-context")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus().isOk()
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(BauprogrammFormContext.class)
+                    .expectBody(BauleitungFormContext.class)
                     .returnResult()
                     .getResponseBody();
 
             // Then
             assertThat(result).isNotNull();
-            assertThat(result.bauprogramme()).isEmpty();
+            assertThat(result.bauleitungen()).isEmpty();
         }
 
         @Test
         void givenEntitiesExist_thenReturnCorrectFormContext() {
             // When
-            final BauprogrammFormContext result = restTestClient.get()
+            final BauleitungFormContext result = restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/bauprogramme/form-context")
+                            .path("/bauleitungen/form-context")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus().isOk()
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(BauprogrammFormContext.class)
+                    .expectBody(BauleitungFormContext.class)
                     .returnResult()
                     .getResponseBody();
 
             // Then
             assertThat(result).isNotNull();
-            assertThat(result.bauprogramme()).hasSize(1);
-            assertThat(result.bauprogramme().getFirst()).isEqualByComparingTo(String.valueOf(EXISTING_ID));
+            assertThat(result.bauleitungen()).hasSize(1);
+            assertThat(result.bauleitungen().getFirst()).isEqualTo(EXISTING_ID);
         }
 
         private static Stream<Arguments> authorizationMappings() {
@@ -442,7 +444,7 @@ class BauprogrammIntegrationTest {
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/bauprogramme/form-context")
+                            .path("/bauleitungen/form-context")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()

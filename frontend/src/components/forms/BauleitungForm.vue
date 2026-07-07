@@ -7,7 +7,7 @@
     <v-row>
       <v-col cols="3">
         <fm-text-field
-          v-model="modelValue.krhname"
+          v-model="modelValue.bauleitung"
           :display-mode="displayMode"
           disable-edit
           required
@@ -16,10 +16,13 @@
           :rules="[
             rules.required(),
             rules.strictLength(1),
-            rules.pattern(/^[A-Z]+$/),
-            rules['unique']!(krankenhausFormContext.krhNamen, currentKrhName),
+            rules.pattern(/^[A-Z0-9]+$/),
+            rules['unique']!(
+              bauleitungFormContext.bauleitungen,
+              currentBauleitung
+            ),
           ]"
-          :label="t('model.krankenhaus.krhname')"
+          :label="t('model.bauleitung.bauleitung')"
         />
       </v-col>
       <v-col cols="9">
@@ -29,7 +32,7 @@
           required
           :counter="200"
           :rules="[rules.required(), rules.maxLength(200)]"
-          :label="t('model.krankenhaus.bezeichnung')"
+          :label="t('model.bauleitung.bezeichnung')"
         />
       </v-col>
     </v-row>
@@ -38,8 +41,8 @@
 
 <script setup lang="ts">
 import type {
-  KrankenhausFormContext,
-  KrankenhausResponseDTO,
+  BauleitungFormContext,
+  BauleitungResponseDTO,
 } from "@/api/generated/foerdermittel-backend";
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
@@ -53,16 +56,14 @@ import { InputDisplayMode } from "@/types/InputDisplayMode";
 
 const { t } = useI18n();
 
-const modelValue = defineModel<Partial<KrankenhausResponseDTO>>({
+const modelValue = defineModel<Partial<BauleitungResponseDTO>>({
   required: true,
 });
+const currentBauleitung = ref(modelValue.value.bauleitung);
 
-// Reactivity is intentionally dropped here to maintain the initial state when form gets mounted.
-const currentKrhName = ref(modelValue.value.krhname);
-
-const { krankenhausFormContext, displayMode = InputDisplayMode.CREATE } =
+const { bauleitungFormContext, displayMode = InputDisplayMode.CREATE } =
   defineProps<{
-    krankenhausFormContext: DeepReadonly<KrankenhausFormContext>;
+    bauleitungFormContext: DeepReadonly<BauleitungFormContext>;
     displayMode?: InputDisplayMode;
   }>();
 
