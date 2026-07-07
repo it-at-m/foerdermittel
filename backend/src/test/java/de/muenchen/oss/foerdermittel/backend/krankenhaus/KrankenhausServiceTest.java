@@ -152,14 +152,14 @@ class KrankenhausServiceTest {
         void givenIdExists_thenReturnVoid() {
             // Given
             final String id = "K";
-            when(krankenhausRepository.existsById(id)).thenReturn(true);
+            when(krankenhausRepository.findById(id)).thenReturn(Optional.of(new Krankenhaus()));
             Mockito.doNothing().when(krankenhausRepository).deleteById(id);
 
             // When
             unitUnderTest.deleteKrankenhaus(id);
 
             // Then
-            verify(krankenhausRepository, times(1)).existsById(id);
+            verify(krankenhausRepository, times(1)).findById(id);
             verify(krankenhausRepository, times(1)).deleteById(id);
         }
 
@@ -167,13 +167,13 @@ class KrankenhausServiceTest {
         void givenIdNotExists_thenThrowNotFoundException() {
             // Given
             final String id = "K";
-            when(krankenhausRepository.existsById(id)).thenReturn(false);
+            when(krankenhausRepository.findById(id)).thenReturn(Optional.empty());
 
             // When
             final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.deleteKrankenhaus(id));
 
             // Then
-            verify(krankenhausRepository, times(1)).existsById(id);
+            verify(krankenhausRepository, times(1)).findById(id);
             verify(krankenhausRepository, never()).deleteById(id);
             assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
         }

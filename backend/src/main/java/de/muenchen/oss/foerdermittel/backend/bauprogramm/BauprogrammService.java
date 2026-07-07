@@ -1,8 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.bauprogramm;
 
-import static de.muenchen.oss.foerdermittel.backend.common.ExceptionMessageConstants.MSG_NOT_FOUND;
-
-import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.math.BigDecimal;
@@ -60,9 +57,7 @@ public class BauprogrammService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteBauprogramm(final BigDecimal bauprogrammId) {
         log.debug("Delete Bauprogramm with ID {}", bauprogrammId);
-        if (!bauprogrammRepository.existsById(bauprogrammId)) {
-            throw new NotFoundException(String.format(MSG_NOT_FOUND, bauprogrammId));
-        }
+        ServiceUtils.getEntityOrThrowNotFoundException(bauprogrammId, bauprogrammRepository);
         bauprogrammRepository.deleteById(bauprogrammId);
     }
 

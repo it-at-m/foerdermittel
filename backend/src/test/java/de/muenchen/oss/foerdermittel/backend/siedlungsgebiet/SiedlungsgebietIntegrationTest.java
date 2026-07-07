@@ -122,7 +122,7 @@ class SiedlungsgebietIntegrationTest {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/siedlungsgebiete")
-                            .queryParam("pageNumber", "0")
+                            .queryParam("page", "0")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
                     .exchange()
@@ -147,7 +147,7 @@ class SiedlungsgebietIntegrationTest {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/siedlungsgebiete")
-                            .queryParam("pageNumber", "0")
+                            .queryParam("page", "0")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()

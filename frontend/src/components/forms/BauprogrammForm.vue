@@ -60,6 +60,8 @@ const { t } = useI18n();
 const modelValue = defineModel<Partial<BauprogrammResponseDTO>>({
   required: true,
 });
+
+// Reactivity is intentionally dropped here to maintain the initial state when form gets mounted.
 const currentBauprogramm = ref(modelValue.value.bauprogramm);
 
 const { bauprogrammFormContext, displayMode = InputDisplayMode.CREATE } =
