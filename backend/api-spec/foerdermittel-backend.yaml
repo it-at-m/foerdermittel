@@ -18,11 +18,6 @@ paths:
       tags:
       - stadtbezirk-controller
       operationId: getStadtbezirk
-  /traeger/{id}:
-    get:
-      tags:
-      - traeger-controller
-      operationId: getTraeger
       parameters:
       - name: id
         in: path
@@ -36,15 +31,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/StadtbezirkResponseDTO"
-                $ref: "#/components/schemas/TraegerResponseDTO"
       security:
       - bearerAuth: []
     put:
       tags:
       - stadtbezirk-controller
       operationId: updateStadtbezirk
-      - traeger-controller
-      operationId: updateTraeger
       parameters:
       - name: id
         in: path
@@ -56,7 +48,6 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/StadtbezirkUpdateDTO"
-              $ref: "#/components/schemas/TraegerUpdateDTO"
         required: true
       responses:
         "200":
@@ -65,15 +56,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/StadtbezirkResponseDTO"
-                $ref: "#/components/schemas/TraegerResponseDTO"
       security:
       - bearerAuth: []
     delete:
       tags:
       - stadtbezirk-controller
       operationId: deleteStadtbezirk
-      - traeger-controller
-      operationId: deleteTraeger
       parameters:
       - name: id
         in: path
@@ -434,67 +422,6 @@ paths:
           description: OK
       security:
       - bearerAuth: []
-  /traeger:
-    get:
-      tags:
-      - traeger-controller
-      operationId: getTraegerByPageable
-      parameters:
-      - name: page
-        in: query
-        description: Zero-based page index (0..N)
-        required: false
-        schema:
-          minimum: 0
-          type: integer
-          default: 0
-      - name: size
-        in: query
-        description: The size of the page to be returned
-        required: false
-        schema:
-          minimum: 1
-          type: integer
-          default: 10
-      - name: sort
-        in: query
-        description: "Sorting criteria in the format: property,(asc|desc). Default\
-          \ sort order is ascending. Multiple sort criteria are supported."
-        required: false
-        schema:
-          type: array
-          items:
-            type: string
-          default:
-          - "kurzform,ASC"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PagedModelTraegerResponseDTO"
-      security:
-      - bearerAuth: []
-    post:
-      tags:
-      - traeger-controller
-      operationId: createTraeger
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/TraegerCreateDTO"
-        required: true
-      responses:
-        "201":
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TraegerResponseDTO"
-      security:
-      - bearerAuth: []
   /siedlungsgebiete:
     get:
       tags:
@@ -806,20 +733,6 @@ paths:
                 $ref: "#/components/schemas/BauleitungResponseDTO"
       security:
       - bearerAuth: []
-  /traeger/form-context:
-    get:
-      tags:
-      - traeger-controller
-      operationId: getTraegerFormContext
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TraegerFormContext"
-      security:
-      - bearerAuth: []
   /siedlungsgebiete/form-context:
     get:
       tags:
@@ -1034,7 +947,6 @@ paths:
 components:
   schemas:
     StadtbezirkUpdateDTO:
-    TraegerUpdateDTO:
       required:
       - bezeichnung
       type: object
@@ -1048,17 +960,11 @@ components:
       - bezeichnung
       - id
       - stadtbezirk
-    TraegerResponseDTO:
-      required:
-      - bezeichnung
-      - id
-      - kurzform
       type: object
       properties:
         id:
           type: string
         stadtbezirk:
-        kurzform:
           type: integer
           format: int32
         bezeichnung:
@@ -1187,21 +1093,6 @@ components:
           type: string
         bezeichnung:
           type: string
-    TraegerCreateDTO:
-      required:
-      - bezeichnung
-      - kurzform
-      type: object
-      properties:
-        kurzform:
-          maximum: 9
-          minimum: 0
-          type: integer
-          format: int32
-        bezeichnung:
-          maxLength: 200
-          minLength: 1
-          type: string
     SiedlungsgebietCreateDTO:
       required:
       - bezeichnung
@@ -1293,7 +1184,6 @@ components:
           type: integer
           format: int64
     PagedModelStadtbezirkResponseDTO:
-    PagedModelTraegerResponseDTO:
       type: object
       properties:
         content:
@@ -1308,15 +1198,6 @@ components:
       type: object
       properties:
         stadtbezirke:
-            $ref: "#/components/schemas/TraegerResponseDTO"
-        page:
-          $ref: "#/components/schemas/PageMetadata"
-    TraegerFormContext:
-      required:
-      - kurzformen
-      type: object
-      properties:
-        kurzformen:
           type: array
           items:
             type: number
