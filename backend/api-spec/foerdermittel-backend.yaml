@@ -73,6 +73,66 @@ paths:
           description: OK
       security:
       - bearerAuth: []
+  /referate/{id}:
+    get:
+      tags:
+      - referat-controller
+      operationId: getReferat
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReferatResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - referat-controller
+      operationId: updateReferat
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReferatUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReferatResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - referat-controller
+      operationId: deleteReferat
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /krankenhaeuser/{id}:
     get:
       tags:
@@ -254,6 +314,67 @@ paths:
                 $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
       security:
       - bearerAuth: []
+  /referate:
+    get:
+      tags:
+      - referat-controller
+      operationId: getReferateByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "refnr,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelReferatResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - referat-controller
+      operationId: createReferat
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReferatCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReferatResponseDTO"
+      security:
+      - bearerAuth: []
   /krankenhaeuser:
     get:
       tags:
@@ -388,6 +509,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SiedlungsgebietFormContext"
+      security:
+      - bearerAuth: []
+  /referate/form-context:
+    get:
+      tags:
+      - referat-controller
+      operationId: getReferatFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReferatFormContext"
       security:
       - bearerAuth: []
   /krankenhaeuser/form-context:
@@ -584,6 +719,29 @@ components:
           format: int32
         bezeichnung:
           type: string
+    ReferatUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    ReferatResponseDTO:
+      required:
+      - bezeichnung
+      - id
+      - refnr
+      type: object
+      properties:
+        id:
+          type: string
+        refnr:
+          type: integer
+          format: int32
+        bezeichnung:
+          type: string
     KrankenhausUpdateDTO:
       required:
       - bezeichnung
@@ -638,6 +796,21 @@ components:
         siedlungsgebiet:
           maximum: 99
           minimum: 1
+          type: integer
+          format: int32
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    ReferatCreateDTO:
+      required:
+      - bezeichnung
+      - refnr
+      type: object
+      properties:
+        refnr:
+          maximum: 99
+          minimum: 0
           type: integer
           format: int32
         bezeichnung:
@@ -704,6 +877,24 @@ components:
       type: object
       properties:
         siedlungsgebiete:
+          type: array
+          items:
+            type: number
+    PagedModelReferatResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReferatResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    ReferatFormContext:
+      required:
+      - refNrs
+      type: object
+      properties:
+        refNrs:
           type: array
           items:
             type: number
