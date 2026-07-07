@@ -840,7 +840,7 @@ components:
         bauleitung:
           maxLength: 1
           minLength: 1
-          pattern: "^[A-Z1-9]+$"
+          pattern: "^[A-Z0-9]+$"
           type: string
         bezeichnung:
           maxLength: 200
