@@ -3,9 +3,9 @@ import type {
   DeletePublikationRequest,
   GetPublikationenByPageableRequest,
   GetPublikationRequest,
+  PagedModelPublikationResponseDTO,
   PublikationFormContext,
   PublikationResponseDTO,
-  PagedModelPublikationResponseDTO,
   UpdatePublikationRequest,
 } from "@/api/generated/foerdermittel-backend";
 

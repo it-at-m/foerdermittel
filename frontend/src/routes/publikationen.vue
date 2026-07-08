@@ -2,28 +2,28 @@
   <base-view :domain-key="domainKey">
     <!-- @vue-generic {Partial<PublikationResponseDTO>} -->
     <crud-card
-        ref="crudRef"
-        v-model="dataTableOptions"
-        :empty-item-template="EMPTY_ITEM_TEMPLATE"
-        :loading="loading"
-        :table-headers="headers"
-        :domain-key="domainKey"
-        :enable-actions="isAdmin"
-        :items="publikationen?.content ?? []"
-        :total-items="publikationen?.page?.totalElements ?? 0"
-        :dialog-width="DialogWidth.MEDIUM"
-        @delete="handleDelete"
-        @create="handleCreate"
-        @update="handleUpdate"
+      ref="crudRef"
+      v-model="dataTableOptions"
+      :empty-item-template="EMPTY_ITEM_TEMPLATE"
+      :loading="loading"
+      :table-headers="headers"
+      :domain-key="domainKey"
+      :enable-actions="isAdmin"
+      :items="publikationen?.content ?? []"
+      :total-items="publikationen?.page?.totalElements ?? 0"
+      :dialog-width="DialogWidth.MEDIUM"
+      @delete="handleDelete"
+      @create="handleCreate"
+      @update="handleUpdate"
     >
       <template #form="{ item, updateValidity, inputDisplayMode }">
         <publikation-form
-            v-if="publikationFormContext"
-            ref="publikationForm"
-            :model-value="item"
-            :display-mode="inputDisplayMode"
-            :publikation-form-context="publikationFormContext"
-            @is-valid="updateValidity"
+          v-if="publikationFormContext"
+          ref="publikationForm"
+          :model-value="item"
+          :display-mode="inputDisplayMode"
+          :publikation-form-context="publikationFormContext"
+          @is-valid="updateValidity"
         />
       </template>
     </crud-card>
@@ -87,13 +87,13 @@ const {
 
 type PublikationFormType = InstanceType<typeof PublikationForm>;
 const publikationFormRef =
-    useTemplateRef<PublikationFormType>("publikationForm");
+  useTemplateRef<PublikationFormType>("publikationForm");
 
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
-    computed(() => publikationen.value?.page?.totalPages),
-    getPublikationen,
-    getPublikationFormContext,
-    () => publikationFormRef.value?.validate()
+  computed(() => publikationen.value?.page?.totalPages),
+  getPublikationen,
+  getPublikationFormContext,
+  () => publikationFormRef.value?.validate()
 );
 
 const {
@@ -103,7 +103,7 @@ const {
 } = useCreatePublikation();
 
 const handleCreate = async (
-    publikationCreateDTO: Partial<PublikationResponseDTO>
+  publikationCreateDTO: Partial<PublikationResponseDTO>
 ) => {
   // TODO: some type checking improvements
   const model = publikationCreateDTO as PublikationResponseDTO;
@@ -124,7 +124,7 @@ const {
 } = useUpdatePublikation();
 
 const handleUpdate = async (
-    publikationUpdateDTO: Partial<PublikationResponseDTO>
+  publikationUpdateDTO: Partial<PublikationResponseDTO>
 ) => {
   // TODO: some type checking improvements
   const model = publikationUpdateDTO as PublikationResponseDTO;
@@ -157,11 +157,11 @@ const handleDelete = async (id: string) => {
 };
 
 const loading = computed(
-    () =>
-        getPublikationenLoading.value ||
-        getPublikationFormContextLoading.value ||
-        createPublikationLoading.value ||
-        updatePublikationLoading.value ||
-        deletePublikationLoading.value
+  () =>
+    getPublikationenLoading.value ||
+    getPublikationFormContextLoading.value ||
+    createPublikationLoading.value ||
+    updatePublikationLoading.value ||
+    deletePublikationLoading.value
 );
 </script>

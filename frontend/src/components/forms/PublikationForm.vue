@@ -17,7 +17,10 @@
             rules.required(),
             rules.strictLength(1),
             rules.pattern(/^[A-Z0-9]+$/),
-            rules['unique']!(publikationFormContext.kurzformen, currentKurzform),
+            rules['unique']!(
+              publikationFormContext.kurzformen,
+              currentKurzform
+            ),
           ]"
           :label="t('model.publikation.kurzform')"
         />
