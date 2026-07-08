@@ -304,6 +304,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.stadtbezirk.modelName", 2),
+        props: {
+          to: "/stadtbezirke",
+        },
       },
       {
         title: t("model.listenname.modelName", 2),

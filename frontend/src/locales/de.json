@@ -118,7 +118,9 @@
       "bezeichnung": "Bezeichnung"
     },
     "stadtbezirk": {
-      "modelName": "Stadtbezirk | Stadtbezirke"
+      "modelName": "Stadtbezirk | Stadtbezirke",
+      "stadtbezirk": "Stadtbezirk",
+      "bezeichnung": "Bezeichnung"
     },
     "listenname": {
       "modelName": "Listenname | Listennamen"
