@@ -312,7 +312,6 @@ class PublikationIntegrationTest {
         @ParameterizedTest(name = "{0}")
         @MethodSource("invalidInputRequests")
         void givenInvalidInput_thenReturnBadRequest(
-                final String description,
                 final PublikationUpdateDTO requestDTO) {
             restTestClient.put()
                     .uri("/publikationen/{id}", EXISTING_ID)
