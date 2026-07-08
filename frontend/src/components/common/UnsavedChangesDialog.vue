@@ -36,5 +36,3 @@ const emit = defineEmits<{
   confirm: [];
 }>();
 </script>
-
-<style scoped></style>
