@@ -1,31 +1,33 @@
 <template>
   <base-view :domain-key="domainKey">
-    <!-- @vue-generic {Partial<StadtbezirkResponseDTO>} -->
-    <crud-card
-      ref="crudRef"
-      v-model="dataTableOptions"
-      :empty-item-template="EMPTY_ITEM_TEMPLATE"
-      :loading="loading"
-      :table-headers="headers"
-      :domain-key="domainKey"
-      :enable-actions="isAdmin"
-      :items="stadtbezirke?.content ?? []"
-      :total-items="stadtbezirke?.page?.totalElements ?? 0"
-      @delete="handleDelete"
-      @create="handleCreate"
-      @update="handleUpdate"
-    >
-      <template #form="{ item, updateValidity, inputDisplayMode }">
-        <stadtbezirk-form
-          v-if="stadtbezirkFormContext"
-          ref="stadtbezirkForm"
-          :model-value="item"
-          :display-mode="inputDisplayMode"
-          :stadtbezirk-form-context="stadtbezirkFormContext"
-          @is-valid="updateValidity"
-        />
-      </template>
-    </crud-card>
+    <template #default="{ baseViewLoading }">
+      <!-- @vue-generic {Partial<StadtbezirkResponseDTO>} -->
+      <crud-card
+        ref="crudRef"
+        v-model="dataTableOptions"
+        :empty-item-template="EMPTY_ITEM_TEMPLATE"
+        :loading="loading || baseViewLoading"
+        :table-headers="headers"
+        :domain-key="domainKey"
+        :enable-actions="isAdmin"
+        :items="stadtbezirke?.content ?? []"
+        :total-items="stadtbezirke?.page?.totalElements ?? 0"
+        @delete="handleDelete"
+        @create="handleCreate"
+        @update="handleUpdate"
+      >
+        <template #form="{ item, updateValidity, inputDisplayMode }">
+          <stadtbezirk-form
+            v-if="stadtbezirkFormContext"
+            ref="stadtbezirkForm"
+            :model-value="item"
+            :display-mode="inputDisplayMode"
+            :stadtbezirk-form-context="stadtbezirkFormContext"
+            @is-valid="updateValidity"
+          />
+        </template>
+      </crud-card>
+    </template>
   </base-view>
 </template>
 
