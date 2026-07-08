@@ -15,4 +15,3 @@ public interface PublikationRepository extends PagingAndSortingRepository<Publik
     List<String> findAllKurzformen();
 
 }
-

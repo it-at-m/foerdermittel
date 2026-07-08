@@ -70,7 +70,7 @@ public class PublikationController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public PublikationResponseDTO updatePublikation(@Valid @RequestBody final PublikationUpdateDTO publikationUpdateDTO,
-                                                    @PathVariable("id") final String publikationId) {
+            @PathVariable("id") final String publikationId) {
         return publikationMapper
                 .toDTO(publikationService.updatePublikation(publikationMapper.toEntity(publikationUpdateDTO), publikationId));
     }
