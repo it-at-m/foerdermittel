@@ -14,7 +14,11 @@
       <v-btn
         :class="{ 'mr-4': !hideConfirm }"
         :text="
-          hideConfirm ? t('common.action.close') : t('common.action.cancel')
+          cancelText
+            ? cancelText
+            : hideConfirm
+              ? t('common.action.close')
+              : t('common.action.cancel')
         "
         :disabled="loading"
         @click="cancel"
