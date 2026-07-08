@@ -12,9 +12,11 @@
     },
     "action": {
       "cancel": "Abbrechen",
+      "continueEditing": "Bearbeitung fortsetzen",
       "close": "Schließen",
       "create": "Erstellen",
       "delete": "Löschen",
+      "discardChanges": "Änderungen verwerfen",
       "save": "Speichern",
       "search": "Suchen",
       "update": "Bearbeiten"
@@ -173,6 +175,10 @@
   "component": {
     "theNavigationDrawer": {
       "loggedIn": "Angemeldet als:"
+    },
+    "unsavedChangesDialog": {
+      "title": "Ungespeicherte Änderungen",
+      "text": "Es sind ungespeicherte Änderungen vorhanden. Möchten Sie die Bearbeitung fortsetzen oder die Änderungen verwerfen?"
     }
   }
 }
