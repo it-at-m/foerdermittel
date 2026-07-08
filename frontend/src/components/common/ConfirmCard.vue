@@ -48,6 +48,7 @@ const {
   text?: string;
   confirmText?: string;
   confirmIcon?: string;
+  cancelText?: string;
   loading?: boolean;
   disableConfirm?: boolean;
   hideConfirm?: boolean;
