@@ -74,7 +74,6 @@ export function useDirtyFlag<T>(
     }
 
     event.preventDefault();
-    event.returnValue = "";
   };
 
   onBeforeRouteLeave((_to, _from, next) => {

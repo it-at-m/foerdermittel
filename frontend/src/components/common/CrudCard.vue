@@ -33,21 +33,12 @@
     />
   </v-dialog>
 
-  <v-dialog
+  <unsaved-changes-dialog
     :model-value="showUnsavedChangesDialog"
-    :max-width="DialogWidth.SMALL"
-  >
-    <confirm-card
-      :title="t('common.unsavedChanges.title')"
-      :text="t('common.unsavedChanges.text')"
-      :loading="loading"
-      :confirm-icon="mdiPencil"
-      :confirm-text="t('common.action.continueEditing')"
-      :cancel-text="t('common.action.discardChanges')"
-      @cancel="discardDialogChanges"
-      @confirm="continueEditing"
-    />
-  </v-dialog>
+    :loading="loading"
+    @cancel="discardDialogChanges"
+    @confirm="continueEditing"
+  />
 
   <v-card class="d-flex flex-column fill-height w-100">
     <v-card-title class="pa-0">
@@ -153,6 +144,7 @@ import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 import ConfirmCard from "@/components/common/ConfirmCard.vue";
+import UnsavedChangesDialog from "@/components/common/UnsavedChangesDialog.vue";
 import { useDirtyFlag } from "@/composables/useDirtyFlag";
 import { DialogWidth } from "@/types/DialogWidth";
 import { InputDisplayMode } from "@/types/InputDisplayMode";

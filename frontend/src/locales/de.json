@@ -38,10 +38,6 @@
       "loading": "Lade {0}...",
       "noData": "Keine {0} vorhanden"
     },
-    "unsavedChanges": {
-      "title": "Ungespeicherte Änderungen",
-      "text": "Es sind ungespeicherte Änderungen vorhanden. Möchten Sie die Bearbeitung fortsetzen oder die Änderungen verwerfen?"
-    },
     "roles": {
       "admin": "Administrator",
       "sachbearbeitung": "Sachbearbeitung",
@@ -179,6 +175,10 @@
   "component": {
     "theNavigationDrawer": {
       "loggedIn": "Angemeldet als:"
+    },
+    "unsavedChangesDialog": {
+      "title": "Ungespeicherte Änderungen",
+      "text": "Es sind ungespeicherte Änderungen vorhanden. Möchten Sie die Bearbeitung fortsetzen oder die Änderungen verwerfen?"
     }
   }
 }
