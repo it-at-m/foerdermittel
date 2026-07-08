@@ -22,7 +22,6 @@ import { useI18n } from "vue-i18n";
 
 import ConfirmCard from "@/components/common/ConfirmCard.vue";
 import { DialogWidth } from "@/types/DialogWidth";
-import { InputDisplayMode } from "@/types/InputDisplayMode";
 
 const { t } = useI18n();
 
@@ -30,8 +29,6 @@ const showDialog = defineModel<boolean>();
 
 const { loading = false } = defineProps<{
   loading?: boolean;
-  displayMode?: InputDisplayMode;
-  disableEdit?: boolean;
 }>();
 
 const emit = defineEmits<{
