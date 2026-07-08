@@ -206,6 +206,9 @@ class StadtbezirkIntegrationTest {
                             "stadtbezirk too high",
                             new StadtbezirkCreateDTO(100, "Test")),
                     arguments(
+                            "stadtbezirk too low",
+                            new StadtbezirkCreateDTO(-1, "Test")),
+                    arguments(
                             "bezeichnung too short",
                             new StadtbezirkCreateDTO(2, "")),
                     arguments(
