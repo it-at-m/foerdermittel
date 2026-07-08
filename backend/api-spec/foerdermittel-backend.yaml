@@ -13,6 +13,126 @@ tags:
     description: Spring Boot Actuator Web API Documentation
     url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
 paths:
+  /traeger/{id}:
+    get:
+      tags:
+      - traeger-controller
+      operationId: getTraeger
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TraegerResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - traeger-controller
+      operationId: updateTraeger
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TraegerUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TraegerResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - traeger-controller
+      operationId: deleteTraeger
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /stadtbezirke/{id}:
+    get:
+      tags:
+      - stadtbezirk-controller
+      operationId: getStadtbezirk
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - stadtbezirk-controller
+      operationId: updateStadtbezirk
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StadtbezirkUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - stadtbezirk-controller
+      operationId: deleteStadtbezirk
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /siedlungsgebiete/{id}:
     get:
       tags:
@@ -251,6 +371,188 @@ paths:
       responses:
         "200":
           description: OK
+      security:
+      - bearerAuth: []
+  /bauleitungen/{id}:
+    get:
+      tags:
+      - bauleitung-controller
+      operationId: getBauleitung
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauleitungResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - bauleitung-controller
+      operationId: updateBauleitung
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BauleitungUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauleitungResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - bauleitung-controller
+      operationId: deleteBauleitung
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /traeger:
+    get:
+      tags:
+      - traeger-controller
+      operationId: getTraegerByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "kurzform,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelTraegerResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - traeger-controller
+      operationId: createTraeger
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TraegerCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TraegerResponseDTO"
+      security:
+      - bearerAuth: []
+  /stadtbezirke:
+    get:
+      tags:
+      - stadtbezirk-controller
+      operationId: getStadtbezirkeByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "stadtbezirk,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelStadtbezirkResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - stadtbezirk-controller
+      operationId: createStadtbezirk
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StadtbezirkCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkResponseDTO"
       security:
       - bearerAuth: []
   /siedlungsgebiete:
@@ -497,6 +799,95 @@ paths:
                 $ref: "#/components/schemas/BauprogrammResponseDTO"
       security:
       - bearerAuth: []
+  /bauleitungen:
+    get:
+      tags:
+      - bauleitung-controller
+      operationId: getBauleitungenByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "bauleitung,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelBauleitungResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - bauleitung-controller
+      operationId: createBauleitung
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BauleitungCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauleitungResponseDTO"
+      security:
+      - bearerAuth: []
+  /traeger/form-context:
+    get:
+      tags:
+      - traeger-controller
+      operationId: getTraegerFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TraegerFormContext"
+      security:
+      - bearerAuth: []
+  /stadtbezirke/form-context:
+    get:
+      tags:
+      - stadtbezirk-controller
+      operationId: getStadtbezirkFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkFormContext"
+      security:
+      - bearerAuth: []
   /siedlungsgebiete/form-context:
     get:
       tags:
@@ -551,6 +942,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BauprogrammFormContext"
+      security:
+      - bearerAuth: []
+  /bauleitungen/form-context:
+    get:
+      tags:
+      - bauleitung-controller
+      operationId: getBauleitungFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauleitungFormContext"
       security:
       - bearerAuth: []
   /actuator:
@@ -696,6 +1101,52 @@ paths:
                 type: object
 components:
   schemas:
+    TraegerUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    TraegerResponseDTO:
+      required:
+      - bezeichnung
+      - id
+      - kurzform
+      type: object
+      properties:
+        id:
+          type: string
+        kurzform:
+          type: integer
+          format: int32
+        bezeichnung:
+          type: string
+    StadtbezirkUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    StadtbezirkResponseDTO:
+      required:
+      - bezeichnung
+      - id
+      - stadtbezirk
+      type: object
+      properties:
+        id:
+          type: string
+        stadtbezirk:
+          type: integer
+          format: int32
+        bezeichnung:
+          type: string
     SiedlungsgebietUpdateDTO:
       required:
       - bezeichnung
@@ -787,6 +1238,58 @@ components:
           format: int32
         bezeichnung:
           type: string
+    BauleitungUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    BauleitungResponseDTO:
+      required:
+      - bauleitung
+      - bezeichnung
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        bauleitung:
+          type: string
+        bezeichnung:
+          type: string
+    TraegerCreateDTO:
+      required:
+      - bezeichnung
+      - kurzform
+      type: object
+      properties:
+        kurzform:
+          maximum: 9
+          minimum: 0
+          type: integer
+          format: int32
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    StadtbezirkCreateDTO:
+      required:
+      - bezeichnung
+      - stadtbezirk
+      type: object
+      properties:
+        stadtbezirk:
+          maximum: 99
+          minimum: 0
+          type: integer
+          format: int32
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
     SiedlungsgebietCreateDTO:
       required:
       - bezeichnung
@@ -847,6 +1350,21 @@ components:
           maxLength: 200
           minLength: 1
           type: string
+    BauleitungCreateDTO:
+      required:
+      - bauleitung
+      - bezeichnung
+      type: object
+      properties:
+        bauleitung:
+          maxLength: 1
+          minLength: 1
+          pattern: "^[A-Z0-9]+$"
+          type: string
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
     PageMetadata:
       type: object
       properties:
@@ -862,6 +1380,42 @@ components:
         totalPages:
           type: integer
           format: int64
+    PagedModelTraegerResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/TraegerResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    TraegerFormContext:
+      required:
+      - kurzformen
+      type: object
+      properties:
+        kurzformen:
+          type: array
+          items:
+            type: number
+    PagedModelStadtbezirkResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    StadtbezirkFormContext:
+      required:
+      - stadtbezirke
+      type: object
+      properties:
+        stadtbezirke:
+          type: array
+          items:
+            type: number
     PagedModelSiedlungsgebietResponseDTO:
       type: object
       properties:
@@ -934,6 +1488,24 @@ components:
           type: array
           items:
             type: number
+    PagedModelBauleitungResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/BauleitungResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    BauleitungFormContext:
+      required:
+      - bauleitungen
+      type: object
+      properties:
+        bauleitungen:
+          type: array
+          items:
+            type: string
     Link:
       type: object
       properties:

@@ -88,12 +88,14 @@
     "ablageindex": {
       "modelName": "Stichwort | Stichworte"
     },
-    "bauleitung": {
-      "modelName": "Bauleitung | Bauleitungen"
-    },
     "bauprogramm": {
       "modelName": "Bauprogramm | Bauprogramme",
       "bauprogramm": "Bauprogramm",
+      "bezeichnung": "Bezeichnung"
+    },
+    "bauleitung": {
+      "modelName": "Bauleitung | Bauleitungen",
+      "bauleitung": "Bauleitung",
       "bezeichnung": "Bezeichnung"
     },
     "foerderbereich": {
@@ -121,7 +123,9 @@
       "bezeichnung": "Bezeichnung"
     },
     "stadtbezirk": {
-      "modelName": "Stadtbezirk | Stadtbezirke"
+      "modelName": "Stadtbezirk | Stadtbezirke",
+      "stadtbezirk": "Stadtbezirk",
+      "bezeichnung": "Bezeichnung"
     },
     "listenname": {
       "modelName": "Listenname | Listennamen"
@@ -133,7 +137,9 @@
       "modelName": "Stichwortbereich | Stichwortbereiche"
     },
     "traeger": {
-      "modelName": "Träger"
+      "modelName": "Träger",
+      "kurzform": "Kurzform",
+      "bezeichnung": "Bezeichnung"
     },
     "hauptabschnitt": {
       "modelName": "Hauptabschnitt | Hauptabschnitte"
