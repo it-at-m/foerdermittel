@@ -1,32 +1,33 @@
 <template>
   <base-view :domain-key="domainKey">
-    <!-- @vue-generic {Partial<BauprogrammResponseDTO>} -->
-    <crud-card
-      ref="crudRef"
-      v-model="dataTableOptions"
-      :empty-item-template="EMPTY_ITEM_TEMPLATE"
-      :loading="loading"
-      :table-headers="headers"
-      :domain-key="domainKey"
-      :enable-actions="isAdmin"
-      :items="bauprogramme?.content ?? []"
-      :total-items="bauprogramme?.page?.totalElements ?? 0"
-      :dialog-width="DialogWidth.MEDIUM"
-      @delete="handleDelete"
-      @create="handleCreate"
-      @update="handleUpdate"
-    >
-      <template #form="{ item, updateValidity, inputDisplayMode }">
-        <bauprogramm-form
-          v-if="bauprogrammFormContext"
-          ref="bauprogrammForm"
-          :model-value="item"
-          :display-mode="inputDisplayMode"
-          :bauprogramm-form-context="bauprogrammFormContext"
-          @is-valid="updateValidity"
-        />
-      </template>
-    </crud-card>
+    <template #default="{ baseViewLoading }">
+      <!-- @vue-generic {Partial<BauprogrammResponseDTO>} -->
+      <crud-card
+        ref="crudRef"
+        v-model="dataTableOptions"
+        :empty-item-template="EMPTY_ITEM_TEMPLATE"
+        :loading="baseViewLoading || loading"
+        :table-headers="headers"
+        :domain-key="domainKey"
+        :enable-actions="isAdmin"
+        :items="bauprogramme?.content ?? []"
+        :total-items="bauprogramme?.page?.totalElements ?? 0"
+        @delete="handleDelete"
+        @create="handleCreate"
+        @update="handleUpdate"
+      >
+        <template #form="{ item, updateValidity, inputDisplayMode }">
+          <bauprogramm-form
+            v-if="bauprogrammFormContext"
+            ref="bauprogrammForm"
+            :model-value="item"
+            :display-mode="inputDisplayMode"
+            :bauprogramm-form-context="bauprogrammFormContext"
+            @is-valid="updateValidity"
+          />
+        </template>
+      </crud-card>
+    </template>
   </base-view>
 </template>
 
@@ -49,7 +50,6 @@ import {
 } from "@/composables/api/useBauprogrammApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
 import usePagination from "@/composables/usePagination";
-import { DialogWidth } from "@/types/DialogWidth";
 import { Role } from "@/types/Role";
 
 const domainKey = "model.bauprogramm.modelName";

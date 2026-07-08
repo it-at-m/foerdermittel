@@ -1,31 +1,33 @@
 <template>
   <base-view :domain-key="domainKey">
-    <!-- @vue-generic {Partial<BauleitungResponseDTO>} -->
-    <crud-card
-      ref="crudRef"
-      v-model="dataTableOptions"
-      :empty-item-template="EMPTY_ITEM_TEMPLATE"
-      :loading="loading"
-      :table-headers="headers"
-      :domain-key="domainKey"
-      :enable-actions="isAdmin"
-      :items="bauleitungen?.content ?? []"
-      :total-items="bauleitungen?.page?.totalElements ?? 0"
-      @delete="handleDelete"
-      @create="handleCreate"
-      @update="handleUpdate"
-    >
-      <template #form="{ item, updateValidity, inputDisplayMode }">
-        <bauleitung-form
-          v-if="bauleitungFormContext"
-          ref="bauleitungForm"
-          :model-value="item"
-          :display-mode="inputDisplayMode"
-          :bauleitung-form-context="bauleitungFormContext"
-          @is-valid="updateValidity"
-        />
-      </template>
-    </crud-card>
+    <template #default="{ baseViewLoading }">
+      <!-- @vue-generic {Partial<BauleitungResponseDTO>} -->
+      <crud-card
+        ref="crudRef"
+        v-model="dataTableOptions"
+        :empty-item-template="EMPTY_ITEM_TEMPLATE"
+        :loading="loading || baseViewLoading"
+        :table-headers="headers"
+        :domain-key="domainKey"
+        :enable-actions="isAdmin"
+        :items="bauleitungen?.content ?? []"
+        :total-items="bauleitungen?.page?.totalElements ?? 0"
+        @delete="handleDelete"
+        @create="handleCreate"
+        @update="handleUpdate"
+      >
+        <template #form="{ item, updateValidity, inputDisplayMode }">
+          <bauleitung-form
+            v-if="bauleitungFormContext"
+            ref="bauleitungForm"
+            :model-value="item"
+            :display-mode="inputDisplayMode"
+            :bauleitung-form-context="bauleitungFormContext"
+            @is-valid="updateValidity"
+          />
+        </template>
+      </crud-card>
+    </template>
   </base-view>
 </template>
 

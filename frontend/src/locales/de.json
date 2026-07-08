@@ -22,6 +22,7 @@
       "update": "Bearbeiten"
     },
     "generics": {
+      "show": "{0} anzeigen",
       "manage": "{0} verwalten",
       "create": "{0} @.lower:common.action.create",
       "update": "{0} @.lower:common.action.update",
@@ -144,7 +145,10 @@
       "modelName": "Unterabschnitt | Unterabschnitte"
     },
     "benutzerhinweis": {
-      "modelName": "Benutzerhinweis | Benutzerhinweise"
+      "modelName": "Benutzerhinweis | Benutzerhinweise",
+      "funktionsbeschreibung": "Funktionsbeschreibung dieser Ansicht",
+      "bedienung": "Hinweise zur Bedienung",
+      "pruefungVorgaben": "Prüfungen und Vorgaben"
     }
   },
   "domain": {
