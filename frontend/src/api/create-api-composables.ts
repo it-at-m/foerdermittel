@@ -12,7 +12,7 @@ export function createAPIComposables<
   DeleteReq,
   GetAllReq,
   Response,
-  ListResponse,
+  GetAllResponse,
   Context,
 >(
   ApiClass: ApiCtor<Api>,
@@ -20,7 +20,7 @@ export function createAPIComposables<
     create?: (api: Api, req: CreateReq) => Promise<Response>;
     update?: (api: Api, req: UpdateReq) => Promise<Response>;
     get?: (api: Api, req: GetReq) => Promise<Response>;
-    getAll?: (api: Api, req: GetAllReq) => Promise<ListResponse>;
+    getAll?: (api: Api, req: GetAllReq) => Promise<GetAllResponse>;
     delete?: (api: Api, req: DeleteReq) => Promise<void>;
     context?: (api: Api) => Promise<Context>;
   }
@@ -40,7 +40,7 @@ export function createAPIComposables<
       useGet: () => useAPI((req: GetReq) => get(api, req)),
     }),
     ...(getAll && {
-      useList: () => useAPI((req: GetAllReq) => getAll(api, req)),
+      useGetAll: () => useAPI((req: GetAllReq) => getAll(api, req)),
     }),
     ...(deleteFn && {
       useDelete: () => useAPI((req: DeleteReq) => deleteFn(api, req)),
