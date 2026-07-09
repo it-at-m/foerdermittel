@@ -1,31 +1,33 @@
 <template>
   <base-view :domain-key="domainKey">
-    <!-- @vue-generic {Partial<SiedlungsgebietResponseDTO>} -->
-    <crud-card
-      ref="crudRef"
-      v-model="dataTableOptions"
-      :empty-item-template="EMPTY_ITEM_TEMPLATE"
-      :loading="loading"
-      :table-headers="headers"
-      :domain-key="domainKey"
-      :enable-actions="isAdmin"
-      :items="siedlungsgebiete?.content ?? []"
-      :total-items="siedlungsgebiete?.page?.totalElements ?? 0"
-      @delete="handleDelete"
-      @create="handleCreate"
-      @update="handleUpdate"
-    >
-      <template #form="{ item, updateValidity, inputDisplayMode }">
-        <siedlungsgebiet-form
-          v-if="siedlungsgebietFormContext"
-          ref="siedlungsgebietForm"
-          :model-value="item"
-          :display-mode="inputDisplayMode"
-          :siedlungsgebiet-form-context="siedlungsgebietFormContext"
-          @is-valid="updateValidity"
-        />
-      </template>
-    </crud-card>
+    <template #default="{ baseViewLoading }">
+      <!-- @vue-generic {Partial<SiedlungsgebietResponseDTO>} -->
+      <crud-card
+        ref="crudRef"
+        v-model="dataTableOptions"
+        :empty-item-template="EMPTY_ITEM_TEMPLATE"
+        :loading="loading || baseViewLoading"
+        :table-headers="headers"
+        :domain-key="domainKey"
+        :enable-actions="isAdmin"
+        :items="siedlungsgebiete?.content ?? []"
+        :total-items="siedlungsgebiete?.page?.totalElements ?? 0"
+        @delete="handleDelete"
+        @create="handleCreate"
+        @update="handleUpdate"
+      >
+        <template #form="{ item, updateValidity, inputDisplayMode }">
+          <siedlungsgebiet-form
+            v-if="siedlungsgebietFormContext"
+            ref="siedlungsgebietForm"
+            :model-value="item"
+            :display-mode="inputDisplayMode"
+            :siedlungsgebiet-form-context="siedlungsgebietFormContext"
+            @is-valid="updateValidity"
+          />
+        </template>
+      </crud-card>
+    </template>
   </base-view>
 </template>
 

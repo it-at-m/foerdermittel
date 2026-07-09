@@ -1,6 +1,5 @@
 <template>
   <v-checkbox
-    :label="canNotEdit ? t('common.generics.readOnly', [label]) : label"
     :readonly="displayMode === InputDisplayMode.READ || canNotEdit"
     :hide-details="displayMode === InputDisplayMode.READ"
     :class="{
@@ -8,7 +7,12 @@
         displayMode === InputDisplayMode.READ || canNotEdit,
     }"
     v-bind="$attrs"
-  />
+  >
+    <template #label>
+      {{ label }}
+      <span v-if="canNotEdit">{{ t("common.word.readOnly") }}</span>
+    </template>
+  </v-checkbox>
 </template>
 
 <script setup lang="ts">

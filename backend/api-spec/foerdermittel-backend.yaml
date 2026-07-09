@@ -73,6 +73,66 @@ paths:
           description: OK
       security:
       - bearerAuth: []
+  /stadtbezirke/{id}:
+    get:
+      tags:
+      - stadtbezirk-controller
+      operationId: getStadtbezirk
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - stadtbezirk-controller
+      operationId: updateStadtbezirk
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StadtbezirkUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - stadtbezirk-controller
+      operationId: deleteStadtbezirk
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /siedlungsgebiete/{id}:
     get:
       tags:
@@ -313,6 +373,51 @@ paths:
           description: OK
       security:
       - bearerAuth: []
+  /benutzerhinweise/{id}:
+    get:
+      tags:
+      - benutzerhinweis-controller
+      operationId: getBenutzerhinweis
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BenutzerhinweisResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - benutzerhinweis-controller
+      operationId: updateBenutzerhinweis
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BenutzerhinweisUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BenutzerhinweisResponseDTO"
+      security:
+      - bearerAuth: []
   /bauprogramme/{id}:
     get:
       tags:
@@ -492,6 +597,67 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TraegerResponseDTO"
+      security:
+      - bearerAuth: []
+  /stadtbezirke:
+    get:
+      tags:
+      - stadtbezirk-controller
+      operationId: getStadtbezirkeByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "stadtbezirk,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelStadtbezirkResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - stadtbezirk-controller
+      operationId: createStadtbezirk
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StadtbezirkCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkResponseDTO"
       security:
       - bearerAuth: []
   /siedlungsgebiete:
@@ -738,6 +904,26 @@ paths:
                 $ref: "#/components/schemas/KrankenhausResponseDTO"
       security:
       - bearerAuth: []
+  /benutzerhinweise:
+    post:
+      tags:
+      - benutzerhinweis-controller
+      operationId: createBenutzerhinweis
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BenutzerhinweisCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BenutzerhinweisResponseDTO"
+      security:
+      - bearerAuth: []
   /bauprogramme:
     get:
       tags:
@@ -872,6 +1058,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TraegerFormContext"
+      security:
+      - bearerAuth: []
+  /stadtbezirke/form-context:
+    get:
+      tags:
+      - stadtbezirk-controller
+      operationId: getStadtbezirkFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkFormContext"
       security:
       - bearerAuth: []
   /siedlungsgebiete/form-context:
@@ -1124,6 +1324,29 @@ components:
           format: int32
         bezeichnung:
           type: string
+    StadtbezirkUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    StadtbezirkResponseDTO:
+      required:
+      - bezeichnung
+      - id
+      - stadtbezirk
+      type: object
+      properties:
+        id:
+          type: string
+        stadtbezirk:
+          type: integer
+          format: int32
+        bezeichnung:
+          type: string
     SiedlungsgebietUpdateDTO:
       required:
       - bezeichnung
@@ -1214,6 +1437,41 @@ components:
           type: string
         bezeichnung:
           type: string
+    BenutzerhinweisUpdateDTO:
+      required:
+      - bedienung
+      - funktionsbeschreibung
+      - pruefungVorgaben
+      type: object
+      properties:
+        funktionsbeschreibung:
+          maxLength: 4000
+          minLength: 0
+          type: string
+        bedienung:
+          maxLength: 4000
+          minLength: 0
+          type: string
+        pruefungVorgaben:
+          maxLength: 4000
+          minLength: 0
+          type: string
+    BenutzerhinweisResponseDTO:
+      required:
+      - bedienung
+      - funktionsbeschreibung
+      - pruefungVorgaben
+      - viewId
+      type: object
+      properties:
+        viewId:
+          type: string
+        funktionsbeschreibung:
+          type: string
+        bedienung:
+          type: string
+        pruefungVorgaben:
+          type: string
     BauprogrammUpdateDTO:
       required:
       - bezeichnung
@@ -1267,6 +1525,21 @@ components:
       properties:
         kurzform:
           maximum: 9
+          minimum: 0
+          type: integer
+          format: int32
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    StadtbezirkCreateDTO:
+      required:
+      - bezeichnung
+      - stadtbezirk
+      type: object
+      properties:
+        stadtbezirk:
+          maximum: 99
           minimum: 0
           type: integer
           format: int32
@@ -1334,6 +1607,30 @@ components:
           maxLength: 200
           minLength: 1
           type: string
+    BenutzerhinweisCreateDTO:
+      required:
+      - bedienung
+      - funktionsbeschreibung
+      - pruefungVorgaben
+      - viewId
+      type: object
+      properties:
+        viewId:
+          maxLength: 30
+          minLength: 1
+          type: string
+        funktionsbeschreibung:
+          maxLength: 4000
+          minLength: 0
+          type: string
+        bedienung:
+          maxLength: 4000
+          minLength: 0
+          type: string
+        pruefungVorgaben:
+          maxLength: 4000
+          minLength: 0
+          type: string
     BauprogrammCreateDTO:
       required:
       - bauprogramm
@@ -1394,6 +1691,24 @@ components:
       type: object
       properties:
         kurzformen:
+          type: array
+          items:
+            type: number
+    PagedModelStadtbezirkResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    StadtbezirkFormContext:
+      required:
+      - stadtbezirke
+      type: object
+      properties:
+        stadtbezirke:
           type: array
           items:
             type: number

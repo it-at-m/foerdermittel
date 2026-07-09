@@ -23,6 +23,11 @@ export default createVuetify({
       color: "secondary",
       variant: "text",
     },
+    VTextarea: {
+      variant: "outlined",
+      persistentPlaceholder: true,
+      noResize: true,
+    },
     VTextField: {
       variant: "outlined",
       persistentPlaceholder: true,

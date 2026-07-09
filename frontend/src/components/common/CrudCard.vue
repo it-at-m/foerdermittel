@@ -7,8 +7,8 @@
       v-if="dialogMode === 'write'"
       :title="dialogTitle"
       :loading="loading"
-      :disable-confirm="!isFormSlotValid"
-      @cancel="closeDialog"
+      :disable-confirm="!isFormSlotValid || !isDirty"
+      @cancel="requestCloseDialog"
       @confirm="saveItem"
     >
       <slot
@@ -32,6 +32,13 @@
       @confirm="deleteItem"
     />
   </v-dialog>
+
+  <unsaved-changes-dialog
+    :model-value="showUnsavedChangesDialog"
+    :loading="loading"
+    @cancel="discardDialogChanges"
+    @confirm="continueEditing"
+  />
 
   <v-card class="d-flex flex-column fill-height w-100">
     <v-card-title class="pa-0">
@@ -133,10 +140,12 @@ import type { DataTableOptions } from "@/types/DataTableOptions";
 import type { DataTableHeader } from "vuetify/framework";
 
 import { mdiDelete, mdiPencil, mdiPlus, mdiTrashCan } from "@mdi/js";
-import { computed, ref, toRaw } from "vue";
+import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 import ConfirmCard from "@/components/common/ConfirmCard.vue";
+import UnsavedChangesDialog from "@/components/common/UnsavedChangesDialog.vue";
+import { useDirtyFlag } from "@/composables/useDirtyFlag";
 import { DialogWidth } from "@/types/DialogWidth";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
@@ -229,7 +238,20 @@ const tableHeadersWithActions = computed(() => [
   } satisfies DataTableHeader<T>,
 ]);
 
-const activeItem = ref<T>({ ...emptyItemTemplate });
+const {
+  currentValue: activeItem,
+  isDirty,
+  showUnsavedChangesDialog,
+  reset,
+  track,
+  requestClose,
+  continueEditing,
+  continuePendingNavigation,
+  discardChanges,
+} = useDirtyFlag<T>(
+  emptyItemTemplate,
+  computed(() => dialogMode.value === "write")
+);
 const isEditing = computed<boolean>(() => !!activeItem.value.id);
 
 const isFormSlotValid = ref(false);
@@ -246,19 +268,19 @@ const updateFormValidity = (valid: boolean | null) => {
 };
 
 const openCreate = () => {
-  activeItem.value = { ...emptyItemTemplate };
+  track(emptyItemTemplate);
   isFormSlotValid.value = false;
   dialogMode.value = "write";
 };
 
 const openEdit = (item: T) => {
-  activeItem.value = structuredClone(toRaw(item));
+  track(item);
   isFormSlotValid.value = false;
   dialogMode.value = "write";
 };
 
 const openDelete = (item: T) => {
-  activeItem.value = item;
+  reset(item);
   isFormSlotValid.value = false;
   dialogMode.value = "delete";
 };
@@ -279,7 +301,17 @@ const deleteItem = () => {
 
 const closeDialog = () => {
   dialogMode.value = null;
-  activeItem.value = { ...emptyItemTemplate };
+  reset();
+  continuePendingNavigation();
+};
+
+const requestCloseDialog = () => {
+  requestClose(closeDialog);
+};
+
+const discardDialogChanges = () => {
+  dialogMode.value = null;
+  discardChanges();
 };
 
 defineExpose({
