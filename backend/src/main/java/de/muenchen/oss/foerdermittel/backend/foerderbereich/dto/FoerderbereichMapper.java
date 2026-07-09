@@ -1,0 +1,24 @@
+package de.muenchen.oss.foerdermittel.backend.foerderbereich.dto;
+
+import de.muenchen.oss.foerdermittel.backend.common.NumberMapper;
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichCreateDTO;
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichResponseDTO;
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichUpdateDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
+@Mapper(uses = NumberMapper.class)
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
+public interface FoerderbereichMapper {
+
+    @Mapping(source = "fb", target = "id", qualifiedByName = "bigDecimalToIntegerString")
+    @Mapping(source = "fb", target = "fb")
+    FoerderbereichResponseDTO toDTO(Foerderbereich foerderbereich);
+
+    Foerderbereich toEntity(FoerderbereichCreateDTO foerderbereichCreateDTO);
+
+    @Mapping(target = "fb", ignore = true)
+    Foerderbereich toEntity(FoerderbereichUpdateDTO foerderbereichUpdateDTO);
+
+}

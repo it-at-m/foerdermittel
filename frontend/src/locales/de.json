@@ -96,7 +96,9 @@
       "bezeichnung": "Bezeichnung"
     },
     "foerderbereich": {
-      "modelName": "Förderbereich | Förderbereiche"
+      "modelName": "Förderbereich | Förderbereiche",
+      "fb": "Förderbereich",
+      "bezeichnung": "Bezeichnung"
     },
     "krankenhaus": {
       "modelName": "Krankenhaus | Krankenhäuser",
