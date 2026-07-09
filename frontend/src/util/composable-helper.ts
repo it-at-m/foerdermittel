@@ -50,3 +50,15 @@ export function createAPIComposables<
     }),
   };
 }
+
+export function requireComposables<T extends Record<string, unknown>>(
+  composables: T
+): Required<T> {
+  for (const [key, value] of Object.entries(composables)) {
+    if (value === undefined) {
+      throw new Error(`${key} composable is not configured`);
+    }
+  }
+
+  return composables as Required<T>;
+}
