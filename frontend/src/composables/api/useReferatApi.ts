@@ -8,8 +8,11 @@ import type {
   UpdateReferatRequest,
 } from "@/api/generated/foerdermittel-backend";
 
-import { createAPIComposables } from "@/api/create-api-composables";
 import { ReferatControllerApi } from "@/api/generated/foerdermittel-backend";
+import {
+  createAPIComposables,
+  requireComposables,
+} from "@/util/composable-helper";
 
 export const {
   useCreate: useCreateReferat,
@@ -17,20 +20,22 @@ export const {
   useGetAll: useGetReferate,
   useDelete: useDeleteReferat,
   useContext: useGetReferatFormContext,
-} = createAPIComposables<
-  ReferatControllerApi,
-  CreateReferatRequest,
-  UpdateReferatRequest,
-  never,
-  DeleteReferatRequest,
-  GetReferateByPageableRequest,
-  ReferatResponseDTO,
-  PagedModelReferatResponseDTO,
-  ReferatFormContext
->(ReferatControllerApi, {
-  create: (api, req) => api.createReferat(req),
-  update: (api, req) => api.updateReferat(req),
-  getAll: (api, req) => api.getReferateByPageable(req),
-  delete: (api, req) => api.deleteReferat(req),
-  context: (api) => api.getReferatFormContext(),
-});
+} = requireComposables(
+  createAPIComposables<
+    ReferatControllerApi,
+    CreateReferatRequest,
+    UpdateReferatRequest,
+    never,
+    DeleteReferatRequest,
+    GetReferateByPageableRequest,
+    ReferatResponseDTO,
+    PagedModelReferatResponseDTO,
+    ReferatFormContext
+  >(ReferatControllerApi, {
+    create: (api, req) => api.createReferat(req),
+    update: (api, req) => api.updateReferat(req),
+    getAll: (api, req) => api.getReferateByPageable(req),
+    delete: (api, req) => api.deleteReferat(req),
+    context: (api) => api.getReferatFormContext(),
+  })
+);

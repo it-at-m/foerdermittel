@@ -8,8 +8,11 @@ import type {
   UpdateTraegerRequest,
 } from "@/api/generated/foerdermittel-backend";
 
-import { createAPIComposables } from "@/api/create-api-composables";
 import { TraegerControllerApi } from "@/api/generated/foerdermittel-backend";
+import {
+  createAPIComposables,
+  requireComposables,
+} from "@/util/composable-helper";
 
 export const {
   useCreate: useCreateTraeger,
@@ -17,20 +20,22 @@ export const {
   useGetAll: useGetAllTraeger,
   useDelete: useDeleteTraeger,
   useContext: useGetTraegerFormContext,
-} = createAPIComposables<
-  TraegerControllerApi,
-  CreateTraegerRequest,
-  UpdateTraegerRequest,
-  never,
-  DeleteTraegerRequest,
-  GetTraegerByPageableRequest,
-  TraegerResponseDTO,
-  PagedModelTraegerResponseDTO,
-  TraegerFormContext
->(TraegerControllerApi, {
-  create: (api, req) => api.createTraeger(req),
-  update: (api, req) => api.updateTraeger(req),
-  getAll: (api, req) => api.getTraegerByPageable(req),
-  delete: (api, req) => api.deleteTraeger(req),
-  context: (api) => api.getTraegerFormContext(),
-});
+} = requireComposables(
+  createAPIComposables<
+    TraegerControllerApi,
+    CreateTraegerRequest,
+    UpdateTraegerRequest,
+    never,
+    DeleteTraegerRequest,
+    GetTraegerByPageableRequest,
+    TraegerResponseDTO,
+    PagedModelTraegerResponseDTO,
+    TraegerFormContext
+  >(TraegerControllerApi, {
+    create: (api, req) => api.createTraeger(req),
+    update: (api, req) => api.updateTraeger(req),
+    getAll: (api, req) => api.getTraegerByPageable(req),
+    delete: (api, req) => api.deleteTraeger(req),
+    context: (api) => api.getTraegerFormContext(),
+  })
+);

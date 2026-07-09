@@ -8,8 +8,11 @@ import type {
   UpdateKrankenhausRequest,
 } from "@/api/generated/foerdermittel-backend";
 
-import { createAPIComposables } from "@/api/create-api-composables";
 import { KrankenhausControllerApi } from "@/api/generated/foerdermittel-backend";
+import {
+  createAPIComposables,
+  requireComposables,
+} from "@/util/composable-helper";
 
 export const {
   useCreate: useCreateKrankenhaus,
@@ -17,20 +20,22 @@ export const {
   useGetAll: useGetKrankenhaeuser,
   useDelete: useDeleteKrankenhaus,
   useContext: useGetKrankenhausFormContext,
-} = createAPIComposables<
-  KrankenhausControllerApi,
-  CreateKrankenhausRequest,
-  UpdateKrankenhausRequest,
-  never,
-  DeleteKrankenhausRequest,
-  GetKrankenhaeuserByPageableRequest,
-  KrankenhausResponseDTO,
-  PagedModelKrankenhausResponseDTO,
-  KrankenhausFormContext
->(KrankenhausControllerApi, {
-  create: (api, req) => api.createKrankenhaus(req),
-  update: (api, req) => api.updateKrankenhaus(req),
-  getAll: (api, req) => api.getKrankenhaeuserByPageable(req),
-  delete: (api, req) => api.deleteKrankenhaus(req),
-  context: (api) => api.getKrankenhausFormContext(),
-});
+} = requireComposables(
+  createAPIComposables<
+    KrankenhausControllerApi,
+    CreateKrankenhausRequest,
+    UpdateKrankenhausRequest,
+    never,
+    DeleteKrankenhausRequest,
+    GetKrankenhaeuserByPageableRequest,
+    KrankenhausResponseDTO,
+    PagedModelKrankenhausResponseDTO,
+    KrankenhausFormContext
+  >(KrankenhausControllerApi, {
+    create: (api, req) => api.createKrankenhaus(req),
+    update: (api, req) => api.updateKrankenhaus(req),
+    getAll: (api, req) => api.getKrankenhaeuserByPageable(req),
+    delete: (api, req) => api.deleteKrankenhaus(req),
+    context: (api) => api.getKrankenhausFormContext(),
+  })
+);

@@ -5,25 +5,30 @@ import type {
   UpdateBenutzerhinweisRequest,
 } from "@/api/generated/foerdermittel-backend";
 
-import { createAPIComposables } from "@/api/create-api-composables";
 import { BenutzerhinweisControllerApi } from "@/api/generated/foerdermittel-backend";
+import {
+  createAPIComposables,
+  requireComposables,
+} from "@/util/composable-helper";
 
 export const {
   useCreate: useCreateBenutzerhinweis,
   useUpdate: useUpdateBenutzerhinweis,
   useGet: useGetBenutzerhinweis,
-} = createAPIComposables<
-  BenutzerhinweisControllerApi,
-  CreateBenutzerhinweisRequest,
-  UpdateBenutzerhinweisRequest,
-  GetBenutzerhinweisRequest,
-  never,
-  never,
-  BenutzerhinweisResponseDTO,
-  never,
-  never
->(BenutzerhinweisControllerApi, {
-  create: (api, req) => api.createBenutzerhinweis(req),
-  update: (api, req) => api.updateBenutzerhinweis(req),
-  get: (api, req) => api.getBenutzerhinweis(req),
-});
+} = requireComposables(
+  createAPIComposables<
+    BenutzerhinweisControllerApi,
+    CreateBenutzerhinweisRequest,
+    UpdateBenutzerhinweisRequest,
+    GetBenutzerhinweisRequest,
+    never,
+    never,
+    BenutzerhinweisResponseDTO,
+    never,
+    never
+  >(BenutzerhinweisControllerApi, {
+    create: (api, req) => api.createBenutzerhinweis(req),
+    update: (api, req) => api.updateBenutzerhinweis(req),
+    get: (api, req) => api.getBenutzerhinweis(req),
+  })
+);
