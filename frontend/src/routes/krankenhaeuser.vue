@@ -77,15 +77,13 @@ const {
   data: krankenhaeuser,
   call: getKrankenhaeuser,
   loading: getKrankenhaeuserLoading,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-} = useGetKrankenhaeuser!();
+} = useGetKrankenhaeuser();
 
 const {
   data: krankenhausFormContext,
   call: getKrankenhausFormContext,
   loading: getKrankenhausFormContextLoading,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-} = useGetKrankenhausFormContext!();
+} = useGetKrankenhausFormContext();
 
 type KrankenhausFormType = InstanceType<typeof KrankenhausForm>;
 const krankenhausFormRef =
@@ -102,8 +100,7 @@ const {
   call: createKrankenhaus,
   loading: createKrankenhausLoading,
   error: createKrankenhaeuserError,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-} = useCreateKrankenhaus!();
+} = useCreateKrankenhaus();
 
 const handleCreate = async (
   krankenhausCreateDTO: Partial<KrankenhausResponseDTO>
@@ -124,8 +121,7 @@ const {
   call: updateKrankenhaus,
   loading: updateKrankenhausLoading,
   error: updateKrankenhaeuserError,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-} = useUpdateKrankenhaus!();
+} = useUpdateKrankenhaus();
 
 const handleUpdate = async (
   krankenhausUpdateDTO: Partial<KrankenhausResponseDTO>
@@ -147,8 +143,7 @@ const {
   call: deleteKrankenhaus,
   loading: deleteKrankenhausLoading,
   error: deleteKrankenhaeuserError,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-} = useDeleteKrankenhaus!();
+} = useDeleteKrankenhaus();
 
 const handleDelete = async (id: string) => {
   await deleteKrankenhaus({

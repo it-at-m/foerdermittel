@@ -77,15 +77,13 @@ const {
   data: stadtbezirke,
   call: getStadtbezirke,
   loading: getStadtbezirkeLoading,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-} = useGetStadtbezirke!();
+} = useGetStadtbezirke();
 
 const {
   data: stadtbezirkFormContext,
   call: getStadtbezirkFormContext,
   loading: getStadtbezirkFormContextLoading,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-} = useGetStadtbezirkFormContext!();
+} = useGetStadtbezirkFormContext();
 
 type StadtbezirkFormType = InstanceType<typeof StadtbezirkForm>;
 const stadtbezirkFormRef =
@@ -102,8 +100,7 @@ const {
   call: createStadtbezirk,
   loading: createStadtbezirkLoading,
   error: createStadtbezirkeError,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-} = useCreateStadtbezirk!();
+} = useCreateStadtbezirk();
 
 const handleCreate = async (
   stadtbezirkCreateDTO: Partial<StadtbezirkResponseDTO>
@@ -124,8 +121,7 @@ const {
   call: updateStadtbezirk,
   loading: updateStadtbezirkLoading,
   error: updateStadtbezirkError,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-} = useUpdateStadtbezirk!();
+} = useUpdateStadtbezirk();
 
 const handleUpdate = async (
   stadtbezirkUpdateDTO: Partial<StadtbezirkResponseDTO>
@@ -147,8 +143,7 @@ const {
   call: deleteStadtbezirk,
   loading: deleteStadtbezirkLoading,
   error: deleteStadtbezirkError,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-} = useDeleteStadtbezirk!();
+} = useDeleteStadtbezirk();
 
 const handleDelete = async (id: string) => {
   await deleteStadtbezirk({

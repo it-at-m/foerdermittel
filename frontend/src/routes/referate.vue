@@ -77,15 +77,13 @@ const {
   data: referate,
   call: getReferate,
   loading: getReferateLoading,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-} = useGetReferate!();
+} = useGetReferate();
 
 const {
   data: referatFormContext,
   call: getReferatFormContext,
   loading: getReferatFormContextLoading,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-} = useGetReferatFormContext!();
+} = useGetReferatFormContext();
 
 type ReferatFormType = InstanceType<typeof ReferatForm>;
 const referatFormRef = useTemplateRef<ReferatFormType>("referatForm");
@@ -101,8 +99,7 @@ const {
   call: createReferat,
   loading: createReferatLoading,
   error: createReferateError,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-} = useCreateReferat!();
+} = useCreateReferat();
 
 const handleCreate = async (referatCreateDTO: Partial<ReferatResponseDTO>) => {
   // TODO: some type checking improvements
@@ -121,8 +118,7 @@ const {
   call: updateReferat,
   loading: updateReferatLoading,
   error: updateReferatError,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-} = useUpdateReferat!();
+} = useUpdateReferat();
 
 const handleUpdate = async (referatUpdateDTO: Partial<ReferatResponseDTO>) => {
   // TODO: some type checking improvements
@@ -142,8 +138,7 @@ const {
   call: deleteReferat,
   loading: deleteReferatLoading,
   error: deleteReferatError,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-} = useDeleteReferat!();
+} = useDeleteReferat();
 
 const handleDelete = async (id: string) => {
   await deleteReferat({

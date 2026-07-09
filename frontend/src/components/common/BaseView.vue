@@ -82,22 +82,19 @@ const {
   data: benutzerhinweis,
   call: getBenutzerhinweis,
   loading: getBenutzerhinweisLoading,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-} = useGetBenutzerhinweis!();
+} = useGetBenutzerhinweis();
 
 const {
   call: createBenutzerhinweis,
   loading: createBenutzerhinweisLoading,
   error: createBenutzerhinweisError,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-} = useCreateBenutzerhinweis!();
+} = useCreateBenutzerhinweis();
 
 const {
   call: updateBenutzerhinweis,
   loading: updateBenutzerhinweisLoading,
   error: updateBenutzerhinweisError,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-} = useUpdateBenutzerhinweis!();
+} = useUpdateBenutzerhinweis();
 
 watch(
   routeName,
