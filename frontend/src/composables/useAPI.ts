@@ -1,5 +1,23 @@
 import { readonly, ref } from "vue";
 
+export default function useAPI<TResponse>(
+  apiMethod: () => Promise<TResponse>
+): {
+  loading: Readonly<typeof ref<boolean>>;
+  error: Readonly<typeof ref<boolean>>;
+  data: Readonly<typeof ref<TResponse | undefined>>;
+  call: () => Promise<void>;
+};
+
+export default function useAPI<TRequest, TResponse>(
+  apiMethod: (params: TRequest) => Promise<TResponse>
+): {
+  loading: Readonly<typeof ref<boolean>>;
+  error: Readonly<typeof ref<boolean>>;
+  data: Readonly<typeof ref<TResponse | undefined>>;
+  call: (params: TRequest) => Promise<void>;
+};
+
 /**
  * A composable utility for managing API calls with loading and error states.
  * @template TRequest - The type of the request parameters.
@@ -7,14 +25,14 @@ import { readonly, ref } from "vue";
  * @param apiMethod - The API method to be called.
  * @returns An object containing the state of the API call and a method to execute the call.
  */
-export default function useAPI<TRequest, TResponse = void>(
-  apiMethod: TRequest extends void
-    ? () => Promise<TResponse>
-    : (params: TRequest) => Promise<TResponse>
+export default function useAPI<TRequest, TResponse>(
+  apiMethod:
+    | ((params: TRequest) => Promise<TResponse>)
+    | (() => Promise<TResponse>)
 ) {
   const loadingInternal = ref(false);
   const errorInternal = ref(false);
-  const dataInternal = ref<TResponse | undefined>(undefined);
+  const dataInternal = ref<TResponse>();
 
   const loading = readonly(loadingInternal);
   const error = readonly(errorInternal);
@@ -25,21 +43,21 @@ export default function useAPI<TRequest, TResponse = void>(
    * @param params - The parameters for the API call as an object.
    * @returns A promise that resolves when the call completes (check `data` state for retrieved data and `error` state for failures).
    */
-  const call = (async <T extends TRequest>(params: T) => {
+  async function call(params?: TRequest): Promise<void> {
     loadingInternal.value = true;
     errorInternal.value = false;
 
     try {
-      dataInternal.value = await apiMethod(params);
+      dataInternal.value = await (
+        apiMethod as (params?: TRequest) => Promise<TResponse>
+      )(params);
     } catch (error) {
       console.debug(error);
       errorInternal.value = true;
     } finally {
       loadingInternal.value = false;
     }
-  }) as TRequest extends void
-    ? () => Promise<void>
-    : (params: TRequest) => Promise<void>;
+  }
 
   return {
     loading,
