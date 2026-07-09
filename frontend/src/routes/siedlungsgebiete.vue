@@ -77,13 +77,15 @@ const {
   data: siedlungsgebiete,
   call: getSiedlungsgebiete,
   loading: getSiedlungsgebieteLoading,
-} = useGetSiedlungsgebiete();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+} = useGetSiedlungsgebiete!();
 
 const {
   data: siedlungsgebietFormContext,
   call: getSiedlungsgebietFormContext,
   loading: getSiedlungsgebietFormContextLoading,
-} = useGetSiedlungsgebietFormContext();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+} = useGetSiedlungsgebietFormContext!();
 
 type SiedlungsgebietFormType = InstanceType<typeof SiedlungsgebietForm>;
 const siedlungsgebietFormRef = useTemplateRef<SiedlungsgebietFormType>(
@@ -101,7 +103,8 @@ const {
   call: createSiedlungsgebiet,
   loading: createSiedlungsgebietLoading,
   error: createSiedlungsgebieteError,
-} = useCreateSiedlungsgebiet();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+} = useCreateSiedlungsgebiet!();
 
 const handleCreate = async (
   siedlungsgebietCreateDTO: Partial<SiedlungsgebietResponseDTO>
@@ -122,7 +125,8 @@ const {
   call: updateSiedlungsgebiet,
   loading: updateSiedlungsgebietLoading,
   error: updateSiedlungsgebietError,
-} = useUpdateSiedlungsgebiet();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+} = useUpdateSiedlungsgebiet!();
 
 const handleUpdate = async (
   siedlungsgebietUpdateDTO: Partial<SiedlungsgebietResponseDTO>
@@ -144,7 +148,8 @@ const {
   call: deleteSiedlungsgebiet,
   loading: deleteSiedlungsgebietLoading,
   error: deleteSiedlungsgebietError,
-} = useDeleteSiedlungsgebiet();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+} = useDeleteSiedlungsgebiet!();
 
 const handleDelete = async (id: string) => {
   await deleteSiedlungsgebiet({

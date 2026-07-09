@@ -77,13 +77,15 @@ const {
   data: bauprogramme,
   call: getBauprogramme,
   loading: getBauprogrammeLoading,
-} = useGetBauprogramme();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+} = useGetBauprogramme!();
 
 const {
   data: bauprogrammFormContext,
   call: getBauprogrammFormContext,
   loading: getBauprogrammFormContextLoading,
-} = useGetBauprogrammFormContext();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+} = useGetBauprogrammFormContext!();
 
 type BauprogrammFormType = InstanceType<typeof BauprogrammForm>;
 const bauprogrammFormRef =
@@ -100,7 +102,8 @@ const {
   call: createBauprogramm,
   loading: createBauprogrammLoading,
   error: createBauprogrammeError,
-} = useCreateBauprogramm();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+} = useCreateBauprogramm!();
 
 const handleCreate = async (
   bauprogrammCreateDTO: Partial<BauprogrammResponseDTO>
@@ -121,7 +124,8 @@ const {
   call: updateBauprogramm,
   loading: updateBauprogrammLoading,
   error: updateBauprogrammError,
-} = useUpdateBauprogramm();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+} = useUpdateBauprogramm!();
 
 const handleUpdate = async (
   bauprogrammUpdateDTO: Partial<BauprogrammResponseDTO>
@@ -143,7 +147,8 @@ const {
   call: deleteBauprogramm,
   loading: deleteBauprogrammLoading,
   error: deleteBauprogrammError,
-} = useDeleteBauprogramm();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+} = useDeleteBauprogramm!();
 
 const handleDelete = async (id: string) => {
   await deleteBauprogramm({

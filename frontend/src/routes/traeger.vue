@@ -77,13 +77,15 @@ const {
   data: traeger,
   call: getTraeger,
   loading: getTraegerLoading,
-} = useGetAllTraeger();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+} = useGetAllTraeger!();
 
 const {
   data: traegerFormContext,
   call: getTraegerFormContext,
   loading: getTraegerFormContextLoading,
-} = useGetTraegerFormContext();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+} = useGetTraegerFormContext!();
 
 type TraegerFormType = InstanceType<typeof TraegerForm>;
 const traegerFormRef = useTemplateRef<TraegerFormType>("traegerForm");
@@ -99,7 +101,8 @@ const {
   call: createTraeger,
   loading: createTraegerLoading,
   error: createTraegerError,
-} = useCreateTraeger();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+} = useCreateTraeger!();
 
 const handleCreate = async (traegerCreateDTO: Partial<TraegerResponseDTO>) => {
   // TODO: some type checking improvements
@@ -118,7 +121,8 @@ const {
   call: updateTraeger,
   loading: updateTraegerLoading,
   error: updateTraegerError,
-} = useUpdateTraeger();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+} = useUpdateTraeger!();
 
 const handleUpdate = async (traegerUpdateDTO: Partial<TraegerResponseDTO>) => {
   // TODO: some type checking improvements
@@ -138,7 +142,8 @@ const {
   call: deleteTraeger,
   loading: deleteTraegerLoading,
   error: deleteTraegerError,
-} = useDeleteTraeger();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+} = useDeleteTraeger!();
 
 const handleDelete = async (id: string) => {
   await deleteTraeger({

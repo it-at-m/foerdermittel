@@ -77,13 +77,15 @@ const {
   data: bauleitungen,
   call: getBauleitungen,
   loading: getBauleitungenLoading,
-} = useGetBauleitungen();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+} = useGetBauleitungen!();
 
 const {
   data: bauleitungFormContext,
   call: getBauleitungFormContext,
   loading: getBauleitungFormContextLoading,
-} = useGetBauleitungFormContext();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+} = useGetBauleitungFormContext!();
 
 type BauleitungFormType = InstanceType<typeof BauleitungForm>;
 const bauleitungFormRef = useTemplateRef<BauleitungFormType>("bauleitungForm");
@@ -99,7 +101,8 @@ const {
   call: createBauleitung,
   loading: createBauleitungLoading,
   error: createBauleitungenError,
-} = useCreateBauleitung();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+} = useCreateBauleitung!();
 
 const handleCreate = async (
   bauleitungCreateDTO: Partial<BauleitungResponseDTO>
@@ -120,7 +123,8 @@ const {
   call: updateBauleitung,
   loading: updateBauleitungLoading,
   error: updateBauleitungerror,
-} = useUpdateBauleitung();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+} = useUpdateBauleitung!();
 
 const handleUpdate = async (
   bauleitungUpdateDTO: Partial<BauleitungResponseDTO>
@@ -142,7 +146,8 @@ const {
   call: deleteBauleitung,
   loading: deleteBauleitungLoading,
   error: deleteBauleitungenrror,
-} = useDeleteBauleitung();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+} = useDeleteBauleitung!();
 
 const handleDelete = async (id: string) => {
   await deleteBauleitung({
