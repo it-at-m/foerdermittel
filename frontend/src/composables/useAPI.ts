@@ -1,4 +1,24 @@
+import type { Ref } from "vue";
+
 import { readonly, ref } from "vue";
+
+export default function useAPI<TResponse>(
+  apiMethod: () => Promise<TResponse>
+): {
+  loading: Readonly<Ref<boolean>>;
+  error: Readonly<Ref<boolean>>;
+  data: Readonly<Ref<TResponse>>;
+  call: () => Promise<void>;
+};
+
+export default function useAPI<TRequest, TResponse>(
+  apiMethod: (params: TRequest) => Promise<TResponse>
+): {
+  loading: Readonly<Ref<boolean>>;
+  error: Readonly<Ref<boolean>>;
+  data: Readonly<Ref<TResponse>>;
+  call: (params: TRequest) => Promise<void>;
+};
 
 /**
  * A composable utility for managing API calls with loading and error states.
