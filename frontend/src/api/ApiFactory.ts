@@ -4,7 +4,7 @@ import { getHeaders } from "@/api/fetch-utils";
 import { BaseAPI, Configuration } from "@/api/generated/foerdermittel-backend";
 import { BASE_API_PATH } from "@/constants";
 
-type ApiCtor<T extends BaseAPI> = new (config: Configuration) => T;
+export type ApiCtor<T extends BaseAPI> = new (config: Configuration) => T;
 
 const instances = new Map<ApiCtor<BaseAPI>, BaseAPI>();
 
