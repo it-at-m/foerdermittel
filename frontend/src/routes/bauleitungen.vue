@@ -100,7 +100,7 @@ const { dataTableOptions, onSuccess, onFailure } = usePagination(
 const {
   call: createBauleitung,
   loading: createBauleitungLoading,
-  error: createBauleitungenError,
+  error: createBauleitungError,
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 } = useCreateBauleitung!();
 
@@ -112,7 +112,7 @@ const handleCreate = async (
   await createBauleitung({
     bauleitungCreateDTO: model,
   });
-  if (!createBauleitungenError.value) {
+  if (!createBauleitungError.value) {
     await onSuccess(t("common.message.created", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.createdError", [t(domainKey)]));
@@ -122,7 +122,7 @@ const handleCreate = async (
 const {
   call: updateBauleitung,
   loading: updateBauleitungLoading,
-  error: updateBauleitungerror,
+  error: updateBauleitungError,
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 } = useUpdateBauleitung!();
 
@@ -135,7 +135,7 @@ const handleUpdate = async (
     id: model.id,
     bauleitungUpdateDTO: model,
   });
-  if (!updateBauleitungerror.value) {
+  if (!updateBauleitungError.value) {
     await onSuccess(t("common.message.updated", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.updatedError", [t(domainKey)]));
@@ -145,7 +145,7 @@ const handleUpdate = async (
 const {
   call: deleteBauleitung,
   loading: deleteBauleitungLoading,
-  error: deleteBauleitungenrror,
+  error: deleteBauleitungError,
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 } = useDeleteBauleitung!();
 
@@ -153,7 +153,7 @@ const handleDelete = async (id: string) => {
   await deleteBauleitung({
     id,
   });
-  if (!deleteBauleitungenrror.value) {
+  if (!deleteBauleitungError.value) {
     await onSuccess(t("common.message.deleted", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.deletedError", [t(domainKey)]));
