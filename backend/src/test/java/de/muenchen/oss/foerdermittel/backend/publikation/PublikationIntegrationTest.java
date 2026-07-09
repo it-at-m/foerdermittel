@@ -205,8 +205,8 @@ class PublikationIntegrationTest {
                             "kurzform not uppercase",
                             new PublikationCreateDTO("a", "Test")),
                     arguments(
-                            "kurzform not A-Z",
-                            new PublikationCreateDTO("9", "Test")),
+                            "kurzform not A-Z or 0-9",
+                            new PublikationCreateDTO("!", "Test")),
                     arguments(
                             "kurzform too long",
                             new PublikationCreateDTO("AB", "Test")),
@@ -312,6 +312,7 @@ class PublikationIntegrationTest {
         @ParameterizedTest(name = "{0}")
         @MethodSource("invalidInputRequests")
         void givenInvalidInput_thenReturnBadRequest(
+                final String description,
                 final PublikationUpdateDTO requestDTO) {
             restTestClient.put()
                     .uri("/publikationen/{id}", EXISTING_ID)
