@@ -1,10 +1,10 @@
 import type {
-  SiedlungsgebietFormContext,
-  SiedlungsgebietResponseDTO,
   CreateSiedlungsgebietRequest,
   DeleteSiedlungsgebietRequest,
   GetSiedlungsgebieteByPageableRequest,
   PagedModelSiedlungsgebietResponseDTO,
+  SiedlungsgebietFormContext,
+  SiedlungsgebietResponseDTO,
   UpdateSiedlungsgebietRequest,
 } from "@/api/generated/foerdermittel-backend";
 

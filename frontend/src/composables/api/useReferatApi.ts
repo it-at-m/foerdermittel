@@ -1,10 +1,10 @@
 import type {
-  ReferatFormContext,
-  ReferatResponseDTO,
   CreateReferatRequest,
   DeleteReferatRequest,
   GetReferateByPageableRequest,
   PagedModelReferatResponseDTO,
+  ReferatFormContext,
+  ReferatResponseDTO,
   UpdateReferatRequest,
 } from "@/api/generated/foerdermittel-backend";
 

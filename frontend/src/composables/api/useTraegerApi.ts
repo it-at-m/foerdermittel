@@ -1,10 +1,10 @@
 import type {
-  TraegerFormContext,
-  TraegerResponseDTO,
   CreateTraegerRequest,
   DeleteTraegerRequest,
   GetTraegerByPageableRequest,
   PagedModelTraegerResponseDTO,
+  TraegerFormContext,
+  TraegerResponseDTO,
   UpdateTraegerRequest,
 } from "@/api/generated/foerdermittel-backend";
 

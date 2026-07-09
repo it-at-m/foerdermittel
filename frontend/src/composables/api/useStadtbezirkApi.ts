@@ -1,10 +1,10 @@
 import type {
-  StadtbezirkFormContext,
-  StadtbezirkResponseDTO,
   CreateStadtbezirkRequest,
   DeleteStadtbezirkRequest,
   GetStadtbezirkeByPageableRequest,
   PagedModelStadtbezirkResponseDTO,
+  StadtbezirkFormContext,
+  StadtbezirkResponseDTO,
   UpdateStadtbezirkRequest,
 } from "@/api/generated/foerdermittel-backend";
 

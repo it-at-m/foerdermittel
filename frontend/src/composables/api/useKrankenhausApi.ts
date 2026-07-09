@@ -1,9 +1,9 @@
 import type {
-  KrankenhausFormContext,
-  KrankenhausResponseDTO,
   CreateKrankenhausRequest,
   DeleteKrankenhausRequest,
   GetKrankenhaeuserByPageableRequest,
+  KrankenhausFormContext,
+  KrankenhausResponseDTO,
   PagedModelKrankenhausResponseDTO,
   UpdateKrankenhausRequest,
 } from "@/api/generated/foerdermittel-backend";
