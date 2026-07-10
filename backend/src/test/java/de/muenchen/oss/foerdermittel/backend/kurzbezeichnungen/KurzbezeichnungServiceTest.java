@@ -1,10 +1,19 @@
 package de.muenchen.oss.foerdermittel.backend.kurzbezeichnungen;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungFormContext;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungRepository;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungService;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -17,14 +26,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 public class KurzbezeichnungServiceTest {
@@ -42,7 +43,7 @@ public class KurzbezeichnungServiceTest {
         void givenIdExists_thenReturnEntity() {
             // Given
             final String id = "K";
-            final Kurzbezeichnung entity = new Kurzbezeichnung (id, BEZEICHNUNG);
+            final Kurzbezeichnung entity = new Kurzbezeichnung(id, BEZEICHNUNG);
             when(kurzbezeichnungRepository.findById(id)).thenReturn(Optional.of(entity));
 
             // When
@@ -77,8 +78,8 @@ public class KurzbezeichnungServiceTest {
             final int pageSize = 10;
             final Pageable pageable = PageRequest.of(pageNumber, pageSize);
 
-            final Kurzbezeichnung entity1 = new Kurzbezeichnung ("K", "Test 1");
-            final Kurzbezeichnung entity2 = new Kurzbezeichnung ("L", "Test 2");
+            final Kurzbezeichnung entity1 = new Kurzbezeichnung("K", "Test 1");
+            final Kurzbezeichnung entity2 = new Kurzbezeichnung("L", "Test 2");
             final List<Kurzbezeichnung> entities = Arrays.asList(entity1, entity2);
             final Page<Kurzbezeichnung> expectedPage = new PageImpl<>(entities, pageable, entities.size());
 
@@ -98,8 +99,8 @@ public class KurzbezeichnungServiceTest {
         @Test
         void givenKurzbezeichnung_thenCallInsertEntity() {
             // Given
-            final Kurzbezeichnung entityToInsert = new Kurzbezeichnung ("K", BEZEICHNUNG);
-            final Kurzbezeichnung expectedEntity = new Kurzbezeichnung ("K", BEZEICHNUNG);
+            final Kurzbezeichnung entityToInsert = new Kurzbezeichnung("K", BEZEICHNUNG);
+            final Kurzbezeichnung expectedEntity = new Kurzbezeichnung("K", BEZEICHNUNG);
             when(kurzbezeichnungRepository.insert(entityToInsert)).thenReturn(expectedEntity);
 
             // When
@@ -112,7 +113,7 @@ public class KurzbezeichnungServiceTest {
     }
 
     @Nested
-    class UpdateKurzbezeichnung{
+    class UpdateKurzbezeichnung {
         @Test
         void givenEntityExists_thenReturnEntity() {
             // Given

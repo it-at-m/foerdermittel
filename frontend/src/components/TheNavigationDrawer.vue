@@ -287,8 +287,8 @@ const navigationItems: NavigationItem[] = [
       {
         title: t("model.kurzbezeichnung.modelName", 2),
         props: {
-                  to: "/kurzbezeichnungen",
-                },
+          to: "/kurzbezeichnungen",
+        },
       },
       {
         title: t("model.publikation.modelName", 2),

@@ -1,5 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.kurzbezeichnungen;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.dto.KurzbezeichnungCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.dto.KurzbezeichnungMapper;
@@ -8,8 +10,6 @@ import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.dto.Kurzbezeichnung
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class KurzbezeichnungMapperTest {
 

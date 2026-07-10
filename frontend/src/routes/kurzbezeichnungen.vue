@@ -87,7 +87,8 @@ const {
 
 type KurzbezeichnungFormType = InstanceType<typeof KurzbezeichnungForm>;
 const kurzbezeichnungFormRef = useTemplateRef<KurzbezeichnungFormType>(
-  "kurzbezeichnungForm");
+  "kurzbezeichnungForm"
+);
 
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => kurzbezeichnungen.value?.page?.totalPages),
