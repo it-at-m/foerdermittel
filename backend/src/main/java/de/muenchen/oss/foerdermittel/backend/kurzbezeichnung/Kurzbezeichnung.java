@@ -35,7 +35,7 @@ public class Kurzbezeichnung implements Serializable {
 
     @Column(nullable = false)
     @Id
-    @NotNull @Size(min = 1, max = 3) @Pattern(regexp = "^[A-Z]{1,3}$") private String kurzbez;
+    @NotNull @Size(min = 1, max = 3) @Pattern(regexp = "^[A-Z0-9]{1,3}$") private String kurzbez;
 
     @Column(nullable = false)
     @NotNull @Size(min = 1, max = 200) private String bezeichnung;

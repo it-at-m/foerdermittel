@@ -17,7 +17,7 @@
             rules.required(),
             rules.minLength(1),
             rules.maxLength(3),
-            rules.pattern(/^[A-Z]{1,3}$/),
+            rules.pattern(/^[A-Z0-9]{1,3}$/),
             rules['unique']!(
               kurzbezeichnungFormContext.kurzbezeichnungen,
               currentKurzbezeichnung
@@ -62,7 +62,7 @@ const modelValue = defineModel<Partial<KurzbezeichnungResponseDTO>>({
 });
 
 // Reactivity is intentionally dropped here to maintain the initial state when form gets mounted.
-const currentKurzBez = ref(modelValue.value.kurzbez);
+const currentKurzbezeichnung = ref(modelValue.value.kurzbez);
 
 const { kurzbezeichnungFormContext, displayMode = InputDisplayMode.CREATE } =
   defineProps<{
