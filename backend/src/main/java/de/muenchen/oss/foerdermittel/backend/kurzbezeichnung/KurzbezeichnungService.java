@@ -36,7 +36,7 @@ public class KurzbezeichnungService {
     @Transactional(readOnly = true)
     public KurzbezeichnungFormContext getKurzbezeichnungFormContext() {
         log.info("Get Kurzbezeichnung form context");
-        return new KurzbezeichnungFormContext(kurzbezeichnungRepository.findAllKurzbezeichnung());
+        return new KurzbezeichnungFormContext(kurzbezeichnungRepository.findAllKurzbezeichnungen());
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)

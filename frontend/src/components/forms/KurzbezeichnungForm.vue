@@ -19,8 +19,8 @@
             rules.maxLength(3),
             rules.pattern(/^[A-Z]{1,3}$/),
             rules['unique']!(
-              kurzbezeichnungFormContext.kurzBez,
-              currentKurzBez
+              kurzbezeichnungFormContext.kurzbezeichnungen,
+              currentKurzbezeichnung
             ),
           ]"
           :label="t('model.kurzbezeichnung.kurzbez')"

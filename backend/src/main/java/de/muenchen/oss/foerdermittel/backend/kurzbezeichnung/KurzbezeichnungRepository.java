@@ -12,6 +12,6 @@ public interface KurzbezeichnungRepository extends PagingAndSortingRepository<Ku
         InsertAndUpdateRepository<Kurzbezeichnung> {
 
     @Query("SELECT k.kurzbez FROM Kurzbezeichnung k")
-    List<String> findAllKurzbezeichnung();
+    List<String> findAllKurzbezeichnungen();
 
 }
