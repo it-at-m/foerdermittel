@@ -253,6 +253,66 @@ paths:
           description: OK
       security:
       - bearerAuth: []
+  /publikationen/{id}:
+    get:
+      tags:
+      - publikation-controller
+      operationId: getPublikation
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublikationResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - publikation-controller
+      operationId: updatePublikation
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PublikationUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublikationResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - publikation-controller
+      operationId: deletePublikation
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /krankenhaeuser/{id}:
     get:
       tags:
@@ -782,6 +842,67 @@ paths:
                 $ref: "#/components/schemas/ReferatResponseDTO"
       security:
       - bearerAuth: []
+  /publikationen:
+    get:
+      tags:
+      - publikation-controller
+      operationId: getPublikationenByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "kurzform,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelPublikationResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - publikation-controller
+      operationId: createPublikation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PublikationCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublikationResponseDTO"
+      security:
+      - bearerAuth: []
   /krankenhaeuser:
     get:
       tags:
@@ -1102,6 +1223,20 @@ paths:
                 $ref: "#/components/schemas/ReferatFormContext"
       security:
       - bearerAuth: []
+  /publikationen/form-context:
+    get:
+      tags:
+      - publikation-controller
+      operationId: getPublikationFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublikationFormContext"
+      security:
+      - bearerAuth: []
   /krankenhaeuser/form-context:
     get:
       tags:
@@ -1393,6 +1528,28 @@ components:
           format: int32
         bezeichnung:
           type: string
+    PublikationUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    PublikationResponseDTO:
+      required:
+      - bezeichnung
+      - id
+      - kurzform
+      type: object
+      properties:
+        id:
+          type: string
+        kurzform:
+          type: string
+        bezeichnung:
+          type: string
     KrankenhausUpdateDTO:
       required:
       - bezeichnung
@@ -1578,6 +1735,21 @@ components:
           maxLength: 200
           minLength: 1
           type: string
+    PublikationCreateDTO:
+      required:
+      - bezeichnung
+      - kurzform
+      type: object
+      properties:
+        kurzform:
+          maxLength: 1
+          minLength: 1
+          pattern: "^[A-Z0-9]+$"
+          type: string
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
     KrankenhausCreateDTO:
       required:
       - bezeichnung
@@ -1749,6 +1921,24 @@ components:
           type: array
           items:
             type: number
+    PagedModelPublikationResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublikationResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    PublikationFormContext:
+      required:
+      - kurzformen
+      type: object
+      properties:
+        kurzformen:
+          type: array
+          items:
+            type: string
     PagedModelKrankenhausResponseDTO:
       type: object
       properties:
