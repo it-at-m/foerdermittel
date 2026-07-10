@@ -92,6 +92,7 @@ const kurzbezeichnungFormRef = useTemplateRef<KurzbezeichnungFormType>(
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => kurzbezeichnungen.value?.page?.totalPages),
   getKurzbezeichnungen,
+  isAdmin,
   getKurzbezeichnungFormContext,
   () => kurzbezeichnungFormRef.value?.validate()
 );
