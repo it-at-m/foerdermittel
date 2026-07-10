@@ -92,6 +92,7 @@ const krankenhausFormRef =
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => krankenhaeuser.value?.page?.totalPages),
   getKrankenhaeuser,
+  isAdmin,
   getKrankenhausFormContext,
   () => krankenhausFormRef.value?.validate()
 );

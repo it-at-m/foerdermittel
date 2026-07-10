@@ -253,11 +253,11 @@ paths:
           description: OK
       security:
       - bearerAuth: []
-  /kurzbezeichnungen/{id}:
+  /publikationen/{id}:
     get:
       tags:
-      - kurzbezeichnung-controller
-      operationId: getKurzbezeichnung
+      - publikation-controller
+      operationId: getPublikation
       parameters:
       - name: id
         in: path
@@ -270,13 +270,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/KurzbezeichnungResponseDTO"
+                $ref: "#/components/schemas/PublikationResponseDTO"
       security:
       - bearerAuth: []
     put:
       tags:
-      - kurzbezeichnung-controller
-      operationId: updateKurzbezeichnung
+      - publikation-controller
+      operationId: updatePublikation
       parameters:
       - name: id
         in: path
@@ -287,7 +287,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/KurzbezeichnungUpdateDTO"
+              $ref: "#/components/schemas/PublikationUpdateDTO"
         required: true
       responses:
         "200":
@@ -295,13 +295,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/KurzbezeichnungResponseDTO"
+                $ref: "#/components/schemas/PublikationResponseDTO"
       security:
       - bearerAuth: []
     delete:
       tags:
-      - kurzbezeichnung-controller
-      operationId: deleteKurzbezeichnung
+      - publikation-controller
+      operationId: deletePublikation
       parameters:
       - name: id
         in: path
@@ -782,11 +782,11 @@ paths:
                 $ref: "#/components/schemas/ReferatResponseDTO"
       security:
       - bearerAuth: []
-  /kurzbezeichnungen:
+  /publikationen:
     get:
       tags:
-      - kurzbezeichnung-controller
-      operationId: getKurzbezeichnungenByPageable
+      - publikation-controller
+      operationId: getPublikationenByPageable
       parameters:
       - name: page
         in: query
@@ -814,25 +814,25 @@ paths:
           items:
             type: string
           default:
-          - "kurzbez,ASC"
+          - "kurzform,ASC"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PagedModelKurzbezeichnungResponseDTO"
+                $ref: "#/components/schemas/PagedModelPublikationResponseDTO"
       security:
       - bearerAuth: []
     post:
       tags:
-      - kurzbezeichnung-controller
-      operationId: createKurzbezeichnung
+      - publikation-controller
+      operationId: createPublikation
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/KurzbezeichnungCreateDTO"
+              $ref: "#/components/schemas/PublikationCreateDTO"
         required: true
       responses:
         "201":
@@ -840,7 +840,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/KurzbezeichnungResponseDTO"
+                $ref: "#/components/schemas/PublikationResponseDTO"
       security:
       - bearerAuth: []
   /krankenhaeuser:
@@ -1102,18 +1102,18 @@ paths:
                 $ref: "#/components/schemas/ReferatFormContext"
       security:
       - bearerAuth: []
-  /kurzbezeichnungen/form-context:
+  /publikationen/form-context:
     get:
       tags:
-      - kurzbezeichnung-controller
-      operationId: getKurzbezeichnungFormContext
+      - publikation-controller
+      operationId: getPublikationFormContext
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/KurzbezeichnungFormContext"
+                $ref: "#/components/schemas/PublikationFormContext"
       security:
       - bearerAuth: []
   /krankenhaeuser/form-context:
@@ -1393,7 +1393,7 @@ components:
           format: int32
         bezeichnung:
           type: string
-    KurzbezeichnungUpdateDTO:
+    PublikationUpdateDTO:
       required:
       - bezeichnung
       type: object
@@ -1402,16 +1402,16 @@ components:
           maxLength: 200
           minLength: 1
           type: string
-    KurzbezeichnungResponseDTO:
+    PublikationResponseDTO:
       required:
       - bezeichnung
       - id
-      - kurzbez
+      - kurzform
       type: object
       properties:
         id:
           type: string
-        kurzbez:
+        kurzform:
           type: string
         bezeichnung:
           type: string
@@ -1577,15 +1577,16 @@ components:
           maxLength: 200
           minLength: 1
           type: string
-    KurzbezeichnungCreateDTO:
+    PublikationCreateDTO:
       required:
       - bezeichnung
+      - kurzform
       type: object
       properties:
-        kurzbez:
-          maxLength: 3
+        kurzform:
+          maxLength: 1
           minLength: 1
-          pattern: "^[A-Z0-9]{1,3}$"
+          pattern: "^[A-Z0-9]+$"
           type: string
         bezeichnung:
           maxLength: 200
@@ -1747,21 +1748,21 @@ components:
           type: array
           items:
             type: number
-    PagedModelKurzbezeichnungResponseDTO:
+    PagedModelPublikationResponseDTO:
       type: object
       properties:
         content:
           type: array
           items:
-            $ref: "#/components/schemas/KurzbezeichnungResponseDTO"
+            $ref: "#/components/schemas/PublikationResponseDTO"
         page:
           $ref: "#/components/schemas/PageMetadata"
-    KurzbezeichnungFormContext:
+    PublikationFormContext:
       required:
-      - Kurzbezeichnungen
+      - kurzformen
       type: object
       properties:
-        Kurzbezeichnungen:
+        kurzformen:
           type: array
           items:
             type: string

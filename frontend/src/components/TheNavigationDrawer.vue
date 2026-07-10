@@ -292,6 +292,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.publikation.modelName", 2),
+        props: {
+          to: "/publikationen",
+        },
       },
       {
         title: t("model.referat.modelName", 2),
