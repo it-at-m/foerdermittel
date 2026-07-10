@@ -227,13 +227,15 @@ const dialogTitle = computed(() => {
 
 const tableHeadersWithActions = computed(() => [
   ...tableHeaders,
-  enableActions ? {
-    title: t("common.word.action", { count: 2 }),
-    value: "actions",
-    width: "100",
-    align: "center",
-    cellProps: { class: "text-no-wrap" },
-  } satisfies DataTableHeader<T> : {},
+  enableActions
+    ? ({
+        title: t("common.word.action", { count: 2 }),
+        value: "actions",
+        width: "100",
+        align: "center",
+        cellProps: { class: "text-no-wrap" },
+      } satisfies DataTableHeader<T>)
+    : {},
 ]);
 
 const {
