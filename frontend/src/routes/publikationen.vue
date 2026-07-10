@@ -1,32 +1,33 @@
 <template>
   <base-view :domain-key="domainKey">
-    <!-- @vue-generic {Partial<PublikationResponseDTO>} -->
-    <crud-card
-      ref="crudRef"
-      v-model="dataTableOptions"
-      :empty-item-template="EMPTY_ITEM_TEMPLATE"
-      :loading="loading"
-      :table-headers="headers"
-      :domain-key="domainKey"
-      :enable-actions="isAdmin"
-      :items="publikationen?.content ?? []"
-      :total-items="publikationen?.page?.totalElements ?? 0"
-      :dialog-width="DialogWidth.MEDIUM"
-      @delete="handleDelete"
-      @create="handleCreate"
-      @update="handleUpdate"
-    >
-      <template #form="{ item, updateValidity, inputDisplayMode }">
-        <publikation-form
-          v-if="publikationFormContext"
-          ref="publikationForm"
-          :model-value="item"
-          :display-mode="inputDisplayMode"
-          :publikation-form-context="publikationFormContext"
-          @is-valid="updateValidity"
-        />
-      </template>
-    </crud-card>
+    <template #default="{ baseViewLoading }">
+      <!-- @vue-generic {Partial<PublikationResponseDTO>} -->
+      <crud-card
+        ref="crudRef"
+        v-model="dataTableOptions"
+        :empty-item-template="EMPTY_ITEM_TEMPLATE"
+        :loading="loading || baseViewLoading"
+        :table-headers="headers"
+        :domain-key="domainKey"
+        :enable-actions="isAdmin"
+        :items="publikationen?.content ?? []"
+        :total-items="publikationen?.page?.totalElements ?? 0"
+        @delete="handleDelete"
+        @create="handleCreate"
+        @update="handleUpdate"
+      >
+        <template #form="{ item, updateValidity, inputDisplayMode }">
+          <publikation-form
+            v-if="publikationFormContext"
+            ref="publikationForm"
+            :model-value="item"
+            :display-mode="inputDisplayMode"
+            :publikation-form-context="publikationFormContext"
+            @is-valid="updateValidity"
+          />
+        </template>
+      </crud-card>
+    </template>
   </base-view>
 </template>
 
@@ -49,7 +50,6 @@ import {
 } from "@/composables/api/usePublikationApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
 import usePagination from "@/composables/usePagination";
-import { DialogWidth } from "@/types/DialogWidth";
 import { Role } from "@/types/Role";
 
 const domainKey = "model.publikation.modelName";
