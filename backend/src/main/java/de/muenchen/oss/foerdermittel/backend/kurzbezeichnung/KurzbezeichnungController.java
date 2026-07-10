@@ -69,7 +69,7 @@ public class KurzbezeichnungController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public KurzbezeichnungResponseDTO updateKurzbezeichnungs(@Valid @RequestBody final KurzbezeichnungUpdateDTO kurzbezeichnungUpdateDTO,
+    public KurzbezeichnungResponseDTO updateKurzbezeichnung(@Valid @RequestBody final KurzbezeichnungUpdateDTO kurzbezeichnungUpdateDTO,
             @PathVariable("id") final String kurzbezeichnungId) {
         return kurzbezeichnungMapper
                 .toDTO(kurzbezeichnungService.updateKurzbezeichnung(kurzbezeichnungMapper.toEntity(kurzbezeichnungUpdateDTO), kurzbezeichnungId));
