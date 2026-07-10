@@ -91,6 +91,7 @@ const traegerFormRef = useTemplateRef<TraegerFormType>("traegerForm");
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => traeger.value?.page?.totalPages),
   getTraeger,
+  isAdmin,
   getTraegerFormContext,
   () => traegerFormRef.value?.validate()
 );

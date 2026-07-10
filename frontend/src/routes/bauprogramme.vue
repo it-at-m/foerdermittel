@@ -92,6 +92,7 @@ const bauprogrammFormRef =
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => bauprogramme.value?.page?.totalPages),
   getBauprogramme,
+  isAdmin,
   getBauprogrammFormContext,
   () => bauprogrammFormRef.value?.validate()
 );
