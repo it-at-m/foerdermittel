@@ -107,7 +107,9 @@
       "modelName": "Kurzbezeichnung | Kurzbezeichnungen"
     },
     "publikation": {
-      "modelName": "Publikation | Publikationen"
+      "modelName": "Publikation | Publikationen",
+      "kurzform": "Kurzform",
+      "bezeichnung": "Bezeichnung"
     },
     "referat": {
       "modelName": "Referat | Referate",
