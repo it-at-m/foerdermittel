@@ -92,6 +92,7 @@ const publikationFormRef =
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => publikationen.value?.page?.totalPages),
   getPublikationen,
+  isAdmin,
   getPublikationFormContext,
   () => publikationFormRef.value?.validate()
 );

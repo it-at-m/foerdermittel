@@ -92,6 +92,7 @@ const stadtbezirkFormRef =
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => stadtbezirke.value?.page?.totalPages),
   getStadtbezirke,
+  isAdmin,
   getStadtbezirkFormContext,
   () => stadtbezirkFormRef.value?.validate()
 );

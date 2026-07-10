@@ -91,6 +91,7 @@ const referatFormRef = useTemplateRef<ReferatFormType>("referatForm");
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => referate.value?.page?.totalPages),
   getReferate,
+  isAdmin,
   getReferatFormContext,
   () => referatFormRef.value?.validate()
 );

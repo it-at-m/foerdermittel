@@ -59,6 +59,7 @@ function urlDecodeSortOptions(sortOptionString: string) {
 export default function usePagination(
   totalPages: Ref<number | undefined>,
   getEntitiesFunction: (pageable: Pageable) => Promise<void>,
+  shouldLoadFormContext?: Ref<boolean>,
   getFormContext?: () => void | Promise<void>,
   validate?: () => void | Promise<void>
 ) {
@@ -142,9 +143,7 @@ export default function usePagination(
   );
 
   onMounted(async () => {
-    if (getFormContext) {
-      await getFormContext();
-    }
+    await fetchFormContext();
   });
 
   const crudRef = useTemplateRef("crudRef");
@@ -156,19 +155,25 @@ export default function usePagination(
       crudRef.value.closeDialog();
     }
     await getEntitiesFunction(pageable.value);
-    if (getFormContext) {
-      await getFormContext();
-    }
+    await fetchFormContext();
   };
   const onFailure = async (msg: string) => {
     snackbarStore.push({ text: msg, color: STATUS_INDICATORS.ERROR });
-    if (getFormContext) {
-      await getFormContext();
-    }
+    await fetchFormContext();
     if (validate) {
       await validate();
     }
   };
+
+  async function fetchFormContext() {
+    if (
+      shouldLoadFormContext &&
+      shouldLoadFormContext.value &&
+      getFormContext
+    ) {
+      await getFormContext();
+    }
+  }
 
   return {
     dataTableOptions,
