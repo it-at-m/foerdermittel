@@ -91,14 +91,12 @@
           <!-- Static actions for edit and delete -->
           <template #[`item.actions`]="{ item }">
             <v-btn
-              v-if="enableActions"
               size="small"
               :icon="mdiPencil"
               class="mr-1"
               @click="openEdit(item)"
             />
             <v-btn
-              v-if="enableActions"
               size="small"
               :icon="mdiDelete"
               @click="openDelete(item)"
@@ -229,13 +227,13 @@ const dialogTitle = computed(() => {
 
 const tableHeadersWithActions = computed(() => [
   ...tableHeaders,
-  {
+  enableActions ? {
     title: t("common.word.action", { count: 2 }),
     value: "actions",
     width: "100",
     align: "center",
     cellProps: { class: "text-no-wrap" },
-  } satisfies DataTableHeader<T>,
+  } satisfies DataTableHeader<T> : {},
 ]);
 
 const {
