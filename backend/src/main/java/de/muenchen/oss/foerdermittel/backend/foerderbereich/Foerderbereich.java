@@ -37,18 +37,14 @@ public class Foerderbereich implements Serializable {
     @NotNull @Size(min = 1, max = 200) private String bezeichnung;
 
     @Column(nullable = false)
-    @NotNull
-    private Boolean finanzausgleich;
+    @NotNull private Boolean finanzausgleich;
 
     @Column(nullable = false)
-    @NotNull
-    private Boolean jahresstatistik;
+    @NotNull private Boolean jahresstatistik;
 
     @Column(nullable = false)
-    @NotNull
-    private Boolean kindergarten;
+    @NotNull private Boolean kindergarten;
 
     @Column(name = "nicht_relevant", nullable = false)
-    @NotNull
-    private Boolean nichtRelevant;
+    @NotNull private Boolean nichtRelevant;
 }
