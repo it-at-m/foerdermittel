@@ -93,6 +93,7 @@ const siedlungsgebietFormRef = useTemplateRef<SiedlungsgebietFormType>(
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => siedlungsgebiete.value?.page?.totalPages),
   getSiedlungsgebiete,
+  isAdmin,
   getSiedlungsgebietFormContext,
   () => siedlungsgebietFormRef.value?.validate()
 );
