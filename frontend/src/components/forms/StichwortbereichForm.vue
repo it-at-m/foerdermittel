@@ -12,13 +12,15 @@
           disable-edit
           required
           uppercase
-          :counter="1"
+          :counter="30"
           :rules="[
             rules.required(),
-            rules.strictLength(1),
             rules.maxLength(30),
             rules.pattern(/^[A-Z]+$/),
-            rules['unique']!(stichwortbereichFormContext.bereiche, currentBereich),
+            rules['unique']!(
+              stichwortbereichFormContext.bereiche,
+              currentBereich
+            ),
           ]"
           :label="t('model.stichwortbereich.bereich')"
         />
