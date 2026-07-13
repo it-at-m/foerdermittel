@@ -1578,7 +1578,7 @@ components:
       - finanzausgleich
       - jahresstatistik
       - kindergarten
-      - nicht_relevant
+      - nichtRelevant
       type: object
       properties:
         bezeichnung:
@@ -1591,7 +1591,7 @@ components:
           type: boolean
         kindergarten:
           type: boolean
-        nicht_relevant:
+        nichtRelevant:
           type: boolean
     FoerderbereichResponseDTO:
       required:
@@ -1601,7 +1601,7 @@ components:
       - id
       - jahresstatistik
       - kindergarten
-      - nicht_relevant
+      - nichtRelevant
       type: object
       properties:
         id:
@@ -1617,7 +1617,7 @@ components:
           type: boolean
         kindergarten:
           type: boolean
-        nicht_relevant:
+        nichtRelevant:
           type: boolean
     BenutzerhinweisUpdateDTO:
       required:
@@ -1796,7 +1796,7 @@ components:
       - finanzausgleich
       - jahresstatistik
       - kindergarten
-      - nicht_relevant
+      - nichtRelevant
       type: object
       properties:
         fb:
@@ -1814,7 +1814,7 @@ components:
           type: boolean
         kindergarten:
           type: boolean
-        nicht_relevant:
+        nichtRelevant:
           type: boolean
     BenutzerhinweisCreateDTO:
       required:
