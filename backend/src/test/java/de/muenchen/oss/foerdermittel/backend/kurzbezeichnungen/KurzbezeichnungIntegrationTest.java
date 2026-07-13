@@ -212,7 +212,7 @@ public class KurzbezeichnungIntegrationTest {
                             new KurzbezeichnungCreateDTO("ABCD", "Test")),
                     arguments(
                             "kurzbez too short",
-                            new KurzbezeichnungCreateDTO("", "")),
+                            new KurzbezeichnungCreateDTO("", "Test")),
                     arguments(
                             "bezeichnung too long",
                             new KurzbezeichnungCreateDTO("A", "a".repeat(201))));
