@@ -73,6 +73,66 @@ paths:
           description: OK
       security:
       - bearerAuth: []
+  /stichwortbereiche/{id}:
+    get:
+      tags:
+      - stichwortbereich-controller
+      operationId: getStichwortbereich
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StichwortbereichResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - stichwortbereich-controller
+      operationId: updateStichwortbereich
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StichwortbereichUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StichwortbereichResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - stichwortbereich-controller
+      operationId: deleteStichwortbereich
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /stadtbezirke/{id}:
     get:
       tags:
@@ -599,6 +659,67 @@ paths:
                 $ref: "#/components/schemas/TraegerResponseDTO"
       security:
       - bearerAuth: []
+  /stichwortbereiche:
+    get:
+      tags:
+      - stichwortbereich-controller
+      operationId: getStichwortbereicheByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "bereich,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelStichwortbereichResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - stichwortbereich-controller
+      operationId: createStichwortbereich
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StichwortbereichCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StichwortbereichResponseDTO"
+      security:
+      - bearerAuth: []
   /stadtbezirke:
     get:
       tags:
@@ -1060,6 +1181,20 @@ paths:
                 $ref: "#/components/schemas/TraegerFormContext"
       security:
       - bearerAuth: []
+  /stichwortbereiche/form-context:
+    get:
+      tags:
+      - stichwortbereich-controller
+      operationId: getStichwortbereichFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StichwortbereichFormContext"
+      security:
+      - bearerAuth: []
   /stadtbezirke/form-context:
     get:
       tags:
@@ -1324,6 +1459,28 @@ components:
           format: int32
         bezeichnung:
           type: string
+    StichwortbereichUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    StichwortbereichResponseDTO:
+      required:
+      - bereich
+      - bezeichnung
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        bereich:
+          type: string
+        bezeichnung:
+          type: string
     StadtbezirkUpdateDTO:
       required:
       - bezeichnung
@@ -1532,6 +1689,21 @@ components:
           maxLength: 200
           minLength: 1
           type: string
+    StichwortbereichCreateDTO:
+      required:
+      - bereich
+      - bezeichnung
+      type: object
+      properties:
+        bereich:
+          maxLength: 30
+          minLength: 1
+          pattern: "^[A-Z]+$"
+          type: string
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
     StadtbezirkCreateDTO:
       required:
       - bezeichnung
@@ -1694,6 +1866,24 @@ components:
           type: array
           items:
             type: number
+    PagedModelStichwortbereichResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/StichwortbereichResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    StichwortbereichFormContext:
+      required:
+      - bereiche
+      type: object
+      properties:
+        bereiche:
+          type: array
+          items:
+            type: string
     PagedModelStadtbezirkResponseDTO:
       type: object
       properties:
