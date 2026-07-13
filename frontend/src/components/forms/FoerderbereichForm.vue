@@ -41,25 +41,25 @@
       <v-col cols="2">
         <fm-checkbox
           v-model="modelValue.finanzausgleich"
-          label="model.foerderbereich.finanzausgleich"
+          :label="t('model.foerderbereich.finanzausgleich')"
         />
       </v-col>
       <v-col cols="2">
         <fm-checkbox
           v-model="modelValue.jahresstatistik"
-          label="model.foerderbereich.jahresstatistik"
+          :label="t('model.foerderbereich.jahresstatistik')"
         />
       </v-col>
       <v-col cols="2">
         <fm-checkbox
           v-model="modelValue.kindergarten"
-          label="model.foerderbereich.kindergarten"
+          :label="t('model.foerderbereich.kindergarten')"
         />
       </v-col>
       <v-col cols="2">
         <fm-checkbox
           v-model="modelValue.nichtRelevant"
-          label="model.foerderbereich.nichtRelevant"
+          :label="t('model.foerderbereich.nichtRelevant')"
         />
       </v-col>
     </v-row>
