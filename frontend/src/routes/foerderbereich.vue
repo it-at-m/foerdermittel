@@ -122,6 +122,10 @@ const headers: DataTableHeader<Partial<FoerderbereichResponseDTO>>[] = [
 const EMPTY_ITEM_TEMPLATE: Partial<FoerderbereichResponseDTO> = {
   fb: undefined,
   bezeichnung: "",
+  finanzausgleich: false,
+  jahresstatistik: false,
+  kindergarten: false,
+  nichtRelevant: false,
 };
 
 const {

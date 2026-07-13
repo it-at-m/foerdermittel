@@ -180,6 +180,10 @@ class FoerderbereichIntegrationTest {
                         assertThat(response).isNotNull();
                         assertThat(response.fb()).isEqualTo(requestDTO.fb());
                         assertThat(response.bezeichnung()).isEqualTo(requestDTO.bezeichnung());
+                        assertThat(response.finanzausgleich()).isEqualTo(requestDTO.finanzausgleich());
+                        assertThat(response.jahresstatistik()).isEqualTo(requestDTO.jahresstatistik());
+                        assertThat(response.kindergarten()).isEqualTo(requestDTO.kindergarten());
+                        assertThat(response.nicht_relevant()).isEqualTo(requestDTO.nicht_relevant());
                     })
                     .returnResult()
                     .getResponseBody();
@@ -206,6 +210,18 @@ class FoerderbereichIntegrationTest {
 
         private static Stream<Arguments> invalidInputRequests() {
             return Stream.of(
+                    arguments(
+                            "foerderbereich too low",
+                            new FoerderbereichCreateDTO(-1, "Test", true, false, true, false)),
+                    arguments(
+                            "foerderbereich missing",
+                            new FoerderbereichCreateDTO(null, "Test", true, false, true, false)),
+                    arguments(
+                            "bezeichnung missing",
+                            new FoerderbereichCreateDTO(2, null, true, false, true, false)),
+                    arguments(
+                            "finanzausgleich missing",
+                            new FoerderbereichCreateDTO(2, "Test", null, false, true, false)),
                     arguments(
                             "foerderbereich too high",
                             new FoerderbereichCreateDTO(100, "Test", true, false,true, false)),
