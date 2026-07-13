@@ -6,7 +6,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(uses = NumberMapper.class)
-
 public interface FoerderbereichMapper {
 
     @Mapping(source = "fb", target = "id", qualifiedByName = "bigDecimalToIntegerString")
