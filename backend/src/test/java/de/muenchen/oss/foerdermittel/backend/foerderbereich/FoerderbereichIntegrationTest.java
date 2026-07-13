@@ -179,7 +179,7 @@ class FoerderbereichIntegrationTest {
                         assertThat(response.finanzausgleich()).isEqualTo(requestDTO.finanzausgleich());
                         assertThat(response.jahresstatistik()).isEqualTo(requestDTO.jahresstatistik());
                         assertThat(response.kindergarten()).isEqualTo(requestDTO.kindergarten());
-                        assertThat(response.nicht_relevant()).isEqualTo(requestDTO.nicht_relevant());
+                        assertThat(response.nichtRelevant()).isEqualTo(requestDTO.nichtRelevant());
                     })
                     .returnResult()
                     .getResponseBody();

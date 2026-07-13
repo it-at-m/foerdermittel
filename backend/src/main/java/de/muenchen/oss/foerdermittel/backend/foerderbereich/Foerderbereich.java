@@ -46,5 +46,5 @@ public class Foerderbereich implements Serializable {
     @NotNull Boolean kindergarten;
 
     @Column(name = "nicht_relevant", nullable = false)
-    @NotNull Boolean nicht_relevant;
+    @NotNull Boolean nichtRelevant;
 }

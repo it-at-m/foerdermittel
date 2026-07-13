@@ -34,7 +34,7 @@ public class FoerderbereichMapperTest {
             assertThat(dto.finanzausgleich()).isEqualTo(entity.getFinanzausgleich());
             assertThat(dto.jahresstatistik()).isEqualTo(entity.getJahresstatistik());
             assertThat(dto.kindergarten()).isEqualTo(entity.getKindergarten());
-            assertThat(dto.nicht_relevant()).isEqualTo(entity.getNicht_relevant());
+            assertThat(dto.nichtRelevant()).isEqualTo(entity.getNichtRelevant());
         }
 
     }
@@ -57,7 +57,7 @@ public class FoerderbereichMapperTest {
             assertThat(entity.getFinanzausgleich()).isEqualTo(dto.finanzausgleich());
             assertThat(entity.getJahresstatistik()).isEqualTo(dto.jahresstatistik());
             assertThat(entity.getKindergarten()).isEqualTo(dto.kindergarten());
-            assertThat(entity.getNicht_relevant()).isEqualTo(dto.nicht_relevant());
+            assertThat(entity.getNichtRelevant()).isEqualTo(dto.nichtRelevant());
         }
 
         @Test
@@ -75,7 +75,7 @@ public class FoerderbereichMapperTest {
             assertThat(entity.getFinanzausgleich()).isEqualTo(dto.finanzausgleich());
             assertThat(entity.getJahresstatistik()).isEqualTo(dto.jahresstatistik());
             assertThat(entity.getKindergarten()).isEqualTo(dto.kindergarten());
-            assertThat(entity.getNicht_relevant()).isEqualTo(dto.nicht_relevant());
+            assertThat(entity.getNichtRelevant()).isEqualTo(dto.nichtRelevant());
         }
 
     }

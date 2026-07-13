@@ -8,5 +8,5 @@ public record FoerderbereichResponseDTO(@NotNull String id,
         @NotNull Boolean finanzausgleich,
         @NotNull Boolean jahresstatistik,
         @NotNull Boolean kindergarten,
-        @NotNull Boolean nicht_relevant) {
+        @NotNull Boolean nichtRelevant) {
 }

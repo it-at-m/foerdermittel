@@ -10,5 +10,5 @@ public record FoerderbereichCreateDTO(@NotNull @Min(0) @Max(99) Integer fb,
         @NotNull Boolean finanzausgleich,
         @NotNull Boolean jahresstatistik,
         @NotNull Boolean kindergarten,
-        @NotNull Boolean nicht_relevant) {
+        @NotNull Boolean nichtRelevant) {
 }

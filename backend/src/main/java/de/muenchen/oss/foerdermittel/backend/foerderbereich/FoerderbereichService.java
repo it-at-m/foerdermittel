@@ -53,7 +53,7 @@ public class FoerderbereichService {
         foundFoerderbereich.setFinanzausgleich(foerderbereich.getFinanzausgleich());
         foundFoerderbereich.setJahresstatistik(foerderbereich.getJahresstatistik());
         foundFoerderbereich.setKindergarten(foerderbereich.getKindergarten());
-        foundFoerderbereich.setNicht_relevant(foerderbereich.getNicht_relevant());
+        foundFoerderbereich.setNichtRelevant(foerderbereich.getNichtRelevant());
         log.debug("Update Foerderbereich {}", foundFoerderbereich);
         return foerderbereichRepository.update(foundFoerderbereich);
     }

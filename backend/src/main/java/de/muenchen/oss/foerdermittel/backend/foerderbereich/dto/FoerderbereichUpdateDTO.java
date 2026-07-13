@@ -7,5 +7,5 @@ public record FoerderbereichUpdateDTO(@NotNull @Size(min = 1, max = 200) String 
         @NotNull Boolean finanzausgleich,
         @NotNull Boolean jahresstatistik,
         @NotNull Boolean kindergarten,
-        @NotNull Boolean nicht_relevant) {
+        @NotNull Boolean nichtRelevant) {
 }
