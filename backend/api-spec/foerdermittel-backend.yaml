@@ -1575,17 +1575,33 @@ components:
     FoerderbereichUpdateDTO:
       required:
       - bezeichnung
+      - finanzausgleich
+      - jahresstatistik
+      - kindergarten
+      - nicht_relevant
       type: object
       properties:
         bezeichnung:
           maxLength: 200
           minLength: 1
           type: string
+        finanzausgleich:
+          type: boolean
+        jahresstatistik:
+          type: boolean
+        kindergarten:
+          type: boolean
+        nicht_relevant:
+          type: boolean
     FoerderbereichResponseDTO:
       required:
       - bezeichnung
       - fb
+      - finanzausgleich
       - id
+      - jahresstatistik
+      - kindergarten
+      - nicht_relevant
       type: object
       properties:
         id:
@@ -1595,6 +1611,14 @@ components:
           format: int32
         bezeichnung:
           type: string
+        finanzausgleich:
+          type: boolean
+        jahresstatistik:
+          type: boolean
+        kindergarten:
+          type: boolean
+        nicht_relevant:
+          type: boolean
     BenutzerhinweisUpdateDTO:
       required:
       - bedienung
@@ -1769,6 +1793,10 @@ components:
       required:
       - bezeichnung
       - fb
+      - finanzausgleich
+      - jahresstatistik
+      - kindergarten
+      - nicht_relevant
       type: object
       properties:
         fb:
@@ -1780,6 +1808,14 @@ components:
           maxLength: 200
           minLength: 1
           type: string
+        finanzausgleich:
+          type: boolean
+        jahresstatistik:
+          type: boolean
+        kindergarten:
+          type: boolean
+        nicht_relevant:
+          type: boolean
     BenutzerhinweisCreateDTO:
       required:
       - bedienung

@@ -98,7 +98,11 @@
     "foerderbereich": {
       "modelName": "Förderbereich | Förderbereiche",
       "fb": "Förderbereich",
-      "bezeichnung": "Bezeichnung"
+      "bezeichnung": "Bezeichnung",
+      "finanzausgleich": "Finanzausgleich",
+      "jahresstatistik": "Jahresstatistik",
+      "kindergarten": "Kindergarten",
+      "nichtRelevant": "Fb nicht relevant"
     },
     "krankenhaus": {
       "modelName": "Krankenhaus | Krankenhäuser",

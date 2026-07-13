@@ -26,6 +26,30 @@
             @is-valid="updateValidity"
           />
         </template>
+        <template #[`item.finanzausgleich`]="{ item }">
+          <v-icon
+            v-if="item.finanzausgleich"
+            :icon="mdiCheck"
+          />
+        </template>
+        <template #[`item.jahresstatistik`]="{ item }">
+          <v-icon
+            v-if="item.jahresstatistik"
+            :icon="mdiCheck"
+          />
+        </template>
+        <template #[`item.kindergarten`]="{ item }">
+          <v-icon
+            v-if="item.kindergarten"
+            :icon="mdiCheck"
+          />
+        </template>
+        <template #[`item.nichtRelevant`]="{ item }">
+          <v-icon
+            v-if="item.nichtRelevant"
+            :icon="mdiCheck"
+          />
+        </template>
       </crud-card>
     </template>
   </base-view>
@@ -35,6 +59,9 @@
 import type { FoerderbereichResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
+import {
+  mdiCheck,
+} from "@mdi/js";
 import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -65,7 +92,31 @@ const headers: DataTableHeader<Partial<FoerderbereichResponseDTO>>[] = [
     align: "center",
     width: 120,
   },
-  { title: t("model.foerderbereich.bezeichnung"), value: "bezeichnung" },
+  {
+    title: t("model.foerderbereich.bezeichnung"),
+    value: "bezeichnung",
+    width: 400,
+  },
+  {
+    title: t("model.foerderbereich.finanzausgleich"),
+    value: "finanzausgleich",
+    align: "center",
+  },
+  {
+    title: t("model.foerderbereich.jahresstatistik"),
+    value: "jahresstatistik",
+    align: "center",
+  },
+  {
+    title: t("model.foerderbereich.kindergarten"),
+    value: "kindergarten",
+    align: "center",
+  },
+  {
+    title: t("model.foerderbereich.nichtRelevant"),
+    value: "nichtRelevant",
+    align: "center",
+  },
 ];
 
 const EMPTY_ITEM_TEMPLATE: Partial<FoerderbereichResponseDTO> = {
@@ -86,9 +137,8 @@ const {
 } = useGetFoerderbereichFormContext();
 
 type FoerderbereichFormType = InstanceType<typeof FoerderbereichForm>;
-const foerderbereichFormRef = useTemplateRef<FoerderbereichFormType>(
-  "foerderbereichForm"
-);
+const foerderbereichFormRef =
+  useTemplateRef<FoerderbereichFormType>("foerderbereichForm");
 
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => foerderbereiche.value?.page?.totalPages),

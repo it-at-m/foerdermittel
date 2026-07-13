@@ -54,6 +54,10 @@ public class FoerderbereichService {
     public Foerderbereich updateFoerderbereich(final Foerderbereich foerderbereich, final BigDecimal foerderbereichId) {
         final Foerderbereich foundFoerderbereich = ServiceUtils.getEntityOrThrowNotFoundException(foerderbereichId, foerderbereichRepository);
         foundFoerderbereich.setBezeichnung(foerderbereich.getBezeichnung());
+        foundFoerderbereich.setFinanzausgleich(foerderbereich.getFinanzausgleich());
+        foundFoerderbereich.setJahresstatistik(foerderbereich.getJahresstatistik());
+        foundFoerderbereich.setKindergarten(foerderbereich.getKindergarten());
+        foundFoerderbereich.setNicht_relevant(foerderbereich.getNicht_relevant());
         log.debug("Update Foerderbereich {}", foundFoerderbereich);
         return foerderbereichRepository.update(foundFoerderbereich);
     }

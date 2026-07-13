@@ -36,6 +36,33 @@
         />
       </v-col>
     </v-row>
+    <v-row>
+      <v-col cols="3"> </v-col>
+        <v-col cols="2">
+          <fm-checkbox
+            v-model="modelValue.finanzausgleich"
+            label="Finanzausgleich"
+          />
+        </v-col>
+        <v-col cols="2">
+          <fm-checkbox
+            v-model="modelValue.jahresstatistik"
+            label="Jahresstatistik"
+          />
+        </v-col>
+        <v-col cols="2">
+          <fm-checkbox
+            v-model="modelValue.kindergarten"
+            label="Kindergarten"
+          />
+        </v-col>
+        <v-col cols="2">
+          <fm-checkbox
+            v-model="modelValue.nichtRelevant"
+            label="FB nicht relevant"
+          />
+        </v-col>
+      </v-row>
   </v-form>
 </template>
 
@@ -54,6 +81,7 @@ import { useRules } from "vuetify/labs/rules";
 import FmNumberInput from "@/components/common/FmNumberInput.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
+import FmCheckbox from "@/components/common/FmCheckbox.vue";
 
 const { t } = useI18n();
 
