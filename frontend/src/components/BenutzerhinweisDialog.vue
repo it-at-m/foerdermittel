@@ -7,7 +7,7 @@
       v-if="displayMode"
       :title="dialogTitle"
       :loading="loading"
-      :disable-confirm="!isFormValid"
+      :disable-confirm="!isFormValid || !isDirty"
       :hide-confirm="displayMode === InputDisplayMode.READ"
       @cancel="emit('close')"
       @confirm="emit('save', activeItem)"
@@ -45,10 +45,12 @@ const {
   benutzerhinweis,
   displayMode,
   loading = false,
+  isDirty = false,
 } = defineProps<{
   benutzerhinweis: Readonly<Partial<BenutzerhinweisResponseDTO>>;
   displayMode?: InputDisplayMode;
   loading?: boolean;
+  isDirty?: boolean;
 }>();
 const activeItem = ref<Partial<BenutzerhinweisResponseDTO>>({
   ...benutzerhinweis,
