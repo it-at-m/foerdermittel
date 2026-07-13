@@ -1,10 +1,8 @@
 package de.muenchen.oss.foerdermittel.backend.foerderbereich;
 
-import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
-import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichFormContext;
-import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichRepository;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
+import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -12,8 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
 
 @Service
 @Slf4j

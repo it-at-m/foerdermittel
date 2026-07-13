@@ -59,9 +59,7 @@
 import type { FoerderbereichResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import {
-  mdiCheck,
-} from "@mdi/js";
+import { mdiCheck } from "@mdi/js";
 import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 

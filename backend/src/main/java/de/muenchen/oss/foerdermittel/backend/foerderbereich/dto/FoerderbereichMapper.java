@@ -2,9 +2,6 @@ package de.muenchen.oss.foerdermittel.backend.foerderbereich.dto;
 
 import de.muenchen.oss.foerdermittel.backend.common.NumberMapper;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
-import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichCreateDTO;
-import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichResponseDTO;
-import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichUpdateDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

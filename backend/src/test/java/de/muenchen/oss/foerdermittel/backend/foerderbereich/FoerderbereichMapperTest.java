@@ -1,17 +1,15 @@
 package de.muenchen.oss.foerdermittel.backend.foerderbereich;
 
-import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichMapper;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichUpdateDTO;
+import java.math.BigDecimal;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-
-import java.math.BigDecimal;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class FoerderbereichMapperTest {
 
@@ -47,7 +45,7 @@ public class FoerderbereichMapperTest {
         @Test
         void givenCreateDTO_thenReturnsCorrectEntity() {
             // given
-            FoerderbereichCreateDTO dto = new FoerderbereichCreateDTO(1, "Test 1", false, true,false,true );
+            FoerderbereichCreateDTO dto = new FoerderbereichCreateDTO(1, "Test 1", false, true, false, true);
 
             // when
             Foerderbereich entity = foerderbereichMapper.toEntity(dto);
