@@ -1,11 +1,11 @@
 import type {
   CreateFoerderbereichRequest,
   DeleteFoerderbereichRequest,
+  FoerderbereichFormContext,
+  FoerderbereichResponseDTO,
   GetFoerderbereicheByPageableRequest,
   GetFoerderbereichRequest,
   PagedModelFoerderbereichResponseDTO,
-  FoerderbereichFormContext,
-  FoerderbereichResponseDTO,
   UpdateFoerderbereichRequest,
 } from "@/api/generated/foerdermittel-backend";
 
@@ -41,8 +41,8 @@ export function useGetFoerderbereiche() {
 export function useGetFoerderbereich() {
   const api = ApiFactory.getInstance(FoerderbereichControllerApi);
 
-  return useAPI<GetFoerderbereichRequest, FoerderbereichResponseDTO>(
-    (params) => api.getFoerderbereich(params)
+  return useAPI<GetFoerderbereichRequest, FoerderbereichResponseDTO>((params) =>
+    api.getFoerderbereich(params)
   );
 }
 
