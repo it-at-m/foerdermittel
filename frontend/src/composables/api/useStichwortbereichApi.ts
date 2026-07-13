@@ -3,9 +3,9 @@ import type {
   DeleteStichwortbereichRequest,
   GetStichwortbereicheByPageableRequest,
   GetStichwortbereichRequest,
+  PagedModelStichwortbereichResponseDTO,
   StichwortbereichFormContext,
   StichwortbereichResponseDTO,
-  PagedModelStichwortbereichResponseDTO,
   UpdateStichwortbereichRequest,
 } from "@/api/generated/foerdermittel-backend";
 
@@ -16,16 +16,16 @@ import useAPI from "@/composables/useAPI";
 export function useCreateStichwortbereich() {
   const api = ApiFactory.getInstance(StichwortbereichControllerApi);
 
-  return useAPI<CreateStichwortbereichRequest, StichwortbereichResponseDTO>((params) =>
-    api.createStichwortbereich(params)
+  return useAPI<CreateStichwortbereichRequest, StichwortbereichResponseDTO>(
+    (params) => api.createStichwortbereich(params)
   );
 }
 
 export function useUpdateStichwortbereich() {
   const api = ApiFactory.getInstance(StichwortbereichControllerApi);
 
-  return useAPI<UpdateStichwortbereichRequest, StichwortbereichResponseDTO>((params) =>
-    api.updateStichwortbereich(params)
+  return useAPI<UpdateStichwortbereichRequest, StichwortbereichResponseDTO>(
+    (params) => api.updateStichwortbereich(params)
   );
 }
 
@@ -41,8 +41,8 @@ export function useGetStichwortbereiche() {
 export function useGetStichwortbereich() {
   const api = ApiFactory.getInstance(StichwortbereichControllerApi);
 
-  return useAPI<GetStichwortbereichRequest, StichwortbereichResponseDTO>((params) =>
-    api.getStichwortbereich(params)
+  return useAPI<GetStichwortbereichRequest, StichwortbereichResponseDTO>(
+    (params) => api.getStichwortbereich(params)
   );
 }
 

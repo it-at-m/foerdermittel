@@ -63,7 +63,7 @@ const headers: DataTableHeader<Partial<StichwortbereichResponseDTO>>[] = [
     title: t("model.stichwortbereich.bereich"),
     value: "bereich",
     align: "center",
-    width: 100,
+    width: 200,
   },
   { title: t("model.stichwortbereich.bezeichnung"), value: "bezeichnung" },
 ];
@@ -86,15 +86,16 @@ const {
 } = useGetStichwortbereichFormContext();
 
 type StichwortbereichFormType = InstanceType<typeof StichwortbereichForm>;
-const stichwortbereichFormRef =
-  useTemplateRef<StichwortbereichFormType>("stichwortbereichForm");
+const stichwortbereichFormRef = useTemplateRef<StichwortbereichFormType>(
+  "stichwortbereichForm"
+);
 
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => stichwortbereiche.value?.page?.totalPages),
   getStichwortbereiche,
   isAdmin,
   getStichwortbereichFormContext,
-  () => StichwortbereichFormRef.value?.validate()
+  () => stichwortbereichFormRef.value?.validate()
 );
 
 const {
