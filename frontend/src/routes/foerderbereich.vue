@@ -145,6 +145,7 @@ const foerderbereichFormRef =
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => foerderbereiche.value?.page?.totalPages),
   getFoerderbereiche,
+  isAdmin,
   getFoerderbereichFormContext,
   () => foerderbereichFormRef.value?.validate()
 );
