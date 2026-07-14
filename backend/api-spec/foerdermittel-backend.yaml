@@ -313,6 +313,66 @@ paths:
           description: OK
       security:
       - bearerAuth: []
+  /kurzbezeichnungen/{id}:
+    get:
+      tags:
+      - kurzbezeichnung-controller
+      operationId: getKurzbezeichnung
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KurzbezeichnungResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - kurzbezeichnung-controller
+      operationId: updateKurzbezeichnung
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KurzbezeichnungUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KurzbezeichnungResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - kurzbezeichnung-controller
+      operationId: deleteKurzbezeichnung
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /krankenhaeuser/{id}:
     get:
       tags:
@@ -903,6 +963,67 @@ paths:
                 $ref: "#/components/schemas/PublikationResponseDTO"
       security:
       - bearerAuth: []
+  /kurzbezeichnungen:
+    get:
+      tags:
+      - kurzbezeichnung-controller
+      operationId: getKurzbezeichnungenByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "kurzbez,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelKurzbezeichnungResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - kurzbezeichnung-controller
+      operationId: createKurzbezeichnung
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KurzbezeichnungCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KurzbezeichnungResponseDTO"
+      security:
+      - bearerAuth: []
   /krankenhaeuser:
     get:
       tags:
@@ -1237,6 +1358,20 @@ paths:
                 $ref: "#/components/schemas/PublikationFormContext"
       security:
       - bearerAuth: []
+  /kurzbezeichnungen/form-context:
+    get:
+      tags:
+      - kurzbezeichnung-controller
+      operationId: getKurzbezeichnungFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KurzbezeichnungFormContext"
+      security:
+      - bearerAuth: []
   /krankenhaeuser/form-context:
     get:
       tags:
@@ -1550,6 +1685,28 @@ components:
           type: string
         bezeichnung:
           type: string
+    KurzbezeichnungUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    KurzbezeichnungResponseDTO:
+      required:
+      - bezeichnung
+      - id
+      - kurzbez
+      type: object
+      properties:
+        id:
+          type: string
+        kurzbez:
+          type: string
+        bezeichnung:
+          type: string
     KrankenhausUpdateDTO:
       required:
       - bezeichnung
@@ -1774,6 +1931,21 @@ components:
           maxLength: 200
           minLength: 1
           type: string
+    KurzbezeichnungCreateDTO:
+      required:
+      - bezeichnung
+      - kurzbez
+      type: object
+      properties:
+        kurzbez:
+          maxLength: 3
+          minLength: 1
+          pattern: "^[A-Z0-9]{1,3}$"
+          type: string
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
     KrankenhausCreateDTO:
       required:
       - bezeichnung
@@ -1972,6 +2144,24 @@ components:
       type: object
       properties:
         kurzformen:
+          type: array
+          items:
+            type: string
+    PagedModelKurzbezeichnungResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/KurzbezeichnungResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    KurzbezeichnungFormContext:
+      required:
+      - kurzbezeichnungen
+      type: object
+      properties:
+        kurzbezeichnungen:
           type: array
           items:
             type: string
