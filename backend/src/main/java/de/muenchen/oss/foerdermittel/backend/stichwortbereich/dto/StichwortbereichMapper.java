@@ -8,12 +8,12 @@ import org.mapstruct.Mapping;
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public interface StichwortbereichMapper {
 
-    @Mapping(source="bereich", target = "id")
-    @Mapping(source="bereich", target = "bereich")
+    @Mapping(source = "bereich", target = "id")
+    @Mapping(source = "bereich", target = "bereich")
     StichwortbereichResponseDTO toDTO(Stichwortbereich stichwortbereich);
 
     Stichwortbereich toEntity(StichwortbereichCreateDTO stichwortbereichCreateDTO);
 
-    @Mapping(target="bereich", ignore = true)
+    @Mapping(target = "bereich", ignore = true)
     Stichwortbereich toEntity(StichwortbereichUpdateDTO stichwortbereichUpdateDTO);
 }
