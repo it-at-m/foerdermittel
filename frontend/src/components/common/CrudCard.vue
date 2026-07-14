@@ -102,12 +102,6 @@
               @click="openDelete(item)"
             />
           </template>
-          <template #[`item.finanzausgleich`]="{ item }">
-            <slot
-              name="checkbox"
-              :item="item"
-            />
-          </template>
           <!-- Slot for rendering the expansion panel -->
           <template
             v-if="expandable"
@@ -122,8 +116,6 @@
               />
             </div>
           </template>
-          <!-- Checkbox -->
-
           <!-- Allow custom slots for other table columns -->
           <template
             v-for="(_, slotName) in $slots"

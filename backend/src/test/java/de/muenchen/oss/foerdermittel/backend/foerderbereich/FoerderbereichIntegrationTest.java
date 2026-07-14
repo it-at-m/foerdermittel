@@ -189,6 +189,10 @@ class FoerderbereichIntegrationTest {
             assertThat(entity).isPresent();
             assertThat(entity.get().getFb().intValue()).isEqualTo(requestDTO.fb());
             assertThat(entity.get().getBezeichnung()).isEqualTo(requestDTO.bezeichnung());
+            assertThat(entity.get().getFinanzausgleich()).isEqualTo(requestDTO.finanzausgleich());
+            assertThat(entity.get().getJahresstatistik()).isEqualTo(requestDTO.jahresstatistik());
+            assertThat(entity.get().getKindergarten()).isEqualTo(requestDTO.kindergarten());
+            assertThat(entity.get().getNichtRelevant()).isEqualTo(requestDTO.nichtRelevant());
         }
 
         @Test
@@ -287,6 +291,10 @@ class FoerderbereichIntegrationTest {
                         assertNotNull(theEntityResponseDTO);
                         assertThat(theEntityResponseDTO.id()).isEqualTo(String.valueOf(EXISTING_ID));
                         assertThat(theEntityResponseDTO.bezeichnung()).isEqualTo(requestDTO.bezeichnung());
+                        assertThat(theEntityResponseDTO.finanzausgleich()).isEqualTo(requestDTO.finanzausgleich());
+                        assertThat(theEntityResponseDTO.jahresstatistik()).isEqualTo(requestDTO.jahresstatistik());
+                        assertThat(theEntityResponseDTO.kindergarten()).isEqualTo(requestDTO.kindergarten());
+                        assertThat(theEntityResponseDTO.nichtRelevant()).isEqualTo(requestDTO.nichtRelevant());
                     })
                     .returnResult()
                     .getResponseBody();
@@ -295,6 +303,10 @@ class FoerderbereichIntegrationTest {
             final Optional<Foerderbereich> entity = foerderbereichRepository.findById(BigDecimal.valueOf(EXISTING_ID));
             assertThat(entity).isPresent();
             assertThat(entity.get().getBezeichnung()).isEqualTo(requestDTO.bezeichnung());
+            assertThat(entity.get().getFinanzausgleich()).isEqualTo(requestDTO.finanzausgleich());
+            assertThat(entity.get().getJahresstatistik()).isEqualTo(requestDTO.jahresstatistik());
+            assertThat(entity.get().getKindergarten()).isEqualTo(requestDTO.kindergarten());
+            assertThat(entity.get().getNichtRelevant()).isEqualTo(requestDTO.nichtRelevant());
         }
 
         @Test
@@ -313,11 +325,26 @@ class FoerderbereichIntegrationTest {
         private static Stream<Arguments> invalidInputRequests() {
             return Stream.of(
                     arguments(
+                            "foerderbereich too low",
+                            new FoerderbereichCreateDTO(-1, "Test", true, false, true, false)),
+                    arguments(
+                            "foerderbereich missing",
+                            new FoerderbereichCreateDTO(null, "Test", true, false, true, false)),
+                    arguments(
+                            "bezeichnung missing",
+                            new FoerderbereichCreateDTO(2, null, true, false, true, false)),
+                    arguments(
+                            "finanzausgleich missing",
+                            new FoerderbereichCreateDTO(2, "Test", null, false, true, false)),
+                    arguments(
+                            "foerderbereich too high",
+                            new FoerderbereichCreateDTO(100, "Test", true, false, true, false)),
+                    arguments(
                             "bezeichnung too short",
-                            new FoerderbereichUpdateDTO("", true, false, true, false)),
+                            new FoerderbereichCreateDTO(2, "", true, false, true, false)),
                     arguments(
                             "bezeichnung too long",
-                            new FoerderbereichUpdateDTO("a".repeat(201), true, false, true, false)));
+                            new FoerderbereichCreateDTO(2, "a".repeat(201), true, false, true, false)));
         }
 
         @ParameterizedTest(name = "{0}")

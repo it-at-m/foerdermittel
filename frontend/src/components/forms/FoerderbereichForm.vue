@@ -37,28 +37,34 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="3"> </v-col>
-      <v-col cols="2">
+      <v-col
+        cols="2"
+        offset="3"
+      >
         <fm-checkbox
           v-model="modelValue.finanzausgleich"
+          :display-mode="displayMode"
           :label="t('model.foerderbereich.finanzausgleich')"
         />
       </v-col>
       <v-col cols="2">
         <fm-checkbox
           v-model="modelValue.jahresstatistik"
+          :display-mode="displayMode"
           :label="t('model.foerderbereich.jahresstatistik')"
         />
       </v-col>
       <v-col cols="2">
         <fm-checkbox
           v-model="modelValue.kindergarten"
+          :display-mode="displayMode"
           :label="t('model.foerderbereich.kindergarten')"
         />
       </v-col>
       <v-col cols="2">
         <fm-checkbox
           v-model="modelValue.nichtRelevant"
+          :display-mode="displayMode"
           :label="t('model.foerderbereich.nichtRelevant')"
         />
       </v-col>
