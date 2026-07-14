@@ -326,25 +326,25 @@ class FoerderbereichIntegrationTest {
             return Stream.of(
                     arguments(
                             "foerderbereich too low",
-                            new FoerderbereichCreateDTO(-1, "Test", true, false, true, false)),
+                            new FoerderbereichUpdateDTO( "Test", true, false, true, false)),
                     arguments(
                             "foerderbereich missing",
-                            new FoerderbereichCreateDTO(null, "Test", true, false, true, false)),
+                            new FoerderbereichUpdateDTO( "Test", true, false, true, false)),
                     arguments(
                             "bezeichnung missing",
-                            new FoerderbereichCreateDTO(2, null, true, false, true, false)),
+                            new FoerderbereichUpdateDTO( null, true, false, true, false)),
                     arguments(
                             "finanzausgleich missing",
-                            new FoerderbereichCreateDTO(2, "Test", null, false, true, false)),
+                            new FoerderbereichUpdateDTO( "Test", null, false, true, false)),
                     arguments(
                             "foerderbereich too high",
-                            new FoerderbereichCreateDTO(100, "Test", true, false, true, false)),
+                            new FoerderbereichUpdateDTO( "Test", true, false, true, false)),
                     arguments(
                             "bezeichnung too short",
-                            new FoerderbereichCreateDTO(2, "", true, false, true, false)),
+                            new FoerderbereichUpdateDTO( "", true, false, true, false)),
                     arguments(
                             "bezeichnung too long",
-                            new FoerderbereichCreateDTO(2, "a".repeat(201), true, false, true, false)));
+                            new FoerderbereichUpdateDTO( "a".repeat(201), true, false, true, false)));
         }
 
         @ParameterizedTest(name = "{0}")
