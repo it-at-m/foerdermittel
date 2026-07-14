@@ -16,7 +16,7 @@
           :rules="[
             rules.required(),
             rules.maxLength(30),
-            rules.pattern(/^[A-Z]+$/),
+            rules.pattern(/^[A-Z0-9\\-]+$/),
             rules['unique']!(
               stichwortbereichFormContext.bereiche,
               currentBereich

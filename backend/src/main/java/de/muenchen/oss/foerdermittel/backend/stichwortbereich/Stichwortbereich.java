@@ -33,7 +33,7 @@ public class Stichwortbereich implements Serializable {
 
     @Column(nullable = false)
     @Id
-    @NotNull @Size(min = 1, max = 30) @Pattern(regexp = "^[A-Z]+$") private String bereich;
+    @NotNull @Size(min = 1, max = 30) @Pattern(regexp = "^[A-Z0-9\\-]+$") private String bereich;
 
     @Column(nullable = false)
     @NotNull @Size(min = 1, max = 200) private String bezeichnung;
