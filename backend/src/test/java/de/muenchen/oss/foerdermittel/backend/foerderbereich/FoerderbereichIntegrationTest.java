@@ -326,19 +326,19 @@ class FoerderbereichIntegrationTest {
             return Stream.of(
                     arguments(
                             "bezeichnung missing",
-                            new FoerderbereichUpdateDTO( null, true, false, true, false)),
+                            new FoerderbereichUpdateDTO(null, true, false, true, false)),
                     arguments(
                             "finanzausgleich missing",
-                            new FoerderbereichUpdateDTO( "Test", null, false, true, false)),
+                            new FoerderbereichUpdateDTO("Test", null, false, true, false)),
                     arguments(
                             "jahresstatistik missing",
-                            new FoerderbereichUpdateDTO( "Test", true, null, true, false)),
+                            new FoerderbereichUpdateDTO("Test", true, null, true, false)),
                     arguments(
                             "bezeichnung too short",
-                            new FoerderbereichUpdateDTO( "", true, false, true, false)),
+                            new FoerderbereichUpdateDTO("", true, false, true, false)),
                     arguments(
                             "bezeichnung too long",
-                            new FoerderbereichUpdateDTO( "a".repeat(201), true, false, true, false)));
+                            new FoerderbereichUpdateDTO("a".repeat(201), true, false, true, false)));
         }
 
         @ParameterizedTest(name = "{0}")
