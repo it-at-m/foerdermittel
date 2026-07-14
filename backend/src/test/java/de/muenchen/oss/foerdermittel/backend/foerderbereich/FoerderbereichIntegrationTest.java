@@ -325,20 +325,14 @@ class FoerderbereichIntegrationTest {
         private static Stream<Arguments> invalidInputRequests() {
             return Stream.of(
                     arguments(
-                            "foerderbereich too low",
-                            new FoerderbereichUpdateDTO( "Test", true, false, true, false)),
-                    arguments(
-                            "foerderbereich missing",
-                            new FoerderbereichUpdateDTO( "Test", true, false, true, false)),
-                    arguments(
                             "bezeichnung missing",
                             new FoerderbereichUpdateDTO( null, true, false, true, false)),
                     arguments(
                             "finanzausgleich missing",
                             new FoerderbereichUpdateDTO( "Test", null, false, true, false)),
                     arguments(
-                            "foerderbereich too high",
-                            new FoerderbereichUpdateDTO( "Test", true, false, true, false)),
+                            "jahresstatistik missing",
+                            new FoerderbereichUpdateDTO( "Test", true, null, true, false)),
                     arguments(
                             "bezeichnung too short",
                             new FoerderbereichUpdateDTO( "", true, false, true, false)),
