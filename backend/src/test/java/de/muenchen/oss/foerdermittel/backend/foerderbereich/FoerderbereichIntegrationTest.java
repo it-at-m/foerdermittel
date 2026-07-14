@@ -223,6 +223,15 @@ class FoerderbereichIntegrationTest {
                             "finanzausgleich missing",
                             new FoerderbereichCreateDTO(2, "Test", null, false, true, false)),
                     arguments(
+                            "jahresstatistik missing",
+                            new FoerderbereichCreateDTO(2, "Test", true, null, true, false)),
+                    arguments(
+                            "kindergarten missing",
+                            new FoerderbereichCreateDTO(2, "Test", true, false, null, false)),
+                    arguments(
+                            "nichtRelevant missing",
+                            new FoerderbereichCreateDTO(2, "Test", true, false, true, null)),
+                    arguments(
                             "foerderbereich too high",
                             new FoerderbereichCreateDTO(100, "Test", true, false, true, false)),
                     arguments(
@@ -333,6 +342,12 @@ class FoerderbereichIntegrationTest {
                     arguments(
                             "jahresstatistik missing",
                             new FoerderbereichUpdateDTO("Test", true, null, true, false)),
+                    arguments(
+                            "kindergarten missing",
+                            new FoerderbereichUpdateDTO("Test", true, false, null, false)),
+                    arguments(
+                            "nichtRelevant missing",
+                            new FoerderbereichUpdateDTO("Test", true, false, true, null)),
                     arguments(
                             "bezeichnung too short",
                             new FoerderbereichUpdateDTO("", true, false, true, false)),
