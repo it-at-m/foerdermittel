@@ -73,6 +73,66 @@ paths:
           description: OK
       security:
       - bearerAuth: []
+  /stadtbezirkslisteen/{id}:
+    get:
+      tags:
+      - stadtbezirksliste-controller
+      operationId: getStadtbezirksliste
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkslisteResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - stadtbezirksliste-controller
+      operationId: updateStadtbezirksliste
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StadtbezirkslisteUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkslisteResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - stadtbezirksliste-controller
+      operationId: deleteStadtbezirksliste
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /stadtbezirke/{id}:
     get:
       tags:
@@ -302,6 +362,66 @@ paths:
       tags:
       - publikation-controller
       operationId: deletePublikation
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /listennameen/{id}:
+    get:
+      tags:
+      - listenname-controller
+      operationId: getListenname
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListennameResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - listenname-controller
+      operationId: updateListenname
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListennameUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListennameResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - listenname-controller
+      operationId: deleteListenname
       parameters:
       - name: id
         in: path
@@ -599,6 +719,67 @@ paths:
                 $ref: "#/components/schemas/TraegerResponseDTO"
       security:
       - bearerAuth: []
+  /stadtbezirkslisteen:
+    get:
+      tags:
+      - stadtbezirksliste-controller
+      operationId: getStadtbezirkslistenByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "lnaKurzbez,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelStadtbezirkslisteResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - stadtbezirksliste-controller
+      operationId: createStadtbezirksliste
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StadtbezirkslisteCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkslisteResponseDTO"
+      security:
+      - bearerAuth: []
   /stadtbezirke:
     get:
       tags:
@@ -843,6 +1024,67 @@ paths:
                 $ref: "#/components/schemas/PublikationResponseDTO"
       security:
       - bearerAuth: []
+  /listennameen:
+    get:
+      tags:
+      - listenname-controller
+      operationId: getListennamenByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "kurzbez,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelListennameResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - listenname-controller
+      operationId: createListenname
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListennameCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListennameResponseDTO"
+      security:
+      - bearerAuth: []
   /krankenhaeuser:
     get:
       tags:
@@ -1060,6 +1302,20 @@ paths:
                 $ref: "#/components/schemas/TraegerFormContext"
       security:
       - bearerAuth: []
+  /stadtbezirkslisteen/form-context:
+    get:
+      tags:
+      - stadtbezirksliste-controller
+      operationId: getStadtbezirkslisteFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkslisteFormContext"
+      security:
+      - bearerAuth: []
   /stadtbezirke/form-context:
     get:
       tags:
@@ -1114,6 +1370,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PublikationFormContext"
+      security:
+      - bearerAuth: []
+  /listennameen/form-context:
+    get:
+      tags:
+      - listenname-controller
+      operationId: getListennameFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListennameFormContext"
       security:
       - bearerAuth: []
   /krankenhaeuser/form-context:
@@ -1324,6 +1594,31 @@ components:
           format: int32
         bezeichnung:
           type: string
+    StadtbezirkslisteUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    StadtbezirkslisteResponseDTO:
+      required:
+      - bezStadtbezirk
+      - bezeichnung
+      - id
+      - lnaKurzbez
+      type: object
+      properties:
+        id:
+          type: string
+        lnaKurzbez:
+          type: string
+        bezStadtbezirk:
+          type: number
+        bezeichnung:
+          type: string
     StadtbezirkUpdateDTO:
       required:
       - bezeichnung
@@ -1412,6 +1707,28 @@ components:
         id:
           type: string
         kurzform:
+          type: string
+        bezeichnung:
+          type: string
+    ListennameUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    ListennameResponseDTO:
+      required:
+      - bezeichnung
+      - id
+      - kurzbez
+      type: object
+      properties:
+        id:
+          type: string
+        kurzbez:
           type: string
         bezeichnung:
           type: string
@@ -1532,6 +1849,26 @@ components:
           maxLength: 200
           minLength: 1
           type: string
+    StadtbezirkslisteCreateDTO:
+      required:
+      - bezStadtbezirk
+      - bezeichnung
+      - lnaKurzbez
+      type: object
+      properties:
+        lnaKurzbez:
+          maxLength: 3
+          minLength: 1
+          pattern: "^[A-Z0-9]+$"
+          type: string
+        bezStadtbezirk:
+          maximum: 99
+          minimum: 0
+          type: number
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
     StadtbezirkCreateDTO:
       required:
       - bezeichnung
@@ -1585,6 +1922,21 @@ components:
       properties:
         kurzform:
           maxLength: 1
+          minLength: 1
+          pattern: "^[A-Z0-9]+$"
+          type: string
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    ListennameCreateDTO:
+      required:
+      - bezeichnung
+      - kurzbez
+      type: object
+      properties:
+        kurzbez:
+          maxLength: 3
           minLength: 1
           pattern: "^[A-Z0-9]+$"
           type: string
@@ -1694,6 +2046,24 @@ components:
           type: array
           items:
             type: number
+    PagedModelStadtbezirkslisteResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkslisteResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    StadtbezirkslisteFormContext:
+      required:
+      - stadtbezirkslisten
+      type: object
+      properties:
+        stadtbezirkslisten:
+          type: array
+          items:
+            type: string
     PagedModelStadtbezirkResponseDTO:
       type: object
       properties:
@@ -1763,6 +2133,24 @@ components:
       type: object
       properties:
         kurzformen:
+          type: array
+          items:
+            type: string
+    PagedModelListennameResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListennameResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    ListennameFormContext:
+      required:
+      - listennamen
+      type: object
+      properties:
+        listennamen:
           type: array
           items:
             type: string

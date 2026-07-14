@@ -11,13 +11,13 @@ import org.mapstruct.Mapping;
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public interface StadtbezirkslisteMapper {
 
-    @Mapping(source = "lna_kurzbez", target = "id")
-    @Mapping(source = "lna_kurzbez", target = "lna_kurzbez")
+    @Mapping(source = "lnaKurzbez", target = "id")
+    @Mapping(source = "lnaKurzbez", target = "lnaKurzbez")
     StadtbezirkslisteResponseDTO toDTO(Stadtbezirksliste stadtbezirksliste);
 
     Stadtbezirksliste toEntity(StadtbezirkslisteCreateDTO stadtbezirkslisteCreateDTO);
 
-    @Mapping(target = "lna_kurzbez", ignore = true)
+    @Mapping(target = "lnaKurzbez", ignore = true)
     Stadtbezirksliste toEntity(StadtbezirkslisteUpdateDTO stadtbezirkslisteUpdateDTO);
 
 }

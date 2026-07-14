@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.stadtbezirksliste;
+package de.muenchen.oss.foerdermittel.backend.listenname;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,7 +14,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * This class represents a Stadtbezirksliste.
+ * This class represents a Listenname.
  * <p>
  * The entity's attributes are mapped to the corresponding database columns.
  * </p>
@@ -23,8 +23,8 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "stadtbezirkslisten")
-public class Stadtbezirksliste implements Serializable {
+@Table(name = "listennamen")
+public class Listenname implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -33,12 +33,9 @@ public class Stadtbezirksliste implements Serializable {
     // Variables //
     // ========= //
 
-    @Column(name = "lna_kurzbez", nullable = false)
+    @Column(nullable = false)
     @Id
-    @NotNull @Size(min = 1, max = 3) @Pattern(regexp = "^[A-Z0-9]{1,3}$") private String lnaKurzbez;
-
-    @Column(name = "bez_stadtbezirk")
-    @NotNull @Min(0) @Max(99) private BigDecimal bezStadtbezirk;
+    @NotNull @Size(min = 1, max = 3) @Pattern(regexp = "^[A-Z0-9]{1,3}$") private String kurzbez;
 
     @Column(nullable = false)
     @NotNull @Size(min = 1, max = 200) private String bezeichnung;

@@ -42,7 +42,7 @@ public class StadtbezirkslisteController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<StadtbezirkslisteResponseDTO> getStadtbezirkslistenByPageable(@ParameterObject @PageableDefault(
-            sort = "stadtbezirksliste"
+            sort = "lnaKurzbez"
     ) final Pageable pageable) {
         final Page<Stadtbezirksliste> pageWithStadtbezirksliste = stadtbezirkslisteService.getAllStadtbezirkslisten(pageable);
         final List<StadtbezirkslisteResponseDTO> stadtbezirkslisteResponseDTOList = pageWithStadtbezirksliste.getContent().stream()

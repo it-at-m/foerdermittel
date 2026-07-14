@@ -4,5 +4,5 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
-public record StadtbezirkslisteResponseDTO(@NotNull String id, @NotNull String lna_kurzbez, @NotNull BigDecimal bez_stadtbezirk, @NotNull String bezeichnung) {
+public record StadtbezirkslisteResponseDTO(@NotNull String id, @NotNull String lnaKurzbez, @NotNull BigDecimal bezStadtbezirk, @NotNull String bezeichnung) {
 }
