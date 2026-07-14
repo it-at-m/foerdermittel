@@ -1,0 +1,2215 @@
+openapi: 3.0.1
+info:
+  title: foerdermittel-backend
+  description: Backend component for the application foerdermittel
+  version: 0.0.1-SNAPSHOT
+servers:
+- url: http://localhost:8086
+  description: Generated server url
+tags:
+- name: Actuator
+  description: Monitor and interact
+  externalDocs:
+    description: Spring Boot Actuator Web API Documentation
+    url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
+paths:
+  /traeger/{id}:
+    get:
+      tags:
+      - traeger-controller
+      operationId: getTraeger
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TraegerResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - traeger-controller
+      operationId: updateTraeger
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TraegerUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TraegerResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - traeger-controller
+      operationId: deleteTraeger
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /stichwortbereiche/{id}:
+    get:
+      tags:
+      - stichwortbereich-controller
+      operationId: getStichwortbereich
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StichwortbereichResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - stichwortbereich-controller
+      operationId: updateStichwortbereich
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StichwortbereichUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StichwortbereichResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - stichwortbereich-controller
+      operationId: deleteStichwortbereich
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /stadtbezirke/{id}:
+    get:
+      tags:
+      - stadtbezirk-controller
+      operationId: getStadtbezirk
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - stadtbezirk-controller
+      operationId: updateStadtbezirk
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StadtbezirkUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - stadtbezirk-controller
+      operationId: deleteStadtbezirk
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /siedlungsgebiete/{id}:
+    get:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: getSiedlungsgebiet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: updateSiedlungsgebiet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SiedlungsgebietUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: deleteSiedlungsgebiet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /referate/{id}:
+    get:
+      tags:
+      - referat-controller
+      operationId: getReferat
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReferatResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - referat-controller
+      operationId: updateReferat
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReferatUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReferatResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - referat-controller
+      operationId: deleteReferat
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /publikationen/{id}:
+    get:
+      tags:
+      - publikation-controller
+      operationId: getPublikation
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublikationResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - publikation-controller
+      operationId: updatePublikation
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PublikationUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublikationResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - publikation-controller
+      operationId: deletePublikation
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /kurzbezeichnungen/{id}:
+    get:
+      tags:
+      - kurzbezeichnung-controller
+      operationId: getKurzbezeichnung
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KurzbezeichnungResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - kurzbezeichnung-controller
+      operationId: updateKurzbezeichnung
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KurzbezeichnungUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KurzbezeichnungResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - kurzbezeichnung-controller
+      operationId: deleteKurzbezeichnung
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /krankenhaeuser/{id}:
+    get:
+      tags:
+      - krankenhaus-controller
+      operationId: getKrankenhaus
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KrankenhausResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - krankenhaus-controller
+      operationId: updateKrankenhaus
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KrankenhausUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KrankenhausResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - krankenhaus-controller
+      operationId: deleteKrankenhaus
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /benutzerhinweise/{id}:
+    get:
+      tags:
+      - benutzerhinweis-controller
+      operationId: getBenutzerhinweis
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BenutzerhinweisResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - benutzerhinweis-controller
+      operationId: updateBenutzerhinweis
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BenutzerhinweisUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BenutzerhinweisResponseDTO"
+      security:
+      - bearerAuth: []
+  /bauprogramme/{id}:
+    get:
+      tags:
+      - bauprogramm-controller
+      operationId: getBauprogramm
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauprogrammResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - bauprogramm-controller
+      operationId: updateBauprogramm
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BauprogrammUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauprogrammResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - bauprogramm-controller
+      operationId: deleteBauprogramm
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /bauleitungen/{id}:
+    get:
+      tags:
+      - bauleitung-controller
+      operationId: getBauleitung
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauleitungResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - bauleitung-controller
+      operationId: updateBauleitung
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BauleitungUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauleitungResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - bauleitung-controller
+      operationId: deleteBauleitung
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /traeger:
+    get:
+      tags:
+      - traeger-controller
+      operationId: getTraegerByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "kurzform,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelTraegerResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - traeger-controller
+      operationId: createTraeger
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TraegerCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TraegerResponseDTO"
+      security:
+      - bearerAuth: []
+  /stichwortbereiche:
+    get:
+      tags:
+      - stichwortbereich-controller
+      operationId: getStichwortbereicheByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "bereich,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelStichwortbereichResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - stichwortbereich-controller
+      operationId: createStichwortbereich
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StichwortbereichCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StichwortbereichResponseDTO"
+      security:
+      - bearerAuth: []
+  /stadtbezirke:
+    get:
+      tags:
+      - stadtbezirk-controller
+      operationId: getStadtbezirkeByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "stadtbezirk,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelStadtbezirkResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - stadtbezirk-controller
+      operationId: createStadtbezirk
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StadtbezirkCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkResponseDTO"
+      security:
+      - bearerAuth: []
+  /siedlungsgebiete:
+    get:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: getSiedlungsgebieteByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "siedlungsgebiet,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelSiedlungsgebietResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: createSiedlungsgebiet
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SiedlungsgebietCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+      security:
+      - bearerAuth: []
+  /referate:
+    get:
+      tags:
+      - referat-controller
+      operationId: getReferateByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "refnr,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelReferatResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - referat-controller
+      operationId: createReferat
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReferatCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReferatResponseDTO"
+      security:
+      - bearerAuth: []
+  /publikationen:
+    get:
+      tags:
+      - publikation-controller
+      operationId: getPublikationenByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "kurzform,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelPublikationResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - publikation-controller
+      operationId: createPublikation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PublikationCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublikationResponseDTO"
+      security:
+      - bearerAuth: []
+  /kurzbezeichnungen:
+    get:
+      tags:
+      - kurzbezeichnung-controller
+      operationId: getKurzbezeichnungenByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "kurzbez,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelKurzbezeichnungResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - kurzbezeichnung-controller
+      operationId: createKurzbezeichnung
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KurzbezeichnungCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KurzbezeichnungResponseDTO"
+      security:
+      - bearerAuth: []
+  /krankenhaeuser:
+    get:
+      tags:
+      - krankenhaus-controller
+      operationId: getKrankenhaeuserByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "krhname,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelKrankenhausResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - krankenhaus-controller
+      operationId: createKrankenhaus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KrankenhausCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KrankenhausResponseDTO"
+      security:
+      - bearerAuth: []
+  /benutzerhinweise:
+    post:
+      tags:
+      - benutzerhinweis-controller
+      operationId: createBenutzerhinweis
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BenutzerhinweisCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BenutzerhinweisResponseDTO"
+      security:
+      - bearerAuth: []
+  /bauprogramme:
+    get:
+      tags:
+      - bauprogramm-controller
+      operationId: getBauprogrammeByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "bauprogramm,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelBauprogrammResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - bauprogramm-controller
+      operationId: createBauprogramm
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BauprogrammCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauprogrammResponseDTO"
+      security:
+      - bearerAuth: []
+  /bauleitungen:
+    get:
+      tags:
+      - bauleitung-controller
+      operationId: getBauleitungenByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "bauleitung,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelBauleitungResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - bauleitung-controller
+      operationId: createBauleitung
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BauleitungCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauleitungResponseDTO"
+      security:
+      - bearerAuth: []
+  /traeger/form-context:
+    get:
+      tags:
+      - traeger-controller
+      operationId: getTraegerFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TraegerFormContext"
+      security:
+      - bearerAuth: []
+  /stichwortbereiche/form-context:
+    get:
+      tags:
+      - stichwortbereich-controller
+      operationId: getStichwortbereichFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StichwortbereichFormContext"
+      security:
+      - bearerAuth: []
+  /stadtbezirke/form-context:
+    get:
+      tags:
+      - stadtbezirk-controller
+      operationId: getStadtbezirkFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkFormContext"
+      security:
+      - bearerAuth: []
+  /siedlungsgebiete/form-context:
+    get:
+      tags:
+      - siedlungsgebiet-controller
+      operationId: getSiedlungsgebietFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiedlungsgebietFormContext"
+      security:
+      - bearerAuth: []
+  /referate/form-context:
+    get:
+      tags:
+      - referat-controller
+      operationId: getReferatFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReferatFormContext"
+      security:
+      - bearerAuth: []
+  /publikationen/form-context:
+    get:
+      tags:
+      - publikation-controller
+      operationId: getPublikationFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublikationFormContext"
+      security:
+      - bearerAuth: []
+  /kurzbezeichnungen/form-context:
+    get:
+      tags:
+      - kurzbezeichnung-controller
+      operationId: getKurzbezeichnungFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KurzbezeichnungFormContext"
+      security:
+      - bearerAuth: []
+  /krankenhaeuser/form-context:
+    get:
+      tags:
+      - krankenhaus-controller
+      operationId: getKrankenhausFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KrankenhausFormContext"
+      security:
+      - bearerAuth: []
+  /bauprogramme/form-context:
+    get:
+      tags:
+      - bauprogramm-controller
+      operationId: getBauprogrammFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauprogrammFormContext"
+      security:
+      - bearerAuth: []
+  /bauleitungen/form-context:
+    get:
+      tags:
+      - bauleitung-controller
+      operationId: getBauleitungFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BauleitungFormContext"
+      security:
+      - bearerAuth: []
+  /actuator:
+    get:
+      tags:
+      - Actuator
+      summary: Actuator root web endpoint
+      operationId: links
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/Link"
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/Link"
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/Link"
+  /actuator/sbom:
+    get:
+      tags:
+      - Actuator
+      summary: Actuator web endpoint 'sbom'
+      operationId: sboms
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+  /actuator/sbom/{id}:
+    get:
+      tags:
+      - Actuator
+      summary: Actuator web endpoint 'sbom-id'
+      operationId: sbom
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                type: object
+        "404":
+          description: Not Found
+  /actuator/metrics:
+    get:
+      tags:
+      - Actuator
+      summary: Actuator web endpoint 'prometheus'
+      operationId: scrape
+      parameters:
+      - name: format
+        in: query
+        schema:
+          type: string
+          enum:
+          - CONTENT_TYPE_004
+          - CONTENT_TYPE_OPENMETRICS_100
+          - CONTENT_TYPE_PROTOBUF
+      - name: includedNames
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain;version=0.0.4;charset=utf-8:
+              schema:
+                type: object
+            application/openmetrics-text;version=1.0.0;charset=utf-8:
+              schema:
+                type: object
+            application/vnd.google.protobuf;proto=io.prometheus.client.MetricFamily;encoding=delimited:
+              schema:
+                type: object
+  /actuator/info:
+    get:
+      tags:
+      - Actuator
+      summary: Actuator web endpoint 'info'
+      operationId: info
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+  /actuator/health:
+    get:
+      tags:
+      - Actuator
+      summary: Actuator web endpoint 'health'
+      operationId: health
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+components:
+  schemas:
+    TraegerUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    TraegerResponseDTO:
+      required:
+      - bezeichnung
+      - id
+      - kurzform
+      type: object
+      properties:
+        id:
+          type: string
+        kurzform:
+          type: integer
+          format: int32
+        bezeichnung:
+          type: string
+    StichwortbereichUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    StichwortbereichResponseDTO:
+      required:
+      - bereich
+      - bezeichnung
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        bereich:
+          type: string
+        bezeichnung:
+          type: string
+    StadtbezirkUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    StadtbezirkResponseDTO:
+      required:
+      - bezeichnung
+      - id
+      - stadtbezirk
+      type: object
+      properties:
+        id:
+          type: string
+        stadtbezirk:
+          type: integer
+          format: int32
+        bezeichnung:
+          type: string
+    SiedlungsgebietUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    SiedlungsgebietResponseDTO:
+      required:
+      - bezeichnung
+      - id
+      - siedlungsgebiet
+      type: object
+      properties:
+        id:
+          type: string
+        siedlungsgebiet:
+          type: integer
+          format: int32
+        bezeichnung:
+          type: string
+    ReferatUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    ReferatResponseDTO:
+      required:
+      - bezeichnung
+      - id
+      - refnr
+      type: object
+      properties:
+        id:
+          type: string
+        refnr:
+          type: integer
+          format: int32
+        bezeichnung:
+          type: string
+    PublikationUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    PublikationResponseDTO:
+      required:
+      - bezeichnung
+      - id
+      - kurzform
+      type: object
+      properties:
+        id:
+          type: string
+        kurzform:
+          type: string
+        bezeichnung:
+          type: string
+    KurzbezeichnungUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    KurzbezeichnungResponseDTO:
+      required:
+      - bezeichnung
+      - id
+      - kurzbez
+      type: object
+      properties:
+        id:
+          type: string
+        kurzbez:
+          type: string
+        bezeichnung:
+          type: string
+    KrankenhausUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    KrankenhausResponseDTO:
+      required:
+      - bezeichnung
+      - id
+      - krhname
+      type: object
+      properties:
+        id:
+          type: string
+        krhname:
+          type: string
+        bezeichnung:
+          type: string
+    BenutzerhinweisUpdateDTO:
+      required:
+      - bedienung
+      - funktionsbeschreibung
+      - pruefungVorgaben
+      type: object
+      properties:
+        funktionsbeschreibung:
+          maxLength: 4000
+          minLength: 0
+          type: string
+        bedienung:
+          maxLength: 4000
+          minLength: 0
+          type: string
+        pruefungVorgaben:
+          maxLength: 4000
+          minLength: 0
+          type: string
+    BenutzerhinweisResponseDTO:
+      required:
+      - bedienung
+      - funktionsbeschreibung
+      - pruefungVorgaben
+      - viewId
+      type: object
+      properties:
+        viewId:
+          type: string
+        funktionsbeschreibung:
+          type: string
+        bedienung:
+          type: string
+        pruefungVorgaben:
+          type: string
+    BauprogrammUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    BauprogrammResponseDTO:
+      required:
+      - bauprogramm
+      - bezeichnung
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        bauprogramm:
+          type: integer
+          format: int32
+        bezeichnung:
+          type: string
+    BauleitungUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    BauleitungResponseDTO:
+      required:
+      - bauleitung
+      - bezeichnung
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        bauleitung:
+          type: string
+        bezeichnung:
+          type: string
+    TraegerCreateDTO:
+      required:
+      - bezeichnung
+      - kurzform
+      type: object
+      properties:
+        kurzform:
+          maximum: 9
+          minimum: 0
+          type: integer
+          format: int32
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    StichwortbereichCreateDTO:
+      required:
+      - bereich
+      - bezeichnung
+      type: object
+      properties:
+        bereich:
+          maxLength: 30
+          minLength: 1
+          pattern: "^[A-Z0-9\\-]+$"
+          type: string
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    StadtbezirkCreateDTO:
+      required:
+      - bezeichnung
+      - stadtbezirk
+      type: object
+      properties:
+        stadtbezirk:
+          maximum: 99
+          minimum: 0
+          type: integer
+          format: int32
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    SiedlungsgebietCreateDTO:
+      required:
+      - bezeichnung
+      - siedlungsgebiet
+      type: object
+      properties:
+        siedlungsgebiet:
+          maximum: 99
+          minimum: 1
+          type: integer
+          format: int32
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    ReferatCreateDTO:
+      required:
+      - bezeichnung
+      - refnr
+      type: object
+      properties:
+        refnr:
+          maximum: 99
+          minimum: 0
+          type: integer
+          format: int32
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    PublikationCreateDTO:
+      required:
+      - bezeichnung
+      - kurzform
+      type: object
+      properties:
+        kurzform:
+          maxLength: 1
+          minLength: 1
+          pattern: "^[A-Z0-9]+$"
+          type: string
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    KurzbezeichnungCreateDTO:
+      required:
+      - bezeichnung
+      - kurzbez
+      type: object
+      properties:
+        kurzbez:
+          maxLength: 3
+          minLength: 1
+          pattern: "^[A-Z0-9]{1,3}$"
+          type: string
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    KrankenhausCreateDTO:
+      required:
+      - bezeichnung
+      - krhname
+      type: object
+      properties:
+        krhname:
+          maxLength: 1
+          minLength: 1
+          pattern: "^[A-Z]+$"
+          type: string
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    BenutzerhinweisCreateDTO:
+      required:
+      - bedienung
+      - funktionsbeschreibung
+      - pruefungVorgaben
+      - viewId
+      type: object
+      properties:
+        viewId:
+          maxLength: 30
+          minLength: 1
+          type: string
+        funktionsbeschreibung:
+          maxLength: 4000
+          minLength: 0
+          type: string
+        bedienung:
+          maxLength: 4000
+          minLength: 0
+          type: string
+        pruefungVorgaben:
+          maxLength: 4000
+          minLength: 0
+          type: string
+    BauprogrammCreateDTO:
+      required:
+      - bauprogramm
+      - bezeichnung
+      type: object
+      properties:
+        bauprogramm:
+          maximum: 99
+          minimum: 1
+          type: integer
+          format: int32
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    BauleitungCreateDTO:
+      required:
+      - bauleitung
+      - bezeichnung
+      type: object
+      properties:
+        bauleitung:
+          maxLength: 1
+          minLength: 1
+          pattern: "^[A-Z0-9]+$"
+          type: string
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    PageMetadata:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    PagedModelTraegerResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/TraegerResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    TraegerFormContext:
+      required:
+      - kurzformen
+      type: object
+      properties:
+        kurzformen:
+          type: array
+          items:
+            type: number
+    PagedModelStichwortbereichResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/StichwortbereichResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    StichwortbereichFormContext:
+      required:
+      - bereiche
+      type: object
+      properties:
+        bereiche:
+          type: array
+          items:
+            type: string
+    PagedModelStadtbezirkResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    StadtbezirkFormContext:
+      required:
+      - stadtbezirke
+      type: object
+      properties:
+        stadtbezirke:
+          type: array
+          items:
+            type: number
+    PagedModelSiedlungsgebietResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    SiedlungsgebietFormContext:
+      required:
+      - siedlungsgebiete
+      type: object
+      properties:
+        siedlungsgebiete:
+          type: array
+          items:
+            type: number
+    PagedModelReferatResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReferatResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    ReferatFormContext:
+      required:
+      - refNrs
+      type: object
+      properties:
+        refNrs:
+          type: array
+          items:
+            type: number
+    PagedModelPublikationResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublikationResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    PublikationFormContext:
+      required:
+      - kurzformen
+      type: object
+      properties:
+        kurzformen:
+          type: array
+          items:
+            type: string
+    PagedModelKurzbezeichnungResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/KurzbezeichnungResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    KurzbezeichnungFormContext:
+      required:
+      - kurzbezeichnungen
+      type: object
+      properties:
+        kurzbezeichnungen:
+          type: array
+          items:
+            type: string
+    PagedModelKrankenhausResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/KrankenhausResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    KrankenhausFormContext:
+      required:
+      - krhNamen
+      type: object
+      properties:
+        krhNamen:
+          type: array
+          items:
+            type: string
+    PagedModelBauprogrammResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/BauprogrammResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    BauprogrammFormContext:
+      required:
+      - bauprogramme
+      type: object
+      properties:
+        bauprogramme:
+          type: array
+          items:
+            type: number
+    PagedModelBauleitungResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/BauleitungResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    BauleitungFormContext:
+      required:
+      - bauleitungen
+      type: object
+      properties:
+        bauleitungen:
+          type: array
+          items:
+            type: string
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+        templated:
+          type: boolean
+  securitySchemes:
+    bearerAuth:
+      type: http
+      name: bearerAuth
+      scheme: bearer
+      bearerFormat: JWT
