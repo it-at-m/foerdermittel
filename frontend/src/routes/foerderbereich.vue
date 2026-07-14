@@ -93,27 +93,36 @@ const headers: DataTableHeader<Partial<FoerderbereichResponseDTO>>[] = [
   {
     title: t("model.foerderbereich.bezeichnung"),
     value: "bezeichnung",
-    width: 400,
+    width: 300,
+    minWidth: 100,
   },
   {
     title: t("model.foerderbereich.finanzausgleich"),
     value: "finanzausgleich",
     align: "center",
+    width: 100,
+    minWidth: 80,
   },
   {
     title: t("model.foerderbereich.jahresstatistik"),
     value: "jahresstatistik",
     align: "center",
+    width: 100,
+    minWidth: 80,
   },
   {
     title: t("model.foerderbereich.kindergarten"),
     value: "kindergarten",
     align: "center",
+    width: 100,
+    minWidth: 80,
   },
   {
     title: t("model.foerderbereich.nichtRelevant"),
     value: "nichtRelevant",
     align: "center",
+    width: 100,
+    minWidth: 80,
   },
 ];
 
