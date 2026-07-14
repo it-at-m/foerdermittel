@@ -130,7 +130,10 @@
       "modelName": "Listenname | Listennamen"
     },
     "stadtbezirksliste": {
-      "modelName": "Stadtbezirksliste | Stadtbezirkslisten"
+      "modelName": "Stadtbezirksliste | Stadtbezirkslisten",
+      "lnaKurzbez": "Listenname",
+      "bezStadtbezirk": "Bezirk",
+      "bezeichnung": "Bezeichnung"
     },
     "stichwortbereich": {
       "modelName": "Stichwortbereich | Stichwortbereiche"
