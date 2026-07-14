@@ -1698,7 +1698,7 @@ components:
         bereich:
           maxLength: 30
           minLength: 1
-          pattern: "^[A-Z]+$"
+          pattern: "^[A-Z0-9\\-]+$"
           type: string
         bezeichnung:
           maxLength: 200
