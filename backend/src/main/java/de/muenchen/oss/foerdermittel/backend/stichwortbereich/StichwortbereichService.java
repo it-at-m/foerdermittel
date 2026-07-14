@@ -40,9 +40,9 @@ public class StichwortbereichService {
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    public Stichwortbereich createStichwortbereich(final Stichwortbereich Stichwortbereich) {
-        log.debug("Create Stichwortbereich {}", Stichwortbereich);
-        return stichwortbereichRepository.insert(Stichwortbereich);
+    public Stichwortbereich createStichwortbereich(final Stichwortbereich stichwortbereich) {
+        log.debug("Create Stichwortbereich {}", stichwortbereich);
+        return stichwortbereichRepository.insert(stichwortbereich);
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
