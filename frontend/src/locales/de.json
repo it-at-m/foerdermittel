@@ -104,7 +104,9 @@
       "bezeichnung": "Bezeichnung"
     },
     "kurzbezeichnung": {
-      "modelName": "Kurzbezeichnung | Kurzbezeichnungen"
+      "modelName": "Kurzbezeichnung | Kurzbezeichnungen",
+      "kurzbez": "Kurzbezeichnung",
+      "bezeichnung": "Bezeichnung"
     },
     "publikation": {
       "modelName": "Publikation | Publikationen",
