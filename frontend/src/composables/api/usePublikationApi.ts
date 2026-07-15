@@ -1,7 +1,7 @@
 import type {
   CreatePublikationRequest,
   DeletePublikationRequest,
-  GetPublikationenByPageableRequest,
+  GetPublikationenRequest,
   PagedModelPublikationResponseDTO,
   PublikationFormContext,
   PublikationResponseDTO,
@@ -27,14 +27,14 @@ export const {
     UpdatePublikationRequest,
     never,
     DeletePublikationRequest,
-    GetPublikationenByPageableRequest,
+    GetPublikationenRequest,
     PublikationResponseDTO,
     PagedModelPublikationResponseDTO,
     PublikationFormContext
   >(PublikationControllerApi, {
     create: (api, req) => api.createPublikation(req),
     update: (api, req) => api.updatePublikation(req),
-    getAll: (api, req) => api.getPublikationenByPageable(req),
+    getAll: (api, req) => api.getPublikationen(req),
     delete: (api, req) => api.deletePublikation(req),
     context: (api) => api.getPublikationFormContext(),
   })
