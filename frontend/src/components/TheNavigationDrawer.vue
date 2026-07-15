@@ -278,7 +278,7 @@ const navigationItems: NavigationItem[] = [
       {
         title: t("model.foerderbereich.modelName", 2),
         props: {
-          to: "/foerderbereich",
+          to: "/foerderbereiche",
         },
       },
       {
