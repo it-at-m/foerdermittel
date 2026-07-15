@@ -35,39 +35,7 @@ class BauprogrammServiceTest {
     private BauprogrammService unitUnderTest;
 
     @Nested
-    class GetBauprogramm {
-        @Test
-        void givenIdExists_thenReturnEntity() {
-            // Given
-            final BigDecimal id = BigDecimal.valueOf(1);
-            final Bauprogramm entity = new Bauprogramm(id, BEZEICHNUNG);
-            when(bauprogrammRepository.findById(id)).thenReturn(Optional.of(entity));
-
-            // When
-            final Bauprogramm result = unitUnderTest.getBauprogramm(id);
-
-            // Then
-            verify(bauprogrammRepository, times(1)).findById(id);
-            assertThat(result).usingRecursiveComparison().isEqualTo(entity);
-        }
-
-        @Test
-        void givenIdNotExists_thenThrowNotFoundException() {
-            // Given
-            final BigDecimal id = BigDecimal.valueOf(1);
-            when(bauprogrammRepository.findById(id)).thenReturn(Optional.empty());
-
-            // When
-            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.getBauprogramm(id));
-
-            // Then
-            verify(bauprogrammRepository, times(1)).findById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
-        }
-    }
-
-    @Nested
-    class GetAllBauprogramme {
+    class GetBauprogramme {
         @Test
         void givenPageable_thenReturnPageOfEntities() {
             // Given

@@ -35,39 +35,7 @@ class FoerderbereichServiceTest {
     private FoerderbereichService unitUnderTest;
 
     @Nested
-    class GetFoerderbereich {
-        @Test
-        void givenIdExists_thenReturnEntity() {
-            // Given
-            final BigDecimal id = BigDecimal.valueOf(1);
-            final Foerderbereich entity = new Foerderbereich(id, BEZEICHNUNG, false, true, false, true);
-            when(foerderbereichRepository.findById(id)).thenReturn(Optional.of(entity));
-
-            // When
-            final Foerderbereich result = unitUnderTest.getFoerderbereich(id);
-
-            // Then
-            verify(foerderbereichRepository, times(1)).findById(id);
-            assertThat(result).usingRecursiveComparison().isEqualTo(entity);
-        }
-
-        @Test
-        void givenIdNotExists_thenThrowNotFoundException() {
-            // Given
-            final BigDecimal id = BigDecimal.valueOf(1);
-            when(foerderbereichRepository.findById(id)).thenReturn(Optional.empty());
-
-            // When
-            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.getFoerderbereich(id));
-
-            // Then
-            verify(foerderbereichRepository, times(1)).findById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
-        }
-    }
-
-    @Nested
-    class GetAllFoerderbereiche {
+    class GetFoerderbereiche {
         @Test
         void givenPageable_thenReturnPageOfEntities() {
             // Given

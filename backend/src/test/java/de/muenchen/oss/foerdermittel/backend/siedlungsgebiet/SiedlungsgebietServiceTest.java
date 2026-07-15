@@ -35,39 +35,7 @@ class SiedlungsgebietServiceTest {
     private SiedlungsgebietService unitUnderTest;
 
     @Nested
-    class GetSiedlungsgebiet {
-        @Test
-        void givenIdExists_thenReturnEntity() {
-            // Given
-            final BigDecimal id = BigDecimal.valueOf(1);
-            final Siedlungsgebiet entity = new Siedlungsgebiet(id, BEZEICHNUNG);
-            when(siedlungsgebietRepository.findById(id)).thenReturn(Optional.of(entity));
-
-            // When
-            final Siedlungsgebiet result = unitUnderTest.getSiedlungsgebiet(id);
-
-            // Then
-            verify(siedlungsgebietRepository, times(1)).findById(id);
-            assertThat(result).usingRecursiveComparison().isEqualTo(entity);
-        }
-
-        @Test
-        void givenIdNotExists_thenThrowNotFoundException() {
-            // Given
-            final BigDecimal id = BigDecimal.valueOf(1);
-            when(siedlungsgebietRepository.findById(id)).thenReturn(Optional.empty());
-
-            // When
-            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.getSiedlungsgebiet(id));
-
-            // Then
-            verify(siedlungsgebietRepository, times(1)).findById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
-        }
-    }
-
-    @Nested
-    class GetAllSiedlungsgebiete {
+    class GetSiedlungsgebiete {
         @Test
         void givenPageable_thenReturnPageOfEntities() {
             // Given

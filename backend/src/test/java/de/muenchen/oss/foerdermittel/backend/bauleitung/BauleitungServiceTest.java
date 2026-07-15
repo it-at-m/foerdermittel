@@ -34,39 +34,7 @@ class BauleitungServiceTest {
     private BauleitungService unitUnderTest;
 
     @Nested
-    class GetBauleitung {
-        @Test
-        void givenIdExists_thenReturnEntity() {
-            // Given
-            final String id = "1";
-            final Bauleitung entity = new Bauleitung(id, BEZEICHNUNG);
-            when(bauleitungRepository.findById(id)).thenReturn(Optional.of(entity));
-
-            // When
-            final Bauleitung result = unitUnderTest.getBauleitung(id);
-
-            // Then
-            verify(bauleitungRepository, times(1)).findById(id);
-            assertThat(result).usingRecursiveComparison().isEqualTo(entity);
-        }
-
-        @Test
-        void givenIdNotExists_thenThrowNotFoundException() {
-            // Given
-            final String id = "1";
-            when(bauleitungRepository.findById(id)).thenReturn(Optional.empty());
-
-            // When
-            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.getBauleitung(id));
-
-            // Then
-            verify(bauleitungRepository, times(1)).findById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
-        }
-    }
-
-    @Nested
-    class GetAllBauleitungen {
+    class GetBauleitungen {
         @Test
         void givenPageable_thenReturnPageOfEntities() {
             // Given

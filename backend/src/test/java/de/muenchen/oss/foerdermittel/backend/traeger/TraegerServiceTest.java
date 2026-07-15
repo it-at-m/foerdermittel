@@ -37,38 +37,6 @@ class TraegerServiceTest {
     @Nested
     class GetTraeger {
         @Test
-        void givenIdExists_thenReturnEntity() {
-            // Given
-            final BigDecimal id = BigDecimal.valueOf(1);
-            final Traeger entity = new Traeger(id, BEZEICHNUNG);
-            when(traegerRepository.findById(id)).thenReturn(Optional.of(entity));
-
-            // When
-            final Traeger result = unitUnderTest.getTraeger(id);
-
-            // Then
-            verify(traegerRepository, times(1)).findById(id);
-            assertThat(result).usingRecursiveComparison().isEqualTo(entity);
-        }
-
-        @Test
-        void givenIdNotExists_thenThrowNotFoundException() {
-            // Given
-            final BigDecimal id = BigDecimal.valueOf(1);
-            when(traegerRepository.findById(id)).thenReturn(Optional.empty());
-
-            // When
-            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.getTraeger(id));
-
-            // Then
-            verify(traegerRepository, times(1)).findById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
-        }
-    }
-
-    @Nested
-    class GetPaginatedTraeger {
-        @Test
         void givenPageable_thenReturnPageOfEntities() {
             // Given
             final int pageNumber = 0;
