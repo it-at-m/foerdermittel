@@ -38,12 +38,6 @@ public class BauleitungController {
     private final BauleitungService bauleitungService;
     private final BauleitungMapper bauleitungMapper;
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public BauleitungResponseDTO getBauleitung(@PathVariable("id") final String bauleitungId) {
-        return bauleitungMapper.toDTO(bauleitungService.getBauleitung(bauleitungId));
-    }
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<BauleitungResponseDTO> getBauleitungenByPageable(@ParameterObject @PageableDefault(

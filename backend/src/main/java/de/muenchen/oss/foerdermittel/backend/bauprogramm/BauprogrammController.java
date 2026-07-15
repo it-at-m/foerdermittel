@@ -39,12 +39,6 @@ public class BauprogrammController {
     private final BauprogrammService bauprogrammService;
     private final BauprogrammMapper bauprogrammMapper;
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public BauprogrammResponseDTO getBauprogramm(@PathVariable("id") final String bauprogrammId) {
-        return bauprogrammMapper.toDTO(bauprogrammService.getBauprogramm(ControllerUtils.convertStringToBigDecimal(bauprogrammId)));
-    }
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<BauprogrammResponseDTO> getBauprogrammeByPageable(@ParameterObject @PageableDefault(

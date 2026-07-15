@@ -37,12 +37,6 @@ public class PublikationController {
     private final PublikationService publikationService;
     private final PublikationMapper publikationMapper;
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public PublikationResponseDTO getPublikation(@PathVariable("id") final String publikationId) {
-        return publikationMapper.toDTO(publikationService.getPublikation(publikationId));
-    }
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<PublikationResponseDTO> getPublikationenByPageable(@ParameterObject @PageableDefault(

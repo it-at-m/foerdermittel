@@ -37,12 +37,6 @@ public class KrankenhausController {
     private final KrankenhausService krankenhausService;
     private final KrankenhausMapper krankenhausMapper;
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public KrankenhausResponseDTO getKrankenhaus(@PathVariable("id") final String krankenhausId) {
-        return krankenhausMapper.toDTO(krankenhausService.getKrankenhaus(krankenhausId));
-    }
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<KrankenhausResponseDTO> getKrankenhaeuserByPageable(@ParameterObject @PageableDefault(

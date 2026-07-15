@@ -38,12 +38,6 @@ public class ReferatController {
     private final ReferatService referatService;
     private final ReferatMapper referatMapper;
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ReferatResponseDTO getReferat(@PathVariable("id") final String referatId) {
-        return referatMapper.toDTO(referatService.getReferat(ControllerUtils.convertStringToBigDecimal(referatId)));
-    }
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<ReferatResponseDTO> getReferateByPageable(@ParameterObject @PageableDefault(

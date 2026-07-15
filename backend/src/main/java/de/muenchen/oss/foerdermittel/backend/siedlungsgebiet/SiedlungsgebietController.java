@@ -38,12 +38,6 @@ public class SiedlungsgebietController {
     private final SiedlungsgebietService siedlungsgebietService;
     private final SiedlungsgebietMapper siedlungsgebietMapper;
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public SiedlungsgebietResponseDTO getSiedlungsgebiet(@PathVariable("id") final String siedlungsgebietId) {
-        return siedlungsgebietMapper.toDTO(siedlungsgebietService.getSiedlungsgebiet(ControllerUtils.convertStringToBigDecimal(siedlungsgebietId)));
-    }
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<SiedlungsgebietResponseDTO> getSiedlungsgebieteByPageable(@ParameterObject @PageableDefault(
