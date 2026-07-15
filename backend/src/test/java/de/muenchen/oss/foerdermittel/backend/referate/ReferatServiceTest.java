@@ -55,7 +55,7 @@ class ReferatServiceTest {
             when(referatRepository.findAll(pageable)).thenReturn(expectedPage);
 
             // When
-            final Page<Referat> result = unitUnderTest.getAllReferate(pageable);
+            final Page<Referat> result = unitUnderTest.getReferate(pageable);
 
             // Then
             verify(referatRepository, times(1)).findAll(pageable);

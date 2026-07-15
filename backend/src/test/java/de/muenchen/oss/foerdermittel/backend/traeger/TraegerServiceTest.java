@@ -51,7 +51,7 @@ class TraegerServiceTest {
             when(traegerRepository.findAll(pageable)).thenReturn(expectedPage);
 
             // When
-            final Page<Traeger> result = unitUnderTest.getAllTraeger(pageable);
+            final Page<Traeger> result = unitUnderTest.getTraeger(pageable);
 
             // Then
             verify(traegerRepository, times(1)).findAll(pageable);

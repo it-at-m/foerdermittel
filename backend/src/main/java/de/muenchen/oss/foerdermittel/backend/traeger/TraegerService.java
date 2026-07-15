@@ -21,8 +21,8 @@ public class TraegerService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public Page<Traeger> getAllTraeger(final Pageable pageable) {
-        log.info("Get all Traeger with Pageable {}", pageable);
+    public Page<Traeger> getTraeger(final Pageable pageable) {
+        log.info("Get Traeger with Pageable {}", pageable);
         return traegerRepository.findAll(pageable);
     }
 

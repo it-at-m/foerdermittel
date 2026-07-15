@@ -43,7 +43,7 @@ public class StadtbezirkController {
     public Page<StadtbezirkResponseDTO> getStadtbezirkeByPageable(@ParameterObject @PageableDefault(
             sort = "stadtbezirk"
     ) final Pageable pageable) {
-        final Page<Stadtbezirk> pageWithStadtbezirk = stadtbezirkService.getAllStadtbezirke(pageable);
+        final Page<Stadtbezirk> pageWithStadtbezirk = stadtbezirkService.getStadtbezirke(pageable);
         final List<StadtbezirkResponseDTO> stadtbezirkResponseDTOList = pageWithStadtbezirk.getContent().stream()
                 .map(stadtbezirkMapper::toDTO)
                 .toList();

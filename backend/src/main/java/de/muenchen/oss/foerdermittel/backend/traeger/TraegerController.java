@@ -43,7 +43,7 @@ public class TraegerController {
     public Page<TraegerResponseDTO> getTraegerByPageable(@ParameterObject @PageableDefault(
             sort = "kurzform"
     ) final Pageable pageable) {
-        final Page<Traeger> pageWithTraeger = traegerService.getAllTraeger(pageable);
+        final Page<Traeger> pageWithTraeger = traegerService.getTraeger(pageable);
         final List<TraegerResponseDTO> traegerResponseDTOList = pageWithTraeger.getContent().stream()
                 .map(traegerMapper::toDTO)
                 .toList();

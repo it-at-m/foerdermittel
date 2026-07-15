@@ -43,7 +43,7 @@ public class ReferatController {
     public Page<ReferatResponseDTO> getReferateByPageable(@ParameterObject @PageableDefault(
             sort = "refnr"
     ) final Pageable pageable) {
-        final Page<Referat> pageWithReferate = referatService.getAllReferate(pageable);
+        final Page<Referat> pageWithReferate = referatService.getReferate(pageable);
         final List<ReferatResponseDTO> referatResponseDTOList = pageWithReferate.getContent().stream()
                 .map(referatMapper::toDTO)
                 .toList();

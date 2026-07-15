@@ -20,8 +20,8 @@ public class PublikationService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public Page<Publikation> getAllPublikationen(final Pageable pageable) {
-        log.info("Get all Publikationen with Pageable {}", pageable);
+    public Page<Publikation> getPublikationen(final Pageable pageable) {
+        log.info("Get Publikationen with Pageable {}", pageable);
         return publikationRepository.findAll(pageable);
     }
 

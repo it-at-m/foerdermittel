@@ -42,7 +42,7 @@ public class KrankenhausController {
     public Page<KrankenhausResponseDTO> getKrankenhaeuserByPageable(@ParameterObject @PageableDefault(
             sort = "krhname"
     ) final Pageable pageable) {
-        final Page<Krankenhaus> pageWithKrankenhaus = krankenhausService.getAllKrankenhaeuser(pageable);
+        final Page<Krankenhaus> pageWithKrankenhaus = krankenhausService.getKrankenhaeuser(pageable);
         final List<KrankenhausResponseDTO> krankenhausResponseDTOList = pageWithKrankenhaus.getContent().stream()
                 .map(krankenhausMapper::toDTO)
                 .toList();

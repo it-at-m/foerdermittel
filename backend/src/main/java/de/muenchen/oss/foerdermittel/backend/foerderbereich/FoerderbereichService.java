@@ -21,8 +21,8 @@ public class FoerderbereichService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public Page<Foerderbereich> getAllFoerderbereiche(final Pageable pageable) {
-        log.info("Get all Foerderbereiche with Pageable {}", pageable);
+    public Page<Foerderbereich> getFoerderbereiche(final Pageable pageable) {
+        log.info("Get Foerderbereiche with Pageable {}", pageable);
         return foerderbereichRepository.findAll(pageable);
     }
 

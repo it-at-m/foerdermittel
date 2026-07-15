@@ -51,7 +51,7 @@ class StadtbezirkServiceTest {
             when(stadtbezirkRepository.findAll(pageable)).thenReturn(expectedPage);
 
             // When
-            final Page<Stadtbezirk> result = unitUnderTest.getAllStadtbezirke(pageable);
+            final Page<Stadtbezirk> result = unitUnderTest.getStadtbezirke(pageable);
 
             // Then
             verify(stadtbezirkRepository, times(1)).findAll(pageable);

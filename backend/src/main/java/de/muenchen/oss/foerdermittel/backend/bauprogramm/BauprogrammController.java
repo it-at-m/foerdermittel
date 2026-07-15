@@ -44,7 +44,7 @@ public class BauprogrammController {
     public Page<BauprogrammResponseDTO> getBauprogrammeByPageable(@ParameterObject @PageableDefault(
             sort = "bauprogramm"
     ) final Pageable pageable) {
-        final Page<Bauprogramm> pageWithBauprogramm = bauprogrammService.getAllBauprogramme(pageable);
+        final Page<Bauprogramm> pageWithBauprogramm = bauprogrammService.getBauprogramme(pageable);
         final List<BauprogrammResponseDTO> bauprogrammResponseDTOList = pageWithBauprogramm.getContent().stream()
                 .map(bauprogrammMapper::toDTO)
                 .toList();

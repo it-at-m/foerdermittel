@@ -51,7 +51,7 @@ class FoerderbereichServiceTest {
             when(foerderbereichRepository.findAll(pageable)).thenReturn(expectedPage);
 
             // When
-            final Page<Foerderbereich> result = unitUnderTest.getAllFoerderbereiche(pageable);
+            final Page<Foerderbereich> result = unitUnderTest.getFoerderbereiche(pageable);
 
             // Then
             verify(foerderbereichRepository, times(1)).findAll(pageable);

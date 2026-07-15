@@ -50,7 +50,7 @@ class BauleitungServiceTest {
             when(bauleitungRepository.findAll(pageable)).thenReturn(expectedPage);
 
             // When
-            final Page<Bauleitung> result = unitUnderTest.getAllBauleitungen(pageable);
+            final Page<Bauleitung> result = unitUnderTest.getBauleitungen(pageable);
 
             // Then
             verify(bauleitungRepository, times(1)).findAll(pageable);

@@ -43,7 +43,7 @@ public class FoerderbereichController {
     public Page<FoerderbereichResponseDTO> getFoerderbereicheByPageable(@ParameterObject @PageableDefault(
             sort = "fb"
     ) final Pageable pageable) {
-        final Page<Foerderbereich> pageWithFoerderbereiche = foerderbereichService.getAllFoerderbereiche(pageable);
+        final Page<Foerderbereich> pageWithFoerderbereiche = foerderbereichService.getFoerderbereiche(pageable);
         final List<FoerderbereichResponseDTO> foerderbereichResponseDTOList = pageWithFoerderbereiche.getContent().stream()
                 .map(foerderbereichMapper::toDTO)
                 .toList();

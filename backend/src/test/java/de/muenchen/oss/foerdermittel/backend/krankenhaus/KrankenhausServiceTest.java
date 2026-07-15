@@ -50,7 +50,7 @@ class KrankenhausServiceTest {
             when(krankenhausRepository.findAll(pageable)).thenReturn(expectedPage);
 
             // When
-            final Page<Krankenhaus> result = unitUnderTest.getAllKrankenhaeuser(pageable);
+            final Page<Krankenhaus> result = unitUnderTest.getKrankenhaeuser(pageable);
 
             // Then
             verify(krankenhausRepository, times(1)).findAll(pageable);

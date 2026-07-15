@@ -43,7 +43,7 @@ public class BauleitungController {
     public Page<BauleitungResponseDTO> getBauleitungenByPageable(@ParameterObject @PageableDefault(
             sort = "bauleitung"
     ) final Pageable pageable) {
-        final Page<Bauleitung> pageWithBauleitung = bauleitungService.getAllBauleitungen(pageable);
+        final Page<Bauleitung> pageWithBauleitung = bauleitungService.getBauleitungen(pageable);
         final List<BauleitungResponseDTO> bauleitungResponseDTOList = pageWithBauleitung.getContent().stream()
                 .map(bauleitungMapper::toDTO)
                 .toList();

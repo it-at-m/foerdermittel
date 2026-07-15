@@ -20,8 +20,8 @@ public class BauleitungService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public Page<Bauleitung> getAllBauleitungen(final Pageable pageable) {
-        log.info("Get all Bauleitungen with Pageable {}", pageable);
+    public Page<Bauleitung> getBauleitungen(final Pageable pageable) {
+        log.info("Get Bauleitungen with Pageable {}", pageable);
         return bauleitungRepository.findAll(pageable);
     }
 

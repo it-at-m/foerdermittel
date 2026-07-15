@@ -50,7 +50,7 @@ class PublikationServiceTest {
             when(publikationRepository.findAll(pageable)).thenReturn(expectedPage);
 
             // When
-            final Page<Publikation> result = unitUnderTest.getAllPublikationen(pageable);
+            final Page<Publikation> result = unitUnderTest.getPublikationen(pageable);
 
             // Then
             verify(publikationRepository, times(1)).findAll(pageable);

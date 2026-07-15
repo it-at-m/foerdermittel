@@ -42,7 +42,7 @@ public class KurzbezeichnungController {
     public Page<KurzbezeichnungResponseDTO> getKurzbezeichnungenByPageable(@ParameterObject @PageableDefault(
             sort = "kurzbez"
     ) final Pageable pageable) {
-        final Page<Kurzbezeichnung> pageWithKurzbezeichnung = kurzbezeichnungService.getAllKurzbezeichnungen(pageable);
+        final Page<Kurzbezeichnung> pageWithKurzbezeichnung = kurzbezeichnungService.getKurzbezeichnungen(pageable);
         final List<KurzbezeichnungResponseDTO> kurzbezeichnungResponseDTOList = pageWithKurzbezeichnung.getContent().stream()
                 .map(kurzbezeichnungMapper::toDTO)
                 .toList();

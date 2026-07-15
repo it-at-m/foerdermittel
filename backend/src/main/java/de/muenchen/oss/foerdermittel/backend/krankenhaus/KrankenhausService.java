@@ -20,8 +20,8 @@ public class KrankenhausService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public Page<Krankenhaus> getAllKrankenhaeuser(final Pageable pageable) {
-        log.info("Get all Krankenhaeuser with Pageable {}", pageable);
+    public Page<Krankenhaus> getKrankenhaeuser(final Pageable pageable) {
+        log.info("Get Krankenhaeuser with Pageable {}", pageable);
         return krankenhausRepository.findAll(pageable);
     }
 

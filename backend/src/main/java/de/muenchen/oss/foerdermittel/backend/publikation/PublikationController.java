@@ -42,7 +42,7 @@ public class PublikationController {
     public Page<PublikationResponseDTO> getPublikationenByPageable(@ParameterObject @PageableDefault(
             sort = "kurzform"
     ) final Pageable pageable) {
-        final Page<Publikation> pageWithPublikation = publikationService.getAllPublikationen(pageable);
+        final Page<Publikation> pageWithPublikation = publikationService.getPublikationen(pageable);
         final List<PublikationResponseDTO> publikationResponseDTOList = pageWithPublikation.getContent().stream()
                 .map(publikationMapper::toDTO)
                 .toList();

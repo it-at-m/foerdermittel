@@ -54,7 +54,7 @@ public class KurzbezeichnungServiceTest {
             when(kurzbezeichnungRepository.findAll(pageable)).thenReturn(expectedPage);
 
             // When
-            final Page<Kurzbezeichnung> result = unitUnderTest.getAllKurzbezeichnungen(pageable);
+            final Page<Kurzbezeichnung> result = unitUnderTest.getKurzbezeichnungen(pageable);
 
             // Then
             verify(kurzbezeichnungRepository, times(1)).findAll(pageable);

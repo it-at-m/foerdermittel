@@ -51,7 +51,7 @@ class SiedlungsgebietServiceTest {
             when(siedlungsgebietRepository.findAll(pageable)).thenReturn(expectedPage);
 
             // When
-            final Page<Siedlungsgebiet> result = unitUnderTest.getAllSiedlungsgebiete(pageable);
+            final Page<Siedlungsgebiet> result = unitUnderTest.getSiedlungsgebiete(pageable);
 
             // Then
             verify(siedlungsgebietRepository, times(1)).findAll(pageable);

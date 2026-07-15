@@ -51,7 +51,7 @@ class BauprogrammServiceTest {
             when(bauprogrammRepository.findAll(pageable)).thenReturn(expectedPage);
 
             // When
-            final Page<Bauprogramm> result = unitUnderTest.getAllBauprogramme(pageable);
+            final Page<Bauprogramm> result = unitUnderTest.getBauprogramme(pageable);
 
             // Then
             verify(bauprogrammRepository, times(1)).findAll(pageable);

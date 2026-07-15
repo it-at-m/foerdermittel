@@ -43,7 +43,7 @@ public class SiedlungsgebietController {
     public Page<SiedlungsgebietResponseDTO> getSiedlungsgebieteByPageable(@ParameterObject @PageableDefault(
             sort = "siedlungsgebiet"
     ) final Pageable pageable) {
-        final Page<Siedlungsgebiet> pageWithSiedlungsgebiet = siedlungsgebietService.getAllSiedlungsgebiete(pageable);
+        final Page<Siedlungsgebiet> pageWithSiedlungsgebiet = siedlungsgebietService.getSiedlungsgebiete(pageable);
         final List<SiedlungsgebietResponseDTO> siedlungsgebietResponseDTOList = pageWithSiedlungsgebiet.getContent().stream()
                 .map(siedlungsgebietMapper::toDTO)
                 .toList();
