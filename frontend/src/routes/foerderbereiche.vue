@@ -162,7 +162,7 @@ const { dataTableOptions, onSuccess, onFailure } = usePagination(
 const {
   call: createFoerderbereich,
   loading: createFoerderbereichLoading,
-  error: createFoerderbereicheError,
+  error: createFoerderbereichError,
 } = useCreateFoerderbereich();
 
 const handleCreate = async (
@@ -173,7 +173,7 @@ const handleCreate = async (
   await createFoerderbereich({
     foerderbereichCreateDTO: model,
   });
-  if (!createFoerderbereicheError.value) {
+  if (!createFoerderbereichError.value) {
     await onSuccess(t("common.message.created", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.createdError", [t(domainKey)]));
