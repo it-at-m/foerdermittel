@@ -472,7 +472,7 @@ paths:
     get:
       tags:
       - traeger-controller
-      operationId: getTraegerByPageable
+      operationId: getTraeger
       parameters:
       - name: page
         in: query
@@ -533,7 +533,7 @@ paths:
     get:
       tags:
       - stadtbezirk-controller
-      operationId: getStadtbezirkeByPageable
+      operationId: getStadtbezirke
       parameters:
       - name: page
         in: query
@@ -594,7 +594,7 @@ paths:
     get:
       tags:
       - siedlungsgebiet-controller
-      operationId: getSiedlungsgebieteByPageable
+      operationId: getSiedlungsgebiete
       parameters:
       - name: page
         in: query
@@ -655,7 +655,7 @@ paths:
     get:
       tags:
       - referat-controller
-      operationId: getReferateByPageable
+      operationId: getReferate
       parameters:
       - name: page
         in: query
@@ -716,7 +716,7 @@ paths:
     get:
       tags:
       - publikation-controller
-      operationId: getPublikationenByPageable
+      operationId: getPublikationen
       parameters:
       - name: page
         in: query
@@ -777,7 +777,7 @@ paths:
     get:
       tags:
       - kurzbezeichnung-controller
-      operationId: getKurzbezeichnungenByPageable
+      operationId: getKurzbezeichnungen
       parameters:
       - name: page
         in: query
@@ -838,7 +838,7 @@ paths:
     get:
       tags:
       - krankenhaus-controller
-      operationId: getKrankenhaeuserByPageable
+      operationId: getKrankenhaeuser
       parameters:
       - name: page
         in: query
@@ -899,7 +899,7 @@ paths:
     get:
       tags:
       - foerderbereich-controller
-      operationId: getFoerderbereicheByPageable
+      operationId: getFoerderbereiche
       parameters:
       - name: page
         in: query
@@ -980,7 +980,7 @@ paths:
     get:
       tags:
       - bauprogramm-controller
-      operationId: getBauprogrammeByPageable
+      operationId: getBauprogramme
       parameters:
       - name: page
         in: query
@@ -1041,7 +1041,7 @@ paths:
     get:
       tags:
       - bauleitung-controller
-      operationId: getBauleitungenByPageable
+      operationId: getBauleitungen
       parameters:
       - name: page
         in: query
