@@ -39,7 +39,7 @@ public class KrankenhausController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<KrankenhausResponseDTO> getKrankenhaeuserByPageable(@ParameterObject @PageableDefault(
+    public Page<KrankenhausResponseDTO> getKrankenhaeuser(@ParameterObject @PageableDefault(
             sort = "krhname"
     ) final Pageable pageable) {
         final Page<Krankenhaus> pageWithKrankenhaus = krankenhausService.getKrankenhaeuser(pageable);

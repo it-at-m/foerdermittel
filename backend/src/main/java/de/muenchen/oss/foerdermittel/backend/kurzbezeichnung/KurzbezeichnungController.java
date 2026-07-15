@@ -39,7 +39,7 @@ public class KurzbezeichnungController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<KurzbezeichnungResponseDTO> getKurzbezeichnungenByPageable(@ParameterObject @PageableDefault(
+    public Page<KurzbezeichnungResponseDTO> getKurzbezeichnungen(@ParameterObject @PageableDefault(
             sort = "kurzbez"
     ) final Pageable pageable) {
         final Page<Kurzbezeichnung> pageWithKurzbezeichnung = kurzbezeichnungService.getKurzbezeichnungen(pageable);

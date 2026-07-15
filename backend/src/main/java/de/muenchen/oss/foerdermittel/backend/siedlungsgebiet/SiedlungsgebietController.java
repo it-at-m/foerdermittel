@@ -40,7 +40,7 @@ public class SiedlungsgebietController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<SiedlungsgebietResponseDTO> getSiedlungsgebieteByPageable(@ParameterObject @PageableDefault(
+    public Page<SiedlungsgebietResponseDTO> getSiedlungsgebiete(@ParameterObject @PageableDefault(
             sort = "siedlungsgebiet"
     ) final Pageable pageable) {
         final Page<Siedlungsgebiet> pageWithSiedlungsgebiet = siedlungsgebietService.getSiedlungsgebiete(pageable);

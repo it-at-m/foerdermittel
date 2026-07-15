@@ -39,7 +39,7 @@ public class PublikationController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<PublikationResponseDTO> getPublikationenByPageable(@ParameterObject @PageableDefault(
+    public Page<PublikationResponseDTO> getPublikationen(@ParameterObject @PageableDefault(
             sort = "kurzform"
     ) final Pageable pageable) {
         final Page<Publikation> pageWithPublikation = publikationService.getPublikationen(pageable);

@@ -40,7 +40,7 @@ public class ReferatController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<ReferatResponseDTO> getReferateByPageable(@ParameterObject @PageableDefault(
+    public Page<ReferatResponseDTO> getReferate(@ParameterObject @PageableDefault(
             sort = "refnr"
     ) final Pageable pageable) {
         final Page<Referat> pageWithReferate = referatService.getReferate(pageable);

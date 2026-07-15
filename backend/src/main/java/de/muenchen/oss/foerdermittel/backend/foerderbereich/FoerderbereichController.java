@@ -40,7 +40,7 @@ public class FoerderbereichController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<FoerderbereichResponseDTO> getFoerderbereicheByPageable(@ParameterObject @PageableDefault(
+    public Page<FoerderbereichResponseDTO> getFoerderbereiche(@ParameterObject @PageableDefault(
             sort = "fb"
     ) final Pageable pageable) {
         final Page<Foerderbereich> pageWithFoerderbereiche = foerderbereichService.getFoerderbereiche(pageable);

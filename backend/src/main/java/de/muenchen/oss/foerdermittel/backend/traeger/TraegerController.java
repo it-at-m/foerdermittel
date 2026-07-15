@@ -40,7 +40,7 @@ public class TraegerController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<TraegerResponseDTO> getTraegerByPageable(@ParameterObject @PageableDefault(
+    public Page<TraegerResponseDTO> getTraeger(@ParameterObject @PageableDefault(
             sort = "kurzform"
     ) final Pageable pageable) {
         final Page<Traeger> pageWithTraeger = traegerService.getTraeger(pageable);

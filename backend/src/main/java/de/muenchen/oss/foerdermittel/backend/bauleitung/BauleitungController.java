@@ -40,7 +40,7 @@ public class BauleitungController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<BauleitungResponseDTO> getBauleitungenByPageable(@ParameterObject @PageableDefault(
+    public Page<BauleitungResponseDTO> getBauleitungen(@ParameterObject @PageableDefault(
             sort = "bauleitung"
     ) final Pageable pageable) {
         final Page<Bauleitung> pageWithBauleitung = bauleitungService.getBauleitungen(pageable);

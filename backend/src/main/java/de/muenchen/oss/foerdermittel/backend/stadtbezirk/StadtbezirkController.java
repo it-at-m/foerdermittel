@@ -40,7 +40,7 @@ public class StadtbezirkController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<StadtbezirkResponseDTO> getStadtbezirkeByPageable(@ParameterObject @PageableDefault(
+    public Page<StadtbezirkResponseDTO> getStadtbezirke(@ParameterObject @PageableDefault(
             sort = "stadtbezirk"
     ) final Pageable pageable) {
         final Page<Stadtbezirk> pageWithStadtbezirk = stadtbezirkService.getStadtbezirke(pageable);

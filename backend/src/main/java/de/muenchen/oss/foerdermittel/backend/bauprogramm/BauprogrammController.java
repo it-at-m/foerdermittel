@@ -41,7 +41,7 @@ public class BauprogrammController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<BauprogrammResponseDTO> getBauprogrammeByPageable(@ParameterObject @PageableDefault(
+    public Page<BauprogrammResponseDTO> getBauprogramme(@ParameterObject @PageableDefault(
             sort = "bauprogramm"
     ) final Pageable pageable) {
         final Page<Bauprogramm> pageWithBauprogramm = bauprogrammService.getBauprogramme(pageable);
