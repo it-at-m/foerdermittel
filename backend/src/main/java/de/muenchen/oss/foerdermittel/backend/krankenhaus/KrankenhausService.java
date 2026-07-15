@@ -20,13 +20,6 @@ public class KrankenhausService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public Krankenhaus getKrankenhaus(final String krhName) {
-        log.info("Get Krankenhaus with ID {}", krhName);
-        return ServiceUtils.getEntityOrThrowNotFoundException(krhName, krankenhausRepository);
-    }
-
-    @PreAuthorize(Authorities.HAS_ANY_ROLE)
-    @Transactional(readOnly = true)
     public Page<Krankenhaus> getAllKrankenhaeuser(final Pageable pageable) {
         log.info("Get all Krankenhaeuser with Pageable {}", pageable);
         return krankenhausRepository.findAll(pageable);

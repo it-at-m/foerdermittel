@@ -21,13 +21,6 @@ public class TraegerService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public Traeger getTraeger(final BigDecimal traegerId) {
-        log.info("Get Traeger with ID {}", traegerId);
-        return ServiceUtils.getEntityOrThrowNotFoundException(traegerId, traegerRepository);
-    }
-
-    @PreAuthorize(Authorities.HAS_ANY_ROLE)
-    @Transactional(readOnly = true)
     public Page<Traeger> getAllTraeger(final Pageable pageable) {
         log.info("Get all Traeger with Pageable {}", pageable);
         return traegerRepository.findAll(pageable);

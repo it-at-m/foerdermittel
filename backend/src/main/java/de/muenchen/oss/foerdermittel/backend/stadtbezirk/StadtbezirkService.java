@@ -21,13 +21,6 @@ public class StadtbezirkService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public Stadtbezirk getStadtbezirk(final BigDecimal stadtbezirkId) {
-        log.info("Get Stadtbezirk with ID {}", stadtbezirkId);
-        return ServiceUtils.getEntityOrThrowNotFoundException(stadtbezirkId, stadtbezirkRepository);
-    }
-
-    @PreAuthorize(Authorities.HAS_ANY_ROLE)
-    @Transactional(readOnly = true)
     public Page<Stadtbezirk> getAllStadtbezirke(final Pageable pageable) {
         log.info("Get all Stadtbezirke with Pageable {}", pageable);
         return stadtbezirkRepository.findAll(pageable);

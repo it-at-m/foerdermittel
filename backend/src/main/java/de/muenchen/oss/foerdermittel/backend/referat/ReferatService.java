@@ -21,13 +21,6 @@ public class ReferatService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public Referat getReferat(final BigDecimal referatId) {
-        log.info("Get Referat with ID {}", referatId);
-        return ServiceUtils.getEntityOrThrowNotFoundException(referatId, referatRepository);
-    }
-
-    @PreAuthorize(Authorities.HAS_ANY_ROLE)
-    @Transactional(readOnly = true)
     public Page<Referat> getAllReferate(final Pageable pageable) {
         log.info("Get all Referate with Pageable {}", pageable);
         return referatRepository.findAll(pageable);
