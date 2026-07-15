@@ -14,25 +14,6 @@ tags:
     url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
 paths:
   /traeger/{id}:
-    get:
-      tags:
-      - traeger-controller
-      operationId: getTraeger
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TraegerResponseDTO"
-      security:
-      - bearerAuth: []
     put:
       tags:
       - traeger-controller
@@ -74,25 +55,6 @@ paths:
       security:
       - bearerAuth: []
   /stadtbezirke/{id}:
-    get:
-      tags:
-      - stadtbezirk-controller
-      operationId: getStadtbezirk
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StadtbezirkResponseDTO"
-      security:
-      - bearerAuth: []
     put:
       tags:
       - stadtbezirk-controller
@@ -134,25 +96,6 @@ paths:
       security:
       - bearerAuth: []
   /siedlungsgebiete/{id}:
-    get:
-      tags:
-      - siedlungsgebiet-controller
-      operationId: getSiedlungsgebiet
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SiedlungsgebietResponseDTO"
-      security:
-      - bearerAuth: []
     put:
       tags:
       - siedlungsgebiet-controller
@@ -194,25 +137,6 @@ paths:
       security:
       - bearerAuth: []
   /referate/{id}:
-    get:
-      tags:
-      - referat-controller
-      operationId: getReferat
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ReferatResponseDTO"
-      security:
-      - bearerAuth: []
     put:
       tags:
       - referat-controller
@@ -254,25 +178,6 @@ paths:
       security:
       - bearerAuth: []
   /publikationen/{id}:
-    get:
-      tags:
-      - publikation-controller
-      operationId: getPublikation
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PublikationResponseDTO"
-      security:
-      - bearerAuth: []
     put:
       tags:
       - publikation-controller
@@ -314,25 +219,6 @@ paths:
       security:
       - bearerAuth: []
   /kurzbezeichnungen/{id}:
-    get:
-      tags:
-      - kurzbezeichnung-controller
-      operationId: getKurzbezeichnung
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/KurzbezeichnungResponseDTO"
-      security:
-      - bearerAuth: []
     put:
       tags:
       - kurzbezeichnung-controller
@@ -374,25 +260,6 @@ paths:
       security:
       - bearerAuth: []
   /krankenhaeuser/{id}:
-    get:
-      tags:
-      - krankenhaus-controller
-      operationId: getKrankenhaus
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/KrankenhausResponseDTO"
-      security:
-      - bearerAuth: []
     put:
       tags:
       - krankenhaus-controller
@@ -434,25 +301,6 @@ paths:
       security:
       - bearerAuth: []
   /foerderbereiche/{id}:
-    get:
-      tags:
-      - foerderbereich-controller
-      operationId: getFoerderbereich
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/FoerderbereichResponseDTO"
-      security:
-      - bearerAuth: []
     put:
       tags:
       - foerderbereich-controller
@@ -539,25 +387,6 @@ paths:
       security:
       - bearerAuth: []
   /bauprogramme/{id}:
-    get:
-      tags:
-      - bauprogramm-controller
-      operationId: getBauprogramm
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BauprogrammResponseDTO"
-      security:
-      - bearerAuth: []
     put:
       tags:
       - bauprogramm-controller
@@ -599,25 +428,6 @@ paths:
       security:
       - bearerAuth: []
   /bauleitungen/{id}:
-    get:
-      tags:
-      - bauleitung-controller
-      operationId: getBauleitung
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BauleitungResponseDTO"
-      security:
-      - bearerAuth: []
     put:
       tags:
       - bauleitung-controller
