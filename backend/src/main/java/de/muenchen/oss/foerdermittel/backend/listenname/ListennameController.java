@@ -26,7 +26,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping(value = "/listennameen", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/listennamen", produces = MediaType.APPLICATION_JSON_VALUE)
 @SecurityRequirement(name = OpenAPIDocumentationConfiguration.SECURITY_SCHEME_NAME)
 public class ListennameController {
 

@@ -18,8 +18,7 @@
             rules.minLength(1),
             rules.maxLength(3),
             rules.pattern(/^[A-Z0-9]{1,3}$/),
-            rules['unique']!(
-              listennameFormContext.kurzbezn,
+            rules['unique']!(listennameFormContext.listennamen,
               currentkurzbez
             ),
           ]"
