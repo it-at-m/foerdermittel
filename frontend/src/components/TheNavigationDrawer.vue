@@ -277,6 +277,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.foerderbereich.modelName", 2),
+        props: {
+          to: "/foerderbereich",
+        },
       },
       {
         title: t("model.krankenhaus.modelName", 2),
@@ -286,6 +289,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.kurzbezeichnung.modelName", 2),
+        props: {
+          to: "/kurzbezeichnungen",
+        },
       },
       {
         title: t("model.publikation.modelName", 2),
