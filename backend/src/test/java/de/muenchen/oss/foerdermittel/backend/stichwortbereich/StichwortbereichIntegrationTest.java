@@ -157,7 +157,7 @@ public class StichwortbereichIntegrationTest {
                             new StichwortbereichCreateDTO("a", "Test")),
                     arguments(
                             "bereiche too short",
-                            new StichwortbereichCreateDTO("", "")),
+                            new StichwortbereichCreateDTO("", "Test")),
                     arguments(
                             "bereiche too long",
                             new StichwortbereichCreateDTO("A".repeat(31), "Test")),
