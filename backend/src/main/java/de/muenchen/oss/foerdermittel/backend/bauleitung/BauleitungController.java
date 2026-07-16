@@ -38,18 +38,12 @@ public class BauleitungController {
     private final BauleitungService bauleitungService;
     private final BauleitungMapper bauleitungMapper;
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public BauleitungResponseDTO getBauleitung(@PathVariable("id") final String bauleitungId) {
-        return bauleitungMapper.toDTO(bauleitungService.getBauleitung(bauleitungId));
-    }
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<BauleitungResponseDTO> getBauleitungenByPageable(@ParameterObject @PageableDefault(
+    public Page<BauleitungResponseDTO> getBauleitungen(@ParameterObject @PageableDefault(
             sort = "bauleitung"
     ) final Pageable pageable) {
-        final Page<Bauleitung> pageWithBauleitung = bauleitungService.getAllBauleitungen(pageable);
+        final Page<Bauleitung> pageWithBauleitung = bauleitungService.getBauleitungen(pageable);
         final List<BauleitungResponseDTO> bauleitungResponseDTOList = pageWithBauleitung.getContent().stream()
                 .map(bauleitungMapper::toDTO)
                 .toList();

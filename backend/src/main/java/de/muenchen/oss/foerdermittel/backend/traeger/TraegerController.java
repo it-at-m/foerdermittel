@@ -38,18 +38,12 @@ public class TraegerController {
     private final TraegerService traegerService;
     private final TraegerMapper traegerMapper;
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public TraegerResponseDTO getTraeger(@PathVariable("id") final String traegerId) {
-        return traegerMapper.toDTO(traegerService.getTraeger(ControllerUtils.convertStringToBigDecimal(traegerId)));
-    }
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<TraegerResponseDTO> getTraegerByPageable(@ParameterObject @PageableDefault(
+    public Page<TraegerResponseDTO> getTraeger(@ParameterObject @PageableDefault(
             sort = "kurzform"
     ) final Pageable pageable) {
-        final Page<Traeger> pageWithTraeger = traegerService.getAllTraeger(pageable);
+        final Page<Traeger> pageWithTraeger = traegerService.getTraeger(pageable);
         final List<TraegerResponseDTO> traegerResponseDTOList = pageWithTraeger.getContent().stream()
                 .map(traegerMapper::toDTO)
                 .toList();

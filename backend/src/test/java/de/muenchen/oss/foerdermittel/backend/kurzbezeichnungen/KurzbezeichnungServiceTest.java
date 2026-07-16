@@ -38,39 +38,7 @@ public class KurzbezeichnungServiceTest {
     private KurzbezeichnungService unitUnderTest;
 
     @Nested
-    class GetKurzbezeichnung {
-        @Test
-        void givenIdExists_thenReturnEntity() {
-            // Given
-            final String id = "K";
-            final Kurzbezeichnung entity = new Kurzbezeichnung(id, BEZEICHNUNG);
-            when(kurzbezeichnungRepository.findById(id)).thenReturn(Optional.of(entity));
-
-            // When
-            final Kurzbezeichnung result = unitUnderTest.getKurzbezeichnung(id);
-
-            // Then
-            verify(kurzbezeichnungRepository, times(1)).findById(id);
-            assertThat(result).usingRecursiveComparison().isEqualTo(entity);
-        }
-
-        @Test
-        void givenIdNotExists_thenThrowNotFoundException() {
-            // Given
-            final String id = "K";
-            when(kurzbezeichnungRepository.findById(id)).thenReturn(Optional.empty());
-
-            // When
-            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.getKurzbezeichnung(id));
-
-            // Then
-            verify(kurzbezeichnungRepository, times(1)).findById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
-        }
-    }
-
-    @Nested
-    class GetAllKurzbezeichnungen {
+    class GetKurzbezeichnungen {
         @Test
         void givenPageable_thenReturnPageOfEntities() {
             // Given
@@ -86,7 +54,7 @@ public class KurzbezeichnungServiceTest {
             when(kurzbezeichnungRepository.findAll(pageable)).thenReturn(expectedPage);
 
             // When
-            final Page<Kurzbezeichnung> result = unitUnderTest.getAllKurzbezeichnungen(pageable);
+            final Page<Kurzbezeichnung> result = unitUnderTest.getKurzbezeichnungen(pageable);
 
             // Then
             verify(kurzbezeichnungRepository, times(1)).findAll(pageable);

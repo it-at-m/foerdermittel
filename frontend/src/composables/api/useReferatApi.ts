@@ -1,7 +1,7 @@
 import type {
   CreateReferatRequest,
   DeleteReferatRequest,
-  GetReferateByPageableRequest,
+  GetReferateRequest,
   PagedModelReferatResponseDTO,
   ReferatFormContext,
   ReferatResponseDTO,
@@ -27,14 +27,14 @@ export const {
     UpdateReferatRequest,
     never,
     DeleteReferatRequest,
-    GetReferateByPageableRequest,
+    GetReferateRequest,
     ReferatResponseDTO,
     PagedModelReferatResponseDTO,
     ReferatFormContext
   >(ReferatControllerApi, {
     create: (api, req) => api.createReferat(req),
     update: (api, req) => api.updateReferat(req),
-    getAll: (api, req) => api.getReferateByPageable(req),
+    getAll: (api, req) => api.getReferate(req),
     delete: (api, req) => api.deleteReferat(req),
     context: (api) => api.getReferatFormContext(),
   })

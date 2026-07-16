@@ -3,7 +3,7 @@ import type {
   BauprogrammResponseDTO,
   CreateBauprogrammRequest,
   DeleteBauprogrammRequest,
-  GetBauprogrammeByPageableRequest,
+  GetBauprogrammeRequest,
   PagedModelBauprogrammResponseDTO,
   UpdateBauprogrammRequest,
 } from "@/api/generated/foerdermittel-backend";
@@ -27,14 +27,14 @@ export const {
     UpdateBauprogrammRequest,
     never,
     DeleteBauprogrammRequest,
-    GetBauprogrammeByPageableRequest,
+    GetBauprogrammeRequest,
     BauprogrammResponseDTO,
     PagedModelBauprogrammResponseDTO,
     BauprogrammFormContext
   >(BauprogrammControllerApi, {
     create: (api, req) => api.createBauprogramm(req),
     update: (api, req) => api.updateBauprogramm(req),
-    getAll: (api, req) => api.getBauprogrammeByPageable(req),
+    getAll: (api, req) => api.getBauprogramme(req),
     delete: (api, req) => api.deleteBauprogramm(req),
     context: (api) => api.getBauprogrammFormContext(),
   })

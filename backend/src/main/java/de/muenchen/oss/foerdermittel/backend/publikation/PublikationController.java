@@ -37,18 +37,12 @@ public class PublikationController {
     private final PublikationService publikationService;
     private final PublikationMapper publikationMapper;
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public PublikationResponseDTO getPublikation(@PathVariable("id") final String publikationId) {
-        return publikationMapper.toDTO(publikationService.getPublikation(publikationId));
-    }
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<PublikationResponseDTO> getPublikationenByPageable(@ParameterObject @PageableDefault(
+    public Page<PublikationResponseDTO> getPublikationen(@ParameterObject @PageableDefault(
             sort = "kurzform"
     ) final Pageable pageable) {
-        final Page<Publikation> pageWithPublikation = publikationService.getAllPublikationen(pageable);
+        final Page<Publikation> pageWithPublikation = publikationService.getPublikationen(pageable);
         final List<PublikationResponseDTO> publikationResponseDTOList = pageWithPublikation.getContent().stream()
                 .map(publikationMapper::toDTO)
                 .toList();

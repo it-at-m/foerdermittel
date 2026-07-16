@@ -37,18 +37,12 @@ public class KurzbezeichnungController {
     private final KurzbezeichnungService kurzbezeichnungService;
     private final KurzbezeichnungMapper kurzbezeichnungMapper;
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public KurzbezeichnungResponseDTO getKurzbezeichnung(@PathVariable("id") final String kurzbezeichnungId) {
-        return kurzbezeichnungMapper.toDTO(kurzbezeichnungService.getKurzbezeichnung(kurzbezeichnungId));
-    }
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<KurzbezeichnungResponseDTO> getKurzbezeichnungenByPageable(@ParameterObject @PageableDefault(
+    public Page<KurzbezeichnungResponseDTO> getKurzbezeichnungen(@ParameterObject @PageableDefault(
             sort = "kurzbez"
     ) final Pageable pageable) {
-        final Page<Kurzbezeichnung> pageWithKurzbezeichnung = kurzbezeichnungService.getAllKurzbezeichnungen(pageable);
+        final Page<Kurzbezeichnung> pageWithKurzbezeichnung = kurzbezeichnungService.getKurzbezeichnungen(pageable);
         final List<KurzbezeichnungResponseDTO> kurzbezeichnungResponseDTOList = pageWithKurzbezeichnung.getContent().stream()
                 .map(kurzbezeichnungMapper::toDTO)
                 .toList();
