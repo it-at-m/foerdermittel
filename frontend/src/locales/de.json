@@ -96,7 +96,13 @@
       "bezeichnung": "Bezeichnung"
     },
     "foerderbereich": {
-      "modelName": "Förderbereich | Förderbereiche"
+      "modelName": "Förderbereich | Förderbereiche",
+      "fb": "Förderbereich",
+      "bezeichnung": "Bezeichnung",
+      "finanzausgleich": "FAG",
+      "jahresstatistik": "Jahresstatistik",
+      "kindergarten": "Kindergarten",
+      "nichtRelevant": "Nicht relevant"
     },
     "krankenhaus": {
       "modelName": "Krankenhaus | Krankenhäuser",

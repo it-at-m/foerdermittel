@@ -493,6 +493,66 @@ paths:
           description: OK
       security:
       - bearerAuth: []
+  /foerderbereiche/{id}:
+    get:
+      tags:
+      - foerderbereich-controller
+      operationId: getFoerderbereich
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FoerderbereichResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - foerderbereich-controller
+      operationId: updateFoerderbereich
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FoerderbereichUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FoerderbereichResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - foerderbereich-controller
+      operationId: deleteFoerderbereich
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /benutzerhinweise/{id}:
     get:
       tags:
@@ -1146,6 +1206,67 @@ paths:
                 $ref: "#/components/schemas/KrankenhausResponseDTO"
       security:
       - bearerAuth: []
+  /foerderbereiche:
+    get:
+      tags:
+      - foerderbereich-controller
+      operationId: getFoerderbereicheByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "fb,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelFoerderbereichResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - foerderbereich-controller
+      operationId: createFoerderbereich
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FoerderbereichCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FoerderbereichResponseDTO"
+      security:
+      - bearerAuth: []
   /benutzerhinweise:
     post:
       tags:
@@ -1398,6 +1519,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/KrankenhausFormContext"
+      security:
+      - bearerAuth: []
+  /foerderbereiche/form-context:
+    get:
+      tags:
+      - foerderbereich-controller
+      operationId: getFoerderbereichFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FoerderbereichFormContext"
       security:
       - bearerAuth: []
   /bauprogramme/form-context:
@@ -1751,6 +1886,53 @@ components:
           type: string
         bezeichnung:
           type: string
+    FoerderbereichUpdateDTO:
+      required:
+      - bezeichnung
+      - finanzausgleich
+      - jahresstatistik
+      - kindergarten
+      - nichtRelevant
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+        finanzausgleich:
+          type: boolean
+        jahresstatistik:
+          type: boolean
+        kindergarten:
+          type: boolean
+        nichtRelevant:
+          type: boolean
+    FoerderbereichResponseDTO:
+      required:
+      - bezeichnung
+      - fb
+      - finanzausgleich
+      - id
+      - jahresstatistik
+      - kindergarten
+      - nichtRelevant
+      type: object
+      properties:
+        id:
+          type: string
+        fb:
+          type: integer
+          format: int32
+        bezeichnung:
+          type: string
+        finanzausgleich:
+          type: boolean
+        jahresstatistik:
+          type: boolean
+        kindergarten:
+          type: boolean
+        nichtRelevant:
+          type: boolean
     BenutzerhinweisUpdateDTO:
       required:
       - bedienung
@@ -1951,6 +2133,33 @@ components:
           maxLength: 200
           minLength: 1
           type: string
+    FoerderbereichCreateDTO:
+      required:
+      - bezeichnung
+      - fb
+      - finanzausgleich
+      - jahresstatistik
+      - kindergarten
+      - nichtRelevant
+      type: object
+      properties:
+        fb:
+          maximum: 99
+          minimum: 0
+          type: integer
+          format: int32
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+        finanzausgleich:
+          type: boolean
+        jahresstatistik:
+          type: boolean
+        kindergarten:
+          type: boolean
+        nichtRelevant:
+          type: boolean
     BenutzerhinweisCreateDTO:
       required:
       - bedienung
@@ -2164,6 +2373,24 @@ components:
           type: array
           items:
             type: string
+    PagedModelFoerderbereichResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/FoerderbereichResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    FoerderbereichFormContext:
+      required:
+      - fbs
+      type: object
+      properties:
+        fbs:
+          type: array
+          items:
+            type: number
     PagedModelBauprogrammResponseDTO:
       type: object
       properties:
