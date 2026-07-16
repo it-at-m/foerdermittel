@@ -34,39 +34,8 @@ public class StichwortbereichServiceTest {
     private StichwortbereichService unitUnderTest;
 
     @Nested
-    class GetStichwortbereich {
-        @Test
-        void givenIdExists_thenReturnEntity() {
-            // Given
-            final String id = "K";
-            final Stichwortbereich entity = new Stichwortbereich(id, BEZEICHNUNG);
-            when(stichwortbereichRepository.findById(id)).thenReturn(Optional.of(entity));
+    class GetStichwortbereiche {
 
-            // When
-            final Stichwortbereich result = unitUnderTest.getStichwortbereich(id);
-
-            // Then
-            verify(stichwortbereichRepository, times(1)).findById(id);
-            assertThat(result).usingRecursiveComparison().isEqualTo(entity);
-        }
-
-        @Test
-        void givenIdNotExists_thenThrowNotFoundException() {
-            // Given
-            final String id = "K";
-            when(stichwortbereichRepository.findById(id)).thenReturn(Optional.empty());
-
-            // When
-            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.getStichwortbereich(id));
-
-            // Then
-            verify(stichwortbereichRepository, times(1)).findById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
-        }
-    }
-
-    @Nested
-    class GetAllStichwortbereiche {
         @Test
         void givenPageable_thenReturnPageOfEntities() {
             // Given
@@ -82,7 +51,7 @@ public class StichwortbereichServiceTest {
             when(stichwortbereichRepository.findAll(pageable)).thenReturn(expectedPage);
 
             // When
-            final Page<Stichwortbereich> result = unitUnderTest.getAllStichwortbereiche(pageable);
+            final Page<Stichwortbereich> result = unitUnderTest.getStichwortbereiche(pageable);
 
             // Then
             verify(stichwortbereichRepository, times(1)).findAll(pageable);

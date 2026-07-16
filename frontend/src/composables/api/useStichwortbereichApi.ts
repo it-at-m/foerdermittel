@@ -1,8 +1,7 @@
 import type {
   CreateStichwortbereichRequest,
   DeleteStichwortbereichRequest,
-  GetStichwortbereicheByPageableRequest,
-  GetStichwortbereichRequest,
+  GetStichwortbereicheRequest,
   PagedModelStichwortbereichResponseDTO,
   StichwortbereichFormContext,
   StichwortbereichResponseDTO,
@@ -11,53 +10,33 @@ import type {
 
 import { ApiFactory } from "@/api/ApiFactory";
 import { StichwortbereichControllerApi } from "@/api/generated/foerdermittel-backend";
-import useAPI from "@/composables/useAPI";
+import {
+  createAPIComposables,
+  requireComposables,
+} from "@/util/composable-helper";
 
-export function useCreateStichwortbereich() {
-  const api = ApiFactory.getInstance(StichwortbereichControllerApi);
-
-  return useAPI<CreateStichwortbereichRequest, StichwortbereichResponseDTO>(
-    (params) => api.createStichwortbereich(params)
-  );
-}
-
-export function useUpdateStichwortbereich() {
-  const api = ApiFactory.getInstance(StichwortbereichControllerApi);
-
-  return useAPI<UpdateStichwortbereichRequest, StichwortbereichResponseDTO>(
-    (params) => api.updateStichwortbereich(params)
-  );
-}
-
-export function useGetStichwortbereiche() {
-  const api = ApiFactory.getInstance(StichwortbereichControllerApi);
-
-  return useAPI<
-    GetStichwortbereicheByPageableRequest,
-    PagedModelStichwortbereichResponseDTO
-  >((params) => api.getStichwortbereicheByPageable(params));
-}
-
-export function useGetStichwortbereich() {
-  const api = ApiFactory.getInstance(StichwortbereichControllerApi);
-
-  return useAPI<GetStichwortbereichRequest, StichwortbereichResponseDTO>(
-    (params) => api.getStichwortbereich(params)
-  );
-}
-
-export function useDeleteStichwortbereich() {
-  const api = ApiFactory.getInstance(StichwortbereichControllerApi);
-
-  return useAPI<DeleteStichwortbereichRequest, void>((params) =>
-    api.deleteStichwortbereich(params)
-  );
-}
-
-export function useGetStichwortbereichFormContext() {
-  const api = ApiFactory.getInstance(StichwortbereichControllerApi);
-
-  return useAPI<void, StichwortbereichFormContext>(() =>
-    api.getStichwortbereichFormContext()
-  );
-}
+export const {
+  useCreate: useCreateStichwortbereich,
+  useUpdate: useUpdateStichwortbereich,
+  useGetAll: useGetStichwortbereiche,
+  useDelete: useDeleteStichwortbereich,
+  useContext: useGetStichwortbereichFormContext,
+} = requireComposables(
+  createAPIComposables<
+    StichwortbereichControllerApi,
+    CreateStichwortbereichRequest,
+    UpdateStichwortbereichRequest,
+    never,
+    DeleteStichwortbereichRequest,
+    GetStichwortbereicheRequest,
+    StichwortbereichResponseDTO,
+    PagedModelStichwortbereichResponseDTO,
+    StichwortbereichFormContext
+  >(StichwortbereichControllerApi, {
+    create: (api, req) => api.createStichwortbereich(req),
+    update: (api, req) => api.updateStichwortbereich(req),
+    getAll: (api, req) => api.getStichwortbereiche(req),
+    delete: (api, req) => api.deleteStichwortbereich(req),
+    context: (api) => api.getStichwortbereichFormContext(),
+  })
+);

@@ -37,18 +37,12 @@ public class StichwortbereichController {
     private final StichwortbereichService stichwortbereichService;
     private final StichwortbereichMapper stichwortbereichMapper;
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public StichwortbereichResponseDTO getStichwortbereich(@PathVariable("id") final String stichwortbereichId) {
-        return stichwortbereichMapper.toDTO(stichwortbereichService.getStichwortbereich(stichwortbereichId));
-    }
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<StichwortbereichResponseDTO> getStichwortbereicheByPageable(@ParameterObject @PageableDefault(
+    public Page<StichwortbereichResponseDTO> getStichwortbereiche(@ParameterObject @PageableDefault(
             sort = "bereich"
     ) final Pageable pageable) {
-        final Page<Stichwortbereich> pageWithStichwortbereich = stichwortbereichService.getAllStichwortbereiche(pageable);
+        final Page<Stichwortbereich> pageWithStichwortbereich = stichwortbereichService.getStichwortbereiche(pageable);
         final List<StichwortbereichResponseDTO> stichwortbereichResponseDTOList = pageWithStichwortbereich.getContent().stream()
                 .map(stichwortbereichMapper::toDTO)
                 .toList();

@@ -20,14 +20,7 @@ public class StichwortbereichService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public Stichwortbereich getStichwortbereich(final String bereich) {
-        log.info("Get Stichwortbereich with ID {}", bereich);
-        return ServiceUtils.getEntityOrThrowNotFoundException(bereich, stichwortbereichRepository);
-    }
-
-    @PreAuthorize(Authorities.HAS_ANY_ROLE)
-    @Transactional(readOnly = true)
-    public Page<Stichwortbereich> getAllStichwortbereiche(final Pageable pageable) {
+    public Page<Stichwortbereich> getStichwortbereiche(final Pageable pageable) {
         log.info("Get all Stichwortbereiche with Pageable {}", pageable);
         return stichwortbereichRepository.findAll(pageable);
     }
