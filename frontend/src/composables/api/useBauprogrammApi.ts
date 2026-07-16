@@ -4,60 +4,38 @@ import type {
   CreateBauprogrammRequest,
   DeleteBauprogrammRequest,
   GetBauprogrammeByPageableRequest,
-  GetBauprogrammRequest,
   PagedModelBauprogrammResponseDTO,
   UpdateBauprogrammRequest,
 } from "@/api/generated/foerdermittel-backend";
 
-import { ApiFactory } from "@/api/ApiFactory";
 import { BauprogrammControllerApi } from "@/api/generated/foerdermittel-backend";
-import useAPI from "@/composables/useAPI";
+import {
+  createAPIComposables,
+  requireComposables,
+} from "@/util/composable-helper";
 
-export function useCreateBauprogramm() {
-  const api = ApiFactory.getInstance(BauprogrammControllerApi);
-
-  return useAPI<CreateBauprogrammRequest, BauprogrammResponseDTO>((params) =>
-    api.createBauprogramm(params)
-  );
-}
-
-export function useUpdateBauprogramm() {
-  const api = ApiFactory.getInstance(BauprogrammControllerApi);
-
-  return useAPI<UpdateBauprogrammRequest, BauprogrammResponseDTO>((params) =>
-    api.updateBauprogramm(params)
-  );
-}
-
-export function useGetBauprogramme() {
-  const api = ApiFactory.getInstance(BauprogrammControllerApi);
-
-  return useAPI<
+export const {
+  useCreate: useCreateBauprogramm,
+  useUpdate: useUpdateBauprogramm,
+  useGetAll: useGetBauprogramme,
+  useDelete: useDeleteBauprogramm,
+  useContext: useGetBauprogrammFormContext,
+} = requireComposables(
+  createAPIComposables<
+    BauprogrammControllerApi,
+    CreateBauprogrammRequest,
+    UpdateBauprogrammRequest,
+    never,
+    DeleteBauprogrammRequest,
     GetBauprogrammeByPageableRequest,
-    PagedModelBauprogrammResponseDTO
-  >((params) => api.getBauprogrammeByPageable(params));
-}
-
-export function useGetBauprogramm() {
-  const api = ApiFactory.getInstance(BauprogrammControllerApi);
-
-  return useAPI<GetBauprogrammRequest, BauprogrammResponseDTO>((params) =>
-    api.getBauprogramm(params)
-  );
-}
-
-export function useDeleteBauprogramm() {
-  const api = ApiFactory.getInstance(BauprogrammControllerApi);
-
-  return useAPI<DeleteBauprogrammRequest, void>((params) =>
-    api.deleteBauprogramm(params)
-  );
-}
-
-export function useGetBauprogrammFormContext() {
-  const api = ApiFactory.getInstance(BauprogrammControllerApi);
-
-  return useAPI<void, BauprogrammFormContext>(() =>
-    api.getBauprogrammFormContext()
-  );
-}
+    BauprogrammResponseDTO,
+    PagedModelBauprogrammResponseDTO,
+    BauprogrammFormContext
+  >(BauprogrammControllerApi, {
+    create: (api, req) => api.createBauprogramm(req),
+    update: (api, req) => api.updateBauprogramm(req),
+    getAll: (api, req) => api.getBauprogrammeByPageable(req),
+    delete: (api, req) => api.deleteBauprogramm(req),
+    context: (api) => api.getBauprogrammFormContext(),
+  })
+);
