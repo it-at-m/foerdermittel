@@ -1,9 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.listenname;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.Stadtbezirksliste;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +10,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents a Listenname.
@@ -39,5 +39,10 @@ public class Listenname implements Serializable {
 
     @Column(nullable = false)
     @NotNull @Size(min = 1, max = 200) private String bezeichnung;
+
+    @OneToMany(
+            mappedBy = "listenName"
+    )
+    private List<Stadtbezirksliste> stadtbezirke = new ArrayList<>();
 
 }

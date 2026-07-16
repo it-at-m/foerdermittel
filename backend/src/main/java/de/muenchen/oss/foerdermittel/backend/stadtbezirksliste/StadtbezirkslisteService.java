@@ -1,8 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.stadtbezirksliste;
 
-import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.Stadtbezirksliste;
-import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.StadtbezirkslisteFormContext;
-import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.StadtbezirkslisteRepository;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import lombok.RequiredArgsConstructor;
@@ -33,13 +30,6 @@ public class StadtbezirkslisteService {
     public Page<Stadtbezirksliste> getAllStadtbezirkslisten(final Pageable pageable) {
         log.info("Get all Stadtbezirkslisten with Pageable {}", pageable);
         return stadtbezirkslisteRepository.findAll(pageable);
-    }
-
-    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    @Transactional(readOnly = true)
-    public StadtbezirkslisteFormContext getStadtbezirkslisteFormContext() {
-        log.info("Get Stadtbezirksliste form context");
-        return new StadtbezirkslisteFormContext(stadtbezirkslisteRepository.findAllStadtbezirkslisten());
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)

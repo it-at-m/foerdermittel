@@ -11,8 +11,4 @@ import java.util.List;
 @Repository
 public interface StadtbezirkslisteRepository extends PagingAndSortingRepository<Stadtbezirksliste, String>, CrudRepository<Stadtbezirksliste, String>,
         InsertAndUpdateRepository<Stadtbezirksliste> {
-
-    @Query("SELECT s.lnaKurzbez FROM Stadtbezirksliste s")
-    List<String> findAllStadtbezirkslisten();
-
 }

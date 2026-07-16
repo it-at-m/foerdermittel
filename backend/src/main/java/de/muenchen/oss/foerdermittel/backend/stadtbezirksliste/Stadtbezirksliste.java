@@ -1,9 +1,8 @@
 package de.muenchen.oss.foerdermittel.backend.stadtbezirksliste;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import de.muenchen.oss.foerdermittel.backend.listenname.Listenname;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,12 +32,18 @@ public class Stadtbezirksliste implements Serializable {
     // Variables //
     // ========= //
 
-    @Column(name = "lna_kurzbez", nullable = false)
-    @Id
-    @NotNull @Size(min = 1, max = 3) @Pattern(regexp = "^[A-Z0-9]{1,3}$") private String lnaKurzbez;
+    @EmbeddedId
+   private StadtbezirkslistePrimaryKey id;
 
-    @Column(name = "bez_stadtbezirk")
-    @NotNull @Min(0) @Max(99) private BigDecimal bezStadtbezirk;
+    @MapsId("bezStadtbezirk")
+    @ManyToOne
+    @JoinColumn(name = "bez_stadtbezirk", referencedColumnName = "stadtbezirk", insertable = false, updatable = false)
+    private Stadtbezirk bezirk;
+
+    @MapsId("lnaKurzbez")
+    @ManyToOne
+    @JoinColumn(name = "lna_kurzbez", referencedColumnName = "kurzbez", insertable = false, updatable = false)
+    private Listenname listenName;
 
     @Column(nullable = false)
     @NotNull @Size(min = 1, max = 200) private String bezeichnung;
