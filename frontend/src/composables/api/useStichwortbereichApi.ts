@@ -8,7 +8,6 @@ import type {
   UpdateStichwortbereichRequest,
 } from "@/api/generated/foerdermittel-backend";
 
-import { ApiFactory } from "@/api/ApiFactory";
 import { StichwortbereichControllerApi } from "@/api/generated/foerdermittel-backend";
 import {
   createAPIComposables,
