@@ -39,39 +39,7 @@ class ReferatServiceTest {
     private ReferatService unitUnderTest;
 
     @Nested
-    class GetReferat {
-        @Test
-        void givenIdExists_thenReturnEntity() {
-            // Given
-            final BigDecimal id = BigDecimal.valueOf(1);
-            final Referat entity = new Referat(id, BEZEICHNUNG);
-            when(referatRepository.findById(id)).thenReturn(Optional.of(entity));
-
-            // When
-            final Referat result = unitUnderTest.getReferat(id);
-
-            // Then
-            verify(referatRepository, times(1)).findById(id);
-            assertThat(result).usingRecursiveComparison().isEqualTo(entity);
-        }
-
-        @Test
-        void givenIdNotExists_thenThrowNotFoundException() {
-            // Given
-            final BigDecimal id = BigDecimal.valueOf(1);
-            when(referatRepository.findById(id)).thenReturn(Optional.empty());
-
-            // When
-            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.getReferat(id));
-
-            // Then
-            verify(referatRepository, times(1)).findById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
-        }
-    }
-
-    @Nested
-    class GetAllReferate {
+    class GetReferate {
         @Test
         void givenPageable_thenReturnPageOfEntities() {
             // Given
@@ -87,7 +55,7 @@ class ReferatServiceTest {
             when(referatRepository.findAll(pageable)).thenReturn(expectedPage);
 
             // When
-            final Page<Referat> result = unitUnderTest.getAllReferate(pageable);
+            final Page<Referat> result = unitUnderTest.getReferate(pageable);
 
             // Then
             verify(referatRepository, times(1)).findAll(pageable);

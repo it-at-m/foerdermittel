@@ -1,7 +1,7 @@
 import type {
   CreateStadtbezirkRequest,
   DeleteStadtbezirkRequest,
-  GetStadtbezirkeByPageableRequest,
+  GetStadtbezirkeRequest,
   PagedModelStadtbezirkResponseDTO,
   StadtbezirkFormContext,
   StadtbezirkResponseDTO,
@@ -27,14 +27,14 @@ export const {
     UpdateStadtbezirkRequest,
     never,
     DeleteStadtbezirkRequest,
-    GetStadtbezirkeByPageableRequest,
+    GetStadtbezirkeRequest,
     StadtbezirkResponseDTO,
     PagedModelStadtbezirkResponseDTO,
     StadtbezirkFormContext
   >(StadtbezirkControllerApi, {
     create: (api, req) => api.createStadtbezirk(req),
     update: (api, req) => api.updateStadtbezirk(req),
-    getAll: (api, req) => api.getStadtbezirkeByPageable(req),
+    getAll: (api, req) => api.getStadtbezirke(req),
     delete: (api, req) => api.deleteStadtbezirk(req),
     context: (api) => api.getStadtbezirkFormContext(),
   })
