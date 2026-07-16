@@ -141,7 +141,9 @@
       "modelName": "Stadtbezirksliste | Stadtbezirkslisten"
     },
     "stichwortbereich": {
-      "modelName": "Stichwortbereich | Stichwortbereiche"
+      "modelName": "Stichwortbereich | Stichwortbereiche",
+      "bereich": "Bereich",
+      "bezeichnung": "Bezeichnung"
     },
     "traeger": {
       "modelName": "Träger",
