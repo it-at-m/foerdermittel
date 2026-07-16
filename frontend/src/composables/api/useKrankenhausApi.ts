@@ -2,62 +2,40 @@ import type {
   CreateKrankenhausRequest,
   DeleteKrankenhausRequest,
   GetKrankenhaeuserByPageableRequest,
-  GetKrankenhausRequest,
   KrankenhausFormContext,
   KrankenhausResponseDTO,
   PagedModelKrankenhausResponseDTO,
   UpdateKrankenhausRequest,
 } from "@/api/generated/foerdermittel-backend";
 
-import { ApiFactory } from "@/api/ApiFactory";
 import { KrankenhausControllerApi } from "@/api/generated/foerdermittel-backend";
-import useAPI from "@/composables/useAPI";
+import {
+  createAPIComposables,
+  requireComposables,
+} from "@/util/composable-helper";
 
-export function useCreateKrankenhaus() {
-  const api = ApiFactory.getInstance(KrankenhausControllerApi);
-
-  return useAPI<CreateKrankenhausRequest, KrankenhausResponseDTO>((params) =>
-    api.createKrankenhaus(params)
-  );
-}
-
-export function useUpdateKrankenhaus() {
-  const api = ApiFactory.getInstance(KrankenhausControllerApi);
-
-  return useAPI<UpdateKrankenhausRequest, KrankenhausResponseDTO>((params) =>
-    api.updateKrankenhaus(params)
-  );
-}
-
-export function useGetKrankenhaeuser() {
-  const api = ApiFactory.getInstance(KrankenhausControllerApi);
-
-  return useAPI<
+export const {
+  useCreate: useCreateKrankenhaus,
+  useUpdate: useUpdateKrankenhaus,
+  useGetAll: useGetKrankenhaeuser,
+  useDelete: useDeleteKrankenhaus,
+  useContext: useGetKrankenhausFormContext,
+} = requireComposables(
+  createAPIComposables<
+    KrankenhausControllerApi,
+    CreateKrankenhausRequest,
+    UpdateKrankenhausRequest,
+    never,
+    DeleteKrankenhausRequest,
     GetKrankenhaeuserByPageableRequest,
-    PagedModelKrankenhausResponseDTO
-  >((params) => api.getKrankenhaeuserByPageable(params));
-}
-
-export function useGetKrankenhaus() {
-  const api = ApiFactory.getInstance(KrankenhausControllerApi);
-
-  return useAPI<GetKrankenhausRequest, KrankenhausResponseDTO>((params) =>
-    api.getKrankenhaus(params)
-  );
-}
-
-export function useDeleteKrankenhaus() {
-  const api = ApiFactory.getInstance(KrankenhausControllerApi);
-
-  return useAPI<DeleteKrankenhausRequest, void>((params) =>
-    api.deleteKrankenhaus(params)
-  );
-}
-
-export function useGetKrankenhausFormContext() {
-  const api = ApiFactory.getInstance(KrankenhausControllerApi);
-
-  return useAPI<void, KrankenhausFormContext>(() =>
-    api.getKrankenhausFormContext()
-  );
-}
+    KrankenhausResponseDTO,
+    PagedModelKrankenhausResponseDTO,
+    KrankenhausFormContext
+  >(KrankenhausControllerApi, {
+    create: (api, req) => api.createKrankenhaus(req),
+    update: (api, req) => api.updateKrankenhaus(req),
+    getAll: (api, req) => api.getKrankenhaeuserByPageable(req),
+    delete: (api, req) => api.deleteKrankenhaus(req),
+    context: (api) => api.getKrankenhausFormContext(),
+  })
+);

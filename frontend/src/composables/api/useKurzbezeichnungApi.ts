@@ -2,62 +2,40 @@ import type {
   CreateKurzbezeichnungRequest,
   DeleteKurzbezeichnungRequest,
   GetKurzbezeichnungenByPageableRequest,
-  GetKurzbezeichnungRequest,
   KurzbezeichnungFormContext,
   KurzbezeichnungResponseDTO,
   PagedModelKurzbezeichnungResponseDTO,
   UpdateKurzbezeichnungRequest,
 } from "@/api/generated/foerdermittel-backend";
 
-import { ApiFactory } from "@/api/ApiFactory";
 import { KurzbezeichnungControllerApi } from "@/api/generated/foerdermittel-backend";
-import useAPI from "@/composables/useAPI";
+import {
+  createAPIComposables,
+  requireComposables,
+} from "@/util/composable-helper";
 
-export function useCreateKurzbezeichnung() {
-  const api = ApiFactory.getInstance(KurzbezeichnungControllerApi);
-
-  return useAPI<CreateKurzbezeichnungRequest, KurzbezeichnungResponseDTO>(
-    (params) => api.createKurzbezeichnung(params)
-  );
-}
-
-export function useUpdateKurzbezeichnung() {
-  const api = ApiFactory.getInstance(KurzbezeichnungControllerApi);
-
-  return useAPI<UpdateKurzbezeichnungRequest, KurzbezeichnungResponseDTO>(
-    (params) => api.updateKurzbezeichnung(params)
-  );
-}
-
-export function useGetKurzbezeichnungen() {
-  const api = ApiFactory.getInstance(KurzbezeichnungControllerApi);
-
-  return useAPI<
+export const {
+  useCreate: useCreateKurzbezeichnung,
+  useUpdate: useUpdateKurzbezeichnung,
+  useGetAll: useGetKurzbezeichnungen,
+  useDelete: useDeleteKurzbezeichnung,
+  useContext: useGetKurzbezeichnungFormContext,
+} = requireComposables(
+  createAPIComposables<
+    KurzbezeichnungControllerApi,
+    CreateKurzbezeichnungRequest,
+    UpdateKurzbezeichnungRequest,
+    never,
+    DeleteKurzbezeichnungRequest,
     GetKurzbezeichnungenByPageableRequest,
-    PagedModelKurzbezeichnungResponseDTO
-  >((params) => api.getKurzbezeichnungenByPageable(params));
-}
-
-export function useGetKurzbezeichnung() {
-  const api = ApiFactory.getInstance(KurzbezeichnungControllerApi);
-
-  return useAPI<GetKurzbezeichnungRequest, KurzbezeichnungResponseDTO>(
-    (params) => api.getKurzbezeichnung(params)
-  );
-}
-
-export function useDeleteKurzbezeichnung() {
-  const api = ApiFactory.getInstance(KurzbezeichnungControllerApi);
-
-  return useAPI<DeleteKurzbezeichnungRequest, void>((params) =>
-    api.deleteKurzbezeichnung(params)
-  );
-}
-
-export function useGetKurzbezeichnungFormContext() {
-  const api = ApiFactory.getInstance(KurzbezeichnungControllerApi);
-
-  return useAPI<void, KurzbezeichnungFormContext>(() =>
-    api.getKurzbezeichnungFormContext()
-  );
-}
+    KurzbezeichnungResponseDTO,
+    PagedModelKurzbezeichnungResponseDTO,
+    KurzbezeichnungFormContext
+  >(KurzbezeichnungControllerApi, {
+    create: (api, req) => api.createKurzbezeichnung(req),
+    update: (api, req) => api.updateKurzbezeichnung(req),
+    getAll: (api, req) => api.getKurzbezeichnungenByPageable(req),
+    delete: (api, req) => api.deleteKurzbezeichnung(req),
+    context: (api) => api.getKurzbezeichnungFormContext(),
+  })
+);

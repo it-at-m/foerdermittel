@@ -2,59 +2,40 @@ import type {
   CreateTraegerRequest,
   DeleteTraegerRequest,
   GetTraegerByPageableRequest,
-  GetTraegerRequest,
   PagedModelTraegerResponseDTO,
   TraegerFormContext,
   TraegerResponseDTO,
   UpdateTraegerRequest,
 } from "@/api/generated/foerdermittel-backend";
 
-import { ApiFactory } from "@/api/ApiFactory";
 import { TraegerControllerApi } from "@/api/generated/foerdermittel-backend";
-import useAPI from "@/composables/useAPI";
+import {
+  createAPIComposables,
+  requireComposables,
+} from "@/util/composable-helper";
 
-export function useCreateTraeger() {
-  const api = ApiFactory.getInstance(TraegerControllerApi);
-
-  return useAPI<CreateTraegerRequest, TraegerResponseDTO>((params) =>
-    api.createTraeger(params)
-  );
-}
-
-export function useUpdateTraeger() {
-  const api = ApiFactory.getInstance(TraegerControllerApi);
-
-  return useAPI<UpdateTraegerRequest, TraegerResponseDTO>((params) =>
-    api.updateTraeger(params)
-  );
-}
-
-export function useGetTraeger1() {
-  const api = ApiFactory.getInstance(TraegerControllerApi);
-
-  return useAPI<GetTraegerByPageableRequest, PagedModelTraegerResponseDTO>(
-    (params) => api.getTraegerByPageable(params)
-  );
-}
-
-export function useGetTraeger() {
-  const api = ApiFactory.getInstance(TraegerControllerApi);
-
-  return useAPI<GetTraegerRequest, TraegerResponseDTO>((params) =>
-    api.getTraeger(params)
-  );
-}
-
-export function useDeleteTraeger() {
-  const api = ApiFactory.getInstance(TraegerControllerApi);
-
-  return useAPI<DeleteTraegerRequest, void>((params) =>
-    api.deleteTraeger(params)
-  );
-}
-
-export function useGetTraegerFormContext() {
-  const api = ApiFactory.getInstance(TraegerControllerApi);
-
-  return useAPI<void, TraegerFormContext>(() => api.getTraegerFormContext());
-}
+export const {
+  useCreate: useCreateTraeger,
+  useUpdate: useUpdateTraeger,
+  useGetAll: useGetAllTraeger,
+  useDelete: useDeleteTraeger,
+  useContext: useGetTraegerFormContext,
+} = requireComposables(
+  createAPIComposables<
+    TraegerControllerApi,
+    CreateTraegerRequest,
+    UpdateTraegerRequest,
+    never,
+    DeleteTraegerRequest,
+    GetTraegerByPageableRequest,
+    TraegerResponseDTO,
+    PagedModelTraegerResponseDTO,
+    TraegerFormContext
+  >(TraegerControllerApi, {
+    create: (api, req) => api.createTraeger(req),
+    update: (api, req) => api.updateTraeger(req),
+    getAll: (api, req) => api.getTraegerByPageable(req),
+    delete: (api, req) => api.deleteTraeger(req),
+    context: (api) => api.getTraegerFormContext(),
+  })
+);

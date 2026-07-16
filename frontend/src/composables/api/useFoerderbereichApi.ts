@@ -4,60 +4,38 @@ import type {
   FoerderbereichFormContext,
   FoerderbereichResponseDTO,
   GetFoerderbereicheByPageableRequest,
-  GetFoerderbereichRequest,
   PagedModelFoerderbereichResponseDTO,
   UpdateFoerderbereichRequest,
 } from "@/api/generated/foerdermittel-backend";
 
-import { ApiFactory } from "@/api/ApiFactory";
 import { FoerderbereichControllerApi } from "@/api/generated/foerdermittel-backend";
-import useAPI from "@/composables/useAPI";
+import {
+  createAPIComposables,
+  requireComposables,
+} from "@/util/composable-helper";
 
-export function useCreateFoerderbereich() {
-  const api = ApiFactory.getInstance(FoerderbereichControllerApi);
-
-  return useAPI<CreateFoerderbereichRequest, FoerderbereichResponseDTO>(
-    (params) => api.createFoerderbereich(params)
-  );
-}
-
-export function useUpdateFoerderbereich() {
-  const api = ApiFactory.getInstance(FoerderbereichControllerApi);
-
-  return useAPI<UpdateFoerderbereichRequest, FoerderbereichResponseDTO>(
-    (params) => api.updateFoerderbereich(params)
-  );
-}
-
-export function useGetFoerderbereiche() {
-  const api = ApiFactory.getInstance(FoerderbereichControllerApi);
-
-  return useAPI<
+export const {
+  useCreate: useCreateFoerderbereich,
+  useUpdate: useUpdateFoerderbereich,
+  useGetAll: useGetFoerderbereiche,
+  useDelete: useDeleteFoerderbereich,
+  useContext: useGetFoerderbereichFormContext,
+} = requireComposables(
+  createAPIComposables<
+    FoerderbereichControllerApi,
+    CreateFoerderbereichRequest,
+    UpdateFoerderbereichRequest,
+    never,
+    DeleteFoerderbereichRequest,
     GetFoerderbereicheByPageableRequest,
-    PagedModelFoerderbereichResponseDTO
-  >((params) => api.getFoerderbereicheByPageable(params));
-}
-
-export function useGetFoerderbereich() {
-  const api = ApiFactory.getInstance(FoerderbereichControllerApi);
-
-  return useAPI<GetFoerderbereichRequest, FoerderbereichResponseDTO>((params) =>
-    api.getFoerderbereich(params)
-  );
-}
-
-export function useDeleteFoerderbereich() {
-  const api = ApiFactory.getInstance(FoerderbereichControllerApi);
-
-  return useAPI<DeleteFoerderbereichRequest, void>((params) =>
-    api.deleteFoerderbereich(params)
-  );
-}
-
-export function useGetFoerderbereichFormContext() {
-  const api = ApiFactory.getInstance(FoerderbereichControllerApi);
-
-  return useAPI<void, FoerderbereichFormContext>(() =>
-    api.getFoerderbereichFormContext()
-  );
-}
+    FoerderbereichResponseDTO,
+    PagedModelFoerderbereichResponseDTO,
+    FoerderbereichFormContext
+  >(FoerderbereichControllerApi, {
+    create: (api, req) => api.createFoerderbereich(req),
+    update: (api, req) => api.updateFoerderbereich(req),
+    getAll: (api, req) => api.getFoerderbereicheByPageable(req),
+    delete: (api, req) => api.deleteFoerderbereich(req),
+    context: (api) => api.getFoerderbereichFormContext(),
+  })
+);
