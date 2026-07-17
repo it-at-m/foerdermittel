@@ -62,8 +62,7 @@ const headers: DataTableHeader<Partial<StichwortbereichResponseDTO>>[] = [
   {
     title: t("model.stichwortbereich.bereich"),
     value: "bereich",
-    align: "center",
-    width: 200,
+    width: 350,
   },
   { title: t("model.stichwortbereich.bezeichnung"), value: "bezeichnung" },
 ];
