@@ -29,8 +29,7 @@ export default function useAPI<TRequest, TResponse>(
  */
 export default function useAPI<TRequest, TResponse>(
   apiMethod:
-    | ((params: TRequest) => Promise<TResponse>)
-    | (() => Promise<TResponse>)
+    ((params: TRequest) => Promise<TResponse>) | (() => Promise<TResponse>)
 ) {
   const loadingInternal = ref(false);
   const errorInternal = ref(false);
