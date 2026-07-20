@@ -3,7 +3,7 @@
     <unsaved-changes-dialog
       :model-value="showUnsavedChangesDialog"
       :loading="loading"
-      @cancel="discardDialogChanges"
+      @cancel="closeDialog"
       @confirm="continueEditing"
     />
     <v-dialog
@@ -92,11 +92,9 @@ const {
   currentValue,
   isDirty,
   showUnsavedChangesDialog,
-  reset,
   track,
   requestClose,
   continueEditing,
-  continuePendingNavigation,
   discardChanges,
 } = useDirtyFlag<Partial<BenutzerhinweisResponseDTO>>(
   benutzerhinweis,
@@ -115,12 +113,6 @@ const requestCloseDialog = () => {
 };
 
 const closeDialog = () => {
-  reset();
-  continuePendingNavigation();
-  emit("close");
-};
-
-const discardDialogChanges = () => {
   discardChanges();
   emit("close");
 };
