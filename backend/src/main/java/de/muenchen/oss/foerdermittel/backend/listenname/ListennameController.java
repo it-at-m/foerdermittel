@@ -1,9 +1,6 @@
 package de.muenchen.oss.foerdermittel.backend.listenname;
 
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
-import de.muenchen.oss.foerdermittel.backend.listenname.Listenname;
-import de.muenchen.oss.foerdermittel.backend.listenname.ListennameFormContext;
-import de.muenchen.oss.foerdermittel.backend.listenname.ListennameService;
 import de.muenchen.oss.foerdermittel.backend.listenname.dto.ListennameCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.listenname.dto.ListennameMapper;
 import de.muenchen.oss.foerdermittel.backend.listenname.dto.ListennameResponseDTO;
@@ -23,58 +20,98 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping(value = "/listennamen", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(
+        value = "/listennamen",
+        produces = MediaType.APPLICATION_JSON_VALUE
+)
 @SecurityRequirement(name = OpenAPIDocumentationConfiguration.SECURITY_SCHEME_NAME)
 public class ListennameController {
+
 
     private final ListennameService listennameService;
     private final ListennameMapper listennameMapper;
 
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ListennameResponseDTO getListenname(@PathVariable("id") final String listennameId) {
-        return listennameMapper.toDTO(listennameService.getListenname(listennameId));
+    public ListennameResponseDTO getListenname(
+            @PathVariable("id") final String kurzbez) {
+
+        return listennameMapper.toDTO(
+                listennameService.getListenname(kurzbez)
+        );
     }
+
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<ListennameResponseDTO> getListennamenByPageable(@ParameterObject @PageableDefault(
-            sort = "kurzbez"
-    ) final Pageable pageable) {
-        final Page<Listenname> pageWithListenname = listennameService.getAllListennamen(pageable);
-        final List<ListennameResponseDTO> listennameResponseDTOList = pageWithListenname.getContent().stream()
-                .map(listennameMapper::toDTO)
-                .toList();
-        return new PageImpl<>(listennameResponseDTOList, pageWithListenname.getPageable(), pageWithListenname.getTotalElements());
+    public Page<ListennameResponseDTO> getListennamen(
+            @ParameterObject
+            @PageableDefault(sort = "kurzbez")
+            final Pageable pageable) {
+
+
+        Page<Listenname> page =
+                listennameService.getAllListennamen(pageable);
+
+
+        List<ListennameResponseDTO> dto =
+                page.getContent()
+                        .stream()
+                        .map(listennameMapper::toDTO)
+                        .toList();
+
+
+        return new PageImpl<>(
+                dto,
+                page.getPageable(),
+                page.getTotalElements()
+        );
     }
 
-    @GetMapping("/form-context")
-    @ResponseStatus(HttpStatus.OK)
-    public ListennameFormContext getListennameFormContext() {
-        return listennameService.getListennameFormContext();
-    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ListennameResponseDTO createListenname(@Valid @RequestBody final ListennameCreateDTO listennameCreateDTO) {
-        return listennameMapper.toDTO(listennameService.createListenname(listennameMapper.toEntity(listennameCreateDTO)));
+    public ListennameResponseDTO createListenname(
+            @Valid
+            @RequestBody final ListennameCreateDTO dto) {
+
+
+        return listennameMapper.toDTO(
+                listennameService.createListenname(
+                        listennameMapper.toEntity(dto)
+                )
+        );
     }
+
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ListennameResponseDTO updateListenname(@Valid @RequestBody final ListennameUpdateDTO listennameUpdateDTO,
-            @PathVariable("id") final String listennameId) {
-        return listennameMapper
-                .toDTO(listennameService.updateListenname(listennameMapper.toEntity(listennameUpdateDTO), listennameId));
+    public ListennameResponseDTO updateListenname(
+            @PathVariable("id") final String kurzbez,
+            @Valid
+            @RequestBody final ListennameUpdateDTO dto) {
+
+
+        return listennameMapper.toDTO(
+                listennameService.updateListenname(
+                        listennameMapper.toEntity(dto),
+                        kurzbez
+                )
+        );
     }
+
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteListenname(@PathVariable("id") final String listennameId) {
-        listennameService.deleteListenname(listennameId);
+    public void deleteListenname(
+            @PathVariable("id") final String kurzbez) {
+
+        listennameService.deleteListenname(kurzbez);
     }
 
 }

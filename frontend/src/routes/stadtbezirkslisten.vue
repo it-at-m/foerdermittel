@@ -65,7 +65,20 @@ const headers: DataTableHeader<Partial<StadtbezirkslisteResponseDTO>>[] = [
     align: "center",
     width: 100,
   },
-  { title: t("model.stadtbezirksliste.bezStadtbezirk"), value: "bezStadtbezirk" },
+  {
+    title: t("model.stadtbezirksliste.listeBezeichnung"),
+    value: "listeBezeichnung",
+  },
+  {
+    title: t("model.stadtbezirksliste.bezStadtbezirk"),
+    value: "bezStadtbezirk",
+    width: "60",
+    align: "center"
+  },
+  {
+    title: t("model.stadtbezirksliste.stadtbezirkBezeichnung"),
+    value: "stadtbezirkBezeichnung",
+  },
   { title: t("model.stadtbezirksliste.bezeichnung"), value: "bezeichnung" },
 ];
 

@@ -1,14 +1,16 @@
 package de.muenchen.oss.foerdermittel.backend.stadtbezirksliste;
 
+import de.muenchen.oss.foerdermittel.backend.listenname.Listenname;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
-import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -16,40 +18,73 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class StadtbezirkslisteService {
 
+
     private final StadtbezirkslisteRepository stadtbezirkslisteRepository;
 
-    @PreAuthorize(Authorities.HAS_ANY_ROLE)
-    @Transactional(readOnly = true)
-    public Stadtbezirksliste getStadtbezirksliste(final String stadtbezirkslisteId) {
-        log.info("Get Stadtbezirksliste with ID {}", stadtbezirkslisteId);
-        return ServiceUtils.getEntityOrThrowNotFoundException(stadtbezirkslisteId, stadtbezirkslisteRepository);
-    }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public Page<Stadtbezirksliste> getAllStadtbezirkslisten(final Pageable pageable) {
-        log.info("Get all Stadtbezirkslisten with Pageable {}", pageable);
-        return stadtbezirkslisteRepository.findAll(pageable);
+    public List<Stadtbezirksliste> getStadtbezirke(final String kurzbez) {
+
+        log.info("Get Stadtbezirke for Listenname {}", kurzbez);
+
+        return stadtbezirkslisteRepository.findByListenName_Kurzbez(kurzbez);
+    }
+
+
+    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
+    public void setStadtbezirke(
+            final String kurzbez,
+            final List<BigDecimal> stadtbezirke) {
+
+        log.debug("Add Stadtbezirke {} for Listenname {}", stadtbezirke, kurzbez);
+
+
+        Listenname listenname = new Listenname();
+        listenname.setKurzbez(kurzbez);
+
+
+        for (BigDecimal bezirk : stadtbezirke) {
+
+            boolean existiert = stadtbezirkslisteRepository
+                    .findByListenName_Kurzbez(kurzbez)
+                    .stream()
+                    .anyMatch(e -> e.getId().getStadtbezirk().equals(bezirk));
+
+
+            if (!existiert) {
+
+                Stadtbezirksliste eintrag = new Stadtbezirksliste();
+
+                eintrag.setId(
+                        new StadtbezirkslistePrimaryKey(
+                                kurzbez,
+                                bezirk
+                        )
+                );
+
+                eintrag.setListenName(listenname);
+
+
+                Stadtbezirk stadtbezirk = new Stadtbezirk();
+                stadtbezirk.setStadtbezirk(bezirk);
+
+                eintrag.setStadtbezirk(stadtbezirk);
+
+
+                stadtbezirkslisteRepository.insert(eintrag);
+            }
+        }
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    public Stadtbezirksliste createStadtbezirksliste(final Stadtbezirksliste stadtbezirksliste) {
-        log.debug("Create Stadtbezirksliste {}", stadtbezirksliste);
-        return stadtbezirkslisteRepository.insert(stadtbezirksliste);
-    }
+    public void deleteStadtbezirk(
+            String kurzbez,
+            BigDecimal stadtbezirk) {
 
-    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    public Stadtbezirksliste updateStadtbezirksliste(final Stadtbezirksliste stadtbezirksliste, final String stadtbezirkslisteId) {
-        final Stadtbezirksliste foundStadtbezirksliste = ServiceUtils.getEntityOrThrowNotFoundException(stadtbezirkslisteId, stadtbezirkslisteRepository);
-        foundStadtbezirksliste.setBezeichnung(stadtbezirksliste.getBezeichnung());
-        log.debug("Update Stadtbezirksliste {}", foundStadtbezirksliste);
-        return stadtbezirkslisteRepository.update(foundStadtbezirksliste);
-    }
-
-    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    public void deleteStadtbezirksliste(final String stadtbezirkslisteId) {
-        log.debug("Delete Stadtbezirksliste with ID {}", stadtbezirkslisteId);
-        ServiceUtils.getEntityOrThrowNotFoundException(stadtbezirkslisteId, stadtbezirkslisteRepository);
-        stadtbezirkslisteRepository.deleteById(stadtbezirkslisteId);
+        stadtbezirkslisteRepository
+                .deleteByListenName_KurzbezAndStadtbezirk_Stadtbezirk(
+                        kurzbez,
+                        stadtbezirk);
     }
 }

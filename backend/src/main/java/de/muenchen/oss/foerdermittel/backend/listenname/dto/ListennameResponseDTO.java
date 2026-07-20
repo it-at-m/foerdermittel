@@ -1,8 +1,14 @@
 package de.muenchen.oss.foerdermittel.backend.listenname.dto;
 
-import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
-import java.math.BigDecimal;
+@Data
+public class ListennameResponseDTO {
 
-public record ListennameResponseDTO(@NotNull String id, @NotNull String kurzbez, @NotNull String bezeichnung) {
+    private String id;
+
+    private String kurzbez;
+
+    private String bezeichnung;
+
 }
