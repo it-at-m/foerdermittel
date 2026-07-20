@@ -5,17 +5,10 @@
   >
     <benutzerhinweis-dialog
       :loading="loading"
-      :benutzerhinweis="benutzerhinweis"
+      :benutzerhinweis="benutzerhinweis ?? EMPTY_ITEM_TEMPLATE"
       :display-mode="displayMode"
-      :is-dirty="isDirty"
-      @close="requestCloseDialog"
+      @close="showBenutzerhinweisDialog = false"
       @save="handleSave"
-    />
-    <unsaved-changes-dialog
-      :model-value="showUnsavedChangesDialog"
-      :loading="loading"
-      @cancel="discardDialogChanges"
-      @confirm="continueEditing"
     />
     <v-row class="justify-space-between align-center flex-0-0">
       <v-col cols="auto">
@@ -63,13 +56,11 @@ import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
 
 import BenutzerhinweisDialog from "@/components/BenutzerhinweisDialog.vue";
-import UnsavedChangesDialog from "@/components/common/UnsavedChangesDialog.vue";
 import {
   useCreateBenutzerhinweis,
   useGetBenutzerhinweis,
   useUpdateBenutzerhinweis,
 } from "@/composables/api/useBenutzerhinweisApi";
-import { useDirtyFlag } from "@/composables/useDirtyFlag";
 import useHasAnyRole from "@/composables/useHasAnyRole";
 import { STATUS_INDICATORS } from "@/constants";
 import { useSnackbarStore } from "@/stores/snackbar";
@@ -87,8 +78,15 @@ const route = useRoute();
 // always contains a valid route name, implemented fallback only to make vue-tsc happy without building to generate route-map.d.ts
 const routeName = computed(() => (route.name as string).replace("/", ""));
 
+const EMPTY_ITEM_TEMPLATE: Partial<BenutzerhinweisResponseDTO> = {
+  viewId: routeName.value,
+  funktionsbeschreibung: "",
+  bedienung: "",
+  pruefungVorgaben: "",
+};
+
 const {
-  data: benutzerhinweisData,
+  data: benutzerhinweis,
   call: getBenutzerhinweis,
   loading: getBenutzerhinweisLoading,
 } = useGetBenutzerhinweis();
@@ -133,17 +131,10 @@ const displayMode = computed(() => {
   if (!isAdmin.value) {
     return InputDisplayMode.READ;
   }
-  return benutzerhinweisData.value
+  return benutzerhinweis.value
     ? InputDisplayMode.EDIT
     : InputDisplayMode.CREATE;
 });
-
-const EMPTY_ITEM_TEMPLATE: Partial<BenutzerhinweisResponseDTO> = {
-  viewId: routeName.value,
-  funktionsbeschreibung: "",
-  bedienung: "",
-  pruefungVorgaben: "",
-};
 
 const benutzerhinweiseDomain = t("model.benutzerhinweis.modelName");
 async function handleSave(
@@ -182,44 +173,4 @@ const onSuccess = async (msg: string) => {
 const onFailure = (msg: string) => {
   snackbarStore.push({ text: msg, color: STATUS_INDICATORS.ERROR });
 };
-
-const {
-  currentValue: benutzerhinweis,
-  isDirty,
-  showUnsavedChangesDialog,
-  reset,
-  track,
-  requestClose,
-  continueEditing,
-  continuePendingNavigation,
-  discardChanges,
-} = useDirtyFlag<Partial<BenutzerhinweisResponseDTO>>(
-  benutzerhinweisData.value ?? EMPTY_ITEM_TEMPLATE,
-  isAdmin
-);
-
-const closeDialog = () => {
-  showBenutzerhinweisDialog.value = false;
-  reset();
-  continuePendingNavigation();
-};
-
-const requestCloseDialog = () => {
-  requestClose(closeDialog);
-};
-
-const discardDialogChanges = () => {
-  showBenutzerhinweisDialog.value = false;
-  discardChanges();
-};
-watch(
-  () => displayMode.value,
-  (newDisplayMode) => {
-    if (newDisplayMode === InputDisplayMode.CREATE) {
-      track(EMPTY_ITEM_TEMPLATE);
-    } else if (newDisplayMode === InputDisplayMode.EDIT) {
-      track(benutzerhinweisData.value as Partial<BenutzerhinweisResponseDTO>);
-    }
-  }
-);
 </script>
