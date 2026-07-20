@@ -44,7 +44,7 @@ import TraegerForm from "@/components/forms/TraegerForm.vue";
 import {
   useCreateTraeger,
   useDeleteTraeger,
-  useGetTraeger1,
+  useGetAllTraeger,
   useGetTraegerFormContext,
   useUpdateTraeger,
 } from "@/composables/api/useTraegerApi";
@@ -77,7 +77,7 @@ const {
   data: traeger,
   call: getTraeger,
   loading: getTraegerLoading,
-} = useGetTraeger1();
+} = useGetAllTraeger();
 
 const {
   data: traegerFormContext,

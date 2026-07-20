@@ -35,39 +35,7 @@ class StadtbezirkServiceTest {
     private StadtbezirkService unitUnderTest;
 
     @Nested
-    class GetStadtbezirk {
-        @Test
-        void givenIdExists_thenReturnEntity() {
-            // Given
-            final BigDecimal id = BigDecimal.valueOf(1);
-            final Stadtbezirk entity = new Stadtbezirk(id, BEZEICHNUNG);
-            when(stadtbezirkRepository.findById(id)).thenReturn(Optional.of(entity));
-
-            // When
-            final Stadtbezirk result = unitUnderTest.getStadtbezirk(id);
-
-            // Then
-            verify(stadtbezirkRepository, times(1)).findById(id);
-            assertThat(result).usingRecursiveComparison().isEqualTo(entity);
-        }
-
-        @Test
-        void givenIdNotExists_thenThrowNotFoundException() {
-            // Given
-            final BigDecimal id = BigDecimal.valueOf(1);
-            when(stadtbezirkRepository.findById(id)).thenReturn(Optional.empty());
-
-            // When
-            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.getStadtbezirk(id));
-
-            // Then
-            verify(stadtbezirkRepository, times(1)).findById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
-        }
-    }
-
-    @Nested
-    class GetAllStadtbezirke {
+    class GetStadtbezirke {
         @Test
         void givenPageable_thenReturnPageOfEntities() {
             // Given
@@ -83,7 +51,7 @@ class StadtbezirkServiceTest {
             when(stadtbezirkRepository.findAll(pageable)).thenReturn(expectedPage);
 
             // When
-            final Page<Stadtbezirk> result = unitUnderTest.getAllStadtbezirke(pageable);
+            final Page<Stadtbezirk> result = unitUnderTest.getStadtbezirke(pageable);
 
             // Then
             verify(stadtbezirkRepository, times(1)).findAll(pageable);

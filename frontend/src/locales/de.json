@@ -96,7 +96,13 @@
       "bezeichnung": "Bezeichnung"
     },
     "foerderbereich": {
-      "modelName": "Förderbereich | Förderbereiche"
+      "modelName": "Förderbereich | Förderbereiche",
+      "fb": "Förderbereich",
+      "bezeichnung": "Bezeichnung",
+      "finanzausgleich": "FAG",
+      "jahresstatistik": "Jahresstatistik",
+      "kindergarten": "Kindergarten",
+      "nichtRelevant": "Nicht relevant"
     },
     "krankenhaus": {
       "modelName": "Krankenhaus | Krankenhäuser",
@@ -104,7 +110,9 @@
       "bezeichnung": "Bezeichnung"
     },
     "kurzbezeichnung": {
-      "modelName": "Kurzbezeichnung | Kurzbezeichnungen"
+      "modelName": "Kurzbezeichnung | Kurzbezeichnungen",
+      "kurzbez": "Kurzbezeichnung",
+      "bezeichnung": "Bezeichnung"
     },
     "publikation": {
       "modelName": "Publikation | Publikationen",
@@ -133,7 +141,9 @@
       "modelName": "Stadtbezirksliste | Stadtbezirkslisten"
     },
     "stichwortbereich": {
-      "modelName": "Stichwortbereich | Stichwortbereiche"
+      "modelName": "Stichwortbereich | Stichwortbereiche",
+      "bereich": "Bereich",
+      "bezeichnung": "Bezeichnung"
     },
     "traeger": {
       "modelName": "Träger",

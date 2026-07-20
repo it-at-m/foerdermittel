@@ -69,55 +69,6 @@ class TraegerIntegrationTest {
     class GetTraeger {
 
         @Test
-        void givenEntityExists_thenReturnEntity() {
-            restTestClient
-                    .get()
-                    .uri("/traeger/{id}", EXISTING_ID)
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
-                    .exchange()
-                    .expectStatus().isOk()
-                    .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(TraegerResponseDTO.class)
-                    .value(responseDTO -> {
-                        assertNotNull(responseDTO);
-                        assertThat(responseDTO.id()).isEqualTo(String.valueOf(EXISTING_ID));
-                    });
-        }
-
-        @Test
-        void givenEntityNotExists_thenReturnNotFound() {
-            restTestClient
-                    .get()
-                    .uri("/traeger/{id}", NON_EXISTING_ID)
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
-                    .exchange()
-                    .expectStatus().isNotFound();
-        }
-
-        private static Stream<Arguments> authorizationMappings() {
-            return Stream.of(
-                    Arguments.of("admin", HttpStatus.OK),
-                    Arguments.of("sachbearbeitung", HttpStatus.OK),
-                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.OK));
-        }
-
-        @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
-        @MethodSource("authorizationMappings")
-        void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
-            restTestClient
-                    .get()
-                    .uri("/traeger/{id}", EXISTING_ID)
-                    .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
-                    .exchange()
-                    .expectStatus().isEqualTo(httpStatus);
-        }
-
-    }
-
-    @Nested
-    class GetPaginatedTraeger {
-
-        @Test
         void givenPageable_thenReturnPageOfEntities() {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
