@@ -64,7 +64,7 @@ public class HauptabschnittController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public HauptabschnittResponseDTO updateHauptabschnitt(@Valid @RequestBody final HauptabschnittUpdateDTO hauptabschnittUpdateDTO,
-                                                    @PathVariable("id") final String hauptabschnittId) {
+            @PathVariable("id") final String hauptabschnittId) {
         return hauptabschnittMapper
                 .toDTO(hauptabschnittService.updateHauptabschnitt(hauptabschnittMapper.toEntity(hauptabschnittUpdateDTO), hauptabschnittId));
     }
