@@ -37,7 +37,9 @@ VALUES ('bauleitungen', 'Funktionsbeschreibung für Bauleitungen', 'Bedienungsh�
        ('traeger', 'Funktionsbeschreibung für Träger', 'Bedienungshínweis für Träger',
         'Prüfungen und Vorgaben für Träger'),
        ('foerderbereiche', 'Funktionsbeschreibung für Förderbereiche', 'Bedienungshínweis für Förderbereiche',
-        'Prüfungen und Vorgaben für Förderbereiche');
+        'Prüfungen und Vorgaben für Förderbereiche'),
+       ('hauptabschnitte', 'Funktionsbeschreibung für Hauptabschnitte', 'Bedienungshínweis für Hauptabschnitte',
+        'Prüfungen und Vorgaben für Hauptabschnitte');
 
 TRUNCATE TABLE foerderbereiche RESTART IDENTITY CASCADE;
 INSERT INTO foerderbereiche (fb, bezeichnung, finanzausgleich, jahresstatistik, kindergarten, nicht_relevant)

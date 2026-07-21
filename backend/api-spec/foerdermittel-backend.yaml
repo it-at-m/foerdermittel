@@ -341,6 +341,47 @@ paths:
           description: OK
       security:
       - bearerAuth: []
+  /hauptabschnitte/{id}:
+    put:
+      tags:
+      - hauptabschnitt-controller
+      operationId: updateHauptabschnitt
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HauptabschnittUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HauptabschnittResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - hauptabschnitt-controller
+      operationId: deleteHauptabschnitt
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /foerderbereiche/{id}:
     put:
       tags:
@@ -997,6 +1038,67 @@ paths:
                 $ref: "#/components/schemas/KrankenhausResponseDTO"
       security:
       - bearerAuth: []
+  /hauptabschnitte:
+    get:
+      tags:
+      - hauptabschnitt-controller
+      operationId: getHauptabschnitte
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "ha,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelHauptabschnittResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - hauptabschnitt-controller
+      operationId: createHauptabschnitt
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HauptabschnittCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HauptabschnittResponseDTO"
+      security:
+      - bearerAuth: []
   /foerderbereiche:
     get:
       tags:
@@ -1310,6 +1412,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/KrankenhausFormContext"
+      security:
+      - bearerAuth: []
+  /hauptabschnitte/form-context:
+    get:
+      tags:
+      - hauptabschnitt-controller
+      operationId: getHauptabschnittFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HauptabschnittFormContext"
       security:
       - bearerAuth: []
   /foerderbereiche/form-context:
@@ -1677,6 +1793,28 @@ components:
           type: string
         bezeichnung:
           type: string
+    HauptabschnittUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    HauptabschnittResponseDTO:
+      required:
+      - bezeichnung
+      - ha
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        ha:
+          type: string
+        bezeichnung:
+          type: string
     FoerderbereichUpdateDTO:
       required:
       - bezeichnung
@@ -1924,6 +2062,21 @@ components:
           maxLength: 200
           minLength: 1
           type: string
+    HauptabschnittCreateDTO:
+      required:
+      - bezeichnung
+      - ha
+      type: object
+      properties:
+        ha:
+          maxLength: 2
+          minLength: 1
+          pattern: "^[a-zA-Z0-9]+$"
+          type: string
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
     FoerderbereichCreateDTO:
       required:
       - bezeichnung
@@ -2161,6 +2314,24 @@ components:
       type: object
       properties:
         krhNamen:
+          type: array
+          items:
+            type: string
+    PagedModelHauptabschnittResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/HauptabschnittResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    HauptabschnittFormContext:
+      required:
+      - has
+      type: object
+      properties:
+        has:
           type: array
           items:
             type: string
