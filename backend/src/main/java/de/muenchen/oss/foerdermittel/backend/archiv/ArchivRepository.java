@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface ArchivRepository extends PagingAndSortingRepository<Archiv, Long>, CrudRepository<Archiv, Long>,
         InsertAndUpdateRepository<Archiv> {
 
-    @Query("SELECT a.id FROM Archiv a JOIN a.projekte p")
+    @Query("SELECT a.id FROM Archiv a JOIN a.projekt p")
     List<Long> findAllWithProjekt();
 
 

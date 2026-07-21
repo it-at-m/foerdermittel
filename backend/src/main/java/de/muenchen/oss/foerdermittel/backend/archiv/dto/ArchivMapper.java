@@ -9,15 +9,15 @@ import org.mapstruct.Mapping;
 @Mapper
 public interface ArchivMapper {
 
-    @Mapping(source = "projekte.projnr", target = "projnr")
-    @Mapping(source = "projekte.pname", target = "pname")
-    @Mapping(source = "projekte.pstrasse", target = "pstrasse")
-    @Mapping(source = "projekte.fob_fb", target = "fob_fb")
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "projekt.projnr", target = "projnr")
+    @Mapping(source = "projekt.pname", target = "pname")
+    @Mapping(source = "projekt.pstrasse", target = "pstrasse")
+    @Mapping(source = "projekt.fob_fb", target = "fob_fb")
     ArchivResponseDTO toDTO(Archiv archiv);
 
     Archiv toEntity(ArchivCreateDTO archivCreateDTO);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "projekte", ignore = true)
     Archiv toEntity(ArchivUpdateDTO dto);
 }

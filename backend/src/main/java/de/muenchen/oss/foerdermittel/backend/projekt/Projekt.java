@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.projekte;
+package de.muenchen.oss.foerdermittel.backend.projekt;
 
 import de.muenchen.oss.foerdermittel.backend.archiv.Archiv;
 import jakarta.persistence.*;
@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "projekte")
-public class Projekte implements Serializable {
+public class Projekt implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -44,7 +44,7 @@ public class Projekte implements Serializable {
 
     // Bidirektionale 1:1 Beziehung zu Archiv
     @OneToOne(
-            mappedBy = "projekte",
+            mappedBy = "projekt",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY

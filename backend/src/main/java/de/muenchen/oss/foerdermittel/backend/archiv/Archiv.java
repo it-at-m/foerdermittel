@@ -1,6 +1,6 @@
 package de.muenchen.oss.foerdermittel.backend.archiv;
 
-import de.muenchen.oss.foerdermittel.backend.projekte.Projekte;
+import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -27,7 +27,7 @@ public class Archiv {
     @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "pro_projnr", referencedColumnName = "projnr")
     @NotNull
-    private Projekte projekte;
+    private Projekt projekt;
 
     @Column(name = "speicherdatum", nullable = false)
     @NotNull
