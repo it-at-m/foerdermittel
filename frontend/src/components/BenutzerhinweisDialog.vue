@@ -1,24 +1,32 @@
 <template>
-  <v-dialog
-    :model-value="showDialog"
-    :max-width="DialogWidth.LARGE"
-  >
-    <confirm-card
-      v-if="displayMode"
-      :title="dialogTitle"
+  <div>
+    <unsaved-changes-dialog
+      :model-value="showUnsavedChangesDialog"
       :loading="loading"
-      :disable-confirm="!isFormValid"
-      :hide-confirm="displayMode === InputDisplayMode.READ"
-      @cancel="emit('close')"
-      @confirm="emit('save', activeItem)"
+      @cancel="closeDialog"
+      @confirm="continueEditing"
+    />
+    <v-dialog
+      :model-value="showDialog"
+      :max-width="DialogWidth.LARGE"
     >
-      <benutzerhinweis-form
-        v-model="activeItem"
-        :display-mode="displayMode"
-        @is-valid="updateFormValidity"
-      />
-    </confirm-card>
-  </v-dialog>
+      <confirm-card
+        v-if="displayMode"
+        :title="dialogTitle"
+        :loading="loading"
+        :disable-confirm="!isFormValid || !isDirty"
+        :hide-confirm="displayMode === InputDisplayMode.READ"
+        @cancel="requestCloseDialog"
+        @confirm="emit('save', currentValue)"
+      >
+        <benutzerhinweis-form
+          v-model="currentValue"
+          :display-mode="displayMode"
+          @is-valid="updateFormValidity"
+        />
+      </confirm-card>
+    </v-dialog>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -28,7 +36,9 @@ import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
 import ConfirmCard from "@/components/common/ConfirmCard.vue";
+import UnsavedChangesDialog from "@/components/common/UnsavedChangesDialog.vue";
 import BenutzerhinweisForm from "@/components/forms/BenutzerhinweisForm.vue";
+import { useDirtyFlag } from "@/composables/useDirtyFlag";
 import { DialogWidth } from "@/types/DialogWidth";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
@@ -50,22 +60,6 @@ const {
   displayMode?: InputDisplayMode;
   loading?: boolean;
 }>();
-const activeItem = ref<Partial<BenutzerhinweisResponseDTO>>({
-  ...benutzerhinweis,
-} as Partial<BenutzerhinweisResponseDTO>);
-
-watch(
-  () => benutzerhinweis,
-  (newBenutzerhinweis) => {
-    activeItem.value = { ...newBenutzerhinweis };
-  }
-);
-
-watch(showDialog, (newShowDialog) => {
-  if (newShowDialog) {
-    activeItem.value = { ...benutzerhinweis };
-  }
-});
 
 const isFormValid = ref(false);
 
@@ -86,4 +80,40 @@ const dialogTitle = computed(() => {
       return "";
   }
 });
+
+const enableDirtyCheck = computed(() => {
+  return (
+    displayMode === InputDisplayMode.CREATE ||
+    displayMode === InputDisplayMode.EDIT
+  );
+});
+
+const {
+  currentValue,
+  isDirty,
+  showUnsavedChangesDialog,
+  track,
+  requestClose,
+  continueEditing,
+  discardChanges,
+} = useDirtyFlag<Partial<BenutzerhinweisResponseDTO>>(
+  benutzerhinweis,
+  enableDirtyCheck
+);
+
+watch(
+  () => displayMode,
+  () => {
+    track(benutzerhinweis);
+  }
+);
+
+const requestCloseDialog = () => {
+  requestClose(closeDialog);
+};
+
+const closeDialog = () => {
+  discardChanges();
+  emit("close");
+};
 </script>
