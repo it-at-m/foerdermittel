@@ -65,7 +65,19 @@
       "modelName": "Ist-Kosten"
     },
     "archiv": {
-      "modelName": "Archiv"
+      "modelName": "Archiv",
+      "id": "ID",
+      "speicherDatum": "Speicherdatum",
+      "speicherAkt": "Speicherakt",
+      "speicherRechnungen": "Speicherrechnungen",
+      "mikroDatPlan": "Mikrodatplan",
+      "mikroDat": "Mikrodatum",
+      "notizen": "Noitzen",
+      "projnr": "Projektnummer",
+      "pname": "Projektname",
+      "pstrasse": "Projektstrasse",
+      "fob_fb": "Fachbereich"
+
     },
     "haushaltsjahr": {
       "modelName": "Haushaltsjahr | Haushaltsjahre"
