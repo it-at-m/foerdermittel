@@ -5,7 +5,7 @@
   >
     <benutzerhinweis-dialog
       :loading="loading"
-      :benutzerhinweis="benutzerhinweis ?? EMPTY_ITEM_TEMPLATE"
+      :benutzerhinweis="benutzerhinweis ?? emptyItemTemplate"
       :display-mode="displayMode"
       @close="showBenutzerhinweisDialog = false"
       @save="handleSave"
@@ -78,6 +78,15 @@ const route = useRoute();
 // always contains a valid route name, implemented fallback only to make vue-tsc happy without building to generate route-map.d.ts
 const routeName = computed(() => (route.name as string).replace("/", ""));
 
+const emptyItemTemplate = computed<Partial<BenutzerhinweisResponseDTO>>(() => {
+  return {
+    viewId: routeName.value,
+    funktionsbeschreibung: "",
+    bedienung: "",
+    pruefungVorgaben: "",
+  };
+});
+
 const {
   data: benutzerhinweis,
   call: getBenutzerhinweis,
@@ -128,13 +137,6 @@ const displayMode = computed(() => {
     ? InputDisplayMode.EDIT
     : InputDisplayMode.CREATE;
 });
-
-const EMPTY_ITEM_TEMPLATE: Partial<BenutzerhinweisResponseDTO> = {
-  viewId: routeName.value,
-  funktionsbeschreibung: "",
-  bedienung: "",
-  pruefungVorgaben: "",
-};
 
 const benutzerhinweiseDomain = t("model.benutzerhinweis.modelName");
 async function handleSave(
