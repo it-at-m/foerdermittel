@@ -509,6 +509,33 @@ paths:
           description: OK
       security:
       - bearerAuth: []
+  /archiv/{id}:
+    put:
+      tags:
+      - archiv-controller
+      operationId: updateArchivNotiz
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArchivUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArchivResponseDTO"
+      security:
+      - bearerAuth: []
   /traeger:
     get:
       tags:
@@ -1200,6 +1227,67 @@ paths:
                 $ref: "#/components/schemas/BauleitungResponseDTO"
       security:
       - bearerAuth: []
+  /archiv:
+    get:
+      tags:
+      - archiv-controller
+      operationId: getArchiveintrag
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "speicherDatum,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelArchivResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - archiv-controller
+      operationId: createArchive
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArchivCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArchivResponseDTO"
+      security:
+      - bearerAuth: []
   /traeger/form-context:
     get:
       tags:
@@ -1352,6 +1440,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BauleitungFormContext"
+      security:
+      - bearerAuth: []
+  /archiv/form-context:
+    get:
+      tags:
+      - archiv-controller
+      operationId: getArchivFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArchivFormContext"
       security:
       - bearerAuth: []
   /actuator:
@@ -1804,6 +1906,72 @@ components:
           type: string
         bezeichnung:
           type: string
+    ArchivUpdateDTO:
+      required:
+      - mikroDat
+      - mikroDatPlan
+      - notizen
+      - speicherAkt
+      - speicherDatum
+      - speicherRechnungen
+      type: object
+      properties:
+        speicherDatum:
+          type: string
+          format: date
+        speicherAkt:
+          type: boolean
+        speicherRechnungen:
+          type: boolean
+        mikroDatPlan:
+          type: string
+          format: date
+        mikroDat:
+          type: string
+          format: date
+        notizen:
+          type: string
+    ArchivResponseDTO:
+      required:
+      - fob_fb
+      - id
+      - mikroDat
+      - mikroDatPlan
+      - notizen
+      - pname
+      - projnr
+      - pstrasse
+      - speicherAkt
+      - speicherDatum
+      - speicherRechnungen
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        speicherDatum:
+          type: string
+          format: date
+        speicherAkt:
+          type: boolean
+        speicherRechnungen:
+          type: boolean
+        mikroDatPlan:
+          type: string
+          format: date
+        mikroDat:
+          type: string
+          format: date
+        notizen:
+          type: string
+        projnr:
+          type: string
+        pname:
+          type: string
+        pstrasse:
+          type: string
+        fob_fb:
+          type: number
     TraegerCreateDTO:
       required:
       - bezeichnung
@@ -2004,6 +2172,27 @@ components:
         bezeichnung:
           maxLength: 200
           minLength: 1
+          type: string
+    ArchivCreateDTO:
+      required:
+      - speicherAkt
+      - speicherRechnungen
+      type: object
+      properties:
+        speicherDatum:
+          type: string
+          format: date
+        speicherAkt:
+          type: boolean
+        speicherRechnungen:
+          type: boolean
+        mikroDatPlan:
+          type: string
+          format: date
+        mikroDat:
+          type: string
+          format: date
+        notizen:
           type: string
     PageMetadata:
       type: object
@@ -2218,6 +2407,25 @@ components:
           type: array
           items:
             type: string
+    PagedModelArchivResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/ArchivResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    ArchivFormContext:
+      required:
+      - archivId
+      type: object
+      properties:
+        archivId:
+          type: array
+          items:
+            type: integer
+            format: int64
     Link:
       type: object
       properties:
