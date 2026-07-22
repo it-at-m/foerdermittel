@@ -44,8 +44,8 @@ import ListennameForm from "@/components/forms/ListennameForm.vue";
 import {
   useCreateListenname,
   useDeleteListenname,
-  useGetListennameFormContext,
   useGetListennamen,
+  useGetListennameFormContext,
   useUpdateListenname,
 } from "@/composables/api/useListennameApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
@@ -75,33 +75,32 @@ const EMPTY_ITEM_TEMPLATE: Partial<ListennameResponseDTO> = {
 
 const {
   data: listennamen,
-  call: getListennamen,
-  loading: getListennamenLoading,
+  call: getlistennamen,
+  loading: getlistennamenLoading,
 } = useGetListennamen();
 
 const {
   data: listennameFormContext,
-  call: getListennameFormContext,
-  loading: getListennameFormContextLoading,
+  call: getlistennameFormContext,
+  loading: getlistennameFormContextLoading,
 } = useGetListennameFormContext();
 
-type ListennameFormType = InstanceType<typeof ListennameForm>;
-const listennameFormRef = useTemplateRef<ListennameFormType>(
-  "listennameForm"
-);
+type listennameFormType = InstanceType<typeof ListennameForm>;
+const listennameFormRef =
+  useTemplateRef<listennameFormType>("listennameForm");
 
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => listennamen.value?.page?.totalPages),
-  getListennamen,
+  getlistennamen,
   isAdmin,
-  getListennameFormContext,
+  getlistennameFormContext,
   () => listennameFormRef.value?.validate()
 );
 
 const {
-  call: createListenname,
-  loading: createListennameLoading,
-  error: createListennamenError,
+  call: createlistenname,
+  loading: createlistennameLoading,
+  error: createlistennamenError,
 } = useCreateListenname();
 
 const handleCreate = async (
@@ -109,10 +108,10 @@ const handleCreate = async (
 ) => {
   // TODO: some type checking improvements
   const model = listennameCreateDTO as ListennameResponseDTO;
-  await createListenname({
+  await createlistenname({
     listennameCreateDTO: model,
   });
-  if (!createListennamenError.value) {
+  if (!createlistennamenError.value) {
     await onSuccess(t("common.message.created", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.createdError", [t(domainKey)]));
@@ -120,9 +119,9 @@ const handleCreate = async (
 };
 
 const {
-  call: updateListenname,
-  loading: updateListennameLoading,
-  error: updateListennamenError,
+  call: updatelistenname,
+  loading: updatelistennameLoading,
+  error: updatelistennamenError,
 } = useUpdateListenname();
 
 const handleUpdate = async (
@@ -130,11 +129,11 @@ const handleUpdate = async (
 ) => {
   // TODO: some type checking improvements
   const model = listennameUpdateDTO as ListennameResponseDTO;
-  await updateListenname({
+  await updatelistenname({
     id: model.id,
     listennameUpdateDTO: model,
   });
-  if (!updateListennamenError.value) {
+  if (!updatelistennamenError.value) {
     await onSuccess(t("common.message.updated", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.updatedError", [t(domainKey)]));
@@ -142,16 +141,16 @@ const handleUpdate = async (
 };
 
 const {
-  call: deleteListenname,
-  loading: deleteListennameLoading,
-  error: deleteListennamenError,
+  call: deletelistenname,
+  loading: deletelistennameLoading,
+  error: deletelistennamenError,
 } = useDeleteListenname();
 
 const handleDelete = async (id: string) => {
-  await deleteListenname({
+  await deletelistenname({
     id,
   });
-  if (!deleteListennamenError.value) {
+  if (!deletelistennamenError.value) {
     await onSuccess(t("common.message.deleted", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.deletedError", [t(domainKey)]));
@@ -160,10 +159,10 @@ const handleDelete = async (id: string) => {
 
 const loading = computed(
   () =>
-    getListennamenLoading.value ||
-    getListennameFormContextLoading.value ||
-    createListennameLoading.value ||
-    updateListennameLoading.value ||
-    deleteListennameLoading.value
+    getlistennamenLoading.value ||
+    getlistennameFormContextLoading.value ||
+    createlistennameLoading.value ||
+    updatelistennameLoading.value ||
+    deletelistennameLoading.value
 );
 </script>

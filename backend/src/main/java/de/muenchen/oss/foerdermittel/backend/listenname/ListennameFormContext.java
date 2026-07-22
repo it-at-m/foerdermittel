@@ -4,8 +4,8 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-public record ListennameFormContext(@NotNull List<String> listennamen) {
+public record ListennameFormContext(@NotNull List<String> kurzbezn) {
     public ListennameFormContext {
-        listennamen = List.copyOf(listennamen);
+        kurzbezn = List.copyOf(kurzbezn);
     }
 }

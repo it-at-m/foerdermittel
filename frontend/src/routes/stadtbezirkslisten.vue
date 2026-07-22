@@ -32,7 +32,10 @@
 </template>
 
 <script setup lang="ts">
-import type { StadtbezirkslisteResponseDTO } from "@/api/generated/foerdermittel-backend";
+import type {
+  ListennameResponseDTO,
+  StadtbezirkslisteResponseDTO,
+} from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
 import { computed, useTemplateRef } from "vue";
@@ -58,10 +61,10 @@ const isAdmin = useHasAnyRole(Role.ADMIN);
 
 const { t } = useI18n();
 
-const headers: DataTableHeader<Partial<StadtbezirkslisteResponseDTO>>[] = [
+const headers: DataTableHeader<Partial<ListennameResponseDTO>>[] = [
   {
     title: t("model.stadtbezirksliste.lnaKurzbez"),
-    value: "lnaKurzbez",
+    value: "kurzbez",
     align: "center",
     width: 100,
   },
@@ -71,9 +74,9 @@ const headers: DataTableHeader<Partial<StadtbezirkslisteResponseDTO>>[] = [
   },
   {
     title: t("model.stadtbezirksliste.bezStadtbezirk"),
-    value: "bezStadtbezirk",
+    value: "",
     width: "60",
-    align: "center"
+    align: "center",
   },
   {
     title: t("model.stadtbezirksliste.stadtbezirkBezeichnung"),
@@ -83,7 +86,7 @@ const headers: DataTableHeader<Partial<StadtbezirkslisteResponseDTO>>[] = [
 ];
 
 const EMPTY_ITEM_TEMPLATE: Partial<StadtbezirkslisteResponseDTO> = {
-  lnaKurzbez: undefined,
+  stadtbezirk: undefined,
   bezeichnung: "",
 };
 

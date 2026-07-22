@@ -32,59 +32,61 @@ public class StadtbezirkslisteService {
     }
 
 
-    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    public void setStadtbezirke(
-            final String kurzbez,
-            final List<BigDecimal> stadtbezirke) {
+//    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
+//    public void setStadtbezirke(
+//            final String kurzbez,
+//            final List<BigDecimal> stadtbezirke) {
+//
+//        log.debug("Add Stadtbezirke {} for Listenname {}", stadtbezirke, kurzbez);
+//
+//
+//        Listenname listenname = new Listenname();
+//        listenname.setKurzbez(kurzbez);
+//
+//
+//        for (BigDecimal bezirk : stadtbezirke) {
+//
+//            boolean existiert = stadtbezirkslisteRepository
+//                    .findByListenName_Kurzbez(kurzbez)
+//                    .stream()
+//                    .anyMatch(e -> e.getId().getStadtbezirk().equals(bezirk));
+//
+//
+//            if (!existiert) {
+//
+//                Stadtbezirksliste eintrag = new Stadtbezirksliste();
+//
+//                eintrag.setId(
+//                        new StadtbezirkslistePrimaryKey(
+//                                kurzbez,
+//                                bezirk
+//                        )
+//                );
+//
+//                eintrag.setListenName(listenname);
+//
+//
+//                Stadtbezirk stadtbezirk = new Stadtbezirk();
+//                stadtbezirk.setStadtbezirk(bezirk);
+//
+//                eintrag.setStadtbezirk(stadtbezirk);
+//
+//
+//                stadtbezirkslisteRepository.insert(eintrag);
+//            }
+//        }
+//    }
+//
+//    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
+//    public void deleteStadtbezirk(
+//            String kurzbez,
+//            BigDecimal stadtbezirk) {
+//
+//        stadtbezirkslisteRepository
+//                .deleteByListenName_KurzbezAndStadtbezirk_Stadtbezirk(
+//                        kurzbez,
+//                        stadtbezirk);
+//    }
 
-        log.debug("Add Stadtbezirke {} for Listenname {}", stadtbezirke, kurzbez);
-
-
-        Listenname listenname = new Listenname();
-        listenname.setKurzbez(kurzbez);
-
-
-        for (BigDecimal bezirk : stadtbezirke) {
-
-            boolean existiert = stadtbezirkslisteRepository
-                    .findByListenName_Kurzbez(kurzbez)
-                    .stream()
-                    .anyMatch(e -> e.getId().getStadtbezirk().equals(bezirk));
-
-
-            if (!existiert) {
-
-                Stadtbezirksliste eintrag = new Stadtbezirksliste();
-
-                eintrag.setId(
-                        new StadtbezirkslistePrimaryKey(
-                                kurzbez,
-                                bezirk
-                        )
-                );
-
-                eintrag.setListenName(listenname);
-
-
-                Stadtbezirk stadtbezirk = new Stadtbezirk();
-                stadtbezirk.setStadtbezirk(bezirk);
-
-                eintrag.setStadtbezirk(stadtbezirk);
-
-
-                stadtbezirkslisteRepository.insert(eintrag);
-            }
-        }
-    }
-
-    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    public void deleteStadtbezirk(
-            String kurzbez,
-            BigDecimal stadtbezirk) {
-
-        stadtbezirkslisteRepository
-                .deleteByListenName_KurzbezAndStadtbezirk_Stadtbezirk(
-                        kurzbez,
-                        stadtbezirk);
-    }
 }
+

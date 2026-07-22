@@ -7,7 +7,7 @@
     <v-row>
       <v-col cols="2">
         <fm-text-field
-          v-model="modelValue.lnaKurzbez"
+          v-model="modelValue.kurzbez"
           :display-mode="displayMode"
           disable-edit
           required
@@ -19,7 +19,7 @@
             rules.maxLength(3),
             rules.pattern(/^[A-Z0-9]{1,3}$/),
             rules['unique']!(
-              stadtbezirkslisteFormContext.lnaKurzbezn,
+              stadtbezirkslisteFormContext.kurzbezn,
               currentlnaKurzbez
             ),
           ]"
@@ -57,16 +57,16 @@ import { InputDisplayMode } from "@/types/InputDisplayMode";
 
 const { t } = useI18n();
 
-const modelValue = defineModel<Partial<StadtbezirkslisteResponseDTO>>({
+const modelValue = defineModel<Partial<ListennameResponseDTO>>({
   required: true,
 });
 
 // Reactivity is intentionally dropped here to maintain the initial state when form gets mounted.
-const currentlnaKurzbez = ref(modelValue.value.lnaKurzbez);
+const currentlnaKurzbez = ref(modelValue.value.kurzbez);
 
 const { stadtbezirkslisteFormContext, displayMode = InputDisplayMode.CREATE } =
   defineProps<{
-    stadtbezirkslisteFormContext: DeepReadonly<StadtbezirkslisteFormContext>;
+    stadtbezirkslisteFormContext: DeepReadonly<ListennameFormContext>;
     displayMode?: InputDisplayMode;
   }>();
 

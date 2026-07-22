@@ -5,7 +5,7 @@
     @update:model-value="onValidityChanged"
   >
     <v-row>
-      <v-col cols="2">
+      <v-col cols="3">
         <fm-text-field
           v-model="modelValue.kurzbez"
           :display-mode="displayMode"
@@ -18,14 +18,12 @@
             rules.minLength(1),
             rules.maxLength(3),
             rules.pattern(/^[A-Z0-9]{1,3}$/),
-            rules['unique']!(listennameFormContext.listennamen,
-              currentkurzbez
-            ),
+            rules['unique']!(listennameFormContext.kurzbezn, currentKurzBez),
           ]"
           :label="t('model.listenname.kurzbez')"
         />
       </v-col>
-      <v-col cols="8">
+      <v-col cols="9">
         <fm-text-field
           v-model="modelValue.bezeichnung"
           :display-mode="displayMode"
@@ -61,7 +59,7 @@ const modelValue = defineModel<Partial<ListennameResponseDTO>>({
 });
 
 // Reactivity is intentionally dropped here to maintain the initial state when form gets mounted.
-const currentkurzbez = ref(modelValue.value.kurzbez);
+const currentKurzBez= ref(modelValue.value.kurzbez);
 
 const { listennameFormContext, displayMode = InputDisplayMode.CREATE } =
   defineProps<{

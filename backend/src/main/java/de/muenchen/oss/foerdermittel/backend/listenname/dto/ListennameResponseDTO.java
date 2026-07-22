@@ -1,14 +1,6 @@
 package de.muenchen.oss.foerdermittel.backend.listenname.dto;
 
-import lombok.Data;
+import jakarta.validation.constraints.NotNull;
 
-@Data
-public class ListennameResponseDTO {
-
-    private String id;
-
-    private String kurzbez;
-
-    private String bezeichnung;
-
+public record ListennameResponseDTO(@NotNull String id, @NotNull String kurzbez, @NotNull String bezeichnung) {
 }

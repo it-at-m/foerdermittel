@@ -8,6 +8,7 @@ import org.mapstruct.Mapping;
 public interface ListennameMapper {
 
     @Mapping(source = "kurzbez", target = "id")
+    @Mapping(source = "kurzbez", target = "kurzbez")
     ListennameResponseDTO toDTO(Listenname listenname);
 
 
