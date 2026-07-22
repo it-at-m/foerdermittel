@@ -4,8 +4,8 @@ import { withMermaid } from "vitepress-plugin-mermaid";
 // https://vitepress.dev/reference/site-config
 const vitepressConfig = defineConfig({
   base: "/foerdermittel/", // needs to be changed if delivered via sub path (e.g. "/docs/" for example.com/docs)
-  title: "Fördermittel Documentation",
-  description: "Documentation template from the RefArch Templates",
+  title: "Fördermittel",
+  description: "Documentation ",
   head: [
     [
       "link",
@@ -22,46 +22,56 @@ const vitepressConfig = defineConfig({
       { text: "Home", link: "/" },
       {
         text: "Docs",
-        items: [{ text: "Architecture", link: "/arc42" }],
-      },
+        items: [
+            {text: "Architecture", link: "/arc42",},
+            { text: "Develop", link: "/develop" }],
+            },
+      { text: "GitHub", link: "https://github.com/it-at-m/foerdermittel" },
     ],
     sidebar: [
+          {
+                  text: "Getting Started",
+                  link: "/getting-started",
+                  items: [],
+                },
+          {
+                  text: "Develop",
+                  link: "/develop",
+                  collapsed: true,
+                  items: [
+                    {text: "Setup and Tools", link: "/develop/setup-and-tools",},
+                    { text: "Development Process", link: "/develop/development-process" },
+                    { text: "Development Guidelines", link: "/develop/guides" },
+                    { text: "Running the Application", link: "/develop/automation" },
+                  ],
+                },
       {
         text: "Architecture",
         link: "/arc42",
+        collapsed: true,
         items: [
           {
             text: "01 Introduction and Goals",
             link: "/arc42/01_introduction_and_goals",
           },
-          {
-            text: "02 Architecture Constraints",
-            link: "/arc42/02_architecture_constraints",
-          },
+          {text: "02 Architecture Constraints", link: "/arc42/02_architecture_constraints",},
           { text: "03 Context and Scope", link: "/arc42/03_context_and_scope" },
           { text: "04 Solution Strategy", link: "/arc42/04_solution_strategy" },
-          {
-            text: "05 Building Block View",
-            link: "/arc42/05_building_block_view",
-          },
-          { text: "06 Runtime View", link: "/arc42/06_runtime_view" },
-          { text: "07 Deployment View", link: "/arc42/07_deployment_view" },
-          { text: "08 Cross-cutting Concepts", link: "/arc42/08_concepts" },
-          {
-            text: "09 Architecture Decisions",
-            link: "/arc42/09_architecture_decisions",
-          },
-          {
-            text: "10 Quality Requirements",
-            link: "/arc42/10_quality_requirements",
-          },
-          {
-            text: "11 Risks and Technical Debts",
-            link: "/arc42/11_technical_risks",
-          },
-          { text: "12 Glossary", link: "/arc42/12_glossary" },
+          { text: "05 Building Block View", link: "/arc42/05_building_block_view",},
+          { text: "06 Cross-cutting Concepts", link: "/arc42/08_concepts" },
+          {text: "07 Architecture Decisions", link: "/arc42/09_architecture_decisions",},
+          { text: "08 Glossary", link: "/arc42/12_glossary" },
         ],
       },
+
+    {
+              text: "References",
+              link: "/reference",
+              items: [
+                { text: "Refarch - Reference architecture", link: "https://refarch.oss.muenchen.de",},
+                { text: "Fördermittel Repository",link: "https://github.com/it-at-m/foerdermittel",},
+              ],
+            },
     ],
     socialLinks: [
       { icon: "github", link: "https://github.com/it-at-m/refarch-templates" },

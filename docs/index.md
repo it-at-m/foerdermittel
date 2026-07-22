@@ -3,14 +3,20 @@
 layout: home
 
 hero:
-  name: "Fördermittel Documentation"
-  text: "Starter files for Vitepress-based documentation"
-  tagline: "This is the default template for writing documentation in RefArch applications"
+  name: "Fördermittel"
+  text: "Documentation"
+  tagline: "Description of the Functionality and Technology of the DB-Web Application Fördermittel"
   actions:
+    - theme: alt
+      text: Getting Started
+      link: /getting-started
     - theme: alt
       text: Architecture
       link: /arc42
-features:
+    - theme: alt
+      text: Tools
+      link: /develop/setup-and-tools
+<features:
   - icon: 1️⃣
     title: Title 1
     details: Add some interesting information here
@@ -21,3 +27,4 @@ features:
     title: Title 3
     details: Add some interesting information here
 ---
+>

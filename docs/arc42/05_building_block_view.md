@@ -1,72 +1,71 @@
-# Building Block View
+# 05. Building Block View
 
 ## Whitebox Overall System
 
-**_\<Overview Diagram\>_**
+***<Overview Diagram>***
 
-Motivation  
-_\<text explanation\>_
+### Motivation
 
-Contained Building Blocks  
-_\<Description of contained building block (black boxes)\>_
+<Beschreibung der modularen Struktur der Anwendung.  
+Darstellung der Komponenten, Module und deren Beziehungen.  
+Besonders relevante Bausteine für den Life Cycle (z. B. Update-Module) werden hervorgehoben.>
 
-Important Interfaces  
-_\<Description of important interfaces\>_
+### Contained Building Blocks
 
-### \<Name black box 1\>
+| Building Block | Description                                          |
+|----------------|------------------------------------------------------|
+| Auth           | Authentication and authorization                     |
+| Master Data    | Management, maintenance and validation of master data |
+| Projects       | Management of project data                           |
+| Reports        | Generation and processing of reports                 |
 
-_\<Purpose/Responsibility\>_
+### Important Interfaces
 
-_\<Interface(s)\>_
+<Beschreibung der wichtigsten Schnittstellen zwischen den Bausteinen.>
 
-_\<(Optional) Quality/Performance Characteristics\>_
-
-_\<(Optional) Directory/File Location\>_
-
-_\<(Optional) Fulfilled Requirements\>_
-
-_\<(optional) Open Issues/Problems/Risks\>_
-
-### \<Name black box 2\>
-
-_\<black box template\>_
-
-### \<Name black box n\>
-
-_\<black box template\>_
-
-### \<Name interface 1\>
-
-…​
-
-### \<Name interface m\>
+---
 
 ## Level 2
 
-### White Box _\<building block 1\>_
+### White Box <Module Name>
 
-_\<white box template\>_
+***<Module Overview Diagram>***
 
-### White Box _\<building block 2\>_
+<Beschreibung des Moduls, Verantwortlichkeiten und Schnittstellen.>
 
-_\<white box template\>_
+### Contained Building Blocks
 
-…​
+| Building Block | Description     |
+|---------------|-----------------|
+| <Controller>  | REST interface  |
+| <Service>     | Business logic  |
+| <Repository>  | Data access     |
+| <Database>    | Data storage    |
 
-### White Box _\<building block m\>_
+### Important Interfaces
 
-_\<white box template\>_
+<Beschreibung der Schnittstellen des Moduls.>
+
+---
 
 ## Level 3
 
-### White Box \<\_building block x.1\_\>
+### White Box <Technical Component>
 
-_\<white box template\>_
+***<Component Diagram>***
 
-### White Box \<\_building block x.2\_\>
+<Beschreibung der technischen Umsetzung und Abhängigkeiten.>
 
-_\<white box template\>_
+Example:
 
-### White Box \<\_building block y.1\_\>
-
-_\<white box template\>_
+```text
+<Module>Controller
+        |
+        v
+<Module>Service
+        |
+        v
+<Module>Repository
+        |
+        v
+<Module>DB
