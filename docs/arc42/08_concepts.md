@@ -1,15 +1,17 @@
 # Cross-cutting Concepts
 
-## _\<Concept 1\>_
+## _Configuration_
 
 _\<explanation\>_
 
-## _\<Concept 2\>_
+## _Plausibility Checks_
 
 _\<explanation\>_
 
 …​
 
-## _\<Concept n\>_
+## _Testability_
 
 _\<explanation\>_
+
+## _Testability_

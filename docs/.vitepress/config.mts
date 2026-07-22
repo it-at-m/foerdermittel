@@ -4,8 +4,8 @@ import { withMermaid } from "vitepress-plugin-mermaid";
 // https://vitepress.dev/reference/site-config
 const vitepressConfig = defineConfig({
   base: "/foerdermittel/", // needs to be changed if delivered via sub path (e.g. "/docs/" for example.com/docs)
-  title: "Fördermittel Documentation",
-  description: "Documentation template from the RefArch Templates",
+  title: "DB-Web-Application Fördermittel",
+  description: "Documentation ",
   head: [
     [
       "link",
@@ -22,8 +22,13 @@ const vitepressConfig = defineConfig({
       { text: "Home", link: "/" },
       {
         text: "Docs",
-        items: [{ text: "Architecture", link: "/arc42" }],
+        items: [
+            {
+            text: "Architecture", link: "/arc42",
+             },
+         { text: "Overview", link: "/overview/getting-started" }],
       },
+      { text: "GitHub", link: "https://github.com/it-at-m/foerdermittel" },
     ],
     sidebar: [
       {
@@ -44,22 +49,12 @@ const vitepressConfig = defineConfig({
             text: "05 Building Block View",
             link: "/arc42/05_building_block_view",
           },
-          { text: "06 Runtime View", link: "/arc42/06_runtime_view" },
-          { text: "07 Deployment View", link: "/arc42/07_deployment_view" },
-          { text: "08 Cross-cutting Concepts", link: "/arc42/08_concepts" },
+          { text: "06 Cross-cutting Concepts", link: "/arc42/08_concepts" },
           {
-            text: "09 Architecture Decisions",
+            text: "07 Architecture Decisions",
             link: "/arc42/09_architecture_decisions",
           },
-          {
-            text: "10 Quality Requirements",
-            link: "/arc42/10_quality_requirements",
-          },
-          {
-            text: "11 Risks and Technical Debts",
-            link: "/arc42/11_technical_risks",
-          },
-          { text: "12 Glossary", link: "/arc42/12_glossary" },
+          { text: "08 Glossary", link: "/arc42/12_glossary" },
         ],
       },
     ],
