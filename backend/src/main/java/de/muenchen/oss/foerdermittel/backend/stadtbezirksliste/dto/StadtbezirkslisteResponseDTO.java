@@ -1,16 +1,9 @@
 package de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto;
 
-import lombok.Data;
+import jakarta.validation.constraints.NotNull;
 
-import java.math.BigDecimal;
+import java.util.List;
 
-@Data
-public class StadtbezirkslisteResponseDTO {
-
-    private String listenname;
-
-    private BigDecimal stadtbezirk;
-
-    private String bezeichnung;
-
+public record StadtbezirkslisteResponseDTO(@NotNull String id, @NotNull String kurzbez, @NotNull String bezeichnung, @NotNull
+                                           List<StadtbezirkslisteAssignmentResponseDTO> assigedStadtbezirke) {
 }

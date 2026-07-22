@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.listenname;
+package de.muenchen.oss.foerdermittel.backend.stadtbezirksliste;
 
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
@@ -32,12 +32,12 @@ public class ListennameService {
         return listennameRepository.findAll(pageable);
     }
 
-    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    @Transactional(readOnly = true)
-    public ListennameFormContext getListennameFormContext() {
-        log.info("Get Listenname form context");
-        return new ListennameFormContext(listennameRepository.findAllKurzBezn());
-    }
+//    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
+//    @Transactional(readOnly = true)
+//    public ListennameFormContext getListennameFormContext() {
+//        log.info("Get Listenname form context");
+//        return new ListennameFormContext(listennameRepository.findAllKurzBezn());
+//    }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Listenname createListenname(final Listenname listenname) {

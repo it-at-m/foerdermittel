@@ -1,6 +1,5 @@
-package de.muenchen.oss.foerdermittel.backend.listenname;
+package de.muenchen.oss.foerdermittel.backend.stadtbezirksliste;
 
-import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.Stadtbezirksliste;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -45,7 +44,8 @@ public class Listenname implements Serializable {
     @OneToMany(
             mappedBy = "listenName",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
     )
     private List<Stadtbezirksliste> stadtbezirkslisten = new ArrayList<>();
 

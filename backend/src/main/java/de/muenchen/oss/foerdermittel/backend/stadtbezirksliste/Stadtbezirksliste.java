@@ -1,6 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.stadtbezirksliste;
 
-import de.muenchen.oss.foerdermittel.backend.listenname.Listenname;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
