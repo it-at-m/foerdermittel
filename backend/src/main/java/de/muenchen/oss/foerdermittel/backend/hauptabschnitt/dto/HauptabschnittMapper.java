@@ -5,7 +5,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public interface HauptabschnittMapper {
 
     @Mapping(source = "ha", target = "id")
