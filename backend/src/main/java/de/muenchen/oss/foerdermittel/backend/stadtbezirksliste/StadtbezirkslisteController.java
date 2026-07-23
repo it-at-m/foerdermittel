@@ -33,6 +33,7 @@ public class StadtbezirkslisteController {
 
     private final ListennameService listennameService;
     private final ListennameStadtbezirkslisteMapper listennameStadtbezirkslisteMapper;
+    private final StadtbezirkslisteService stadtbezirkslisteService;
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -52,24 +53,24 @@ public class StadtbezirkslisteController {
         return new PageImpl<>(stadtbezirkslisteResponseDTOList, pageWithStadtbezirk.getPageable(), pageWithStadtbezirk.getTotalElements());
     }
 
-//    @PutMapping("/{kurzbez}/stadtbezirke")
-//    @ResponseStatus(HttpStatus.OK)
-//    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-//    public void setStadtbezirke(
-//            @PathVariable final String kurzbez,
-//            @RequestBody final List<BigDecimal> stadtbezirke) {
-//
-//
-//        service.setStadtbezirke(kurzbez, stadtbezirke);
-//    }
-//
-//    @DeleteMapping("/{kurzbez}/stadtbezirke/{stadtbezirk}")
-//    @ResponseStatus(HttpStatus.OK)
-//    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-//    public void deleteStadtbezirk(
-//            @PathVariable String kurzbez,
-//            @PathVariable BigDecimal stadtbezirk) {
-//
-//        service.deleteStadtbezirk(kurzbez, stadtbezirk);
-//    }
+    @PutMapping("/{kurzbez}/stadtbezirke")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
+    public void setStadtbezirke(
+            @PathVariable final String kurzbez,
+            @RequestBody final List<BigDecimal> stadtbezirke) {
+
+
+        stadtbezirkslisteService.setStadtbezirke(kurzbez, stadtbezirke);
+    }
+
+    @DeleteMapping("/{kurzbez}/stadtbezirke/{stadtbezirk}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
+    public void deleteStadtbezirk(
+            @PathVariable String kurzbez,
+            @PathVariable BigDecimal stadtbezirk) {
+
+        stadtbezirkslisteService.deleteStadtbezirk(kurzbez, stadtbezirk);
+    }
 }

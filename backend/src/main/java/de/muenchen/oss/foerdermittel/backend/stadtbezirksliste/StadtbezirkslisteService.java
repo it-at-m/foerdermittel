@@ -1,12 +1,16 @@
 package de.muenchen.oss.foerdermittel.backend.stadtbezirksliste;
 
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -17,6 +21,9 @@ public class StadtbezirkslisteService {
 
 
     private final StadtbezirkslisteRepository stadtbezirkslisteRepository;
+    private final StadtbezirkRepository stadtbezirkRepository;
+    private final ListennameRepository listennameRepository;
+
 
 
 //    @PreAuthorize(Authorities.HAS_ANY_ROLE)
@@ -28,7 +35,7 @@ public class StadtbezirkslisteService {
 //        return stadtbezirkslisteRepository.findByListenName_Kurzbez(kurzbez);
 //    }
 
-
+//
 //    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
 //    public void setStadtbezirke(
 //            final String kurzbez,
@@ -63,8 +70,8 @@ public class StadtbezirkslisteService {
 //                eintrag.setListenName(listenname);
 //
 //
-//                Stadtbezirk stadtbezirk = new Stadtbezirk();
-//                stadtbezirk.setStadtbezirk(bezirk);
+//                Stadtbezirksliste stadtbezirk = new Stadtbezirksliste();
+//                stadtbezirk.setStadtbezirk();
 //
 //                eintrag.setStadtbezirk(stadtbezirk);
 //
@@ -73,17 +80,49 @@ public class StadtbezirkslisteService {
 //            }
 //        }
 //    }
-//
-//    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-//    public void deleteStadtbezirk(
-//            String kurzbez,
-//            BigDecimal stadtbezirk) {
-//
-//        stadtbezirkslisteRepository
-//                .deleteByListenName_KurzbezAndStadtbezirk_Stadtbezirk(
-//                        kurzbez,
-//                        stadtbezirk);
-//    }
+
+
+    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
+    public void setStadtbezirke(String kurzbez, List<BigDecimal> stadtbezirkIds) {
+
+        Listenname listenname = listennameRepository.findById(kurzbez)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Listenname '" + kurzbez + "' wurde nicht gefunden."));
+
+        // Alte Zuordnungen löschen
+        stadtbezirkslisteRepository.deleteAll(
+                stadtbezirkslisteRepository.findByListenName_Kurzbez(kurzbez));
+
+        // Neue Zuordnungen anlegen
+        for (BigDecimal stadtbezirkId : stadtbezirkIds) {
+
+            Stadtbezirk stadtbezirk = stadtbezirkRepository.findById(stadtbezirkId)
+                    .orElseThrow(() -> new EntityNotFoundException(
+                            "Stadtbezirk '" + stadtbezirkId + "' wurde nicht gefunden."));
+
+            Stadtbezirksliste zuordnung = new Stadtbezirksliste();
+            zuordnung.setId(new StadtbezirkslistePrimaryKey(kurzbez, stadtbezirkId));
+            zuordnung.setListenName(listenname);
+            zuordnung.setStadtbezirk(stadtbezirk);
+            zuordnung.setBezeichnung(stadtbezirk.getBezeichnung());
+
+            stadtbezirkslisteRepository.save(zuordnung);
+        }
+    }
+
+
+
+
+    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
+    public void deleteStadtbezirk(
+            String kurzbez,
+            BigDecimal stadtbezirk) {
+
+        stadtbezirkslisteRepository
+                .deleteByListenName_KurzbezAndStadtbezirk_Stadtbezirk(
+                        kurzbez,
+                        stadtbezirk);
+    }
 
 }
 
