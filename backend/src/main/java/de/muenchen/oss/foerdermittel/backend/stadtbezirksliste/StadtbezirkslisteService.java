@@ -3,9 +3,12 @@ package de.muenchen.oss.foerdermittel.backend.stadtbezirksliste;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
+import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,51 +38,34 @@ public class StadtbezirkslisteService {
 //        return stadtbezirkslisteRepository.findByListenName_Kurzbez(kurzbez);
 //    }
 
-//
-//    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-//    public void setStadtbezirke(
-//            final String kurzbez,
-//            final List<BigDecimal> stadtbezirke) {
-//
-//        log.debug("Add Stadtbezirke {} for Listenname {}", stadtbezirke, kurzbez);
-//
-//
-//        Listenname listenname = new Listenname();
-//        listenname.setKurzbez(kurzbez);
-//
-//
-//        for (BigDecimal bezirk : stadtbezirke) {
-//
-//            boolean existiert = stadtbezirkslisteRepository
-//                    .findByListenName_Kurzbez(kurzbez)
-//                    .stream()
-//                    .anyMatch(e -> e.getId().getStadtbezirk().equals(bezirk));
-//
-//
-//            if (!existiert) {
-//
-//                Stadtbezirksliste eintrag = new Stadtbezirksliste();
-//
-//                eintrag.setId(
-//                        new StadtbezirkslistePrimaryKey(
-//                                kurzbez,
-//                                bezirk
-//                        )
-//                );
-//
-//                eintrag.setListenName(listenname);
-//
-//
-//                Stadtbezirksliste stadtbezirk = new Stadtbezirksliste();
-//                stadtbezirk.setStadtbezirk();
-//
-//                eintrag.setStadtbezirk(stadtbezirk);
-//
-//
-//                stadtbezirkslisteRepository.insert(eintrag);
-//            }
-//        }
-//    }
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public Listenname getListenname(final String kurzBez) {
+        log.info("Get Listenname with ID {}", kurzBez);
+        return ServiceUtils.getEntityOrThrowNotFoundException(kurzBez, listennameRepository);
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public Page<Listenname> getAllListennamen(final Pageable pageable) {
+        log.info("Get all Listennamen with Pageable {}", pageable);
+        return listennameRepository.findAll(pageable);
+    }
+
+
+    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
+    public Listenname createListenname(final Listenname listenname) {
+    log.debug("Create Listenname {}", listenname);
+    return listennameRepository.insert(listenname);
+    }
+
+    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
+    public Listenname updateListenname(final Listenname listenname, final String kurzBez) {
+        final Listenname foundListenname = ServiceUtils.getEntityOrThrowNotFoundException(kurzBez, listennameRepository);
+        foundListenname.setBezeichnung(listenname.getBezeichnung());
+        log.debug("Update Listenname {}", foundListenname);
+        return listennameRepository.update(foundListenname);
+    }
 
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
@@ -122,6 +108,13 @@ public class StadtbezirkslisteService {
                 .deleteByListenName_KurzbezAndStadtbezirk_Stadtbezirk(
                         kurzbez,
                         stadtbezirk);
+    }
+
+    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
+    public void deleteListenname(final String kurzBez) {
+        log.debug("Delete Listenname with ID {}", kurzBez);
+        ServiceUtils.getEntityOrThrowNotFoundException(kurzBez, listennameRepository);
+        listennameRepository.deleteById(kurzBez);
     }
 
 }
