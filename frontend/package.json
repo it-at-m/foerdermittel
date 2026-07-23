@@ -35,7 +35,7 @@
     "@intlify/unplugin-vue-i18n": "11.2.4",
     "@mdi/js": "7.4.47",
     "@muenchen/prettier-codeformat": "1.0.2",
-    "@openapitools/openapi-generator-cli": "^2.23.0",
+    "@openapitools/openapi-generator-cli": "2.40.0",
     "@pinia/testing": "2.0.1",
     "@tsconfig/node-lts": "24.0.0",
     "@types/node": "24.11.2",
