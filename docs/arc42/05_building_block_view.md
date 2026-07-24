@@ -2,70 +2,44 @@
 
 ## Whitebox Overall System
 
-***<Overview Diagram>***
+**Overview Diagram**
 
-### Motivation
-
-<Beschreibung der modularen Struktur der Anwendung.  
-Darstellung der Komponenten, Module und deren Beziehungen.  
-Besonders relevante Bausteine für den Life Cycle (z. B. Update-Module) werden hervorgehoben.>
+**Beschreibung der modularen Struktur der Anwendung.Darstellung der Komponenten, Module und deren Beziehungen.**
 
 ### Contained Building Blocks
 
-| Building Block | Description                                          |
-|----------------|------------------------------------------------------|
-| Auth           | Authentication and authorization                     |
-| Master Data    | Management, maintenance and validation of master data |
-| Projects       | Management of project data                           |
-| Reports        | Generation and processing of reports                 |
+| Element         | Description         | 
+|-----------------|---------------------|
+| _\<Element-1\>_ | _\<Description-1\>_ | 
+| _\<Element-2\>_ | _\<Description-2\>_ | 
+| _\<Element-3\>_ | _\<Description-3\>_ | 
 
-### Important Interfaces
-
-<Beschreibung der wichtigsten Schnittstellen zwischen den Bausteinen.>
-
----
+**Beschreibung der wichtigsten Schnittstellen zwischen den Bausteinen.**
 
 ## Level 2
 
-### White Box <Module Name>
+### White Box Module Name
 
-***<Module Overview Diagram>***
+***Module Overview Diagram***
 
-<Beschreibung des Moduls, Verantwortlichkeiten und Schnittstellen.>
+**Beschreibung des Moduls, Verantwortlichkeiten und Schnittstellen.**
 
 ### Contained Building Blocks
 
-| Building Block | Description     |
-|---------------|-----------------|
-| <Controller>  | REST interface  |
-| <Service>     | Business logic  |
-| <Repository>  | Data access     |
-| <Database>    | Data storage    |
+| Building Block   | Description          |  
+|------------------|----------------------|
+| _\<Controller\>_ | _\<REST\>_           | 
+| _\<Service\>_    | _\<Business logic\>_ | 
+| _\<Repository\>_ | _\<Data access\>_    | 
+| _\<Database\>_   | _\<Data storage\>_   | 
 
-### Important Interfaces
-
-<Beschreibung der Schnittstellen des Moduls.>
-
----
+**Beschreibung der Schnittstellen des Moduls.**
 
 ## Level 3
 
-### White Box <Technical Component>
+### White Box Technical Component
 
-***<Component Diagram>***
+**\<Diagram f.e. component context diagram\>**
 
-<Beschreibung der technischen Umsetzung und Abhängigkeiten.>
+**Beschreibung der technischen Umsetzung und Abhängigkeiten.**
 
-Example:
-
-```text
-<Module>Controller
-        |
-        v
-<Module>Service
-        |
-        v
-<Module>Repository
-        |
-        v
-<Module>DB
