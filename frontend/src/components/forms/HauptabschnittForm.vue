@@ -14,7 +14,9 @@
           :counter="2"
           :rules="[
             rules.required(),
-            rules.pattern(/^[a-zA-Z0-9]{1,2}$/),
+            rules.minLength(1),
+            rules.maxLength(2),
+            rules.pattern(/^[a-zA-Z0-9]+$/),
             rules['unique']!(hauptabschnittFormContext.has, currentHa),
           ]"
           :label="t('model.hauptabschnitt.ha')"
