@@ -2,7 +2,7 @@
 
 ## Requirements Overview
 
-**\<Short Explanation for LCM-SKA-DB-Webverfahren, usage and goal\>**
+**\<Short explanation for LCM-SKA-DB-Webverfahren, usage and goal\>**
 
 ### Overview of functions
 **\<List\>**

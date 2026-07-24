@@ -1,5 +1,7 @@
 # Context and Scope
 
+**System scope and context - as the name suggests - delimits your system (i.e. your scope) from all its communication partners (neighboring systems and users, i.e. the context of your system). It thereby specifies the external interfaces.**
+
 ## Business Context
 **\<Diagram f.e. system context diagram & Table\>**
 

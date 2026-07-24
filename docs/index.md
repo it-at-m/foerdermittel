@@ -13,9 +13,6 @@ hero:
     - theme: alt
       text: Architecture
       link: /arc42
-    - theme: alt
-      text: Tools
-      link: /develop/setup-and-tools
 <features:
   - icon: 1️⃣
     title: Title 1
@@ -28,3 +25,4 @@ hero:
     details: Add some interesting information here
 ---
 >
+

@@ -3,7 +3,6 @@
 ## Tools and Frameworks
 ### Tools
 + GitHub
-+ Jira / Confluence
 + Podman
 + Bruno
 ### Frameworks
@@ -13,3 +12,7 @@
 + VitePress
 
 ## Environment Configuration
+**\<List or table\>**
++ ....
++ ....
++ ....
