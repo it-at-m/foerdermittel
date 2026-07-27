@@ -34,4 +34,3 @@
 **<\Text\>**
 ## Starting the Backend
 **<\Text\>**
-## Tools and Frameworks

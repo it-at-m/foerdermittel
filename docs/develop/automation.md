@@ -1,6 +1,10 @@
 # Automation and Maintenance
 
 ## Renovate
+
+Lifecycle Management (LCM) - [Renovate](https://docs.renovatebot.com/) is used to keep your dependencies up to date.
+
+
 | Element         | Description         | 
 |-----------------|---------------------|
 | _\<Element-1\>_ | _\<Description-1\>_ | 

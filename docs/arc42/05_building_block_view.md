@@ -4,7 +4,7 @@
 
 **Overview Diagram**
 
-**Beschreibung der modularen Struktur der Anwendung.Darstellung der Komponenten, Module und deren Beziehungen.**
+**Description of the modular structure of the application. Presentation of the components, modules, and their relationships.**
 
 ### Contained Building Blocks
 
@@ -14,15 +14,14 @@
 | _\<Element-2\>_ | _\<Description-2\>_ | 
 | _\<Element-3\>_ | _\<Description-3\>_ | 
 
-**Beschreibung der wichtigsten Schnittstellen zwischen den Bausteinen.**
-
+**Description of the main interfaces between the building blocks**
 ## Level 2
 
 ### White Box Module Name
 
 ***Module Overview Diagram***
 
-**Beschreibung des Moduls, Verantwortlichkeiten und Schnittstellen.**
+**Description of the module, its responsibilities, and interfaces.**
 
 ### Contained Building Blocks
 
@@ -33,7 +32,7 @@
 | _\<Repository\>_ | _\<Data access\>_    | 
 | _\<Database\>_   | _\<Data storage\>_   | 
 
-**Beschreibung der Schnittstellen des Moduls.**
+**Description of the module’s interfaces.**
 
 ## Level 3
 
@@ -41,5 +40,5 @@
 
 **\<Diagram f.e. component context diagram\>**
 
-**Beschreibung der technischen Umsetzung und Abhängigkeiten.**
+**Description of the technical implementation and dependencies.**
 

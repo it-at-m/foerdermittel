@@ -2,62 +2,6 @@
 
 ## Technologies
 
-The following diagram visualizes the local development setup and all involved core technologies.
-Those will be further explained below:
-
-```mermaid
----
-config:
-  htmlLabels: false
----
-flowchart LR
-    classDef browser fill:#eeeeee,stroke:#444,color:#111;
-    classDef pod fill:#d8c6ff,stroke:#444,color:#111;
-    classDef maven fill:#ffe0b2,stroke:#444,color:#111;
-    classDef npm fill:#ffd4d4,stroke:#444,color:#111;
-
-    subgraph Legend
-        NODE["`**Node.js / npm**`" project]
-        MAVEN["`**JDK / Maven**`" project]
-        POD["`**Podman**`" container image]
-
-        class NODE npm;
-        class MAVEN maven;
-        class POD pod;
-    end
-
-    subgraph Local Development Setup
-        direction LR
-        B{{"`**Browser**`"}}
-        AG["`**API Gateway**`"]
-        FE["`**Vite Dev Server**<br/> (Vue / Vuetify)`"]
-        BE["`**Backend**<br/> (Java / Spring Boot)`"]
-        DB@{ shape: db, label: Database<br/> (Postgres)}
-        KC["`**SSO**<br/> (Keycloak)`"]
-
-        %% Main application flow
-        B <-- :8083 --> AG
-        AG <-- :8081 --> FE
-        AG <-- :8086 --> BE
-        BE <-- :5432 --> DB
-
-        %% Authentication
-        AG <-- :8100 --> KC
-        BE <-- :8100 --> KC
-
-        class B browser;
-        class AG,KC,DB pod;
-        class BE maven;
-        class FE npm;
-
-        click AG "../gateway"
-        click FE "./develop#vite"
-        click BE "./develop#maven"
-        click DB "https://www.postgresql.org/"
-        click KC "https://www.keycloak.org/"
-    end
-```
-
 ### Container Engine
 
 [Podman](https://podman.io) is suggested for running the local development stack including all necessary services. Alternatively [Docker](https://www.docker.com/)
@@ -115,10 +59,6 @@ You can run those tools in combination by using the following npm scripts:
 - Lint your source code: `npm run lint`
 - Autofix issues: `npm run fix`
 
-::: info Information
-Not all issues are auto-fixable, so you still might have some manual work to do after running the command.
-:::
-
 The tools are configured through the respective configuration files
 
 - Prettier: `.prettierrc.json` (points to a [centralized configuration](https://github.com/it-at-m/itm-prettier-codeformat))
@@ -141,17 +81,6 @@ Alternatively you can also run the custom maven goals provided by those plugins:
 - Run SpotBugs lint check: `mvn spotbugs:check`  
   (**Note**: Requires project compilation before execution when code changes were made)
 
-::: info Information
-Issues reported by the PMD and SpotBugs are currently not auto-fixable so you still have some manual work to do.
-:::
-
-The tools are configured through the respective configuration files or configuration sections inside the `pom.xml`
-
-- Spotless: `pom.xml` and using a [centralized configuration](https://github.com/it-at-m/itm-java-codeformat)
-- PMD: `pom.xml` and using centralized configuration (more information in [Tools](../cross-cutting-concepts/tools.md#pmd))
-- SpotBugs: `pom.xml` and `spotbugs-exclude-rules.xml` (configuration part of the templates)
-
-
 ### Vue Dev Tools
 
 The [Vue Dev Tools](https://devtools.vuejs.org/) provide useful features when developing with Vue.js. Those include checking and editing component state, debugging the [Pinia](https://pinia.vuejs.org/) store, testing client-side routing, inspecting page elements and way more.
@@ -160,20 +89,6 @@ The Vue Dev Tools are included as a development dependency inside the templates,
 
 A useful feature is the inspection of elements, which allows you to click components of your webpage inside your Browser-rendered application and open the relevant part right in your IDE.
 To make use of this feature, a few steps have to be made on your machine.
-
-### Database Migration
-
-[Flyway](https://documentation.red-gate.com/flyway) is used as our tool for database migration.
-
-It runs automatically when starting the backend application.
-Additionally, the following maven goals can be run manually:
-
-- Clean database: `mvn flyway:clean -Dflyway.cleanDisabled=false`
-- Apply migrations: `mvn flyway:migrate`
-- Reset and migrate: `mvn flyway:clean flyway:migrate -Dflyway.cleanDisabled=false`
-
-To maintain your migration files, check the folder `db.migration` inside the `resources` folder of the Java project.
-For more information about how to work with Flyway, checkout its [Getting Started guide](https://documentation.red-gate.com/flyway/getting-started-with-flyway)
 
 ### Local services and ports
 
@@ -185,11 +100,5 @@ The following table shows which local development service is served on which por
 | [API Gateway](http://localhost:8083)   |     8083     |
 | Backend                                |     8086     |
 | [Keycloak](http://localhost:8100)      |     8100     |
-| PostgreSQL                             |     5432     |
 | [pgAdmin](http://localhost:5050)       |     5050     |
-
-
-## Lifecycle Management (LCM)
-
-[Renovate](https://docs.renovatebot.com/) is used to keep your dependencies up to date.
 
