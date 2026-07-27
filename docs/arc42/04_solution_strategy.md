@@ -4,7 +4,7 @@
 
 **\<List\>**
 
-# Architecture decision
+## Architecture decision
 
 **\<List\>**
 

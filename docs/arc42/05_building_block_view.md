@@ -2,19 +2,19 @@
 
 ## Whitebox Overall System
 
-**Overview Diagram**
+### Overview Diagram**
 
 **Description of the modular structure of the application. Presentation of the components, modules, and their relationships.**
 
 ### Contained Building Blocks
+
+**Description of the main interfaces between the building blocks.**
 
 | Element         | Description         |
 | --------------- | ------------------- |
 | _\<Element-1\>_ | _\<Description-1\>_ |
 | _\<Element-2\>_ | _\<Description-2\>_ |
 | _\<Element-3\>_ | _\<Description-3\>_ |
-
-**Description of the main interfaces between the building blocks**
 
 ## Level 2
 

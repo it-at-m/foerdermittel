@@ -15,7 +15,7 @@ Describe common approaches, standards, and implementation principles.**
 
 ### Authentication
 
-**Description of authentication mechanisms**
+**Description of authentication mechanisms.**
 
 ### Authorization
 
