@@ -92,10 +92,10 @@ To make use of this feature, a few steps have to be made on your machine.
 
 The following table shows which local development service is served on which port (services reachable inside the browser will have a direct `localhost` link).
 
-| Service                              | Default port |
-| ------------------------------------ | :----------: |
-| [Frontend](http://localhost:8083)    |     8081     |
-| [API Gateway](http://localhost:8083) |     8083     |
-| Backend                              |     8086     |
-| [Keycloak](http://localhost:8100)    |     8100     |
-| [pgAdmin](http://localhost:5050)     |     5050     |
+| Service          | Default port |
+|------------------| :----------: |
+| [Frontend](#)    |     8081     |
+| [API Gateway](#) |     8083     |
+| Backend          |     8086     |
+| [Keycloak](#)    |     8100     |
+| [pgAdmin](#)     |     5050     |
