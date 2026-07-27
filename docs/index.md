@@ -24,5 +24,5 @@ hero:
     title: Title 3
     details: Add some interesting information here
 ---
->
 
+>

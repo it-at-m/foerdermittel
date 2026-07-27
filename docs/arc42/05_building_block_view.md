@@ -8,29 +8,30 @@
 
 ### Contained Building Blocks
 
-| Element         | Description         | 
-|-----------------|---------------------|
-| _\<Element-1\>_ | _\<Description-1\>_ | 
-| _\<Element-2\>_ | _\<Description-2\>_ | 
-| _\<Element-3\>_ | _\<Description-3\>_ | 
+| Element         | Description         |
+| --------------- | ------------------- |
+| _\<Element-1\>_ | _\<Description-1\>_ |
+| _\<Element-2\>_ | _\<Description-2\>_ |
+| _\<Element-3\>_ | _\<Description-3\>_ |
 
 **Description of the main interfaces between the building blocks**
+
 ## Level 2
 
 ### White Box Module Name
 
-***Module Overview Diagram***
+_**Module Overview Diagram**_
 
 **Description of the module, its responsibilities, and interfaces.**
 
 ### Contained Building Blocks
 
-| Building Block   | Description          |  
-|------------------|----------------------|
-| _\<Controller\>_ | _\<REST\>_           | 
-| _\<Service\>_    | _\<Business logic\>_ | 
-| _\<Repository\>_ | _\<Data access\>_    | 
-| _\<Database\>_   | _\<Data storage\>_   | 
+| Building Block   | Description          |
+| ---------------- | -------------------- |
+| _\<Controller\>_ | _\<REST\>_           |
+| _\<Service\>_    | _\<Business logic\>_ |
+| _\<Repository\>_ | _\<Data access\>_    |
+| _\<Database\>_   | _\<Data storage\>_   |
 
 **Description of the module’s interfaces.**
 
@@ -41,4 +42,3 @@
 **\<Diagram f.e. component context diagram\>**
 
 **Description of the technical implementation and dependencies.**
-

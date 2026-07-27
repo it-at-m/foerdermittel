@@ -20,7 +20,6 @@ Stack components (as OCI images):
 - [API Gateway](../gateway.md): API gateway of the RefArch, configured via [environment variables](../gateway.md#configuration) in `docker-compose.yml`
 - [Appswitcher Server](https://github.com/it-at-m/appswitcher-server): Server component to access local development tools via the frontend UI
 
-
 ### Vite
 
 [Vite](https://vite.dev/) is used as the build tool for JavaScript-based projects, along with the testing framework [Vitest](https://vitest.dev/).
@@ -30,7 +29,6 @@ The following npm scripts are provided for working with those tools:
 - Start Vite development server: `npm run dev`
 - Run Vitest test execution: `npm run test`
 - Build the Vite project (for production): `npm run build`
-
 
 ### Maven
 
@@ -94,11 +92,10 @@ To make use of this feature, a few steps have to be made on your machine.
 
 The following table shows which local development service is served on which port (services reachable inside the browser will have a direct `localhost` link).
 
-| Service                                | Default port |
-|----------------------------------------|:------------:|
-| [Frontend](http://localhost:8083)      |   8081       |
-| [API Gateway](http://localhost:8083)   |     8083     |
-| Backend                                |     8086     |
-| [Keycloak](http://localhost:8100)      |     8100     |
-| [pgAdmin](http://localhost:5050)       |     5050     |
-
+| Service                              | Default port |
+| ------------------------------------ | :----------: |
+| [Frontend](http://localhost:8083)    |     8081     |
+| [API Gateway](http://localhost:8083) |     8083     |
+| Backend                              |     8086     |
+| [Keycloak](http://localhost:8100)    |     8100     |
+| [pgAdmin](http://localhost:5050)     |     5050     |

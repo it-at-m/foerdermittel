@@ -1,28 +1,38 @@
 # Getting started
+
 **<\Text\>**
 
-## Formatter configuration 
-+ checkstyle and spotless
+## Formatter configuration
+
+- checkstyle and spotless
+
 ## IDE and Podman
-+ configuration
+
+- configuration
+
 ## Services and Ports
+
 **<\Table\>**
-| Service      | Port |
-|--------------|------|
-| Application  | 8083 |
+
+| Service     | Port |
+| ----------- | ---- |
+| Application | 8083 |
+
 ## Profile
+
 **<\Table\>**
 
 | Profilename | Description          |
-|-------------|----------------------|
+| ----------- | -------------------- |
 | local       | _<\Description-1 \>_ |
 | no-scurity  | _<\Description-2 \>_ |
 
 ## User
+
 **<\Table\>**
 
 | Profilename | Password      | Description          |
-|-------------|---------------|----------------------|
+| ----------- | ------------- | -------------------- |
 | fmad        | foerdermittel | _<\Description-1 \>_ |
 | fmsb        | foerdermittel | _<\Description-2 \>_ |
 
@@ -31,6 +41,9 @@
 ## Podman
 
 ## Starting the Frontend
+
 **<\Text\>**
+
 ## Starting the Backend
+
 **<\Text\>**
