@@ -8,5 +8,6 @@ import org.mapstruct.Mapping;
 @Mapper(    componentModel = "spring",uses = NumberMapper.class)
 public interface ListennameStadtbezirkslisteAssignmentMapper {
     @Mapping(source = "id.stadtbezirk", target = "stadtbezirkId")
+    @Mapping(source = "stadtbezirk.bezeichnung", target = "stadtbezirkBezeichnung")
     StadtbezirkslisteAssignmentResponseDTO toDTO(Stadtbezirksliste stadtbezirksliste);
 }

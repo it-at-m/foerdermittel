@@ -1,56 +1,49 @@
+import type { CreateListennameRequest, CreateStadtbezirkRequest, DeleteListennameRequest, GetStadtbezirklistenByPageableRequest, GetStadtbezirklisteRequest, PagedModelStadtbezirkslisteResponseDTO, StadtbezirkResponseDTO, StadtbezirkslisteFormContext, StadtbezirkslisteResponseDTO, UpdateListennameRequest } from "@/api/generated/foerdermittel-backend";
 import type {
-  CreateListennameRequest,
-  DeleteListennameRequest,
   GetListennamenByPageableRequest,
   GetListennameRequest,
-  ListennameFormContext,
-  PagedModelListennameResponseDTO,
-  StadtbezirkslisteResponseDTO,
-  UpdateListennameRequest,
-} from "@/api/generated/foerdermittel-backend";
+} from "@/api/generated/foerdermittel-backend/apis/ListennameControllerApi";
 
 import { ApiFactory } from "@/api/ApiFactory";
-import {
-  ListennameControllerApi,
-  
-} from "@/api/generated/foerdermittel-backend";
+import { StadtbezirkslisteControllerApi } from "@/api/generated/foerdermittel-backend";
 import useAPI from "@/composables/useAPI";
 
-export function useCreateStadtbezirksliste() {
-  const api = ApiFactory.getInstance(ListennameControllerApi);
 
-  return useAPI<CreateListennameRequest, StadtbezirkslisteResponseDTO>(
-    (params) => api.createListenname(params)
+export function useCreateListenname() {
+  const api = ApiFactory.getInstance(StadtbezirkslisteControllerApi);
+
+  return useAPI<CreateListennameRequest, StadtbezirkslisteResponseDTO>((params) =>
+    api.createListenname(params)
   );
 }
 
-export function useUpdateStadtbezirksliste() {
-  const api = ApiFactory.getInstance(ListennameControllerApi);
+export function useUpdateListenname() {
+  const api = ApiFactory.getInstance(StadtbezirkslisteControllerApi);
 
   return useAPI<UpdateListennameRequest, StadtbezirkslisteResponseDTO>(
-    (params) => api.updateListenname(params)
+      (params) => api.updateListenname(params)
   );
 }
 
 export function useGetStadtbezirkslisten() {
-  const api = ApiFactory.getInstance(ListennameControllerApi);
+  const api = ApiFactory.getInstance(StadtbezirkslisteControllerApi);
 
   return useAPI<
     GetListennamenByPageableRequest,
-    PagedModelListennameResponseDTO
-  >((params) => api.getListennamenByPageable(params));
+    PagedModelStadtbezirkslisteResponseDTO
+  >((params) => api.getStadtbezirklistenByPageable(params));
 }
 
 export function useGetStadtbezirksliste() {
-  const api = ApiFactory.getInstance(ListennameControllerApi);
+  const api = ApiFactory.getInstance(StadtbezirkslisteControllerApi);
 
   return useAPI<GetListennameRequest, StadtbezirkslisteResponseDTO>((params) =>
-    api.getListenname(params)
+    api.getStadtbezirkliste(params)
   );
 }
 
 export function useDeleteStadtbezirksliste() {
-  const api = ApiFactory.getInstance(ListennameControllerApi);
+  const api = ApiFactory.getInstance(StadtbezirkslisteControllerApi);
 
   return useAPI<DeleteListennameRequest, void>((params) =>
     api.deleteListenname(params)
@@ -58,9 +51,9 @@ export function useDeleteStadtbezirksliste() {
 }
 
 export function useGetStadtbezirkslisteFormContext() {
-  const api = ApiFactory.getInstance(ListennameControllerApi);
+  const api = ApiFactory.getInstance(StadtbezirkslisteControllerApi);
 
-  return useAPI<void, ListennameFormContext>(() =>
-    api.getListennameFormContext()
+  return useAPI<void, StadtbezirkslisteFormContext>(() =>
+    api.getStadtbezirkslisteFormContext()
   );
 }

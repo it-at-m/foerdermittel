@@ -2,7 +2,9 @@ package de.muenchen.oss.foerdermittel.backend.stadtbezirksliste;
 
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.StadtbezirkslisteFormContext;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.StadtbezirkslisteAssignmentResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -52,6 +55,12 @@ public class StadtbezirkslisteService {
         return listennameRepository.findAll(pageable);
     }
 
+    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
+    @Transactional(readOnly = true)
+    public StadtbezirkslisteFormContext getStadtbezirksListeFormContext() {
+        log.info("Get Stadtbezirk form context");
+        return new StadtbezirkslisteFormContext(listennameRepository.findAllKurzBezn());
+    }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Listenname createListenname(final Listenname listenname) {
@@ -67,33 +76,34 @@ public class StadtbezirkslisteService {
         return listennameRepository.update(foundListenname);
     }
 
-
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    public void setStadtbezirke(String kurzbez, List<BigDecimal> stadtbezirkIds) {
+    public void setStadtbezirke(String kurzbez,
+                                List<StadtbezirkslisteAssignmentResponseDTO> assignments) {
 
         Listenname listenname = listennameRepository.findById(kurzbez)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Listenname '" + kurzbez + "' wurde nicht gefunden."));
 
-        // Alte Zuordnungen löschen
-        stadtbezirkslisteRepository.deleteAll(
-                stadtbezirkslisteRepository.findByListenName_Kurzbez(kurzbez));
+        stadtbezirkslisteRepository.deleteByListenName_Kurzbez(kurzbez);
 
-        // Neue Zuordnungen anlegen
-        for (BigDecimal stadtbezirkId : stadtbezirkIds) {
+        List<Stadtbezirksliste> neueZuordnungen = new ArrayList<>();
 
-            Stadtbezirk stadtbezirk = stadtbezirkRepository.findById(stadtbezirkId)
+        for (StadtbezirkslisteAssignmentResponseDTO dto : assignments) {
+
+            Stadtbezirk stadtbezirk = stadtbezirkRepository.findById(dto.stadtbezirkId())
                     .orElseThrow(() -> new EntityNotFoundException(
-                            "Stadtbezirk '" + stadtbezirkId + "' wurde nicht gefunden."));
+                            "Stadtbezirk '" + dto.stadtbezirkId() + "' wurde nicht gefunden."));
 
             Stadtbezirksliste zuordnung = new Stadtbezirksliste();
-            zuordnung.setId(new StadtbezirkslistePrimaryKey(kurzbez, stadtbezirkId));
+            zuordnung.setId(new StadtbezirkslistePrimaryKey(kurzbez, dto.stadtbezirkId()));
             zuordnung.setListenName(listenname);
             zuordnung.setStadtbezirk(stadtbezirk);
-            zuordnung.setBezeichnung(stadtbezirk.getBezeichnung());
+            zuordnung.setBezeichnung(dto.bezeichnung());
 
-            stadtbezirkslisteRepository.save(zuordnung);
+            neueZuordnungen.add(zuordnung);
         }
+
+        stadtbezirkslisteRepository.saveAll(neueZuordnungen);
     }
 
 

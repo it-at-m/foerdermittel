@@ -10,7 +10,6 @@
         :table-headers="headers"
         :domain-key="domainKey"
         :enable-actions="isAdmin"
-        :expandable="true"
         :items="stadtbezirkslisten?.content ?? []"
         :total-items="stadtbezirkslisten?.page?.totalElements ?? 0"
         @delete="handleDelete"
@@ -23,38 +22,9 @@
             ref="stadtbezirkslisteForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
-            :listenname-form-context="stadtbezirkslisteFormContext"
+            :stadtbezirksliste-form-context="stadtbezirkslisteFormContext"
             @is-valid="updateValidity"
           />
-        </template>
-
-        <template #expanded="{ item }">
-          <v-table density="compact">
-            <thead>
-              <tr>
-                <th>{{ t("model.stadtbezirk.stadtbezirk") }}</th>
-                <th>{{ t("model.stadtbezirk.stadtbezirk") }}</th>
-                <th>{{ t("model.stadtbezirk.bezeichnung") }}</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr
-                v-for="stadtbezirk in item.assignedStadtbezirke"
-                :key="stadtbezirk.stadtbezirkId"
-              >
-                <td>
-                  {{ stadtbezirk.stadtbezirkId }}
-                </td>
-                <td>
-                  {{ stadtbezirk.stadtbezirkBezeichnung }}
-                </td>
-                <td>
-                  {{ stadtbezirk.bezeichnung }}
-                </td>
-              </tr>
-            </tbody>
-          </v-table>
         </template>
       </crud-card>
     </template>
@@ -62,7 +32,10 @@
 </template>
 
 <script setup lang="ts">
-import type { StadtbezirkslisteResponseDTO } from "@/api/generated/foerdermittel-backend";
+import type {
+  ListennameResponseDTO,
+  StadtbezirkslisteResponseDTO,
+} from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
 import { computed, useTemplateRef } from "vue";
@@ -72,11 +45,11 @@ import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
 import StadtbezirkslisteForm from "@/components/forms/StadtbezirkslisteForm.vue";
 import {
-  useCreateListenname,
+  useCreateStadtbezirksliste,
   useDeleteStadtbezirksliste,
   useGetStadtbezirkslisteFormContext,
   useGetStadtbezirkslisten,
-  useUpdateListenname,
+  useUpdateStadtbezirksliste,
 } from "@/composables/api/useStadtbezirkslisteApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
 import usePagination from "@/composables/usePagination";
@@ -84,24 +57,36 @@ import { Role } from "@/types/Role";
 
 const domainKey = "model.stadtbezirksliste.modelName";
 
-const { t } = useI18n();
-
 const isAdmin = useHasAnyRole(Role.ADMIN);
 
-const headers: DataTableHeader<Partial<StadtbezirkslisteResponseDTO>>[] = [
+const { t } = useI18n();
+
+const headers: DataTableHeader<Partial<ListennameResponseDTO>>[] = [
   {
     title: t("model.stadtbezirksliste.lnaKurzbez"),
     value: "kurzbez",
-    width: 120,
+    align: "center",
+    width: 100,
   },
   {
-    title: t("model.stadtbezirksliste.bezeichnung"),
-    value: "bezeichnung",
+    title: t("model.stadtbezirksliste.listeBezeichnung"),
+    value: "listeBezeichnung",
   },
+  {
+    title: t("model.stadtbezirksliste.bezStadtbezirk"),
+    value: "",
+    width: "60",
+    align: "center",
+  },
+  {
+    title: t("model.stadtbezirksliste.stadtbezirkBezeichnung"),
+    value: "stadtbezirkBezeichnung",
+  },
+  { title: t("model.stadtbezirksliste.bezeichnung"), value: "bezeichnung" },
 ];
 
 const EMPTY_ITEM_TEMPLATE: Partial<StadtbezirkslisteResponseDTO> = {
-  kurzbez: "",
+  stadtbezirk: undefined,
   bezeichnung: "",
 };
 
@@ -118,7 +103,6 @@ const {
 } = useGetStadtbezirkslisteFormContext();
 
 type StadtbezirkslisteFormType = InstanceType<typeof StadtbezirkslisteForm>;
-
 const stadtbezirkslisteFormRef = useTemplateRef<StadtbezirkslisteFormType>(
   "stadtbezirkslisteForm"
 );
@@ -132,21 +116,20 @@ const { dataTableOptions, onSuccess, onFailure } = usePagination(
 );
 
 const {
-  call: createListenname,
-  loading: createListennameLoading,
-  error: createListennameError,
-} = useCreateListenname();
+  call: createStadtbezirksliste,
+  loading: createStadtbezirkslisteLoading,
+  error: createStadtbezirkslistenError,
+} = useCreateStadtbezirksliste();
 
 const handleCreate = async (
   stadtbezirkslisteCreateDTO: Partial<StadtbezirkslisteResponseDTO>
 ) => {
+  // TODO: some type checking improvements
   const model = stadtbezirkslisteCreateDTO as StadtbezirkslisteResponseDTO;
-
-  await createListenname({
-    listennameCreateDTO: model,
+  await createStadtbezirksliste({
+    stadtbezirkslisteCreateDTO: model,
   });
-
-  if (!createListennameError.value) {
+  if (!createStadtbezirkslistenError.value) {
     await onSuccess(t("common.message.created", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.createdError", [t(domainKey)]));
@@ -154,22 +137,21 @@ const handleCreate = async (
 };
 
 const {
-  call: updateListenname,
-  loading: updateListennameLoading,
-  error: updateListennameError,
-} = useUpdateListenname();
+  call: updateStadtbezirksliste,
+  loading: updateStadtbezirkslisteLoading,
+  error: updateStadtbezirkslistenError,
+} = useUpdateStadtbezirksliste();
 
 const handleUpdate = async (
   stadtbezirkslisteUpdateDTO: Partial<StadtbezirkslisteResponseDTO>
 ) => {
+  // TODO: some type checking improvements
   const model = stadtbezirkslisteUpdateDTO as StadtbezirkslisteResponseDTO;
-
-  await updateListenname({
+  await updateStadtbezirksliste({
     id: model.id,
-    listennameUpdateDTO: model,
+    stadtbezirkslisteUpdateDTO: model,
   });
-
-  if (!updateListennameError.value) {
+  if (!updateStadtbezirkslistenError.value) {
     await onSuccess(t("common.message.updated", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.updatedError", [t(domainKey)]));
@@ -179,15 +161,14 @@ const handleUpdate = async (
 const {
   call: deleteStadtbezirksliste,
   loading: deleteStadtbezirkslisteLoading,
-  error: deleteStadtbezirkslisteError,
+  error: deleteStadtbezirkslistenError,
 } = useDeleteStadtbezirksliste();
 
 const handleDelete = async (id: string) => {
   await deleteStadtbezirksliste({
     id,
   });
-
-  if (!deleteStadtbezirkslisteError.value) {
+  if (!deleteStadtbezirkslistenError.value) {
     await onSuccess(t("common.message.deleted", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.deletedError", [t(domainKey)]));
@@ -198,8 +179,8 @@ const loading = computed(
   () =>
     getStadtbezirkslistenLoading.value ||
     getStadtbezirkslisteFormContextLoading.value ||
-    createListennameLoading.value ||
-    updateListennameLoading.value ||
+    createStadtbezirkslisteLoading.value ||
+    updateStadtbezirkslisteLoading.value ||
     deleteStadtbezirkslisteLoading.value
 );
 </script>

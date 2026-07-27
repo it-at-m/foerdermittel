@@ -32,10 +32,11 @@ public class Stadtbezirksliste implements Serializable {
     private Listenname listenName;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("stadtbezirk")
     @JoinColumn(name = "bez_stadtbezirk")
     private Stadtbezirk stadtbezirk;
+
 
 
     @Column(name = "bezeichnung")

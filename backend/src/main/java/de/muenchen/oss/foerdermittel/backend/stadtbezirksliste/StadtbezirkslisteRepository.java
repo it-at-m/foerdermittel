@@ -22,4 +22,6 @@ public interface StadtbezirkslisteRepository extends
             String kurzbez,
             BigDecimal stadtbezirk);
 
+    void deleteByListenName_Kurzbez(String kurzbez);
+
 }
