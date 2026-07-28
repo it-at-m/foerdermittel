@@ -76,7 +76,6 @@ const vitepressConfig = defineConfig({
 
       {
         text: "References",
-        link: "/reference",
         items: [
           {
             text: "Refarch - Reference architecture",
@@ -90,13 +89,8 @@ const vitepressConfig = defineConfig({
       },
     ],
     socialLinks: [
-      { icon: "github", link: "https://github.com/it-at-m/refarch-templates" },
+      { icon: "github", link: "https://github.com/it-at-m/foerdermittel" },
     ],
-    editLink: {
-      pattern:
-        "https://github.com/it-at-m/refarch-templates/blob/main/docs/:path",
-      text: "View this page on GitHub",
-    },
     footer: {
       message: `<a href="https://opensource.muenchen.de/impress.html">Impress and Contact</a>`,
     },

@@ -2,7 +2,7 @@
 
 ## Whitebox Overall System
 
-### Overview Diagram**
+### Overview Diagram
 
 **Description of the modular structure of the application. Presentation of the components, modules, and their relationships.**
 

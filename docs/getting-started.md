@@ -23,18 +23,18 @@
 **<\Table\>**
 
 | Profilename | Description          |
-| ----------- | -------------------- |
+|-------------| -------------------- |
 | local       | _<\Description-1 \>_ |
-| no-scurity  | _<\Description-2 \>_ |
+| no-security | _<\Description-2 \>_ |
 
 ## User
 
 **<\Table\>**
 
-| Profilename | Password      | Description          |
-| ----------- | ------------- | -------------------- |
-| fmad        | foerdermittel | _<\Description-1 \>_ |
-| fmsb        | foerdermittel | _<\Description-2 \>_ |
+| Profilename | Password      | Description         |
+| ----------- | ------------- | ------------------- |
+| fmad        | foerdermittel | _<\Description-1\>_ |
+| fmsb        | foerdermittel | _<\Description-2\>_ |
 
 ## Database
 
