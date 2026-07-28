@@ -23,7 +23,7 @@
 **<\Table\>**
 
 | Profilename | Description          |
-|-------------| -------------------- |
+| ----------- | -------------------- |
 | local       | _<\Description-1 \>_ |
 | no-security | _<\Description-2 \>_ |
 
