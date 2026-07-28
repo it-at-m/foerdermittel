@@ -182,9 +182,9 @@ const {
   error: deleteStadtbezirkslisteError,
 } = useDeleteStadtbezirksliste();
 
-const handleDelete = async (id: string) => {
+const handleDelete = async (kurzbez: string) => {
   await deleteStadtbezirksliste({
-    id,
+    kurzbez,
   });
 
   if (!deleteStadtbezirkslisteError.value) {
