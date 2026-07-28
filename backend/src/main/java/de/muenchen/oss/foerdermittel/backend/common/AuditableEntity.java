@@ -3,6 +3,7 @@ package de.muenchen.oss.foerdermittel.backend.common;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -43,14 +44,14 @@ public abstract class AuditableEntity implements Serializable {
 
     @CreatedBy
     @Column(nullable = false)
-    private String anlagevon;
+    @Size(min = 1, max = 30) private String anlagevon;
 
     @CreatedDate
     @Column(nullable = false)
     private LocalDateTime anlagedatum;
 
     @LastModifiedBy
-    private String aenderungvon;
+    @Size(min = 1, max = 30) private String aenderungvon;
 
     @LastModifiedDate
     private LocalDateTime aenderungsdatum;
