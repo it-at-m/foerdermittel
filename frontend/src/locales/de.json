@@ -151,7 +151,9 @@
       "bezeichnung": "Bezeichnung"
     },
     "hauptabschnitt": {
-      "modelName": "Hauptabschnitt | Hauptabschnitte"
+      "modelName": "Hauptabschnitt | Hauptabschnitte",
+      "ha": "Hauptabschnitt",
+      "bezeichnung": "Bezeichnung"
     },
     "unterabschnitt": {
       "modelName": "Unterabschnitt | Unterabschnitte"
