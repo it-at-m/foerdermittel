@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Data
@@ -42,12 +43,9 @@ public class Projekt implements Serializable {
     @NotNull
     private BigDecimal fob_fb;
 
-    // Bidirektionale 1:1 Beziehung zu Archiv
-    @OneToOne(
+    @OneToMany(
             mappedBy = "projekt",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
             fetch = FetchType.LAZY
     )
-    private Archiv archiv;
+    private List<Archiv> archiv;
 }
