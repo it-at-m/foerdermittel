@@ -5,6 +5,7 @@ import de.muenchen.oss.foerdermittel.backend.projekt.ProjektRepository;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -12,9 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
-import java.util.List;
 
 @Service
 @Slf4j
@@ -42,8 +40,7 @@ public class ArchivService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Archiv updateArchiv(final Archiv archiv, final Long archivID) {
-        final Archiv foundArchiveintrag =
-                ServiceUtils.getEntityOrThrowNotFoundException(archivID, archivRepository);
+        final Archiv foundArchiveintrag = ServiceUtils.getEntityOrThrowNotFoundException(archivID, archivRepository);
 
         foundArchiveintrag.setSpeicherDatum(archiv.getSpeicherDatum());
         foundArchiveintrag.setSpeicherAkt(archiv.getSpeicherAkt());
@@ -56,11 +53,8 @@ public class ArchivService {
             String projnr = archiv.getProjekt().getProjnr();
 
             Projekt projekt = projektRepository.findById(projnr)
-                    .orElseThrow(() ->
-                            new EntityNotFoundException(
-                                    "Projekt mit Projektnummer " + projnr + " wurde nicht gefunden"
-                            )
-                    );
+                    .orElseThrow(() -> new EntityNotFoundException(
+                            "Projekt mit Projektnummer " + projnr + " wurde nicht gefunden"));
 
             foundArchiveintrag.setProjekt(projekt);
         }
@@ -77,11 +71,8 @@ public class ArchivService {
         String projnr = archiv.getProjekt().getProjnr();
 
         Projekt projekt = projektRepository.findById(projnr)
-                .orElseThrow(() ->
-                        new EntityNotFoundException(
-                                "Projekt mit Projektnummer " + projnr + " wurde nicht gefunden"
-                        )
-                );
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Projekt mit Projektnummer " + projnr + " wurde nicht gefunden"));
 
         archiv.setProjekt(projekt);
 
@@ -94,6 +85,5 @@ public class ArchivService {
         Archiv archiv = ServiceUtils.getEntityOrThrowNotFoundException(archivID, archivRepository);
         archivRepository.delete(archiv);
     }
-
 
 }

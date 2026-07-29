@@ -4,17 +4,10 @@ import de.muenchen.oss.foerdermittel.backend.archiv.dto.ArchivCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.archiv.dto.ArchivMapper;
 import de.muenchen.oss.foerdermittel.backend.archiv.dto.ArchivResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.archiv.dto.ArchivUpdateDTO;
-import de.muenchen.oss.foerdermittel.backend.bauleitung.Bauleitung;
-import de.muenchen.oss.foerdermittel.backend.bauleitung.BauleitungRepository;
-import de.muenchen.oss.foerdermittel.backend.bauleitung.dto.BauleitungResponseDTO;
-import de.muenchen.oss.foerdermittel.backend.bauleitung.dto.BauleitungUpdateDTO;
-import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammFormContext;
-import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammCreateDTO;
-import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
-import de.muenchen.oss.foerdermittel.backend.util.ControllerUtils;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
@@ -24,9 +17,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
@@ -40,7 +39,8 @@ public class ArchivController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<ArchivResponseDTO> getArchiveintrag( @ParameterObject @PageableDefault (sort = "speicherDatum"
+    public Page<ArchivResponseDTO> getArchiveintrag(@ParameterObject @PageableDefault(
+            sort = "speicherDatum"
     ) final Pageable pageable) {
         final Page<Archiv> pageWithArchiv = archivService.getArchiveintraege(pageable);
         final List<ArchivResponseDTO> archivResponseDTOList = pageWithArchiv.getContent().stream()
@@ -64,7 +64,7 @@ public class ArchivController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ArchivResponseDTO updateArchivNotiz(@Valid @RequestBody final ArchivUpdateDTO archivUpdateDTO,
-                                                  @PathVariable("id") final Long archivId) {
+            @PathVariable("id") final Long archivId) {
         return archivMapper
                 .toDTO(archivService.updateArchiv(archivMapper.toEntity(archivUpdateDTO), archivId));
     }
@@ -74,6 +74,5 @@ public class ArchivController {
     public void deleteArchiv(@PathVariable("id") final String archivID) {
         archivService.deleteArchiv(Long.valueOf(archivID));
     }
-
 
 }

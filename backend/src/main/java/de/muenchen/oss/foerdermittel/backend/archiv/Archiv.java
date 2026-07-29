@@ -3,11 +3,10 @@ package de.muenchen.oss.foerdermittel.backend.archiv;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Entity
 @Data
@@ -30,31 +29,24 @@ public class Archiv {
             referencedColumnName = "projnr",
             nullable = false
     )
-    @NotNull
-    private Projekt projekt;
+    @NotNull private Projekt projekt;
 
     @Column(name = "speicherdatum", nullable = false)
-    @NotNull
-    private LocalDate speicherDatum;
+    @NotNull private LocalDate speicherDatum;
 
     @Column(name = "speicherakt", nullable = false)
-    @NotNull
-    private Boolean speicherAkt;
+    @NotNull private Boolean speicherAkt;
 
     @Column(name = "speicherrechnungen", nullable = false)
-    @NotNull
-    private Boolean speicherRechnungen;
+    @NotNull private Boolean speicherRechnungen;
 
     @Column(name = "mikrodatplan")
-    @NotNull
-    private LocalDate mikroDatPlan;
+    @NotNull private LocalDate mikroDatPlan;
 
     @Column(name = "mikrodat")
-    @NotNull
-    private LocalDate mikroDat;
+    @NotNull private LocalDate mikroDat;
 
     @Column(name = "notizen")
-    @NotNull
-    private String notizen;
+    @NotNull private String notizen;
 
 }
