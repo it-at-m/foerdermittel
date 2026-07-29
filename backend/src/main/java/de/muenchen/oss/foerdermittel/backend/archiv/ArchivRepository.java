@@ -15,6 +15,4 @@ public interface ArchivRepository extends PagingAndSortingRepository<Archiv, Lon
 
     @Query("SELECT a.id FROM Archiv a JOIN a.projekt p")
     List<Long> findAllWithProjekt();
-
-
 }

@@ -12,6 +12,7 @@ import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammFormContext;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
+import de.muenchen.oss.foerdermittel.backend.util.ControllerUtils;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -67,5 +68,12 @@ public class ArchivController {
         return archivMapper
                 .toDTO(archivService.updateArchiv(archivMapper.toEntity(archivUpdateDTO), archivId));
     }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteArchiv(@PathVariable("id") final String archivID) {
+        archivService.deleteArchiv(Long.valueOf(archivID));
+    }
+
 
 }

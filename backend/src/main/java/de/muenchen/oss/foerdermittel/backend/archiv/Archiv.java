@@ -22,10 +22,14 @@ public class Archiv {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull private Long id;
+    private Long id;
 
-    @OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "pro_projnr", referencedColumnName = "projnr")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "pro_projnr",
+            referencedColumnName = "projnr",
+            nullable = false
+    )
     @NotNull
     private Projekt projekt;
 
