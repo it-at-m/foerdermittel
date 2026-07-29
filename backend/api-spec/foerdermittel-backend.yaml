@@ -536,6 +536,21 @@ paths:
                 $ref: "#/components/schemas/ArchivResponseDTO"
       security:
       - bearerAuth: []
+    delete:
+      tags:
+      - archiv-controller
+      operationId: deleteArchiv
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /traeger:
     get:
       tags:
@@ -1908,11 +1923,7 @@ components:
           type: string
     ArchivUpdateDTO:
       required:
-      - mikroDat
-      - mikroDatPlan
-      - notizen
       - speicherAkt
-      - speicherDatum
       - speicherRechnungen
       type: object
       properties:
@@ -2175,6 +2186,7 @@ components:
           type: string
     ArchivCreateDTO:
       required:
+      - projnr
       - speicherAkt
       - speicherRechnungen
       type: object
@@ -2193,6 +2205,8 @@ components:
           type: string
           format: date
         notizen:
+          type: string
+        projnr:
           type: string
     PageMetadata:
       type: object
