@@ -195,10 +195,10 @@ function onValidityChanged(newIsValid: boolean | null) {
   emit("isValid", newIsValid);
 }
 
-function removeStadtbezirk(stadtbezirk: { stadtbezirkId: number }) {
+function removeStadtbezirk(stadtbezirkId: number) {
   modelValue.value.assignedStadtbezirke =
     modelValue.value.assignedStadtbezirke?.filter(
-      (s) => s.stadtbezirkId !== stadtbezirk.stadtbezirkId
+      (s) => s.stadtbezirkId !== stadtbezirkId
     ) ?? [];
 }
 
