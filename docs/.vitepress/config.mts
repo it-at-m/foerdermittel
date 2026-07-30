@@ -61,17 +61,17 @@ const vitepressConfig = defineConfig({
             link: "/architecture/02_architecture_constraints",
           },
           { text: "03 Context and Scope", link: "/architecture/03_context_and_scope" },
-          { text: "04 Solution Strategy", link: "/architecture/04_solution_strategy" },
           {
-            text: "05 Building Block View",
-            link: "/architecture/05_building_block_view",
+            text: "04 Building Block View",
+            link: "/architecture/04_building_block_view",
           },
-          { text: "06 Cross-cutting Concepts", link: "/architecture/06_concepts" },
+          { text: "05 Cross-cutting Concepts", link: "/architecture/05_concepts" },
+          { text: "06 Development View", link: "/architecture/06_development_view" },
           {
             text: "07 Architecture Decisions",
-            link: "/adr",
+            link: "/architecture/arc",
           },
-          { text: "08 Glossary", link: "/architecture/08_glossary" },
+          { text: "Glossary", link: "/architecture/glossary" },
         ],
       },
 
