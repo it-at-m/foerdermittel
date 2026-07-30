@@ -7,7 +7,7 @@ import type { RuleAliases } from "vuetify/labs/rules";
  * See
  */
 export interface ValidationAttributes {
-  dataType: string;
+  dataType?: string;
   required?: boolean;
   maxLength?: number;
   minLength?: number;
