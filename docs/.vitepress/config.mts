@@ -5,7 +5,7 @@ import { withMermaid } from "vitepress-plugin-mermaid";
 const vitepressConfig = defineConfig({
   base: "/foerdermittel/", // needs to be changed if delivered via sub path (e.g. "/docs/" for example.com/docs)
   title: "Fördermittel",
-  description: "Documentation ",
+  description: "Documentation",
   head: [
     [
       "link",
@@ -21,19 +21,21 @@ const vitepressConfig = defineConfig({
     nav: [
       { text: "Home", link: "/" },
       {
+              text: "Overview",
+              link: "/overview",
+            },
+      {
         text: "Docs",
         items: [
-          { text: "Architecture", link: "/arc42" },
+          { text: "Architecture", link: "/architecture" },
           { text: "Develop", link: "/develop" },
         ],
       },
-      { text: "GitHub", link: "https://github.com/it-at-m/foerdermittel" },
     ],
     sidebar: [
       {
-        text: "Getting Started",
-        link: "/getting-started",
-        items: [],
+        text: "Overview",
+        link: "/overview",
       },
       {
         text: "Develop",
@@ -43,34 +45,33 @@ const vitepressConfig = defineConfig({
           { text: "Setup and Tools", link: "/develop/setup-and-tools" },
           { text: "Development Process", link: "/develop/development-process" },
           { text: "Guides", link: "/develop/guides" },
-          { text: "Automation", link: "/develop/automation" },
         ],
       },
       {
         text: "Architecture",
-        link: "/arc42",
+        link: "/architecture",
         collapsed: true,
         items: [
           {
             text: "01 Introduction and Goals",
-            link: "/arc42/01_introduction_and_goals",
+            link: "/architecture/01_introduction_and_goals",
           },
           {
             text: "02 Architecture Constraints",
-            link: "/arc42/02_architecture_constraints",
+            link: "/architecture/02_architecture_constraints",
           },
-          { text: "03 Context and Scope", link: "/arc42/03_context_and_scope" },
-          { text: "04 Solution Strategy", link: "/arc42/04_solution_strategy" },
+          { text: "03 Context and Scope", link: "/architecture/03_context_and_scope" },
+          { text: "04 Solution Strategy", link: "/architecture/04_solution_strategy" },
           {
             text: "05 Building Block View",
-            link: "/arc42/05_building_block_view",
+            link: "/architecture/05_building_block_view",
           },
-          { text: "06 Cross-cutting Concepts", link: "/arc42/08_concepts" },
+          { text: "06 Cross-cutting Concepts", link: "/architecture/06_concepts" },
           {
             text: "07 Architecture Decisions",
-            link: "/arc42/09_architecture_decisions",
+            link: "/adr",
           },
-          { text: "08 Glossary", link: "/arc42/12_glossary" },
+          { text: "08 Glossary", link: "/architecture/08_glossary" },
         ],
       },
 

@@ -71,10 +71,3 @@ Describe common approaches, standards, and implementation principles.**
 - Profiles
 - Environment-specific settings
 
-## Testability and Quality Assurance
-
-**Description of approaches to ensure quality and maintainability.**
-
-- Code reviews
-- Sprint reviews
-- Automated tests

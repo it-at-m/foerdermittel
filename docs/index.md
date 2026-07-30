@@ -5,24 +5,15 @@ layout: home
 hero:
   name: "Fördermittel"
   text: "Documentation"
-  tagline: "Description of the Functionality and Technology of the DB-Web Application Fördermittel"
+  tagline: "Description of the functionality and technology"
   actions:
     - theme: alt
-      text: Getting Started
-      link: /getting-started
+      text: Overview
+      link: /overview
     - theme: alt
       text: Architecture
-      link: /arc42
-<features:
-  - icon: 1️⃣
-    title: Title 1
-    details: Add some interesting information here
-  - icon: 2️⃣
-    title: Title 2
-    details: Add some interesting information here
-  - icon: 3️⃣
-    title: Title 3
-    details: Add some interesting information here
----
+      link: /architecture
+    - theme: alt
+      text: Develop
+      link: /develop
 
->
