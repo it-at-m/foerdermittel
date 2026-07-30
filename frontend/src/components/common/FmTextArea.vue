@@ -2,9 +2,6 @@
   <v-textarea
     v-model="model"
     :readonly="canNotEdit"
-    :class="{
-      'pointer-events-none': canNotEdit,
-    }"
     v-bind="$attrs"
   >
     <template #label>
@@ -12,11 +9,9 @@
       <span
         v-if="required && !canNotEdit"
         class="text-red"
-        >{{ t("common.word.required") }}</span
-      >
-      <span v-if="displayMode === InputDisplayMode.EDIT && canNotEdit">{{
-        t("common.word.readOnly")
-      }}</span>
+        >{{ t("common.word.required") }}
+      </span>
+      <span v-if="canNotEdit">{{ t("common.word.readOnly") }}</span>
     </template>
   </v-textarea>
 </template>

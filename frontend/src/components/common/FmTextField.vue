@@ -4,9 +4,6 @@
     ref="textField"
     :model-value="model"
     :readonly="canNotEdit"
-    :class="{
-      'pointer-events-none': canNotEdit,
-    }"
     v-bind="$attrs"
     @update:model-value="updateModel"
   >
@@ -17,11 +14,14 @@
         class="text-red"
         >{{ t("common.word.required") }}</span
       >
-      <span v-if="canNotEdit">{{ t("common.word.readOnly") }}</span>
+      <span v-if="displayMode == InputDisplayMode.EDIT && canNotEdit">{{
+        t("common.word.readOnly")
+      }}</span>
     </template>
   </v-text-field>
   <v-textarea
     v-else
+    :model-value="model"
     :label="label"
     auto-grow
     readonly
