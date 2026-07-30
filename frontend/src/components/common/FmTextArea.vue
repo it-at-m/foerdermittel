@@ -3,6 +3,7 @@
     v-model="model"
     :readonly="canNotEdit"
     v-bind="$attrs"
+    :hide-details="displayMode === InputDisplayMode.READ"
   >
     <template #label>
       {{ label }}
@@ -11,7 +12,9 @@
         class="text-red"
         >{{ t("common.word.required") }}
       </span>
-      <span v-if="canNotEdit">{{ t("common.word.readOnly") }}</span>
+      <span v-if="displayMode == InputDisplayMode.EDIT && canNotEdit">{{
+        t("common.word.readOnly")
+      }}</span>
     </template>
   </v-textarea>
 </template>

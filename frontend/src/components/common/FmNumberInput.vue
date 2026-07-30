@@ -23,7 +23,6 @@
     readonly
     hide-details
     variant="plain"
-    class="pointer-events-none"
     v-bind="$attrs"
   />
 </template>
