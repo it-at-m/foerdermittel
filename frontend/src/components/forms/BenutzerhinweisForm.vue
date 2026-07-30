@@ -9,6 +9,7 @@
           v-model="modelValue.funktionsbeschreibung"
           :display-mode="displayMode"
           :counter="4000"
+          :rows="20"
           :rules="[rules.maxLength(4000)]"
           :label="t('model.benutzerhinweis.funktionsbeschreibung')"
         />
@@ -18,6 +19,7 @@
           v-model="modelValue.bedienung"
           :display-mode="displayMode"
           :counter="4000"
+          :rows="20"
           :rules="[rules.maxLength(4000)]"
           :label="t('model.benutzerhinweis.bedienung')"
         />
@@ -27,6 +29,7 @@
           v-model="modelValue.pruefungVorgaben"
           :display-mode="displayMode"
           :counter="4000"
+          :rows="20"
           :rules="[rules.maxLength(4000)]"
           :label="t('model.benutzerhinweis.pruefungVorgaben')"
         />

@@ -1,16 +1,17 @@
 <template>
   <v-checkbox
-    :readonly="displayMode === InputDisplayMode.READ || canNotEdit"
+    :readonly="canNotEdit"
     :hide-details="displayMode === InputDisplayMode.READ"
     :class="{
-      'pointer-events-none':
-        displayMode === InputDisplayMode.READ || canNotEdit,
+      'pointer-events-none': canNotEdit,
     }"
     v-bind="$attrs"
   >
     <template #label>
       {{ label }}
-      <span v-if="canNotEdit">{{ t("common.word.readOnly") }}</span>
+      <span v-if="displayMode == InputDisplayMode.EDIT && canNotEdit">{{
+        t("common.word.readOnly")
+      }}</span>
     </template>
   </v-checkbox>
 </template>
@@ -29,7 +30,9 @@ const { displayMode = InputDisplayMode.CREATE, disableEdit = false } =
   }>();
 
 const canNotEdit = computed(
-  () => displayMode === InputDisplayMode.EDIT && disableEdit
+  () =>
+    displayMode === InputDisplayMode.READ ||
+    (displayMode === InputDisplayMode.EDIT && disableEdit)
 );
 
 const { t } = useI18n();
