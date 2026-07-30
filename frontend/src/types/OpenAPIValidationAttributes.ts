@@ -4,7 +4,6 @@ import type { RuleAliases } from "vuetify/labs/rules";
 /**
  * This interface holds most available in generated *ValidationAttributesMap types via the OpenAPI generator.
  * Only the attributes that are mappable to a corresponding Vuetify {@link RuleAliases} are included.
- * See
  */
 export interface ValidationAttributes {
   dataType?: string;
