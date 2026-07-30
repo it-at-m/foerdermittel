@@ -13,7 +13,8 @@
           "enumPropertyNaming": "UPPERCASE",
           "disallowAdditionalPropertiesIfNotPresent": false,
           "validationAttributes": true
-        }
+        },
+        "templateDir": "."
       }
     }
   }
