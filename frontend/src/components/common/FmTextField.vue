@@ -7,6 +7,8 @@
     :class="{
       'pointer-events-none': canNotEdit,
     }"
+    :counter="counter"
+    :rules="allRules"
     v-bind="$attrs"
     @update:model-value="updateModel"
   >
@@ -32,26 +34,79 @@
   />
 </template>
 
-<script setup lang="ts">
+<script
+  setup
+  lang="ts"
+  generic="M extends Record<string, ValidationAttributes>, K extends keyof M"
+>
+import type { ValidationAttributes } from "@/types/OpenAPIValidationAttributes";
 import type { VTextField } from "vuetify/components";
+import type { ValidationRule } from "vuetify/framework";
 
 import { computed, nextTick, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRules } from "vuetify/labs/rules";
 
 import { InputDisplayMode } from "@/types/InputDisplayMode";
+import {
+  getOpenAPIValidationConstraint,
+  mapOpenAPIToVuetifyValidationRules,
+} from "@/util/validation";
 
 const {
   displayMode = InputDisplayMode.CREATE,
   disableEdit = false,
-  required = false,
   uppercase = false,
+  validationAttributeMap,
+  validationAttributeKey,
+  additionalRules = [],
 } = defineProps<{
   label: string;
   displayMode?: InputDisplayMode;
   disableEdit?: boolean;
-  required?: boolean;
   uppercase?: boolean;
+  validationAttributeMap?: M;
+  validationAttributeKey?: K;
+  additionalRules?: ValidationRule[];
 }>();
+
+const required = computed(
+  () =>
+    (validationAttributeMap &&
+      validationAttributeKey &&
+      getOpenAPIValidationConstraint(
+        validationAttributeMap,
+        validationAttributeKey,
+        "required"
+      )) ??
+    false
+);
+
+const rules = useRules();
+const allRules = computed(() => {
+  if (!validationAttributeMap || !validationAttributeKey) {
+    return additionalRules;
+  }
+
+  return [
+    ...mapOpenAPIToVuetifyValidationRules(
+      rules,
+      validationAttributeMap,
+      validationAttributeKey
+    ),
+    ...additionalRules,
+  ];
+});
+
+const counter = computed(() =>
+  !validationAttributeMap || !validationAttributeKey
+    ? undefined
+    : getOpenAPIValidationConstraint(
+        validationAttributeMap,
+        validationAttributeKey,
+        "maxLength"
+      )
+);
 
 const canNotEdit = computed(
   () =>
