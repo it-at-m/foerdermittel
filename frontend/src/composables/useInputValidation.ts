@@ -10,7 +10,7 @@ import {
   mapOpenAPIToVuetifyValidationRules,
 } from "@/util/validation";
 
-export function useOpenApiInput(
+export function useInputValidation(
   validationAttributeMap: Record<string, ValidationAttributes>,
   validationAttributeKey: string,
   additionalRules: ValidationRule[],
