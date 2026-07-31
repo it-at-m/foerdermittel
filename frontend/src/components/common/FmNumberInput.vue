@@ -1,5 +1,6 @@
 <template>
   <v-number-input
+    v-model="model"
     :readonly="displayMode === InputDisplayMode.READ || canNotEdit"
     :hide-details="displayMode === InputDisplayMode.READ"
     :variant="displayMode === InputDisplayMode.READ ? 'plain' : undefined"
@@ -100,6 +101,8 @@ const counter = computed(() =>
 const canNotEdit = computed(
   () => displayMode === InputDisplayMode.EDIT && disableEdit
 );
+
+const model = defineModel<number>();
 
 const { t } = useI18n();
 </script>
