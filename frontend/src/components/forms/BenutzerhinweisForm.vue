@@ -8,8 +8,10 @@
         <fm-text-area
           v-model="modelValue.funktionsbeschreibung"
           :display-mode="displayMode"
-          :counter="4000"
-          :rules="[rules.maxLength(4000)]"
+          :validation-attribute-map="
+            BenutzerhinweisCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="funktionsbeschreibung"
           :label="t('model.benutzerhinweis.funktionsbeschreibung')"
         />
       </v-col>
@@ -17,8 +19,10 @@
         <fm-text-area
           v-model="modelValue.bedienung"
           :display-mode="displayMode"
-          :counter="4000"
-          :rules="[rules.maxLength(4000)]"
+          :validation-attribute-map="
+            BenutzerhinweisCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bedienung"
           :label="t('model.benutzerhinweis.bedienung')"
         />
       </v-col>
@@ -26,8 +30,10 @@
         <fm-text-area
           v-model="modelValue.pruefungVorgaben"
           :display-mode="displayMode"
-          :counter="4000"
-          :rules="[rules.maxLength(4000)]"
+          :validation-attribute-map="
+            BenutzerhinweisCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="pruefungVorgaben"
           :label="t('model.benutzerhinweis.pruefungVorgaben')"
         />
       </v-col>
@@ -40,8 +46,8 @@ import type { BenutzerhinweisResponseDTO } from "@/api/generated/foerdermittel-b
 import type { VForm } from "vuetify/components";
 
 import { useI18n } from "vue-i18n";
-import { useRules } from "vuetify/labs/rules";
 
+import { BenutzerhinweisCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmTextArea from "@/components/common/FmTextArea.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
@@ -62,6 +68,4 @@ const emit = defineEmits<{
 function onValidityChanged(newIsValid: boolean | null) {
   emit("isValid", newIsValid);
 }
-
-const rules = useRules();
 </script>
