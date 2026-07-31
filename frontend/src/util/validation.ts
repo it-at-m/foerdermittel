@@ -98,3 +98,49 @@ export function getOpenAPIValidationConstraint<
 
   return attributes[constraint];
 }
+
+/**
+ * Deep equal compares two objects using trimmed string values
+ * @param a object a
+ * @param b object b
+ */
+export function deepEqualTrimmed(a: unknown, b: unknown): boolean {
+  if (typeof a === "string" && typeof b === "string") {
+    return a.trim() === b.trim();
+  }
+
+  if (a === b) {
+    return true;
+  }
+
+  if (Array.isArray(a) && Array.isArray(b)) {
+    return (
+      a.length === b.length &&
+      a.every((item, i) => deepEqualTrimmed(item, b[i]))
+    );
+  }
+
+  if (
+    a &&
+    b &&
+    typeof a === "object" &&
+    typeof b === "object"
+  ) {
+    const aKeys = Object.keys(a);
+    const bKeys = Object.keys(b);
+
+    return (
+      aKeys.length === bKeys.length &&
+      aKeys.every(
+        key =>
+          bKeys.includes(key) &&
+          deepEqualTrimmed(
+            (a as Record<string, unknown>)[key],
+            (b as Record<string, unknown>)[key]
+          )
+      )
+    );
+  }
+
+  return false;
+}

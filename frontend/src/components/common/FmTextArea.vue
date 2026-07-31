@@ -8,6 +8,7 @@
     :counter="counter"
     :rules="allRules"
     v-bind="$attrs"
+    @blur="trimModel"
   >
     <template #label>
       {{ label }}
@@ -101,6 +102,10 @@ const canNotEdit = computed(
 );
 
 const model = defineModel<string>();
+
+function trimModel() {
+  model.value = model.value?.trim();
+}
 
 const { t } = useI18n();
 </script>

@@ -1,9 +1,9 @@
 import type { Ref } from "vue";
 import type { NavigationGuardNext } from "vue-router";
 
-import equal from "fast-deep-equal";
 import { computed, onMounted, onUnmounted, ref, toRaw } from "vue";
 import { onBeforeRouteLeave } from "vue-router";
+import { deepEqualTrimmed } from "@/util/validation";
 
 function cloneValue<T>(value: T): T {
   return structuredClone(toRaw(value));
@@ -22,7 +22,7 @@ export function useDirtyFlag<T>(
     () =>
       enabled.value &&
       initialValue.value != null &&
-      !equal(initialValue.value, currentValue.value)
+      !deepEqualTrimmed(initialValue.value, currentValue.value)
   );
 
   const clearDirtyState = () => {

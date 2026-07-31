@@ -11,6 +11,7 @@
     :rules="allRules"
     v-bind="$attrs"
     @update:model-value="updateModel"
+    @blur="trimModel"
   >
     <template #label>
       {{ label }}
@@ -130,6 +131,10 @@ async function updateModel(newModelValue: string) {
   await nextTick();
 
   input?.setSelectionRange(start, end);
+}
+
+function trimModel() {
+  model.value = model.value?.trim();
 }
 
 const { t } = useI18n();
