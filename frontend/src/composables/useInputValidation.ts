@@ -11,11 +11,11 @@ import {
 } from "@/util/validation";
 
 export function useInputValidation(
-  validationAttributeMap: Record<string, ValidationAttributes>,
-  validationAttributeKey: string,
-  additionalRules: ValidationRule[],
   displayMode: InputDisplayMode,
-  disableEdit: boolean
+  disableEdit: boolean,
+  additionalRules: ValidationRule[] = [],
+  validationAttributeMap?: Record<string, ValidationAttributes>,
+  validationAttributeKey?: string
 ) {
   const required = computed(
     () =>

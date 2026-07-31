@@ -38,15 +38,10 @@
 import type { ValidationAttributes } from "@/types/OpenAPIValidationAttributes";
 import type { ValidationRule } from "vuetify/framework";
 
-import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRules } from "vuetify/labs/rules";
 
+import { useInputValidation } from "@/composables/useInputValidation";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
-import {
-  getOpenAPIValidationConstraint,
-  mapOpenAPIToVuetifyValidationRules,
-} from "@/util/validation";
 
 const {
   displayMode = InputDisplayMode.CREATE,
@@ -63,48 +58,12 @@ const {
   additionalRules?: ValidationRule[];
 }>();
 
-const required = computed(
-  () =>
-    (validationAttributeMap &&
-      validationAttributeKey &&
-      getOpenAPIValidationConstraint(
-        validationAttributeMap,
-        validationAttributeKey,
-        "required"
-      )) ??
-    false
-);
-
-const rules = useRules();
-const allRules = computed(() => {
-  if (!validationAttributeMap || !validationAttributeKey) {
-    return additionalRules;
-  }
-
-  return [
-    ...mapOpenAPIToVuetifyValidationRules(
-      rules,
-      validationAttributeMap,
-      validationAttributeKey
-    ),
-    ...additionalRules,
-  ];
-});
-
-const counter = computed(() =>
-  !validationAttributeMap || !validationAttributeKey
-    ? undefined
-    : (getOpenAPIValidationConstraint(
-        validationAttributeMap,
-        validationAttributeKey,
-        "maxLength"
-      ) as number)
-);
-
-const canNotEdit = computed(
-  () =>
-    displayMode === InputDisplayMode.READ ||
-    (displayMode === InputDisplayMode.EDIT && disableEdit)
+const { required, allRules, counter, canNotEdit } = useInputValidation(
+  displayMode,
+  disableEdit,
+  additionalRules,
+  validationAttributeMap,
+  validationAttributeKey as string
 );
 
 const model = defineModel<number>();
