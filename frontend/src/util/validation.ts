@@ -28,9 +28,10 @@ export function mapOpenAPIToVuetifyValidationRules<
   const result: ValidationRule[] = [];
 
   if (!attributes) {
-    throw Error(
-      `Property "${String(property)}" not found in ${validationAttributes}"`
+    console.debug(
+      `Validation property "${String(property)}" not found in ${JSON.stringify(validationAttributes)}"`
     );
+    return [];
   }
 
   // Required
@@ -45,14 +46,14 @@ export function mapOpenAPIToVuetifyValidationRules<
     attributes.minLength === attributes.maxLength
   ) {
     result.push(rules.strictLength(attributes.minLength));
-  }
+  } else {
+    if (attributes.minLength !== undefined && attributes.minLength > 0) {
+      result.push(rules.minLength(attributes.minLength));
+    }
 
-  if (attributes.minLength !== undefined && attributes.minLength > 0) {
-    result.push(rules.minLength(attributes.minLength));
-  }
-
-  if (attributes.maxLength !== undefined && attributes.maxLength > 0) {
-    result.push(rules.maxLength(attributes.maxLength));
+    if (attributes.maxLength !== undefined && attributes.maxLength > 0) {
+      result.push(rules.maxLength(attributes.maxLength));
+    }
   }
 
   if (attributes.pattern !== undefined) {
@@ -91,9 +92,10 @@ export function getOpenAPIValidationConstraint<
   const attributes = validationAttributes[property];
 
   if (!attributes) {
-    throw Error(
-      `Property "${String(property)}" not found in ${validationAttributes}"`
+    console.debug(
+      `Validation property "${String(property)}" not found in ${JSON.stringify(validationAttributes)}"`
     );
+    return [];
   }
 
   return attributes[constraint];

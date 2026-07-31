@@ -94,11 +94,11 @@ const allRules = computed(() => {
 const counter = computed(() =>
   !validationAttributeMap || !validationAttributeKey
     ? undefined
-    : getOpenAPIValidationConstraint(
+    : (getOpenAPIValidationConstraint(
         validationAttributeMap,
         validationAttributeKey,
         "maxLength"
-      )
+      ) as number)
 );
 
 const canNotEdit = computed(

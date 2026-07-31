@@ -8,7 +8,7 @@ type CustomRule = (...args: any[]) => (value: any) => string | boolean;
 const minRule: CustomRule = (minNumber: number, exclusive = false, err) => {
   return (v) =>
     exclusive
-      ? v > minNumber
+      ? v > minNumber || err || `Der Wert muss größer als ${minNumber} sein.`
       : v >= minNumber ||
         err ||
         `Der Wert muss mindestens ${minNumber} betragen.`;
@@ -17,7 +17,7 @@ const minRule: CustomRule = (minNumber: number, exclusive = false, err) => {
 const maxRule: CustomRule = (maxNumber: number, exclusive = false, err) => {
   return (v) =>
     exclusive
-      ? v < maxNumber
+      ? v < maxNumber || err || `Der Wert muss kleiner als ${maxNumber} sein.`
       : v <= maxNumber ||
         err ||
         `Der Wert darf höchstens ${maxNumber} betragen.`;
