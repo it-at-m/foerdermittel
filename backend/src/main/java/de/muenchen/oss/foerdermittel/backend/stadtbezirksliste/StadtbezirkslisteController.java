@@ -59,14 +59,6 @@ public class StadtbezirkslisteController {
         return stadtbezirkslisteService.getStadtbezirksListeFormContext();
     }
 
-//    @PostMapping
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-//    public Listenname createListenname(
-//            @RequestBody final Listenname listenname) {
-//
-//        return stadtbezirkslisteService.createListenname(ListennameCreateDTO);
-//    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -75,45 +67,19 @@ public class StadtbezirkslisteController {
         return listennameStadtbezirkslisteMapper.toDTO(stadtbezirkslisteService.createListenname(listennameStadtbezirkslisteMapper.toEntity(listennameCreateDTO)));
     }
 
-//    @PutMapping("/{kurzBez}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public Listenname updateListenname(
-//            @PathVariable final String kurzBez,
-//            @RequestBody final Listenname listenname) {
-//
-//        return stadtbezirkslisteService.updateListenname(listenname, kurzBez);
-//    }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public StadtbezirkslisteResponseDTO updateListenname(@Valid @RequestBody final ListennameUpdateDTO listennameUpdateDTO,
-                                                    @PathVariable("id") final String listennameId) {
-        return listennameStadtbezirkslisteMapper
-                .toDTO(stadtbezirkslisteService.updateListenname(listennameStadtbezirkslisteMapper.toEntity(listennameUpdateDTO),
+    public StadtbezirkslisteResponseDTO updateListenname(
+            @Valid @RequestBody ListennameUpdateDTO listennameUpdateDTO,
+            @PathVariable("id") String listennameId) {
+
+        return listennameStadtbezirkslisteMapper.toDTO(
+                stadtbezirkslisteService.updateListenname(
+                        listennameStadtbezirkslisteMapper.toEntity(listennameUpdateDTO),
                         listennameId));
     }
 
-    @PutMapping("/{kurzbez}/stadtbezirke")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    public void setStadtbezirke(
-            @PathVariable final String kurzbez,
-
-            @RequestBody final List<StadtbezirkslisteAssignmentResponseDTO> stadtbezirke){
-
-
-        stadtbezirkslisteService.setStadtbezirke(kurzbez, stadtbezirke);
-    }
-
-    @DeleteMapping("/{kurzbez}/stadtbezirke/{stadtbezirk}")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    public void deleteStadtbezirk(
-            @PathVariable String kurzbez,
-            @PathVariable BigDecimal stadtbezirk) {
-
-        stadtbezirkslisteService.deleteStadtbezirk(kurzbez, stadtbezirk);
-    }
 
     @DeleteMapping("/{kurzbez}")
     @ResponseStatus(HttpStatus.OK)

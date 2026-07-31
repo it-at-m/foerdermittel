@@ -1,6 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.stadtbezirksliste;
 
 import de.muenchen.oss.foerdermittel.backend.common.InsertAndUpdateRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
@@ -16,6 +17,9 @@ public interface StadtbezirkslisteRepository extends
 
 
     List<Stadtbezirksliste> findByListenName_Kurzbez(String kurzbez);
+
+    @Query("SELECT s.listenName FROM Stadtbezirksliste s")
+    List<BigDecimal> findAllStadtbezirkslisten();
 
 
     void deleteByListenName_KurzbezAndStadtbezirk_Stadtbezirk(

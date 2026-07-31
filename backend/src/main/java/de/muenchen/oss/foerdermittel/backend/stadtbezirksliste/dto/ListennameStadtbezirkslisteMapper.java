@@ -8,9 +8,10 @@ import org.mapstruct.Mapping;
 @Mapper(
         componentModel = "spring",
         uses = {
-        NumberMapper.class,
-        ListennameStadtbezirkslisteAssignmentMapper.class
-})
+                NumberMapper.class,
+                ListennameStadtbezirkslisteAssignmentMapper.class
+        }
+)
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public interface ListennameStadtbezirkslisteMapper {
 
@@ -19,11 +20,9 @@ public interface ListennameStadtbezirkslisteMapper {
     @Mapping(source = "stadtbezirkslisten", target = "assignedStadtbezirke")
     StadtbezirkslisteResponseDTO toDTO(Listenname listenname);
 
-
     Listenname toEntity(ListennameCreateDTO listennameCreateDTO);
 
-
     @Mapping(target = "kurzbez", ignore = true)
+    @Mapping(source = "assignedStadtbezirke", target = "stadtbezirkslisten")
     Listenname toEntity(ListennameUpdateDTO listennameUpdateDTO);
-
 }

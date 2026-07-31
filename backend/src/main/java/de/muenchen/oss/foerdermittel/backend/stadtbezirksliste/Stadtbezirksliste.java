@@ -41,5 +41,4 @@ public class Stadtbezirksliste implements Serializable {
 
     @Column(name = "bezeichnung")
     private String bezeichnung;
-
 }
