@@ -10,13 +10,11 @@
           v-model="modelValue.kurzform"
           :display-mode="displayMode"
           disable-edit
-          required
-          :counter="1"
-          :rules="[
-            rules.required(),
-            rules.number(),
-            rules['min']!(0),
-            rules['max']!(9),
+          :validation-attribute-map="
+            TraegerCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="kurzform"
+          :additional-rules="[
             rules['unique']!(traegerFormContext.kurzformen, currentTraeger),
           ]"
           :label="t('model.traeger.kurzform')"

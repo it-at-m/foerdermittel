@@ -10,13 +10,11 @@
           v-model="modelValue.stadtbezirk"
           :display-mode="displayMode"
           disable-edit
-          required
-          :counter="2"
-          :rules="[
-            rules.required(),
-            rules.number(),
-            rules['min']!(0),
-            rules['max']!(99),
+          :validation-attribute-map="
+            StadtbezirkCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="stadtbezirk"
+          :additional-rules="[
             rules['unique']!(
               stadtbezirkFormContext.stadtbezirke,
               currentStadtbezirk

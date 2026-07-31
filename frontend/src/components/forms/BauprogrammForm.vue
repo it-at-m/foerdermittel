@@ -10,13 +10,11 @@
           v-model="modelValue.bauprogramm"
           :display-mode="displayMode"
           disable-edit
-          required
-          :counter="2"
-          :rules="[
-            rules.required(),
-            rules.number(),
-            rules['min']!(1),
-            rules['max']!(99),
+          :validation-attribute-map="
+            BauprogrammCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bauprogramm"
+          :additional-rules="[
             rules['unique']!(
               bauprogrammFormContext.bauprogramme,
               currentBauprogramm

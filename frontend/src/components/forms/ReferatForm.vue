@@ -10,13 +10,11 @@
           v-model="modelValue.refnr"
           :display-mode="displayMode"
           disable-edit
-          required
-          :counter="2"
-          :rules="[
-            rules.required(),
-            rules.number(),
-            rules['min']!(0),
-            rules['max']!(99),
+          :validation-attribute-map="
+            ReferatCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="refnr"
+          :additional-rules="[
             rules['unique']!(referatFormContext.refNrs, currentReferat),
           ]"
           :label="t('model.referat.refnr')"

@@ -10,13 +10,11 @@
           v-model="modelValue.fb"
           :display-mode="displayMode"
           disable-edit
-          required
-          :counter="2"
-          :rules="[
-            rules.required(),
-            rules.number(),
-            rules['min']!(0),
-            rules['max']!(99),
+          :validation-attribute-map="
+            FoerderbereichCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="fb"
+          :additional-rules="[
             rules['unique']!(
               foerderbereichFormContext.fbs,
               currentFoerderbereich
