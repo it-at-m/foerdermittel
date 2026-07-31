@@ -1,6 +1,6 @@
 <template>
   <v-number-input
-    v-model="model"
+    v-model.number="model"
     :readonly="displayMode === InputDisplayMode.READ || canNotEdit"
     :hide-details="displayMode === InputDisplayMode.READ"
     :variant="displayMode === InputDisplayMode.READ ? 'plain' : undefined"
