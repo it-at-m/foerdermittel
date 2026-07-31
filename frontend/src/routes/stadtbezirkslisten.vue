@@ -103,6 +103,7 @@ const headers: DataTableHeader<Partial<StadtbezirkslisteResponseDTO>>[] = [
 const EMPTY_ITEM_TEMPLATE: Partial<StadtbezirkslisteResponseDTO> = {
   kurzbez: "",
   bezeichnung: "",
+  assignedStadtbezirke: [],
 };
 
 const {

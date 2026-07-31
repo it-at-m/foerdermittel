@@ -49,8 +49,16 @@ public class StadtbezirkslisteService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Listenname createListenname(final Listenname listenname) {
-    log.debug("Create Listenname {}", listenname);
-    return listennameRepository.insert(listenname);
+        listenname.getStadtbezirkslisten().forEach(assignment -> {
+            assignment.setListenName(listenname);
+            assignment.setId(new StadtbezirkslistePrimaryKey(
+                    listenname.getKurzbez(),
+                    assignment.getStadtbezirk().getStadtbezirk()
+            ));
+        });
+
+        log.debug("Create Listenname {}", listenname);
+        return listennameRepository.insert(listenname);
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)

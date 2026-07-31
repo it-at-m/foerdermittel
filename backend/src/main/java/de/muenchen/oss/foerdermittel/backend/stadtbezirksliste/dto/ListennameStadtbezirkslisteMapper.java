@@ -20,6 +20,7 @@ public interface ListennameStadtbezirkslisteMapper {
     @Mapping(source = "stadtbezirkslisten", target = "assignedStadtbezirke")
     StadtbezirkslisteResponseDTO toDTO(Listenname listenname);
 
+    @Mapping(source = "assignedStadtbezirke", target = "stadtbezirkslisten")
     Listenname toEntity(ListennameCreateDTO listennameCreateDTO);
 
     @Mapping(target = "kurzbez", ignore = true)
