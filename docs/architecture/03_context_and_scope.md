@@ -1,4 +1,4 @@
-# Context and Scope
+# 03. Context and Scope
 
 **Describe the system boundary and its communication partners. Depending on the application, the business context may be very small, while the technical context contains most of the relevant external dependencies.**
 
