@@ -74,11 +74,11 @@ const vitepressConfig = defineConfig({
           },
           {
             text: "06 Development View",
-            link: "/architecture/06_development_view",
+            link: "/architecture/06_deployment_view",
           },
           {
             text: "07 Architecture Decisions",
-            link: "/architecture/arc",
+            link: "/architecture/adr/index",
           },
           { text: "Glossary", link: "/architecture/glossary" },
         ],
