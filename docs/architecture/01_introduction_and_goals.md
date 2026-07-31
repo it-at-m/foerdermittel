@@ -27,7 +27,7 @@
 ## Stakeholders
 
 | Role/Name                  | Expectations        |
-| -------------------------- |---------------------|
+| -------------------------- | ------------------- |
 | _\<Role- Sachbearbeiter\>_ | _\<Expectation-1\>_ |
 | _\<Role-Admin\>_           | _\<Expectation-2\>_ |
 | _\<Role-3 \>_              | _\<Expectation-3\>_ |

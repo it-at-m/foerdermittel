@@ -6,8 +6,6 @@ This project follows the Munich Reference Architecture.
 
 Most architectural decisions are inherited from the RefArch and therefore act as constraints for this project.
 
-**<Cross-reference => refarch.oss.muenchen.de>**
-
 ## Project-specific Decisions
 
 - ...

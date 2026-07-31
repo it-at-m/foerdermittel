@@ -4,16 +4,15 @@
 
 ## Business Context (optional)
 
-*<Business context diagram (optional)*
+**Business context diagram (optional).**
 
 ## Technical Context
 
 **Describe the technical dependencies and interfaces of the application.**
 
-*Technical context diagram*
+**Technical context diagram.**
 
 | System / Component | Purpose       | Interface       |
-| ---------------- |---------------|-----------------|
-| Database         | \<Purpose-1\> | \<Interface-1\> |
-| Identity Provider| \<Purpose-2\> | \<Interface-1\> |
-
+| ------------------ | ------------- | --------------- |
+| Database           | \<Purpose-1\> | \<Interface-1\> |
+| Identity Provider  | \<Purpose-2\> | \<Interface-1\> |

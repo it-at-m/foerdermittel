@@ -70,4 +70,3 @@ Describe common approaches, standards, and implementation principles.**
 - Configuration files
 - Profiles
 - Environment-specific settings
-

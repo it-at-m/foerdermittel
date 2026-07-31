@@ -2,7 +2,7 @@
 
 ## Getting started
 
-*Text*
+**Text.**
 
 ## Technologies
 
