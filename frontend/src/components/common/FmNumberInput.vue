@@ -1,16 +1,8 @@
 <template>
   <v-number-input
+    v-if="displayMode !== InputDisplayMode.READ"
     v-model.number="model"
-    :readonly="displayMode === InputDisplayMode.READ || canNotEdit"
-    :hide-details="displayMode === InputDisplayMode.READ"
-    :variant="displayMode === InputDisplayMode.READ ? 'plain' : undefined"
-    :control-variant="
-      displayMode === InputDisplayMode.READ ? 'hidden' : undefined
-    "
-    :class="{
-      'pointer-events-none':
-        displayMode === InputDisplayMode.READ || canNotEdit,
-    }"
+    :readonly="canNotEdit"
     :counter="counter"
     :rules="allRules"
     v-bind="$attrs"
@@ -18,13 +10,24 @@
     <template #label>
       {{ label }}
       <span
-        v-if="required && !canNotEdit && displayMode !== InputDisplayMode.READ"
+        v-if="required && !canNotEdit"
         class="text-red"
         >{{ t("common.word.required") }}</span
       >
-      <span v-if="canNotEdit">{{ t("common.word.readOnly") }}</span>
+      <span v-if="displayMode == InputDisplayMode.EDIT && canNotEdit">{{
+        t("common.word.readOnly")
+      }}</span>
     </template>
   </v-number-input>
+  <v-textarea
+    v-else
+    :label="label"
+    auto-grow
+    readonly
+    hide-details
+    variant="plain"
+    v-bind="$attrs"
+  />
 </template>
 
 <script
@@ -99,7 +102,9 @@ const counter = computed(() =>
 );
 
 const canNotEdit = computed(
-  () => displayMode === InputDisplayMode.EDIT && disableEdit
+  () =>
+    displayMode === InputDisplayMode.READ ||
+    (displayMode === InputDisplayMode.EDIT && disableEdit)
 );
 
 const model = defineModel<number>();

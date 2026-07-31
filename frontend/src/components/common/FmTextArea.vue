@@ -8,14 +8,16 @@
     :counter="counter"
     :rules="allRules"
     v-bind="$attrs"
+    :hide-details="displayMode === InputDisplayMode.READ"
   >
     <template #label>
       {{ label }}
       <span
         v-if="required && !canNotEdit"
         class="text-red"
-        >{{ t("common.word.required") }}</span
       >
+        {{ t("common.word.required") }}
+      </span>
       <span v-if="displayMode === InputDisplayMode.EDIT && canNotEdit">{{
         t("common.word.readOnly")
       }}</span>
