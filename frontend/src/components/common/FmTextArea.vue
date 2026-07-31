@@ -2,9 +2,6 @@
   <v-textarea
     v-model="model"
     :readonly="canNotEdit"
-    :class="{
-      'pointer-events-none': canNotEdit,
-    }"
     :counter="counter"
     :rules="allRules"
     v-bind="$attrs"
