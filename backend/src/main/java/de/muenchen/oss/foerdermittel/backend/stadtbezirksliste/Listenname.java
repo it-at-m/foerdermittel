@@ -47,6 +47,7 @@ public class Listenname implements Serializable {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
+    @OrderBy("id.stadtbezirk ASC")
     private List<Stadtbezirksliste> stadtbezirkslisten = new ArrayList<>();
 
 }

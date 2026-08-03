@@ -63,6 +63,7 @@
               variant="outlined"
               density="compact"
               hide-details
+              :rules="[rules.maxLength(200)]"
             />
           </td>
           <td class="text-end">
@@ -85,18 +86,21 @@
               label="Stadtbezirk"
               variant="outlined"
               density="compact"
-              hide-details
-              :menu-props="{ location: 'bottom' }"
+              :menu-props="{
+                location: 'bottom',
+                contained: true,
+              }"
             />
           </td>
 
           <td>
-            <v-text-field
+            <fm-text-field
               v-model="newBezeichnung"
               label="Bezeichnung"
               variant="outlined"
               density="compact"
-              hide-details
+              :counter="200"
+              :rules="[rules.maxLength(200)]"
             />
           </td>
 
@@ -211,7 +215,6 @@ async function validate() {
     await formRef.value.validate();
   }
 }
-
 
 defineExpose({
   validate,

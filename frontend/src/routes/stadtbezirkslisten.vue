@@ -28,33 +28,36 @@
           />
         </template>
 
-        <template #expanded="{ item }">
-          <v-table density="compact">
-            <thead>
-              <tr>
-                <th>{{ t("model.stadtbezirk.stadtbezirk") }}</th>
-                <th>{{ t("model.stadtbezirk.stadtbezirk") }}</th>
-                <th>{{ t("model.stadtbezirk.bezeichnung") }}</th>
-              </tr>
-            </thead>
 
-            <tbody>
-              <tr
-                v-for="stadtbezirk in item.assignedStadtbezirke"
-                :key="stadtbezirk.stadtbezirkId"
-              >
-                <td>
-                  {{ stadtbezirk.stadtbezirkId }}
-                </td>
-                <td>
-                  {{ stadtbezirk.stadtbezirkBezeichnung }}
-                </td>
-                <td>
-                  {{ stadtbezirk.bezeichnung }}
-                </td>
-              </tr>
-            </tbody>
-          </v-table>
+        <template #expanded="{ item }">
+          <div class="ml-7 pl-4 border-s border-l-2">
+            <v-table density="compact">
+              <thead>
+                <tr>
+                  <th>{{ t("model.stadtbezirk.stadtbezirk") }}</th>
+                  <th>{{ t("model.stadtbezirk.stadtbezirk") }}</th>
+                  <th>{{ t("model.stadtbezirk.bezeichnung") }}</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr
+                  v-for="stadtbezirk in item.assignedStadtbezirke"
+                  :key="stadtbezirk.stadtbezirkId"
+                >
+                  <td>
+                    {{ stadtbezirk.stadtbezirkId }}
+                  </td>
+                  <td>
+                    {{ stadtbezirk.stadtbezirkBezeichnung }}
+                  </td>
+                  <td>
+                    {{ stadtbezirk.bezeichnung }}
+                  </td>
+                </tr>
+              </tbody>
+            </v-table>
+          </div>
         </template>
       </crud-card>
     </template>

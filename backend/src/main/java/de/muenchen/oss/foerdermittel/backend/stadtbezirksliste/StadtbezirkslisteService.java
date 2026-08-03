@@ -1,9 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.stadtbezirksliste;
 
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
-import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -12,8 +10,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.util.List;
 
 @Service
 @Slf4j
@@ -22,7 +18,6 @@ import java.util.List;
 public class StadtbezirkslisteService {
 
 
-    private final StadtbezirkslisteRepository stadtbezirkslisteRepository;
     private final ListennameRepository listennameRepository;
 
 
