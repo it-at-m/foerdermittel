@@ -1,7 +1,7 @@
 <template>
   <v-number-input
     v-if="displayMode !== InputDisplayMode.READ"
-    v-model.number="model"
+    v-model="model"
     :readonly="canNotEdit"
     :counter="counter"
     :rules="allRules"
