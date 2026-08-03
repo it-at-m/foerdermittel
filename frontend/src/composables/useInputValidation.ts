@@ -51,9 +51,9 @@ export function useInputValidation(
     }
 
     const maxLength = getOpenAPIValidationConstraint(
-        validationAttributeMap,
-        validationAttributeKey,
-        "maxLength"
+      validationAttributeMap,
+      validationAttributeKey,
+      "maxLength"
     ) as number | undefined;
 
     if (maxLength !== undefined) {
@@ -61,9 +61,9 @@ export function useInputValidation(
     }
 
     const maximum = getOpenAPIValidationConstraint(
-        validationAttributeMap,
-        validationAttributeKey,
-        "maximum"
+      validationAttributeMap,
+      validationAttributeKey,
+      "maximum"
     ) as number | undefined;
 
     return maximum !== undefined ? String(maximum).length : undefined;
