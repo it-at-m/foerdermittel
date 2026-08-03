@@ -45,15 +45,29 @@ export function useInputValidation(
     ];
   });
 
-  const counter = computed(() =>
-    !validationAttributeMap || !validationAttributeKey
-      ? undefined
-      : (getOpenAPIValidationConstraint(
-          validationAttributeMap,
-          validationAttributeKey,
-          "maxLength"
-        ) as number)
-  );
+  const counter = computed(() => {
+    if (!validationAttributeMap || !validationAttributeKey) {
+      return undefined;
+    }
+
+    const maxLength = getOpenAPIValidationConstraint(
+        validationAttributeMap,
+        validationAttributeKey,
+        "maxLength"
+    ) as number | undefined;
+
+    if (maxLength !== undefined) {
+      return maxLength;
+    }
+
+    const maximum = getOpenAPIValidationConstraint(
+        validationAttributeMap,
+        validationAttributeKey,
+        "maximum"
+    ) as number | undefined;
+
+    return maximum !== undefined ? String(maximum).length : undefined;
+  });
 
   const canNotEdit = computed(
     () =>
