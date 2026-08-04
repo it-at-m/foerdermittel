@@ -1,9 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.foerderbereich;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +9,8 @@ import jakarta.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,4 +47,10 @@ public class Foerderbereich implements Serializable {
 
     @Column(name = "nicht_relevant", nullable = false)
     @NotNull private Boolean nichtRelevant;
+
+    @OneToMany(
+            mappedBy = "foerderbereich",
+            fetch = FetchType.LAZY
+    )
+    private List<Projekt> projekte;
 }

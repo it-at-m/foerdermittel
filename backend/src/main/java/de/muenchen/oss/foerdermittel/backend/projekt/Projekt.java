@@ -1,6 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
 import de.muenchen.oss.foerdermittel.backend.archiv.Archiv;
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -32,12 +33,18 @@ public class Projekt implements Serializable {
     @Column(name = "pstrasse", nullable = false)
     @NotNull @Size(min = 1, max = 100) private String pstrasse;
 
-    @Column(name = "fob_fb", nullable = false, precision = 2)
-    @NotNull private BigDecimal fob_fb;
-
     @OneToMany(
             mappedBy = "projekt",
             fetch = FetchType.LAZY
     )
     private List<Archiv> archiv;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "fob_fb",
+            referencedColumnName = "fb",
+            nullable = false
+    )
+    private Foerderbereich foerderbereich;
+
 }
