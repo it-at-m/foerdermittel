@@ -28,35 +28,33 @@
           />
         </template>
 
-
         <template #expanded="{ item }">
-          <div class="ml-7 pl-4 border-s border-l-2">
-            <v-table density="compact">
-              <thead>
-                <tr>
-                  <th>{{ t("model.stadtbezirk.stadtbezirk") }}</th>
-                  <th>{{ t("model.stadtbezirk.stadtbezirk") }}</th>
-                  <th>{{ t("model.stadtbezirk.bezeichnung") }}</th>
-                </tr>
-              </thead>
+          <div>
+            <!-- Header -->
+            <v-row class="font-weight-bold py-2 pl-6">
+              <v-col cols="2"
+                >{{t("model.stadtbezirksliste.bezStadtbezirk")}}</v-col
+              >
+              <v-col cols="4"></v-col>
+              <v-col cols="6">{{
+                t("model.stadtbezirksliste.listeBezeichnung")
+              }}</v-col>
+            </v-row>
 
-              <tbody>
-                <tr
-                  v-for="stadtbezirk in item.assignedStadtbezirke"
-                  :key="stadtbezirk.stadtbezirkId"
-                >
-                  <td>
-                    {{ stadtbezirk.stadtbezirkId }}
-                  </td>
-                  <td>
-                    {{ stadtbezirk.stadtbezirkBezeichnung }}
-                  </td>
-                  <td>
-                    {{ stadtbezirk.bezeichnung }}
-                  </td>
-                </tr>
-              </tbody>
-            </v-table>
+            <v-divider />
+
+            <template
+              v-for="stadtbezirk in item.assignedStadtbezirke"
+              :key="stadtbezirk.stadtbezirkId"
+            >
+              <v-row class="py-2 pl-6">
+                <v-col cols="2">{{ stadtbezirk.stadtbezirkId }}</v-col>
+                <v-col cols="4">{{ stadtbezirk.stadtbezirkBezeichnung }}</v-col>
+                <v-col cols="6">{{ stadtbezirk.bezeichnung }}</v-col>
+              </v-row>
+
+              <v-divider />
+            </template>
           </div>
         </template>
       </crud-card>

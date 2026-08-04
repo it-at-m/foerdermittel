@@ -40,12 +40,16 @@
     </v-row>
     <v-divider class="my-4" />
 
+    <div class="text-h6 mb-2">
+      {{ t("model.stadtbezirksliste.stadtBezirkeDerListe") }}
+    </div>
+    <v-divider class="my-4" />
     <v-table density="compact">
       <thead>
         <tr>
           <th width="100">ID</th>
-          <th>Stadtbezirk</th>
-          <th>Bezeichnung</th>
+          <th>{{ t("model.stadtbezirk.stadtbezirk") }}</th>
+          <th>{{ t("model.stadtbezirksliste.listeBezeichnung") }}</th>
           <th width="100"></th>
         </tr>
       </thead>
@@ -70,10 +74,19 @@
             <v-btn
               :icon="mdiDelete"
               variant="text"
-              @click="removeStadtbezirk(stadtbezirk.stadtbezirkId)"
+              @click="removeStadtbezirk(stadtbezirk.stadtbezirkId!)"
             />
           </td>
         </tr>
+      </tbody>
+    </v-table>
+    <v-divider class="my-4" />
+    <div class="text-h6 mb-2">
+      {{ t("model.stadtbezirksliste.addBezirke") }}
+    </div>
+    <v-divider class="my-4" />
+    <v-table density="compact">
+      <tbody>
         <tr height="100">
           <td style="width: 100px"></td>
 
@@ -83,7 +96,7 @@
               :items="availableStadtbezirke"
               item-title="bezeichnung"
               :return-object="true"
-              label="Stadtbezirk"
+              :label="t('model.stadtbezirksliste.bezStadtbezirk')"
               variant="outlined"
               density="compact"
               :menu-props="{
@@ -96,7 +109,7 @@
           <td>
             <fm-text-field
               v-model="newBezeichnung"
-              label="Bezeichnung"
+              :label="t('model.stadtbezirksliste.listeBezeichnung')"
               variant="outlined"
               density="compact"
               :counter="200"
@@ -111,9 +124,9 @@
             <v-btn
               :icon="mdiPlus"
               variant="text"
+              :disabled="!selectedStadtbezirk"
               @click="addStadtbezirk"
-            >
-            </v-btn>
+            />
           </td>
         </tr>
       </tbody>
