@@ -67,17 +67,16 @@
     "archiv": {
       "modelName": "Archiv",
       "id": "ID",
-      "speicherDatum": "Speicherdatum",
-      "speicherAkt": "Speicherakt",
-      "speicherRechnungen": "Speicherrechnungen",
-      "mikroDatPlan": "Mikrodatplan",
-      "mikroDat": "Mikrodatum",
+      "speicherDatum": "Ablage in Speicher am",
+      "speicherAkt": "Akt im Speicher",
+      "speicherRechnungen": "Rechnung im Speicher",
+      "mikroDatPlan": "Mikrofiches bestellt",
+      "mikroDat": "Mikrofiches erhalten",
       "notizen": "Notizen",
-      "projnr": "Projektnummer",
-      "pname": "Projektname",
-      "pstrasse": "Projektstrasse",
-      "fob_fb": "Fachbereich"
-
+      "projnr": "Projnr",
+      "pname": "Name",
+      "pstrasse": "Straße",
+      "fob_fb": "FB"
     },
     "haushaltsjahr": {
       "modelName": "Haushaltsjahr | Haushaltsjahre"
