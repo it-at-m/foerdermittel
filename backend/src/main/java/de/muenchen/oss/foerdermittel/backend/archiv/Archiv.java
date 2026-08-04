@@ -3,7 +3,12 @@ package de.muenchen.oss.foerdermittel.backend.archiv;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +18,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "archiv")
-public class Archiv {
+public class Archiv implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     // ========= //
     // Variables //
@@ -23,7 +31,7 @@ public class Archiv {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
             name = "pro_projnr",
             referencedColumnName = "projnr",

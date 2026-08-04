@@ -11,7 +11,7 @@ public interface ArchivMapper {
     @Mapping(source = "projekt.projnr", target = "projnr")
     @Mapping(source = "projekt.pname", target = "pname")
     @Mapping(source = "projekt.pstrasse", target = "pstrasse")
-    @Mapping(source = "projekt.fob_fb", target = "fob_fb")
+    @Mapping(source = "projekt.foerderbereich.fb", target = "fob_fb")
     ArchivResponseDTO toDTO(Archiv archiv);
 
     @Mapping(source = "projnr", target = "projekt.projnr")
