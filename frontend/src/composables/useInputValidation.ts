@@ -1,7 +1,8 @@
 import type { ValidationAttributes } from "@/types/OpenAPIValidationAttributes";
+import type { MaybeRefOrGetter } from "vue";
 import type { ValidationRule } from "vuetify/framework";
 
-import { computed } from "vue";
+import { computed, toValue } from "vue";
 import { useRules } from "vuetify/labs/rules";
 
 import { InputDisplayMode } from "@/types/InputDisplayMode";
@@ -11,56 +12,68 @@ import {
 } from "@/util/validation";
 
 export function useInputValidation(
-  displayMode: InputDisplayMode,
-  disableEdit: boolean,
-  additionalRules: ValidationRule[] = [],
-  validationAttributeMap?: Record<string, ValidationAttributes>,
-  validationAttributeKey?: string
+  displayMode: MaybeRefOrGetter<InputDisplayMode>,
+  disableEdit: MaybeRefOrGetter<boolean>,
+  additionalRules: MaybeRefOrGetter<ValidationRule[]> = [],
+  validationAttributeMap?: MaybeRefOrGetter<
+    Record<string, ValidationAttributes> | undefined
+  >,
+  validationAttributeKey?: MaybeRefOrGetter<string | undefined>
 ) {
-  const required = computed(
-    () =>
-      (validationAttributeMap &&
-        validationAttributeKey &&
+  const required = computed(() => {
+    const resolvedValidationAttributeMap = toValue(validationAttributeMap);
+    const resolvedValidationAttributeKey = toValue(validationAttributeKey);
+
+    return (
+      (resolvedValidationAttributeMap &&
+        resolvedValidationAttributeKey &&
         getOpenAPIValidationConstraint(
-          validationAttributeMap,
-          validationAttributeKey,
+          resolvedValidationAttributeMap,
+          resolvedValidationAttributeKey,
           "required"
         )) ??
       false
-  );
+    );
+  });
 
   const rules = useRules();
   const allRules = computed(() => {
-    if (!validationAttributeMap || !validationAttributeKey) {
-      return additionalRules;
+    const resolvedValidationAttributeMap = toValue(validationAttributeMap);
+    const resolvedValidationAttributeKey = toValue(validationAttributeKey);
+
+    if (!resolvedValidationAttributeMap || !resolvedValidationAttributeKey) {
+      return toValue(additionalRules);
     }
 
     return [
       ...mapOpenAPIToVuetifyValidationRules(
         rules,
-        validationAttributeMap,
-        validationAttributeKey
+        resolvedValidationAttributeMap,
+        resolvedValidationAttributeKey
       ),
-      ...additionalRules,
+      ...toValue(additionalRules),
     ];
   });
 
   const counter = computed(() => {
-    if (!validationAttributeMap || !validationAttributeKey) {
+    const resolvedValidationAttributeMap = toValue(validationAttributeMap);
+    const resolvedValidationAttributeKey = toValue(validationAttributeKey);
+
+    if (!resolvedValidationAttributeMap || !resolvedValidationAttributeKey) {
       return undefined;
     }
 
     return getOpenAPIValidationConstraint(
-      validationAttributeMap,
-      validationAttributeKey,
+      resolvedValidationAttributeMap,
+      resolvedValidationAttributeKey,
       "maxLength"
     ) as number | undefined;
   });
 
   const canNotEdit = computed(
     () =>
-      displayMode === InputDisplayMode.READ ||
-      (displayMode === InputDisplayMode.EDIT && disableEdit)
+      toValue(displayMode) === InputDisplayMode.READ ||
+      (toValue(displayMode) === InputDisplayMode.EDIT && toValue(disableEdit))
   );
 
   return {
