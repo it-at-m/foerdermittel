@@ -32,9 +32,9 @@
           <div>
             <!-- Header -->
             <v-row class="font-weight-bold py-2 pl-6">
-              <v-col cols="2"
-                >{{t("model.stadtbezirksliste.bezStadtbezirk")}}</v-col
-              >
+              <v-col cols="2">{{
+                t("model.stadtbezirksliste.bezStadtbezirk")
+              }}</v-col>
               <v-col cols="4"></v-col>
               <v-col cols="6">{{
                 t("model.stadtbezirksliste.listeBezeichnung")
@@ -42,6 +42,18 @@
             </v-row>
 
             <v-divider />
+
+            <v-row
+              v-if="!item.assignedStadtbezirke?.length"
+              class="py-4 pl-6"
+            >
+              <v-col
+                cols="12"
+                class="text-medium-emphasis"
+              >
+                {{ t("model.stadtbezirksliste.noAssigneStadtbezirke") }}
+              </v-col>
+            </v-row>
 
             <template
               v-for="stadtbezirk in item.assignedStadtbezirke"

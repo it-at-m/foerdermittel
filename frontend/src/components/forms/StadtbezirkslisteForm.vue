@@ -44,7 +44,8 @@
       {{ t("model.stadtbezirksliste.stadtBezirkeDerListe") }}
     </div>
     <v-divider class="my-4" />
-    <v-table density="compact">
+    <v-table
+      density="compact">
       <thead>
         <tr>
           <th width="100">ID</th>
@@ -88,13 +89,13 @@
     <v-table density="compact">
       <tbody>
         <tr height="100">
-          <td style="width: 100px"></td>
+
 
           <td style="width: 250px">
             <v-autocomplete
               v-model="selectedStadtbezirk"
               :items="availableStadtbezirke"
-              item-title="bezeichnung"
+              :item-title="formatStadtbezirk"
               :return-object="true"
               :label="t('model.stadtbezirksliste.bezStadtbezirk')"
               variant="outlined"
@@ -174,6 +175,10 @@ const availableStadtbezirke = computed(
         )
     ) ?? []
 );
+
+function formatStadtbezirk(stadtbezirk: StadtbezirkResponseDTO) {
+  return `${stadtbezirk.id} - ${stadtbezirk.bezeichnung}`;
+}
 
 const selectedStadtbezirk = ref<StadtbezirkResponseDTO | null>(null);
 const newBezeichnung = ref("");
