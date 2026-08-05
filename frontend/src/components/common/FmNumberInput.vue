@@ -3,7 +3,6 @@
     v-if="displayMode !== InputDisplayMode.READ"
     v-model="model"
     :readonly="canNotEdit"
-    :counter="counter"
     :rules="allRules"
     v-bind="$attrs"
   >
@@ -34,7 +33,10 @@
 <script
   setup
   lang="ts"
-  generic="M extends Record<string, ValidationAttributes>, K extends keyof M"
+  generic="
+    M extends Record<string, ValidationAttributes>,
+    K extends keyof M & string
+  "
 >
 import type { ValidationAttributes } from "@/types/OpenAPIValidationAttributes";
 import type { ValidationRule } from "vuetify/framework";
@@ -59,12 +61,12 @@ const {
   additionalRules?: ValidationRule[];
 }>();
 
-const { required, allRules, counter, canNotEdit } = useInputValidation(
+const { required, allRules, canNotEdit } = useInputValidation(
   displayMode,
   disableEdit,
   additionalRules,
   validationAttributeMap,
-  validationAttributeKey as string
+  validationAttributeKey
 );
 
 const model = defineModel<number>();
