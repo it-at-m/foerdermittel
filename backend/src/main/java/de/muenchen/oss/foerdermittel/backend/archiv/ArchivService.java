@@ -35,7 +35,8 @@ public class ArchivService {
     public ArchivFormContext getArchivFormContext() {
         log.info("Get Archiv form context");
         List<Long> archivIds = archivRepository.findAllWithProjekt();
-        return new ArchivFormContext(archivIds);
+        List<String> projektenummern = projektRepository.findAllProjekte();
+        return new ArchivFormContext(archivIds, projektenummern);
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
