@@ -108,7 +108,7 @@ class StadtbezirkslisteIntegrationTest {
     }
 
     @Nested
-    class CreateStadtbezirk {
+    class CreateStadtbezirksliste {
 
         @Test
         void givenEntityNotExists_thenEntityIsSaved() {
@@ -296,7 +296,7 @@ class StadtbezirkslisteIntegrationTest {
     }
 
     @Nested
-    class DeleteStadtbezirk {
+    class DeleteStadtbezirksliste {
 
         @Test
         void givenEntityIdExists_thenEntityIsDeleted() {
