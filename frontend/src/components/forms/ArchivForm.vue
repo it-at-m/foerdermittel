@@ -9,6 +9,7 @@
         <v-autocomplete
           v-model="modelValue.projnr"
           v-model:search="projektSuche"
+          :rules="[rules.required()]"
           :items="gefilterteProjektnummern"
           :label="t('model.archiv.projnr')"
           :readonly="displayMode !== InputDisplayMode.CREATE"
