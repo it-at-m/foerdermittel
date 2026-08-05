@@ -21,6 +21,7 @@
   </v-number-input>
   <v-textarea
     v-else
+    :model-value="model"
     :label="label"
     auto-grow
     readonly

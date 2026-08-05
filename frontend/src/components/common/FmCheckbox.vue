@@ -29,13 +29,7 @@ const { displayMode = InputDisplayMode.CREATE, disableEdit = false } =
     disableEdit?: boolean;
   }>();
 
-const { canNotEdit } = useInputValidation(
-  displayMode,
-  disableEdit,
-  undefined,
-  undefined,
-  undefined
-);
+const { canNotEdit } = useInputValidation(displayMode, disableEdit);
 
 const { t } = useI18n();
 </script>

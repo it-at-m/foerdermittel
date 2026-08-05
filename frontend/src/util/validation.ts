@@ -95,7 +95,7 @@ export function getOpenAPIValidationConstraint<
     console.debug(
       `Validation property "${String(property)}" not found in ${JSON.stringify(validationAttributes)}"`
     );
-    return [];
+    return undefined;
   }
 
   return attributes[constraint];
