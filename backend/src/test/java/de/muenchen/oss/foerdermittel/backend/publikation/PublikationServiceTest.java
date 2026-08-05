@@ -34,39 +34,7 @@ class PublikationServiceTest {
     private PublikationService unitUnderTest;
 
     @Nested
-    class GetPublikation {
-        @Test
-        void givenIdExists_thenReturnEntity() {
-            // Given
-            final String id = "K";
-            final Publikation entity = new Publikation(id, BEZEICHNUNG);
-            when(publikationRepository.findById(id)).thenReturn(Optional.of(entity));
-
-            // When
-            final Publikation result = unitUnderTest.getPublikation(id);
-
-            // Then
-            verify(publikationRepository, times(1)).findById(id);
-            assertThat(result).usingRecursiveComparison().isEqualTo(entity);
-        }
-
-        @Test
-        void givenIdNotExists_thenThrowNotFoundException() {
-            // Given
-            final String id = "K";
-            when(publikationRepository.findById(id)).thenReturn(Optional.empty());
-
-            // When
-            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.getPublikation(id));
-
-            // Then
-            verify(publikationRepository, times(1)).findById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
-        }
-    }
-
-    @Nested
-    class GetAllPublikationen {
+    class GetPublikationen {
         @Test
         void givenPageable_thenReturnPageOfEntities() {
             // Given
@@ -82,7 +50,7 @@ class PublikationServiceTest {
             when(publikationRepository.findAll(pageable)).thenReturn(expectedPage);
 
             // When
-            final Page<Publikation> result = unitUnderTest.getAllPublikationen(pageable);
+            final Page<Publikation> result = unitUnderTest.getPublikationen(pageable);
 
             // Then
             verify(publikationRepository, times(1)).findAll(pageable);

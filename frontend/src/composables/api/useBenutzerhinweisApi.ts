@@ -5,30 +5,30 @@ import type {
   UpdateBenutzerhinweisRequest,
 } from "@/api/generated/foerdermittel-backend";
 
-import { ApiFactory } from "@/api/ApiFactory";
 import { BenutzerhinweisControllerApi } from "@/api/generated/foerdermittel-backend";
-import useAPI from "@/composables/useAPI";
+import {
+  createAPIComposables,
+  requireComposables,
+} from "@/util/composable-helper";
 
-export function useCreateBenutzerhinweis() {
-  const api = ApiFactory.getInstance(BenutzerhinweisControllerApi);
-
-  return useAPI<CreateBenutzerhinweisRequest, BenutzerhinweisResponseDTO>(
-    (params) => api.createBenutzerhinweis(params)
-  );
-}
-
-export function useUpdateBenutzerhinweis() {
-  const api = ApiFactory.getInstance(BenutzerhinweisControllerApi);
-
-  return useAPI<UpdateBenutzerhinweisRequest, BenutzerhinweisResponseDTO>(
-    (params) => api.updateBenutzerhinweis(params)
-  );
-}
-
-export function useGetBenutzerhinweis() {
-  const api = ApiFactory.getInstance(BenutzerhinweisControllerApi);
-
-  return useAPI<GetBenutzerhinweisRequest, BenutzerhinweisResponseDTO>(
-    (params) => api.getBenutzerhinweis(params)
-  );
-}
+export const {
+  useCreate: useCreateBenutzerhinweis,
+  useUpdate: useUpdateBenutzerhinweis,
+  useGet: useGetBenutzerhinweis,
+} = requireComposables(
+  createAPIComposables<
+    BenutzerhinweisControllerApi,
+    CreateBenutzerhinweisRequest,
+    UpdateBenutzerhinweisRequest,
+    GetBenutzerhinweisRequest,
+    never,
+    never,
+    BenutzerhinweisResponseDTO,
+    never,
+    never
+  >(BenutzerhinweisControllerApi, {
+    create: (api, req) => api.createBenutzerhinweis(req),
+    update: (api, req) => api.updateBenutzerhinweis(req),
+    get: (api, req) => api.getBenutzerhinweis(req),
+  })
+);

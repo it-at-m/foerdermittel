@@ -73,75 +73,6 @@ paths:
           description: OK
       security:
       - bearerAuth: []
-  /stadtbezirkslisten/{kurzbez}/stadtbezirke:
-    put:
-      tags:
-      - stadtbezirksliste-controller
-      operationId: setStadtbezirke
-      parameters:
-      - name: kurzbez
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: "#/components/schemas/StadtbezirkslisteAssignmentResponseDTO"
-        required: true
-      responses:
-        "200":
-          description: OK
-      security:
-      - bearerAuth: []
-  /stadtbezirkslisten/{id}:
-    get:
-      tags:
-      - stadtbezirksliste-controller
-      operationId: getStadtbezirkliste
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StadtbezirkslisteResponseDTO"
-      security:
-      - bearerAuth: []
-    put:
-      tags:
-      - stadtbezirksliste-controller
-      operationId: updateListenname
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ListennameUpdateDTO"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StadtbezirkslisteResponseDTO"
-      security:
-      - bearerAuth: []
   /stadtbezirke/{id}:
     get:
       tags:
@@ -668,67 +599,6 @@ paths:
                 $ref: "#/components/schemas/TraegerResponseDTO"
       security:
       - bearerAuth: []
-  /stadtbezirkslisten:
-    get:
-      tags:
-      - stadtbezirksliste-controller
-      operationId: getStadtbezirklistenByPageable
-      parameters:
-      - name: page
-        in: query
-        description: Zero-based page index (0..N)
-        required: false
-        schema:
-          minimum: 0
-          type: integer
-          default: 0
-      - name: size
-        in: query
-        description: The size of the page to be returned
-        required: false
-        schema:
-          minimum: 1
-          type: integer
-          default: 10
-      - name: sort
-        in: query
-        description: "Sorting criteria in the format: property,(asc|desc). Default\
-          \ sort order is ascending. Multiple sort criteria are supported."
-        required: false
-        schema:
-          type: array
-          items:
-            type: string
-          default:
-          - "kurzbez,ASC"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PagedModelStadtbezirkslisteResponseDTO"
-      security:
-      - bearerAuth: []
-    post:
-      tags:
-      - stadtbezirksliste-controller
-      operationId: createListenname
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ListennameCreateDTO"
-        required: true
-      responses:
-        "201":
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StadtbezirkslisteResponseDTO"
-      security:
-      - bearerAuth: []
   /stadtbezirke:
     get:
       tags:
@@ -1190,20 +1060,6 @@ paths:
                 $ref: "#/components/schemas/TraegerFormContext"
       security:
       - bearerAuth: []
-  /stadtbezirkslisten/form-context:
-    get:
-      tags:
-      - stadtbezirksliste-controller
-      operationId: getStadtbezirkslisteFormContext
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StadtbezirkslisteFormContext"
-      security:
-      - bearerAuth: []
   /stadtbezirke/form-context:
     get:
       tags:
@@ -1443,43 +1299,6 @@ paths:
             application/json:
               schema:
                 type: object
-  /stadtbezirkslisten/{kurzbez}:
-    delete:
-      tags:
-      - stadtbezirksliste-controller
-      operationId: deleteListenname
-      parameters:
-      - name: kurzbez
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-      security:
-      - bearerAuth: []
-  /stadtbezirkslisten/{kurzbez}/stadtbezirke/{stadtbezirk}:
-    delete:
-      tags:
-      - stadtbezirksliste-controller
-      operationId: deleteStadtbezirk_1
-      parameters:
-      - name: kurzbez
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: stadtbezirk
-        in: path
-        required: true
-        schema:
-          type: number
-      responses:
-        "200":
-          description: OK
-      security:
-      - bearerAuth: []
 components:
   schemas:
     TraegerUpdateDTO:
@@ -1505,42 +1324,6 @@ components:
           format: int32
         bezeichnung:
           type: string
-    StadtbezirkslisteAssignmentResponseDTO:
-      type: object
-      properties:
-        stadtbezirkId:
-          type: number
-        stadtbezirkBezeichnung:
-          type: string
-        bezeichnung:
-          type: string
-    ListennameUpdateDTO:
-      required:
-      - bezeichnung
-      type: object
-      properties:
-        bezeichnung:
-          maxLength: 200
-          minLength: 1
-          type: string
-    StadtbezirkslisteResponseDTO:
-      required:
-      - assignedStadtbezirke
-      - bezeichnung
-      - id
-      - kurzbez
-      type: object
-      properties:
-        id:
-          type: string
-        kurzbez:
-          type: string
-        bezeichnung:
-          type: string
-        assignedStadtbezirke:
-          type: array
-          items:
-            $ref: "#/components/schemas/StadtbezirkslisteAssignmentResponseDTO"
     StadtbezirkUpdateDTO:
       required:
       - bezeichnung
@@ -1749,21 +1532,6 @@ components:
           maxLength: 200
           minLength: 1
           type: string
-    ListennameCreateDTO:
-      required:
-      - bezeichnung
-      - kurzbez
-      type: object
-      properties:
-        kurzbez:
-          maxLength: 3
-          minLength: 1
-          pattern: "^[A-Z]+$"
-          type: string
-        bezeichnung:
-          maxLength: 200
-          minLength: 1
-          type: string
     StadtbezirkCreateDTO:
       required:
       - bezeichnung
@@ -1926,24 +1694,6 @@ components:
           type: array
           items:
             type: number
-    PagedModelStadtbezirkslisteResponseDTO:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: "#/components/schemas/StadtbezirkslisteResponseDTO"
-        page:
-          $ref: "#/components/schemas/PageMetadata"
-    StadtbezirkslisteFormContext:
-      required:
-      - stadtbezirksliste
-      type: object
-      properties:
-        stadtbezirksliste:
-          type: array
-          items:
-            type: string
     PagedModelStadtbezirkResponseDTO:
       type: object
       properties:

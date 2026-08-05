@@ -39,18 +39,12 @@ public class BauprogrammController {
     private final BauprogrammService bauprogrammService;
     private final BauprogrammMapper bauprogrammMapper;
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public BauprogrammResponseDTO getBauprogramm(@PathVariable("id") final String bauprogrammId) {
-        return bauprogrammMapper.toDTO(bauprogrammService.getBauprogramm(ControllerUtils.convertStringToBigDecimal(bauprogrammId)));
-    }
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<BauprogrammResponseDTO> getBauprogrammeByPageable(@ParameterObject @PageableDefault(
+    public Page<BauprogrammResponseDTO> getBauprogramme(@ParameterObject @PageableDefault(
             sort = "bauprogramm"
     ) final Pageable pageable) {
-        final Page<Bauprogramm> pageWithBauprogramm = bauprogrammService.getAllBauprogramme(pageable);
+        final Page<Bauprogramm> pageWithBauprogramm = bauprogrammService.getBauprogramme(pageable);
         final List<BauprogrammResponseDTO> bauprogrammResponseDTOList = pageWithBauprogramm.getContent().stream()
                 .map(bauprogrammMapper::toDTO)
                 .toList();

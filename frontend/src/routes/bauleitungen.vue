@@ -99,7 +99,7 @@ const { dataTableOptions, onSuccess, onFailure } = usePagination(
 const {
   call: createBauleitung,
   loading: createBauleitungLoading,
-  error: createBauleitungenError,
+  error: createBauleitungError,
 } = useCreateBauleitung();
 
 const handleCreate = async (
@@ -110,7 +110,7 @@ const handleCreate = async (
   await createBauleitung({
     bauleitungCreateDTO: model,
   });
-  if (!createBauleitungenError.value) {
+  if (!createBauleitungError.value) {
     await onSuccess(t("common.message.created", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.createdError", [t(domainKey)]));
@@ -120,7 +120,7 @@ const handleCreate = async (
 const {
   call: updateBauleitung,
   loading: updateBauleitungLoading,
-  error: updateBauleitungerror,
+  error: updateBauleitungError,
 } = useUpdateBauleitung();
 
 const handleUpdate = async (
@@ -132,7 +132,7 @@ const handleUpdate = async (
     id: model.id,
     bauleitungUpdateDTO: model,
   });
-  if (!updateBauleitungerror.value) {
+  if (!updateBauleitungError.value) {
     await onSuccess(t("common.message.updated", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.updatedError", [t(domainKey)]));
@@ -142,14 +142,14 @@ const handleUpdate = async (
 const {
   call: deleteBauleitung,
   loading: deleteBauleitungLoading,
-  error: deleteBauleitungenrror,
+  error: deleteBauleitungError,
 } = useDeleteBauleitung();
 
 const handleDelete = async (id: string) => {
   await deleteBauleitung({
     id,
   });
-  if (!deleteBauleitungenrror.value) {
+  if (!deleteBauleitungError.value) {
     await onSuccess(t("common.message.deleted", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.deletedError", [t(domainKey)]));

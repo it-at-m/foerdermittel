@@ -277,6 +277,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.foerderbereich.modelName", 2),
+        props: {
+          to: "/foerderbereiche",
+        },
       },
       {
         title: t("model.krankenhaus.modelName", 2),
@@ -286,6 +289,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.kurzbezeichnung.modelName", 2),
+        props: {
+          to: "/kurzbezeichnungen",
+        },
       },
       {
         title: t("model.publikation.modelName", 2),
@@ -319,6 +325,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.stichwortbereich.modelName", 2),
+        props: {
+          to: "/stichwortbereiche",
+        },
       },
       {
         title: t("model.traeger.modelName"),
@@ -328,6 +337,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.hauptabschnitt.modelName", 2),
+        props: {
+          to: "/hauptabschnitte",
+        },
       },
       {
         title: t("model.unterabschnitt.modelName", 2),
