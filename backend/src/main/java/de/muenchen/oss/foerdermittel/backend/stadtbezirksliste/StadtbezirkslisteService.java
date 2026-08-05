@@ -10,16 +10,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
 public class StadtbezirkslisteService {
 
-
     private final ListennameRepository listennameRepository;
-
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -48,8 +45,7 @@ public class StadtbezirkslisteService {
             assignment.setListenName(listenname);
             assignment.setId(new StadtbezirkslistePrimaryKey(
                     listenname.getKurzbez(),
-                    assignment.getStadtbezirk().getStadtbezirk()
-            ));
+                    assignment.getStadtbezirk().getStadtbezirk()));
         });
 
         log.debug("Create Listenname {}", listenname);
@@ -69,8 +65,7 @@ public class StadtbezirkslisteService {
             assignment.setListenName(foundListenname);
             assignment.setId(new StadtbezirkslistePrimaryKey(
                     kurzBez,
-                    assignment.getStadtbezirk().getStadtbezirk()
-            ));
+                    assignment.getStadtbezirk().getStadtbezirk()));
         });
 
         foundListenname.getStadtbezirkslisten()
@@ -81,7 +76,6 @@ public class StadtbezirkslisteService {
         return listennameRepository.update(foundListenname);
     }
 
-
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteListenname(final String kurzBez) {
         log.debug("Delete Listenname with ID {}", kurzBez);
@@ -90,4 +84,3 @@ public class StadtbezirkslisteService {
     }
 
 }
-

@@ -4,6 +4,6 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-public record StadtbezirkslisteResponseDTO(@NotNull String id, @NotNull String kurzbez, @NotNull String bezeichnung, @NotNull
-                                           List<StadtbezirkslisteAssignmentResponseDTO> assignedStadtbezirke) {
+public record StadtbezirkslisteResponseDTO(@NotNull String id, @NotNull String kurzbez, @NotNull String bezeichnung,
+        @NotNull List<StadtbezirkslisteAssignmentResponseDTO> assignedStadtbezirke) {
 }

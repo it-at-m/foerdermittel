@@ -2,10 +2,13 @@ package de.muenchen.oss.foerdermittel.backend.stadtbezirksliste;
 
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
-
-import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.*;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameCreateDTO;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameStadtbezirkslisteMapper;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameUpdateDTO;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.StadtbezirkslisteResponseDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -15,11 +18,15 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import java.math.BigDecimal;
-import java.util.List;
-
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -57,14 +64,13 @@ public class StadtbezirkslisteController {
         return stadtbezirkslisteService.getStadtbezirksListeFormContext();
     }
 
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public StadtbezirkslisteResponseDTO createListenname(@Valid @RequestBody final ListennameCreateDTO listennameCreateDTO) {
-        return listennameStadtbezirkslisteMapper.toDTO(stadtbezirkslisteService.createListenname(listennameStadtbezirkslisteMapper.toEntity(listennameCreateDTO)));
+        return listennameStadtbezirkslisteMapper
+                .toDTO(stadtbezirkslisteService.createListenname(listennameStadtbezirkslisteMapper.toEntity(listennameCreateDTO)));
     }
-
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -78,13 +84,11 @@ public class StadtbezirkslisteController {
                         listennameId));
     }
 
-
     @DeleteMapping("/{kurzbez}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteListenname(
-            @PathVariable String kurzbez)
-             {
+            @PathVariable String kurzbez) {
 
         stadtbezirkslisteService.deleteListenname(kurzbez);
     }
