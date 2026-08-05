@@ -81,6 +81,7 @@ export function useDirtyFlag<T>(
 
     showUnsavedChangesDialog.value = true;
     return new Promise<boolean>((resolve) => {
+      pendingNavigationDecision.value?.(false);
       pendingNavigationDecision.value = resolve;
     });
   });
