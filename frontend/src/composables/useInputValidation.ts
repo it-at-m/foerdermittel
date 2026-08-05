@@ -50,23 +50,11 @@ export function useInputValidation(
       return undefined;
     }
 
-    const maxLength = getOpenAPIValidationConstraint(
+    return getOpenAPIValidationConstraint(
       validationAttributeMap,
       validationAttributeKey,
       "maxLength"
     ) as number | undefined;
-
-    if (maxLength !== undefined) {
-      return maxLength;
-    }
-
-    const maximum = getOpenAPIValidationConstraint(
-      validationAttributeMap,
-      validationAttributeKey,
-      "maximum"
-    ) as number | undefined;
-
-    return maximum !== undefined ? String(maximum).length : undefined;
   });
 
   const canNotEdit = computed(
