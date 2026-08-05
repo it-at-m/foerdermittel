@@ -6,47 +6,25 @@
   >
     <v-row>
       <v-col cols="3">
-        <fm-text-field
+        <v-autocomplete
           v-model="modelValue.projnr"
-          :display-mode="displayMode"
-          required
-          :counter="50"
-          :rules="[rules.required(), rules.maxLength(50)]"
+          v-model:search="projektSuche"
+          :items="gefilterteProjektnummern"
           :label="t('model.archiv.projnr')"
+          :readonly="displayMode !== InputDisplayMode.CREATE"
         />
       </v-col>
     </v-row>
 
     <v-row>
-      <v-col cols="4">
+      <v-col
+        v-for="feld in datumsfelder"
+        :key="feld.key"
+        cols="4"
+      >
         <v-date-input
-          v-model="speicherDatum"
-          required
-          :label="t('model.archiv.speicherDatum')"
-          :rules="[rules.required()]"
-          prepend-icon=""
-          locale="de-DE"
-          clearable
-        />
-      </v-col>
-
-      <v-col cols="4">
-        <v-date-input
-          v-model="mikroDatPlan"
-          required
-          :label="t('model.archiv.mikroDatPlan')"
-          :rules="[rules.required()]"
-          prepend-icon=""
-          locale="de-DE"
-          clearable
-        />
-      </v-col>
-
-      <v-col cols="4">
-        <v-date-input
-          v-model="mikroDat"
-          required
-          :label="t('model.archiv.mikroDat')"
+          v-model="feld.value.value"
+          :label="t(feld.label)"
           :rules="[rules.required()]"
           prepend-icon=""
           locale="de-DE"
@@ -88,14 +66,10 @@
 </template>
 
 <script setup lang="ts">
-import type {
-  ArchivFormContext,
-  ArchivResponseDTO,
-} from "@/api/generated/foerdermittel-backend";
-import type { DeepReadonly } from "vue";
+import type { ArchivResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { VForm } from "vuetify/components";
 
-import { computed, useTemplateRef } from "vue";
+import { computed, ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRules } from "vuetify/labs/rules";
 
@@ -104,65 +78,64 @@ import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
 const { t } = useI18n();
+const rules = useRules();
+
+const { projektnummern, displayMode = InputDisplayMode.CREATE } = defineProps<{
+  projektnummern: string[];
+  displayMode?: InputDisplayMode;
+}>();
 
 const modelValue = defineModel<Partial<ArchivResponseDTO>>({
   required: true,
 });
 
-const { displayMode = InputDisplayMode.CREATE } = defineProps<{
-  archivFormContext: DeepReadonly<ArchivFormContext>;
-  displayMode?: InputDisplayMode;
-}>();
+const projektSuche = ref("");
 
-function toDate(value?: string | Date | null): Date | undefined {
-  if (!value) {
-    return undefined;
-  }
+const gefilterteProjektnummern = computed(() =>
+  projektSuche.value
+    ? projektnummern.filter((p) =>
+        p.toLowerCase().includes(projektSuche.value.toLowerCase())
+      )
+    : projektnummern
+);
 
-  if (value instanceof Date) {
-    return value;
-  }
+function toDate(value?: string | Date | null) {
+  if (!value) return undefined;
+  if (value instanceof Date) return value;
 
-  const datePart = value.substring(0, 10);
+  const [year, month, day] = value.substring(0, 10).split("-");
 
-  const [year, month, day] = datePart.split("-");
-
-  if (!year || !month || !day) {
-    return undefined;
-  }
-
-  return new Date(Number(year), Number(month) - 1, Number(day));
+  return year && month && day
+    ? new Date(Number(year), Number(month) - 1, Number(day), 12)
+    : undefined;
 }
 
-const speicherDatum = computed({
-  get() {
-    return toDate(modelValue.value.speicherDatum);
-  },
+function dateModel(key: keyof ArchivResponseDTO) {
+  return computed({
+    get: () => toDate(modelValue.value[key] as string),
+    set: (value) => {
+      modelValue.value[key] = value as never;
+    },
+  });
+}
 
-  set(value: Date | undefined) {
-    modelValue.value.speicherDatum = value;
+const datumsfelder = [
+  {
+    key: "speicherDatum",
+    label: "model.archiv.speicherDatum",
+    value: dateModel("speicherDatum"),
   },
-});
-
-const mikroDatPlan = computed({
-  get() {
-    return toDate(modelValue.value.mikroDatPlan);
+  {
+    key: "mikroDatPlan",
+    label: "model.archiv.mikroDatPlan",
+    value: dateModel("mikroDatPlan"),
   },
-
-  set(value: Date | undefined) {
-    modelValue.value.mikroDatPlan = value;
+  {
+    key: "mikroDat",
+    label: "model.archiv.mikroDat",
+    value: dateModel("mikroDat"),
   },
-});
-
-const mikroDat = computed({
-  get() {
-    return toDate(modelValue.value.mikroDat);
-  },
-
-  set(value: Date | undefined) {
-    modelValue.value.mikroDat = value;
-  },
-});
+];
 
 const emit = defineEmits<{
   isValid: [boolean | null];
@@ -172,17 +145,11 @@ function onValidityChanged(value: boolean | null) {
   emit("isValid", value);
 }
 
-const rules = useRules();
-
 const formRef = useTemplateRef<VForm>("form");
 
 async function validate() {
-  if (formRef.value) {
-    await formRef.value.validate();
-  }
+  await formRef.value?.validate();
 }
 
-defineExpose({
-  validate,
-});
+defineExpose({ validate });
 </script>

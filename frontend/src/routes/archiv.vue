@@ -18,38 +18,37 @@
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <archiv-form
-            v-if="archivFormContext"
             ref="archivForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
-            :archiv-form-context="archivFormContext"
+            :projektnummern="projektnummern"
             @is-valid="updateValidity"
           />
         </template>
 
-        <template #item.speicherAkt="{ item }">
+        <template #[`item.speicherAkt`]="{ item }">
           <v-icon
             v-if="item.speicherAkt"
             :icon="mdiCheck"
           />
         </template>
 
-        <template #item.speicherRechnungen="{ item }">
+        <template #[`item.speicherRechnungen`]="{ item }">
           <v-icon
             v-if="item.speicherRechnungen"
             :icon="mdiCheck"
           />
         </template>
 
-        <template #item.speicherDatum="{ item }">
+        <template #[`item.speicherDatum`]="{ item }">
           {{ formatDate(item.speicherDatum) }}
         </template>
 
-        <template #item.mikroDatPlan="{ item }">
+        <template #[`item.mikroDatPlan`]="{ item }">
           {{ formatDate(item.mikroDatPlan) }}
         </template>
 
-        <template #item.mikroDat="{ item }">
+        <template #[`item.mikroDat`]="{ item }">
           {{ formatDate(item.mikroDat) }}
         </template>
       </crud-card>
@@ -81,25 +80,56 @@ import { Role } from "@/types/Role";
 
 const domainKey = "model.archiv.modelName";
 
-const isAdmin = useHasAnyRole(Role.ADMIN);
-
 const { t } = useI18n();
 
-function formatDate(value?: string) {
-  if (!value) return "";
+const isAdmin = useHasAnyRole(Role.ADMIN);
 
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return value;
+function normalizeDate(value?: string | Date | null) {
+  if (!value) {
+    return undefined;
   }
 
-  return date.toLocaleDateString("de-DE", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
+  if (value instanceof Date) {
+    return new Date(
+      value.getFullYear(),
+      value.getMonth(),
+      value.getDate(),
+      12,
+      0,
+      0
+    );
+  }
+
+  const [year, month, day] = value.substring(0, 10).split("-");
+
+  if (!year || !month || !day) {
+    return undefined;
+  }
+
+  return new Date(Number(year), Number(month) - 1, Number(day), 12, 0, 0);
 }
+
+function formatDate(value?: string | Date) {
+  const date = normalizeDate(value);
+
+  return (
+    date?.toLocaleDateString("de-DE", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    }) ?? ""
+  );
+}
+
+const {
+  data: archivFormContext,
+  call: getArchivFormContext,
+  loading: archivFormContextLoading,
+} = useGetArchivFormContext();
+
+const projektnummern = computed(
+  () => archivFormContext.value?.projektnummern ?? []
+);
 
 const headers: DataTableHeader<Partial<ArchivResponseDTO>>[] = [
   {
@@ -111,150 +141,156 @@ const headers: DataTableHeader<Partial<ArchivResponseDTO>>[] = [
   {
     title: t("model.archiv.speicherDatum"),
     value: "speicherDatum",
+    align: "center",
+    width: 100,
   },
   {
     title: t("model.archiv.speicherAkt"),
     value: "speicherAkt",
     align: "center",
+    width: 120,
   },
   {
     title: t("model.archiv.speicherRechnungen"),
     value: "speicherRechnungen",
     align: "center",
+    width: 120,
   },
   {
     title: t("model.archiv.mikroDatPlan"),
     value: "mikroDatPlan",
+    align: "center",
+    width: 100,
   },
   {
     title: t("model.archiv.mikroDat"),
     value: "mikroDat",
+    align: "center",
+    width: 100,
   },
   {
     title: t("model.archiv.fob_fb"),
     value: "fobFb",
     align: "center",
+    width: 50,
   },
   {
     title: t("model.archiv.pstrasse"),
     value: "pstrasse",
+    align: "center",
+    width: 120,
   },
   {
     title: t("model.archiv.pname"),
     value: "pname",
+    align: "center",
+    width: 120,
   },
   {
     title: t("model.archiv.notizen"),
     value: "notizen",
+    width: 500,
   },
 ];
 
 const EMPTY_ITEM_TEMPLATE: Partial<ArchivResponseDTO> = {
-  id: undefined,
-  speicherDatum: undefined,
   speicherAkt: false,
   speicherRechnungen: false,
-  mikroDatPlan: undefined,
-  mikroDat: undefined,
   notizen: "",
-  projnr: "",
-  pname: "",
-  pstrasse: "",
-  fobFb: undefined,
 };
 
 const {
   data: archive,
   call: getArchive,
-  loading: getArchiveLoading,
+  loading: archiveLoading,
 } = useGetArchive();
-
-const {
-  data: archivFormContext,
-  call: getArchivFormContext,
-  loading: getArchivFormContextLoading,
-} = useGetArchivFormContext();
 
 type ArchivFormType = InstanceType<typeof ArchivForm>;
 
 const archivFormRef = useTemplateRef<ArchivFormType>("archivForm");
 
 onMounted(async () => {
-  await getArchive();
-  await getArchivFormContext();
+  await Promise.all([getArchive(), getArchivFormContext()]);
 });
 
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => archive.value?.page?.totalPages),
   getArchive,
   isAdmin,
-  getArchivFormContext,
+  undefined,
   () => archivFormRef.value?.validate()
 );
 
+function normalizeArchivDates(model: Partial<ArchivResponseDTO>) {
+  return {
+    ...model,
+    speicherDatum: normalizeDate(model.speicherDatum),
+    mikroDatPlan: normalizeDate(model.mikroDatPlan),
+    mikroDat: normalizeDate(model.mikroDat),
+  } as ArchivResponseDTO;
+}
+
 const {
   call: createArchiv,
-  loading: createArchivLoading,
-  error: createArchivError,
+  loading: createLoading,
+  error: createError,
 } = useCreateArchiv();
 
-const handleCreate = async (archivCreateDTO: Partial<ArchivResponseDTO>) => {
+async function handleCreate(dto: Partial<ArchivResponseDTO>) {
   await createArchiv({
-    archivCreateDTO: archivCreateDTO as ArchivResponseDTO,
+    archivCreateDTO: normalizeArchivDates(dto),
   });
 
-  if (!createArchivError.value) {
-    await onSuccess(t("common.message.created", [t(domainKey)]));
-  } else {
+  if (createError.value) {
     await onFailure(t("common.message.createdError", [t(domainKey)]));
+  } else {
+    await onSuccess(t("common.message.created", [t(domainKey)]));
   }
-};
+}
 
 const {
   call: updateArchiv,
-  loading: updateArchivLoading,
-  error: updateArchivError,
+  loading: updateLoading,
+  error: updateError,
 } = useUpdateArchiv();
 
-const handleUpdate = async (archivUpdateDTO: Partial<ArchivResponseDTO>) => {
-  const model = archivUpdateDTO as ArchivResponseDTO;
+async function handleUpdate(dto: Partial<ArchivResponseDTO>) {
+  const model = normalizeArchivDates(dto);
 
   await updateArchiv({
     id: model.id,
     archivUpdateDTO: model,
   });
 
-  if (!updateArchivError.value) {
-    await onSuccess(t("common.message.updated", [t(domainKey)]));
-  } else {
+  if (updateError.value) {
     await onFailure(t("common.message.updatedError", [t(domainKey)]));
+  } else {
+    await onSuccess(t("common.message.updated", [t(domainKey)]));
   }
-};
+}
 
 const {
   call: deleteArchiv,
-  loading: deleteArchivLoading,
-  error: deleteArchivError,
+  loading: deleteLoading,
+  error: deleteError,
 } = useDeleteArchiv();
 
-const handleDelete = async (id: string) => {
-  await deleteArchiv({
-    id,
-  });
+async function handleDelete(id: string) {
+  await deleteArchiv({ id });
 
-  if (!deleteArchivError.value) {
-    await onSuccess(t("common.message.deleted", [t(domainKey)]));
-  } else {
+  if (deleteError.value) {
     await onFailure(t("common.message.deletedError", [t(domainKey)]));
+  } else {
+    await onSuccess(t("common.message.deleted", [t(domainKey)]));
   }
-};
+}
 
 const loading = computed(
   () =>
-    getArchiveLoading.value ||
-    getArchivFormContextLoading.value ||
-    createArchivLoading.value ||
-    updateArchivLoading.value ||
-    deleteArchivLoading.value
+    archiveLoading.value ||
+    archivFormContextLoading.value ||
+    createLoading.value ||
+    updateLoading.value ||
+    deleteLoading.value
 );
 </script>
