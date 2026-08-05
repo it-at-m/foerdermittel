@@ -75,7 +75,8 @@
             <v-btn
               :icon="mdiDelete"
               variant="text"
-              @click="removeStadtbezirk(stadtbezirk.stadtbezirkId!)"
+              :disabled="displayMode === InputDisplayMode.READ"
+              `@click`="removeStadtbezirk(stadtbezirk.stadtbezirkId!)"
             />
           </td>
         </tr>
