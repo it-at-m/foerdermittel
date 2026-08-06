@@ -17,9 +17,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
+import { useInputValidation } from "@/composables/useInputValidation";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
 const { displayMode = InputDisplayMode.CREATE, disableEdit = false } =
@@ -29,11 +29,7 @@ const { displayMode = InputDisplayMode.CREATE, disableEdit = false } =
     disableEdit?: boolean;
   }>();
 
-const canNotEdit = computed(
-  () =>
-    displayMode === InputDisplayMode.READ ||
-    (displayMode === InputDisplayMode.EDIT && disableEdit)
-);
+const { canNotEdit } = useInputValidation(displayMode, disableEdit);
 
 const { t } = useI18n();
 </script>

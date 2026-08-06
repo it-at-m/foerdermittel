@@ -10,13 +10,11 @@
           v-model="modelValue.kurzform"
           :display-mode="displayMode"
           disable-edit
-          required
-          :counter="1"
-          :rules="[
-            rules.required(),
-            rules.number(),
-            rules['min']!(0),
-            rules['max']!(9),
+          :validation-attribute-map="
+            TraegerCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="kurzform"
+          :additional-rules="[
             rules['unique']!(traegerFormContext.kurzformen, currentTraeger),
           ]"
           :label="t('model.traeger.kurzform')"
@@ -26,9 +24,10 @@
         <fm-text-field
           v-model="modelValue.bezeichnung"
           :display-mode="displayMode"
-          required
-          :counter="200"
-          :rules="[rules.required(), rules.maxLength(200)]"
+          :validation-attribute-map="
+            TraegerCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bezeichnung"
           :label="t('model.traeger.bezeichnung')"
         />
       </v-col>
@@ -48,6 +47,7 @@ import { ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRules } from "vuetify/labs/rules";
 
+import { TraegerCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmNumberInput from "@/components/common/FmNumberInput.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
