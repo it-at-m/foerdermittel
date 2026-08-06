@@ -199,16 +199,16 @@ class StadtbezirkslisteIntegrationTest {
             return Stream.of(
                     arguments(
                             "listenname too long",
-                            new ListennameCreateDTO("SL00", "Test", null)),
+                            new ListennameCreateDTO("SL00", "Test", List.of())),
                     arguments(
                             "listenname too short",
-                            new ListennameCreateDTO("", "Test", null)),
+                            new ListennameCreateDTO("", "Test", List.of())),
                     arguments(
                             "bezeichnung too short",
-                            new ListennameCreateDTO("SL1", "", null)),
+                            new ListennameCreateDTO("SL1", "", List.of())),
                     arguments(
                             "bezeichnung too long",
-                            new ListennameCreateDTO("SL1", "a".repeat(201), null)));
+                            new ListennameCreateDTO("SL1", "a".repeat(201), List.of())));
         }
 
         @ParameterizedTest(name = "{0}")
