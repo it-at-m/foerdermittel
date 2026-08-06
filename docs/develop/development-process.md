@@ -2,7 +2,7 @@
 
 This page describes the development process, conventions, and project-specific development practices.
 
-# RefArch 
+## RefArch 
 
 **This project follows the standard development tooling and conventions defined in the it@M Reference Architecture [RefArch – Develop](https://refarch.oss.muenchen.de/templates/develop.html).
 The RefArch provides guidance for topics such as:**
@@ -17,28 +17,28 @@ The RefArch provides guidance for topics such as:**
 
 **Only project-specific deviations are documented below.**
 
-# Technologies
+## Technologies
 
-## Framework
+### Framework
 
 - Spring-Boot
 - Vue.js
 - Vuetify
 - VitePress
 
-## Tools
+### Tools
 
 - GitHub
 - Podman
 - OpenAPI Generator
 
-# Project-specific Development Workflow
+## Project-specific Development Workflow
 
-## Formatter configuration
+### Formatter configuration
 
 **Project-specific formatter configuration (e.g. Spotless, Checkstyle).**
 
-## Testability and Quality Assurance
+### Testability and Quality Assurance
 
 **Description of approaches to ensure quality and maintainability.**
 

@@ -1,5 +1,5 @@
 # Develop
 
-- [Setup and Tools](./setup-and-tools.md)
+- [Getting Started](getting-started.md)
 - [Development Process](./development-process.md)
 - [Guides](./guides.md)

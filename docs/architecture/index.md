@@ -9,4 +9,4 @@ Architecture documentation based on [arc42](https://arc42.org):
 - [05 Cross-cutting Concepts](05_concepts.md)
 - [06 Deployment View](06_deployment_view.md)
 - [07 Architecture Decisions](adr/index.md)
-- [08_Glossary](08_glossary.md)
+- [08 Glossary](08_glossary.md)
