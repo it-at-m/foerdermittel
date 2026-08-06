@@ -4,6 +4,8 @@
     ref="textField"
     :model-value="model"
     :readonly="canNotEdit"
+    :counter="counter"
+    :rules="allRules"
     v-bind="$attrs"
     @update:model-value="updateModel"
   >
@@ -14,7 +16,7 @@
         class="text-red"
         >{{ t("common.word.required") }}</span
       >
-      <span v-if="displayMode == InputDisplayMode.EDIT && canNotEdit">{{
+      <span v-if="displayMode === InputDisplayMode.EDIT && canNotEdit">{{
         t("common.word.readOnly")
       }}</span>
     </template>
@@ -31,31 +33,47 @@
   />
 </template>
 
-<script setup lang="ts">
+<script
+  setup
+  lang="ts"
+  generic="
+    M extends Record<string, ValidationAttributes>,
+    K extends keyof M & string
+  "
+>
+import type { ValidationAttributes } from "@/types/OpenAPIValidationAttributes";
 import type { VTextField } from "vuetify/components";
+import type { ValidationRule } from "vuetify/framework";
 
-import { computed, nextTick, useTemplateRef } from "vue";
+import { nextTick, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
+import { useInputValidation } from "@/composables/useInputValidation";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
 const {
   displayMode = InputDisplayMode.CREATE,
   disableEdit = false,
-  required = false,
   uppercase = false,
+  validationAttributeMap,
+  validationAttributeKey,
+  additionalRules = [],
 } = defineProps<{
   label: string;
   displayMode?: InputDisplayMode;
   disableEdit?: boolean;
-  required?: boolean;
   uppercase?: boolean;
+  validationAttributeMap?: M;
+  validationAttributeKey?: K;
+  additionalRules?: ValidationRule[];
 }>();
 
-const canNotEdit = computed(
-  () =>
-    displayMode === InputDisplayMode.READ ||
-    (displayMode === InputDisplayMode.EDIT && disableEdit)
+const { required, allRules, counter, canNotEdit } = useInputValidation(
+  displayMode,
+  disableEdit,
+  additionalRules,
+  validationAttributeMap,
+  validationAttributeKey
 );
 
 const model = defineModel<string>();

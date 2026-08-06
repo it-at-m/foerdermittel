@@ -1,5 +1,4 @@
 import type { Ref } from "vue";
-import type { NavigationGuardNext } from "vue-router";
 
 import equal from "fast-deep-equal";
 import { computed, onMounted, onUnmounted, ref, toRaw } from "vue";
@@ -16,7 +15,9 @@ export function useDirtyFlag<T>(
   const currentValue = ref(cloneValue(defaultValue));
   const initialValue = ref(null) as Ref<T | null>;
   const showUnsavedChangesDialog = ref(false);
-  const pendingRouteNext = ref<NavigationGuardNext | null>(null);
+  const pendingNavigationDecision = ref<
+    ((allowNavigation: boolean) => void) | null
+  >(null);
 
   const isDirty = computed<boolean>(
     () =>
@@ -51,16 +52,13 @@ export function useDirtyFlag<T>(
 
   const continueEditing = () => {
     showUnsavedChangesDialog.value = false;
-    if (pendingRouteNext.value != null) {
-      pendingRouteNext.value(false);
-      pendingRouteNext.value = null;
-    }
+    pendingNavigationDecision.value?.(false);
+    pendingNavigationDecision.value = null;
   };
 
   const continuePendingNavigation = () => {
-    const next = pendingRouteNext.value;
-    pendingRouteNext.value = null;
-    next?.();
+    pendingNavigationDecision.value?.(true);
+    pendingNavigationDecision.value = null;
   };
 
   const discardChanges = () => {
@@ -76,14 +74,16 @@ export function useDirtyFlag<T>(
     event.preventDefault();
   };
 
-  onBeforeRouteLeave((_to, _from, next) => {
+  onBeforeRouteLeave(() => {
     if (!isDirty.value) {
-      next();
-      return;
+      return true;
     }
 
-    pendingRouteNext.value = next;
     showUnsavedChangesDialog.value = true;
+    return new Promise<boolean>((resolve) => {
+      pendingNavigationDecision.value?.(false);
+      pendingNavigationDecision.value = resolve;
+    });
   });
 
   onMounted(() => {
