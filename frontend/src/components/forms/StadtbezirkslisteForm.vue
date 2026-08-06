@@ -74,6 +74,7 @@
             <v-btn
               :icon="mdiDelete"
               variant="text"
+              :text="t('common.action.delete')"
               @click="removeStadtbezirk(stadtbezirk.stadtbezirkId!)"
             />
           </td>
@@ -122,6 +123,7 @@
             <v-btn
               :icon="mdiPlus"
               variant="text"
+              :text="t('common.action.create')"
               :disabled="!selectedStadtbezirk"
               @click="addStadtbezirk"
             />
