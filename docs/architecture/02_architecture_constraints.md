@@ -6,7 +6,7 @@ This project follows the [it@M Reference Architecture (RefArch)](https://refarch
 
 Most architectural decisions are inherited from it and therefore act as constraints for this project.
 
-## Derived from the Reference Architecture RefArch
+## Derived from the Reference Architecture
 
 - ...
 - ...
