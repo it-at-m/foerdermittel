@@ -1,7 +1,9 @@
 <template>
   <v-number-input
     v-if="displayMode !== InputDisplayMode.READ"
+    v-model="model"
     :readonly="canNotEdit"
+    :rules="allRules"
     v-bind="$attrs"
   >
     <template #label>
@@ -18,6 +20,7 @@
   </v-number-input>
   <v-textarea
     v-else
+    :model-value="model"
     :label="label"
     auto-grow
     readonly
@@ -27,28 +30,46 @@
   />
 </template>
 
-<script setup lang="ts">
-import { computed } from "vue";
+<script
+  setup
+  lang="ts"
+  generic="
+    M extends Record<string, ValidationAttributes>,
+    K extends keyof M & string
+  "
+>
+import type { ValidationAttributes } from "@/types/OpenAPIValidationAttributes";
+import type { ValidationRule } from "vuetify/framework";
+
 import { useI18n } from "vue-i18n";
 
+import { useInputValidation } from "@/composables/useInputValidation";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
 const {
   displayMode = InputDisplayMode.CREATE,
   disableEdit = false,
-  required = false,
+  validationAttributeMap,
+  validationAttributeKey,
+  additionalRules = [],
 } = defineProps<{
   label: string;
   displayMode?: InputDisplayMode;
   disableEdit?: boolean;
-  required?: boolean;
+  validationAttributeMap?: M;
+  validationAttributeKey?: K;
+  additionalRules?: ValidationRule[];
 }>();
 
-const canNotEdit = computed(
-  () =>
-    displayMode === InputDisplayMode.READ ||
-    (displayMode === InputDisplayMode.EDIT && disableEdit)
+const { required, allRules, canNotEdit } = useInputValidation(
+  displayMode,
+  disableEdit,
+  additionalRules,
+  validationAttributeMap,
+  validationAttributeKey
 );
+
+const model = defineModel<number>();
 
 const { t } = useI18n();
 </script>

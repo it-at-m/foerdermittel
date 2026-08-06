@@ -10,13 +10,12 @@
           v-model="modelValue.bereich"
           :display-mode="displayMode"
           disable-edit
-          required
           uppercase
-          :counter="30"
-          :rules="[
-            rules.required(),
-            rules.maxLength(30),
-            rules.pattern(/^[A-Z0-9\\-]+$/),
+          :validation-attribute-map="
+            StichwortbereichCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bereich"
+          :additional-rules="[
             rules['unique']!(
               stichwortbereichFormContext.bereiche,
               currentBereich
@@ -29,9 +28,10 @@
         <fm-text-field
           v-model="modelValue.bezeichnung"
           :display-mode="displayMode"
-          required
-          :counter="200"
-          :rules="[rules.required(), rules.maxLength(200)]"
+          :validation-attribute-map="
+            StichwortbereichCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bezeichnung"
           :label="t('model.stichwortbereich.bezeichnung')"
         />
       </v-col>
@@ -51,6 +51,7 @@ import { ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRules } from "vuetify/labs/rules";
 
+import { StichwortbereichCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 

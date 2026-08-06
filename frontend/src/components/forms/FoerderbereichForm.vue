@@ -10,13 +10,11 @@
           v-model="modelValue.fb"
           :display-mode="displayMode"
           disable-edit
-          required
-          :counter="2"
-          :rules="[
-            rules.required(),
-            rules.number(),
-            rules['min']!(0),
-            rules['max']!(99),
+          :validation-attribute-map="
+            FoerderbereichCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="fb"
+          :additional-rules="[
             rules['unique']!(
               foerderbereichFormContext.fbs,
               currentFoerderbereich
@@ -29,9 +27,10 @@
         <fm-text-field
           v-model="modelValue.bezeichnung"
           :display-mode="displayMode"
-          required
-          :counter="200"
-          :rules="[rules.required(), rules.maxLength(200)]"
+          :validation-attribute-map="
+            FoerderbereichCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bezeichnung"
           :label="t('model.foerderbereich.bezeichnung')"
         />
       </v-col>
@@ -84,6 +83,7 @@ import { ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRules } from "vuetify/labs/rules";
 
+import { FoerderbereichCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
 import FmNumberInput from "@/components/common/FmNumberInput.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
