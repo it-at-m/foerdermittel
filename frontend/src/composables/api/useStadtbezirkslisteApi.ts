@@ -1,15 +1,7 @@
-import type {
-  CreateListennameRequest,
-  DeleteListennameRequest,
-  PagedModelStadtbezirkslisteResponseDTO,
-  StadtbezirkslisteFormContext,
-  StadtbezirkslisteResponseDTO,
-  UpdateListennameRequest,
-} from "@/api/generated/foerdermittel-backend";
-import type {
-  GetListennamenByPageableRequest,
-  GetListennameRequest,
-} from "@/api/generated/foerdermittel-backend/apis/ListennameControllerApi";
+import type { CreateListennameRequest, DeleteListennameRequest, PagedModelStadtbezirkslisteResponseDTO, StadtbezirkslisteFormContext, StadtbezirkslisteResponseDTO, UpdateListennameRequest } from "@/api/generated/foerdermittel-backend";
+import type { GetListennamenByPageableRequest, GetListennameRequest } from "@/api/generated/foerdermittel-backend/apis/ListennameControllerApi";
+
+
 
 import { ApiFactory } from "@/api/ApiFactory";
 import { StadtbezirkslisteControllerApi } from "@/api/generated/foerdermittel-backend";
