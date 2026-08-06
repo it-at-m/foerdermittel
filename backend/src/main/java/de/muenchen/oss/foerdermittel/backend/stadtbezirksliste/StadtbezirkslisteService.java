@@ -54,7 +54,7 @@ public class StadtbezirkslisteService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Listenname updateListenname(final Listenname listenname, final String kurzBez) {
-      final Listenname foundListenname = ServiceUtils.getEntityOrThrowNotFoundException(
+        final Listenname foundListenname = ServiceUtils.getEntityOrThrowNotFoundException(
                 kurzBez, listennameRepository);
 
         foundListenname.setBezeichnung(listenname.getBezeichnung());

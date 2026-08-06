@@ -19,7 +19,6 @@ public class StadtbezirkslistePrimaryKey implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-
     @Column(name = "lna_kurzbez")
     private String listenname;
 
