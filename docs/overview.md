@@ -1,8 +1,6 @@
 # About - _Fördermittel_
 
-**This project follows the standard development tooling and conventions defined in the Reference Architecture [RefArch](https://refarch.oss.muenchen.de).**
-
-## Purpose of the application
+## Purpose
 
 **Text.**
 
@@ -12,4 +10,4 @@
 
 ## Main functionality
 
-**High-level architecture (optional).**
+**Text.**
