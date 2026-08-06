@@ -6,15 +6,12 @@ import type {
   PagedModelStadtbezirkslisteResponseDTO,
   StadtbezirkslisteFormContext,
   StadtbezirkslisteResponseDTO,
-  UpdateListennameRequest
+  UpdateListennameRequest,
 } from "@/api/generated/foerdermittel-backend";
-
-
 
 import { ApiFactory } from "@/api/ApiFactory";
 import { StadtbezirkslisteControllerApi } from "@/api/generated/foerdermittel-backend";
 import useAPI from "@/composables/useAPI";
-
 
 export function useCreateListenname() {
   const api = ApiFactory.getInstance(StadtbezirkslisteControllerApi);
