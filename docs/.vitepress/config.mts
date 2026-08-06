@@ -42,7 +42,7 @@ const vitepressConfig = defineConfig({
         link: "/develop",
         collapsed: true,
         items: [
-          { text: "Setup and Tools", link: "/develop/setup-and-tools" },
+          { text: "Getting Started", link: "/develop/getting-started" },
           { text: "Development Process", link: "/develop/development-process" },
           { text: "Guides", link: "/develop/guides" },
         ],

@@ -1,10 +1,10 @@
 # Getting Started
 
-This page describes the  steps required to set up and run the project locally.
+*This page describes the  steps required to set up and run the project locally.*
 
 ## Prerequisites
 
-Install the required software before starting development.
+*Install the required software before starting development.*
 
 - Java
 - Node.js
@@ -14,8 +14,6 @@ Install the required software before starting development.
 - 
 ## Clone the Repository
 
-Clone the project repository.
-
 ```bash
 git clone https://github.com/it-at-m/foerdermittel.git
 cd foerdermittel
@@ -23,7 +21,7 @@ cd foerdermittel
 
 ## Install Dependencies
 
-Install all required project dependencies.
+*Install all required project dependencies.*
 
 ### Backend
 
@@ -39,7 +37,7 @@ npm install
 
 ## Start the local development stack
 
-**The local development stack consists of:**
+**The local development stack consists of.**
 
 - Keycloak
 - PostgreSQL
@@ -54,15 +52,15 @@ podman compose up -d
 
 ## Run the Application
 
-Describe how to start the applications for local development.
+*Describe how to start the applications for local development.*
 
 ### Backend
 
-**<Code example>**
+**.......**
 
 ### Frontend
 
-**<Code example>**
+**.......**
 
 ### Local services and ports
 
