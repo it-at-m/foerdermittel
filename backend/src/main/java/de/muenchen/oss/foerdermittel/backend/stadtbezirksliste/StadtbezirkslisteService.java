@@ -83,6 +83,4 @@ public class StadtbezirkslisteService {
         listennameRepository.deleteById(kurzBez);
     }
 
-
-
 }
