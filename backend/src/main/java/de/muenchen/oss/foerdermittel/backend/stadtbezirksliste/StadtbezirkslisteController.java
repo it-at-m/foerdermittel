@@ -75,8 +75,8 @@ public class StadtbezirkslisteController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public StadtbezirkslisteResponseDTO updateListenname(
-            @Valid @RequestBody ListennameUpdateDTO listennameUpdateDTO,
-            @PathVariable("id") String listennameId) {
+            @Valid @RequestBody final ListennameUpdateDTO listennameUpdateDTO,
+            @PathVariable("id") final String listennameId) {
 
         return listennameStadtbezirkslisteMapper.toDTO(
                 stadtbezirkslisteService.updateListenname(
@@ -88,7 +88,7 @@ public class StadtbezirkslisteController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteListenname(
-            @PathVariable String kurzbez) {
+            @PathVariable final String kurzbez) {
 
         stadtbezirkslisteService.deleteListenname(kurzbez);
     }
