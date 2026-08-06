@@ -134,9 +134,6 @@
       "stadtbezirk": "Stadtbezirk",
       "bezeichnung": "Bezeichnung"
     },
-    "listenname": {
-      "modelName": "Listenname | Listennamen"
-    },
     "stadtbezirksliste": {
       "modelName": "Stadtbezirksliste | Stadtbezirkslisten",
       "lnaKurzbez": "Listenname",
