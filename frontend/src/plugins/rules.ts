@@ -5,14 +5,22 @@ import vuetify from "@/plugins/vuetify";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type CustomRule = (...args: any[]) => (value: any) => string | boolean;
 
-const minRule: CustomRule = (minNumber, err) => {
+const minRule: CustomRule = (minNumber: number, exclusive = false, err) => {
   return (v) =>
-    v >= minNumber || err || `Der Wert muss mindestens ${minNumber} betragen.`;
+    exclusive
+      ? v > minNumber || err || `Der Wert muss größer als ${minNumber} sein.`
+      : v >= minNumber ||
+        err ||
+        `Der Wert muss mindestens ${minNumber} betragen.`;
 };
 
-const maxRule: CustomRule = (maxNumber, err) => {
+const maxRule: CustomRule = (maxNumber: number, exclusive = false, err) => {
   return (v) =>
-    v <= maxNumber || err || `Der Wert darf höchstens ${maxNumber} betragen.`;
+    exclusive
+      ? v < maxNumber || err || `Der Wert muss kleiner als ${maxNumber} sein.`
+      : v <= maxNumber ||
+        err ||
+        `Der Wert darf höchstens ${maxNumber} betragen.`;
 };
 
 const uniqueRule: CustomRule = (values, currentValue, err) => {

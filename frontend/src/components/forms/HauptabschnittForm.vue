@@ -10,13 +10,11 @@
           v-model="modelValue.ha"
           :display-mode="displayMode"
           disable-edit
-          required
-          :counter="2"
-          :rules="[
-            rules.required(),
-            rules.minLength(1),
-            rules.maxLength(2),
-            rules.pattern(/^[a-zA-Z0-9]+$/),
+          :validation-attribute-map="
+            HauptabschnittCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="ha"
+          :additional-rules="[
             rules['unique']!(hauptabschnittFormContext.has, currentHa),
           ]"
           :label="t('model.hauptabschnitt.ha')"
@@ -26,9 +24,10 @@
         <fm-text-field
           v-model="modelValue.bezeichnung"
           :display-mode="displayMode"
-          required
-          :counter="200"
-          :rules="[rules.required(), rules.maxLength(200)]"
+          :validation-attribute-map="
+            HauptabschnittCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bezeichnung"
           :label="t('model.hauptabschnitt.bezeichnung')"
         />
       </v-col>
@@ -48,6 +47,7 @@ import { ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRules } from "vuetify/labs/rules";
 
+import { HauptabschnittCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
