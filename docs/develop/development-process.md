@@ -1,55 +1,38 @@
 # Development Process
 
-## Getting started
+This page describes the development process, conventions, and project-specific development practices.
 
-**Text.**
+# RefArch 
 
-## Technologies
+**This project follows the standard development tooling and conventions defined in the it@M Reference Architecture [RefArch – Develop](https://refarch.oss.muenchen.de/templates/develop.html).
+The RefArch provides guidance for topics such as:**
 
-**This project follows the standard development tooling and conventions defined in the Reference Architecture [RefArch – Develop](https://refarch.oss.muenchen.de/templates/develop.html).
-See the Reference Architecture for details about:**
-
-- Local container stack (Podman/Docker)
-- Vite and Vitest
-- Maven
-- Code formatting and linting
-- Vue DevTools
+* Local development setup
+* Container-based development environment
+* Backend and frontend development workflows
+* Build tools and frameworks
+* Code formatting and linting
+* Testing and quality assurance
+* CI/CD processes
 
 **Only project-specific deviations are documented below.**
 
-## Local stack
+# Technologies
 
-**The local development stack consists of:**
+## Framework
 
-- Keycloak
-- PostgreSQL
-- pgAdmin
-- API Gateway
-- Appswitcher
+- Spring-Boot
+- Vue.js
+- Vuetify
+- VitePress
 
-**Start the stack from the `stack` directory:**
+## Tools
 
-```bash
-podman compose up -d
-```
+- GitHub
+- Podman
+- OpenAPI Generator
 
-### Local services and ports
-
-| Service               | Default port |
-| --------------------- | :----------: |
-| \<Frontend(Link)\>    |  \<Port-1\>  |
-| \<API Gateway(Link)\> |  \<Port-2\>  |
-| \<Backend (Link)\>    |  \<Port-3\>  |
-| \<Keykloak (Link)\>   |  \<Port-4\>  |
-| \<pgAdmin (Link)\>    |  \<Port-5\>  |
-
-## Starting the Backend
-
-**<\Table\>**
-
-## Starting the Frontend
-
-**<\Table\>**
+# Project-specific Development Workflow
 
 ## Formatter configuration
 
@@ -62,3 +45,5 @@ podman compose up -d
 - Code reviews
 - Sprint reviews
 - Automated tests
+
+Further instructions for running tests locally can be found in the Guides section.

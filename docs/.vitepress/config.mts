@@ -80,7 +80,7 @@ const vitepressConfig = defineConfig({
             text: "07 Architecture Decisions",
             link: "/architecture/adr/index",
           },
-          { text: "Glossary", link: "/architecture/glossary" },
+          { text: "08 Glossary", link: "/architecture/08_glossary" },
         ],
       },
 
@@ -101,6 +101,11 @@ const vitepressConfig = defineConfig({
     socialLinks: [
       { icon: "github", link: "https://github.com/it-at-m/foerdermittel" },
     ],
+    editLink: {
+      pattern:
+        "https://github.com/it-at-m/foerdermittel",
+      text: "View this page on GitHub",
+    },
     footer: {
       message: `<a href="https://opensource.muenchen.de/impress.html">Impress and Contact</a>`,
     },
