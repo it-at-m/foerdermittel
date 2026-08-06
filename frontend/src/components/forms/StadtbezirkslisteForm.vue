@@ -44,8 +44,7 @@
       {{ t("model.stadtbezirksliste.stadtBezirkeDerListe") }}
     </div>
     <v-divider class="my-4" />
-    <v-table
-      density="compact">
+    <v-table density="compact">
       <thead>
         <tr>
           <th width="100">ID</th>
@@ -75,8 +74,7 @@
             <v-btn
               :icon="mdiDelete"
               variant="text"
-              :disabled="displayMode === InputDisplayMode.READ"
-              `@click`="removeStadtbezirk(stadtbezirk.stadtbezirkId!)"
+              @click="removeStadtbezirk(stadtbezirk.stadtbezirkId!)"
             />
           </td>
         </tr>
@@ -90,8 +88,6 @@
     <v-table density="compact">
       <tbody>
         <tr height="100">
-
-
           <td style="width: 250px">
             <v-autocomplete
               v-model="selectedStadtbezirk"

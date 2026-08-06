@@ -4,10 +4,8 @@ import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_TEST_PR
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
-
 import de.muenchen.oss.foerdermittel.backend.TestConstants;
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
-import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameUpdateDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.StadtbezirkslisteResponseDTO;
@@ -100,6 +98,51 @@ class StadtbezirkslisteIntegrationTest {
                             .path("/stadtbezirkslisten")
                             .queryParam("page", "0")
                             .build())
+                    .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
+                    .exchange()
+                    .expectStatus().isEqualTo(httpStatus);
+        }
+
+        @Test
+        void givenExistingId_thenReturnEntity() {
+            restTestClient.get()
+                    .uri("/stadtbezirkslisten/{id}", EXISTING_ID)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                    .expectBody(StadtbezirkslisteResponseDTO.class)
+                    .value(response -> {
+                        assertNotNull(response);
+                        assertThat(response.id()).isEqualTo(EXISTING_ID);
+                        assertThat(response.bezeichnung()).isEqualTo("test");
+                    });
+        }
+
+        @Test
+        void givenNonExistingId_thenReturnNotFound() {
+            restTestClient.get()
+                    .uri("/stadtbezirkslisten/{id}", NON_EXISTING_ID)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                    .exchange()
+                    .expectStatus().isNotFound();
+        }
+
+        private static Stream<Arguments> authorizationMappingsForGetById() {
+            return Stream.of(
+                    Arguments.of("admin", HttpStatus.OK),
+                    Arguments.of("sachbearbeitung", HttpStatus.OK),
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.OK));
+        }
+
+        @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
+        @MethodSource("authorizationMappingsForGetById")
+        void givenRole_thenReturnStatusForGetById(
+                final String role,
+                final HttpStatus httpStatus) {
+
+            restTestClient.get()
+                    .uri("/stadtbezirkslisten/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()
                     .expectStatus().isEqualTo(httpStatus);
@@ -212,7 +255,7 @@ class StadtbezirkslisteIntegrationTest {
         void givenEntityExists_thenEntityIsUpdated() {
             final ListennameUpdateDTO requestDTO = new ListennameUpdateDTO("Test aktualisiert", List.of());
 
-            final StadtbezirkResponseDTO responseDTO = restTestClient.put()
+            final StadtbezirkslisteResponseDTO responseDTO = restTestClient.put()
                     .uri("/stadtbezirkslisten/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
@@ -220,7 +263,7 @@ class StadtbezirkslisteIntegrationTest {
                     .exchange()
                     .expectStatus().isOk()
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(StadtbezirkResponseDTO.class)
+                    .expectBody(StadtbezirkslisteResponseDTO.class)
                     .value(theEntityResponseDTO -> {
                         assertNotNull(theEntityResponseDTO);
                         assertThat(theEntityResponseDTO.id()).isEqualTo(EXISTING_ID);

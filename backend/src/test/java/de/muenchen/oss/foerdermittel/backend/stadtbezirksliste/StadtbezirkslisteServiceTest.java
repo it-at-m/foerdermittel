@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
@@ -117,7 +118,7 @@ class StadtbezirkslisteServiceTest {
             final Stadtbezirk stadtbezirk = new Stadtbezirk(BigDecimal.ONE, "Bezirk");
             final Stadtbezirksliste assignment = new Stadtbezirksliste(null, null, stadtbezirk, "Test");
 
-            final Listenname entity = new Listenname(KURZBEZ, BEZEICHNUNG, List.of(assignment));
+            final Listenname entity = new Listenname(KURZBEZ, BEZEICHNUNG, new ArrayList<>(List.of(assignment)));
 
             when(listennameRepository.insert(entity)).thenReturn(entity);
 
@@ -160,7 +161,12 @@ class StadtbezirkslisteServiceTest {
             // Then
             verify(listennameRepository, times(1)).findById(KURZBEZ);
             verify(listennameRepository, times(1)).update(foundEntity);
-            assertThat(result).isEqualTo(foundEntity);
+            assertThat(result).isSameAs(foundEntity);
+            assertThat(foundEntity.getBezeichnung()).isEqualTo(BEZEICHNUNG);
+            assertThat(foundEntity.getStadtbezirkslisten()).containsExactly(newAssignment);
+            assertThat(newAssignment.getListenName()).isSameAs(foundEntity);
+            assertThat(newAssignment.getId())
+                    .isEqualTo(new StadtbezirkslistePrimaryKey(KURZBEZ, BigDecimal.ONE));
         }
 
         @Test
