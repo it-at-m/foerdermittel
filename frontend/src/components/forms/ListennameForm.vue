@@ -59,7 +59,7 @@ const modelValue = defineModel<Partial<ListennameResponseDTO>>({
 });
 
 // Reactivity is intentionally dropped here to maintain the initial state when form gets mounted.
-const currentKurzBez= ref(modelValue.value.kurzbez);
+const currentKurzBez = ref(modelValue.value.kurzbez);
 
 const { listennameFormContext, displayMode = InputDisplayMode.CREATE } =
   defineProps<{

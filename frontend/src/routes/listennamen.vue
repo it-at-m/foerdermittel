@@ -44,8 +44,8 @@ import ListennameForm from "@/components/forms/ListennameForm.vue";
 import {
   useCreateListenname,
   useDeleteListenname,
-  useGetListennamen,
   useGetListennameFormContext,
+  useGetListennamen,
   useUpdateListenname,
 } from "@/composables/api/useListennameApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
@@ -86,8 +86,7 @@ const {
 } = useGetListennameFormContext();
 
 type listennameFormType = InstanceType<typeof ListennameForm>;
-const listennameFormRef =
-  useTemplateRef<listennameFormType>("listennameForm");
+const listennameFormRef = useTemplateRef<listennameFormType>("listennameForm");
 
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => listennamen.value?.page?.totalPages),
