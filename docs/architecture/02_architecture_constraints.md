@@ -4,7 +4,7 @@
 
 This project follows the [it@M Reference Architecture (RefArch)](https://refarch.oss.muenchen.de/architecture/).
 
-Most architectural decisions are inherited from the RefArch and therefore act as constraints for this project.
+Most architectural decisions are inherited from it and therefore act as constraints for this project.
 
 ## Derived from the Reference Architecture RefArch
 
