@@ -2,7 +2,7 @@ import type { Ref } from "vue";
 
 import equal from "fast-deep-equal";
 import { computed, onMounted, onUnmounted, ref, toRaw } from "vue";
-import { onBeforeRouteLeave } from "vue-router";
+import { onBeforeRouteLeave, onBeforeRouteUpdate } from "vue-router";
 
 function cloneValue<T>(value: T): T {
   return structuredClone(toRaw(value));
@@ -66,15 +66,7 @@ export function useDirtyFlag<T>(
     continuePendingNavigation();
   };
 
-  const onBeforeUnload = (event: BeforeUnloadEvent) => {
-    if (!isDirty.value) {
-      return;
-    }
-
-    event.preventDefault();
-  };
-
-  onBeforeRouteLeave(() => {
+  function onBeforeRouteChange() {
     if (!isDirty.value) {
       return true;
     }
@@ -84,7 +76,18 @@ export function useDirtyFlag<T>(
       pendingNavigationDecision.value?.(false);
       pendingNavigationDecision.value = resolve;
     });
-  });
+  }
+
+  onBeforeRouteLeave(onBeforeRouteChange);
+  onBeforeRouteUpdate(onBeforeRouteChange);
+
+  function onBeforeUnload(event: BeforeUnloadEvent) {
+    if (!isDirty.value) {
+      return;
+    }
+
+    event.preventDefault();
+  }
 
   onMounted(() => {
     window.addEventListener("beforeunload", onBeforeUnload);
