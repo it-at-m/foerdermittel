@@ -1,0 +1,19 @@
+# 02. Architecture Constraints
+
+## Reference Architecture
+
+This project follows the [it@M Reference Architecture (RefArch)](https://refarch.oss.muenchen.de/architecture/).
+
+Most architectural decisions are inherited from it and therefore act as constraints for this project.
+
+## Derived from the Reference Architecture
+
+- ...
+- ...
+- ...
+
+## Project-specific Decisions
+
+- ...
+- ...
+- ...
