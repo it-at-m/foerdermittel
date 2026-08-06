@@ -10,13 +10,11 @@
           v-model="modelValue.stadtbezirk"
           :display-mode="displayMode"
           disable-edit
-          required
-          :counter="2"
-          :rules="[
-            rules.required(),
-            rules.number(),
-            rules['min']!(0),
-            rules['max']!(99),
+          :validation-attribute-map="
+            StadtbezirkCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="stadtbezirk"
+          :additional-rules="[
             rules['unique']!(
               stadtbezirkFormContext.stadtbezirke,
               currentStadtbezirk
@@ -29,9 +27,10 @@
         <fm-text-field
           v-model="modelValue.bezeichnung"
           :display-mode="displayMode"
-          required
-          :counter="200"
-          :rules="[rules.required(), rules.maxLength(200)]"
+          :validation-attribute-map="
+            StadtbezirkCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bezeichnung"
           :label="t('model.stadtbezirk.bezeichnung')"
         />
       </v-col>
@@ -51,6 +50,7 @@ import { ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRules } from "vuetify/labs/rules";
 
+import { StadtbezirkCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmNumberInput from "@/components/common/FmNumberInput.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";

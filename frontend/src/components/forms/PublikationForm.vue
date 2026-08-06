@@ -10,13 +10,12 @@
           v-model="modelValue.kurzform"
           :display-mode="displayMode"
           disable-edit
-          required
           uppercase
-          :counter="1"
-          :rules="[
-            rules.required(),
-            rules.strictLength(1),
-            rules.pattern(/^[A-Z0-9]+$/),
+          :validation-attribute-map="
+            PublikationCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="kurzform"
+          :additional-rules="[
             rules['unique']!(
               publikationFormContext.kurzformen,
               currentKurzform
@@ -29,9 +28,10 @@
         <fm-text-field
           v-model="modelValue.bezeichnung"
           :display-mode="displayMode"
-          required
-          :counter="200"
-          :rules="[rules.required(), rules.maxLength(200)]"
+          :validation-attribute-map="
+            PublikationCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bezeichnung"
           :label="t('model.publikation.bezeichnung')"
         />
       </v-col>
@@ -51,6 +51,7 @@ import { ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRules } from "vuetify/labs/rules";
 
+import { PublikationCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
