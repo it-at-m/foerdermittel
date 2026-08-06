@@ -1,4 +1,4 @@
-# Glossary _optional_
+# 08. Glossary
 
 | Term         | Definition         |
 | ------------ | ------------------ |
