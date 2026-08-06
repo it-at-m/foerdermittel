@@ -71,7 +71,7 @@ public class StadtbezirkslisteService {
         foundListenname.getStadtbezirkslisten()
                 .addAll(listenname.getStadtbezirkslisten());
 
-        log.debug("Update Listenname {}", foundListenname);
+        log.debug("Update Listenname {}", foundListenname.getKurzbez());
 
         return listennameRepository.update(foundListenname);
     }
@@ -82,5 +82,7 @@ public class StadtbezirkslisteService {
         ServiceUtils.getEntityOrThrowNotFoundException(kurzBez, listennameRepository);
         listennameRepository.deleteById(kurzBez);
     }
+
+
 
 }
