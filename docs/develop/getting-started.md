@@ -1,17 +1,18 @@
 # Getting Started
 
-*This page describes the  steps required to set up and run the project locally.*
+_This page describes the steps required to set up and run the project locally._
 
 ## Prerequisites
 
-*Install the required software before starting development.*
+_Install the required software before starting development._
 
 - Java
 - Node.js
 - Maven
 - Podman or Docker
 - Git
-- 
+-
+
 ## Clone the Repository
 
 ```bash
@@ -21,7 +22,7 @@ cd foerdermittel
 
 ## Install Dependencies
 
-*Install all required project dependencies.*
+_Install all required project dependencies._
 
 ### Backend
 
@@ -52,7 +53,7 @@ podman compose up -d
 
 ## Run the Application
 
-*Describe how to start the applications for local development.*
+_Describe how to start the applications for local development._
 
 ### Backend
 
@@ -84,4 +85,3 @@ podman compose up -d
 | ----------- | ------------- | ------------------- |
 | fmad        | foerdermittel | _<\Description-1\>_ |
 | fmsb        | foerdermittel | _<\Description-2\>_ |
-

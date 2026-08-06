@@ -13,4 +13,3 @@
 | --------------- | ----------------- |
 | <\Component-1>\ | <\Description-1>\ |
 | <\Component-2>\ | <\Description-2>\ |
-

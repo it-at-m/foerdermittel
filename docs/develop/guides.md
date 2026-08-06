@@ -1,26 +1,27 @@
 # Guides
 
-*This section contains practical instructions for common development tasks.*
+_This section contains practical instructions for common development tasks._
 
 ## OpenAPI Specification
 
-*This guide describes how to generate and update the OpenAPI specification.
-Steps:*
-* .....
-* .....
-* .....
+_This guide describes how to generate and update the OpenAPI specification.
+Steps:_
+
+- .....
+- .....
+- .....
 
 ## Code Formatting and Linting
 
-*This guide explains how to check and improve code quality locally. The frontend uses formatting and linting tools based on the RefArch configuration.*
+_This guide explains how to check and improve code quality locally. The frontend uses formatting and linting tools based on the RefArch configuration._
 
-*Run the checks with:*
+_Run the checks with:_
 
 ```bash
 npm run lint
 ```
 
-*Fix automatically detectable issues with:*
+_Fix automatically detectable issues with:_
 
 ```bash
 npm run fix

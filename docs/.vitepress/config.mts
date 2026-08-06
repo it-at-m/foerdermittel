@@ -102,8 +102,7 @@ const vitepressConfig = defineConfig({
       { icon: "github", link: "https://github.com/it-at-m/foerdermittel" },
     ],
     editLink: {
-      pattern:
-        "https://github.com/it-at-m/foerdermittel",
+      pattern: "https://github.com/it-at-m/foerdermittel",
       text: "View this page on GitHub",
     },
     footer: {

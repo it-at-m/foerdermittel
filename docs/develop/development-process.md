@@ -2,18 +2,18 @@
 
 This page describes the development process, conventions, and project-specific development practices.
 
-## RefArch 
+## RefArch
 
 **This project follows the standard development tooling and conventions defined in the it@M Reference Architecture [RefArch – Develop](https://refarch.oss.muenchen.de/templates/develop.html).
 The RefArch provides guidance for topics such as:**
 
-* Local development setup
-* Container-based development environment
-* Backend and frontend development workflows
-* Build tools and frameworks
-* Code formatting and linting
-* Testing and quality assurance
-* CI/CD processes
+- Local development setup
+- Container-based development environment
+- Backend and frontend development workflows
+- Build tools and frameworks
+- Code formatting and linting
+- Testing and quality assurance
+- CI/CD processes
 
 **Only project-specific deviations are documented below.**
 
