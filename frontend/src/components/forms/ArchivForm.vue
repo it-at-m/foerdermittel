@@ -18,17 +18,32 @@
     </v-row>
 
     <v-row>
-      <v-col
-        v-for="feld in datumsfelder"
-        :key="feld.key"
-        cols="4"
-      >
-        <v-date-input
-          v-model="feld.value.value"
-          :label="t(feld.label)"
+      <v-col cols="4">
+        <fm-date-field
+          v-model="modelValue.speicherDatum"
+          :display-mode="displayMode"
+          :label="t('model.archiv.speicherDatum')"
           :rules="[rules.required()]"
-          prepend-icon=""
-          locale="de-DE"
+          clearable
+        />
+      </v-col>
+
+      <v-col cols="4">
+        <fm-date-field
+          v-model="modelValue.mikroDatPlan"
+          :display-mode="displayMode"
+          :label="t('model.archiv.mikroDatPlan')"
+          :rules="[rules.required()]"
+          clearable
+        />
+      </v-col>
+
+      <v-col cols="4">
+        <fm-date-field
+          v-model="modelValue.mikroDat"
+          :display-mode="displayMode"
+          :label="t('model.archiv.mikroDat')"
+          :rules="[rules.required()]"
           clearable
         />
       </v-col>
@@ -75,6 +90,7 @@ import { useI18n } from "vue-i18n";
 import { useRules } from "vuetify/labs/rules";
 
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
+import FmDateField from "@/components/common/FmDateField.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
@@ -99,44 +115,6 @@ const gefilterteProjektnummern = computed(() =>
       )
     : projektnummern
 );
-
-function toDate(value?: string | Date | null) {
-  if (!value) return undefined;
-  if (value instanceof Date) return value;
-
-  const [year, month, day] = value.substring(0, 10).split("-");
-
-  return year && month && day
-    ? new Date(Number(year), Number(month) - 1, Number(day), 12)
-    : undefined;
-}
-
-function dateModel(key: keyof ArchivResponseDTO) {
-  return computed({
-    get: () => toDate(modelValue.value[key] as string),
-    set: (value) => {
-      modelValue.value[key] = value as never;
-    },
-  });
-}
-
-const datumsfelder = [
-  {
-    key: "speicherDatum",
-    label: "model.archiv.speicherDatum",
-    value: dateModel("speicherDatum"),
-  },
-  {
-    key: "mikroDatPlan",
-    label: "model.archiv.mikroDatPlan",
-    value: dateModel("mikroDatPlan"),
-  },
-  {
-    key: "mikroDat",
-    label: "model.archiv.mikroDat",
-    value: dateModel("mikroDat"),
-  },
-];
 
 const emit = defineEmits<{
   isValid: [boolean | null];

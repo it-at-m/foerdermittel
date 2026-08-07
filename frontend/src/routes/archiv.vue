@@ -59,6 +59,7 @@
 <script setup lang="ts">
 import type { ArchivResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
+import { formatDate } from "@/util/date";
 
 import { mdiCheck } from "@mdi/js";
 import { computed, onMounted, useTemplateRef } from "vue";
@@ -84,42 +85,6 @@ const { t } = useI18n();
 
 const isAdmin = useHasAnyRole(Role.ADMIN);
 
-function normalizeDate(value?: string | Date | null) {
-  if (!value) {
-    return undefined;
-  }
-
-  if (value instanceof Date) {
-    return new Date(
-      value.getFullYear(),
-      value.getMonth(),
-      value.getDate(),
-      12,
-      0,
-      0
-    );
-  }
-
-  const [year, month, day] = value.substring(0, 10).split("-");
-
-  if (!year || !month || !day) {
-    return undefined;
-  }
-
-  return new Date(Number(year), Number(month) - 1, Number(day), 12, 0, 0);
-}
-
-function formatDate(value?: string | Date) {
-  const date = normalizeDate(value);
-
-  return (
-    date?.toLocaleDateString("de-DE", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    }) ?? ""
-  );
-}
 
 const {
   data: archivFormContext,
@@ -136,37 +101,37 @@ const headers: DataTableHeader<Partial<ArchivResponseDTO>>[] = [
     title: t("model.archiv.projnr"),
     value: "projnr",
     align: "center",
-    width: 120,
+    width: 100,
   },
   {
     title: t("model.archiv.speicherDatum"),
     value: "speicherDatum",
     align: "center",
-    width: 100,
+    width: 120,
   },
   {
     title: t("model.archiv.speicherAkt"),
     value: "speicherAkt",
     align: "center",
-    width: 120,
+    width: 110,
   },
   {
     title: t("model.archiv.speicherRechnungen"),
     value: "speicherRechnungen",
     align: "center",
-    width: 120,
+    width: 110,
   },
   {
     title: t("model.archiv.mikroDatPlan"),
     value: "mikroDatPlan",
     align: "center",
-    width: 100,
+    width: 120,
   },
   {
     title: t("model.archiv.mikroDat"),
     value: "mikroDat",
     align: "center",
-    width: 100,
+    width: 120,
   },
   {
     title: t("model.archiv.fob_fb"),
@@ -178,18 +143,18 @@ const headers: DataTableHeader<Partial<ArchivResponseDTO>>[] = [
     title: t("model.archiv.pstrasse"),
     value: "pstrasse",
     align: "center",
-    width: 120,
+    width: 180,
   },
   {
     title: t("model.archiv.pname"),
     value: "pname",
     align: "center",
-    width: 120,
+    width: 150,
   },
   {
     title: t("model.archiv.notizen"),
     value: "notizen",
-    width: 500,
+    width: 250,
   },
 ];
 
@@ -221,15 +186,6 @@ const { dataTableOptions, onSuccess, onFailure } = usePagination(
   () => archivFormRef.value?.validate()
 );
 
-function normalizeArchivDates(model: Partial<ArchivResponseDTO>) {
-  return {
-    ...model,
-    speicherDatum: normalizeDate(model.speicherDatum),
-    mikroDatPlan: normalizeDate(model.mikroDatPlan),
-    mikroDat: normalizeDate(model.mikroDat),
-  } as ArchivResponseDTO;
-}
-
 const {
   call: createArchiv,
   loading: createLoading,
@@ -238,7 +194,7 @@ const {
 
 async function handleCreate(dto: Partial<ArchivResponseDTO>) {
   await createArchiv({
-    archivCreateDTO: normalizeArchivDates(dto),
+    archivCreateDTO: dto as ArchivResponseDTO,
   });
 
   if (createError.value) {
@@ -255,11 +211,9 @@ const {
 } = useUpdateArchiv();
 
 async function handleUpdate(dto: Partial<ArchivResponseDTO>) {
-  const model = normalizeArchivDates(dto);
-
   await updateArchiv({
-    id: model.id,
-    archivUpdateDTO: model,
+    id: dto.id!,
+    archivUpdateDTO: dto as ArchivResponseDTO,
   });
 
   if (updateError.value) {
