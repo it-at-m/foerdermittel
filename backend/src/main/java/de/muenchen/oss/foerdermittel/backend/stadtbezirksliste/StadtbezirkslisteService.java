@@ -76,7 +76,7 @@ public class StadtbezirkslisteService {
                     Listenname.class, Stadtbezirk.class);
         }
 
-        Listenname listenname = ServiceUtils.getEntityOrThrowNotFoundException(
+        final Listenname listenname = ServiceUtils.getEntityOrThrowNotFoundException(
                 kurzBez,
                 listennameRepository);
 

@@ -51,7 +51,7 @@ public class Listenname implements Serializable {
     @OrderBy("id.stadtbezirk ASC")
     private List<Stadtbezirksliste> stadtbezirkslisten = new ArrayList<>();
 
-    public void updateStadtbezirke(List<Stadtbezirksliste> listen, String kurzBez) {
+    public void updateStadtbezirke(final List<Stadtbezirksliste> listen, final String kurzBez) {
         stadtbezirkslisten.clear();
 
         listen.forEach(assignment -> {
