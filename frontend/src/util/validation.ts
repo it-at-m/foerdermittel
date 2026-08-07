@@ -105,6 +105,8 @@ export function getOpenAPIValidationConstraint<
 
 /**
  * Deep equal compares two objects using trimmed string values
+ * <br>
+ * <b>Note:</b> Does not work for non-plain objects e.g. Date, Map, Set, RegExp, ...
  * @param a object a
  * @param b object b
  */
