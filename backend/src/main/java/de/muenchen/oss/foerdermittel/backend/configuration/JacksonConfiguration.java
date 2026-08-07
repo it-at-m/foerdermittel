@@ -1,0 +1,37 @@
+package de.muenchen.oss.foerdermittel.backend.configuration;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JacksonModule;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.module.SimpleModule;
+
+@Configuration
+public class JacksonConfiguration {
+
+    @Bean
+    public JacksonModule trimmingModule() {
+        SimpleModule module = new SimpleModule();
+        module.addDeserializer(String.class, new TrimStringDeserializer());
+        return module;
+    }
+
+    /**
+     * This deserializer trims leading and trailing whitespaces and normalizes whitespaces in between characters to
+     * singular whitespaces. Additionally, whitespace before and after newline are removed.
+     */
+    static class TrimStringDeserializer extends ValueDeserializer<String> {
+        @Override
+        public String deserialize(JsonParser p, DeserializationContext ctxt) {
+            String value = p.getValueAsString();
+            return value == null ? null
+                    : value.replaceAll("[ \\t]+\\n", "\n")
+                            .replaceAll("\\n[ \\t]+", "\n")
+                            .trim()
+                            .replaceAll(" +", " ");
+        }
+    }
+
+}
