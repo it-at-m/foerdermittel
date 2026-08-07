@@ -38,6 +38,7 @@ import { useI18n } from "vue-i18n";
 
 import { useInputValidation } from "@/composables/useInputValidation";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
+import { toTrimmedString } from "@/util/formatter";
 
 const {
   displayMode = InputDisplayMode.CREATE,
@@ -65,7 +66,7 @@ const { required, allRules, counter, canNotEdit } = useInputValidation(
 const model = defineModel<string>();
 
 function trimModel() {
-  model.value = model.value?.trim();
+  model.value = toTrimmedString(model.value);
 }
 
 const { t } = useI18n();

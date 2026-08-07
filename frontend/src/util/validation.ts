@@ -3,6 +3,7 @@ import type { maxRule, minRule } from "@/plugins/rules";
 import type { ValidationAttributes } from "@/types/OpenAPIValidationAttributes";
 import type { ValidationRule } from "vuetify/framework";
 import type { RuleAliases } from "vuetify/labs/rules";
+import { toTrimmedString } from "@/util/formatter";
 
 /**
  * Calculates Vuetify {@link ValidationRule}s for a single input component using *ValidationAttributesMap object generated using OpenAPIGenerator typescript-fetch generator
@@ -108,7 +109,7 @@ export function getOpenAPIValidationConstraint<
  */
 export function deepEqualTrimmed(a: unknown, b: unknown): boolean {
   if (typeof a === "string" && typeof b === "string") {
-    return a.trim() === b.trim();
+    return toTrimmedString(a) === toTrimmedString(b);
   }
 
   if (a === b) {

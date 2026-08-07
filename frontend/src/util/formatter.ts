@@ -13,3 +13,11 @@ export function toTimeString(date: Date): string {
 export function toDateAndTimeString(date: Date): string {
   return date ? date.toLocaleString() : "";
 }
+
+export function toTrimmedString(text?: string): string | undefined {
+  return text
+      ?.replace(/[ \t]+\n/g, "\n")
+      .replace(/\n[ \t]+/g, "\n")
+      .trim()
+      .replace(/ +/g, " ");
+}
