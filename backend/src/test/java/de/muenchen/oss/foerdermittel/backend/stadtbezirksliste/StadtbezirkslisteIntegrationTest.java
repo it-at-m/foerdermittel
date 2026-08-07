@@ -214,6 +214,7 @@ class StadtbezirkslisteIntegrationTest {
         @ParameterizedTest(name = "{0}")
         @MethodSource("invalidInputRequests")
         void givenInvalidInput_thenReturnBadRequest(
+                final String description,
                 final ListennameCreateDTO requestDTO) {
 
             restTestClient.post()
