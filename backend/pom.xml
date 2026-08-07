@@ -44,6 +44,9 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
 
+        <!-- Reporting -->
+        <jasperreports.version>6.21.4</jasperreports.version>
+
         <!-- Linting & Formatting -->
         <spotless-maven-plugin.version>3.8.0</spotless-maven-plugin.version>
         <itm-java-codeformat.version>1.0.10</itm-java-codeformat.version>
@@ -219,6 +222,13 @@
             <groupId>com.github.therapi</groupId>
             <artifactId>therapi-runtime-javadoc</artifactId>
             <version>${therapi-runtime-javadoc.version}</version>
+        </dependency>
+
+        <!-- Reports -->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>${jasperreports.version}</version>
         </dependency>
 
         <!-- Developer Tools -->
