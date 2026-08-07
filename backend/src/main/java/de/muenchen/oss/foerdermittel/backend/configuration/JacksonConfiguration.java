@@ -13,7 +13,7 @@ public class JacksonConfiguration {
 
     @Bean
     public JacksonModule trimmingModule() {
-        SimpleModule module = new SimpleModule();
+        final SimpleModule module = new SimpleModule();
         module.addDeserializer(String.class, new TrimStringDeserializer());
         return module;
     }
@@ -23,10 +23,10 @@ public class JacksonConfiguration {
      * characters to
      * singular whitespaces. Additionally, whitespace before and after newline are removed.
      */
-    static class TrimStringDeserializer extends ValueDeserializer<String> {
+    /* package */ static class TrimStringDeserializer extends ValueDeserializer<String> {
         @Override
-        public String deserialize(JsonParser p, DeserializationContext ctxt) {
-            String value = p.getValueAsString();
+        public String deserialize(final JsonParser p, final DeserializationContext ctxt) {
+            final String value = p.getValueAsString();
             return value == null ? null
                     : value.replaceAll("[ \\t]+\\n", "\n")
                             .replaceAll("\\n[ \\t]+", "\n")
