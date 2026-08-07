@@ -31,4 +31,15 @@ public class GlobalExceptionHandler {
         };
     }
 
+    @ExceptionHandler(DeleteNotAllowedException.class)
+    public ProblemDetail handleDeleteNotAllowed(
+            final DeleteNotAllowedException exception) {
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, exception.getMessage());
+        problemDetail.setProperty("targetModelName", exception.getTargetClassName());
+        problemDetail.setProperty("violatedModelName", exception.getViolatedClassName());
+
+        return problemDetail;
+    }
+
 }

@@ -1,6 +1,8 @@
 package de.muenchen.oss.foerdermittel.backend.stadtbezirksliste;
 
+import de.muenchen.oss.foerdermittel.backend.common.DeleteNotAllowedException;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class StadtbezirkslisteService {
 
     private final ListennameRepository listennameRepository;
+    private final StadtbezirkslisteRepository stadtbezirkslisteRepository;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -58,29 +61,26 @@ public class StadtbezirkslisteService {
                 kurzBez, listennameRepository);
 
         foundListenname.setBezeichnung(listenname.getBezeichnung());
-
-        foundListenname.getStadtbezirkslisten().clear();
-
-        listenname.getStadtbezirkslisten().forEach(assignment -> {
-            assignment.setListenName(foundListenname);
-            assignment.setId(new StadtbezirkslistePrimaryKey(
-                    kurzBez,
-                    assignment.getStadtbezirk().getStadtbezirk()));
-        });
-
-        foundListenname.getStadtbezirkslisten()
-                .addAll(listenname.getStadtbezirkslisten());
-
-        log.debug("Update Listenname {}", foundListenname.getKurzbez());
+        foundListenname.updateStadtbezirke(listenname.getStadtbezirkslisten(), kurzBez);
 
         return listennameRepository.update(foundListenname);
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteListenname(final String kurzBez) {
+
         log.debug("Delete Listenname with ID {}", kurzBez);
-        ServiceUtils.getEntityOrThrowNotFoundException(kurzBez, listennameRepository);
-        listennameRepository.deleteById(kurzBez);
+
+        if (stadtbezirkslisteRepository.existsByListenName_Kurzbez(kurzBez)) {
+            throw new DeleteNotAllowedException(
+                    Listenname.class, Stadtbezirk.class);
+        }
+
+        Listenname listenname = ServiceUtils.getEntityOrThrowNotFoundException(
+                kurzBez,
+                listennameRepository);
+
+        listennameRepository.delete(listenname);
     }
 
 }

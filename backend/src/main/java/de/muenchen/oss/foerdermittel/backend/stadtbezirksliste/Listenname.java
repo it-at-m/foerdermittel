@@ -41,11 +41,25 @@ public class Listenname implements Serializable {
 
     @OneToMany(
             mappedBy = "listenName",
-            cascade = CascadeType.ALL,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
     @OrderBy("id.stadtbezirk ASC")
     private List<Stadtbezirksliste> stadtbezirkslisten = new ArrayList<>();
 
+    public void updateStadtbezirke(List<Stadtbezirksliste> listen, String kurzBez) {
+        stadtbezirkslisten.clear();
+
+        listen.forEach(assignment -> {
+            assignment.setListenName(this);
+            assignment.setId(new StadtbezirkslistePrimaryKey(
+                    kurzBez,
+                    assignment.getStadtbezirk().getStadtbezirk()));
+            stadtbezirkslisten.add(assignment);
+        });
+    }
 }
