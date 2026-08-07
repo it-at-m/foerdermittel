@@ -200,7 +200,7 @@ class StadtbezirkslisteServiceTest {
             // Given
             Listenname listenname = new Listenname();
 
-            when(stadtbezirkslisteRepository.existsByListenName_Kurzbez(KURZBEZ))
+            when(stadtbezirkslisteRepository.existsByListenNameKurzbez(KURZBEZ))
                     .thenReturn(false);
 
             when(listennameRepository.findById(KURZBEZ))
@@ -211,7 +211,7 @@ class StadtbezirkslisteServiceTest {
 
             // Then
             verify(stadtbezirkslisteRepository)
-                    .existsByListenName_Kurzbez(KURZBEZ);
+                    .existsByListenNameKurzbez(KURZBEZ);
 
             verify(listennameRepository)
                     .findById(KURZBEZ);

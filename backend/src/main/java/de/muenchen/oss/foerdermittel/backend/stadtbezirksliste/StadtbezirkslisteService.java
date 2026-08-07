@@ -71,7 +71,7 @@ public class StadtbezirkslisteService {
 
         log.debug("Delete Listenname with ID {}", kurzBez);
 
-        if (stadtbezirkslisteRepository.existsByListenName_Kurzbez(kurzBez)) {
+        if (stadtbezirkslisteRepository.existsByListenNameKurzbez(kurzBez)) {
             throw new DeleteNotAllowedException(
                     Listenname.class, Stadtbezirk.class);
         }

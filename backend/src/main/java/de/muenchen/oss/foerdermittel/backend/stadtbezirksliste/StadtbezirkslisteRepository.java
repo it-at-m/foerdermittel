@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 public interface StadtbezirkslisteRepository
         extends CrudRepository<Stadtbezirksliste, StadtbezirkslistePrimaryKey> {
 
-    boolean existsByListenName_Kurzbez(String kurzbez);
+    boolean existsByListenNameKurzbez(String kurzbez);
 
 }
