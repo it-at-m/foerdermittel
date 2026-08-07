@@ -32,6 +32,8 @@ class StadtbezirkslisteServiceTest {
 
     @Mock
     private ListennameRepository listennameRepository;
+    @Mock
+    private StadtbezirkslisteRepository stadtbezirkslisteRepository;
 
     @InjectMocks
     private StadtbezirkslisteService unitUnderTest;
@@ -196,15 +198,26 @@ class StadtbezirkslisteServiceTest {
         @Test
         void givenKurzbezExists_thenDeleteEntity() {
             // Given
+            Listenname listenname = new Listenname();
+
+            when(stadtbezirkslisteRepository.existsByListenName_Kurzbez(KURZBEZ))
+                    .thenReturn(false);
+
             when(listennameRepository.findById(KURZBEZ))
-                    .thenReturn(Optional.of(new Listenname()));
+                    .thenReturn(Optional.of(listenname));
 
             // When
             unitUnderTest.deleteListenname(KURZBEZ);
 
             // Then
-            verify(listennameRepository, times(1)).findById(KURZBEZ);
-            verify(listennameRepository, times(1)).deleteById(KURZBEZ);
+            verify(stadtbezirkslisteRepository)
+                    .existsByListenName_Kurzbez(KURZBEZ);
+
+            verify(listennameRepository)
+                    .findById(KURZBEZ);
+
+            verify(listennameRepository)
+                    .delete(listenname);
         }
 
         @Test
