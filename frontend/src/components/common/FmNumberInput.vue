@@ -1,48 +1,50 @@
 <template>
   <v-number-input
-    :readonly="displayMode === InputDisplayMode.READ || canNotEdit"
-    :hide-details="displayMode === InputDisplayMode.READ"
-    :variant="displayMode === InputDisplayMode.READ ? 'plain' : undefined"
-    :control-variant="
-      displayMode === InputDisplayMode.READ ? 'hidden' : undefined
-    "
-    :class="{
-      'pointer-events-none':
-        displayMode === InputDisplayMode.READ || canNotEdit,
-    }"
-    :counter="counter"
+    v-if="displayMode !== InputDisplayMode.READ"
+    v-model="model"
+    :readonly="canNotEdit"
     :rules="allRules"
     v-bind="$attrs"
   >
     <template #label>
       {{ label }}
       <span
-        v-if="required && !canNotEdit && displayMode !== InputDisplayMode.READ"
+        v-if="required && !canNotEdit"
         class="text-red"
         >{{ t("common.word.required") }}</span
       >
-      <span v-if="canNotEdit">{{ t("common.word.readOnly") }}</span>
+      <span v-if="displayMode == InputDisplayMode.EDIT && canNotEdit">{{
+        t("common.word.readOnly")
+      }}</span>
     </template>
   </v-number-input>
+  <v-textarea
+    v-else
+    :model-value="model"
+    :label="label"
+    auto-grow
+    readonly
+    hide-details
+    variant="plain"
+    v-bind="$attrs"
+  />
 </template>
 
 <script
   setup
   lang="ts"
-  generic="M extends Record<string, ValidationAttributes>, K extends keyof M"
+  generic="
+    M extends Record<string, ValidationAttributes>,
+    K extends keyof M & string
+  "
 >
 import type { ValidationAttributes } from "@/types/OpenAPIValidationAttributes";
 import type { ValidationRule } from "vuetify/framework";
 
-import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRules } from "vuetify/labs/rules";
 
+import { useInputValidation } from "@/composables/useInputValidation";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
-import {
-  getOpenAPIValidationConstraint,
-  mapOpenAPIToVuetifyValidationRules,
-} from "@/util/validation";
 
 const {
   displayMode = InputDisplayMode.CREATE,
@@ -59,47 +61,15 @@ const {
   additionalRules?: ValidationRule[];
 }>();
 
-const required = computed(
-  () =>
-    (validationAttributeMap &&
-      validationAttributeKey &&
-      getOpenAPIValidationConstraint(
-        validationAttributeMap,
-        validationAttributeKey,
-        "required"
-      )) ??
-    false
+const { required, allRules, canNotEdit } = useInputValidation(
+  displayMode,
+  disableEdit,
+  additionalRules,
+  validationAttributeMap,
+  validationAttributeKey
 );
 
-const rules = useRules();
-const allRules = computed(() => {
-  if (!validationAttributeMap || !validationAttributeKey) {
-    return additionalRules;
-  }
-
-  return [
-    ...mapOpenAPIToVuetifyValidationRules(
-      rules,
-      validationAttributeMap,
-      validationAttributeKey
-    ),
-    ...additionalRules,
-  ];
-});
-
-const counter = computed(() =>
-  !validationAttributeMap || !validationAttributeKey
-    ? undefined
-    : getOpenAPIValidationConstraint(
-        validationAttributeMap,
-        validationAttributeKey,
-        "maxLength"
-      )
-);
-
-const canNotEdit = computed(
-  () => displayMode === InputDisplayMode.EDIT && disableEdit
-);
+const model = defineModel<number>();
 
 const { t } = useI18n();
 </script>

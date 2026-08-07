@@ -14,7 +14,7 @@
           "disallowAdditionalPropertiesIfNotPresent": false,
           "validationAttributes": true
         },
-        "templateDir": "."
+        "templateDir": "openapi-generator-templates"
       }
     }
   }

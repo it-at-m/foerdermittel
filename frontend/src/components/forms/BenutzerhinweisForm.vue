@@ -8,6 +8,7 @@
         <fm-text-area
           v-model="modelValue.funktionsbeschreibung"
           :display-mode="displayMode"
+          :rows="20"
           :validation-attribute-map="
             BenutzerhinweisCreateDTOPropertyValidationAttributesMap
           "
@@ -19,6 +20,7 @@
         <fm-text-area
           v-model="modelValue.bedienung"
           :display-mode="displayMode"
+          :rows="20"
           :validation-attribute-map="
             BenutzerhinweisCreateDTOPropertyValidationAttributesMap
           "
@@ -30,6 +32,7 @@
         <fm-text-area
           v-model="modelValue.pruefungVorgaben"
           :display-mode="displayMode"
+          :rows="20"
           :validation-attribute-map="
             BenutzerhinweisCreateDTOPropertyValidationAttributesMap
           "
