@@ -16,8 +16,8 @@ export function toDateAndTimeString(date: Date): string {
 
 export function toTrimmedString(text?: string): string | undefined {
   return text
-      ?.replace(/[ \t]+\n/g, "\n")
-      .replace(/\n[ \t]+/g, "\n")
-      .trim()
-      .replace(/ +/g, " ");
+    ?.replace(/[ \t]+\n/g, "\n")
+    .replace(/\n[ \t]+/g, "\n")
+    .trim()
+    .replace(/ +/g, " ");
 }

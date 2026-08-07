@@ -3,6 +3,7 @@ import type { maxRule, minRule } from "@/plugins/rules";
 import type { ValidationAttributes } from "@/types/OpenAPIValidationAttributes";
 import type { ValidationRule } from "vuetify/framework";
 import type { RuleAliases } from "vuetify/labs/rules";
+
 import { toTrimmedString } from "@/util/formatter";
 
 /**
@@ -123,19 +124,14 @@ export function deepEqualTrimmed(a: unknown, b: unknown): boolean {
     );
   }
 
-  if (
-    a &&
-    b &&
-    typeof a === "object" &&
-    typeof b === "object"
-  ) {
+  if (a && b && typeof a === "object" && typeof b === "object") {
     const aKeys = Object.keys(a);
     const bKeys = Object.keys(b);
 
     return (
       aKeys.length === bKeys.length &&
       aKeys.every(
-        key =>
+        (key) =>
           bKeys.includes(key) &&
           deepEqualTrimmed(
             (a as Record<string, unknown>)[key],
