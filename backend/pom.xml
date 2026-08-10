@@ -6,12 +6,12 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>4.1.0</version>
-        <relativePath/>
+        <relativePath />
     </parent>
 
     <groupId>de.muenchen.oss.foerdermittel</groupId>
     <artifactId>foerdermittel-backend</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
 
     <name>foerdermittel-backend</name>
     <description>Backend component for the application foerdermittel</description>
@@ -27,7 +27,7 @@
         <url>https://github.com/it-at-m/foerdermittel.git</url>
         <connection>scm:git:https://github.com/it-at-m/foerdermittel.git</connection>
         <developerConnection>scm:git:https://github.com/it-at-m/foerdermittel.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>foerdermittel-backend-0.0.1</tag>
     </scm>
     <developers>
         <developer>
