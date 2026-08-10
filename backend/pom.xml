@@ -6,12 +6,12 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>4.1.0</version>
-        <relativePath/>
+        <relativePath />
     </parent>
 
     <groupId>de.muenchen.oss.foerdermittel</groupId>
     <artifactId>foerdermittel-backend</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
 
     <name>foerdermittel-backend</name>
     <description>Backend component for the application foerdermittel</description>
