@@ -8,9 +8,10 @@
       <v-col cols="3">
         <v-autocomplete
           v-model="modelValue.projnr"
-          v-model:search="projektSuche"
           :rules="[rules.required()]"
-          :items="gefilterteProjektnummern"
+          :items="projektItems"
+          item-title="anzeige"
+          item-value="projnr"
           :label="t('model.archiv.projnr')"
           :readonly="displayMode !== InputDisplayMode.CREATE"
         />
@@ -82,10 +83,13 @@
 </template>
 
 <script setup lang="ts">
-import type { ArchivResponseDTO } from "@/api/generated/foerdermittel-backend";
+import type {
+  ArchivResponseDTO,
+  ProjektResponseDTO,
+} from "@/api/generated/foerdermittel-backend";
 import type { VForm } from "vuetify/components";
 
-import { computed, ref, useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRules } from "vuetify/labs/rules";
 
@@ -97,8 +101,8 @@ import { InputDisplayMode } from "@/types/InputDisplayMode";
 const { t } = useI18n();
 const rules = useRules();
 
-const { projektnummern, displayMode = InputDisplayMode.CREATE } = defineProps<{
-  projektnummern: string[];
+const { projekte, displayMode = InputDisplayMode.CREATE } = defineProps<{
+  projekte: ProjektResponseDTO[];
   displayMode?: InputDisplayMode;
 }>();
 
@@ -106,14 +110,11 @@ const modelValue = defineModel<Partial<ArchivResponseDTO>>({
   required: true,
 });
 
-const projektSuche = ref("");
-
-const gefilterteProjektnummern = computed(() =>
-  projektSuche.value
-    ? projektnummern.filter((p) =>
-        p.toLowerCase().includes(projektSuche.value.toLowerCase())
-      )
-    : projektnummern
+const projektItems = computed(() =>
+  projekte.map((projekt) => ({
+    ...projekt,
+    anzeige: `${projekt.projnr} (${projekt.pname})`,
+  }))
 );
 
 const emit = defineEmits<{
