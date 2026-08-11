@@ -18,7 +18,6 @@ import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
-import net.sf.jasperreports.export.SimpleXlsxReportConfiguration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +53,7 @@ public class JasperReportService {
 
     private static byte[] exportReport(final JasperPrint jasperPrint, final ReportFormat format) throws JRException {
         return switch (format) {
-        case PDF -> JasperExportManager.exportReportToPdf(jasperPrint); // TODO CHECK IF CUSTOM LAYOUT IS NEEDED
+        case PDF -> JasperExportManager.exportReportToPdf(jasperPrint);
         case EXCEL -> exportReportToXlsx(jasperPrint);
         };
     }
@@ -65,14 +64,6 @@ public class JasperReportService {
         final JRXlsxExporter exporter = new JRXlsxExporter();
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
         exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputStream));
-
-        final SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
-        // CHECK IF CUSTOM LAYOUT IS NEEDED
-        configuration.setDetectCellType(true);
-        configuration.setCollapseRowSpan(false);
-        configuration.setOnePagePerSheet(false);
-        exporter.setConfiguration(configuration);
-
         exporter.exportReport();
 
         return outputStream.toByteArray();
