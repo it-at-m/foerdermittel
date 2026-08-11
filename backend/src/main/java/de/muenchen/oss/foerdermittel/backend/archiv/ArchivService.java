@@ -2,10 +2,14 @@ package de.muenchen.oss.foerdermittel.backend.archiv;
 
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektRepository;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektMapper;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.stream.StreamSupport;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -13,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Slf4j
@@ -22,6 +28,7 @@ public class ArchivService {
 
     private final ArchivRepository archivRepository;
     private final ProjektRepository projektRepository;
+    private final ProjektMapper projektMapper;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -30,13 +37,20 @@ public class ArchivService {
         return archivRepository.findAll(pageable);
     }
 
-    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    @Transactional(readOnly = true)
+    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)@Transactional(readOnly = true)
     public ArchivFormContext getArchivFormContext() {
         log.info("Get Archiv form context");
+
         List<Long> archivIds = archivRepository.findAllWithProjekt();
-        List<String> projektenummern = projektRepository.findAllProjekte();
-        return new ArchivFormContext(archivIds, projektenummern);
+
+        List<ProjektResponseDTO> projekte = StreamSupport
+                .stream(projektRepository.findAll().spliterator(), false)
+                .map(projektMapper::toDTO)
+                .toList();
+
+        log.info("Anzahl Projekte: {}", projekte.size());
+
+        return new ArchivFormContext(archivIds, projekte);
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
