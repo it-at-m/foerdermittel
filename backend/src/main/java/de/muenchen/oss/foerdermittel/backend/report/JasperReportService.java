@@ -1,7 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.report;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -37,15 +37,16 @@ public class JasperReportService {
      * desired report format.
      *
      * @param reportType requested report type
-     * @param parameters user provided parameters
      * @param reportFormat requested report format
-     * @return byte array representing the generated file
+     * @param parameters user provided parameters
+     * @param outputStream the output stream to write the generated file content to
      * @throws IOException when access to the requested report located in the classpath was not possible
      * @throws SQLException when an error with the database connection occurs
      * @throws JRException when JasperReport related error (e.g. loading, filling or exporting the
      *             report) occur
      */
-    public byte[] generateReportWithParameters(final ReportType reportType, final Map<String, Object> parameters, final ReportFormat reportFormat)
+    public void generateReportWithParameters(final ReportType reportType, final ReportFormat reportFormat, final Map<String, Object> parameters,
+            final OutputStream outputStream)
             throws IOException, SQLException, JRException {
         final JasperReport jasperReport = loadCompiledReport(reportType);
 
@@ -56,7 +57,7 @@ public class JasperReportService {
                     jasperReport,
                     parameters,
                     connection);
-            return exportReport(jasperPrint, reportFormat);
+            exportReport(jasperPrint, reportFormat, outputStream);
         }
     }
 
@@ -119,33 +120,29 @@ public class JasperReportService {
      * Exports a filled JasperPrint as a byte array to construct `.pdf` or `.xlsx` files.
      *
      * @param jasperPrint the filled jasper print object
-     * @param format the desired ReportFormat
-     * @return byte array representing the generated file
+     * @param reportFormat the desired ReportFormat
+     * @param outputStream the output stream to write the generated file content to
      * @throws JRException when error in file export occurs
      */
-    private static byte[] exportReport(final JasperPrint jasperPrint, final ReportFormat format) throws JRException {
-        return switch (format) {
-        case PDF -> JasperExportManager.exportReportToPdf(jasperPrint);
-        case EXCEL -> exportReportToXlsx(jasperPrint);
-        };
+    private static void exportReport(final JasperPrint jasperPrint, final ReportFormat reportFormat, final OutputStream outputStream) throws JRException {
+        switch (reportFormat) {
+        case PDF -> JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+        case EXCEL -> exportReportToXlsx(jasperPrint, outputStream);
+        }
     }
 
     /**
      * Exports a filled JasperPrint as a byte array reprenting an `.xlsx` file.
      *
      * @param jasperPrint the filled jasper print object
-     * @return byte array representing the `.xlsx` file
+     * @param outputStream the output stream to write the generated file content to
      * @throws JRException when error in `.xlsx` creation occurs
      */
-    private static byte[] exportReportToXlsx(final JasperPrint jasperPrint) throws JRException {
-        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
+    private static void exportReportToXlsx(final JasperPrint jasperPrint, final OutputStream outputStream) throws JRException {
         final JRXlsxExporter exporter = new JRXlsxExporter();
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
         exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputStream));
         exporter.exportReport();
-
-        return outputStream.toByteArray();
     }
 
 }
