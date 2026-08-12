@@ -70,10 +70,10 @@ public class JasperReportService {
      * @param reportFormat requested report format
      * @return file name of the file to be generated
      */
-    public static String getDownloadFilename(final ReportType reportType, final ReportFormat reportFormat) {
+    public static String getDownloadFileName(final ReportType reportType, final ReportFormat reportFormat) {
         final String timestamp = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
-        return String.format("%s_%s_%s.%s", reportType.getFileName(), reportFormat.getFileSuffix(), timestamp, reportFormat.getFileExtension());
+        return reportType.getFileName() + reportFormat.getFileSuffix() + "_" + timestamp + reportFormat.getFileExtension();
     }
 
     /**
@@ -86,7 +86,7 @@ public class JasperReportService {
      * @throws JRException when error loading the file content as a JasperReport occurs
      */
     private static JasperReport loadCompiledReport(final ReportType reportType, final ReportFormat reportFormat) throws IOException, JRException {
-        final String path = reportType.getJasperFilePath(reportFormat);
+        final String path = "reports/" + reportType.getFileName() + reportFormat.getFileSuffix() + ".jasper";
         final ClassPathResource resource = new ClassPathResource(path);
         return (JasperReport) JRLoader.loadObject(resource.getURL());
     }

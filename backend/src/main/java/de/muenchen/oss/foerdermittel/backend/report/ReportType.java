@@ -15,10 +15,6 @@ public enum ReportType {
         return this.name();
     }
 
-    public String getJasperFilePath(final ReportFormat reportFormat) {
-        return "reports/" + this.getFileName() + reportFormat.getFileSuffix() + ".jasper";
-    }
-
     public boolean supportsFormat(final ReportFormat format) {
         return supportedFormats.contains(format);
     }
