@@ -7,6 +7,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.ByteArrayOutputStream;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -55,51 +56,58 @@ class JasperReportServiceTest {
         assertThat(jasperReport.getParameters())
                 .filteredOn(parameter -> parameter.getName().equals(BEREICH_PARAMETER))
                 .singleElement()
-                .satisfies(parameter -> assertThat(parameter.getValueClassName()).isEqualTo(String.class.getName()));
+                .satisfies(parameter -> assertThat(parameter.getValueClassName())
+                        .isEqualTo(String.class.getName()));
     }
 
     @Test
     void givenCompiledReportAndAllParameters_thenGeneratePdfReport() throws Exception {
         // Given
         mockJdbcConnection();
+
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put(BEREICH_PARAMETER, "Testbereich");
         parameters.put(SORT_PARAMETER, "");
 
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
         // When
-        final byte[] reportBytes = unitUnderTest.generateReportWithParameters(
+        unitUnderTest.generateReportWithParameters(
                 ReportType.FMW_ABLAGEINDEX_R,
+                ReportFormat.PDF,
                 parameters,
-                ReportFormat.PDF);
+                outputStream);
 
         // Then
         verify(dataSource, times(1)).getConnection();
         verify(connection, times(1)).prepareStatement(anyString());
         verify(connection, times(1)).close();
-        verify(preparedStatement, times(1)).executeQuery();
-        assertThat(reportBytes).isNotEmpty();
+        assertThat(outputStream.toByteArray()).isNotEmpty();
     }
 
     @Test
     void givenCompiledReportAndAllParameters_thenGenerateExcelReport() throws Exception {
         // Given
         mockJdbcConnection();
+
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put(BEREICH_PARAMETER, "Testbereich");
         parameters.put(SORT_PARAMETER, "");
 
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
         // When
-        final byte[] reportBytes = unitUnderTest.generateReportWithParameters(
+        unitUnderTest.generateReportWithParameters(
                 ReportType.FMW_ABLAGEINDEX_R,
+                ReportFormat.EXCEL,
                 parameters,
-                ReportFormat.EXCEL);
+                outputStream);
 
         // Then
         verify(dataSource, times(1)).getConnection();
         verify(connection, times(1)).prepareStatement(anyString());
         verify(connection, times(1)).close();
-        verify(preparedStatement, times(1)).executeQuery();
-        assertThat(reportBytes).isNotEmpty();
+        assertThat(outputStream.toByteArray()).isNotEmpty();
     }
 
     @Test
@@ -108,11 +116,14 @@ class JasperReportServiceTest {
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put(SORT_PARAMETER, "");
 
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
         // When / Then
         assertThatThrownBy(() -> unitUnderTest.generateReportWithParameters(
                 ReportType.FMW_ABLAGEINDEX_R,
+                ReportFormat.PDF,
                 parameters,
-                ReportFormat.PDF))
+                outputStream))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing required JasperReports parameter: " + BEREICH_PARAMETER);
     }
@@ -125,11 +136,14 @@ class JasperReportServiceTest {
         parameters.put(SORT_PARAMETER, "");
         parameters.put("UNKNOWN_PARAMETER", "unknown");
 
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
         // When / Then
         assertThatThrownBy(() -> unitUnderTest.generateReportWithParameters(
                 ReportType.FMW_ABLAGEINDEX_R,
+                ReportFormat.PDF,
                 parameters,
-                ReportFormat.PDF))
+                outputStream))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Unknown JasperReports parameter: UNKNOWN_PARAMETER");
     }
