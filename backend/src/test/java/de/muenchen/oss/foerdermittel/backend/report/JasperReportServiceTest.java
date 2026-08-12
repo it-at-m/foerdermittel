@@ -134,16 +134,6 @@ class JasperReportServiceTest {
                 .hasMessage("Unknown JasperReports parameter: UNKNOWN_PARAMETER");
     }
 
-    @Test
-    void givenNoParameters_thenThrowIllegalArgumentExceptionForRequiredParameter() {
-        // When / Then
-        assertThatThrownBy(() -> unitUnderTest.generateReport(
-                ReportType.FMW_ABLAGEINDEX_R,
-                ReportFormat.PDF))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Missing required JasperReports parameter: " + SORT_PARAMETER);
-    }
-
     private void mockJdbcConnection() throws Exception {
         when(dataSource.getConnection()).thenReturn(connection);
         when(connection.getMetaData()).thenReturn(databaseMetaData);

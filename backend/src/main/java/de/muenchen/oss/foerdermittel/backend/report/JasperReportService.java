@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -59,23 +58,6 @@ public class JasperReportService {
                     connection);
             return exportReport(jasperPrint, reportFormat);
         }
-    }
-
-    /**
-     * Generates a Jasper report file as byte array given a specific report type and the desired report
-     * format.
-     *
-     * @param reportType requested report type
-     * @param reportFormat requested report format
-     * @return byte array representing the generated file
-     * @throws IOException when access to the requested report located in the classpath was not possible
-     * @throws SQLException when an error with the database connection occurs
-     * @throws JRException when JasperReport related error (e.g. loading, filling or exporting the
-     *             report) occur
-     */
-    public byte[] generateReport(final ReportType reportType, final ReportFormat reportFormat)
-            throws IOException, SQLException, JRException {
-        return generateReportWithParameters(reportType, Collections.emptyMap(), reportFormat);
     }
 
     /**
