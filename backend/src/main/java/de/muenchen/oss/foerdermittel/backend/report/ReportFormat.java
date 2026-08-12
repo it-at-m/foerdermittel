@@ -7,9 +7,11 @@ import org.springframework.http.MediaType;
 @Getter
 @RequiredArgsConstructor
 public enum ReportFormat {
-    PDF(MediaType.APPLICATION_PDF, ".pdf"),
-    EXCEL(MediaType.valueOf("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"), ".xlsx");
+    PDF("_R", MediaType.APPLICATION_PDF, ".pdf"),
+    PDF_FLAT("_FLAT_R", MediaType.APPLICATION_PDF, ".pdf"),
+    EXCEL("_CALC_R", MediaType.valueOf("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"), ".xlsx");
 
+    private final String fileSuffix;
     private final MediaType contentType;
     private final String fileExtension;
 }

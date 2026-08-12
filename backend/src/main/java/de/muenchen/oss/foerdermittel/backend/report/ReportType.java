@@ -1,16 +1,17 @@
 package de.muenchen.oss.foerdermittel.backend.report;
 
+import java.util.Set;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
 public enum ReportType {
-    FMW_ABLAGEINDEX_R("FMW_ABLAGEINDEX_R.jasper");
+    FMW_ABLAGEINDEX(Set.of(ReportFormat.PDF));
 
-    private final String fileName;
+    private final Set<ReportFormat> supportedFormats;
 
-    public String getResourcePath() {
-        return "reports/" + this.fileName;
+    public boolean supportsFormat(final ReportFormat format) {
+        return supportedFormats.contains(format);
     }
 }
