@@ -30,6 +30,9 @@ import org.springframework.core.io.ClassPathResource;
 @ExtendWith(MockitoExtension.class)
 class JasperReportServiceTest {
 
+    private static final String BEREICH_PARAMETER = "P_BEREICH";
+    private static final String SORT_PARAMETER = "P_SORT";
+
     @Mock
     private DataSource dataSource;
 
@@ -45,14 +48,15 @@ class JasperReportServiceTest {
     @InjectMocks
     private JasperReportService unitUnderTest;
 
-    private static final String BEREICH_PARAMETER = "P_BEREICH";
-    private static final String SORT_PARAMETER = "P_SORT";
-
     @Test
     void givenCompiledReport_thenContainPBereichStringParameter() throws Exception {
+        // Given
         final JasperReport jasperReport = (JasperReport) JRLoader.loadObject(
-                new ClassPathResource(ReportType.FMW_ABLAGEINDEX_R.getResourcePath()).getURL());
+                new ClassPathResource(
+                        ReportType.FMW_ABLAGEINDEX.getJasperFilePath(ReportFormat.PDF))
+                        .getURL());
 
+        // Then
         assertThat(jasperReport.getParameters())
                 .filteredOn(parameter -> parameter.getName().equals(BEREICH_PARAMETER))
                 .singleElement()
@@ -61,53 +65,45 @@ class JasperReportServiceTest {
     }
 
     @Test
-    void givenCompiledReportAndAllParameters_thenGeneratePdfReport() throws Exception {
+    void givenCompiledReportAndAllParameters_thenGenerateReport() throws Exception {
         // Given
         mockJdbcConnection();
 
-        final Map<String, Object> parameters = new HashMap<>();
-        parameters.put(BEREICH_PARAMETER, "Testbereich");
-        parameters.put(SORT_PARAMETER, "");
-
+        final Map<String, Object> parameters = createValidParameters();
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         // When
         unitUnderTest.generateReportWithParameters(
-                ReportType.FMW_ABLAGEINDEX_R,
+                ReportType.FMW_ABLAGEINDEX,
                 ReportFormat.PDF,
                 parameters,
                 outputStream);
 
         // Then
         verify(dataSource, times(1)).getConnection();
+        verify(dataSource, times(1)).getConnection();
         verify(connection, times(1)).prepareStatement(anyString());
         verify(connection, times(1)).close();
+        verify(preparedStatement, times(1)).executeQuery();
         assertThat(outputStream.toByteArray()).isNotEmpty();
     }
 
     @Test
-    void givenCompiledReportAndAllParameters_thenGenerateExcelReport() throws Exception {
+    void givenUnsupportedReportFormat_thenThrowIllegalArgumentException() {
         // Given
-        mockJdbcConnection();
-
-        final Map<String, Object> parameters = new HashMap<>();
-        parameters.put(BEREICH_PARAMETER, "Testbereich");
-        parameters.put(SORT_PARAMETER, "");
-
+        final Map<String, Object> parameters = createValidParameters();
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        // When
-        unitUnderTest.generateReportWithParameters(
-                ReportType.FMW_ABLAGEINDEX_R,
-                ReportFormat.EXCEL,
+        // When / Then
+        assertThatThrownBy(() -> unitUnderTest.generateReportWithParameters(
+                ReportType.FMW_ABLAGEINDEX,
+                ReportFormat.PDF_FLAT,
                 parameters,
-                outputStream);
-
-        // Then
-        verify(dataSource, times(1)).getConnection();
-        verify(connection, times(1)).prepareStatement(anyString());
-        verify(connection, times(1)).close();
-        assertThat(outputStream.toByteArray()).isNotEmpty();
+                outputStream))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(
+                        "Unsupported ReportFormat: " + ReportFormat.PDF_FLAT
+                                + " for ReportType: " + ReportType.FMW_ABLAGEINDEX);
     }
 
     @Test
@@ -120,32 +116,38 @@ class JasperReportServiceTest {
 
         // When / Then
         assertThatThrownBy(() -> unitUnderTest.generateReportWithParameters(
-                ReportType.FMW_ABLAGEINDEX_R,
+                ReportType.FMW_ABLAGEINDEX,
                 ReportFormat.PDF,
                 parameters,
                 outputStream))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Missing required JasperReports parameter: " + BEREICH_PARAMETER);
+                .hasMessage(
+                        "Missing required JasperReports parameter: " + BEREICH_PARAMETER);
     }
 
     @Test
     void givenUnknownParameter_thenThrowIllegalArgumentException() {
         // Given
-        final Map<String, Object> parameters = new HashMap<>();
-        parameters.put(BEREICH_PARAMETER, "Testbereich");
-        parameters.put(SORT_PARAMETER, "");
+        final Map<String, Object> parameters = createValidParameters();
         parameters.put("UNKNOWN_PARAMETER", "unknown");
 
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         // When / Then
         assertThatThrownBy(() -> unitUnderTest.generateReportWithParameters(
-                ReportType.FMW_ABLAGEINDEX_R,
+                ReportType.FMW_ABLAGEINDEX,
                 ReportFormat.PDF,
                 parameters,
                 outputStream))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Unknown JasperReports parameter: UNKNOWN_PARAMETER");
+    }
+
+    private Map<String, Object> createValidParameters() {
+        final Map<String, Object> parameters = new HashMap<>();
+        parameters.put(BEREICH_PARAMETER, "Testbereich");
+        parameters.put(SORT_PARAMETER, "");
+        return parameters;
     }
 
     private void mockJdbcConnection() throws Exception {
@@ -169,6 +171,7 @@ class JasperReportServiceTest {
         metaData.setColumnType(4, Types.VARCHAR);
 
         final CachedRowSet resultSet = RowSetProvider.newFactory().createCachedRowSet();
+
         resultSet.setMetaData(metaData);
         resultSet.moveToInsertRow();
         resultSet.updateString("BEREICH", "Testbereich");
@@ -181,5 +184,4 @@ class JasperReportServiceTest {
 
         return resultSet;
     }
-
 }
