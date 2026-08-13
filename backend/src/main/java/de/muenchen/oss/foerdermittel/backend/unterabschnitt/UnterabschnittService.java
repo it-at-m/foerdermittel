@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UnterabschnittService {
 
-
     private final HauptabschnittService hauptabschnittService;
     private final UnterabschnittRepository unterabschnittRepository;
     private final HauptabschnittRepository hauptabschnittRepository;

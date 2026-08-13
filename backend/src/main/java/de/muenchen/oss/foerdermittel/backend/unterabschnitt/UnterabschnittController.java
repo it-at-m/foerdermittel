@@ -37,9 +37,6 @@ public class UnterabschnittController {
     private final UnterabschnittService unterabschnittService;
     private final UnterabschnittMapper unterabschnittMapper;
 
-
-
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<UnterabschnittResponseDTO> getUnterabschnitte(@ParameterObject @PageableDefault(
@@ -68,7 +65,7 @@ public class UnterabschnittController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UnterabschnittResponseDTO updateUnterabschnitt(@Valid @RequestBody final UnterabschnittUpdateDTO unterabschnittUpdateDTO,
-                                                          @PathVariable("id") final String unterabschnittId) {
+            @PathVariable("id") final String unterabschnittId) {
         return unterabschnittMapper
                 .toDTO(unterabschnittService.updateUnterabschnitt(unterabschnittMapper.toEntity(unterabschnittUpdateDTO), unterabschnittId));
     }

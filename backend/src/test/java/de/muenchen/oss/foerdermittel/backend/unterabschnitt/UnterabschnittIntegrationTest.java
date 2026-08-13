@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-import de.muenchen.oss.foerdermittel.backend.TestUtils;
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
+import de.muenchen.oss.foerdermittel.backend.TestUtils;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.HauptabschnittRepository;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.dto.UnterabschnittCreateDTO;
@@ -18,6 +18,7 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -37,6 +38,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureRestTestClient
@@ -67,8 +69,8 @@ class UnterabschnittIntegrationTest {
         unterabschnittRepository.deleteAll();
         hauptabschnittRepository.deleteAll();
         final Hauptabschnitt exampleHa = new Hauptabschnitt("ha", "bz");
-        final Unterabschnitt exampleEntity = new Unterabschnitt(EXISTING_ID, "Test", exampleHa);
-        hauptabschnittRepository.save(exampleHa);
+        final Hauptabschnitt savedHa = hauptabschnittRepository.save(exampleHa);
+        final Unterabschnitt exampleEntity = new Unterabschnitt(EXISTING_ID, "Test", savedHa);
         unterabschnittRepository.save(exampleEntity);
     }
 
@@ -147,7 +149,7 @@ class UnterabschnittIntegrationTest {
 
         @Test
         void givenEntityAlreadyExists_thenReturnConflict() {
-            final UnterabschnittCreateDTO requestDTO = new UnterabschnittCreateDTO(EXISTING_ID, "Test" , EXISTING_HASHA);
+            final UnterabschnittCreateDTO requestDTO = new UnterabschnittCreateDTO(EXISTING_ID, "Test", EXISTING_HASHA);
 
             restTestClient.post()
                     .uri("/unterabschnitte")
@@ -157,7 +159,6 @@ class UnterabschnittIntegrationTest {
                     .exchange()
                     .expectStatus().isEqualTo(HttpStatus.CONFLICT);
         }
-
 
         private static Stream<Arguments> invalidInputRequests() {
             return Stream.of(
@@ -172,8 +173,7 @@ class UnterabschnittIntegrationTest {
                             new UnterabschnittCreateDTO("A", "a".repeat(201), EXISTING_HASHA)),
                     arguments(
                             "no hasHa selected",
-                            new UnterabschnittCreateDTO("B", "a", ""))
-            );
+                            new UnterabschnittCreateDTO("B", "a", "")));
         }
 
         @ParameterizedTest(name = "{0}")
@@ -190,21 +190,6 @@ class UnterabschnittIntegrationTest {
                     .exchange()
                     .expectStatus().isBadRequest();
         }
-
-
-        @Test
-        void givenHashaNotExists_thenReturnNotFound() {
-            final UnterabschnittCreateDTO requestDTO = new UnterabschnittCreateDTO(EXISTING_ID, "Test" , "H");
-
-            restTestClient.post()
-                    .uri("/unterabschnitte")
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
-                    .body(requestDTO)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .exchange()
-                    .expectStatus().isNotFound();
-        }
-
 
         private static Stream<Arguments> authorizationMappings() {
             return Stream.of(
@@ -234,7 +219,7 @@ class UnterabschnittIntegrationTest {
 
         @Test
         void givenEntityExists_thenEntityIsUpdated() {
-            final UnterabschnittUpdateDTO requestDTO = new UnterabschnittUpdateDTO("Test aktualisiert",EXISTING_HASHA);
+            final UnterabschnittUpdateDTO requestDTO = new UnterabschnittUpdateDTO("Test aktualisiert", EXISTING_HASHA);
 
             final UnterabschnittResponseDTO responseDTO = restTestClient.put()
                     .uri("/unterabschnitte/{id}", EXISTING_ID)

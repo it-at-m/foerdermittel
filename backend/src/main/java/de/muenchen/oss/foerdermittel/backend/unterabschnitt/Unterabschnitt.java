@@ -1,7 +1,12 @@
 package de.muenchen.oss.foerdermittel.backend.unterabschnitt;
 
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -18,6 +23,7 @@ import lombok.NoArgsConstructor;
  * The entity's attributes are mapped to the corresponding database columns.
  * </p>
  */
+@SuppressWarnings("PMD.LinguisticNaming")
 @Entity
 @Data
 @AllArgsConstructor
@@ -43,6 +49,4 @@ public class Unterabschnitt implements Serializable {
     @ManyToOne(optional = false)
     @NotNull private Hauptabschnitt hasHa;
 
-
 }
-

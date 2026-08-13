@@ -7,13 +7,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.HauptabschnittRepository;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.HauptabschnittService;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
