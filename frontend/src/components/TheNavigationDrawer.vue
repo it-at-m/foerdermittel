@@ -343,6 +343,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.unterabschnitt.modelName", 2),
+        props: {
+          to: "/unterabschnitte",
+        },
       },
     ],
   },

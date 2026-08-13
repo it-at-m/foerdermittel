@@ -1,21 +1,20 @@
-package de.muenchen.oss.foerdermittel.backend.hauptabschnitt;
+package de.muenchen.oss.foerdermittel.backend.unterabschnitt;
 
 import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_TEST_PROFILE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
 import de.muenchen.oss.foerdermittel.backend.TestUtils;
-import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittCreateDTO;
-import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittResponseDTO;
-import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittUpdateDTO;
+import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.HauptabschnittRepository;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.dto.UnterabschnittCreateDTO;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.dto.UnterabschnittResponseDTO;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.dto.UnterabschnittUpdateDTO;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-
-import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
-import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -43,7 +42,7 @@ import org.testcontainers.utility.DockerImageName;
 @AutoConfigureRestTestClient
 @ActiveProfiles(profiles = { SPRING_TEST_PROFILE })
 @Import(TestSecurityConfiguration.class)
-class HauptabschnittIntegrationTest {
+class UnterabschnittIntegrationTest {
 
     @Autowired
     private RestTestClient restTestClient;
@@ -56,30 +55,31 @@ class HauptabschnittIntegrationTest {
 
     private static final String EXISTING_ID = "L";
     private static final String NON_EXISTING_ID = "K";
+    private static final String EXISTING_HASHA = "ha";
 
     @Autowired
-    private HauptabschnittRepository hauptabschnittRepository;
-    @Autowired
     private UnterabschnittRepository unterabschnittRepository;
+    @Autowired
+    private HauptabschnittRepository hauptabschnittRepository;
 
     @BeforeEach
     public void setUp() {
-        hauptabschnittRepository.deleteAll();
         unterabschnittRepository.deleteAll();
-        final Hauptabschnitt exampleEntity = new Hauptabschnitt(EXISTING_ID, "Test");
-        final Unterabschnitt exampleUa = new Unterabschnitt("ua", "Test", exampleEntity);
-        hauptabschnittRepository.save(exampleEntity);
-        unterabschnittRepository.save(exampleUa);
+        hauptabschnittRepository.deleteAll();
+        final Hauptabschnitt exampleHa = new Hauptabschnitt("ha", "bz");
+        final Unterabschnitt exampleEntity = new Unterabschnitt(EXISTING_ID, "Test", exampleHa);
+        hauptabschnittRepository.save(exampleHa);
+        unterabschnittRepository.save(exampleEntity);
     }
 
     @Nested
-    class GetHauptabschnitte {
+    class GetUnterabschnitte {
 
         @Test
         void givenPageable_thenReturnPageOfEntities() {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/hauptabschnitte")
+                            .path("/unterabschnitte")
                             .queryParam("page", "0")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
@@ -88,7 +88,7 @@ class HauptabschnittIntegrationTest {
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
                     .expectBody()
                     .jsonPath("$.content")
-                    .value(new ParameterizedTypeReference<List<HauptabschnittResponseDTO>>() {
+                    .value(new ParameterizedTypeReference<List<UnterabschnittResponseDTO>>() {
                     }, content -> assertThat(content.size()).isEqualTo(1));
         }
 
@@ -104,7 +104,7 @@ class HauptabschnittIntegrationTest {
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/hauptabschnitte")
+                            .path("/unterabschnitte")
                             .queryParam("page", "0")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
@@ -115,42 +115,42 @@ class HauptabschnittIntegrationTest {
     }
 
     @Nested
-    class CreateHauptabschnitt {
+    class CreateUnterabschnitt {
 
         @Test
         void givenEntityNotExists_thenEntityIsSaved() {
-            final HauptabschnittCreateDTO requestDTO = new HauptabschnittCreateDTO(NON_EXISTING_ID, "Test");
+            final UnterabschnittCreateDTO requestDTO = new UnterabschnittCreateDTO(NON_EXISTING_ID, "Test", EXISTING_HASHA);
 
-            final HauptabschnittResponseDTO responseDTO = restTestClient.post()
-                    .uri("/hauptabschnitte")
+            final UnterabschnittResponseDTO responseDTO = restTestClient.post()
+                    .uri("/unterabschnitte")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
                     .exchange()
                     .expectStatus().isCreated()
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(HauptabschnittResponseDTO.class)
+                    .expectBody(UnterabschnittResponseDTO.class)
                     .value(response -> {
                         assertThat(response).isNotNull();
-                        assertThat(response.ha()).isEqualTo(requestDTO.ha());
+                        assertThat(response.ua()).isEqualTo(requestDTO.ua());
                         assertThat(response.bezeichnung()).isEqualTo(requestDTO.bezeichnung());
                     })
                     .returnResult()
                     .getResponseBody();
 
             assertThat(responseDTO).isNotNull();
-            final Optional<Hauptabschnitt> entity = hauptabschnittRepository.findById(responseDTO.id());
+            final Optional<Unterabschnitt> entity = unterabschnittRepository.findById(responseDTO.id());
             assertThat(entity).isPresent();
-            assertThat(entity.get().getHa()).isEqualTo(requestDTO.ha());
+            assertThat(entity.get().getUa()).isEqualTo(requestDTO.ua());
             assertThat(entity.get().getBezeichnung()).isEqualTo(requestDTO.bezeichnung());
         }
 
         @Test
         void givenEntityAlreadyExists_thenReturnConflict() {
-            final HauptabschnittCreateDTO requestDTO = new HauptabschnittCreateDTO(EXISTING_ID, "Test");
+            final UnterabschnittCreateDTO requestDTO = new UnterabschnittCreateDTO(EXISTING_ID, "Test" , EXISTING_HASHA);
 
             restTestClient.post()
-                    .uri("/hauptabschnitte")
+                    .uri("/unterabschnitte")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -158,33 +158,53 @@ class HauptabschnittIntegrationTest {
                     .expectStatus().isEqualTo(HttpStatus.CONFLICT);
         }
 
+
         private static Stream<Arguments> invalidInputRequests() {
             return Stream.of(
                     arguments(
-                            "ha too long",
-                            new HauptabschnittCreateDTO("ABC", "Test")),
+                            "ua too long",
+                            new UnterabschnittCreateDTO("ABC", "Test", EXISTING_HASHA)),
                     arguments(
                             "bezeichnung too short",
-                            new HauptabschnittCreateDTO("9", "")),
+                            new UnterabschnittCreateDTO("9", "", EXISTING_HASHA)),
                     arguments(
                             "bezeichnung too long",
-                            new HauptabschnittCreateDTO("A", "a".repeat(201))));
+                            new UnterabschnittCreateDTO("A", "a".repeat(201), EXISTING_HASHA)),
+                    arguments(
+                            "no hasHa selected",
+                            new UnterabschnittCreateDTO("B", "a", ""))
+            );
         }
 
         @ParameterizedTest(name = "{0}")
         @MethodSource("invalidInputRequests")
         void givenInvalidInput_thenReturnBadRequest(
                 final String description,
-                final HauptabschnittCreateDTO requestDTO) {
+                final UnterabschnittCreateDTO requestDTO) {
 
             restTestClient.post()
-                    .uri("/hauptabschnitte")
+                    .uri("/unterabschnitte")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
                     .exchange()
                     .expectStatus().isBadRequest();
         }
+
+
+        @Test
+        void givenHashaNotExists_thenReturnNotFound() {
+            final UnterabschnittCreateDTO requestDTO = new UnterabschnittCreateDTO(EXISTING_ID, "Test" , "H");
+
+            restTestClient.post()
+                    .uri("/unterabschnitte")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                    .body(requestDTO)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isNotFound();
+        }
+
 
         private static Stream<Arguments> authorizationMappings() {
             return Stream.of(
@@ -196,10 +216,10 @@ class HauptabschnittIntegrationTest {
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
         @MethodSource("authorizationMappings")
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
-            final HauptabschnittCreateDTO requestDTO = new HauptabschnittCreateDTO(NON_EXISTING_ID, "Test");
+            final UnterabschnittCreateDTO requestDTO = new UnterabschnittCreateDTO(NON_EXISTING_ID, "Test", EXISTING_HASHA);
 
             restTestClient.post()
-                    .uri("/hauptabschnitte")
+                    .uri("/unterabschnitte")
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -210,21 +230,21 @@ class HauptabschnittIntegrationTest {
     }
 
     @Nested
-    class UpdateHauptabschnitt {
+    class UpdateUnterabschnitt {
 
         @Test
         void givenEntityExists_thenEntityIsUpdated() {
-            final HauptabschnittUpdateDTO requestDTO = new HauptabschnittUpdateDTO("Test aktualisiert");
+            final UnterabschnittUpdateDTO requestDTO = new UnterabschnittUpdateDTO("Test aktualisiert",EXISTING_HASHA);
 
-            final HauptabschnittResponseDTO responseDTO = restTestClient.put()
-                    .uri("/hauptabschnitte/{id}", EXISTING_ID)
+            final UnterabschnittResponseDTO responseDTO = restTestClient.put()
+                    .uri("/unterabschnitte/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
                     .exchange()
                     .expectStatus().isOk()
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(HauptabschnittResponseDTO.class)
+                    .expectBody(UnterabschnittResponseDTO.class)
                     .value(theEntityResponseDTO -> {
                         assertNotNull(theEntityResponseDTO);
                         assertThat(theEntityResponseDTO.id()).isEqualTo(EXISTING_ID);
@@ -234,17 +254,17 @@ class HauptabschnittIntegrationTest {
                     .getResponseBody();
 
             assertThat(responseDTO).isNotNull();
-            final Optional<Hauptabschnitt> entity = hauptabschnittRepository.findById(EXISTING_ID);
+            final Optional<Unterabschnitt> entity = unterabschnittRepository.findById(EXISTING_ID);
             assertThat(entity).isPresent();
             assertThat(entity.get().getBezeichnung()).isEqualTo(requestDTO.bezeichnung());
         }
 
         @Test
         void givenEntityNotExists_thenReturnNotFound() {
-            final HauptabschnittUpdateDTO requestDTO = new HauptabschnittUpdateDTO("Test aktualisiert");
+            final UnterabschnittUpdateDTO requestDTO = new UnterabschnittUpdateDTO("Test aktualisiert", EXISTING_HASHA);
 
             restTestClient.put()
-                    .uri("/hauptabschnitte/{id}", NON_EXISTING_ID)
+                    .uri("/unterabschnitte/{id}", NON_EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -256,19 +276,19 @@ class HauptabschnittIntegrationTest {
             return Stream.of(
                     arguments(
                             "bezeichnung too short",
-                            new HauptabschnittUpdateDTO("")),
+                            new UnterabschnittUpdateDTO("", EXISTING_HASHA)),
                     arguments(
                             "bezeichnung too long",
-                            new HauptabschnittUpdateDTO("a".repeat(201))));
+                            new UnterabschnittUpdateDTO("a".repeat(201), EXISTING_HASHA)));
         }
 
         @ParameterizedTest(name = "{0}")
         @MethodSource("invalidInputRequests")
         void givenInvalidInput_thenReturnBadRequest(
                 final String description,
-                final HauptabschnittUpdateDTO requestDTO) {
+                final UnterabschnittUpdateDTO requestDTO) {
             restTestClient.put()
-                    .uri("/hauptabschnitte/{id}", EXISTING_ID)
+                    .uri("/unterabschnitte/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -286,10 +306,10 @@ class HauptabschnittIntegrationTest {
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
         @MethodSource("authorizationMappings")
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
-            final HauptabschnittUpdateDTO requestDTO = new HauptabschnittUpdateDTO("Test aktualisiert");
+            final UnterabschnittUpdateDTO requestDTO = new UnterabschnittUpdateDTO("Test aktualisiert", EXISTING_HASHA);
 
             restTestClient.put()
-                    .uri("/hauptabschnitte/{id}", EXISTING_ID)
+                    .uri("/unterabschnitte/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -300,32 +320,23 @@ class HauptabschnittIntegrationTest {
     }
 
     @Nested
-    class DeleteHauptabschnitt {
-
-        @Test
-        void givenEntityHasUa_thenReturnConflict() {
-            restTestClient.delete()
-                    .uri("/hauptabschnitte/{id}", EXISTING_ID)
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
-                    .exchange()
-                    .expectStatus().isEqualTo(HttpStatus.CONFLICT);
-        }
+    class DeleteUnterabschnitt {
 
         @Test
         void givenEntityIdExists_thenEntityIsDeleted() {
             restTestClient.delete()
-                    .uri("/hauptabschnitte/{id}", EXISTING_ID)
+                    .uri("/unterabschnitte/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus().isOk();
 
-            assertThat(hauptabschnittRepository.findById(EXISTING_ID)).isEmpty();
+            assertThat(unterabschnittRepository.findById(EXISTING_ID)).isEmpty();
         }
 
         @Test
         void givenEntityIdNotExists_thenReturnNotFound() {
             restTestClient.delete()
-                    .uri("/hauptabschnitte/{id}", NON_EXISTING_ID)
+                    .uri("/unterabschnitte/{id}", NON_EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus().isNotFound();
@@ -342,7 +353,7 @@ class HauptabschnittIntegrationTest {
         @MethodSource("authorizationMappings")
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             restTestClient.delete()
-                    .uri("/hauptabschnitte/{id}", EXISTING_ID)
+                    .uri("/unterabschnitte/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()
                     .expectStatus().isEqualTo(httpStatus);
@@ -351,50 +362,50 @@ class HauptabschnittIntegrationTest {
     }
 
     @Nested
-    class GetHauptabschnittFormContext {
+    class GetUnterabschnittFormContext {
 
         @Test
         void givenNoEntitiesExist_thenReturnEmptyFormContext() {
             // Given
-            hauptabschnittRepository.deleteAll();
+            unterabschnittRepository.deleteAll();
 
             // When
-            final HauptabschnittFormContext result = restTestClient.get()
+            final UnterabschnittFormContext result = restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/hauptabschnitte/form-context")
+                            .path("/unterabschnitte/form-context")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus().isOk()
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(HauptabschnittFormContext.class)
+                    .expectBody(UnterabschnittFormContext.class)
                     .returnResult()
                     .getResponseBody();
 
             // Then
             assertThat(result).isNotNull();
-            assertThat(result.has()).isEmpty();
+            assertThat(result.uas()).isEmpty();
         }
 
         @Test
         void givenEntitiesExist_thenReturnCorrectFormContext() {
             // When
-            final HauptabschnittFormContext result = restTestClient.get()
+            final UnterabschnittFormContext result = restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/hauptabschnitte/form-context")
+                            .path("/unterabschnitte/form-context")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus().isOk()
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(HauptabschnittFormContext.class)
+                    .expectBody(UnterabschnittFormContext.class)
                     .returnResult()
                     .getResponseBody();
 
             // Then
             assertThat(result).isNotNull();
-            assertThat(result.has()).hasSize(1);
-            assertThat(result.has().getFirst()).isEqualTo(EXISTING_ID);
+            assertThat(result.uas()).hasSize(1);
+            assertThat(result.uas().getFirst()).isEqualTo(EXISTING_ID);
         }
 
         private static Stream<Arguments> authorizationMappings() {
@@ -409,7 +420,7 @@ class HauptabschnittIntegrationTest {
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/hauptabschnitte/form-context")
+                            .path("/unterabschnitte/form-context")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()

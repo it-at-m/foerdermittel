@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: foerdermittel-backend
   description: Backend component for the application foerdermittel
-  version: 0.0.1-SNAPSHOT
+  version: 0.1.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -13,6 +13,47 @@ tags:
     description: Spring Boot Actuator Web API Documentation
     url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
 paths:
+  /unterabschnitte/{id}:
+    put:
+      tags:
+      - unterabschnitt-controller
+      operationId: updateUnterabschnitt
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnterabschnittUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnterabschnittResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - unterabschnitt-controller
+      operationId: deleteUnterabschnitt
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /traeger/{id}:
     put:
       tags:
@@ -548,6 +589,67 @@ paths:
       responses:
         "200":
           description: OK
+      security:
+      - bearerAuth: []
+  /unterabschnitte:
+    get:
+      tags:
+      - unterabschnitt-controller
+      operationId: getUnterabschnitte
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "ua,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelUnterabschnittResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - unterabschnitt-controller
+      operationId: createUnterabschnitt
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnterabschnittCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnterabschnittResponseDTO"
       security:
       - bearerAuth: []
   /traeger:
@@ -1302,6 +1404,20 @@ paths:
                 $ref: "#/components/schemas/BauleitungResponseDTO"
       security:
       - bearerAuth: []
+  /unterabschnitte/form-context:
+    get:
+      tags:
+      - unterabschnitt-controller
+      operationId: getUnterabschnittFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnterabschnittFormContext"
+      security:
+      - bearerAuth: []
   /traeger/form-context:
     get:
       tags:
@@ -1613,6 +1729,37 @@ paths:
                 type: object
 components:
   schemas:
+    UnterabschnittUpdateDTO:
+      required:
+      - bezeichnung
+      - hasHa
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+        hasHa:
+          maxLength: 2
+          minLength: 1
+          pattern: "^[a-zA-Z0-9]+$"
+          type: string
+    UnterabschnittResponseDTO:
+      required:
+      - bezeichnung
+      - hasHa
+      - id
+      - ua
+      type: object
+      properties:
+        id:
+          type: string
+        ua:
+          type: string
+        bezeichnung:
+          type: string
+        hasHa:
+          type: string
     TraegerUpdateDTO:
       required:
       - bezeichnung
@@ -1942,6 +2089,27 @@ components:
           type: string
         bezeichnung:
           type: string
+    UnterabschnittCreateDTO:
+      required:
+      - bezeichnung
+      - hasHa
+      - ua
+      type: object
+      properties:
+        ua:
+          maxLength: 2
+          minLength: 1
+          pattern: "^[a-zA-Z0-9]+$"
+          type: string
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+        hasHa:
+          maxLength: 2
+          minLength: 1
+          pattern: "^[a-zA-Z0-9]+$"
+          type: string
     TraegerCreateDTO:
       required:
       - bezeichnung
@@ -2173,6 +2341,29 @@ components:
         totalPages:
           type: integer
           format: int64
+    PagedModelUnterabschnittResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnterabschnittResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    UnterabschnittFormContext:
+      required:
+      - hasHas
+      - uas
+      type: object
+      properties:
+        uas:
+          type: array
+          items:
+            type: string
+        hasHas:
+          type: array
+          items:
+            type: string
     PagedModelTraegerResponseDTO:
       type: object
       properties:
