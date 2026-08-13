@@ -48,9 +48,10 @@ public class JasperReportService {
     public void generateReportWithParameters(final ReportType reportType, final ReportFormat reportFormat, final Map<String, Object> parameters,
             final OutputStream outputStream)
             throws IOException, SQLException, JRException {
+        checkReportFormat(reportType, reportFormat);
+
         final JasperReport jasperReport = loadCompiledReport(reportType, reportFormat);
 
-        checkReportFormat(reportType, reportFormat);
         checkParameters(jasperReport, parameters);
 
         try (Connection connection = dataSource.getConnection()) {
