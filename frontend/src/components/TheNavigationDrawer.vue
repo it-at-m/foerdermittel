@@ -31,7 +31,7 @@
 
     <v-divider />
 
-    <v-container>
+    <v-container v-if="hasRole">
       <v-list
         :items="navigationItems"
         open-strategy="single"
@@ -57,13 +57,25 @@ import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
 import Ad2ImageAvatar from "@/components/common/Ad2ImageAvatar.vue";
+import useHasAnyRole from "@/composables/useHasAnyRole";
 import { useUserInfoStore } from "@/stores/userinfo";
+import { Role } from "@/types/Role";
 
 const userInfoStore = useUserInfoStore();
 const { t } = useI18n();
 
+const hasRole = useHasAnyRole([
+  Role.SACHBEARBEITUNG,
+  Role.SACHBEARBEITUNG_HAUSHALT,
+  Role.ADMIN,
+]);
+
 const rolesText = computed(() =>
-  userInfoStore.currentRoles.map((role) => t(`common.roles.${role}`)).join(",")
+  userInfoStore.currentRoles.length
+    ? userInfoStore.currentRoles
+        .map((role) => t(`common.roles.${role}`))
+        .join(",")
+    : t("common.roles.noRole")
 );
 
 const navigationItems: NavigationItem[] = [
