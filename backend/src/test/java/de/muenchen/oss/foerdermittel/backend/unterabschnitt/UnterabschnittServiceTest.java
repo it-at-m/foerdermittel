@@ -76,13 +76,16 @@ class UnterabschnittServiceTest {
             final String ha = testHa.getHa();
             final Unterabschnitt entityToInsert = new Unterabschnitt("K", BEZEICHNUNG, testHa);
             final Unterabschnitt expectedEntity = new Unterabschnitt("K", BEZEICHNUNG, testHa);
+            when(hauptabschnittService.getHauptabschnitt(ha)).thenReturn(testHa);
             when(unterabschnittRepository.insert(entityToInsert)).thenReturn(expectedEntity);
 
             // When
             final Unterabschnitt result = unitUnderTest.createUnterabschnitt(entityToInsert, ha);
 
             // Then
+            verify(hauptabschnittService).getHauptabschnitt(ha);
             verify(unterabschnittRepository, times(1)).insert(entityToInsert);
+            assertThat(entityToInsert.getHasHa()).isSameAs(testHa);
             assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
         }
     }
