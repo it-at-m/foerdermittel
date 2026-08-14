@@ -88,7 +88,8 @@ public class StichwortbereichIntegrationTest {
             return Stream.of(
                     Arguments.of("admin", HttpStatus.OK),
                     Arguments.of("sachbearbeitung", HttpStatus.OK),
-                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.OK));
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.OK),
+                    Arguments.of("no-role", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -188,7 +189,8 @@ public class StichwortbereichIntegrationTest {
             return Stream.of(
                     Arguments.of("admin", HttpStatus.CREATED),
                     Arguments.of("sachbearbeitung", HttpStatus.FORBIDDEN),
-                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN));
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN),
+                    Arguments.of("no-role", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -278,7 +280,8 @@ public class StichwortbereichIntegrationTest {
             return Stream.of(
                     Arguments.of("admin", HttpStatus.OK),
                     Arguments.of("sachbearbeitung", HttpStatus.FORBIDDEN),
-                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN));
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN),
+                    Arguments.of("no-role", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -324,7 +327,8 @@ public class StichwortbereichIntegrationTest {
             return Stream.of(
                     Arguments.of("admin", HttpStatus.OK),
                     Arguments.of("sachbearbeitung", HttpStatus.FORBIDDEN),
-                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN));
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN),
+                    Arguments.of("no-role", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -390,7 +394,8 @@ public class StichwortbereichIntegrationTest {
             return Stream.of(
                     Arguments.of("admin", HttpStatus.OK),
                     Arguments.of("sachbearbeitung", HttpStatus.FORBIDDEN),
-                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN));
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN),
+                    Arguments.of("no-role", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
