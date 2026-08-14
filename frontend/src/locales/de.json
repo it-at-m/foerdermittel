@@ -37,7 +37,8 @@
       "created": "{0} wurde erstellt.",
       "createdError": "{0} konnte nicht erstellt werden.",
       "loading": "Lade {0}...",
-      "noData": "Keine {0} vorhanden"
+      "noData": "Keine {0} vorhanden",
+      "noPermission": "Sie haben nicht die erforderlichen Berechtigungen, um diese Seite anzuzeigen."
     },
     "roles": {
       "admin": "Administrator",
