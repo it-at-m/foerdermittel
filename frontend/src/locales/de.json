@@ -43,7 +43,8 @@
     "roles": {
       "admin": "Administrator",
       "sachbearbeitung": "Sachbearbeitung",
-      "sachbearbeitunghaushalt": "Sachbearbeitung Haushalt"
+      "sachbearbeitunghaushalt": "Sachbearbeitung Haushalt",
+      "noRole": "Keine Rolle zugewiesen"
     }
   },
   "model": {
