@@ -4,6 +4,8 @@ import type { ValidationAttributes } from "@/types/OpenAPIValidationAttributes";
 import type { ValidationRule } from "vuetify/framework";
 import type { RuleAliases } from "vuetify/labs/rules";
 
+import { toTrimmedString } from "@/util/formatter";
+
 /**
  * Calculates Vuetify {@link ValidationRule}s for a single input component using *ValidationAttributesMap object generated using OpenAPIGenerator typescript-fetch generator
  * Supported rules currently are:
@@ -99,4 +101,47 @@ export function getOpenAPIValidationConstraint<
   }
 
   return attributes[constraint];
+}
+
+/**
+ * Deep equal compares two objects using trimmed string values
+ * <br>
+ * <b>Note:</b> Does not work for non-plain objects e.g. Date, Map, Set, RegExp, ...
+ * @param a object a
+ * @param b object b
+ */
+export function deepEqualTrimmed(a: unknown, b: unknown): boolean {
+  if (typeof a === "string" && typeof b === "string") {
+    return toTrimmedString(a) === toTrimmedString(b);
+  }
+
+  if (a === b) {
+    return true;
+  }
+
+  if (Array.isArray(a) && Array.isArray(b)) {
+    return (
+      a.length === b.length &&
+      a.every((item, i) => deepEqualTrimmed(item, b[i]))
+    );
+  }
+
+  if (a && b && typeof a === "object" && typeof b === "object") {
+    const aKeys = Object.keys(a);
+    const bKeys = Object.keys(b);
+
+    return (
+      aKeys.length === bKeys.length &&
+      aKeys.every(
+        (key) =>
+          bKeys.includes(key) &&
+          deepEqualTrimmed(
+            (a as Record<string, unknown>)[key],
+            (b as Record<string, unknown>)[key]
+          )
+      )
+    );
+  }
+
+  return false;
 }
