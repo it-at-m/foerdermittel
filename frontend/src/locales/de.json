@@ -191,7 +191,12 @@
       "fortsetzungsAntrag": "Fortsetzungsantrag | Fortsetzungsanträge"
     }
   },
-  "view": {},
+  "view": {
+    "index": {
+      "welcomeTitle": "Willkommen bei der Anwendung @:common.appName{'!'}",
+      "welcomeText": "Bitte wählen Sie den gewünschten Punkt im Menü auf der linken Seite aus."
+    }
+  },
   "component": {
     "theNavigationDrawer": {
       "loggedIn": "Angemeldet als:"
