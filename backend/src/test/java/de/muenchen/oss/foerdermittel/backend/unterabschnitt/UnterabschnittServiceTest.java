@@ -107,6 +107,7 @@ class UnterabschnittServiceTest {
             final Unterabschnitt result = unitUnderTest.updateUnterabschnitt(entityToUpdate, id);
 
             // Then
+            assertThat(foundEntity.getBezeichnung()).isEqualTo("updated");
             verify(unterabschnittRepository, times(1)).findById(id);
             verify(unterabschnittRepository, times(1)).update(foundEntity);
             assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
@@ -125,7 +126,7 @@ class UnterabschnittServiceTest {
 
             // Then
             verify(unterabschnittRepository, times(1)).findById(id);
-            verify(unterabschnittRepository, never()).update(entityToUpdate);
+            verify(unterabschnittRepository, never()).update(Mockito.any(Unterabschnitt.class));
             assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
         }
     }
