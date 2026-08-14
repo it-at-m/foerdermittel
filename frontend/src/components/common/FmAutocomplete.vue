@@ -71,6 +71,5 @@ const { required, allRules, canNotEdit } = useInputValidation(
 
 const model = defineModel<T>();
 
-
 const { t } = useI18n();
 </script>

@@ -2,9 +2,9 @@ import type {
   CreateUnterabschnittRequest,
   DeleteUnterabschnittRequest,
   GetUnterabschnitteRequest,
+  PagedModelUnterabschnittResponseDTO,
   UnterabschnittFormContext,
   UnterabschnittResponseDTO,
-  PagedModelUnterabschnittResponseDTO,
   UpdateUnterabschnittRequest,
 } from "@/api/generated/foerdermittel-backend";
 

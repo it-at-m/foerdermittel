@@ -74,14 +74,14 @@ const headers: DataTableHeader<Partial<UnterabschnittResponseDTO>>[] = [
   {
     title: t("model.unterabschnitt.hasHa"),
     value: "hasHa",
-    align: "start"
+    align: "start",
   },
 ];
 
 const EMPTY_ITEM_TEMPLATE: Partial<UnterabschnittResponseDTO> = {
   ua: undefined,
   bezeichnung: "",
-  hasHa: ""
+  hasHa: "",
 };
 
 const {

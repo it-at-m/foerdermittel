@@ -1,24 +1,14 @@
-
-
-
 import "vuetify/styles";
 
-
-
 import type { VueI18nAdapterParams } from "vuetify/locale/adapters/vue-i18n";
-
-
 
 import { useI18n } from "vue-i18n";
 import { createVuetify } from "vuetify";
 import { aliases, mdi } from "vuetify/iconsets/mdi-svg";
 import { createVueI18nAdapter } from "vuetify/locale/adapters/vue-i18n";
 
-
-
 import { ITEMS_PER_PAGE_OPTIONS } from "@/composables/usePagination";
 import i18n from "@/plugins/i18n";
-
 
 export default createVuetify({
   icons: {
@@ -80,7 +70,7 @@ export default createVuetify({
       variant: "outlined",
       persistentPlaceholder: true,
       autoSelectFirst: true,
-      clearOnSelect: true
+      clearOnSelect: true,
     },
   },
   theme: {
