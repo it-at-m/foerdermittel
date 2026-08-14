@@ -32,3 +32,13 @@ changes:
   - updateUserPassword:
       name: fmsbha
       password: "foerdermittel"
+  - addUser:
+      name: fmno
+      lastName: keinerolle
+      firstName: testno
+      enabled: true
+      emailVerified: true
+      email: fmno@example.com
+  - updateUserPassword:
+      name: fmno
+      password: "foerdermittel"
