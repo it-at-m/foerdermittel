@@ -45,23 +45,36 @@
 <script setup lang="ts">
 import type { NavigationItem } from "@/types/NavigationItem";
 
-import { mdiChartBar, mdiDatabase, mdiFileChart, mdiMagnify, mdiNote, mdiSitemap, } from "@mdi/js";
+import {
+  mdiChartBar,
+  mdiDatabase,
+  mdiFileChart,
+  mdiMagnify,
+  mdiNote,
+  mdiSitemap,
+} from "@mdi/js";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
 import Ad2ImageAvatar from "@/components/common/Ad2ImageAvatar.vue";
-import { useUserInfoStore } from "@/stores/userinfo";
 import useHasAnyRole from "@/composables/useHasAnyRole";
+import { useUserInfoStore } from "@/stores/userinfo";
 import { Role } from "@/types/Role";
 
 const userInfoStore = useUserInfoStore();
 const { t } = useI18n();
 
-const hasRole = useHasAnyRole([Role.SACHBEARBEITUNG, Role.SACHBEARBEITUNG_HAUSHALT, Role.ADMIN]);
+const hasRole = useHasAnyRole([
+  Role.SACHBEARBEITUNG,
+  Role.SACHBEARBEITUNG_HAUSHALT,
+  Role.ADMIN,
+]);
 
 const rolesText = computed(() =>
   userInfoStore.currentRoles.length
-    ? userInfoStore.currentRoles.map((role) => t(`common.roles.${role}`)).join(",")
+    ? userInfoStore.currentRoles
+        .map((role) => t(`common.roles.${role}`))
+        .join(",")
     : t("common.roles.noRole")
 );
 

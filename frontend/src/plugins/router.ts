@@ -1,6 +1,9 @@
 import { mdiShieldLock } from "@mdi/js";
 import { createRouter, createWebHistory } from "vue-router";
-import { routes as fileBasedRoutes, handleHotUpdate } from "vue-router/auto-routes";
+import {
+  routes as fileBasedRoutes,
+  handleHotUpdate,
+} from "vue-router/auto-routes";
 
 import { hasAnyRole } from "@/composables/useHasAnyRole";
 import { STATUS_INDICATORS } from "@/constants";
