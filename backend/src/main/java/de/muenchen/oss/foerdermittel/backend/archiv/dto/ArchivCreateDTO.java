@@ -10,6 +10,5 @@ public record ArchivCreateDTO(LocalDate speicherDatum,
         LocalDate mikroDatPlan,
         LocalDate mikroDat,
         String notizen,
-        @NotNull String projnr
-) {
+        @NotNull String projnr) {
 }

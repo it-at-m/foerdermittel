@@ -14,7 +14,6 @@ import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichRepository;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektRepository;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -45,7 +44,7 @@ import org.testcontainers.utility.DockerImageName;
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureRestTestClient
-@ActiveProfiles(profiles = {SPRING_TEST_PROFILE})
+@ActiveProfiles(profiles = { SPRING_TEST_PROFILE })
 @Import(TestSecurityConfiguration.class)
 class ArchivIntegrationTest {
 
@@ -64,14 +63,12 @@ class ArchivIntegrationTest {
     @Container
     @ServiceConnection
     @SuppressWarnings("unused")
-    private static final PostgreSQLContainer POSTGRE_SQL_CONTAINER =
-            new PostgreSQLContainer(
-                    DockerImageName.parse(TestConstants.TESTCONTAINERS_POSTGRES_IMAGE));
+    private static final PostgreSQLContainer POSTGRE_SQL_CONTAINER = new PostgreSQLContainer(
+            DockerImageName.parse(TestConstants.TESTCONTAINERS_POSTGRES_IMAGE));
 
     private static final String EXISTING_PROJNR = "3325101";
 
     private static final long NON_EXISTING_ID = Long.MAX_VALUE;
-
 
     @BeforeEach
     void setUp() {
@@ -115,8 +112,7 @@ class ArchivIntegrationTest {
                     LocalDate.of(2026, 2, 10),
                     LocalDate.of(2026, 3, 10),
                     "Test",
-                    EXISTING_PROJNR
-            );
+                    EXISTING_PROJNR);
 
             restTestClient.post()
                     .uri("/archiv")
@@ -141,29 +137,20 @@ class ArchivIntegrationTest {
                     .expectBody()
                     .jsonPath("$.content")
                     .value(
-                            new ParameterizedTypeReference<List<ArchivResponseDTO>>() {},
+                            new ParameterizedTypeReference<List<ArchivResponseDTO>>() {
+                            },
                             content -> {
                                 assertThat(content).hasSize(1);
 
                                 final ArchivResponseDTO archiv = content.getFirst();
 
-                                assertThat(archiv.speicherDatum())
-                                        .isEqualTo(LocalDate.of(2026, 1, 10));
-
+                                assertThat(archiv.speicherDatum()).isEqualTo(LocalDate.of(2026, 1, 10));
                                 assertThat(archiv.speicherAkt()).isTrue();
                                 assertThat(archiv.speicherRechnungen()).isFalse();
-
-                                assertThat(archiv.mikroDatPlan())
-                                        .isEqualTo(LocalDate.of(2026, 2, 10));
-
-                                assertThat(archiv.mikroDat())
-                                        .isEqualTo(LocalDate.of(2026, 3, 10));
-
-                                assertThat(archiv.notizen())
-                                        .isEqualTo("Test");
-
-                                assertThat(archiv.projnr())
-                                        .isEqualTo(EXISTING_PROJNR);
+                                assertThat(archiv.mikroDatPlan()).isEqualTo(LocalDate.of(2026, 2, 10));
+                                assertThat(archiv.mikroDat()).isEqualTo(LocalDate.of(2026, 3, 10));
+                                assertThat(archiv.notizen()).isEqualTo("Test");
+                                assertThat(archiv.projnr()).isEqualTo(EXISTING_PROJNR);
                             });
         }
 
@@ -182,7 +169,8 @@ class ArchivIntegrationTest {
                     .expectBody()
                     .jsonPath("$.content")
                     .value(
-                            new ParameterizedTypeReference<List<ArchivResponseDTO>>() {},
+                            new ParameterizedTypeReference<List<ArchivResponseDTO>>() {
+                            },
                             content -> assertThat(content).isEmpty());
         }
 
@@ -190,8 +178,7 @@ class ArchivIntegrationTest {
             return Stream.of(
                     arguments("admin", HttpStatus.OK),
                     arguments("sachbearbeitung", HttpStatus.OK),
-                    arguments("sachbearbeitunghaushalt", HttpStatus.OK)
-            );
+                    arguments("sachbearbeitunghaushalt", HttpStatus.OK));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -227,8 +214,7 @@ class ArchivIntegrationTest {
                     LocalDate.of(2026, 2, 10),
                     LocalDate.of(2026, 3, 10),
                     "Archiv Test",
-                    EXISTING_PROJNR
-            );
+                    EXISTING_PROJNR);
 
             final ArchivResponseDTO responseDTO = restTestClient.post()
                     .uri("/archiv")
@@ -244,62 +230,33 @@ class ArchivIntegrationTest {
                     .value(response -> {
 
                         assertNotNull(response);
-
-                        assertThat(response.speicherDatum())
-                                .isEqualTo(requestDTO.speicherDatum());
-
-                        assertThat(response.speicherAkt())
-                                .isEqualTo(requestDTO.speicherAkt());
-
-                        assertThat(response.speicherRechnungen())
-                                .isEqualTo(requestDTO.speicherRechnungen());
-
-                        assertThat(response.mikroDatPlan())
-                                .isEqualTo(requestDTO.mikroDatPlan());
-
-                        assertThat(response.mikroDat())
-                                .isEqualTo(requestDTO.mikroDat());
-
-                        assertThat(response.notizen())
-                                .isEqualTo(requestDTO.notizen());
-
-                        assertThat(response.projnr())
-                                .isEqualTo(EXISTING_PROJNR);
+                        assertThat(response.speicherDatum()).isEqualTo(requestDTO.speicherDatum());
+                        assertThat(response.speicherAkt()).isEqualTo(requestDTO.speicherAkt());
+                        assertThat(response.speicherRechnungen()).isEqualTo(requestDTO.speicherRechnungen());
+                        assertThat(response.mikroDatPlan()).isEqualTo(requestDTO.mikroDatPlan());
+                        assertThat(response.mikroDat()).isEqualTo(requestDTO.mikroDat());
+                        assertThat(response.notizen()).isEqualTo(requestDTO.notizen());
+                        assertThat(response.projnr()).isEqualTo(EXISTING_PROJNR);
                     })
                     .returnResult()
                     .getResponseBody();
 
             assertThat(responseDTO).isNotNull();
 
-            final Optional<Archiv> entity =
-                    archivRepository.findById(responseDTO.id());
+            final Optional<Archiv> entity = archivRepository.findById(responseDTO.id());
 
             assertThat(entity).isPresent();
 
             final Archiv archiv = entity.get();
 
-            assertThat(archiv.getSpeicherDatum())
-                    .isEqualTo(requestDTO.speicherDatum());
-
-            assertThat(archiv.getSpeicherAkt())
-                    .isEqualTo(requestDTO.speicherAkt());
-
-            assertThat(archiv.getSpeicherRechnungen())
-                    .isEqualTo(requestDTO.speicherRechnungen());
-
-            assertThat(archiv.getMikroDatPlan())
-                    .isEqualTo(requestDTO.mikroDatPlan());
-
-            assertThat(archiv.getMikroDat())
-                    .isEqualTo(requestDTO.mikroDat());
-
-            assertThat(archiv.getNotizen())
-                    .isEqualTo(requestDTO.notizen());
-
+            assertThat(archiv.getSpeicherDatum()).isEqualTo(requestDTO.speicherDatum());
+            assertThat(archiv.getSpeicherAkt()).isEqualTo(requestDTO.speicherAkt());
+            assertThat(archiv.getSpeicherRechnungen()).isEqualTo(requestDTO.speicherRechnungen());
+            assertThat(archiv.getMikroDatPlan()).isEqualTo(requestDTO.mikroDatPlan());
+            assertThat(archiv.getMikroDat()).isEqualTo(requestDTO.mikroDat());
+            assertThat(archiv.getNotizen()).isEqualTo(requestDTO.notizen());
             assertThat(archiv.getProjekt()).isNotNull();
-
-            assertThat(archiv.getProjekt().getProjnr())
-                    .isEqualTo(EXISTING_PROJNR);
+            assertThat(archiv.getProjekt().getProjnr()).isEqualTo(EXISTING_PROJNR);
         }
 
         @Test
@@ -312,8 +269,7 @@ class ArchivIntegrationTest {
                     LocalDate.of(2026, 2, 10),
                     LocalDate.of(2026, 3, 10),
                     "Test",
-                    "9999999"
-            );
+                    "9999999");
 
             restTestClient.post()
                     .uri("/archiv")
@@ -352,18 +308,14 @@ class ArchivIntegrationTest {
                                     LocalDate.of(2026, 2, 10),
                                     LocalDate.of(2026, 3, 10),
                                     "Test",
-                                    null
-                            )
-                    )
-            );
+                                    null)));
         }
 
         private static Stream<Arguments> authorizationMappings() {
             return Stream.of(
                     arguments("admin", HttpStatus.CREATED),
                     arguments("sachbearbeitung", HttpStatus.FORBIDDEN),
-                    arguments("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN)
-            );
+                    arguments("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -379,8 +331,7 @@ class ArchivIntegrationTest {
                     LocalDate.of(2026, 2, 10),
                     LocalDate.of(2026, 3, 10),
                     "Test",
-                    EXISTING_PROJNR
-            );
+                    EXISTING_PROJNR);
 
             restTestClient.post()
                     .uri("/archiv")
@@ -408,8 +359,7 @@ class ArchivIntegrationTest {
                     LocalDate.of(2026, 2, 10),
                     LocalDate.of(2026, 3, 10),
                     "Alt",
-                    EXISTING_PROJNR
-            );
+                    EXISTING_PROJNR);
 
             final ArchivResponseDTO created = restTestClient.post()
                     .uri("/archiv")
@@ -431,8 +381,7 @@ class ArchivIntegrationTest {
                     true,
                     LocalDate.of(2026, 5, 10),
                     LocalDate.of(2026, 6, 10),
-                    "Aktualisierte Notiz"
-            );
+                    "Aktualisierte Notiz");
 
             final ArchivResponseDTO responseDTO = restTestClient.put()
                     .uri("/archiv/{id}", created.id())
@@ -448,61 +397,30 @@ class ArchivIntegrationTest {
                     .value(response -> {
 
                         assertNotNull(response);
-
-                        assertThat(response.id())
-                                .isEqualTo(created.id());
-
-                        assertThat(response.speicherDatum())
-                                .isEqualTo(updateDTO.speicherDatum());
-
-                        assertThat(response.speicherAkt())
-                                .isEqualTo(updateDTO.speicherAkt());
-
-                        assertThat(response.speicherRechnungen())
-                                .isEqualTo(updateDTO.speicherRechnungen());
-
-                        assertThat(response.mikroDatPlan())
-                                .isEqualTo(updateDTO.mikroDatPlan());
-
-                        assertThat(response.mikroDat())
-                                .isEqualTo(updateDTO.mikroDat());
-
-                        assertThat(response.notizen())
-                                .isEqualTo(updateDTO.notizen());
-
-                        assertThat(response.projnr())
-                                .isEqualTo(EXISTING_PROJNR);
+                        assertThat(response.id()).isEqualTo(created.id());
+                        assertThat(response.speicherDatum()).isEqualTo(updateDTO.speicherDatum());
+                        assertThat(response.speicherAkt()).isEqualTo(updateDTO.speicherAkt());
+                        assertThat(response.speicherRechnungen()).isEqualTo(updateDTO.speicherRechnungen());
+                        assertThat(response.mikroDatPlan()).isEqualTo(updateDTO.mikroDatPlan());
+                        assertThat(response.mikroDat()).isEqualTo(updateDTO.mikroDat());
+                        assertThat(response.notizen()).isEqualTo(updateDTO.notizen());
+                        assertThat(response.projnr()).isEqualTo(EXISTING_PROJNR);
                     })
                     .returnResult()
                     .getResponseBody();
 
             assertThat(responseDTO).isNotNull();
 
-            final Optional<Archiv> entity =
-                    archivRepository.findById(created.id());
+            final Optional<Archiv> entity = archivRepository.findById(created.id());
 
             assertThat(entity).isPresent();
-
-            assertThat(entity.get().getSpeicherDatum())
-                    .isEqualTo(updateDTO.speicherDatum());
-
-            assertThat(entity.get().getSpeicherAkt())
-                    .isEqualTo(updateDTO.speicherAkt());
-
-            assertThat(entity.get().getSpeicherRechnungen())
-                    .isEqualTo(updateDTO.speicherRechnungen());
-
-            assertThat(entity.get().getMikroDatPlan())
-                    .isEqualTo(updateDTO.mikroDatPlan());
-
-            assertThat(entity.get().getMikroDat())
-                    .isEqualTo(updateDTO.mikroDat());
-
-            assertThat(entity.get().getNotizen())
-                    .isEqualTo(updateDTO.notizen());
-
-            assertThat(entity.get().getProjekt().getProjnr())
-                    .isEqualTo(EXISTING_PROJNR);
+            assertThat(entity.get().getSpeicherDatum()).isEqualTo(updateDTO.speicherDatum());
+            assertThat(entity.get().getSpeicherAkt()).isEqualTo(updateDTO.speicherAkt());
+            assertThat(entity.get().getSpeicherRechnungen()).isEqualTo(updateDTO.speicherRechnungen());
+            assertThat(entity.get().getMikroDatPlan()).isEqualTo(updateDTO.mikroDatPlan());
+            assertThat(entity.get().getMikroDat()).isEqualTo(updateDTO.mikroDat());
+            assertThat(entity.get().getNotizen()).isEqualTo(updateDTO.notizen());
+            assertThat(entity.get().getProjekt().getProjnr()).isEqualTo(EXISTING_PROJNR);
         }
 
         @Test
@@ -514,8 +432,7 @@ class ArchivIntegrationTest {
                     true,
                     LocalDate.of(2026, 5, 10),
                     LocalDate.of(2026, 6, 10),
-                    "Test"
-            );
+                    "Test");
 
             restTestClient.put()
                     .uri("/archiv/{id}", NON_EXISTING_ID)
@@ -531,8 +448,7 @@ class ArchivIntegrationTest {
             return Stream.of(
                     arguments("admin", HttpStatus.OK),
                     arguments("sachbearbeitung", HttpStatus.FORBIDDEN),
-                    arguments("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN)
-            );
+                    arguments("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -548,8 +464,7 @@ class ArchivIntegrationTest {
                     LocalDate.of(2026, 2, 10),
                     LocalDate.of(2026, 3, 10),
                     "Test",
-                    EXISTING_PROJNR
-            );
+                    EXISTING_PROJNR);
 
             final ArchivResponseDTO created = restTestClient.post()
                     .uri("/archiv")
@@ -571,8 +486,7 @@ class ArchivIntegrationTest {
                     true,
                     LocalDate.of(2026, 5, 10),
                     LocalDate.of(2026, 6, 10),
-                    "Test"
-            );
+                    "Test");
 
             restTestClient.put()
                     .uri("/archiv/{id}", created.id())
@@ -600,8 +514,7 @@ class ArchivIntegrationTest {
                     LocalDate.of(2026, 2, 10),
                     LocalDate.of(2026, 3, 10),
                     "Test",
-                    EXISTING_PROJNR
-            );
+                    EXISTING_PROJNR);
 
             final ArchivResponseDTO created = restTestClient.post()
                     .uri("/archiv")
@@ -643,8 +556,7 @@ class ArchivIntegrationTest {
             return Stream.of(
                     arguments("admin", HttpStatus.OK),
                     arguments("sachbearbeitung", HttpStatus.FORBIDDEN),
-                    arguments("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN)
-            );
+                    arguments("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -660,8 +572,7 @@ class ArchivIntegrationTest {
                     LocalDate.of(2026, 2, 10),
                     LocalDate.of(2026, 3, 10),
                     "Test",
-                    EXISTING_PROJNR
-            );
+                    EXISTING_PROJNR);
 
             final ArchivResponseDTO created = restTestClient.post()
                     .uri("/archiv")
