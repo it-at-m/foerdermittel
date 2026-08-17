@@ -204,6 +204,11 @@
     "unsavedChangesDialog": {
       "title": "Ungespeicherte Änderungen",
       "text": "Es sind ungespeicherte Änderungen vorhanden. Möchten Sie die Bearbeitung fortsetzen oder die Änderungen verwerfen?"
+    },
+    "themeToggleBtn": {
+      "changeText": "Auf die Darstellung '{0}' wechseln",
+      "light": "Hell",
+      "dark": "Dunkel"
     }
   }
 }

@@ -26,7 +26,7 @@
           location="left"
         >
           <template #activator="{ props }">
-            <v-btn
+            <v-icon-btn
               :icon="mdiHelpCircle"
               v-bind="props"
               :aria-label="benutzerhinweisOpenText"
