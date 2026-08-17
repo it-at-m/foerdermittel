@@ -1,6 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.archiv;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -30,7 +31,9 @@ import org.springframework.data.domain.Pageable;
 @ExtendWith(MockitoExtension.class)
 class ArchivServiceTest {
 
-    private static final String PROJNR = "1124101";
+    private static final Long ARCHIV_ID = 1L;
+    private static final String PROJNR = "3325101";
+    private static final String OTHER_PROJNR = "1234567";
 
     @Mock
     private ArchivRepository archivRepository;
@@ -54,10 +57,10 @@ class ArchivServiceTest {
             final int pageSize = 10;
             final Pageable pageable = PageRequest.of(pageNumber, pageSize);
 
-            final Archiv entity1 = new Archiv();
-            final Archiv entity2 = new Archiv();
+            final Archiv archiv1 = createArchiv(1L, PROJNR);
+            final Archiv archiv2 = createArchiv(2L, OTHER_PROJNR);
 
-            final List<Archiv> entities = List.of(entity1, entity2);
+            final List<Archiv> entities = List.of(archiv1, archiv2);
 
             final Page<Archiv> expectedPage =
                     new PageImpl<>(entities, pageable, entities.size());
@@ -79,304 +82,21 @@ class ArchivServiceTest {
     }
 
     @Nested
-    class CreateArchiv {
-
-        @Test
-        void givenArchivAndExistingProjekt_thenCallInsertEntity() {
-            // Given
-            // Projekt existiert bereits und wird nur über die Projektnummer
-            // identifiziert.
-            final Projekt existingProjekt =
-                    new Projekt(PROJNR,null,null,null, null );
-
-            final Archiv entityToInsert =
-                    new Archiv(
-                            null,
-                            new Projekt(PROJNR, null,null,null, null),
-                            LocalDate.of(2024, 9, 14),
-                            false,
-                            true,
-                            LocalDate.of(2024, 9, 16),
-                            LocalDate.of(2024, 9, 18),
-                            "Fusce tincidunt, nisl quis bibendum fermentum"
-                    );
-
-            final Archiv expectedEntity =
-                    new Archiv(
-                            1L,
-                            existingProjekt,
-                            LocalDate.of(2024, 9, 14),
-                            false,
-                            true,
-                            LocalDate.of(2024, 9, 16),
-                            LocalDate.of(2024, 9, 18),
-                            "Fusce tincidunt, nisl quis bibendum fermentum"
-                    );
-
-            when(projektRepository.findById(PROJNR))
-                    .thenReturn(Optional.of(existingProjekt));
-
-            when(archivRepository.insert(entityToInsert))
-                    .thenReturn(expectedEntity);
-
-            // When
-            final Archiv result =
-                    unitUnderTest.createArchiv(entityToInsert);
-
-            // Then
-            verify(projektRepository, times(1))
-                    .findById(PROJNR);
-
-            verify(archivRepository, times(1))
-                    .insert(entityToInsert);
-
-            assertThat(entityToInsert.getProjekt())
-                    .isEqualTo(existingProjekt);
-
-            assertThat(result)
-                    .usingRecursiveComparison()
-                    .isEqualTo(expectedEntity);
-        }
-
-        @Test
-        void givenProjektNotExists_thenThrowEntityNotFoundException() {
-            // Given
-            final Archiv entityToInsert =
-                    new Archiv(
-                            null,
-                            new Projekt(PROJNR, null,null,null, null),
-                            LocalDate.of(2024, 9, 14),
-                            false,
-                            true,
-                            LocalDate.of(2024, 9, 16),
-                            LocalDate.of(2024, 9, 18),
-                            "Fusce tincidunt, nisl quis bibendum fermentum"
-                    );
-
-            when(projektRepository.findById(PROJNR))
-                    .thenReturn(Optional.empty());
-
-            // When
-            final Exception exception =
-                    Assertions.assertThrows(
-                            EntityNotFoundException.class,
-                            () -> unitUnderTest.createArchiv(entityToInsert)
-                    );
-
-            // Then
-            verify(projektRepository, times(1))
-                    .findById(PROJNR);
-
-            verify(archivRepository, never())
-                    .insert(entityToInsert);
-
-            assertThat(exception.getMessage())
-                    .isEqualTo(
-                            "Projekt mit Projektnummer "
-                                    + PROJNR
-                                    + " wurde nicht gefunden"
-                    );
-        }
-    }
-
-    @Nested
-    class UpdateArchiv {
-
-        @Test
-        void givenEntityExists_thenReturnUpdatedEntity() {
-            // Given
-            final Long id = 1L;
-
-            final Projekt existingProjekt =
-                    new Projekt(PROJNR, null,null,null, null);
-
-            final Archiv entityToUpdate =
-                    new Archiv(
-                            id,
-                            existingProjekt,
-                            LocalDate.of(2026, 8, 1),
-                            false,
-                            false,
-                            LocalDate.of(2026, 8, 1),
-                            LocalDate.of(2026, 8, 1),
-                            "Updated"
-                    );
-
-            final Archiv foundEntity =
-                    new Archiv(
-                            id,
-                            existingProjekt,
-                            LocalDate.of(2024, 9, 14),
-                            false,
-                            true,
-                            LocalDate.of(2024, 9, 16),
-                            LocalDate.of(2024, 9, 18),
-                            "Test"
-                    );
-
-            final Archiv expectedEntity =
-                    new Archiv(
-                            id,
-                            existingProjekt,
-                            LocalDate.of(2026, 8, 1),
-                            false,
-                            false,
-                            LocalDate.of(2026, 8, 1),
-                            LocalDate.of(2026, 8, 1),
-                            "Updated"
-                    );
-
-            when(archivRepository.findById(id))
-                    .thenReturn(Optional.of(foundEntity));
-
-            when(archivRepository.update(foundEntity))
-                    .thenReturn(expectedEntity);
-
-            // When
-            final Archiv result =
-                    unitUnderTest.updateArchiv(entityToUpdate, id);
-
-            // Then
-            verify(archivRepository, times(1))
-                    .findById(id);
-
-            verify(archivRepository, times(1))
-                    .update(foundEntity);
-
-            // Projekt wird beim Update nicht neu gesucht/manipuliert.
-            verify(projektRepository, never())
-                    .findById(PROJNR);
-
-            assertThat(result)
-                    .usingRecursiveComparison()
-                    .isEqualTo(expectedEntity);
-        }
-
-        @Test
-        void givenEntityNotExists_thenThrowNotFoundException() {
-            // Given
-            final Long id = 1L;
-
-            final Archiv entityToUpdate =
-                    new Archiv();
-
-            when(archivRepository.findById(id))
-                    .thenReturn(Optional.empty());
-
-            // When
-            final Exception exception =
-                    Assertions.assertThrows(
-                            NotFoundException.class,
-                            () -> unitUnderTest.updateArchiv(
-                                    entityToUpdate,
-                                    id
-                            )
-                    );
-
-            // Then
-            verify(archivRepository, times(1))
-                    .findById(id);
-
-            verify(archivRepository, never())
-                    .update(entityToUpdate);
-
-            assertThat(exception.getMessage())
-                    .isEqualTo(
-                            String.format(
-                                    "404 NOT_FOUND \"Could not find entity with ID %s\"",
-                                    id
-                            )
-                    );
-        }
-    }
-
-    @Nested
-    class DeleteArchiv {
-
-        @Test
-        void givenIdExists_thenReturnVoid() {
-            // Given
-            final Long id = 1L;
-
-            final Archiv archiv =
-                    new Archiv();
-
-            when(archivRepository.findById(id))
-                    .thenReturn(Optional.of(archiv));
-
-            // When
-            unitUnderTest.deleteArchiv(id);
-
-            // Then
-            verify(archivRepository, times(1))
-                    .findById(id);
-
-            verify(archivRepository, times(1))
-                    .delete(archiv);
-        }
-
-        @Test
-        void givenIdNotExists_thenThrowNotFoundException() {
-            // Given
-            final Long id = 1L;
-
-            when(archivRepository.findById(id))
-                    .thenReturn(Optional.empty());
-
-            // When
-            final Exception exception =
-                    Assertions.assertThrows(
-                            NotFoundException.class,
-                            () -> unitUnderTest.deleteArchiv(id)
-                    );
-
-            // Then
-            verify(archivRepository, times(1))
-                    .findById(id);
-
-            verify(archivRepository, never())
-                    .delete(
-                            org.mockito.ArgumentMatchers.any(Archiv.class)
-                    );
-
-            assertThat(exception.getMessage())
-                    .isEqualTo(
-                            String.format(
-                                    "404 NOT_FOUND \"Could not find entity with ID %s\"",
-                                    id
-                            )
-                    );
-        }
-    }
-
-    @Nested
     class GetArchivFormContext {
 
         @Test
-        void givenExistingProjekte_thenReturnCorrectFormContext() {
+        void givenArchivIdsAndProjekte_thenReturnCorrectFormContext() {
             // Given
-            final List<Long> archivIds =
-                    List.of(1L, 2L, 3L);
+            final List<Long> archivIds = List.of(1L, 2L, 3L);
 
-            // Projekte existieren bereits.
-            // Für Archiv ist nur die Projektnummer relevant.
-            final Projekt projekt1 =
-                    new Projekt("1124101", null,null,null, null);
+            final Projekt projekt1 = new Projekt();
+            projekt1.setProjnr(PROJNR);
 
-            final Projekt projekt2 =
-                    new Projekt("1124102", null,null,null, null);
+            final Projekt projekt2 = new Projekt();
+            projekt2.setProjnr(OTHER_PROJNR);
 
-            final ProjektResponseDTO projektDto1 =
-                    new ProjektResponseDTO(
-                            "1124101",
-                            null,null,null
-                    );
-
-            final ProjektResponseDTO projektDto2 =
-                    new ProjektResponseDTO(
-                            "1124102",
-                            null,null,null
-                    );
+            final ProjektResponseDTO projektDTO1 = mockProjektResponseDTO();
+            final ProjektResponseDTO projektDTO2 = mockProjektResponseDTO();
 
             when(archivRepository.findAllWithProjekt())
                     .thenReturn(archivIds);
@@ -385,13 +105,13 @@ class ArchivServiceTest {
                     .thenReturn(List.of(projekt1, projekt2));
 
             when(projektMapper.toDTO(projekt1))
-                    .thenReturn(projektDto1);
+                    .thenReturn(projektDTO1);
 
             when(projektMapper.toDTO(projekt2))
-                    .thenReturn(projektDto2);
+                    .thenReturn(projektDTO2);
 
             // When
-            final ArchivFormContext formContext =
+            final ArchivFormContext result =
                     unitUnderTest.getArchivFormContext();
 
             // Then
@@ -407,17 +127,362 @@ class ArchivServiceTest {
             verify(projektMapper, times(1))
                     .toDTO(projekt2);
 
-            assertThat(formContext.archivId())
+            assertThat(result.archivId())
                     .isEqualTo(archivIds);
 
-            assertThat(formContext.projekte())
-                    .hasSize(2);
-
-            assertThat(formContext.projekte().get(0))
-                    .isEqualTo(projektDto1);
-
-            assertThat(formContext.projekte().get(1))
-                    .isEqualTo(projektDto2);
+            assertThat(result.projekte())
+                    .containsExactly(projektDTO1, projektDTO2);
         }
+    }
+
+    @Nested
+    class CreateArchiv {
+
+        @Test
+        void givenArchivAndExistingProjekt_thenInsertArchiv() {
+            // Given
+            final Projekt projekt = new Projekt();
+            projekt.setProjnr(PROJNR);
+
+            final Archiv archiv = createArchiv(null, PROJNR);
+
+            // Das Archiv enthält zunächst nur eine Projekt-Referenz
+            archiv.setProjekt(projekt);
+
+            final Archiv expectedArchiv = createArchiv(ARCHIV_ID, PROJNR);
+            expectedArchiv.setProjekt(projekt);
+
+            when(projektRepository.findById(PROJNR))
+                    .thenReturn(Optional.of(projekt));
+
+            when(archivRepository.insert(archiv))
+                    .thenReturn(expectedArchiv);
+
+            // When
+            final Archiv result =
+                    unitUnderTest.createArchiv(archiv);
+
+            // Then
+            verify(projektRepository, times(1))
+                    .findById(PROJNR);
+
+            verify(archivRepository, times(1))
+                    .insert(archiv);
+
+            assertThat(archiv.getProjekt())
+                    .isSameAs(projekt);
+
+            assertThat(result)
+                    .usingRecursiveComparison()
+                    .isEqualTo(expectedArchiv);
+        }
+
+        @Test
+        void givenProjektDoesNotExist_thenThrowEntityNotFoundException() {
+            // Given
+            final Projekt projekt = new Projekt();
+            projekt.setProjnr(PROJNR);
+
+            final Archiv archiv = createArchiv(null, PROJNR);
+            archiv.setProjekt(projekt);
+
+            when(projektRepository.findById(PROJNR))
+                    .thenReturn(Optional.empty());
+
+            // When / Then
+            final EntityNotFoundException exception =
+                    Assertions.assertThrows(
+                            EntityNotFoundException.class,
+                            () -> unitUnderTest.createArchiv(archiv));
+
+            verify(projektRepository, times(1))
+                    .findById(PROJNR);
+
+            verify(archivRepository, never())
+                    .insert(archiv);
+
+            assertThat(exception.getMessage())
+                    .isEqualTo(
+                            "Projekt mit Projektnummer "
+                                    + PROJNR
+                                    + " wurde nicht gefunden");
+        }
+    }
+
+    @Nested
+    class UpdateArchiv {
+
+        @Test
+        void givenArchivExists_thenUpdateArchiv() {
+            // Given
+            final Projekt projekt = new Projekt();
+            projekt.setProjnr(PROJNR);
+
+            final Archiv foundArchiv = createArchiv(ARCHIV_ID, PROJNR);
+
+            final Archiv archivToUpdate =
+                    createArchiv(null, PROJNR);
+
+            final Archiv expectedArchiv =
+                    createArchiv(ARCHIV_ID, PROJNR);
+
+            when(archivRepository.findById(ARCHIV_ID))
+                    .thenReturn(Optional.of(foundArchiv));
+
+            when(projektRepository.findById(PROJNR))
+                    .thenReturn(Optional.of(projekt));
+
+            when(archivRepository.update(foundArchiv))
+                    .thenReturn(expectedArchiv);
+
+            // Archiv enthält Projekt
+            archivToUpdate.setProjekt(projekt);
+
+            // When
+            final Archiv result =
+                    unitUnderTest.updateArchiv(
+                            archivToUpdate,
+                            ARCHIV_ID);
+
+            // Then
+            verify(archivRepository, times(1))
+                    .findById(ARCHIV_ID);
+
+            verify(projektRepository, times(1))
+                    .findById(PROJNR);
+
+            verify(archivRepository, times(1))
+                    .update(foundArchiv);
+
+            assertThat(foundArchiv.getSpeicherDatum())
+                    .isEqualTo(archivToUpdate.getSpeicherDatum());
+
+            assertThat(foundArchiv.getSpeicherAkt())
+                    .isEqualTo(archivToUpdate.getSpeicherAkt());
+
+            assertThat(foundArchiv.getSpeicherRechnungen())
+                    .isEqualTo(archivToUpdate.getSpeicherRechnungen());
+
+            assertThat(foundArchiv.getMikroDatPlan())
+                    .isEqualTo(archivToUpdate.getMikroDatPlan());
+
+            assertThat(foundArchiv.getMikroDat())
+                    .isEqualTo(archivToUpdate.getMikroDat());
+
+            assertThat(foundArchiv.getNotizen())
+                    .isEqualTo(archivToUpdate.getNotizen());
+
+            assertThat(foundArchiv.getProjekt())
+                    .isSameAs(projekt);
+
+            assertThat(result)
+                    .usingRecursiveComparison()
+                    .isEqualTo(expectedArchiv);
+        }
+
+        @Test
+        void givenArchivDoesNotExist_thenThrowNotFoundException() {
+            // Given
+            final Archiv archiv =
+                    createArchiv(null, PROJNR);
+
+            when(archivRepository.findById(ARCHIV_ID))
+                    .thenReturn(Optional.empty());
+
+            // When
+            final Exception exception =
+                    Assertions.assertThrows(
+                            NotFoundException.class,
+                            () -> unitUnderTest.updateArchiv(
+                                    archiv,
+                                    ARCHIV_ID));
+
+            // Then
+            verify(archivRepository, times(1))
+                    .findById(ARCHIV_ID);
+
+            verify(archivRepository, never())
+                    .update(archiv);
+
+            assertThat(exception.getMessage())
+                    .isEqualTo(
+                            String.format(
+                                    "404 NOT_FOUND \"Could not find entity with ID %s\"",
+                                    ARCHIV_ID));
+        }
+
+        @Test
+        void givenNewProjektDoesNotExist_thenThrowEntityNotFoundException() {
+            // Given
+            final Archiv foundArchiv =
+                    createArchiv(ARCHIV_ID, PROJNR);
+
+            final Projekt projekt =
+                    new Projekt();
+
+            projekt.setProjnr(OTHER_PROJNR);
+
+            final Archiv archivToUpdate =
+                    createArchiv(null, OTHER_PROJNR);
+
+            archivToUpdate.setProjekt(projekt);
+
+            when(archivRepository.findById(ARCHIV_ID))
+                    .thenReturn(Optional.of(foundArchiv));
+
+            when(projektRepository.findById(OTHER_PROJNR))
+                    .thenReturn(Optional.empty());
+
+            // When
+            final EntityNotFoundException exception =
+                    Assertions.assertThrows(
+                            EntityNotFoundException.class,
+                            () -> unitUnderTest.updateArchiv(
+                                    archivToUpdate,
+                                    ARCHIV_ID));
+
+            // Then
+            verify(archivRepository, times(1))
+                    .findById(ARCHIV_ID);
+
+            verify(projektRepository, times(1))
+                    .findById(OTHER_PROJNR);
+
+            verify(archivRepository, never())
+                    .update(foundArchiv);
+
+            assertThat(exception.getMessage())
+                    .isEqualTo(
+                            "Projekt mit Projektnummer "
+                                    + OTHER_PROJNR
+                                    + " wurde nicht gefunden");
+        }
+
+        @Test
+        void givenArchivWithoutProjekt_thenUpdateWithoutChangingProjekt() {
+            // Given
+            final Projekt existingProjekt = new Projekt();
+            existingProjekt.setProjnr(PROJNR);
+
+            final Archiv foundArchiv =
+                    createArchiv(ARCHIV_ID, PROJNR);
+
+            foundArchiv.setProjekt(existingProjekt);
+
+            final Archiv archivToUpdate =
+                    createArchiv(null, null);
+
+            archivToUpdate.setProjekt(null);
+
+            when(archivRepository.findById(ARCHIV_ID))
+                    .thenReturn(Optional.of(foundArchiv));
+
+            when(archivRepository.update(foundArchiv))
+                    .thenReturn(foundArchiv);
+
+            // When
+            final Archiv result =
+                    unitUnderTest.updateArchiv(
+                            archivToUpdate,
+                            ARCHIV_ID);
+
+            // Then
+            verify(archivRepository, times(1))
+                    .findById(ARCHIV_ID);
+
+            verify(projektRepository, never())
+                    .findById(PROJNR);
+
+            verify(archivRepository, times(1))
+                    .update(foundArchiv);
+
+            assertThat(foundArchiv.getProjekt())
+                    .isSameAs(existingProjekt);
+
+            assertThat(result)
+                    .isSameAs(foundArchiv);
+        }
+    }
+
+    @Nested
+    class DeleteArchiv {
+
+        @Test
+        void givenArchivExists_thenDeleteArchiv() {
+            // Given
+            final Archiv archiv =
+                    createArchiv(ARCHIV_ID, PROJNR);
+
+            when(archivRepository.findById(ARCHIV_ID))
+                    .thenReturn(Optional.of(archiv));
+
+            // When
+            unitUnderTest.deleteArchiv(ARCHIV_ID);
+
+            // Then
+            verify(archivRepository, times(1))
+                    .findById(ARCHIV_ID);
+
+            verify(archivRepository, times(1))
+                    .delete(archiv);
+        }
+
+        @Test
+        void givenArchivDoesNotExist_thenThrowNotFoundException() {
+            // Given
+            when(archivRepository.findById(ARCHIV_ID))
+                    .thenReturn(Optional.empty());
+
+            // When
+            final Exception exception =
+                    Assertions.assertThrows(
+                            NotFoundException.class,
+                            () -> unitUnderTest.deleteArchiv(ARCHIV_ID));
+
+            // Then
+            verify(archivRepository, times(1))
+                    .findById(ARCHIV_ID);
+
+            verify(archivRepository, never())
+                    .delete(org.mockito.ArgumentMatchers.any(Archiv.class));
+
+            assertThat(exception.getMessage())
+                    .isEqualTo(
+                            String.format(
+                                    "404 NOT_FOUND \"Could not find entity with ID %s\"",
+                                    ARCHIV_ID));
+        }
+    }
+
+    private static Archiv createArchiv(
+            final Long id,
+            final String projnr) {
+
+        final Archiv archiv = new Archiv();
+
+        archiv.setId(id);
+        archiv.setSpeicherDatum(LocalDate.of(2026, 1, 10));
+        archiv.setSpeicherAkt(true);
+        archiv.setSpeicherRechnungen(false);
+        archiv.setMikroDatPlan(LocalDate.of(2026, 2, 10));
+        archiv.setMikroDat(LocalDate.of(2026, 3, 10));
+        archiv.setNotizen("Archiv Test");
+
+        if (projnr != null) {
+            final Projekt projekt = new Projekt();
+            projekt.setProjnr(projnr);
+            archiv.setProjekt(projekt);
+        }
+
+        return archiv;
+    }
+
+    private static ProjektResponseDTO mockProjektResponseDTO() {
+        return new ProjektResponseDTO(
+                PROJNR,
+                "Test Projekt",
+                "Test Strasse",
+                "11"
+        );
     }
 }
