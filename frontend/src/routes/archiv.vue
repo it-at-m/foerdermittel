@@ -70,8 +70,8 @@ import ArchivForm from "@/components/forms/ArchivForm.vue";
 import {
   useCreateArchiv,
   useDeleteArchiv,
-  useGetArchivFormContext,
   useGetArchive,
+  useGetArchivFormContext,
   useUpdateArchiv,
 } from "@/composables/api/useArchivApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
@@ -91,9 +91,7 @@ const {
   loading: archivFormContextLoading,
 } = useGetArchivFormContext();
 
-const projekte = computed(
-  () => archivFormContext.value?.projekte ?? []
-);
+const projekte = computed(() => archivFormContext.value?.projekte ?? []);
 
 const headers: DataTableHeader<Partial<ArchivResponseDTO>>[] = [
   {
@@ -174,17 +172,10 @@ type ArchivFormType = InstanceType<typeof ArchivForm>;
 const archivFormRef = useTemplateRef<ArchivFormType>("archivForm");
 
 onMounted(async () => {
-  await Promise.all([
-    getArchive(),
-    getArchivFormContext(),
-  ]);
+  await Promise.all([getArchive(), getArchivFormContext()]);
 });
 
-const {
-  dataTableOptions,
-  onSuccess,
-  onFailure,
-} = usePagination(
+const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => archive.value?.page?.totalPages),
   getArchive,
   isAdmin,
@@ -204,13 +195,9 @@ async function handleCreate(dto: Partial<ArchivResponseDTO>) {
   });
 
   if (createError.value) {
-    await onFailure(
-      t("common.message.createdError", [t(domainKey)])
-    );
+    await onFailure(t("common.message.createdError", [t(domainKey)]));
   } else {
-    await onSuccess(
-      t("common.message.created", [t(domainKey)])
-    );
+    await onSuccess(t("common.message.created", [t(domainKey)]));
   }
 }
 
@@ -227,13 +214,9 @@ async function handleUpdate(dto: Partial<ArchivResponseDTO>) {
   });
 
   if (updateError.value) {
-    await onFailure(
-      t("common.message.updatedError", [t(domainKey)])
-    );
+    await onFailure(t("common.message.updatedError", [t(domainKey)]));
   } else {
-    await onSuccess(
-      t("common.message.updated", [t(domainKey)])
-    );
+    await onSuccess(t("common.message.updated", [t(domainKey)]));
   }
 }
 
@@ -247,13 +230,9 @@ async function handleDelete(id: string) {
   await deleteArchiv({ id });
 
   if (deleteError.value) {
-    await onFailure(
-      t("common.message.deletedError", [t(domainKey)])
-    );
+    await onFailure(t("common.message.deletedError", [t(domainKey)]));
   } else {
-    await onSuccess(
-      t("common.message.deleted", [t(domainKey)])
-    );
+    await onSuccess(t("common.message.deleted", [t(domainKey)]));
   }
 }
 

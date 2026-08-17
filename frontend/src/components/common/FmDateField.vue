@@ -22,18 +22,13 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const emit = defineEmits<{
-  (e: "update:modelValue", value?: Date): void;
-}>();
+const emit = defineEmits<(e: "update:modelValue", value?: Date) => void>();
 
 const value = computed({
   get: () => normalizeDate(props.modelValue),
 
   set: (date) => {
-    emit(
-      "update:modelValue",
-      normalizeDate(date)
-    );
+    emit("update:modelValue", normalizeDate(date));
   },
 });
 </script>

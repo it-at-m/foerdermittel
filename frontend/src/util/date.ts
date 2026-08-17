@@ -20,14 +20,7 @@ export function normalizeDate(value?: string | Date | null): Date | undefined {
     return undefined;
   }
 
-  return new Date(
-    Number(year),
-    Number(month) - 1,
-    Number(day),
-    12,
-    0,
-    0
-  );
+  return new Date(Number(year), Number(month) - 1, Number(day), 12, 0, 0);
 }
 
 export function toDateString(value?: Date | null): string | undefined {
