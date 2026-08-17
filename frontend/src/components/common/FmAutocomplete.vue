@@ -11,11 +11,11 @@
       <span
         v-if="required && !canNotEdit"
         class="text-red"
-      >{{ t("common.word.required") }}</span
+        >{{ t("common.word.required") }}</span
       >
       <span v-if="displayMode === InputDisplayMode.EDIT && canNotEdit">{{
-          t("common.word.readOnly")
-        }}</span>
+        t("common.word.readOnly")
+      }}</span>
     </template>
   </v-autocomplete>
   <v-textarea
