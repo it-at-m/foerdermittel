@@ -7,6 +7,7 @@ import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichMa
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichUpdateDTO;
 import java.math.BigDecimal;
+import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -21,7 +22,7 @@ public class FoerderbereichMapperTest {
         @Test
         void givenEntity_thenReturnsCorrectDTO() {
             // given
-            Foerderbereich entity = new Foerderbereich(BigDecimal.valueOf(1), "test", false, true, false, true);
+            Foerderbereich entity = new Foerderbereich(BigDecimal.valueOf(1), "test", false, true, false, true, List.of());
 
             // when
             FoerderbereichResponseDTO dto = foerderbereichMapper.toDTO(entity);

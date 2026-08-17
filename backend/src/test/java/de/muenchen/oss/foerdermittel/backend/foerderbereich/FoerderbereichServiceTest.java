@@ -43,8 +43,8 @@ class FoerderbereichServiceTest {
             final int pageSize = 10;
             final Pageable pageable = PageRequest.of(pageNumber, pageSize);
 
-            final Foerderbereich entity1 = new Foerderbereich(BigDecimal.valueOf(1), "Test 1", false, true, false, true);
-            final Foerderbereich entity2 = new Foerderbereich(BigDecimal.valueOf(2), "Test 2", false, true, false, true);
+            final Foerderbereich entity1 = new Foerderbereich(BigDecimal.valueOf(1), "Test 1", false, true, false, true, List.of());
+            final Foerderbereich entity2 = new Foerderbereich(BigDecimal.valueOf(2), "Test 2", false, true, false, true, List.of());
             final List<Foerderbereich> entities = Arrays.asList(entity1, entity2);
             final Page<Foerderbereich> expectedPage = new PageImpl<>(entities, pageable, entities.size());
 
@@ -64,8 +64,8 @@ class FoerderbereichServiceTest {
         @Test
         void givenFoerderbereich_thenCallInsertEntity() {
             // Given
-            final Foerderbereich entityToInsert = new Foerderbereich(BigDecimal.valueOf(1), BEZEICHNUNG, false, true, false, true);
-            final Foerderbereich expectedEntity = new Foerderbereich(BigDecimal.valueOf(1), BEZEICHNUNG, false, true, false, true);
+            final Foerderbereich entityToInsert = new Foerderbereich(BigDecimal.valueOf(1), BEZEICHNUNG, false, true, false, true, List.of());
+            final Foerderbereich expectedEntity = new Foerderbereich(BigDecimal.valueOf(1), BEZEICHNUNG, false, true, false, true, List.of());
             when(foerderbereichRepository.insert(entityToInsert)).thenReturn(expectedEntity);
 
             // When
@@ -83,9 +83,9 @@ class FoerderbereichServiceTest {
         void givenEntityExists_thenReturnEntity() {
             // Given
             final BigDecimal id = BigDecimal.valueOf(1);
-            final Foerderbereich entityToUpdate = new Foerderbereich(id, "updated", false, true, false, true);
-            final Foerderbereich foundEntity = new Foerderbereich(id, BEZEICHNUNG, false, true, false, true);
-            final Foerderbereich expectedEntity = new Foerderbereich(id, "updated", false, true, false, true);
+            final Foerderbereich entityToUpdate = new Foerderbereich(id, "updated", false, true, false, true, List.of());
+            final Foerderbereich foundEntity = new Foerderbereich(id, BEZEICHNUNG, false, true, false, true, List.of());
+            final Foerderbereich expectedEntity = new Foerderbereich(id, "updated", false, true, false, true, List.of());
             when(foerderbereichRepository.findById(id)).thenReturn(Optional.of(foundEntity));
             when(foerderbereichRepository.update(foundEntity)).thenReturn(expectedEntity);
 
@@ -102,7 +102,7 @@ class FoerderbereichServiceTest {
         void givenEntityNotExists_thenThrowNotFoundException() {
             // Given
             final BigDecimal id = BigDecimal.valueOf(1);
-            final Foerderbereich entityToUpdate = new Foerderbereich(id, BEZEICHNUNG, false, true, false, true);
+            final Foerderbereich entityToUpdate = new Foerderbereich(id, BEZEICHNUNG, false, true, false, true, List.of());
             when(foerderbereichRepository.findById(id)).thenReturn(Optional.empty());
 
             // When
