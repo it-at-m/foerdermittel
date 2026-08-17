@@ -69,18 +69,18 @@ export default createVuetify({
     themes: {
       light: {
         colors: {
-          primary: "#FFCC00",
-          secondary: "#333333",
-          accent: "#7BA4D9",
+          primary: "#333333",
+          secondary: "#666666",
+          accent: "#FFCC00",
           success: "#69BE28",
           error: "#FF0000",
         },
       },
       dark: {
         colors: {
-          primary: "#FFD633",
-          secondary: "#333333",
-          accent: "#8FB7E8",
+          primary: "#FFFFFF",
+          secondary: "#BBBBBB",
+          accent: "#FFD633",
           success: "#7ED63A",
           error: "#FF5252",
         },

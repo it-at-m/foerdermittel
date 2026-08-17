@@ -51,7 +51,7 @@
           <v-btn
             v-if="enableActions"
             variant="flat"
-            color="primary"
+            color="accent"
             class="text-body-large"
             :append-icon="mdiPlus"
             :text="t('common.action.create')"

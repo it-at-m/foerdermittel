@@ -5,6 +5,7 @@
   >
     <template #activator="{ props }">
       <v-btn
+        color="accent"
         v-bind="props"
         :icon="isDark ? mdiWeatherSunny : mdiWeatherNight"
         @click="toggleTheme"

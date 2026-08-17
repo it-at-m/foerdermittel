@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer>
+  <v-navigation-drawer color="grey-darken-4">
     <v-container>
       <div class="text-center mb-5">
         <p class="text-headline-small font-weight-bold">
@@ -41,6 +41,7 @@
         open-strategy="single"
         nav
         density="compact"
+        color="accent"
       />
     </v-container>
   </v-navigation-drawer>
