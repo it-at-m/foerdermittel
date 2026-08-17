@@ -8,6 +8,7 @@
         color="accent"
         v-bind="props"
         :icon="isDark ? mdiWeatherSunny : mdiWeatherNight"
+        :aria-label="changeText"
         @click="toggleTheme"
       />
     </template>
