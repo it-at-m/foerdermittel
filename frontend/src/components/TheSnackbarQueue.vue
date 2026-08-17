@@ -1,5 +1,8 @@
 <template>
-  <v-snackbar-queue v-model="snackbarStore.queue">
+  <v-snackbar-queue
+    v-model="snackbarStore.queue"
+    closable
+  >
     <template #text="textData">
       <v-layout class="align-center">
         <v-icon
@@ -10,24 +13,11 @@
         <p class="my-0 text-body-large">{{ textData.item.text }}</p>
       </v-layout>
     </template>
-    <template #actions="{ props, item }">
-      <v-btn
-        v-if="item.color === STATUS_INDICATORS.ERROR"
-        v-bind="props"
-      >
-        {{ t("common.action.close") }}
-      </v-btn>
-    </template>
   </v-snackbar-queue>
 </template>
 
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
-
-import { STATUS_INDICATORS } from "@/constants";
 import { useSnackbarStore } from "@/stores/snackbar";
 
 const snackbarStore = useSnackbarStore();
-
-const { t } = useI18n();
 </script>

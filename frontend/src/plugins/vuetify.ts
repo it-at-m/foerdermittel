@@ -20,7 +20,6 @@ export default createVuetify({
   },
   defaults: {
     VBtn: {
-      color: "secondary",
       variant: "text",
     },
     VTextarea: {
@@ -51,7 +50,6 @@ export default createVuetify({
     VNavigationDrawer: {
       permanent: true,
       width: 400,
-      color: "secondary",
     },
     VTooltip: {
       location: "bottom",
@@ -68,7 +66,6 @@ export default createVuetify({
     },
   },
   theme: {
-    defaultTheme: "light",
     themes: {
       light: {
         colors: {
@@ -77,6 +74,15 @@ export default createVuetify({
           accent: "#7BA4D9",
           success: "#69BE28",
           error: "#FF0000",
+        },
+      },
+      dark: {
+        colors: {
+          primary: "#FFD633",
+          secondary: "#333333",
+          accent: "#8FB7E8",
+          success: "#7ED63A",
+          error: "#FF5252",
         },
       },
     },

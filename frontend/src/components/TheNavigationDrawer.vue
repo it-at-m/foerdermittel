@@ -13,10 +13,13 @@
         <ad2-image-avatar
           :username="userInfoStore.userInfo.preferred_username"
         />
-        <div>
-          <p class="mb-3">{{ t("component.theNavigationDrawer.loggedIn") }}</p>
+        <div class="mb-5">
+          <p>{{ t("component.theNavigationDrawer.loggedIn") }}</p>
 
-          <v-tooltip :text="rolesText">
+          <v-tooltip
+            location="right"
+            :text="rolesText"
+          >
             <template #activator="{ props }">
               <v-chip
                 label
@@ -26,6 +29,7 @@
             </template>
           </v-tooltip>
         </div>
+        <theme-toggle-btn />
       </div>
     </v-container>
 
@@ -57,6 +61,7 @@ import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
 import Ad2ImageAvatar from "@/components/common/Ad2ImageAvatar.vue";
+import ThemeToggleBtn from "@/components/common/ThemeToggleBtn.vue";
 import useHasAnyRole from "@/composables/useHasAnyRole";
 import { useUserInfoStore } from "@/stores/userinfo";
 import { Role } from "@/types/Role";
