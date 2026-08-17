@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import de.muenchen.oss.foerdermittel.backend.FoerdermittelBackendApplication;
-import de.muenchen.oss.foerdermittel.backend.TestConstants;
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
+import de.muenchen.oss.foerdermittel.backend.TestUtils;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.Bauprogramm;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammRepository;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammCreateDTO;
@@ -40,7 +40,7 @@ class UnicodeFilterConfigurationTest {
     @ServiceConnection
     @SuppressWarnings("unused")
     private static final PostgreSQLContainer POSTGRE_SQL_CONTAINER = new PostgreSQLContainer(
-            DockerImageName.parse(TestConstants.TESTCONTAINERS_POSTGRES_IMAGE));
+            DockerImageName.parse(TestUtils.getImageFromDockerCompose("postgres")));
 
     private static final String ENTITY_ENDPOINT_URL = "/bauprogramme";
 

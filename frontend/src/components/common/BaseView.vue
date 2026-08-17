@@ -22,14 +22,14 @@
       <v-col cols="auto">
         <slot name="actions" />
         <v-tooltip
-          :text="t('common.generics.show', [benutzerhinweiseDomain])"
+          :text="benutzerhinweisOpenText"
           location="left"
         >
           <template #activator="{ props }">
-            <v-btn
+            <v-icon-btn
               :icon="mdiHelpCircle"
               v-bind="props"
-              :aria-label="t('common.generics.show', [benutzerhinweiseDomain])"
+              :aria-label="benutzerhinweisOpenText"
               @click="showBenutzerhinweisDialog = true"
             />
           </template>
@@ -139,6 +139,13 @@ const displayMode = computed(() => {
 });
 
 const benutzerhinweiseDomain = t("model.benutzerhinweis.modelName");
+
+const benutzerhinweisOpenText = computed(() => {
+  return isAdmin.value
+    ? t("common.generics.update", [benutzerhinweiseDomain])
+    : t("common.generics.show", [benutzerhinweiseDomain]);
+});
+
 async function handleSave(
   benutzerhinweis: Partial<BenutzerhinweisResponseDTO>
 ) {

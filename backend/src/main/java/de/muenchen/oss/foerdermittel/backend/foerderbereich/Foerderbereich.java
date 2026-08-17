@@ -8,6 +8,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serial;
@@ -38,7 +39,7 @@ public class Foerderbereich implements Serializable {
     @Min(0) @Max(99) private BigDecimal fb;
 
     @Column(nullable = false)
-    @NotNull @Size(min = 1, max = 200) private String bezeichnung;
+    @NotBlank @Size(min = 1, max = 200) private String bezeichnung;
 
     @Column(nullable = false)
     @NotNull private Boolean finanzausgleich;

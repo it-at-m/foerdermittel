@@ -25,7 +25,7 @@
       />
       <v-btn
         v-if="!hideConfirm"
-        color="primary"
+        color="accent"
         variant="flat"
         :append-icon="confirmIcon"
         :text="confirmText ?? t('common.action.save')"

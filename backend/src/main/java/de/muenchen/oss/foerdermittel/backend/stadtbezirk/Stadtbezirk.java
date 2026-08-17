@@ -6,12 +6,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,6 +41,6 @@ public class Stadtbezirk implements Serializable {
     @NotNull @Min(0) @Max(99) private BigDecimal stadtbezirk;
 
     @Column(nullable = false)
-    @NotNull @Size(min = 1, max = 200) private String bezeichnung;
+    @NotBlank @Size(min = 1, max = 200) private String bezeichnung;
 
 }

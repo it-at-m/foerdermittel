@@ -22,6 +22,7 @@ public class TestSecurityConfiguration {
 
     private final SecurityProperties securityProperties;
 
+    private static final String TOKEN_WITHOUT_ROLE = "no-role";
     private static final List<String> MOCKED_ROLES = List.of("sachbearbeitung", "sachbearbeitunghaushalt", "admin");
 
     @Bean
@@ -32,6 +33,9 @@ public class TestSecurityConfiguration {
             Mockito.when(mockedJwtDecoder.decode(role))
                     .thenReturn(jwtWithRole(role));
         });
+
+        Mockito.when(mockedJwtDecoder.decode(TOKEN_WITHOUT_ROLE))
+                .thenReturn(jwtWithoutRole());
 
         return mockedJwtDecoder;
     }
@@ -44,6 +48,17 @@ public class TestSecurityConfiguration {
                         Map.of(
                                 securityProperties.getClientId(),
                                 Map.of("roles", List.of(role))))
+                .build();
+    }
+
+    private Jwt jwtWithoutRole() {
+        return Jwt.withTokenValue(TOKEN_WITHOUT_ROLE)
+                .header("alg", "none")
+                .claim(
+                        "resource_access",
+                        Map.of(
+                                securityProperties.getClientId(),
+                                Map.of("roles", List.of())))
                 .build();
     }
 

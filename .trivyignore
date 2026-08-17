@@ -1,2 +1,5 @@
-# brace-expansion (npm) related DoS vulnerability, however irrelevant as not used in production
-CVE-2026-14257
+# Not relevant because Java >= 17 is used, see https://community.jaspersoft.com/forums/topic/69926-cve-2025-10492-%E2%80%93-no-fix-available-after-jasperreports-upgrade-community-edition
+CVE-2025-10492
+
+# Not relevant because `.jasper` files are statically built into the jar, see https://security.snyk.io/vuln/SNYK-JAVA-NETSFJASPERREPORTS-16787146
+CVE-2026-6009

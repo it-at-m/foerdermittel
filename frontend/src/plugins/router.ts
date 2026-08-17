@@ -7,6 +7,7 @@ import {
 
 import { hasAnyRole } from "@/composables/useHasAnyRole";
 import { STATUS_INDICATORS } from "@/constants";
+import i18n from "@/plugins/i18n";
 import { useSnackbarStore } from "@/stores/snackbar";
 import { useUserInfoStore } from "@/stores/userinfo";
 
@@ -53,7 +54,7 @@ router.beforeEach(async (to, from) => {
 
   snackbarStore.push({
     color: STATUS_INDICATORS.ERROR,
-    text: "Du hast nicht die erforderlichen Berechtigungen, um diese Seite anzuzeigen.",
+    text: i18n.global.t("common.message.noPermission"),
     icon: mdiShieldLock,
   });
 
