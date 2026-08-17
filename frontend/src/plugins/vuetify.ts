@@ -64,6 +64,12 @@ export default createVuetify({
         title: String(option),
       })),
     },
+    VAutocomplete: {
+      variant: "outlined",
+      persistentPlaceholder: true,
+      autoSelectFirst: true,
+      clearOnSelect: true,
+    },
   },
   theme: {
     themes: {
