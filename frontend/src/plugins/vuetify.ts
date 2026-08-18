@@ -2,6 +2,8 @@ import "vuetify/styles";
 
 import type { VueI18nAdapterParams } from "vuetify/locale/adapters/vue-i18n";
 
+import DateFnsAdapter from "@date-io/date-fns";
+import de from "date-fns/locale/de";
 import { useI18n } from "vue-i18n";
 import { createVuetify } from "vuetify";
 import { aliases, mdi } from "vuetify/iconsets/mdi-svg";
@@ -18,52 +20,68 @@ export default createVuetify({
       mdi,
     },
   },
+
   defaults: {
     VBtn: {
       variant: "text",
     },
+
     VTextarea: {
       variant: "outlined",
       persistentPlaceholder: true,
       noResize: true,
     },
+
     VTextField: {
       variant: "outlined",
       persistentPlaceholder: true,
     },
+
     VNumberInput: {
       variant: "outlined",
       persistentPlaceholder: true,
       controlVariant: "stacked",
     },
+
     VCard: {
       class: "elevation-0",
     },
+
     VCardActions: {
       class: "mb-4 mr-4 pt-0",
     },
+
+    VDateInput: {
+      variant: "outlined",
+    },
+
     VDialog: {
       maxWidth: "800px",
       width: "90%",
       persistent: true,
     },
+
     VNavigationDrawer: {
       permanent: true,
       width: 400,
     },
+
     VTooltip: {
       location: "bottom",
     },
+
     VSnackbar: {
       timeout: 5000,
       color: "info",
     },
+
     VDataTableServer: {
       itemsPerPageOptions: ITEMS_PER_PAGE_OPTIONS.map((option) => ({
         value: option,
         title: String(option),
       })),
     },
+
     VAutocomplete: {
       variant: "outlined",
       persistentPlaceholder: true,
@@ -71,6 +89,14 @@ export default createVuetify({
       clearOnSelect: true,
     },
   },
+
+  date: {
+    adapter: DateFnsAdapter,
+    locale: {
+      de,
+    },
+  },
+
   theme: {
     themes: {
       light: {
@@ -82,6 +108,7 @@ export default createVuetify({
           error: "#FF0000",
         },
       },
+
       dark: {
         colors: {
           primary: "#FFFFFF",
@@ -93,8 +120,12 @@ export default createVuetify({
       },
     },
   },
+
   locale: {
     // @ts-expect-error false positive for type mismatch (no tsc compilation error)
-    adapter: createVueI18nAdapter({ i18n, useI18n } as VueI18nAdapterParams),
+    adapter: createVueI18nAdapter({
+      i18n,
+      useI18n,
+    } as VueI18nAdapterParams),
   },
 });
