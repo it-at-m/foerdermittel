@@ -6,14 +6,16 @@
   >
     <v-row>
       <v-col cols="3">
-        <v-autocomplete
+        <fm-autocomplete
           v-model="modelValue.projnr"
-          :rules="[rules.required()]"
           :items="projektItems"
           item-title="anzeige"
           item-value="projnr"
+          :display-mode="displayMode"
           :label="t('model.archiv.projnr')"
-          :readonly="displayMode !== InputDisplayMode.CREATE"
+          :rules="[rules.required()]"
+          :validation-attribute-map="validationAttributeMap"
+          validation-attribute-key="projnr"
         />
       </v-col>
     </v-row>
@@ -24,7 +26,8 @@
           v-model="modelValue.speicherDatum"
           :display-mode="displayMode"
           :label="t('model.archiv.speicherDatum')"
-          :rules="[rules.required()]"
+          :validation-attribute-map="validationAttributeMap"
+          validation-attribute-key="speicherDatum"
           clearable
         />
       </v-col>
@@ -34,7 +37,8 @@
           v-model="modelValue.mikroDatPlan"
           :display-mode="displayMode"
           :label="t('model.archiv.mikroDatPlan')"
-          :rules="[rules.required()]"
+          :validation-attribute-map="validationAttributeMap"
+          validation-attribute-key="mikroDatPlan"
           clearable
         />
       </v-col>
@@ -44,7 +48,8 @@
           v-model="modelValue.mikroDat"
           :display-mode="displayMode"
           :label="t('model.archiv.mikroDat')"
-          :rules="[rules.required()]"
+          :validation-attribute-map="validationAttributeMap"
+          validation-attribute-key="mikroDat"
           clearable
         />
       </v-col>
@@ -75,6 +80,8 @@
           :display-mode="displayMode"
           :counter="1000"
           :rules="[rules.maxLength(1000)]"
+          :validation-attribute-map="validationAttributeMap"
+          validation-attribute-key="notizen"
           :label="t('model.archiv.notizen')"
         />
       </v-col>
@@ -93,6 +100,7 @@ import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRules } from "vuetify/labs/rules";
 
+import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
 import FmDateField from "@/components/common/FmDateField.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
@@ -101,9 +109,14 @@ import { InputDisplayMode } from "@/types/InputDisplayMode";
 const { t } = useI18n();
 const rules = useRules();
 
-const { projekte, displayMode = InputDisplayMode.CREATE } = defineProps<{
+const {
+  projekte,
+  displayMode = InputDisplayMode.CREATE,
+  validationAttributeMap,
+} = defineProps<{
   projekte: ProjektResponseDTO[];
   displayMode?: InputDisplayMode;
+  validationAttributeMap: Record<string, string>;
 }>();
 
 const modelValue = defineModel<Partial<ArchivResponseDTO>>({
@@ -114,7 +127,7 @@ const projektItems = computed(() =>
   projekte.map((projekt) => ({
     ...projekt,
     anzeige: `${projekt.projnr} (${projekt.pname})`,
-  }))
+  })),
 );
 
 const emit = defineEmits<{
@@ -127,9 +140,19 @@ function onValidityChanged(value: boolean | null) {
 
 const formRef = useTemplateRef<VForm>("form");
 
-async function validate() {
-  await formRef.value?.validate();
+async function validate(): Promise<boolean> {
+  if (!formRef.value) {
+    return false;
+  }
+
+  const result = await formRef.value.validate();
+
+  emit("isValid", result.valid);
+
+  return result.valid;
 }
 
-defineExpose({ validate });
+defineExpose({
+  validate,
+});
 </script>

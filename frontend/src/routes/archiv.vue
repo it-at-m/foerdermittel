@@ -16,10 +16,11 @@
         @create="handleCreate"
         @update="handleUpdate"
       >
-        <template #form="{ item, updateValidity, inputDisplayMode }">
+        <template #form="{ item, updateItem, updateValidity, inputDisplayMode }">
           <archiv-form
             ref="archivForm"
             :model-value="item"
+            @update:model-value="updateItem"
             :display-mode="inputDisplayMode"
             :projekte="projekte"
             @is-valid="updateValidity"
@@ -156,9 +157,13 @@ const headers: DataTableHeader<Partial<ArchivResponseDTO>>[] = [
 ];
 
 const EMPTY_ITEM_TEMPLATE: Partial<ArchivResponseDTO> = {
-  speicherAkt: false,
-  speicherRechnungen: false,
-  notizen: "",
+    projnr: undefined,
+    speicherDatum: null,
+    mikroDatPlan: null,
+    mikroDat: null,
+    speicherAkt: false,
+    speicherRechnungen: false,
+    notizen: "",
 };
 
 const {
