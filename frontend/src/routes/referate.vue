@@ -1,28 +1,26 @@
 <template>
   <base-view :domain-key="domainKey">
     <template #default="{ baseViewLoading }">
-      <!-- @vue-generic {Partial<ReferatResponseDTO>} -->
       <crud-card
-        ref="crudRef"
-        v-model="dataTableOptions"
         :empty-item-template="EMPTY_ITEM_TEMPLATE"
-        :loading="loading || baseViewLoading"
+        :loading="baseViewLoading"
         :table-headers="headers"
+        :api="referatApi"
         :domain-key="domainKey"
         :enable-actions="isAdmin"
-        :items="referate?.content ?? []"
-        :total-items="referate?.page?.totalElements ?? 0"
-        @delete="handleDelete"
-        @create="handleCreate"
-        @update="handleUpdate"
+        :should-load-form-context="isAdmin"
+        :handle-create="handleCreate"
+        :handle-update="handleUpdate"
+        :handle-delete="handleDelete"
+        :form-ref="referatFormRef"
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <referat-form
-            v-if="referatFormContext"
+            v-if="referatApi.context.data"
             ref="referatForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
-            :referat-form-context="referatFormContext"
+            :referat-form-context="referatApi.context.data.value!"
             @is-valid="updateValidity"
           />
         </template>
@@ -35,21 +33,14 @@
 import type { ReferatResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { computed, useTemplateRef } from "vue";
+import { useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
 import ReferatForm from "@/components/forms/ReferatForm.vue";
-import {
-  useCreateReferat,
-  useDeleteReferat,
-  useGetReferate,
-  useGetReferatFormContext,
-  useUpdateReferat,
-} from "@/composables/api/useReferatApi";
+import { useReferatApi } from "@/composables/api/useReferatApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
-import usePagination from "@/composables/usePagination";
 import { Role } from "@/types/Role";
 
 const domainKey = "model.referat.modelName";
@@ -83,91 +74,34 @@ const EMPTY_ITEM_TEMPLATE: Partial<ReferatResponseDTO> = {
   bezeichnung: "",
 };
 
-const {
-  data: referate,
-  call: getReferate,
-  loading: getReferateLoading,
-} = useGetReferate();
-
-const {
-  data: referatFormContext,
-  call: getReferatFormContext,
-  loading: getReferatFormContextLoading,
-} = useGetReferatFormContext();
+const referatApi = useReferatApi();
 
 type ReferatFormType = InstanceType<typeof ReferatForm>;
 const referatFormRef = useTemplateRef<ReferatFormType>("referatForm");
 
-const { dataTableOptions, onSuccess, onFailure } = usePagination(
-  computed(() => referate.value?.page?.totalPages),
-  getReferate,
-  isAdmin,
-  getReferatFormContext,
-  () => referatFormRef.value?.validate()
-);
-
-const {
-  call: createReferat,
-  loading: createReferatLoading,
-  error: createReferateError,
-} = useCreateReferat();
-
 const handleCreate = async (referatCreateDTO: Partial<ReferatResponseDTO>) => {
   // TODO: some type checking improvements
   const model = referatCreateDTO as ReferatResponseDTO;
-  await createReferat({
+  await referatApi.create.call({
     referatCreateDTO: model,
   });
-  if (!createReferateError.value) {
-    await onSuccess(t("common.message.created", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.createdError", [t(domainKey)]));
-  }
+  return !referatApi.create.error.value;
 };
-
-const {
-  call: updateReferat,
-  loading: updateReferatLoading,
-  error: updateReferatError,
-} = useUpdateReferat();
 
 const handleUpdate = async (referatUpdateDTO: Partial<ReferatResponseDTO>) => {
   // TODO: some type checking improvements
   const model = referatUpdateDTO as ReferatResponseDTO;
-  await updateReferat({
+  await referatApi.update.call({
     id: model.id,
     referatUpdateDTO: model,
   });
-  if (!updateReferatError.value) {
-    await onSuccess(t("common.message.updated", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.updatedError", [t(domainKey)]));
-  }
+  return !referatApi.update.error.value;
 };
-
-const {
-  call: deleteReferat,
-  loading: deleteReferatLoading,
-  error: deleteReferatError,
-} = useDeleteReferat();
 
 const handleDelete = async (id: string) => {
-  await deleteReferat({
+  await referatApi.delete.call({
     id,
   });
-  if (!deleteReferatError.value) {
-    await onSuccess(t("common.message.deleted", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.deletedError", [t(domainKey)]));
-  }
+  return !referatApi.delete.error.value;
 };
-
-const loading = computed(
-  () =>
-    getReferateLoading.value ||
-    getReferatFormContextLoading.value ||
-    createReferatLoading.value ||
-    updateReferatLoading.value ||
-    deleteReferatLoading.value
-);
 </script>

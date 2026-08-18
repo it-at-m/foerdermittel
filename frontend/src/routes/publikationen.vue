@@ -1,28 +1,26 @@
 <template>
   <base-view :domain-key="domainKey">
     <template #default="{ baseViewLoading }">
-      <!-- @vue-generic {Partial<PublikationResponseDTO>} -->
       <crud-card
-        ref="crudRef"
-        v-model="dataTableOptions"
         :empty-item-template="EMPTY_ITEM_TEMPLATE"
-        :loading="loading || baseViewLoading"
+        :loading="baseViewLoading"
         :table-headers="headers"
+        :api="publikationApi"
         :domain-key="domainKey"
         :enable-actions="isAdmin"
-        :items="publikationen?.content ?? []"
-        :total-items="publikationen?.page?.totalElements ?? 0"
-        @delete="handleDelete"
-        @create="handleCreate"
-        @update="handleUpdate"
+        :should-load-form-context="isAdmin"
+        :handle-create="handleCreate"
+        :handle-update="handleUpdate"
+        :handle-delete="handleDelete"
+        :form-ref="publikationFormRef"
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <publikation-form
-            v-if="publikationFormContext"
+            v-if="publikationApi.context.data"
             ref="publikationForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
-            :publikation-form-context="publikationFormContext"
+            :publikation-form-context="publikationApi.context.data.value!"
             @is-valid="updateValidity"
           />
         </template>
@@ -35,21 +33,14 @@
 import type { PublikationResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { computed, useTemplateRef } from "vue";
+import { useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
 import PublikationForm from "@/components/forms/PublikationForm.vue";
-import {
-  useCreatePublikation,
-  useDeletePublikation,
-  useGetPublikationen,
-  useGetPublikationFormContext,
-  useUpdatePublikation,
-} from "@/composables/api/usePublikationApi";
+import { usePublikationApi } from "@/composables/api/usePublikationApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
-import usePagination from "@/composables/usePagination";
 import { Role } from "@/types/Role";
 
 const domainKey = "model.publikation.modelName";
@@ -83,96 +74,39 @@ const EMPTY_ITEM_TEMPLATE: Partial<PublikationResponseDTO> = {
   bezeichnung: "",
 };
 
-const {
-  data: publikationen,
-  call: getPublikationen,
-  loading: getPublikationenLoading,
-} = useGetPublikationen();
-
-const {
-  data: publikationFormContext,
-  call: getPublikationFormContext,
-  loading: getPublikationFormContextLoading,
-} = useGetPublikationFormContext();
+const publikationApi = usePublikationApi();
 
 type PublikationFormType = InstanceType<typeof PublikationForm>;
 const publikationFormRef =
   useTemplateRef<PublikationFormType>("publikationForm");
-
-const { dataTableOptions, onSuccess, onFailure } = usePagination(
-  computed(() => publikationen.value?.page?.totalPages),
-  getPublikationen,
-  isAdmin,
-  getPublikationFormContext,
-  () => publikationFormRef.value?.validate()
-);
-
-const {
-  call: createPublikation,
-  loading: createPublikationLoading,
-  error: createPublikationenError,
-} = useCreatePublikation();
 
 const handleCreate = async (
   publikationCreateDTO: Partial<PublikationResponseDTO>
 ) => {
   // TODO: some type checking improvements
   const model = publikationCreateDTO as PublikationResponseDTO;
-  await createPublikation({
+  await publikationApi.create.call({
     publikationCreateDTO: model,
   });
-  if (!createPublikationenError.value) {
-    await onSuccess(t("common.message.created", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.createdError", [t(domainKey)]));
-  }
+  return !publikationApi.create.error.value;
 };
-
-const {
-  call: updatePublikation,
-  loading: updatePublikationLoading,
-  error: updatePublikationenError,
-} = useUpdatePublikation();
 
 const handleUpdate = async (
   publikationUpdateDTO: Partial<PublikationResponseDTO>
 ) => {
   // TODO: some type checking improvements
   const model = publikationUpdateDTO as PublikationResponseDTO;
-  await updatePublikation({
+  await publikationApi.update.call({
     id: model.id,
     publikationUpdateDTO: model,
   });
-  if (!updatePublikationenError.value) {
-    await onSuccess(t("common.message.updated", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.updatedError", [t(domainKey)]));
-  }
+  return !publikationApi.update.error.value;
 };
-
-const {
-  call: deletePublikation,
-  loading: deletePublikationLoading,
-  error: deletePublikationenError,
-} = useDeletePublikation();
 
 const handleDelete = async (id: string) => {
-  await deletePublikation({
+  await publikationApi.delete.call({
     id,
   });
-  if (!deletePublikationenError.value) {
-    await onSuccess(t("common.message.deleted", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.deletedError", [t(domainKey)]));
-  }
+  return !publikationApi.delete.error.value;
 };
-
-const loading = computed(
-  () =>
-    getPublikationenLoading.value ||
-    getPublikationFormContextLoading.value ||
-    createPublikationLoading.value ||
-    updatePublikationLoading.value ||
-    deletePublikationLoading.value
-);
 </script>

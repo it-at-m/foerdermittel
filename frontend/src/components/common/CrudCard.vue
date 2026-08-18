@@ -348,9 +348,9 @@ const onSuccess = async (msg: string) => {
     text: msg,
     color: STATUS_INDICATORS.SUCCESS,
   });
-  closeDialog();
   await refetchEntities();
   await loadFormContext();
+  closeDialog();
 };
 
 const onFailure = async (msg: string) => {
@@ -401,10 +401,6 @@ const discardDialogChanges = () => {
   dialogMode.value = null;
   discardChanges();
 };
-
-defineExpose({
-  closeDialog,
-});
 </script>
 
 <style scoped>
