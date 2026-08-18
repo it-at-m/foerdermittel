@@ -1,8 +1,59 @@
 import type { ApiCtor } from "@/api/ApiFactory";
+import type { PageMetadata } from "@/api/generated/foerdermittel-backend";
+import type { Pageable } from "@/types/Pageable";
+import type { Ref } from "vue";
 
 import { ApiFactory } from "@/api/ApiFactory";
 import { BaseAPI } from "@/api/generated/foerdermittel-backend";
 import useAPI from "@/composables/useAPI";
+
+export interface ApiComposableMethods<
+  Api extends BaseAPI,
+  CreateReq,
+  UpdateReq,
+  GetReq,
+  DeleteReq,
+  GetAllReq,
+  Response,
+  GetAllResponse,
+  Context,
+> {
+  create?: (api: Api, req: CreateReq) => Promise<Response>;
+  update?: (api: Api, req: UpdateReq) => Promise<Response>;
+  get?: (api: Api, req: GetReq) => Promise<Response>;
+  getAll?: (api: Api, req: GetAllReq) => Promise<GetAllResponse>;
+  delete?: (api: Api, req: DeleteReq) => Promise<void>;
+  context?: (api: Api) => Promise<Context>;
+}
+
+interface ApiComposable<TRequest, TResponse> {
+  loading: Readonly<Ref<boolean>>;
+  error: Readonly<Ref<boolean>>;
+  data: Readonly<Ref<TResponse | undefined, TResponse | undefined>>;
+  call: (params: TRequest) => Promise<void>;
+}
+
+export interface ApiComposables<
+  TGetResponse,
+  TContextResponse,
+  TCreateRequest,
+  TCreateResponse,
+  TUpdateRequest,
+  TUpdateResponse,
+  TDeleteRequest,
+> {
+  getAll: ApiComposable<
+    Pageable,
+    {
+      content?: TGetResponse[];
+      page?: PageMetadata;
+    }
+  >;
+  context: ApiComposable<void, TContextResponse>;
+  create: ApiComposable<TCreateRequest, TCreateResponse>;
+  update: ApiComposable<TUpdateRequest, TUpdateResponse>;
+  delete: ApiComposable<TDeleteRequest, void>;
+}
 
 export function createAPIComposables<
   Api extends BaseAPI,
@@ -16,14 +67,17 @@ export function createAPIComposables<
   Context,
 >(
   ApiClass: ApiCtor<Api>,
-  methods: {
-    create?: (api: Api, req: CreateReq) => Promise<Response>;
-    update?: (api: Api, req: UpdateReq) => Promise<Response>;
-    get?: (api: Api, req: GetReq) => Promise<Response>;
-    getAll?: (api: Api, req: GetAllReq) => Promise<GetAllResponse>;
-    delete?: (api: Api, req: DeleteReq) => Promise<void>;
-    context?: (api: Api) => Promise<Context>;
-  }
+  methods: ApiComposableMethods<
+    Api,
+    CreateReq,
+    UpdateReq,
+    GetReq,
+    DeleteReq,
+    GetAllReq,
+    Response,
+    GetAllResponse,
+    Context
+  >
 ) {
   const api = ApiFactory.getInstance(ApiClass);
 
