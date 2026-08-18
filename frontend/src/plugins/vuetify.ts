@@ -3,7 +3,7 @@ import "vuetify/styles";
 import type { VueI18nAdapterParams } from "vuetify/locale/adapters/vue-i18n";
 
 import DateFnsAdapter from "@date-io/date-fns";
-import de from "date-fns/locale/de";
+import { de } from "date-fns/locale/de";
 import { useI18n } from "vue-i18n";
 import { createVuetify } from "vuetify";
 import { aliases, mdi } from "vuetify/iconsets/mdi-svg";
