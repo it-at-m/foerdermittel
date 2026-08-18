@@ -8,7 +8,7 @@
         :api="bauprogrammApi"
         :domain-key="domainKey"
         :enable-actions="isAdmin"
-        :should-load-form-context="true"
+        :should-load-form-context="isAdmin"
         :handle-create="handleCreate"
         :handle-update="handleUpdate"
         :handle-delete="handleDelete"

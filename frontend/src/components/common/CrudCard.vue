@@ -136,25 +136,21 @@
   setup
   lang="ts"
   generic="
-    TGetRequest extends {},
     TGetResponse extends { id?: string },
-    TContextRequest extends {},
     TContextResponse extends {},
     TCreateRequest extends {},
     TCreateResponse extends {},
     TUpdateRequest extends {},
     TUpdateResponse extends {},
-    TDeleteRequest extends {},
-    TDeleteResponse extends {}
+    TDeleteRequest extends {}
   "
 >
 import type { ApiComposables } from "@/util/composable-helper";
 import type { Awaitable } from "@vueuse/core";
-import type { MaybeRefOrGetter } from "vue";
 import type { DataTableHeader } from "vuetify/framework";
 
 import { mdiDelete, mdiPencil, mdiPlus, mdiTrashCan } from "@mdi/js";
-import { computed, onMounted, ref, toValue } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 import ConfirmCard from "@/components/common/ConfirmCard.vue";
@@ -203,7 +199,7 @@ const {
   enableActions?: boolean;
   expandable?: boolean;
   dialogWidth?: DialogWidth;
-  shouldLoadFormContext: MaybeRefOrGetter<boolean>;
+  shouldLoadFormContext: boolean;
   handleCreate: (item: TGetResponse) => Awaitable<boolean>;
   handleUpdate: (item: TGetResponse) => Awaitable<boolean>;
   handleDelete: (id: string) => Awaitable<boolean>;
@@ -316,7 +312,7 @@ onMounted(async () => {
 // --- Functions ---
 
 const loadFormContext = async () => {
-  if (toValue(shouldLoadFormContext)) {
+  if (shouldLoadFormContext) {
     await api.context.call();
   }
 };
