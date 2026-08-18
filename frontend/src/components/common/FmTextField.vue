@@ -4,11 +4,11 @@
     ref="textField"
     :model-value="model"
     :readonly="canNotEdit"
-    :class="{
-      'pointer-events-none': canNotEdit,
-    }"
+    :counter="counter"
+    :rules="allRules"
     v-bind="$attrs"
     @update:model-value="updateModel"
+    @blur="trimModel"
   >
     <template #label>
       {{ label }}
@@ -17,46 +17,65 @@
         class="text-red"
         >{{ t("common.word.required") }}</span
       >
-      <span v-if="canNotEdit">{{ t("common.word.readOnly") }}</span>
+      <span v-if="displayMode === InputDisplayMode.EDIT && canNotEdit">{{
+        t("common.word.readOnly")
+      }}</span>
     </template>
   </v-text-field>
   <v-textarea
     v-else
+    :model-value="model"
     :label="label"
     auto-grow
     readonly
     hide-details
     variant="plain"
-    class="pointer-events-none"
     v-bind="$attrs"
   />
 </template>
 
-<script setup lang="ts">
+<script
+  setup
+  lang="ts"
+  generic="
+    M extends Record<string, ValidationAttributes>,
+    K extends keyof M & string
+  "
+>
+import type { ValidationAttributes } from "@/types/OpenAPIValidationAttributes";
 import type { VTextField } from "vuetify/components";
+import type { ValidationRule } from "vuetify/framework";
 
-import { computed, nextTick, useTemplateRef } from "vue";
+import { nextTick, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
+import { useInputValidation } from "@/composables/useInputValidation";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
+import { toTrimmedString } from "@/util/formatter";
 
 const {
   displayMode = InputDisplayMode.CREATE,
   disableEdit = false,
-  required = false,
   uppercase = false,
+  validationAttributeMap,
+  validationAttributeKey,
+  additionalRules = [],
 } = defineProps<{
   label: string;
   displayMode?: InputDisplayMode;
   disableEdit?: boolean;
-  required?: boolean;
   uppercase?: boolean;
+  validationAttributeMap?: M;
+  validationAttributeKey?: K;
+  additionalRules?: ValidationRule[];
 }>();
 
-const canNotEdit = computed(
-  () =>
-    displayMode === InputDisplayMode.READ ||
-    (displayMode === InputDisplayMode.EDIT && disableEdit)
+const { required, allRules, counter, canNotEdit } = useInputValidation(
+  displayMode,
+  disableEdit,
+  additionalRules,
+  validationAttributeMap,
+  validationAttributeKey
 );
 
 const model = defineModel<string>();
@@ -75,6 +94,10 @@ async function updateModel(newModelValue: string) {
   await nextTick();
 
   input?.setSelectionRange(start, end);
+}
+
+function trimModel() {
+  model.value = toTrimmedString(model.value);
 }
 
 const { t } = useI18n();

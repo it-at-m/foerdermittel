@@ -38,18 +38,12 @@ public class FoerderbereichController {
     private final FoerderbereichService foerderbereichService;
     private final FoerderbereichMapper foerderbereichMapper;
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public FoerderbereichResponseDTO getFoerderbereich(@PathVariable("id") final String foerderbereichId) {
-        return foerderbereichMapper.toDTO(foerderbereichService.getFoerderbereich(ControllerUtils.convertStringToBigDecimal(foerderbereichId)));
-    }
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<FoerderbereichResponseDTO> getFoerderbereicheByPageable(@ParameterObject @PageableDefault(
+    public Page<FoerderbereichResponseDTO> getFoerderbereiche(@ParameterObject @PageableDefault(
             sort = "fb"
     ) final Pageable pageable) {
-        final Page<Foerderbereich> pageWithFoerderbereiche = foerderbereichService.getAllFoerderbereiche(pageable);
+        final Page<Foerderbereich> pageWithFoerderbereiche = foerderbereichService.getFoerderbereiche(pageable);
         final List<FoerderbereichResponseDTO> foerderbereichResponseDTOList = pageWithFoerderbereiche.getContent().stream()
                 .map(foerderbereichMapper::toDTO)
                 .toList();

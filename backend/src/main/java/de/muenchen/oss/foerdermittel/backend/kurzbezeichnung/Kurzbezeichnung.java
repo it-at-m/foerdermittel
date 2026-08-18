@@ -4,7 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.io.Serial;
@@ -35,9 +35,9 @@ public class Kurzbezeichnung implements Serializable {
 
     @Column(nullable = false)
     @Id
-    @NotNull @Size(min = 1, max = 3) @Pattern(regexp = "^[A-Z0-9]{1,3}$") private String kurzbez;
+    @NotBlank @Size(min = 1, max = 3) @Pattern(regexp = "^[A-Z0-9]{1,3}$") private String kurzbez;
 
     @Column(nullable = false)
-    @NotNull @Size(min = 1, max = 200) private String bezeichnung;
+    @NotBlank @Size(min = 1, max = 200) private String bezeichnung;
 
 }

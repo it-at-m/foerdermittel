@@ -1,5 +1,5 @@
 <template>
-  <v-avatar>
+  <v-avatar color="white">
     <img
       :src="avatarUrl"
       :alt="altText"

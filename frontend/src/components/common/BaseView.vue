@@ -5,7 +5,7 @@
   >
     <benutzerhinweis-dialog
       :loading="loading"
-      :benutzerhinweis="benutzerhinweis ?? EMPTY_ITEM_TEMPLATE"
+      :benutzerhinweis="benutzerhinweis ?? emptyItemTemplate"
       :display-mode="displayMode"
       @close="showBenutzerhinweisDialog = false"
       @save="handleSave"
@@ -22,14 +22,14 @@
       <v-col cols="auto">
         <slot name="actions" />
         <v-tooltip
-          :text="t('common.generics.show', [benutzerhinweiseDomain])"
+          :text="benutzerhinweisOpenText"
           location="left"
         >
           <template #activator="{ props }">
-            <v-btn
+            <v-icon-btn
               :icon="mdiHelpCircle"
               v-bind="props"
-              :aria-label="t('common.generics.show', [benutzerhinweiseDomain])"
+              :aria-label="benutzerhinweisOpenText"
               @click="showBenutzerhinweisDialog = true"
             />
           </template>
@@ -77,6 +77,15 @@ const { t } = useI18n();
 const route = useRoute();
 // always contains a valid route name, implemented fallback only to make vue-tsc happy without building to generate route-map.d.ts
 const routeName = computed(() => (route.name as string).replace("/", ""));
+
+const emptyItemTemplate = computed<Partial<BenutzerhinweisResponseDTO>>(() => {
+  return {
+    viewId: routeName.value,
+    funktionsbeschreibung: "",
+    bedienung: "",
+    pruefungVorgaben: "",
+  };
+});
 
 const {
   data: benutzerhinweis,
@@ -129,14 +138,14 @@ const displayMode = computed(() => {
     : InputDisplayMode.CREATE;
 });
 
-const EMPTY_ITEM_TEMPLATE: Partial<BenutzerhinweisResponseDTO> = {
-  viewId: routeName.value,
-  funktionsbeschreibung: "",
-  bedienung: "",
-  pruefungVorgaben: "",
-};
-
 const benutzerhinweiseDomain = t("model.benutzerhinweis.modelName");
+
+const benutzerhinweisOpenText = computed(() => {
+  return isAdmin.value
+    ? t("common.generics.update", [benutzerhinweiseDomain])
+    : t("common.generics.show", [benutzerhinweiseDomain]);
+});
+
 async function handleSave(
   benutzerhinweis: Partial<BenutzerhinweisResponseDTO>
 ) {

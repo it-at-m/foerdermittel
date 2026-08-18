@@ -37,12 +37,14 @@
       "created": "{0} wurde erstellt.",
       "createdError": "{0} konnte nicht erstellt werden.",
       "loading": "Lade {0}...",
-      "noData": "Keine {0} vorhanden"
+      "noData": "Keine {0} vorhanden",
+      "noPermission": "Sie haben nicht die erforderlichen Berechtigungen, um diese Seite anzuzeigen."
     },
     "roles": {
       "admin": "Administrator",
       "sachbearbeitung": "Sachbearbeitung",
-      "sachbearbeitunghaushalt": "Sachbearbeitung Haushalt"
+      "sachbearbeitunghaushalt": "Sachbearbeitung Haushalt",
+      "noRole": "Keine Rolle zugewiesen"
     }
   },
   "model": {
@@ -141,7 +143,9 @@
       "modelName": "Stadtbezirksliste | Stadtbezirkslisten"
     },
     "stichwortbereich": {
-      "modelName": "Stichwortbereich | Stichwortbereiche"
+      "modelName": "Stichwortbereich | Stichwortbereiche",
+      "bereich": "Bereich",
+      "bezeichnung": "Bezeichnung"
     },
     "traeger": {
       "modelName": "Träger",
@@ -149,7 +153,9 @@
       "bezeichnung": "Bezeichnung"
     },
     "hauptabschnitt": {
-      "modelName": "Hauptabschnitt | Hauptabschnitte"
+      "modelName": "Hauptabschnitt | Hauptabschnitte",
+      "ha": "Hauptabschnitt",
+      "bezeichnung": "Bezeichnung"
     },
     "unterabschnitt": {
       "modelName": "Unterabschnitt | Unterabschnitte"
@@ -185,7 +191,12 @@
       "fortsetzungsAntrag": "Fortsetzungsantrag | Fortsetzungsanträge"
     }
   },
-  "view": {},
+  "view": {
+    "index": {
+      "welcomeTitle": "Willkommen bei der Anwendung @:common.appName{'!'}",
+      "welcomeText": "Bitte wählen Sie den gewünschten Punkt im Menü auf der linken Seite aus."
+    }
+  },
   "component": {
     "theNavigationDrawer": {
       "loggedIn": "Angemeldet als:"
@@ -193,6 +204,11 @@
     "unsavedChangesDialog": {
       "title": "Ungespeicherte Änderungen",
       "text": "Es sind ungespeicherte Änderungen vorhanden. Möchten Sie die Bearbeitung fortsetzen oder die Änderungen verwerfen?"
+    },
+    "themeToggleBtn": {
+      "changeText": "Auf die Darstellung '{0}' wechseln",
+      "light": "Hell",
+      "dark": "Dunkel"
     }
   }
 }

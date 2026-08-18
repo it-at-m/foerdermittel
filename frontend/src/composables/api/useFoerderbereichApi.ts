@@ -3,7 +3,7 @@ import type {
   DeleteFoerderbereichRequest,
   FoerderbereichFormContext,
   FoerderbereichResponseDTO,
-  GetFoerderbereicheByPageableRequest,
+  GetFoerderbereicheRequest,
   PagedModelFoerderbereichResponseDTO,
   UpdateFoerderbereichRequest,
 } from "@/api/generated/foerdermittel-backend";
@@ -27,14 +27,14 @@ export const {
     UpdateFoerderbereichRequest,
     never,
     DeleteFoerderbereichRequest,
-    GetFoerderbereicheByPageableRequest,
+    GetFoerderbereicheRequest,
     FoerderbereichResponseDTO,
     PagedModelFoerderbereichResponseDTO,
     FoerderbereichFormContext
   >(FoerderbereichControllerApi, {
     create: (api, req) => api.createFoerderbereich(req),
     update: (api, req) => api.updateFoerderbereich(req),
-    getAll: (api, req) => api.getFoerderbereicheByPageable(req),
+    getAll: (api, req) => api.getFoerderbereiche(req),
     delete: (api, req) => api.deleteFoerderbereich(req),
     context: (api) => api.getFoerderbereichFormContext(),
   })

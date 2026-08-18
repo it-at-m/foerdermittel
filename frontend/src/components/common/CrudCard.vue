@@ -51,7 +51,8 @@
           <v-btn
             v-if="enableActions"
             variant="flat"
-            color="primary"
+            color="accent"
+            class="text-body-large"
             :append-icon="mdiPlus"
             :text="t('common.action.create')"
             :disabled="loading"
@@ -90,14 +91,12 @@
           </template>
           <!-- Static actions for edit and delete -->
           <template #[`item.actions`]="{ item }">
-            <v-btn
-              size="small"
+            <v-icon-btn
               :icon="mdiPencil"
               class="mr-1"
               @click="openEdit(item)"
             />
-            <v-btn
-              size="small"
+            <v-icon-btn
               :icon="mdiDelete"
               @click="openDelete(item)"
             />

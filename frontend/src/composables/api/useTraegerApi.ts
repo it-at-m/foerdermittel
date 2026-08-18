@@ -1,7 +1,7 @@
 import type {
   CreateTraegerRequest,
   DeleteTraegerRequest,
-  GetTraegerByPageableRequest,
+  GetTraegerRequest,
   PagedModelTraegerResponseDTO,
   TraegerFormContext,
   TraegerResponseDTO,
@@ -27,14 +27,14 @@ export const {
     UpdateTraegerRequest,
     never,
     DeleteTraegerRequest,
-    GetTraegerByPageableRequest,
+    GetTraegerRequest,
     TraegerResponseDTO,
     PagedModelTraegerResponseDTO,
     TraegerFormContext
   >(TraegerControllerApi, {
     create: (api, req) => api.createTraeger(req),
     update: (api, req) => api.updateTraeger(req),
-    getAll: (api, req) => api.getTraegerByPageable(req),
+    getAll: (api, req) => api.getTraeger(req),
     delete: (api, req) => api.deleteTraeger(req),
     context: (api) => api.getTraegerFormContext(),
   })

@@ -10,13 +10,12 @@
           v-model="modelValue.bauleitung"
           :display-mode="displayMode"
           disable-edit
-          required
           uppercase
-          :counter="1"
-          :rules="[
-            rules.required(),
-            rules.strictLength(1),
-            rules.pattern(/^[A-Z0-9]+$/),
+          :validation-attribute-map="
+            BauleitungCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bauleitung"
+          :additional-rules="[
             rules['unique']!(
               bauleitungFormContext.bauleitungen,
               currentBauleitung
@@ -29,9 +28,10 @@
         <fm-text-field
           v-model="modelValue.bezeichnung"
           :display-mode="displayMode"
-          required
-          :counter="200"
-          :rules="[rules.required(), rules.maxLength(200)]"
+          :validation-attribute-map="
+            BauleitungCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bezeichnung"
           :label="t('model.bauleitung.bezeichnung')"
         />
       </v-col>
@@ -51,6 +51,7 @@ import { ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRules } from "vuetify/labs/rules";
 
+import { BauleitungCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 

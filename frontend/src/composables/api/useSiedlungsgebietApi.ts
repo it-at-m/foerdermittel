@@ -1,7 +1,7 @@
 import type {
   CreateSiedlungsgebietRequest,
   DeleteSiedlungsgebietRequest,
-  GetSiedlungsgebieteByPageableRequest,
+  GetSiedlungsgebieteRequest,
   PagedModelSiedlungsgebietResponseDTO,
   SiedlungsgebietFormContext,
   SiedlungsgebietResponseDTO,
@@ -27,14 +27,14 @@ export const {
     UpdateSiedlungsgebietRequest,
     never,
     DeleteSiedlungsgebietRequest,
-    GetSiedlungsgebieteByPageableRequest,
+    GetSiedlungsgebieteRequest,
     SiedlungsgebietResponseDTO,
     PagedModelSiedlungsgebietResponseDTO,
     SiedlungsgebietFormContext
   >(SiedlungsgebietControllerApi, {
     create: (api, req) => api.createSiedlungsgebiet(req),
     update: (api, req) => api.updateSiedlungsgebiet(req),
-    getAll: (api, req) => api.getSiedlungsgebieteByPageable(req),
+    getAll: (api, req) => api.getSiedlungsgebiete(req),
     delete: (api, req) => api.deleteSiedlungsgebiet(req),
     context: (api) => api.getSiedlungsgebietFormContext(),
   })

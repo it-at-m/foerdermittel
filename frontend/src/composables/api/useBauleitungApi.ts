@@ -3,7 +3,7 @@ import type {
   BauleitungResponseDTO,
   CreateBauleitungRequest,
   DeleteBauleitungRequest,
-  GetBauleitungenByPageableRequest,
+  GetBauleitungenRequest,
   PagedModelBauleitungResponseDTO,
   UpdateBauleitungRequest,
 } from "@/api/generated/foerdermittel-backend";
@@ -27,14 +27,14 @@ export const {
     UpdateBauleitungRequest,
     never,
     DeleteBauleitungRequest,
-    GetBauleitungenByPageableRequest,
+    GetBauleitungenRequest,
     BauleitungResponseDTO,
     PagedModelBauleitungResponseDTO,
     BauleitungFormContext
   >(BauleitungControllerApi, {
     create: (api, req) => api.createBauleitung(req),
     update: (api, req) => api.updateBauleitung(req),
-    getAll: (api, req) => api.getBauleitungenByPageable(req),
+    getAll: (api, req) => api.getBauleitungen(req),
     delete: (api, req) => api.deleteBauleitung(req),
     context: (api) => api.getBauleitungFormContext(),
   })

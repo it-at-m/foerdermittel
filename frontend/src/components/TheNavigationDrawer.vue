@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer>
+  <v-navigation-drawer color="grey-darken-4">
     <v-container>
       <div class="text-center mb-5">
         <p class="text-headline-small font-weight-bold">
@@ -13,10 +13,13 @@
         <ad2-image-avatar
           :username="userInfoStore.userInfo.preferred_username"
         />
-        <div>
-          <p class="mb-3">{{ t("component.theNavigationDrawer.loggedIn") }}</p>
+        <div class="mb-5">
+          <p>{{ t("component.theNavigationDrawer.loggedIn") }}</p>
 
-          <v-tooltip :text="rolesText">
+          <v-tooltip
+            location="right"
+            :text="rolesText"
+          >
             <template #activator="{ props }">
               <v-chip
                 label
@@ -26,17 +29,19 @@
             </template>
           </v-tooltip>
         </div>
+        <theme-toggle-btn />
       </div>
     </v-container>
 
     <v-divider />
 
-    <v-container>
+    <v-container v-if="hasRole">
       <v-list
         :items="navigationItems"
         open-strategy="single"
         nav
         density="compact"
+        color="accent"
       />
     </v-container>
   </v-navigation-drawer>
@@ -57,13 +62,26 @@ import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
 import Ad2ImageAvatar from "@/components/common/Ad2ImageAvatar.vue";
+import ThemeToggleBtn from "@/components/common/ThemeToggleBtn.vue";
+import useHasAnyRole from "@/composables/useHasAnyRole";
 import { useUserInfoStore } from "@/stores/userinfo";
+import { Role } from "@/types/Role";
 
 const userInfoStore = useUserInfoStore();
 const { t } = useI18n();
 
+const hasRole = useHasAnyRole([
+  Role.SACHBEARBEITUNG,
+  Role.SACHBEARBEITUNG_HAUSHALT,
+  Role.ADMIN,
+]);
+
 const rolesText = computed(() =>
-  userInfoStore.currentRoles.map((role) => t(`common.roles.${role}`)).join(",")
+  userInfoStore.currentRoles.length
+    ? userInfoStore.currentRoles
+        .map((role) => t(`common.roles.${role}`))
+        .join(",")
+    : t("common.roles.noRole")
 );
 
 const navigationItems: NavigationItem[] = [
@@ -278,7 +296,7 @@ const navigationItems: NavigationItem[] = [
       {
         title: t("model.foerderbereich.modelName", 2),
         props: {
-          to: "/foerderbereich",
+          to: "/foerderbereiche",
         },
       },
       {
@@ -325,6 +343,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.stichwortbereich.modelName", 2),
+        props: {
+          to: "/stichwortbereiche",
+        },
       },
       {
         title: t("model.traeger.modelName"),
@@ -334,6 +355,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.hauptabschnitt.modelName", 2),
+        props: {
+          to: "/hauptabschnitte",
+        },
       },
       {
         title: t("model.unterabschnitt.modelName", 2),

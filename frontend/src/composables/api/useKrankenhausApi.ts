@@ -1,7 +1,7 @@
 import type {
   CreateKrankenhausRequest,
   DeleteKrankenhausRequest,
-  GetKrankenhaeuserByPageableRequest,
+  GetKrankenhaeuserRequest,
   KrankenhausFormContext,
   KrankenhausResponseDTO,
   PagedModelKrankenhausResponseDTO,
@@ -27,14 +27,14 @@ export const {
     UpdateKrankenhausRequest,
     never,
     DeleteKrankenhausRequest,
-    GetKrankenhaeuserByPageableRequest,
+    GetKrankenhaeuserRequest,
     KrankenhausResponseDTO,
     PagedModelKrankenhausResponseDTO,
     KrankenhausFormContext
   >(KrankenhausControllerApi, {
     create: (api, req) => api.createKrankenhaus(req),
     update: (api, req) => api.updateKrankenhaus(req),
-    getAll: (api, req) => api.getKrankenhaeuserByPageable(req),
+    getAll: (api, req) => api.getKrankenhaeuser(req),
     delete: (api, req) => api.deleteKrankenhaus(req),
     context: (api) => api.getKrankenhausFormContext(),
   })

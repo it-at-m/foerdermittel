@@ -1,7 +1,7 @@
 import type {
   CreateKurzbezeichnungRequest,
   DeleteKurzbezeichnungRequest,
-  GetKurzbezeichnungenByPageableRequest,
+  GetKurzbezeichnungenRequest,
   KurzbezeichnungFormContext,
   KurzbezeichnungResponseDTO,
   PagedModelKurzbezeichnungResponseDTO,
@@ -27,14 +27,14 @@ export const {
     UpdateKurzbezeichnungRequest,
     never,
     DeleteKurzbezeichnungRequest,
-    GetKurzbezeichnungenByPageableRequest,
+    GetKurzbezeichnungenRequest,
     KurzbezeichnungResponseDTO,
     PagedModelKurzbezeichnungResponseDTO,
     KurzbezeichnungFormContext
   >(KurzbezeichnungControllerApi, {
     create: (api, req) => api.createKurzbezeichnung(req),
     update: (api, req) => api.updateKurzbezeichnung(req),
-    getAll: (api, req) => api.getKurzbezeichnungenByPageable(req),
+    getAll: (api, req) => api.getKurzbezeichnungen(req),
     delete: (api, req) => api.deleteKurzbezeichnung(req),
     context: (api) => api.getKurzbezeichnungFormContext(),
   })

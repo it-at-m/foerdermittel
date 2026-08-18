@@ -38,18 +38,12 @@ public class StadtbezirkController {
     private final StadtbezirkService stadtbezirkService;
     private final StadtbezirkMapper stadtbezirkMapper;
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public StadtbezirkResponseDTO getStadtbezirk(@PathVariable("id") final String stadtbezirkId) {
-        return stadtbezirkMapper.toDTO(stadtbezirkService.getStadtbezirk(ControllerUtils.convertStringToBigDecimal(stadtbezirkId)));
-    }
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<StadtbezirkResponseDTO> getStadtbezirkeByPageable(@ParameterObject @PageableDefault(
+    public Page<StadtbezirkResponseDTO> getStadtbezirke(@ParameterObject @PageableDefault(
             sort = "stadtbezirk"
     ) final Pageable pageable) {
-        final Page<Stadtbezirk> pageWithStadtbezirk = stadtbezirkService.getAllStadtbezirke(pageable);
+        final Page<Stadtbezirk> pageWithStadtbezirk = stadtbezirkService.getStadtbezirke(pageable);
         final List<StadtbezirkResponseDTO> stadtbezirkResponseDTOList = pageWithStadtbezirk.getContent().stream()
                 .map(stadtbezirkMapper::toDTO)
                 .toList();

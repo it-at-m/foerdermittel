@@ -2,7 +2,7 @@ name: foerdermittel-stack
 
 services:
   postgres:
-    image: postgres:17.4-alpine3.21@sha256:7062a2109c4b51f3c792c7ea01e83ed12ef9a980886e3b3d380a7d2e5f6ce3f5
+    image: postgres:18.4-alpine@sha256:9a8afca54e7861fd90fab5fdf4c42477a6b1cb7d293595148e674e0a3181de15
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=admin
@@ -86,7 +86,7 @@ services:
     security_opt: *security_settings
 
   refarch-gateway:
-    image: ghcr.io/it-at-m/refarch/refarch-gateway:1.8.1@sha256:d91c274fdb2e11d1d2c99aa2f1e7fef840be62b4c6f7f59d14e4903f6f850c66
+    image: ghcr.io/it-at-m/refarch/refarch-gateway:1.9.0@sha256:688b8cdd91a59fdedc8e7b36d4b8f7740b0a1020eae7a8a49ab0da6eb9f10f1d
     depends_on:
       init-keycloak:
         condition: service_completed_successfully
@@ -113,6 +113,7 @@ services:
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_CLIENTID=local
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_CLIENTSECRET=client_secret
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_SCOPE=profile, openid, roles
+      - LOGGING_STRUCTURED_FORMAT_CONSOLE=
     networks:
       - keycloak
     extra_hosts:
