@@ -1,34 +1,99 @@
 <template>
   <v-date-input
+    v-model="internalDate"
+    :rules="allRules"
     v-bind="$attrs"
-    v-model="value"
-    prepend-icon=""
-    locale="de-DE"
-  />
+  >
+  <template #label>
+        {{ label }}
+        <span
+          v-if="required && !canNotEdit"
+          class="text-red"
+          >{{ t("common.word.required") }}</span
+        >
+        <span v-if="displayMode === InputDisplayMode.EDIT && canNotEdit">{{
+          t("common.word.readOnly")
+        }}</span>
+      </template>
+  </v-date-input>
 </template>
 
-<script setup lang="ts">
-import { computed } from "vue";
+<script
+  setup
+  lang="ts"
+  generic="
+    M extends Record<string, ValidationAttributes>,
+    K extends keyof M & string
+  "
+>
+import type { ValidationAttributes } from "@/types/OpenAPIValidationAttributes";
+import type { ValidationRule } from "vuetify/framework";
 
-import { normalizeDate } from "@/util/date";
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
+
+import { useInputValidation } from "@/composables/useInputValidation";
+import { InputDisplayMode } from "@/types/InputDisplayMode";
 
 defineOptions({
   inheritAttrs: false,
 });
 
-interface Props {
-  modelValue?: string | Date | null;
-}
+const {
+  label,
+  displayMode = InputDisplayMode.CREATE,
+  disableEdit = false,
+  validationAttributeMap,
+  validationAttributeKey,
+  additionalRules = [],
+} = defineProps<{
+  label: string;
+  displayMode?: InputDisplayMode;
+  disableEdit?: boolean;
+  validationAttributeMap?: M;
+  validationAttributeKey?: K;
+  additionalRules?: ValidationRule[];
+}>();
 
-const props = defineProps<Props>();
+const { required, allRules, canNotEdit } = useInputValidation(
+  displayMode,
+  disableEdit,
+  [],
+  validationAttributeMap,
+  validationAttributeKey,
+);
 
-const emit = defineEmits<(e: "update:modelValue", value?: Date) => void>();
+const model = defineModel<Date | null>();
 
-const value = computed({
-  get: () => normalizeDate(props.modelValue),
+const internalDate = computed<Date | undefined>({
+  get() {
+    if (!model.value) {
+      return undefined;
+    }
 
-  set: (date) => {
-    emit("update:modelValue", normalizeDate(date));
+    return new Date(
+      model.value.getFullYear(),
+      model.value.getMonth(),
+      model.value.getDate(),
+      12,
+      0,
+      0,
+    );
+  },
+
+  set(value) {
+    model.value = value
+      ? new Date(
+          value.getFullYear(),
+          value.getMonth(),
+          value.getDate(),
+          12,
+          0,
+          0,
+        )
+      : null;
   },
 });
+
+const { t } = useI18n();
 </script>
