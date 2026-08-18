@@ -4,17 +4,17 @@
     :rules="allRules"
     v-bind="$attrs"
   >
-  <template #label>
-        {{ label }}
-        <span
-          v-if="required && !canNotEdit"
-          class="text-red"
-          >{{ t("common.word.required") }}</span
-        >
-        <span v-if="displayMode === InputDisplayMode.EDIT && canNotEdit">{{
-          t("common.word.readOnly")
-        }}</span>
-      </template>
+    <template #label>
+      {{ label }}
+      <span
+        v-if="required && !canNotEdit"
+        class="text-red"
+        >{{ t("common.word.required") }}</span
+      >
+      <span v-if="displayMode === InputDisplayMode.EDIT && canNotEdit">{{
+        t("common.word.readOnly")
+      }}</span>
+    </template>
   </v-date-input>
 </template>
 
@@ -58,9 +58,9 @@ const {
 const { required, allRules, canNotEdit } = useInputValidation(
   displayMode,
   disableEdit,
-  [],
+  additionalRules,
   validationAttributeMap,
-  validationAttributeKey,
+  validationAttributeKey
 );
 
 const model = defineModel<Date | null>();
@@ -77,7 +77,7 @@ const internalDate = computed<Date | undefined>({
       model.value.getDate(),
       12,
       0,
-      0,
+      0
     );
   },
 
@@ -89,7 +89,7 @@ const internalDate = computed<Date | undefined>({
           value.getDate(),
           12,
           0,
-          0,
+          0
         )
       : null;
   },
