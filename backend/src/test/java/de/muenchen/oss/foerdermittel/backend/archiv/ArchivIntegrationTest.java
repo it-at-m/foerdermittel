@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-import de.muenchen.oss.foerdermittel.backend.TestConstants;
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
+import de.muenchen.oss.foerdermittel.backend.TestUtils;
 import de.muenchen.oss.foerdermittel.backend.archiv.dto.ArchivCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.archiv.dto.ArchivResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.archiv.dto.ArchivUpdateDTO;
@@ -64,7 +64,7 @@ class ArchivIntegrationTest {
     @ServiceConnection
     @SuppressWarnings("unused")
     private static final PostgreSQLContainer POSTGRE_SQL_CONTAINER = new PostgreSQLContainer(
-            DockerImageName.parse(TestConstants.TESTCONTAINERS_POSTGRES_IMAGE));
+            DockerImageName.parse(TestUtils.getImageFromDockerCompose("postgres")));
 
     private static final String EXISTING_PROJNR = "3325101";
 
