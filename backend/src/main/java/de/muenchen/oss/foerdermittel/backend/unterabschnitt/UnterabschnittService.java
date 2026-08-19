@@ -49,7 +49,11 @@ public class UnterabschnittService {
     public Unterabschnitt updateUnterabschnitt(final Unterabschnitt unterabschnitt, final String ua) {
         final Unterabschnitt foundUnterabschnitt = ServiceUtils.getEntityOrThrowNotFoundException(ua, unterabschnittRepository);
         foundUnterabschnitt.setBezeichnung(unterabschnitt.getBezeichnung());
-        foundUnterabschnitt.setHasHa(unterabschnitt.getHasHa());
+        final Hauptabschnitt hauptabschnitt =
+                hauptabschnittService.getHauptabschnitt(
+                        unterabschnitt.getHasHa().getHa());
+
+        foundUnterabschnitt.setHasHa(hauptabschnitt);
         log.debug("Update Unterabschnitt {}", foundUnterabschnitt);
         return unterabschnittRepository.update(foundUnterabschnitt);
     }
