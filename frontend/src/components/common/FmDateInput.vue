@@ -3,8 +3,9 @@
     v-if="displayMode !== InputDisplayMode.READ"
     v-model="model"
     :rules="allRules"
-    v-bind="$attrs"
     :readonly="canNotEdit"
+    :menu-props="canNotEdit ? { modelValue: false } : undefined"
+    v-bind="$attrs"
   >
     <template #label>
       {{ label }}
@@ -20,7 +21,7 @@
   </v-date-input>
   <v-textarea
     v-else
-    :model-value="model"
+    :model-value="formattedModel"
     :label="label"
     auto-grow
     readonly
@@ -41,7 +42,9 @@
 import type { ValidationAttributes } from "@/types/OpenAPIValidationAttributes";
 import type { ValidationRule } from "vuetify/framework";
 
+import { computed } from "vue";
 import { useI18n } from "vue-i18n";
+import { useDate } from "vuetify/framework";
 
 import { useInputValidation } from "@/composables/useInputValidation";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
@@ -70,6 +73,11 @@ const { required, allRules, canNotEdit } = useInputValidation(
 );
 
 const model = defineModel<Date | null>();
+
+const date = useDate();
+const formattedModel = computed(() => {
+  return model.value ? date.format(model.value, "fullDate") : "";
+});
 
 const { t } = useI18n();
 </script>
