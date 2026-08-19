@@ -1,8 +1,10 @@
 <template>
   <v-date-input
-    v-model="internalDate"
+    v-if="displayMode !== InputDisplayMode.READ"
+    v-model="model"
     :rules="allRules"
     v-bind="$attrs"
+    :readonly="canNotEdit"
   >
     <template #label>
       {{ label }}
@@ -16,6 +18,16 @@
       }}</span>
     </template>
   </v-date-input>
+  <v-textarea
+    v-else
+    :model-value="model"
+    :label="label"
+    auto-grow
+    readonly
+    hide-details
+    variant="plain"
+    v-bind="$attrs"
+  />
 </template>
 
 <script
@@ -29,18 +41,12 @@
 import type { ValidationAttributes } from "@/types/OpenAPIValidationAttributes";
 import type { ValidationRule } from "vuetify/framework";
 
-import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
 import { useInputValidation } from "@/composables/useInputValidation";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
-defineOptions({
-  inheritAttrs: false,
-});
-
 const {
-  label,
   displayMode = InputDisplayMode.CREATE,
   disableEdit = false,
   validationAttributeMap,
@@ -64,36 +70,6 @@ const { required, allRules, canNotEdit } = useInputValidation(
 );
 
 const model = defineModel<Date | null>();
-
-const internalDate = computed<Date | undefined>({
-  get() {
-    if (!model.value) {
-      return undefined;
-    }
-
-    return new Date(
-      model.value.getFullYear(),
-      model.value.getMonth(),
-      model.value.getDate(),
-      12,
-      0,
-      0
-    );
-  },
-
-  set(value) {
-    model.value = value
-      ? new Date(
-          value.getFullYear(),
-          value.getMonth(),
-          value.getDate(),
-          12,
-          0,
-          0
-        )
-      : null;
-  },
-});
 
 const { t } = useI18n();
 </script>
