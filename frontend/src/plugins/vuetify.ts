@@ -51,7 +51,6 @@ export default createVuetify({
       showWeek: true,
       weekdayFormat: "short",
       placeholder: "TT.MM.JJJJ",
-      displayFormat: "fullDate",
     },
     VDialog: {
       maxWidth: "800px",
