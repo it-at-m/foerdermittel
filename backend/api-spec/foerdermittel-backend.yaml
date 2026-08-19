@@ -2151,6 +2151,7 @@ components:
           type: string
     ListennameCreateDTO:
       required:
+      - assignedStadtbezirke
       - bezeichnung
       - kurzbez
       type: object

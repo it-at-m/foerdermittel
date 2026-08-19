@@ -92,6 +92,7 @@
           <td style="width: 250px">
             <fm-autocomplete
               v-model="selectedStadtbezirk"
+              :loading="stadtbezirkLoading"
               :items="availableStadtbezirke"
               :item-title="formatStadtbezirk"
               :return-object="true"
@@ -159,7 +160,7 @@ const modelValue = defineModel<Partial<StadtbezirkslisteResponseDTO>>({
   required: true,
 });
 
-const { data: stadtbezirke, call: getStadtbezirke } = useGetStadtbezirke();
+const { data: stadtbezirke, call: getStadtbezirke, loading: stadtbezirkLoading } = useGetStadtbezirke();
 
 getStadtbezirke({
   page: 0,
