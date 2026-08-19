@@ -28,13 +28,11 @@
           :display-mode="displayMode"
           :disabled="!modelValue.hasHa"
           disable-edit
-          required
-          :counter="2"
-          :rules="[
-            rules.required(),
-            rules.minLength(1),
-            rules.maxLength(2),
-            rules.pattern(/^[a-zA-Z0-9]+$/),
+          :validation-attribute-map="
+                      UnterabschnittCreateDTOPropertyValidationAttributesMap
+                    "
+                    validation-attribute-key="ua"
+                    :additional-rules="[
             rules['unique']!(unterabschnittFormContext.uas, currentUa),
           ]"
           :label="t('model.unterabschnitt.ua')"
@@ -46,9 +44,10 @@
           v-model="modelValue.bezeichnung"
           :display-mode="displayMode"
           :disabled="!modelValue.hasHa"
-          required
-          :counter="200"
-          :rules="[rules.required(), rules.maxLength(200)]"
+          :validation-attribute-map="
+                                UnterabschnittCreateDTOPropertyValidationAttributesMap
+                              "
+                              validation-attribute-key="bezeichnung"
           :label="t('model.unterabschnitt.bezeichnung')"
         />
       </v-col>
