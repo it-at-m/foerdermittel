@@ -82,7 +82,6 @@ export default createVuetify({
       clearOnSelect: true,
     },
   },
-
   theme: {
     themes: {
       light: {
