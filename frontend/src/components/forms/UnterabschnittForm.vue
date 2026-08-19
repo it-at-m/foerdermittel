@@ -29,10 +29,10 @@
           :disabled="!modelValue.hasHa"
           disable-edit
           :validation-attribute-map="
-                      UnterabschnittCreateDTOPropertyValidationAttributesMap
-                    "
-                    validation-attribute-key="ua"
-                    :additional-rules="[
+            UnterabschnittCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="ua"
+          :additional-rules="[
             rules['unique']!(unterabschnittFormContext.uas, currentUa),
           ]"
           :label="t('model.unterabschnitt.ua')"
@@ -45,9 +45,9 @@
           :display-mode="displayMode"
           :disabled="!modelValue.hasHa"
           :validation-attribute-map="
-                                UnterabschnittCreateDTOPropertyValidationAttributesMap
-                              "
-                              validation-attribute-key="bezeichnung"
+            UnterabschnittCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bezeichnung"
           :label="t('model.unterabschnitt.bezeichnung')"
         />
       </v-col>
