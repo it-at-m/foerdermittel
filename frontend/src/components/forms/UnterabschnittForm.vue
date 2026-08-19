@@ -35,10 +35,7 @@
             rules.minLength(1),
             rules.maxLength(2),
             rules.pattern(/^[a-zA-Z0-9]+$/),
-            rules['unique']!(
-              unterabschnittFormContext.uas,
-              currentUa,
-            ),
+            rules['unique']!(unterabschnittFormContext.uas, currentUa),
           ]"
           :label="t('model.unterabschnitt.ua')"
         />
@@ -84,13 +81,11 @@ const modelValue = defineModel<Partial<UnterabschnittResponseDTO>>({
 
 const currentUa = ref(modelValue.value.ua);
 
-const {
-  unterabschnittFormContext,
-  displayMode = InputDisplayMode.CREATE,
-} = defineProps<{
-  unterabschnittFormContext: DeepReadonly<UnterabschnittFormContext>;
-  displayMode?: InputDisplayMode;
-}>();
+const { unterabschnittFormContext, displayMode = InputDisplayMode.CREATE } =
+  defineProps<{
+    unterabschnittFormContext: DeepReadonly<UnterabschnittFormContext>;
+    displayMode?: InputDisplayMode;
+  }>();
 
 const emit = defineEmits<{
   isValid: [boolean | null];
@@ -106,7 +101,7 @@ const HaItems = computed(() =>
   unterabschnittFormContext.hasHas.map((hauptabschnitt) => ({
     ...hauptabschnitt,
     anzeige: `${hauptabschnitt.ha} (${hauptabschnitt.bezeichnung})`,
-  })),
+  }))
 );
 
 const formRef = useTemplateRef<VForm>("form");

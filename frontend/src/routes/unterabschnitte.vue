@@ -60,17 +60,17 @@ const { t } = useI18n();
 
 const headers: DataTableHeader<Partial<UnterabschnittResponseDTO>>[] = [
   {
-      title: t("model.unterabschnitt.hasHa"),
-      value: "hasHa",
-      align: "center",
-      width: 80,
-    },
-    {
-        title: t("model.unterabschnitt.haBezeichnung"),
-        value: "haBezeichnung",
-        align: "start",
-        width: 150,
-      },
+    title: t("model.unterabschnitt.hasHa"),
+    value: "hasHa",
+    align: "center",
+    width: 80,
+  },
+  {
+    title: t("model.unterabschnitt.haBezeichnung"),
+    value: "haBezeichnung",
+    align: "start",
+    width: 150,
+  },
   {
     title: t("model.unterabschnitt.ua"),
     value: "ua",
@@ -114,7 +114,7 @@ const { dataTableOptions, onSuccess, onFailure } = usePagination(
   getUnterabschnitte,
   isAdmin,
   getUnterabschnittFormContext,
-  () => unterabschnittFormRef.value?.validate(),
+  () => unterabschnittFormRef.value?.validate()
 );
 
 const {
@@ -124,7 +124,7 @@ const {
 } = useCreateUnterabschnitt();
 
 const handleCreate = async (
-  unterabschnittCreateDTO: Partial<UnterabschnittResponseDTO>,
+  unterabschnittCreateDTO: Partial<UnterabschnittResponseDTO>
 ) => {
   // TODO: some type checking improvements
   const model = unterabschnittCreateDTO as UnterabschnittResponseDTO;
@@ -147,7 +147,7 @@ const {
 } = useUpdateUnterabschnitt();
 
 const handleUpdate = async (
-  unterabschnittUpdateDTO: Partial<UnterabschnittResponseDTO>,
+  unterabschnittUpdateDTO: Partial<UnterabschnittResponseDTO>
 ) => {
   // TODO: some type checking improvements
   const model = unterabschnittUpdateDTO as UnterabschnittResponseDTO;
@@ -188,6 +188,6 @@ const loading = computed(
     getUnterabschnittFormContextLoading.value ||
     createUnterabschnittLoading.value ||
     updateUnterabschnittLoading.value ||
-    deleteUnterabschnittLoading.value,
+    deleteUnterabschnittLoading.value
 );
 </script>
