@@ -12,12 +12,11 @@
           disable-edit
           required
           uppercase
-          :counter="3"
-          :rules="[
-            rules.required(),
-            rules.minLength(1),
-            rules.maxLength(3),
-            rules.pattern(/^[A-Z0-9]{1,3}$/),
+          :validation-attribute-map="
+            ListennameCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="kurzbez"
+          :additional-rules="[
             rules['unique']!(
               listennameFormContext.stadtbezirksliste,
               currentKurzbez
@@ -40,98 +39,175 @@
     </v-row>
     <v-divider class="my-4" />
 
-    <div class="text-h6 mb-2">
-      {{ t("model.stadtbezirksliste.stadtBezirkeDerListe") }}
-    </div>
-    <v-divider class="my-4" />
-    <v-table density="compact">
-      <thead>
-        <tr>
-          <th width="100">ID</th>
-          <th>{{ t("model.stadtbezirk.stadtbezirk") }}</th>
-          <th>{{ t("model.stadtbezirksliste.listeBezeichnung") }}</th>
-          <th width="100"></th>
-        </tr>
-      </thead>
+    <!-- Stadtbezirke -->
+    <div class="d-flex align-center mb-4">
+      <div>
+        <div class="text-subtitle-1 font-weight-medium">
+          {{ t("model.stadtbezirksliste.stadtBezirkeDerListe") }}
+        </div>
+        <div class="text-body-2 text-medium-emphasis">
+          {{ assignedStadtbezirkeCount }}
+          {{ assignedStadtbezirkeCount === 1 ? "Bezirk" : "Bezirke" }}
+          hinzugefügt
+        </div>
+      </div>
 
-      <tbody>
-        <tr
-          v-for="stadtbezirk in modelValue.assignedStadtbezirke"
-          :key="stadtbezirk.stadtbezirkId"
-        >
-          <td>{{ stadtbezirk.stadtbezirkId }}</td>
-          <td>{{ stadtbezirk.stadtbezirkBezeichnung }}</td>
-          <td>
-            <v-text-field
-              v-model="stadtbezirk.bezeichnung"
-              variant="outlined"
-              density="compact"
-              hide-details
-              :rules="[rules.maxLength(200)]"
-            />
-          </td>
-          <td class="text-end">
-            <v-btn
-              :icon="mdiDelete"
-              variant="text"
-              :text="t('common.action.delete')"
-              @click="removeStadtbezirk(stadtbezirk.stadtbezirkId!)"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </v-table>
-    <v-divider class="my-4" />
-    <div class="text-h6 mb-2">
-      {{ t("model.stadtbezirksliste.addBezirke") }}
-    </div>
-    <v-divider class="my-4" />
-    <v-table density="compact">
-      <tbody>
-        <tr height="100">
-          <td style="width: 250px">
-            <fm-autocomplete
-              v-model="selectedStadtbezirk"
-              :loading="stadtbezirkLoading"
-              :items="availableStadtbezirke"
-              :item-title="formatStadtbezirk"
-              :return-object="true"
-              :label="t('model.stadtbezirksliste.bezStadtbezirk')"
-              variant="outlined"
-              density="compact"
-              :menu-props="{
-                location: 'bottom',
-                contained: true,
-              }"
-            />
-          </td>
+      <v-spacer />
 
-          <td>
+      <v-chip
+        v-if="assignedStadtbezirkeCount"
+        size="small"
+        variant="tonal"
+      >
+        {{ assignedStadtbezirkeCount }}
+      </v-chip>
+    </div>
+    <!-- Bereits zugeordnete Stadtbezirke -->
+    <v-sheet
+      v-if="assignedStadtbezirkeCount"
+      border
+      rounded="lg"
+      class="mb-4 overflow-hidden"
+    >
+      <div
+        v-for="(stadtbezirk, index) in modelValue.assignedStadtbezirke"
+        :key="stadtbezirk.stadtbezirkId"
+      >
+        <div class="d-flex align-center px-4 py-3">
+          <v-avatar
+            size="32"
+            variant="tonal"
+            class="mr-3"
+          >
+            <span class="text-caption font-weight-bold">
+              {{ stadtbezirk.stadtbezirkId }}
+            </span>
+          </v-avatar>
+
+          <div
+            class="text-body-1 font-weight-medium mr-4"
+            style="min-width: 180px"
+          >
+            {{ stadtbezirk.stadtbezirkBezeichnung }}
+          </div>
+
+          <div class="flex-grow-1">
             <fm-text-field
-              v-model="newBezeichnung"
+              v-model="stadtbezirk.bezeichnung"
+              :display-mode="displayMode"
               :label="t('model.stadtbezirksliste.listeBezeichnung')"
               variant="outlined"
               density="compact"
-              :counter="200"
-              :rules="[rules.maxLength(200)]"
+              hide-details
+              :validation-attribute-map="
+                StadtbezirkslisteCreateDTOPropertyValidationAttributesMap
+              "
+              validation-attribute-key="bezeichnung"
             />
-          </td>
+          </div>
 
-          <td
-            style="width: 100px"
-            class="text-end"
+          <v-btn
+            :icon="mdiDelete"
+            variant="text"
+            class="ml-2"
+            :disabled="displayMode === InputDisplayMode.READ"
+            @click="removeStadtbezirk(stadtbezirk.stadtbezirkId!)"
+          />
+        </div>
+
+        <v-divider v-if="index < assignedStadtbezirkeCount - 1" />
+      </div>
+    </v-sheet>
+
+    <!-- Empty State -->
+    <v-sheet
+      v-else
+      border
+      rounded="lg"
+      class="d-flex flex-column align-center justify-center pa-6 mb-4"
+    >
+      <v-icon
+        :icon="mdiMapMarkerRemoveOutline"
+        size="36"
+        class="mb-2 text-medium-emphasis"
+      />
+      <div class="text-body-1 font-weight-medium">
+        Noch keine Stadtbezirke hinzugefügt
+      </div>
+      <div class="text-body-2 text-medium-emphasis mt-1">
+        Wähle unten einen Stadtbezirk aus.
+      </div>
+    </v-sheet>
+
+    <!-- Stadtbezirk hinzufügen -->
+    <v-sheet
+      border
+      rounded="lg"
+      class="pa-4"
+    >
+      <div class="text-subtitle-2 font-weight-medium mb-3">
+        {{ t("model.stadtbezirksliste.addBezirke") }}
+      </div>
+
+      <v-row
+        align="start"
+        dense
+      >
+        <v-col
+          cols="12"
+          md="3"
+        >
+          <fm-autocomplete
+            v-model="selectedStadtbezirk"
+            :loading="stadtbezirkLoading"
+            :items="availableStadtbezirke"
+            :item-title="formatStadtbezirk"
+            :return-object="true"
+            :label="t('model.stadtbezirksliste.bezStadtbezirk')"
+            variant="outlined"
+            density="comfortable"
+            :menu-props="{
+              location: 'bottom',
+              contained: true,
+            }"
+          />
+        </v-col>
+
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <fm-text-field
+            v-model="newBezeichnung"
+            :label="t('model.stadtbezirksliste.listeBezeichnung')"
+            variant="outlined"
+            density="comfortable"
+            :validation-attribute-map="
+              StadtbezirkslisteCreateDTOPropertyValidationAttributesMap
+            "
+            validation-attribute-key="listeBezeichnung"
+          />
+        </v-col>
+
+        <v-col
+          cols="12"
+          md="3"
+          class="d-flex"
+        >
+          <v-btn
+            color="primary"
+            variant="tonal"
+            prepend-icon="mdi-plus"
+            block
+            height="48"
+            :disabled="!selectedStadtbezirk"
+            @click="addStadtbezirk"
           >
-            <v-btn
-              :icon="mdiPlus"
-              variant="text"
-              :text="t('common.action.create')"
-              :disabled="!selectedStadtbezirk"
-              @click="addStadtbezirk"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </v-table>
+            {{ t("common.action.add") }}
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-sheet>
   </v-form>
 </template>
 
@@ -144,11 +220,13 @@ import type {
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
 
-import { mdiDelete, mdiPlus } from "@mdi/js";
+import { mdiDelete, mdiMapMarkerRemoveOutline } from "@mdi/js";
 import { computed, ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRules } from "vuetify/labs/rules";
 
+import { ListennameCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
+import { StadtbezirkslisteCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend/models/StadtbezirkslisteCreateDTO";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { useGetStadtbezirke } from "@/composables/api/useStadtbezirkApi";
@@ -160,7 +238,11 @@ const modelValue = defineModel<Partial<StadtbezirkslisteResponseDTO>>({
   required: true,
 });
 
-const { data: stadtbezirke, call: getStadtbezirke, loading: stadtbezirkLoading } = useGetStadtbezirke();
+const {
+  data: stadtbezirke,
+  call: getStadtbezirke,
+  loading: stadtbezirkLoading,
+} = useGetStadtbezirke();
 
 getStadtbezirke({
   page: 0,
@@ -175,6 +257,10 @@ const availableStadtbezirke = computed(
           (assigned) => assigned.stadtbezirkId === Number(sb.id)
         )
     ) ?? []
+);
+
+const assignedStadtbezirkeCount = computed(
+  () => modelValue.value.assignedStadtbezirke?.length ?? 0
 );
 
 function formatStadtbezirk(stadtbezirk: StadtbezirkResponseDTO) {

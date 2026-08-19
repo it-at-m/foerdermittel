@@ -19,7 +19,8 @@
       "discardChanges": "Änderungen verwerfen",
       "save": "Speichern",
       "search": "Suchen",
-      "update": "Bearbeiten"
+      "update": "Bearbeiten",
+      "add": "Hinzufügen"
     },
     "generics": {
       "show": "{0} anzeigen",
