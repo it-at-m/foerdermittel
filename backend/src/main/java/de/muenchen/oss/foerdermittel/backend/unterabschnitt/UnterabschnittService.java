@@ -40,12 +40,13 @@ public class UnterabschnittService {
     public UnterabschnittFormContext getUnterabschnittFormContext() {
         log.info("Get Unterabschnitt form context");
 
-        List<HauptabschnittResponseDTO> hauptabschnitte = StreamSupport
+        final List<HauptabschnittResponseDTO> hauptabschnitte = StreamSupport
                 .stream(hauptabschnittRepository.findAll().spliterator(), false)
                 .map(hauptabschnittMapper::toDTO)
                 .toList();
 
         return new UnterabschnittFormContext(
+
                 unterabschnittRepository.findAllUas(),
                 hauptabschnitte);
     }
