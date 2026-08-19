@@ -1,6 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.unterabschnitt;
 
-import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittResponseDTO;
 import jakarta.validation.constraints.NotNull;
 

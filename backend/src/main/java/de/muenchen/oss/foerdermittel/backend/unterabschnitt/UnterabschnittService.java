@@ -7,6 +7,8 @@ import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittMa
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
+import java.util.List;
+import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -14,9 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.StreamSupport;
 
 @Service
 @Slf4j
@@ -48,9 +47,9 @@ public class UnterabschnittService {
 
         return new UnterabschnittFormContext(
                 unterabschnittRepository.findAllUas(),
-                hauptabschnitte
-        );
+                hauptabschnitte);
     }
+
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Unterabschnitt createUnterabschnitt(final Unterabschnitt unterabschnitt, final String ha) {
         final Hauptabschnitt hauptabschnitt = hauptabschnittService.getHauptabschnitt(ha);
@@ -63,9 +62,8 @@ public class UnterabschnittService {
     public Unterabschnitt updateUnterabschnitt(final Unterabschnitt unterabschnitt, final String ua) {
         final Unterabschnitt foundUnterabschnitt = ServiceUtils.getEntityOrThrowNotFoundException(ua, unterabschnittRepository);
         foundUnterabschnitt.setBezeichnung(unterabschnitt.getBezeichnung());
-        final Hauptabschnitt hauptabschnitt =
-                hauptabschnittService.getHauptabschnitt(
-                        unterabschnitt.getHasHa().getHa());
+        final Hauptabschnitt hauptabschnitt = hauptabschnittService.getHauptabschnitt(
+                unterabschnitt.getHasHa().getHa());
 
         foundUnterabschnitt.setHasHa(hauptabschnitt);
         log.debug("Update Unterabschnitt {}", foundUnterabschnitt);
