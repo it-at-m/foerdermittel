@@ -102,13 +102,16 @@ class UnterabschnittServiceTest {
         void givenEntityExists_thenReturnEntity() {
             // Given
             final String id = "K";
-            final Hauptabschnitt testHa = new Hauptabschnitt("H4", BEZEICHNUNG);
-            final Unterabschnitt entityToUpdate = new Unterabschnitt(id, "updated", testHa);
-            final Unterabschnitt foundEntity = new Unterabschnitt(id, BEZEICHNUNG, testHa);
-            final Unterabschnitt expectedEntity = new Unterabschnitt(id, "updated", testHa);
+            final Hauptabschnitt storedHa = new Hauptabschnitt("H4", BEZEICHNUNG);
+            final Hauptabschnitt requestedHa = new Hauptabschnitt("H5", BEZEICHNUNG);
+            final Hauptabschnitt resolvedHa = new Hauptabschnitt("H5", "Resolved");
+            final Unterabschnitt entityToUpdate = new Unterabschnitt(id, "updated", requestedHa);
+            final Unterabschnitt foundEntity = new Unterabschnitt(id, BEZEICHNUNG, storedHa);
+            final Unterabschnitt expectedEntity = new Unterabschnitt(id, "updated", resolvedHa);
 
             when(unterabschnittRepository.findById(id)).thenReturn(Optional.of(foundEntity));
-            when(hauptabschnittService.getHauptabschnitt(testHa.getHa())).thenReturn(testHa);
+            when(hauptabschnittService.getHauptabschnitt(requestedHa.getHa()))
+                    .thenReturn(resolvedHa);
             when(unterabschnittRepository.update(foundEntity)).thenReturn(expectedEntity);
 
             // When
@@ -116,10 +119,12 @@ class UnterabschnittServiceTest {
 
             // Then
             assertThat(foundEntity.getBezeichnung()).isEqualTo("updated");
-            verify(unterabschnittRepository, times(1)).findById(id);
-            verify(hauptabschnittService, times(1)).getHauptabschnitt(testHa.getHa());
-            verify(unterabschnittRepository, times(1)).update(foundEntity);
+            assertThat(foundEntity.getHasHa()).isSameAs(resolvedHa);
             assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
+
+            verify(unterabschnittRepository, times(1)).findById(id);
+            verify(hauptabschnittService, times(1)).getHauptabschnitt(requestedHa.getHa());
+            verify(unterabschnittRepository, times(1)).update(foundEntity);
         }
 
         @Test
