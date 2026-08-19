@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: foerdermittel-backend
   description: Backend component for the application foerdermittel
-  version: 0.0.1-SNAPSHOT
+  version: 0.1.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -1386,6 +1386,76 @@ paths:
                 $ref: "#/components/schemas/PublikationFormContext"
       security:
       - bearerAuth: []
+  /projekte:
+    get:
+      tags:
+      - projekt-controller
+      operationId: getProjekte
+      parameters:
+      - name: projnr
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: fobFb
+        in: query
+        required: false
+        schema:
+          type: number
+      - name: kurKurzbez
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: uasUa
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: pname
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: pstrasse
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "projnr,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PagedModelProjekt"
   /kurzbezeichnungen/form-context:
     get:
       tags:
@@ -2281,6 +2351,30 @@ components:
           type: array
           items:
             type: string
+    PagedModelProjekt:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/Projekt"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    Projekt:
+      type: object
+      properties:
+        projnr:
+          type: string
+        fobFb:
+          type: number
+        kurKurzbez:
+          type: string
+        uasUa:
+          type: string
+        pname:
+          type: string
+        pstrasse:
+          type: string
     PagedModelKurzbezeichnungResponseDTO:
       type: object
       properties:
