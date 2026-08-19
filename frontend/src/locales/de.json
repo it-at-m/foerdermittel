@@ -160,8 +160,9 @@
     "unterabschnitt": {
       "modelName": "Unterabschnitt | Unterabschnitte",
       "ua": "Unterabschnitt",
-      "bezeichnung": "Bezeichnung",
-      "hasHa": "Hauptabschnitt"
+      "bezeichnung": "Unterabschnittbezeichnung",
+      "hasHa": "Hauptabschnitt",
+      "haBezeichnung": "Hauptabschnittbezeichnung"
     },
     "benutzerhinweis": {
       "modelName": "Benutzerhinweis | Benutzerhinweise",
