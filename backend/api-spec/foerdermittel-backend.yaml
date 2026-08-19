@@ -623,7 +623,7 @@ paths:
           items:
             type: string
           default:
-          - "ua,ASC"
+          - "hasHa,ASC"
       responses:
         "200":
           description: OK
@@ -1747,6 +1747,7 @@ components:
     UnterabschnittResponseDTO:
       required:
       - bezeichnung
+      - haBezeichnung
       - hasHa
       - id
       - ua
@@ -1759,6 +1760,8 @@ components:
         bezeichnung:
           type: string
         hasHa:
+          type: string
+        haBezeichnung:
           type: string
     TraegerUpdateDTO:
       required:
@@ -2363,7 +2366,7 @@ components:
         hasHas:
           type: array
           items:
-            type: string
+            $ref: "#/components/schemas/HauptabschnittResponseDTO"
     PagedModelTraegerResponseDTO:
       type: object
       properties:
