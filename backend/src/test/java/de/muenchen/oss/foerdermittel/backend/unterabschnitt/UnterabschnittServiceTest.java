@@ -56,13 +56,10 @@ class UnterabschnittServiceTest {
             final int pageSize = 10;
             final Pageable pageable = PageRequest.of(pageNumber, pageSize);
 
-            final Unterabschnitt entity1 =
-                    new Unterabschnitt("K", "Test 1", new Hauptabschnitt("H1", BEZEICHNUNG));
-            final Unterabschnitt entity2 =
-                    new Unterabschnitt("L", "Test 2", new Hauptabschnitt("H2", BEZEICHNUNG));
+            final Unterabschnitt entity1 = new Unterabschnitt("K", "Test 1", new Hauptabschnitt("H1", BEZEICHNUNG));
+            final Unterabschnitt entity2 = new Unterabschnitt("L", "Test 2", new Hauptabschnitt("H2", BEZEICHNUNG));
             final List<Unterabschnitt> entities = Arrays.asList(entity1, entity2);
-            final Page<Unterabschnitt> expectedPage =
-                    new PageImpl<>(entities, pageable, entities.size());
+            final Page<Unterabschnitt> expectedPage = new PageImpl<>(entities, pageable, entities.size());
 
             when(unterabschnittRepository.findAll(pageable)).thenReturn(expectedPage);
 
@@ -82,17 +79,14 @@ class UnterabschnittServiceTest {
             // Given
             final Hauptabschnitt testHa = new Hauptabschnitt("H3", BEZEICHNUNG);
             final String ha = testHa.getHa();
-            final Unterabschnitt entityToInsert =
-                    new Unterabschnitt("K", BEZEICHNUNG, testHa);
-            final Unterabschnitt expectedEntity =
-                    new Unterabschnitt("K", BEZEICHNUNG, testHa);
+            final Unterabschnitt entityToInsert = new Unterabschnitt("K", BEZEICHNUNG, testHa);
+            final Unterabschnitt expectedEntity = new Unterabschnitt("K", BEZEICHNUNG, testHa);
 
             when(hauptabschnittService.getHauptabschnitt(ha)).thenReturn(testHa);
             when(unterabschnittRepository.insert(entityToInsert)).thenReturn(expectedEntity);
 
             // When
-            final Unterabschnitt result =
-                    unitUnderTest.createUnterabschnitt(entityToInsert, ha);
+            final Unterabschnitt result = unitUnderTest.createUnterabschnitt(entityToInsert, ha);
 
             // Then
             verify(hauptabschnittService).getHauptabschnitt(ha);
@@ -109,20 +103,16 @@ class UnterabschnittServiceTest {
             // Given
             final String id = "K";
             final Hauptabschnitt testHa = new Hauptabschnitt("H4", BEZEICHNUNG);
-            final Unterabschnitt entityToUpdate =
-                    new Unterabschnitt(id, "updated", testHa);
-            final Unterabschnitt foundEntity =
-                    new Unterabschnitt(id, BEZEICHNUNG, testHa);
-            final Unterabschnitt expectedEntity =
-                    new Unterabschnitt(id, "updated", testHa);
+            final Unterabschnitt entityToUpdate = new Unterabschnitt(id, "updated", testHa);
+            final Unterabschnitt foundEntity = new Unterabschnitt(id, BEZEICHNUNG, testHa);
+            final Unterabschnitt expectedEntity = new Unterabschnitt(id, "updated", testHa);
 
             when(unterabschnittRepository.findById(id)).thenReturn(Optional.of(foundEntity));
             when(hauptabschnittService.getHauptabschnitt(testHa.getHa())).thenReturn(testHa);
             when(unterabschnittRepository.update(foundEntity)).thenReturn(expectedEntity);
 
             // When
-            final Unterabschnitt result =
-                    unitUnderTest.updateUnterabschnitt(entityToUpdate, id);
+            final Unterabschnitt result = unitUnderTest.updateUnterabschnitt(entityToUpdate, id);
 
             // Then
             assertThat(foundEntity.getBezeichnung()).isEqualTo("updated");
@@ -137,16 +127,14 @@ class UnterabschnittServiceTest {
             // Given
             final String id = "K";
             final Hauptabschnitt testHa = new Hauptabschnitt("H5", BEZEICHNUNG);
-            final Unterabschnitt entityToUpdate =
-                    new Unterabschnitt(id, BEZEICHNUNG, testHa);
+            final Unterabschnitt entityToUpdate = new Unterabschnitt(id, BEZEICHNUNG, testHa);
 
             when(unterabschnittRepository.findById(id)).thenReturn(Optional.empty());
 
             // When
-            final Exception exception =
-                    Assertions.assertThrows(
-                            NotFoundException.class,
-                            () -> unitUnderTest.updateUnterabschnitt(entityToUpdate, id));
+            final Exception exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> unitUnderTest.updateUnterabschnitt(entityToUpdate, id));
 
             // Then
             verify(unterabschnittRepository, times(1)).findById(id);
@@ -188,10 +176,9 @@ class UnterabschnittServiceTest {
             when(unterabschnittRepository.findById(id)).thenReturn(Optional.empty());
 
             // When
-            final Exception exception =
-                    Assertions.assertThrows(
-                            NotFoundException.class,
-                            () -> unitUnderTest.deleteUnterabschnitt(id));
+            final Exception exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> unitUnderTest.deleteUnterabschnitt(id));
 
             // Then
             verify(unterabschnittRepository, times(1)).findById(id);
@@ -212,11 +199,9 @@ class UnterabschnittServiceTest {
             // Given
             final List<String> allUas = List.of("L", "K", "M");
 
-            final Hauptabschnitt hauptabschnitt =
-                    new Hauptabschnitt("H1", BEZEICHNUNG);
+            final Hauptabschnitt hauptabschnitt = new Hauptabschnitt("H1", BEZEICHNUNG);
 
-            final HauptabschnittResponseDTO hauptabschnittDto =
-                    Mockito.mock(HauptabschnittResponseDTO.class);
+            final HauptabschnittResponseDTO hauptabschnittDto = Mockito.mock(HauptabschnittResponseDTO.class);
 
             when(unterabschnittRepository.findAllUas()).thenReturn(allUas);
             when(hauptabschnittRepository.findAll()).thenReturn(List.of(hauptabschnitt));
