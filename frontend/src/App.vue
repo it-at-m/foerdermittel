@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="app">
     <the-snackbar-queue />
     <the-navigation-drawer />
     <v-main>
@@ -16,3 +16,9 @@
 import TheNavigationDrawer from "@/components/TheNavigationDrawer.vue";
 import TheSnackbarQueue from "@/components/TheSnackbarQueue.vue";
 </script>
+
+<style>
+.app {
+  background: rgb(var(--v-theme-surface));
+}
+</style>
