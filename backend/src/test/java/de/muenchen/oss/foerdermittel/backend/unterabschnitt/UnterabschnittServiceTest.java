@@ -10,6 +10,8 @@ import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.HauptabschnittRepository;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.HauptabschnittService;
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittMapper;
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittResponseDTO;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +41,9 @@ class UnterabschnittServiceTest {
     @Mock
     private HauptabschnittService hauptabschnittService;
 
+    @Mock
+    private HauptabschnittMapper hauptabschnittMapper;
+
     @InjectMocks
     private UnterabschnittService unitUnderTest;
 
@@ -51,10 +56,13 @@ class UnterabschnittServiceTest {
             final int pageSize = 10;
             final Pageable pageable = PageRequest.of(pageNumber, pageSize);
 
-            final Unterabschnitt entity1 = new Unterabschnitt("K", "Test 1", new Hauptabschnitt("H1", BEZEICHNUNG));
-            final Unterabschnitt entity2 = new Unterabschnitt("L", "Test 2", new Hauptabschnitt("H2", BEZEICHNUNG));
+            final Unterabschnitt entity1 =
+                    new Unterabschnitt("K", "Test 1", new Hauptabschnitt("H1", BEZEICHNUNG));
+            final Unterabschnitt entity2 =
+                    new Unterabschnitt("L", "Test 2", new Hauptabschnitt("H2", BEZEICHNUNG));
             final List<Unterabschnitt> entities = Arrays.asList(entity1, entity2);
-            final Page<Unterabschnitt> expectedPage = new PageImpl<>(entities, pageable, entities.size());
+            final Page<Unterabschnitt> expectedPage =
+                    new PageImpl<>(entities, pageable, entities.size());
 
             when(unterabschnittRepository.findAll(pageable)).thenReturn(expectedPage);
 
@@ -74,13 +82,17 @@ class UnterabschnittServiceTest {
             // Given
             final Hauptabschnitt testHa = new Hauptabschnitt("H3", BEZEICHNUNG);
             final String ha = testHa.getHa();
-            final Unterabschnitt entityToInsert = new Unterabschnitt("K", BEZEICHNUNG, testHa);
-            final Unterabschnitt expectedEntity = new Unterabschnitt("K", BEZEICHNUNG, testHa);
+            final Unterabschnitt entityToInsert =
+                    new Unterabschnitt("K", BEZEICHNUNG, testHa);
+            final Unterabschnitt expectedEntity =
+                    new Unterabschnitt("K", BEZEICHNUNG, testHa);
+
             when(hauptabschnittService.getHauptabschnitt(ha)).thenReturn(testHa);
             when(unterabschnittRepository.insert(entityToInsert)).thenReturn(expectedEntity);
 
             // When
-            final Unterabschnitt result = unitUnderTest.createUnterabschnitt(entityToInsert, ha);
+            final Unterabschnitt result =
+                    unitUnderTest.createUnterabschnitt(entityToInsert, ha);
 
             // Then
             verify(hauptabschnittService).getHauptabschnitt(ha);
@@ -97,18 +109,25 @@ class UnterabschnittServiceTest {
             // Given
             final String id = "K";
             final Hauptabschnitt testHa = new Hauptabschnitt("H4", BEZEICHNUNG);
-            final Unterabschnitt entityToUpdate = new Unterabschnitt(id, "updated", testHa);
-            final Unterabschnitt foundEntity = new Unterabschnitt(id, BEZEICHNUNG, testHa);
-            final Unterabschnitt expectedEntity = new Unterabschnitt(id, "updated", testHa);
+            final Unterabschnitt entityToUpdate =
+                    new Unterabschnitt(id, "updated", testHa);
+            final Unterabschnitt foundEntity =
+                    new Unterabschnitt(id, BEZEICHNUNG, testHa);
+            final Unterabschnitt expectedEntity =
+                    new Unterabschnitt(id, "updated", testHa);
+
             when(unterabschnittRepository.findById(id)).thenReturn(Optional.of(foundEntity));
+            when(hauptabschnittService.getHauptabschnitt(testHa.getHa())).thenReturn(testHa);
             when(unterabschnittRepository.update(foundEntity)).thenReturn(expectedEntity);
 
             // When
-            final Unterabschnitt result = unitUnderTest.updateUnterabschnitt(entityToUpdate, id);
+            final Unterabschnitt result =
+                    unitUnderTest.updateUnterabschnitt(entityToUpdate, id);
 
             // Then
             assertThat(foundEntity.getBezeichnung()).isEqualTo("updated");
             verify(unterabschnittRepository, times(1)).findById(id);
+            verify(hauptabschnittService, times(1)).getHauptabschnitt(testHa.getHa());
             verify(unterabschnittRepository, times(1)).update(foundEntity);
             assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
         }
@@ -118,16 +137,29 @@ class UnterabschnittServiceTest {
             // Given
             final String id = "K";
             final Hauptabschnitt testHa = new Hauptabschnitt("H5", BEZEICHNUNG);
-            final Unterabschnitt entityToUpdate = new Unterabschnitt(id, BEZEICHNUNG, testHa);
+            final Unterabschnitt entityToUpdate =
+                    new Unterabschnitt(id, BEZEICHNUNG, testHa);
+
             when(unterabschnittRepository.findById(id)).thenReturn(Optional.empty());
 
             // When
-            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.updateUnterabschnitt(entityToUpdate, id));
+            final Exception exception =
+                    Assertions.assertThrows(
+                            NotFoundException.class,
+                            () -> unitUnderTest.updateUnterabschnitt(entityToUpdate, id));
 
             // Then
             verify(unterabschnittRepository, times(1)).findById(id);
-            verify(unterabschnittRepository, never()).update(Mockito.any(Unterabschnitt.class));
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            verify(
+                    unterabschnittRepository,
+                    never())
+                    .update(Mockito.any(Unterabschnitt.class));
+
+            assertThat(exception.getMessage())
+                    .isEqualTo(
+                            String.format(
+                                    "404 NOT_FOUND \"Could not find entity with ID %s\"",
+                                    id));
         }
     }
 
@@ -137,7 +169,8 @@ class UnterabschnittServiceTest {
         void givenIdExists_thenReturnVoid() {
             // Given
             final String id = "K";
-            when(unterabschnittRepository.findById(id)).thenReturn(Optional.of(new Unterabschnitt()));
+            when(unterabschnittRepository.findById(id))
+                    .thenReturn(Optional.of(new Unterabschnitt()));
             Mockito.doNothing().when(unterabschnittRepository).deleteById(id);
 
             // When
@@ -155,12 +188,19 @@ class UnterabschnittServiceTest {
             when(unterabschnittRepository.findById(id)).thenReturn(Optional.empty());
 
             // When
-            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.deleteUnterabschnitt(id));
+            final Exception exception =
+                    Assertions.assertThrows(
+                            NotFoundException.class,
+                            () -> unitUnderTest.deleteUnterabschnitt(id));
 
             // Then
             verify(unterabschnittRepository, times(1)).findById(id);
             verify(unterabschnittRepository, never()).deleteById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            assertThat(exception.getMessage())
+                    .isEqualTo(
+                            String.format(
+                                    "404 NOT_FOUND \"Could not find entity with ID %s\"",
+                                    id));
         }
     }
 
@@ -171,15 +211,27 @@ class UnterabschnittServiceTest {
         void givenEntitiesExists_thenReturnCorrectFormContext() {
             // Given
             final List<String> allUas = List.of("L", "K", "M");
+
+            final Hauptabschnitt hauptabschnitt =
+                    new Hauptabschnitt("H1", BEZEICHNUNG);
+
+            final HauptabschnittResponseDTO hauptabschnittDto =
+                    Mockito.mock(HauptabschnittResponseDTO.class);
+
             when(unterabschnittRepository.findAllUas()).thenReturn(allUas);
+            when(hauptabschnittRepository.findAll()).thenReturn(List.of(hauptabschnitt));
+            when(hauptabschnittMapper.toDTO(hauptabschnitt)).thenReturn(hauptabschnittDto);
 
             // When
             final UnterabschnittFormContext formContext = unitUnderTest.getUnterabschnittFormContext();
 
             // Then
             verify(unterabschnittRepository, times(1)).findAllUas();
-            assertThat(formContext.uas()).isEqualTo(allUas);
-        }
+            verify(hauptabschnittRepository, times(1)).findAll();
+            verify(hauptabschnittMapper, times(1)).toDTO(hauptabschnitt);
 
+            assertThat(formContext.uas()).isEqualTo(allUas);
+            assertThat(formContext.hasHas()).containsExactly(hauptabschnittDto);
+        }
     }
 }
