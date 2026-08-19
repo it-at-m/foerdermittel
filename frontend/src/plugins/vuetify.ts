@@ -19,80 +19,67 @@ export default createVuetify({
       mdi,
     },
   },
-
   defaults: {
     VBtn: {
       variant: "text",
     },
-
     VTextarea: {
       variant: "outlined",
       persistentPlaceholder: true,
       noResize: true,
     },
-
     VTextField: {
       variant: "outlined",
       persistentPlaceholder: true,
     },
-
     VNumberInput: {
       variant: "outlined",
       persistentPlaceholder: true,
       controlVariant: "stacked",
     },
-
     VCard: {
       class: "elevation-0",
     },
-
     VCardActions: {
       class: "mb-4 mr-4 pt-0",
     },
-
     VDateInput: {
       variant: "outlined",
+      persistentPlaceholder: true,
+      prependIcon: "",
+      hideSpinButtons: true,
+      showWeek: true,
+      weekdayFormat: "short",
+      placeholder: "TT.MM.JJJJ",
+      displayFormat: "fullDate",
     },
-
     VDialog: {
       maxWidth: "800px",
       width: "90%",
       persistent: true,
     },
-
     VNavigationDrawer: {
       permanent: true,
       width: 400,
     },
-
     VTooltip: {
       location: "bottom",
     },
-
     VSnackbar: {
       timeout: 5000,
       color: "info",
     },
-
     VDataTableServer: {
       itemsPerPageOptions: ITEMS_PER_PAGE_OPTIONS.map((option) => ({
         value: option,
         title: String(option),
       })),
     },
-
     VAutocomplete: {
       variant: "outlined",
       persistentPlaceholder: true,
       autoSelectFirst: true,
       clearOnSelect: true,
-    },
-  },
-
-  date: {
-    adapter: VuetifyDateAdapter,
-    locale: {
-      de: "de-DE",
     },
   },
 
@@ -107,7 +94,6 @@ export default createVuetify({
           error: "#FF0000",
         },
       },
-
       dark: {
         colors: {
           primary: "#FFFFFF",
@@ -119,7 +105,12 @@ export default createVuetify({
       },
     },
   },
-
+  date: {
+    adapter: VuetifyDateAdapter,
+    locale: {
+      de: "de-DE",
+    },
+  },
   locale: {
     // @ts-expect-error false positive for type mismatch (no tsc compilation error)
     adapter: createVueI18nAdapter({
