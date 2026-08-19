@@ -3,6 +3,8 @@ package de.muenchen.oss.foerdermittel.backend.unterabschnitt;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.HauptabschnittRepository;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.HauptabschnittService;
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittMapper;
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import lombok.RequiredArgsConstructor;
@@ -13,12 +15,16 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.StreamSupport;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
 public class UnterabschnittService {
 
+    private final HauptabschnittMapper hauptabschnittMapper;
     private final HauptabschnittService hauptabschnittService;
     private final UnterabschnittRepository unterabschnittRepository;
     private final HauptabschnittRepository hauptabschnittRepository;
@@ -34,9 +40,17 @@ public class UnterabschnittService {
     @Transactional(readOnly = true)
     public UnterabschnittFormContext getUnterabschnittFormContext() {
         log.info("Get Unterabschnitt form context");
-        return new UnterabschnittFormContext(unterabschnittRepository.findAllUas(), hauptabschnittRepository.findAllHas());
-    }
 
+        List<HauptabschnittResponseDTO> hauptabschnitte = StreamSupport
+                .stream(hauptabschnittRepository.findAll().spliterator(), false)
+                .map(hauptabschnittMapper::toDTO)
+                .toList();
+
+        return new UnterabschnittFormContext(
+                unterabschnittRepository.findAllUas(),
+                hauptabschnitte
+        );
+    }
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Unterabschnitt createUnterabschnitt(final Unterabschnitt unterabschnitt, final String ha) {
         final Hauptabschnitt hauptabschnitt = hauptabschnittService.getHauptabschnitt(ha);

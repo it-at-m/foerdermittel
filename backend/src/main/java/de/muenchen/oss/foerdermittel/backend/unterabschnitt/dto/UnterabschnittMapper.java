@@ -10,6 +10,7 @@ public interface UnterabschnittMapper {
     @Mapping(source = "ua", target = "id")
     @Mapping(source = "ua", target = "ua")
     @Mapping(source = "hasHa.ha", target = "hasHa")
+    @Mapping(source = "hasHa.bezeichnung", target = "haBezeichnung")
     UnterabschnittResponseDTO toDTO(Unterabschnitt unterabschnitt);
 
     @Mapping(source = "hasHa", target = "hasHa.ha")
