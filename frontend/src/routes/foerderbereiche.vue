@@ -81,6 +81,16 @@ const domainKey = "model.foerderbereich.modelName";
 
 const isAdmin = useHasAnyRole(Role.ADMIN);
 
+definePage({
+  meta: {
+    hasAnyRole: [
+      Role.SACHBEARBEITUNG,
+      Role.SACHBEARBEITUNG_HAUSHALT,
+      Role.ADMIN,
+    ],
+  },
+});
+
 const { t } = useI18n();
 
 const headers: DataTableHeader<Partial<FoerderbereichResponseDTO>>[] = [
