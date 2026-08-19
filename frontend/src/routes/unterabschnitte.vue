@@ -60,21 +60,28 @@ const { t } = useI18n();
 
 const headers: DataTableHeader<Partial<UnterabschnittResponseDTO>>[] = [
   {
+      title: t("model.unterabschnitt.hasHa"),
+      value: "hasHa",
+      align: "center",
+      width: 80,
+    },
+    {
+        title: t("model.unterabschnitt.haBezeichnung"),
+        value: "haBezeichnung",
+        align: "start",
+        width: 150,
+      },
+  {
     title: t("model.unterabschnitt.ua"),
     value: "ua",
     align: "center",
-    width: 120,
+    width: 80,
   },
   {
     title: t("model.unterabschnitt.bezeichnung"),
     value: "bezeichnung",
     align: "start",
-    width: 240,
-  },
-  {
-    title: t("model.unterabschnitt.hasHa"),
-    value: "hasHa",
-    align: "start",
+    width: 350,
   },
 ];
 
@@ -82,6 +89,7 @@ const EMPTY_ITEM_TEMPLATE: Partial<UnterabschnittResponseDTO> = {
   ua: undefined,
   bezeichnung: "",
   hasHa: "",
+  haBezeichnung: "",
 };
 
 const {
@@ -97,6 +105,7 @@ const {
 } = useGetUnterabschnittFormContext();
 
 type UnterabschnittFormType = InstanceType<typeof UnterabschnittForm>;
+
 const unterabschnittFormRef =
   useTemplateRef<UnterabschnittFormType>("unterabschnittForm");
 
@@ -105,7 +114,7 @@ const { dataTableOptions, onSuccess, onFailure } = usePagination(
   getUnterabschnitte,
   isAdmin,
   getUnterabschnittFormContext,
-  () => unterabschnittFormRef.value?.validate()
+  () => unterabschnittFormRef.value?.validate(),
 );
 
 const {
@@ -115,13 +124,15 @@ const {
 } = useCreateUnterabschnitt();
 
 const handleCreate = async (
-  unterabschnittCreateDTO: Partial<UnterabschnittResponseDTO>
+  unterabschnittCreateDTO: Partial<UnterabschnittResponseDTO>,
 ) => {
   // TODO: some type checking improvements
   const model = unterabschnittCreateDTO as UnterabschnittResponseDTO;
+
   await createUnterabschnitt({
     unterabschnittCreateDTO: model,
   });
+
   if (!createUnterabschnitteError.value) {
     await onSuccess(t("common.message.created", [t(domainKey)]));
   } else {
@@ -136,14 +147,16 @@ const {
 } = useUpdateUnterabschnitt();
 
 const handleUpdate = async (
-  unterabschnittUpdateDTO: Partial<UnterabschnittResponseDTO>
+  unterabschnittUpdateDTO: Partial<UnterabschnittResponseDTO>,
 ) => {
   // TODO: some type checking improvements
   const model = unterabschnittUpdateDTO as UnterabschnittResponseDTO;
+
   await updateUnterabschnitt({
     id: model.id,
     unterabschnittUpdateDTO: model,
   });
+
   if (!updateUnterabschnitteError.value) {
     await onSuccess(t("common.message.updated", [t(domainKey)]));
   } else {
@@ -161,6 +174,7 @@ const handleDelete = async (id: string) => {
   await deleteUnterabschnitt({
     id,
   });
+
   if (!deleteUnterabschnitteError.value) {
     await onSuccess(t("common.message.deleted", [t(domainKey)]));
   } else {
@@ -174,6 +188,6 @@ const loading = computed(
     getUnterabschnittFormContextLoading.value ||
     createUnterabschnittLoading.value ||
     updateUnterabschnittLoading.value ||
-    deleteUnterabschnittLoading.value
+    deleteUnterabschnittLoading.value,
 );
 </script>
