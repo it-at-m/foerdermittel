@@ -158,7 +158,7 @@
             :return-object="true"
             :label="t('model.stadtbezirksliste.bezStadtbezirk')"
             variant="outlined"
-            density="comfortable"
+            density="compact"
             :menu-props="{
               location: 'bottom',
               contained: true,
@@ -168,13 +168,13 @@
 
         <v-col
           cols="12"
-          md="6"
+          md="7"
         >
           <fm-text-field
             v-model="newBezeichnung"
             :label="t('model.stadtbezirksliste.listeBezeichnung')"
             variant="outlined"
-            density="comfortable"
+            density="compact"
             :validation-attribute-map="
               StadtbezirkslisteAssignmentResponseDTOPropertyValidationAttributesMap
             "
@@ -184,14 +184,14 @@
 
         <v-col
           cols="12"
-          md="3"
+          md="2"
           class="d-flex"
         >
           <v-btn
             color="primary"
             variant="tonal"
             block
-            height="48"
+            height="40"
             :disabled="!selectedStadtbezirk"
             @click="addStadtbezirk"
           >
