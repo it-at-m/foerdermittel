@@ -18,7 +18,7 @@
           validation-attribute-key="kurzbez"
           :additional-rules="[
             rules['unique']!(
-              listennameFormContext.stadtbezirksliste,
+              listennameFormContext.stadtbezirkslistenIds,
               currentKurzbez
             ),
           ]"
@@ -144,7 +144,7 @@
 
       <v-row
         align="start"
-        dense
+        density="comfortable"
       >
         <v-col
           cols="12"
@@ -207,7 +207,6 @@
 import type {
   StadtbezirkResponseDTO,
   StadtbezirkslisteFormContext,
-  //StadtbezirkslisteFormContext,
   StadtbezirkslisteResponseDTO,
 } from "@/api/generated/foerdermittel-backend";
 import type { DeepReadonly } from "vue";

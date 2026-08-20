@@ -404,7 +404,7 @@ class StadtbezirkslisteIntegrationTest {
 
             // Then
             assertThat(result).isNotNull();
-            assertThat(result.stadtbezirksliste()).isEmpty();
+            assertThat(result.stadtbezirkslistenIds()).isEmpty();
         }
 
         @Test
@@ -424,8 +424,8 @@ class StadtbezirkslisteIntegrationTest {
 
             // Then
             assertThat(result).isNotNull();
-            assertThat(result.stadtbezirksliste()).hasSize(1);
-            assertThat(result.stadtbezirksliste().getFirst()).isEqualToNormalizingUnicode(EXISTING_ID);
+            assertThat(result.stadtbezirkslistenIds()).hasSize(1);
+            assertThat(result.stadtbezirkslistenIds().getFirst()).isEqualToNormalizingUnicode(EXISTING_ID);
         }
 
         private static Stream<Arguments> authorizationMappings() {

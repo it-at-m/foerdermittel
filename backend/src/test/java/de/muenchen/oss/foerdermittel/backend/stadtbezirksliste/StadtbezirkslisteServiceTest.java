@@ -107,7 +107,7 @@ class StadtbezirkslisteServiceTest {
 
             // Then
             verify(listennameRepository, times(1)).findAllKurzBezn();
-            assertThat(result.stadtbezirksliste()).isEqualTo(kurzbezeichnungen);
+            assertThat(result.stadtbezirkslistenIds()).isEqualTo(kurzbezeichnungen);
         }
     }
 

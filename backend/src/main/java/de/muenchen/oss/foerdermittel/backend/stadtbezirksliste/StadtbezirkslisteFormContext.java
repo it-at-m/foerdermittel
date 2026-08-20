@@ -4,8 +4,8 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-public record StadtbezirkslisteFormContext(@NotNull List<String> stadtbezirksliste) {
+public record StadtbezirkslisteFormContext(@NotNull List<String> stadtbezirkslistenIds) {
     public StadtbezirkslisteFormContext {
-        stadtbezirksliste = List.copyOf(stadtbezirksliste);
+        stadtbezirkslistenIds = List.copyOf(stadtbezirkslistenIds);
     }
 }

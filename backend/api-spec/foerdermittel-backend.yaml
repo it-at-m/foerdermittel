@@ -2417,10 +2417,10 @@ components:
           $ref: "#/components/schemas/PageMetadata"
     StadtbezirkslisteFormContext:
       required:
-      - stadtbezirksliste
+      - stadtbezirkslistenIds
       type: object
       properties:
-        stadtbezirksliste:
+        stadtbezirkslistenIds:
           type: array
           items:
             type: string
