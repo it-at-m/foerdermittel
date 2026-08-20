@@ -14,42 +14,39 @@
           :display-mode="displayMode"
           :label="t('model.archiv.projnr')"
           :rules="[rules.required()]"
-          :validation-attribute-map="validationAttributeMap"
+          :validation-attribute-map="
+            ArchivCreateDTOPropertyValidationAttributesMap
+          "
           validation-attribute-key="projnr"
+          :disable-edit="displayMode === InputDisplayMode.EDIT"
         />
       </v-col>
     </v-row>
 
     <v-row>
       <v-col cols="4">
-        <fm-date-field
+        <fm-date-input
           v-model="modelValue.speicherDatum"
           :display-mode="displayMode"
           :label="t('model.archiv.speicherDatum')"
-          :validation-attribute-map="validationAttributeMap"
-          validation-attribute-key="speicherDatum"
           clearable
         />
       </v-col>
 
       <v-col cols="4">
-        <fm-date-field
+        <fm-date-input
           v-model="modelValue.mikroDatPlan"
           :display-mode="displayMode"
           :label="t('model.archiv.mikroDatPlan')"
-          :validation-attribute-map="validationAttributeMap"
-          validation-attribute-key="mikroDatPlan"
           clearable
         />
       </v-col>
 
       <v-col cols="4">
-        <fm-date-field
+        <fm-date-input
           v-model="modelValue.mikroDat"
           :display-mode="displayMode"
           :label="t('model.archiv.mikroDat')"
-          :validation-attribute-map="validationAttributeMap"
-          validation-attribute-key="mikroDat"
           clearable
         />
       </v-col>
@@ -78,10 +75,6 @@
         <fm-text-field
           v-model="modelValue.notizen"
           :display-mode="displayMode"
-          :counter="1000"
-          :rules="[rules.maxLength(1000)]"
-          :validation-attribute-map="validationAttributeMap"
-          validation-attribute-key="notizen"
           :label="t('model.archiv.notizen')"
         />
       </v-col>
@@ -100,23 +93,19 @@ import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRules } from "vuetify/labs/rules";
 
+import { ArchivCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
-import FmDateField from "@/components/common/FmDateField.vue";
+import FmDateInput from "@/components/common/FmDateInput.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
 const { t } = useI18n();
 const rules = useRules();
 
-const {
-  projekte,
-  displayMode = InputDisplayMode.CREATE,
-  validationAttributeMap,
-} = defineProps<{
+const { projekte, displayMode = InputDisplayMode.CREATE } = defineProps<{
   projekte: ProjektResponseDTO[];
   displayMode?: InputDisplayMode;
-  validationAttributeMap: Record<string, string>;
 }>();
 
 const modelValue = defineModel<Partial<ArchivResponseDTO>>({
@@ -127,7 +116,7 @@ const projektItems = computed(() =>
   projekte.map((projekt) => ({
     ...projekt,
     anzeige: `${projekt.projnr} (${projekt.pname})`,
-  })),
+  }))
 );
 
 const emit = defineEmits<{
