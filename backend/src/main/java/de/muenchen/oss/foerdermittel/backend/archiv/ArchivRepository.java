@@ -9,6 +9,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface ArchivRepository extends PagingAndSortingRepository<Archiv, Long>, CrudRepository<Archiv, Long>,
         InsertAndUpdateRepository<Archiv> {
 
-    @Query("SELECT a.id FROM Archiv a JOIN a.projekt p")
+    @Query("SELECT a.id FROM Archiv a")
     List<Long> findAllWithProjekt();
 }

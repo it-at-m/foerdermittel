@@ -40,9 +40,7 @@ public class ArchivController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<ArchivResponseDTO> getArchiveintrag(
-            @ParameterObject
-            @PageableDefault(sort = {"projekt.projnr", "speicherDatum"})
-            final Pageable pageable) {
+            @ParameterObject @PageableDefault(sort = { "projekt.projnr", "speicherDatum" }) final Pageable pageable) {
 
         final Page<Archiv> pageWithArchiv = archivService.getArchiveintraege(pageable);
 
@@ -53,8 +51,7 @@ public class ArchivController {
         return new PageImpl<>(
                 archivResponseDTOList,
                 pageWithArchiv.getPageable(),
-                pageWithArchiv.getTotalElements()
-        );
+                pageWithArchiv.getTotalElements());
     }
 
     @GetMapping("/form-context")
