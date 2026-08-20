@@ -119,6 +119,10 @@ export function deepEqualTrimmed(a: unknown, b: unknown): boolean {
     return true;
   }
 
+  if (a instanceof Date && b instanceof Date) {
+    return a.getTime() === b.getTime();
+  }
+
   if (Array.isArray(a) && Array.isArray(b)) {
     return (
       a.length === b.length &&
