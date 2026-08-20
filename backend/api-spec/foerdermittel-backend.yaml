@@ -1816,6 +1816,8 @@ components:
         stadtbezirkBezeichnung:
           type: string
         bezeichnung:
+          maxLength: 200
+          minLength: 1
           type: string
     StadtbezirkslisteResponseDTO:
       required:

@@ -93,7 +93,7 @@
               density="compact"
               hide-details
               :validation-attribute-map="
-                StadtbezirkslisteCreateDTOPropertyValidationAttributesMap
+                StadtbezirkslisteAssignmentResponseDTOPropertyValidationAttributesMap
               "
               validation-attribute-key="bezeichnung"
             />
@@ -176,9 +176,9 @@
             variant="outlined"
             density="comfortable"
             :validation-attribute-map="
-              StadtbezirkslisteCreateDTOPropertyValidationAttributesMap
+              StadtbezirkslisteAssignmentResponseDTOPropertyValidationAttributesMap
             "
-            validation-attribute-key="listeBezeichnung"
+            validation-attribute-key="bezeichnung"
           />
         </v-col>
 
@@ -217,8 +217,10 @@ import { computed, ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRules } from "vuetify/labs/rules";
 
-import { ListennameCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
-import { StadtbezirkslisteCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend/models/StadtbezirkslisteCreateDTO";
+import {
+  ListennameCreateDTOPropertyValidationAttributesMap,
+  StadtbezirkslisteAssignmentResponseDTOPropertyValidationAttributesMap,
+} from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { useGetStadtbezirke } from "@/composables/api/useStadtbezirkApi";
