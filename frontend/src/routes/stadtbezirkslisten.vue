@@ -51,7 +51,7 @@
                 cols="12"
                 class="text-medium-emphasis"
               >
-                {{ t("model.stadtbezirksliste.noAssigneStadtbezirke") }}
+                {{ t("model.stadtbezirksliste.noDistricts") }}
               </v-col>
             </v-row>
 

@@ -145,7 +145,8 @@
       "listeBezeichnung": "Notiz",
       "stadtBezirkeDerListe": "Stadtbezirke der Liste",
       "addBezirke": "Bezirk hinzufügen",
-      "noAssigneStadtbezirke": "keine Stadtbezirke zugeordnet"
+      "noDistricts": "Noch keine Stadtbezirke hinzugefügt",
+      "selectHint": "Wähle unten einen Stadtbezirk aus."
     },
     "stichwortbereich": {
       "modelName": "Stichwortbereich | Stichwortbereiche",

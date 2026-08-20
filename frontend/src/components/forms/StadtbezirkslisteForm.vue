@@ -31,8 +31,10 @@
           v-model="modelValue.bezeichnung"
           :display-mode="displayMode"
           required
-          :counter="200"
-          :rules="[rules.required(), rules.maxLength(200)]"
+          :validation-attribute-map="
+            ListennameCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bezeichnung"
           :label="t('model.stadtbezirksliste.bezeichnung')"
         />
       </v-col>
@@ -51,16 +53,7 @@
           hinzugefügt
         </div>
       </div>
-
       <v-spacer />
-
-      <v-chip
-        v-if="assignedStadtbezirkeCount"
-        size="small"
-        variant="tonal"
-      >
-        {{ assignedStadtbezirkeCount }}
-      </v-chip>
     </div>
     <!-- Bereits zugeordnete Stadtbezirke -->
     <v-sheet
@@ -132,10 +125,10 @@
         class="mb-2 text-medium-emphasis"
       />
       <div class="text-body-1 font-weight-medium">
-        Noch keine Stadtbezirke hinzugefügt
+        {{ t("model.stadtbezirksliste.noDistricts") }}
       </div>
       <div class="text-body-2 text-medium-emphasis mt-1">
-        Wähle unten einen Stadtbezirk aus.
+        {{ t("model.stadtbezirksliste.selectHint") }}
       </div>
     </v-sheet>
 
@@ -197,7 +190,6 @@
           <v-btn
             color="primary"
             variant="tonal"
-            prepend-icon="mdi-plus"
             block
             height="48"
             :disabled="!selectedStadtbezirk"
@@ -215,6 +207,7 @@
 import type {
   StadtbezirkResponseDTO,
   StadtbezirkslisteFormContext,
+  //StadtbezirkslisteFormContext,
   StadtbezirkslisteResponseDTO,
 } from "@/api/generated/foerdermittel-backend";
 import type { DeepReadonly } from "vue";
