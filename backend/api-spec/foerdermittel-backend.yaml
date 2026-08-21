@@ -554,7 +554,7 @@ paths:
     put:
       tags:
       - archiv-controller
-      operationId: updateArchivNotiz
+      operationId: updateArchiv
       parameters:
       - name: id
         in: path
@@ -586,7 +586,8 @@ paths:
         in: path
         required: true
         schema:
-          type: string
+          type: integer
+          format: int64
       responses:
         "200":
           description: OK
@@ -1348,7 +1349,7 @@ paths:
     get:
       tags:
       - archiv-controller
-      operationId: getArchiveintrag
+      operationId: getArchiveintraege
       parameters:
       - name: page
         in: query
@@ -1390,7 +1391,7 @@ paths:
     post:
       tags:
       - archiv-controller
-      operationId: createArchive
+      operationId: createArchiv
       requestBody:
         content:
           application/json:
