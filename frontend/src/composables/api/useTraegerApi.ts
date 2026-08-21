@@ -7,6 +7,7 @@ import type {
   TraegerResponseDTO,
   UpdateTraegerRequest,
 } from "@/api/generated/foerdermittel-backend";
+import type { ApiComposables } from "@/util/composable-helper";
 
 import { TraegerControllerApi } from "@/api/generated/foerdermittel-backend";
 import {
@@ -39,3 +40,21 @@ export const {
     context: (api) => api.getTraegerFormContext(),
   })
 );
+
+export function useTraegerApi(): ApiComposables<
+  TraegerResponseDTO,
+  TraegerFormContext,
+  CreateTraegerRequest,
+  TraegerResponseDTO,
+  UpdateTraegerRequest,
+  TraegerResponseDTO,
+  DeleteTraegerRequest
+> {
+  return {
+    getAll: useGetAllTraeger(),
+    context: useGetTraegerFormContext(),
+    create: useCreateTraeger(),
+    update: useUpdateTraeger(),
+    delete: useDeleteTraeger(),
+  };
+}

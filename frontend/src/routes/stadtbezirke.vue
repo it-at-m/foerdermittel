@@ -1,28 +1,26 @@
 <template>
   <base-view :domain-key="domainKey">
     <template #default="{ baseViewLoading }">
-      <!-- @vue-generic {Partial<StadtbezirkResponseDTO>} -->
       <crud-card
-        ref="crudRef"
-        v-model="dataTableOptions"
         :empty-item-template="EMPTY_ITEM_TEMPLATE"
-        :loading="loading || baseViewLoading"
+        :loading="baseViewLoading"
         :table-headers="headers"
+        :api="stadtbezirkApi"
         :domain-key="domainKey"
         :enable-actions="isAdmin"
-        :items="stadtbezirke?.content ?? []"
-        :total-items="stadtbezirke?.page?.totalElements ?? 0"
-        @delete="handleDelete"
-        @create="handleCreate"
-        @update="handleUpdate"
+        :should-load-form-context="isAdmin"
+        :handle-create="handleCreate"
+        :handle-update="handleUpdate"
+        :handle-delete="handleDelete"
+        :form-ref="stadtbezirkFormRef"
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <stadtbezirk-form
-            v-if="stadtbezirkFormContext"
+            v-if="stadtbezirkApi.context.data"
             ref="stadtbezirkForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
-            :stadtbezirk-form-context="stadtbezirkFormContext"
+            :stadtbezirk-form-context="stadtbezirkApi.context.data.value!"
             @is-valid="updateValidity"
           />
         </template>
@@ -35,21 +33,14 @@
 import type { StadtbezirkResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { computed, useTemplateRef } from "vue";
+import { useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
 import StadtbezirkForm from "@/components/forms/StadtbezirkForm.vue";
-import {
-  useCreateStadtbezirk,
-  useDeleteStadtbezirk,
-  useGetStadtbezirke,
-  useGetStadtbezirkFormContext,
-  useUpdateStadtbezirk,
-} from "@/composables/api/useStadtbezirkApi";
+import { useStadtbezirkApi } from "@/composables/api/useStadtbezirkApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
-import usePagination from "@/composables/usePagination";
 import { Role } from "@/types/Role";
 
 const domainKey = "model.stadtbezirk.modelName";
@@ -83,96 +74,39 @@ const EMPTY_ITEM_TEMPLATE: Partial<StadtbezirkResponseDTO> = {
   bezeichnung: "",
 };
 
-const {
-  data: stadtbezirke,
-  call: getStadtbezirke,
-  loading: getStadtbezirkeLoading,
-} = useGetStadtbezirke();
-
-const {
-  data: stadtbezirkFormContext,
-  call: getStadtbezirkFormContext,
-  loading: getStadtbezirkFormContextLoading,
-} = useGetStadtbezirkFormContext();
+const stadtbezirkApi = useStadtbezirkApi();
 
 type StadtbezirkFormType = InstanceType<typeof StadtbezirkForm>;
 const stadtbezirkFormRef =
   useTemplateRef<StadtbezirkFormType>("stadtbezirkForm");
-
-const { dataTableOptions, onSuccess, onFailure } = usePagination(
-  computed(() => stadtbezirke.value?.page?.totalPages),
-  getStadtbezirke,
-  isAdmin,
-  getStadtbezirkFormContext,
-  () => stadtbezirkFormRef.value?.validate()
-);
-
-const {
-  call: createStadtbezirk,
-  loading: createStadtbezirkLoading,
-  error: createStadtbezirkeError,
-} = useCreateStadtbezirk();
 
 const handleCreate = async (
   stadtbezirkCreateDTO: Partial<StadtbezirkResponseDTO>
 ) => {
   // TODO: some type checking improvements
   const model = stadtbezirkCreateDTO as StadtbezirkResponseDTO;
-  await createStadtbezirk({
+  await stadtbezirkApi.create.call({
     stadtbezirkCreateDTO: model,
   });
-  if (!createStadtbezirkeError.value) {
-    await onSuccess(t("common.message.created", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.createdError", [t(domainKey)]));
-  }
+  return !stadtbezirkApi.create.error.value;
 };
-
-const {
-  call: updateStadtbezirk,
-  loading: updateStadtbezirkLoading,
-  error: updateStadtbezirkError,
-} = useUpdateStadtbezirk();
 
 const handleUpdate = async (
   stadtbezirkUpdateDTO: Partial<StadtbezirkResponseDTO>
 ) => {
   // TODO: some type checking improvements
   const model = stadtbezirkUpdateDTO as StadtbezirkResponseDTO;
-  await updateStadtbezirk({
+  await stadtbezirkApi.update.call({
     id: model.id,
     stadtbezirkUpdateDTO: model,
   });
-  if (!updateStadtbezirkError.value) {
-    await onSuccess(t("common.message.updated", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.updatedError", [t(domainKey)]));
-  }
+  return !stadtbezirkApi.update.error.value;
 };
-
-const {
-  call: deleteStadtbezirk,
-  loading: deleteStadtbezirkLoading,
-  error: deleteStadtbezirkError,
-} = useDeleteStadtbezirk();
 
 const handleDelete = async (id: string) => {
-  await deleteStadtbezirk({
+  await stadtbezirkApi.delete.call({
     id,
   });
-  if (!deleteStadtbezirkError.value) {
-    await onSuccess(t("common.message.deleted", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.deletedError", [t(domainKey)]));
-  }
+  return !stadtbezirkApi.delete.error.value;
 };
-
-const loading = computed(
-  () =>
-    getStadtbezirkeLoading.value ||
-    getStadtbezirkFormContextLoading.value ||
-    createStadtbezirkLoading.value ||
-    updateStadtbezirkLoading.value ||
-    deleteStadtbezirkLoading.value
-);
 </script>

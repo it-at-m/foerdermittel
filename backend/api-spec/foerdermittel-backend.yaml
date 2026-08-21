@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: foerdermittel-backend
   description: Backend component for the application foerdermittel
-  version: 0.0.1-SNAPSHOT
+  version: 0.1.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url

@@ -75,8 +75,8 @@
           v-model:search="search"
           fixed-header
           :headers="tableHeadersWithActions"
-          :items="items"
-          :items-length="totalItems"
+          :items="api.getAll.data.value?.content ?? []"
+          :items-length="api.getAll.data.value?.page?.totalElements ?? 0"
           :loading="loading"
           :show-expand="expandable"
           expand-strategy="single"
@@ -132,17 +132,33 @@
   </v-card>
 </template>
 
-<script setup lang="ts" generic="T extends { id?: string }">
-import type { DataTableOptions } from "@/types/DataTableOptions";
+<script
+  setup
+  lang="ts"
+  generic="
+    TGetResponse extends { id?: string },
+    TContextResponse extends {},
+    TCreateRequest extends {},
+    TCreateResponse extends {},
+    TUpdateRequest extends {},
+    TUpdateResponse extends {},
+    TDeleteRequest extends {}
+  "
+>
+import type { ApiComposables } from "@/util/composable-helper";
+import type { Awaitable } from "@vueuse/core";
 import type { DataTableHeader } from "vuetify/framework";
 
 import { mdiDelete, mdiPencil, mdiPlus, mdiTrashCan } from "@mdi/js";
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 import ConfirmCard from "@/components/common/ConfirmCard.vue";
 import UnsavedChangesDialog from "@/components/common/UnsavedChangesDialog.vue";
 import { useDirtyFlag } from "@/composables/useDirtyFlag";
+import usePagination from "@/composables/usePagination";
+import { STATUS_INDICATORS } from "@/constants";
+import { useSnackbarStore } from "@/stores/snackbar";
 import { DialogWidth } from "@/types/DialogWidth";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
@@ -153,27 +169,59 @@ const dialogMode = ref<DialogMode>(null);
 const showDialog = computed(() => dialogMode.value !== null);
 
 const {
-  domainKey,
-  tableHeaders,
   emptyItemTemplate,
-  loading = false,
-  items = [],
+  domainKey,
+  loading: loadingProp = false,
+  tableHeaders,
+  api,
   enableActions = true,
   expandable = false,
   dialogWidth = DialogWidth.MEDIUM,
+  shouldLoadFormContext,
+  handleCreate,
+  handleUpdate,
+  handleDelete,
+  formRef,
 } = defineProps<{
-  emptyItemTemplate: T;
+  emptyItemTemplate: TGetResponse;
   domainKey: string;
   loading?: boolean;
-  tableHeaders: Readonly<DataTableHeader<T>>[];
-  items?: readonly T[];
-  totalItems: number;
+  tableHeaders: Readonly<DataTableHeader<TGetResponse>>[];
+  api: ApiComposables<
+    TGetResponse,
+    TContextResponse,
+    TCreateRequest,
+    TCreateResponse,
+    TUpdateRequest,
+    TUpdateResponse,
+    TDeleteRequest
+  >;
   enableActions?: boolean;
   expandable?: boolean;
   dialogWidth?: DialogWidth;
+  shouldLoadFormContext: boolean;
+  handleCreate: (item: TGetResponse) => Awaitable<boolean>;
+  handleUpdate: (item: TGetResponse) => Awaitable<boolean>;
+  handleDelete: (id: string) => Awaitable<boolean>;
+  formRef?: { validate: () => unknown } | null | undefined;
 }>();
 
-const dataTableOptions = defineModel<DataTableOptions>({ required: true });
+const loading = computed(
+  () =>
+    loadingProp ||
+    api.getAll.loading.value ||
+    api.context.loading.value ||
+    api.create.loading.value ||
+    api.update.loading.value ||
+    api.delete.loading.value
+);
+
+const { dataTableOptions, refetchEntities } = usePagination(
+  computed(() => api.getAll.data.value?.page?.totalPages),
+  api.getAll.call
+);
+
+const snackbarStore = useSnackbarStore();
 
 const page = computed({
   get: () => dataTableOptions.value.page,
@@ -233,7 +281,7 @@ const tableHeadersWithActions = computed(() => [
         width: "100",
         align: "center",
         cellProps: { class: "text-no-wrap" },
-      } satisfies DataTableHeader<T>)
+      } satisfies DataTableHeader<TGetResponse>)
     : {},
 ]);
 
@@ -247,7 +295,7 @@ const {
   continueEditing,
   continuePendingNavigation,
   discardChanges,
-} = useDirtyFlag<T>(
+} = useDirtyFlag<TGetResponse>(
   emptyItemTemplate,
   computed(() => dialogMode.value === "write")
 );
@@ -255,13 +303,20 @@ const isEditing = computed<boolean>(() => !!activeItem.value.id);
 
 const isFormSlotValid = ref(false);
 
-const emit = defineEmits<{
-  create: [item: T];
-  update: [item: T];
-  delete: [id: string];
-}>();
+// --- Lifecycle Handlers ---
+
+onMounted(async () => {
+  await loadFormContext();
+});
 
 // --- Functions ---
+
+const loadFormContext = async () => {
+  if (shouldLoadFormContext) {
+    await api.context.call();
+  }
+};
+
 const updateFormValidity = (valid: boolean | null) => {
   isFormSlotValid.value = !!valid;
 };
@@ -272,29 +327,59 @@ const openCreate = () => {
   dialogMode.value = "write";
 };
 
-const openEdit = (item: T) => {
+const openEdit = (item: TGetResponse) => {
   track(item);
   isFormSlotValid.value = false;
   dialogMode.value = "write";
 };
 
-const openDelete = (item: T) => {
+const openDelete = (item: TGetResponse) => {
   reset(item);
   isFormSlotValid.value = false;
   dialogMode.value = "delete";
 };
 
-const saveItem = () => {
+const onSuccess = async (msg: string) => {
+  snackbarStore.push({
+    text: msg,
+    color: STATUS_INDICATORS.SUCCESS,
+  });
+  await refetchEntities();
+  await loadFormContext();
+  closeDialog();
+};
+
+const onFailure = async (msg: string) => {
+  await loadFormContext();
+  await formRef?.validate();
+  snackbarStore.push({
+    text: msg,
+    color: STATUS_INDICATORS.ERROR,
+  });
+};
+
+const saveItem = async () => {
   if (isEditing.value && activeItem.value.id) {
-    emit("update", activeItem.value);
+    if (await handleUpdate(activeItem.value)) {
+      await onSuccess(t("common.message.updated", [t(domainKey)]));
+    } else {
+      await onFailure(t("common.message.updatedError", [t(domainKey)]));
+    }
   } else {
-    emit("create", activeItem.value);
+    if (await handleCreate(activeItem.value)) {
+      await onSuccess(t("common.message.created", [t(domainKey)]));
+    } else {
+      await onFailure(t("common.message.createdError", [t(domainKey)]));
+    }
   }
 };
 
-const deleteItem = () => {
-  if (activeItem.value.id) {
-    emit("delete", activeItem.value.id);
+const deleteItem = async () => {
+  if (!activeItem.value.id) return;
+  if (await handleDelete(activeItem.value.id)) {
+    await onSuccess(t("common.message.deleted", [t(domainKey)]));
+  } else {
+    await onFailure(t("common.message.deletedError", [t(domainKey)]));
   }
 };
 
@@ -312,10 +397,6 @@ const discardDialogChanges = () => {
   dialogMode.value = null;
   discardChanges();
 };
-
-defineExpose({
-  closeDialog,
-});
 </script>
 
 <style scoped>

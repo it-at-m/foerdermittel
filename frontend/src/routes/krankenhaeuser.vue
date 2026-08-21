@@ -1,28 +1,26 @@
 <template>
   <base-view :domain-key="domainKey">
     <template #default="{ baseViewLoading }">
-      <!-- @vue-generic {Partial<KrankenhausResponseDTO>} -->
       <crud-card
-        ref="crudRef"
-        v-model="dataTableOptions"
         :empty-item-template="EMPTY_ITEM_TEMPLATE"
-        :loading="loading || baseViewLoading"
+        :loading="baseViewLoading"
         :table-headers="headers"
+        :api="krankenhausApi"
         :domain-key="domainKey"
         :enable-actions="isAdmin"
-        :items="krankenhaeuser?.content ?? []"
-        :total-items="krankenhaeuser?.page?.totalElements ?? 0"
-        @delete="handleDelete"
-        @create="handleCreate"
-        @update="handleUpdate"
+        :should-load-form-context="isAdmin"
+        :handle-create="handleCreate"
+        :handle-update="handleUpdate"
+        :handle-delete="handleDelete"
+        :form-ref="krankenhausFormRef"
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <krankenhaus-form
-            v-if="krankenhausFormContext"
+            v-if="krankenhausApi.context.data"
             ref="krankenhausForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
-            :krankenhaus-form-context="krankenhausFormContext"
+            :krankenhaus-form-context="krankenhausApi.context.data.value!"
             @is-valid="updateValidity"
           />
         </template>
@@ -35,21 +33,14 @@
 import type { KrankenhausResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { computed, useTemplateRef } from "vue";
+import { useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
 import KrankenhausForm from "@/components/forms/KrankenhausForm.vue";
-import {
-  useCreateKrankenhaus,
-  useDeleteKrankenhaus,
-  useGetKrankenhaeuser,
-  useGetKrankenhausFormContext,
-  useUpdateKrankenhaus,
-} from "@/composables/api/useKrankenhausApi";
+import { useKrankenhausApi } from "@/composables/api/useKrankenhausApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
-import usePagination from "@/composables/usePagination";
 import { Role } from "@/types/Role";
 
 const domainKey = "model.krankenhaus.modelName";
@@ -83,96 +74,39 @@ const EMPTY_ITEM_TEMPLATE: Partial<KrankenhausResponseDTO> = {
   bezeichnung: "",
 };
 
-const {
-  data: krankenhaeuser,
-  call: getKrankenhaeuser,
-  loading: getKrankenhaeuserLoading,
-} = useGetKrankenhaeuser();
-
-const {
-  data: krankenhausFormContext,
-  call: getKrankenhausFormContext,
-  loading: getKrankenhausFormContextLoading,
-} = useGetKrankenhausFormContext();
-
 type KrankenhausFormType = InstanceType<typeof KrankenhausForm>;
 const krankenhausFormRef =
   useTemplateRef<KrankenhausFormType>("krankenhausForm");
 
-const { dataTableOptions, onSuccess, onFailure } = usePagination(
-  computed(() => krankenhaeuser.value?.page?.totalPages),
-  getKrankenhaeuser,
-  isAdmin,
-  getKrankenhausFormContext,
-  () => krankenhausFormRef.value?.validate()
-);
-
-const {
-  call: createKrankenhaus,
-  loading: createKrankenhausLoading,
-  error: createKrankenhaeuserError,
-} = useCreateKrankenhaus();
+const krankenhausApi = useKrankenhausApi();
 
 const handleCreate = async (
   krankenhausCreateDTO: Partial<KrankenhausResponseDTO>
 ) => {
   // TODO: some type checking improvements
   const model = krankenhausCreateDTO as KrankenhausResponseDTO;
-  await createKrankenhaus({
+  await krankenhausApi.create.call({
     krankenhausCreateDTO: model,
   });
-  if (!createKrankenhaeuserError.value) {
-    await onSuccess(t("common.message.created", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.createdError", [t(domainKey)]));
-  }
+  return !krankenhausApi.create.error.value;
 };
-
-const {
-  call: updateKrankenhaus,
-  loading: updateKrankenhausLoading,
-  error: updateKrankenhaeuserError,
-} = useUpdateKrankenhaus();
 
 const handleUpdate = async (
   krankenhausUpdateDTO: Partial<KrankenhausResponseDTO>
 ) => {
   // TODO: some type checking improvements
   const model = krankenhausUpdateDTO as KrankenhausResponseDTO;
-  await updateKrankenhaus({
+  await krankenhausApi.update.call({
     id: model.id,
     krankenhausUpdateDTO: model,
   });
-  if (!updateKrankenhaeuserError.value) {
-    await onSuccess(t("common.message.updated", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.updatedError", [t(domainKey)]));
-  }
+  return !krankenhausApi.update.error.value;
 };
-
-const {
-  call: deleteKrankenhaus,
-  loading: deleteKrankenhausLoading,
-  error: deleteKrankenhaeuserError,
-} = useDeleteKrankenhaus();
 
 const handleDelete = async (id: string) => {
-  await deleteKrankenhaus({
+  await krankenhausApi.delete.call({
     id,
   });
-  if (!deleteKrankenhaeuserError.value) {
-    await onSuccess(t("common.message.deleted", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.deletedError", [t(domainKey)]));
-  }
+  return !krankenhausApi.delete.error.value;
 };
-
-const loading = computed(
-  () =>
-    getKrankenhaeuserLoading.value ||
-    getKrankenhausFormContextLoading.value ||
-    createKrankenhausLoading.value ||
-    updateKrankenhausLoading.value ||
-    deleteKrankenhausLoading.value
-);
 </script>

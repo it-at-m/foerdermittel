@@ -1,28 +1,26 @@
 <template>
   <base-view :domain-key="domainKey">
     <template #default="{ baseViewLoading }">
-      <!-- @vue-generic {Partial<BauleitungResponseDTO>} -->
       <crud-card
-        ref="crudRef"
-        v-model="dataTableOptions"
         :empty-item-template="EMPTY_ITEM_TEMPLATE"
-        :loading="loading || baseViewLoading"
+        :loading="baseViewLoading"
         :table-headers="headers"
+        :api="bauleitungApi"
         :domain-key="domainKey"
         :enable-actions="isAdmin"
-        :items="bauleitungen?.content ?? []"
-        :total-items="bauleitungen?.page?.totalElements ?? 0"
-        @delete="handleDelete"
-        @create="handleCreate"
-        @update="handleUpdate"
+        :should-load-form-context="isAdmin"
+        :handle-create="handleCreate"
+        :handle-update="handleUpdate"
+        :handle-delete="handleDelete"
+        :form-ref="bauleitungFormRef"
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <bauleitung-form
-            v-if="bauleitungFormContext"
+            v-if="bauleitungApi.context.data"
             ref="bauleitungForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
-            :bauleitung-form-context="bauleitungFormContext"
+            :bauleitung-form-context="bauleitungApi.context.data.value!"
             @is-valid="updateValidity"
           />
         </template>
@@ -35,21 +33,14 @@
 import type { BauleitungResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { computed, useTemplateRef } from "vue";
+import { useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
 import BauleitungForm from "@/components/forms/BauleitungForm.vue";
-import {
-  useCreateBauleitung,
-  useDeleteBauleitung,
-  useGetBauleitungen,
-  useGetBauleitungFormContext,
-  useUpdateBauleitung,
-} from "@/composables/api/useBauleitungApi";
+import { useBauleitungApi } from "@/composables/api/useBauleitungApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
-import usePagination from "@/composables/usePagination";
 import { Role } from "@/types/Role";
 
 const domainKey = "model.bauleitung.modelName";
@@ -83,95 +74,38 @@ const EMPTY_ITEM_TEMPLATE: Partial<BauleitungResponseDTO> = {
   bezeichnung: "",
 };
 
-const {
-  data: bauleitungen,
-  call: getBauleitungen,
-  loading: getBauleitungenLoading,
-} = useGetBauleitungen();
-
-const {
-  data: bauleitungFormContext,
-  call: getBauleitungFormContext,
-  loading: getBauleitungFormContextLoading,
-} = useGetBauleitungFormContext();
+const bauleitungApi = useBauleitungApi();
 
 type BauleitungFormType = InstanceType<typeof BauleitungForm>;
 const bauleitungFormRef = useTemplateRef<BauleitungFormType>("bauleitungForm");
-
-const { dataTableOptions, onSuccess, onFailure } = usePagination(
-  computed(() => bauleitungen.value?.page?.totalPages),
-  getBauleitungen,
-  isAdmin,
-  getBauleitungFormContext,
-  () => bauleitungFormRef.value?.validate()
-);
-
-const {
-  call: createBauleitung,
-  loading: createBauleitungLoading,
-  error: createBauleitungError,
-} = useCreateBauleitung();
 
 const handleCreate = async (
   bauleitungCreateDTO: Partial<BauleitungResponseDTO>
 ) => {
   // TODO: some type checking improvements
   const model = bauleitungCreateDTO as BauleitungResponseDTO;
-  await createBauleitung({
+  await bauleitungApi.create.call({
     bauleitungCreateDTO: model,
   });
-  if (!createBauleitungError.value) {
-    await onSuccess(t("common.message.created", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.createdError", [t(domainKey)]));
-  }
+  return !bauleitungApi.create.error.value;
 };
-
-const {
-  call: updateBauleitung,
-  loading: updateBauleitungLoading,
-  error: updateBauleitungError,
-} = useUpdateBauleitung();
 
 const handleUpdate = async (
   bauleitungUpdateDTO: Partial<BauleitungResponseDTO>
 ) => {
   // TODO: some type checking improvements
   const model = bauleitungUpdateDTO as BauleitungResponseDTO;
-  await updateBauleitung({
+  await bauleitungApi.update.call({
     id: model.id,
     bauleitungUpdateDTO: model,
   });
-  if (!updateBauleitungError.value) {
-    await onSuccess(t("common.message.updated", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.updatedError", [t(domainKey)]));
-  }
+  return !bauleitungApi.update.error.value;
 };
-
-const {
-  call: deleteBauleitung,
-  loading: deleteBauleitungLoading,
-  error: deleteBauleitungError,
-} = useDeleteBauleitung();
 
 const handleDelete = async (id: string) => {
-  await deleteBauleitung({
+  await bauleitungApi.delete.call({
     id,
   });
-  if (!deleteBauleitungError.value) {
-    await onSuccess(t("common.message.deleted", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.deletedError", [t(domainKey)]));
-  }
+  return !bauleitungApi.delete.error.value;
 };
-
-const loading = computed(
-  () =>
-    getBauleitungenLoading.value ||
-    getBauleitungFormContextLoading.value ||
-    createBauleitungLoading.value ||
-    updateBauleitungLoading.value ||
-    deleteBauleitungLoading.value
-);
 </script>
