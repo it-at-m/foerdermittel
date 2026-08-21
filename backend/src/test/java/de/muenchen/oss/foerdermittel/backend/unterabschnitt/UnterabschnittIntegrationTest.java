@@ -58,6 +58,7 @@ class UnterabschnittIntegrationTest {
     private static final String EXISTING_ID = "L";
     private static final String NON_EXISTING_ID = "K";
     private static final String EXISTING_HASHA = "ha";
+    private static final String NON_EXISTING_HASHA = "xx";
 
     @Autowired
     private UnterabschnittRepository unterabschnittRepository;
@@ -98,7 +99,8 @@ class UnterabschnittIntegrationTest {
             return Stream.of(
                     Arguments.of("admin", HttpStatus.OK),
                     Arguments.of("sachbearbeitung", HttpStatus.OK),
-                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.OK));
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.OK),
+                    Arguments.of("no-role", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -136,6 +138,7 @@ class UnterabschnittIntegrationTest {
                         assertThat(response).isNotNull();
                         assertThat(response.ua()).isEqualTo(requestDTO.ua());
                         assertThat(response.bezeichnung()).isEqualTo(requestDTO.bezeichnung());
+                        assertThat(response.hasHa()).isEqualTo(requestDTO.hasHa());
                     })
                     .returnResult()
                     .getResponseBody();
@@ -145,6 +148,7 @@ class UnterabschnittIntegrationTest {
             assertThat(entity).isPresent();
             assertThat(entity.get().getUa()).isEqualTo(requestDTO.ua());
             assertThat(entity.get().getBezeichnung()).isEqualTo(requestDTO.bezeichnung());
+            assertThat(entity.get().getHasHa().getHa()).isEqualTo(requestDTO.hasHa());
         }
 
         @Test
@@ -174,6 +178,20 @@ class UnterabschnittIntegrationTest {
                     arguments(
                             "no hasHa selected",
                             new UnterabschnittCreateDTO("B", "a", "")));
+
+        }
+
+        @Test
+        void givenNonExistingHa_thenReturnNotFound() {
+            final UnterabschnittCreateDTO requestDTO = new UnterabschnittCreateDTO("A", "Test", NON_EXISTING_HASHA);
+
+            restTestClient.post()
+                    .uri("/unterabschnitte")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                    .body(requestDTO)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isEqualTo(HttpStatus.NOT_FOUND);
         }
 
         @ParameterizedTest(name = "{0}")
@@ -242,6 +260,8 @@ class UnterabschnittIntegrationTest {
             final Optional<Unterabschnitt> entity = unterabschnittRepository.findById(EXISTING_ID);
             assertThat(entity).isPresent();
             assertThat(entity.get().getBezeichnung()).isEqualTo(requestDTO.bezeichnung());
+            assertThat(entity.get().getHasHa()).isNotNull();
+            assertThat(entity.get().getHasHa().getHa()).isEqualTo(requestDTO.hasHa());
         }
 
         @Test
@@ -265,6 +285,19 @@ class UnterabschnittIntegrationTest {
                     arguments(
                             "bezeichnung too long",
                             new UnterabschnittUpdateDTO("a".repeat(201), EXISTING_HASHA)));
+        }
+
+        @Test
+        void givenHaDoesNotExist_thenReturnNotFound() {
+            final UnterabschnittUpdateDTO requestDTO = new UnterabschnittUpdateDTO("Test", NON_EXISTING_HASHA);
+
+            restTestClient.put()
+                    .uri("/unterabschnitte/{id}", EXISTING_ID)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                    .body(requestDTO)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isNotFound();
         }
 
         @ParameterizedTest(name = "{0}")

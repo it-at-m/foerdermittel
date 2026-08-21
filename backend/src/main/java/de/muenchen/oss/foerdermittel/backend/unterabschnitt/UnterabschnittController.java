@@ -64,10 +64,17 @@ public class UnterabschnittController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UnterabschnittResponseDTO updateUnterabschnitt(@Valid @RequestBody final UnterabschnittUpdateDTO unterabschnittUpdateDTO,
+    public UnterabschnittResponseDTO updateUnterabschnitt(
+            @Valid @RequestBody final UnterabschnittUpdateDTO unterabschnittUpdateDTO,
             @PathVariable("id") final String unterabschnittId) {
-        return unterabschnittMapper
-                .toDTO(unterabschnittService.updateUnterabschnitt(unterabschnittMapper.toEntity(unterabschnittUpdateDTO), unterabschnittId));
+
+        final Unterabschnitt unterabschnitt = unterabschnittMapper.toEntity(unterabschnittUpdateDTO);
+
+        return unterabschnittMapper.toDTO(
+                unterabschnittService.updateUnterabschnitt(
+                        unterabschnitt,
+                        unterabschnittId,
+                        unterabschnittUpdateDTO.hasHa()));
     }
 
     @DeleteMapping("/{id}")

@@ -1,14 +1,12 @@
 package de.muenchen.oss.foerdermittel.backend.unterabschnitt;
 
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
-import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.HauptabschnittRepository;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.HauptabschnittService;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittMapper;
-import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.dto.UnterabschnittFormContextHauptabschnitt;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.util.List;
-import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -26,7 +24,6 @@ public class UnterabschnittService {
     private final HauptabschnittMapper hauptabschnittMapper;
     private final HauptabschnittService hauptabschnittService;
     private final UnterabschnittRepository unterabschnittRepository;
-    private final HauptabschnittRepository hauptabschnittRepository;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -40,13 +37,14 @@ public class UnterabschnittService {
     public UnterabschnittFormContext getUnterabschnittFormContext() {
         log.info("Get Unterabschnitt form context");
 
-        final List<HauptabschnittResponseDTO> hauptabschnitte = StreamSupport
-                .stream(hauptabschnittRepository.findAll().spliterator(), false)
-                .map(hauptabschnittMapper::toDTO)
+        final List<UnterabschnittFormContextHauptabschnitt> hauptabschnitte = hauptabschnittService.getHauptabschnitte()
+                .stream()
+                .map(hauptabschnitt -> new UnterabschnittFormContextHauptabschnitt(
+                        hauptabschnitt.getHa(),
+                        hauptabschnitt.getBezeichnung()))
                 .toList();
 
         return new UnterabschnittFormContext(
-
                 unterabschnittRepository.findAllUas(),
                 hauptabschnitte);
     }
@@ -60,13 +58,15 @@ public class UnterabschnittService {
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    public Unterabschnitt updateUnterabschnitt(final Unterabschnitt unterabschnitt, final String ua) {
-        final Unterabschnitt foundUnterabschnitt = ServiceUtils.getEntityOrThrowNotFoundException(ua, unterabschnittRepository);
-        foundUnterabschnitt.setBezeichnung(unterabschnitt.getBezeichnung());
-        final Hauptabschnitt hauptabschnitt = hauptabschnittService.getHauptabschnitt(
-                unterabschnitt.getHasHa().getHa());
+    public Unterabschnitt updateUnterabschnitt(final Unterabschnitt unterabschnitt, final String ua, final String ha) {
 
+        final Unterabschnitt foundUnterabschnitt = ServiceUtils.getEntityOrThrowNotFoundException(ua, unterabschnittRepository);
+
+        final Hauptabschnitt hauptabschnitt = hauptabschnittService.getHauptabschnitt(ha);
+
+        foundUnterabschnitt.setBezeichnung(unterabschnitt.getBezeichnung());
         foundUnterabschnitt.setHasHa(hauptabschnitt);
+
         log.debug("Update Unterabschnitt {}", foundUnterabschnitt);
         return unterabschnittRepository.update(foundUnterabschnitt);
     }

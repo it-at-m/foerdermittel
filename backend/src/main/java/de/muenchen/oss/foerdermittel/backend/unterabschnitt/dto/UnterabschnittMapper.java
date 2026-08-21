@@ -13,10 +13,10 @@ public interface UnterabschnittMapper {
     @Mapping(source = "hasHa.bezeichnung", target = "haBezeichnung")
     UnterabschnittResponseDTO toDTO(Unterabschnitt unterabschnitt);
 
-    @Mapping(source = "hasHa", target = "hasHa.ha")
+    @Mapping(target = "hasHa", ignore = true)
     Unterabschnitt toEntity(UnterabschnittCreateDTO unterabschnittCreateDTO);
 
-    @Mapping(source = "hasHa", target = "hasHa.ha")
+    @Mapping(target = "hasHa", ignore = true)
     @Mapping(target = "ua", ignore = true)
     Unterabschnitt toEntity(UnterabschnittUpdateDTO unterabschnittUpdateDTO);
 

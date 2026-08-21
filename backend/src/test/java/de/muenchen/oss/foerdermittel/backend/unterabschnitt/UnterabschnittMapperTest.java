@@ -32,6 +32,7 @@ public class UnterabschnittMapperTest {
             assertThat(dto.ua()).isEqualTo(entity.getUa());
             assertThat(dto.bezeichnung()).isEqualTo(entity.getBezeichnung());
             assertThat(dto.hasHa()).isEqualTo(entity.getHasHa().getHa());
+            assertThat(dto.haBezeichnung()).isEqualTo(entity.getHasHa().getBezeichnung());
         }
 
     }

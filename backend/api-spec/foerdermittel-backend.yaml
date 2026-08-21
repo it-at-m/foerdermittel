@@ -2366,7 +2366,17 @@ components:
         hasHas:
           type: array
           items:
-            $ref: "#/components/schemas/HauptabschnittResponseDTO"
+            $ref: "#/components/schemas/UnterabschnittFormContextHauptabschnitt"
+    UnterabschnittFormContextHauptabschnitt:
+      required:
+      - bezeichnung
+      - ha
+      type: object
+      properties:
+        ha:
+          type: string
+        bezeichnung:
+          type: string
     PagedModelTraegerResponseDTO:
       type: object
       properties:

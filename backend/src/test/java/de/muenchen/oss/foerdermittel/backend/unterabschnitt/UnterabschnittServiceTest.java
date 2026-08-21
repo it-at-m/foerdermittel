@@ -8,10 +8,8 @@ import static org.mockito.Mockito.when;
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
-import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.HauptabschnittRepository;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.HauptabschnittService;
-import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittMapper;
-import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittResponseDTO;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.dto.UnterabschnittFormContextHauptabschnitt;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -36,13 +34,7 @@ class UnterabschnittServiceTest {
     private UnterabschnittRepository unterabschnittRepository;
 
     @Mock
-    private HauptabschnittRepository hauptabschnittRepository;
-
-    @Mock
     private HauptabschnittService hauptabschnittService;
-
-    @Mock
-    private HauptabschnittMapper hauptabschnittMapper;
 
     @InjectMocks
     private UnterabschnittService unitUnderTest;
@@ -90,10 +82,19 @@ class UnterabschnittServiceTest {
 
             // Then
             verify(hauptabschnittService).getHauptabschnitt(ha);
-            verify(unterabschnittRepository, times(1)).insert(entityToInsert);
-            assertThat(entityToInsert.getHasHa()).isSameAs(testHa);
+            verify(unterabschnittRepository).insert(entityToInsert);
             assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
         }
+    }
+
+    @Test
+    void givenHaNotExists_thenThrowNotFoundException() {
+        final String ha = "H99";
+        final Unterabschnitt entityToInsert = new Unterabschnitt("K", BEZEICHNUNG, null);
+
+        when(hauptabschnittService.getHauptabschnitt(ha)).thenThrow(NotFoundException.class);
+
+        Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.createUnterabschnitt(entityToInsert, ha));
     }
 
     @Nested
@@ -102,57 +103,57 @@ class UnterabschnittServiceTest {
         void givenEntityExists_thenReturnEntity() {
             // Given
             final String id = "K";
-            final Hauptabschnitt storedHa = new Hauptabschnitt("H4", BEZEICHNUNG);
-            final Hauptabschnitt requestedHa = new Hauptabschnitt("H5", BEZEICHNUNG);
-            final Hauptabschnitt resolvedHa = new Hauptabschnitt("H5", "Resolved");
-            final Unterabschnitt entityToUpdate = new Unterabschnitt(id, "updated", requestedHa);
+            final String ha = "H4";
+            final Hauptabschnitt storedHa = new Hauptabschnitt(ha, BEZEICHNUNG);
+            final Unterabschnitt entityToUpdate = new Unterabschnitt(id, "updated", null);
             final Unterabschnitt foundEntity = new Unterabschnitt(id, BEZEICHNUNG, storedHa);
-            final Unterabschnitt expectedEntity = new Unterabschnitt(id, "updated", resolvedHa);
+            final Unterabschnitt expectedEntity = new Unterabschnitt(id, "updated", storedHa);
 
             when(unterabschnittRepository.findById(id)).thenReturn(Optional.of(foundEntity));
-            when(hauptabschnittService.getHauptabschnitt(requestedHa.getHa()))
-                    .thenReturn(resolvedHa);
+            when(hauptabschnittService.getHauptabschnitt(ha)).thenReturn(storedHa);
             when(unterabschnittRepository.update(foundEntity)).thenReturn(expectedEntity);
 
             // When
-            final Unterabschnitt result = unitUnderTest.updateUnterabschnitt(entityToUpdate, id);
+            final Unterabschnitt result = unitUnderTest.updateUnterabschnitt(entityToUpdate, id, ha);
 
             // Then
-            assertThat(foundEntity.getBezeichnung()).isEqualTo("updated");
-            assertThat(foundEntity.getHasHa()).isSameAs(resolvedHa);
-            assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
+            verify(unterabschnittRepository).findById(id);
+            verify(hauptabschnittService).getHauptabschnitt(ha);
+            verify(unterabschnittRepository).update(foundEntity);
 
-            verify(unterabschnittRepository, times(1)).findById(id);
-            verify(hauptabschnittService, times(1)).getHauptabschnitt(requestedHa.getHa());
-            verify(unterabschnittRepository, times(1)).update(foundEntity);
+            assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
+        }
+
+        @Test
+        void givenHaNotExists_thenThrowNotFoundException() {
+            final String ha = "99";
+            final Unterabschnitt entityToInsert = new Unterabschnitt("K", BEZEICHNUNG, null);
+
+            when(hauptabschnittService.getHauptabschnitt(ha)).thenThrow(NotFoundException.class);
+
+            Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.createUnterabschnitt(entityToInsert, ha));
         }
 
         @Test
         void givenEntityNotExists_thenThrowNotFoundException() {
             // Given
             final String id = "K";
-            final Hauptabschnitt testHa = new Hauptabschnitt("H5", BEZEICHNUNG);
+            final String ha = "H5";
+
+            final Hauptabschnitt testHa = new Hauptabschnitt(ha, BEZEICHNUNG);
             final Unterabschnitt entityToUpdate = new Unterabschnitt(id, BEZEICHNUNG, testHa);
 
             when(unterabschnittRepository.findById(id)).thenReturn(Optional.empty());
 
             // When
-            final Exception exception = Assertions.assertThrows(
-                    NotFoundException.class,
-                    () -> unitUnderTest.updateUnterabschnitt(entityToUpdate, id));
+            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.updateUnterabschnitt(entityToUpdate, id, ha));
 
             // Then
             verify(unterabschnittRepository, times(1)).findById(id);
-            verify(
-                    unterabschnittRepository,
-                    never())
-                    .update(Mockito.any(Unterabschnitt.class));
+            verify(unterabschnittRepository, never()).update(Mockito.any(Unterabschnitt.class));
+            verify(hauptabschnittService, never()).getHauptabschnitt(Mockito.anyString());
 
-            assertThat(exception.getMessage())
-                    .isEqualTo(
-                            String.format(
-                                    "404 NOT_FOUND \"Could not find entity with ID %s\"",
-                                    id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
         }
     }
 
@@ -200,28 +201,24 @@ class UnterabschnittServiceTest {
     class GetUnterabschnittFormContext {
 
         @Test
-        void givenEntitiesExists_thenReturnCorrectFormContext() {
+        void givenEntitiesExist_thenReturnCorrectFormContext() {
             // Given
             final List<String> allUas = List.of("L", "K", "M");
-
             final Hauptabschnitt hauptabschnitt = new Hauptabschnitt("H1", BEZEICHNUNG);
 
-            final HauptabschnittResponseDTO hauptabschnittDto = Mockito.mock(HauptabschnittResponseDTO.class);
-
             when(unterabschnittRepository.findAllUas()).thenReturn(allUas);
-            when(hauptabschnittRepository.findAll()).thenReturn(List.of(hauptabschnitt));
-            when(hauptabschnittMapper.toDTO(hauptabschnitt)).thenReturn(hauptabschnittDto);
+            when(hauptabschnittService.getHauptabschnitte())
+                    .thenReturn(List.of(hauptabschnitt));
 
             // When
             final UnterabschnittFormContext formContext = unitUnderTest.getUnterabschnittFormContext();
 
             // Then
-            verify(unterabschnittRepository, times(1)).findAllUas();
-            verify(hauptabschnittRepository, times(1)).findAll();
-            verify(hauptabschnittMapper, times(1)).toDTO(hauptabschnitt);
+            verify(unterabschnittRepository).findAllUas();
+            verify(hauptabschnittService).getHauptabschnitte();
 
             assertThat(formContext.uas()).isEqualTo(allUas);
-            assertThat(formContext.hasHas()).containsExactly(hauptabschnittDto);
+            assertThat(formContext.hasHas()).containsExactly(new UnterabschnittFormContextHauptabschnitt("H1", BEZEICHNUNG));
         }
     }
 }
