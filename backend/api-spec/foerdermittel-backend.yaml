@@ -1453,9 +1453,11 @@ paths:
         "200":
           description: OK
           content:
-            '*/*':
+            application/json:
               schema:
-                $ref: "#/components/schemas/PagedModelProjekt"
+                $ref: "#/components/schemas/PagedModelProjektResponseDTO"
+      security:
+      - bearerAuth: []
   /kurzbezeichnungen/form-context:
     get:
       tags:
@@ -2351,16 +2353,16 @@ components:
           type: array
           items:
             type: string
-    PagedModelProjekt:
+    PagedModelProjektResponseDTO:
       type: object
       properties:
         content:
           type: array
           items:
-            $ref: "#/components/schemas/Projekt"
+            $ref: "#/components/schemas/ProjektResponseDTO"
         page:
           $ref: "#/components/schemas/PageMetadata"
-    Projekt:
+    ProjektResponseDTO:
       type: object
       properties:
         projnr:

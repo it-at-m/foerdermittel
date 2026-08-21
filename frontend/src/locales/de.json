@@ -49,7 +49,13 @@
   },
   "model": {
     "projekt": {
-      "modelName": "Projekt | Projekte"
+      "modelName": "Projekt | Projekte",
+      "fobFb" : "Förderbereich",
+      "kurKurzbez": "Kurzbezeichnung",
+      "projnr": "Projekt",
+      "pstrasse": "Straße",
+      "pname": "Name",
+      "uasUa": "UA"
     },
     "antrag": {
       "modelName": "Antrag | Anträge"
