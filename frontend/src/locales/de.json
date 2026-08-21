@@ -19,7 +19,8 @@
       "discardChanges": "Änderungen verwerfen",
       "save": "Speichern",
       "search": "Suchen",
-      "update": "Bearbeiten"
+      "update": "Bearbeiten",
+      "add": "Hinzufügen"
     },
     "generics": {
       "show": "{0} anzeigen",
@@ -136,11 +137,16 @@
       "stadtbezirk": "Stadtbezirk",
       "bezeichnung": "Bezeichnung"
     },
-    "listenname": {
-      "modelName": "Listenname | Listennamen"
-    },
     "stadtbezirksliste": {
-      "modelName": "Stadtbezirksliste | Stadtbezirkslisten"
+      "modelName": "Stadtbezirksliste | Stadtbezirkslisten",
+      "lnaKurzbez": "Listenname",
+      "bezeichnung": "Bezeichnung",
+      "bezStadtbezirk": "Bezirk",
+      "listeBezeichnung": "Notiz",
+      "stadtBezirkeDerListe": "Stadtbezirke der Liste",
+      "addBezirke": "Bezirk hinzufügen",
+      "noDistricts": "Noch keine Stadtbezirke hinzugefügt",
+      "selectHint": "Wähle unten einen Stadtbezirk aus."
     },
     "stichwortbereich": {
       "modelName": "Stichwortbereich | Stichwortbereiche",
