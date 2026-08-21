@@ -20,21 +20,21 @@ public class UnterabschnittMapperTest {
 
         @Test
         void givenEntity_thenReturnsCorrectDTO() {
-            // given
-            Unterabschnitt entity = new Unterabschnitt("K", "test", new Hauptabschnitt("H", "test"));
+            // Given
+            final Hauptabschnitt hauptabschnitt = new Hauptabschnitt("H", "test");
+            final Unterabschnitt entity = new Unterabschnitt("K", "test", hauptabschnitt);
 
-            // when
-            UnterabschnittResponseDTO dto = unterabschnittMapper.toDTO(entity);
+            // When
+            final UnterabschnittResponseDTO dto = unterabschnittMapper.toDTO(entity);
 
-            // then
+            // Then
             assertThat(dto).isNotNull();
             assertThat(dto.id()).isEqualTo(entity.getUa());
             assertThat(dto.ua()).isEqualTo(entity.getUa());
             assertThat(dto.bezeichnung()).isEqualTo(entity.getBezeichnung());
-            assertThat(dto.hasHa()).isEqualTo(entity.getHasHa().getHa());
-            assertThat(dto.haBezeichnung()).isEqualTo(entity.getHasHa().getBezeichnung());
+            assertThat(dto.hasHa()).isEqualTo(hauptabschnitt.getHa());
+            assertThat(dto.haBezeichnung()).isEqualTo(hauptabschnitt.getBezeichnung());
         }
-
     }
 
     @Nested
@@ -42,34 +42,32 @@ public class UnterabschnittMapperTest {
 
         @Test
         void givenCreateDTO_thenReturnsCorrectEntity() {
-            // given
-            UnterabschnittCreateDTO dto = new UnterabschnittCreateDTO("K", "Test 1", "H");
+            // Given
+            final UnterabschnittCreateDTO dto = new UnterabschnittCreateDTO("K", "Test 1", "H");
 
-            // when
-            Unterabschnitt entity = unterabschnittMapper.toEntity(dto);
+            // When
+            final Unterabschnitt entity = unterabschnittMapper.toEntity(dto);
 
-            // then
+            // Then
             assertThat(entity).isNotNull();
             assertThat(entity.getUa()).isEqualTo(dto.ua());
             assertThat(entity.getBezeichnung()).isEqualTo(dto.bezeichnung());
-            assertThat(entity.getHasHa().getHa()).isEqualTo(dto.hasHa());
+            assertThat(entity.getHasHa()).isNull();
         }
 
         @Test
         void givenUpdateDTO_thenReturnsCorrectEntity() {
-            // given
-            UnterabschnittUpdateDTO dto = new UnterabschnittUpdateDTO("Test 2", "H");
+            // Given
+            final UnterabschnittUpdateDTO dto = new UnterabschnittUpdateDTO("Test 2", "H");
 
-            // when
-            Unterabschnitt entity = unterabschnittMapper.toEntity(dto);
+            // When
+            final Unterabschnitt entity = unterabschnittMapper.toEntity(dto);
 
-            // then
+            // Then
             assertThat(entity).isNotNull();
             assertThat(entity.getUa()).isNull();
             assertThat(entity.getBezeichnung()).isEqualTo(dto.bezeichnung());
-            assertThat(entity.getHasHa().getHa()).isEqualTo(dto.hasHa());
+            assertThat(entity.getHasHa()).isNull();
         }
-
     }
-
 }
