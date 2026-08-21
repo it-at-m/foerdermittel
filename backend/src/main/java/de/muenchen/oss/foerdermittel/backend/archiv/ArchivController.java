@@ -39,7 +39,7 @@ public class ArchivController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<ArchivResponseDTO> getArchiveintrag(
+    public Page<ArchivResponseDTO> getArchiveintraege(
             @ParameterObject @PageableDefault(sort = { "projekt.projnr", "speicherDatum" }) final Pageable pageable) {
 
         final Page<Archiv> pageWithArchiv = archivService.getArchiveintraege(pageable);
@@ -62,13 +62,13 @@ public class ArchivController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ArchivResponseDTO createArchive(@Valid @RequestBody final ArchivCreateDTO archivCreateDTO) {
+    public ArchivResponseDTO createArchiv(@Valid @RequestBody final ArchivCreateDTO archivCreateDTO) {
         return archivMapper.toDTO(archivService.createArchiv(archivMapper.toEntity(archivCreateDTO)));
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ArchivResponseDTO updateArchivNotiz(@Valid @RequestBody final ArchivUpdateDTO archivUpdateDTO,
+    public ArchivResponseDTO updateArchiv(@Valid @RequestBody final ArchivUpdateDTO archivUpdateDTO,
             @PathVariable("id") final Long archivId) {
         return archivMapper
                 .toDTO(archivService.updateArchiv(archivMapper.toEntity(archivUpdateDTO), archivId));
@@ -76,8 +76,8 @@ public class ArchivController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteArchiv(@PathVariable("id") final String archivID) {
-        archivService.deleteArchiv(Long.valueOf(archivID));
+    public void deleteArchiv(@PathVariable("id") final Long archivID) {
+        archivService.deleteArchiv(archivID);
     }
 
 }

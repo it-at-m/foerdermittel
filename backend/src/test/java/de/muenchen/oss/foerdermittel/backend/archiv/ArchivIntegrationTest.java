@@ -281,7 +281,7 @@ class ArchivIntegrationTest {
                     .is5xxServerError();
         }
 
-        @ParameterizedTest(name = "{0}")
+        @ParameterizedTest
         @MethodSource("invalidInputRequests")
         void givenInvalidInput_thenReturnBadRequest(
                 final String description,

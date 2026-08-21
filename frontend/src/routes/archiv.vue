@@ -17,15 +17,13 @@
         @create="handleCreate"
         @update="handleUpdate"
       >
-        <template
-          #form="{ item, updateItem, updateValidity, inputDisplayMode }"
-        >
+        <template #form="{ item, updateValidity, inputDisplayMode }">
           <archiv-form
+            v-if="archivFormContext"
             ref="archivForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
             :projekte="projekte"
-            @update:model-value="updateItem"
             @is-valid="updateValidity"
           />
         </template>
@@ -76,15 +74,11 @@
 </template>
 
 <script setup lang="ts">
-import type {
-  ArchivCreateDTO,
-  ArchivResponseDTO,
-  ArchivUpdateDTO,
-} from "@/api/generated/foerdermittel-backend";
+import type { ArchivResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
 import { mdiCheck } from "@mdi/js";
-import { computed, onMounted, useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -93,28 +87,29 @@ import ArchivForm from "@/components/forms/ArchivForm.vue";
 import {
   useCreateArchiv,
   useDeleteArchiv,
-  useGetArchive,
+  useGetArchiv,
   useGetArchivFormContext,
   useUpdateArchiv,
 } from "@/composables/api/useArchivApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
 import usePagination from "@/composables/usePagination";
 import { Role } from "@/types/Role";
-import { formatDate } from "@/util/date";
 
 const domainKey = "model.archiv.modelName";
 
-const { t } = useI18n();
-
 const isAdmin = useHasAnyRole(Role.ADMIN);
 
-const {
-  data: archivFormContext,
-  call: getArchivFormContext,
-  loading: archivFormContextLoading,
-} = useGetArchivFormContext();
+definePage({
+  meta: {
+    hasAnyRole: [
+      Role.SACHBEARBEITUNG,
+      Role.SACHBEARBEITUNG_HAUSHALT,
+      Role.ADMIN,
+    ],
+  },
+});
 
-const projekte = computed(() => archivFormContext.value?.projekte ?? []);
+const { t } = useI18n();
 
 const headers: DataTableHeader<Partial<ArchivResponseDTO>>[] = [
   {
@@ -175,99 +170,107 @@ const headers: DataTableHeader<Partial<ArchivResponseDTO>>[] = [
 
 const EMPTY_ITEM_TEMPLATE: Partial<ArchivResponseDTO> = {
   projnr: undefined,
-  speicherDatum: null,
-  mikroDatPlan: null,
-  mikroDat: null,
+  speicherDatum: undefined,
+  mikroDatPlan: undefined,
+  mikroDat: undefined,
   speicherAkt: false,
   speicherRechnungen: false,
-  notizen: "",
+  notizen: undefined,
 };
 
-type ArchivFormType = InstanceType<typeof ArchivForm>;
-
-const archivFormRef = useTemplateRef<ArchivFormType>("archivForm");
+const {
+  data: archivFormContext,
+  call: getArchivFormContext,
+  loading: getArchivFormContextLoading,
+} = useGetArchivFormContext();
 
 const {
   data: archive,
-  call: getArchive,
-  loading: archiveLoading,
-} = useGetArchive();
+  call: getArchiveintraege,
+  loading: getArchivLoading,
+} = useGetArchiv();
 
-onMounted(async () => {
-  await Promise.all([getArchive(), getArchivFormContext()]);
-});
+const projekte = computed(() => archivFormContext.value?.projekte ?? []);
+
+type ArchivFormType = InstanceType<typeof ArchivForm>;
+const archivFormRef = useTemplateRef<ArchivFormType>("archivForm");
 
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => archive.value?.page?.totalPages),
-  getArchive,
+  getArchiveintraege,
   isAdmin,
-  undefined,
-  () => archivFormRef.value?.validate()
+  getArchivFormContext,
+  async () => {
+    await archivFormRef.value?.validate();
+  }
 );
 
 const {
   call: createArchiv,
-  loading: createLoading,
-  error: createError,
+  loading: createArchivLoading,
+  error: createArchivError,
 } = useCreateArchiv();
 
-async function handleCreate(dto: Partial<ArchivResponseDTO>) {
+const handleCreate = async (archivCreateDTO: Partial<ArchivResponseDTO>) => {
+  const model = archivCreateDTO as ArchivResponseDTO;
+
   await createArchiv({
-    archivCreateDTO: dto as ArchivCreateDTO,
+    archivCreateDTO: model,
   });
 
-  if (createError.value) {
-    await onFailure(t("common.message.createdError", [t(domainKey)]));
-  } else {
+  if (!createArchivError.value) {
     await onSuccess(t("common.message.created", [t(domainKey)]));
+  } else {
+    await onFailure(t("common.message.createdError", [t(domainKey)]));
   }
-}
+};
 
 const {
   call: updateArchiv,
-  loading: updateLoading,
-  error: updateError,
+  loading: updateArchivLoading,
+  error: updateArchivError,
 } = useUpdateArchiv();
 
-type ArchivUpdate = Partial<ArchivResponseDTO> & {
-  id: number;
-};
-
-async function handleUpdate(dto: ArchivUpdate) {
+const handleUpdate = async (archivUpdateDTO: Partial<ArchivResponseDTO>) => {
+  const model = archivUpdateDTO as ArchivResponseDTO;
   await updateArchiv({
-    id: dto.id,
-    archivUpdateDTO: dto as ArchivUpdateDTO,
+    id: model.id,
+    archivUpdateDTO: model,
   });
 
-  if (updateError.value) {
-    await onFailure(t("common.message.updatedError", [t(domainKey)]));
-  } else {
+  if (!updateArchivError.value) {
     await onSuccess(t("common.message.updated", [t(domainKey)]));
+  } else {
+    onFailure(t("common.message.updatedError", [t(domainKey)]));
   }
-}
+};
 
 const {
   call: deleteArchiv,
-  loading: deleteLoading,
-  error: deleteError,
+  loading: deleteArchivLoading,
+  error: deleteArchivError,
 } = useDeleteArchiv();
 
-async function handleDelete(id: string) {
-  await deleteArchiv({ id });
-
-  if (deleteError.value) {
-    await onFailure(t("common.message.deletedError", [t(domainKey)]));
-  } else {
+const handleDelete = async (id: string) => {
+  await deleteArchiv({
+    id: Number(id),
+  });
+  if (!deleteArchivError.value) {
     await onSuccess(t("common.message.deleted", [t(domainKey)]));
+  } else {
+    onFailure(t("common.message.deletedError", [t(domainKey)]));
   }
-}
+};
+
+const formatDate = (value?: string | null) =>
+  value ? value.split("-").reverse().join(".") : "";
 
 const loading = computed(
   () =>
-    archiveLoading.value ||
-    archivFormContextLoading.value ||
-    createLoading.value ||
-    updateLoading.value ||
-    deleteLoading.value
+    getArchivLoading.value ||
+    getArchivFormContextLoading.value ||
+    createArchivLoading.value ||
+    updateArchivLoading.value ||
+    deleteArchivLoading.value
 );
 </script>
