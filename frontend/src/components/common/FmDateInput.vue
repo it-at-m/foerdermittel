@@ -72,7 +72,7 @@ const { required, allRules, canNotEdit } = useInputValidation(
   validationAttributeKey
 );
 
-const model = defineModel<Date | null>();
+const model = defineModel<string | null>();
 
 const date = useDate();
 const formattedModel = computed(() => {
