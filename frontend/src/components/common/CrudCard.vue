@@ -132,7 +132,7 @@
   </v-card>
 </template>
 
-<script setup lang="ts" generic="T extends { id?: string }">
+<script setup lang="ts" generic="T extends { id?: string | number }">
 import type { DataTableOptions } from "@/types/DataTableOptions";
 import type { DataTableHeader } from "vuetify/framework";
 
