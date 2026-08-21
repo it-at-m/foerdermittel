@@ -34,8 +34,8 @@ import org.springframework.web.bind.annotation.RestController;
 @SecurityRequirement(name = OpenAPIDocumentationConfiguration.SECURITY_SCHEME_NAME)
 public class ArchivController {
 
-    final private ArchivService archivService;
-    final private ArchivMapper archivMapper;
+    private final ArchivService archivService;
+    private final ArchivMapper archivMapper;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
