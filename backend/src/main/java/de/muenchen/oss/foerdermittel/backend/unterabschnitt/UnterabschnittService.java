@@ -2,7 +2,6 @@ package de.muenchen.oss.foerdermittel.backend.unterabschnitt;
 
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.HauptabschnittService;
-import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittMapper;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.dto.UnterabschnittFormContextHauptabschnitt;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
@@ -21,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UnterabschnittService {
 
-    private final HauptabschnittMapper hauptabschnittMapper;
     private final HauptabschnittService hauptabschnittService;
     private final UnterabschnittRepository unterabschnittRepository;
 
@@ -59,7 +57,6 @@ public class UnterabschnittService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Unterabschnitt updateUnterabschnitt(final Unterabschnitt unterabschnitt, final String ua, final String ha) {
-
         final Unterabschnitt foundUnterabschnitt = ServiceUtils.getEntityOrThrowNotFoundException(ua, unterabschnittRepository);
 
         final Hauptabschnitt hauptabschnitt = hauptabschnittService.getHauptabschnitt(ha);

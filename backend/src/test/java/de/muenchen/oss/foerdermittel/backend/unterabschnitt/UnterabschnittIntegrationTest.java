@@ -164,6 +164,19 @@ class UnterabschnittIntegrationTest {
                     .expectStatus().isEqualTo(HttpStatus.CONFLICT);
         }
 
+        @Test
+        void givenNonExistingHa_thenReturnNotFound() {
+            final UnterabschnittCreateDTO requestDTO = new UnterabschnittCreateDTO("A", "Test", NON_EXISTING_HASHA);
+
+            restTestClient.post()
+                    .uri("/unterabschnitte")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                    .body(requestDTO)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isEqualTo(HttpStatus.NOT_FOUND);
+        }
+
         private static Stream<Arguments> invalidInputRequests() {
             return Stream.of(
                     arguments(
@@ -179,19 +192,6 @@ class UnterabschnittIntegrationTest {
                             "no hasHa selected",
                             new UnterabschnittCreateDTO("B", "a", "")));
 
-        }
-
-        @Test
-        void givenNonExistingHa_thenReturnNotFound() {
-            final UnterabschnittCreateDTO requestDTO = new UnterabschnittCreateDTO("A", "Test", NON_EXISTING_HASHA);
-
-            restTestClient.post()
-                    .uri("/unterabschnitte")
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
-                    .body(requestDTO)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .exchange()
-                    .expectStatus().isEqualTo(HttpStatus.NOT_FOUND);
         }
 
         @ParameterizedTest(name = "{0}")
@@ -213,7 +213,8 @@ class UnterabschnittIntegrationTest {
             return Stream.of(
                     Arguments.of("admin", HttpStatus.CREATED),
                     Arguments.of("sachbearbeitung", HttpStatus.FORBIDDEN),
-                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN));
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN),
+                    Arguments.of("no-role", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -277,18 +278,8 @@ class UnterabschnittIntegrationTest {
                     .expectStatus().isNotFound();
         }
 
-        private static Stream<Arguments> invalidInputRequests() {
-            return Stream.of(
-                    arguments(
-                            "bezeichnung too short",
-                            new UnterabschnittUpdateDTO("", EXISTING_HASHA)),
-                    arguments(
-                            "bezeichnung too long",
-                            new UnterabschnittUpdateDTO("a".repeat(201), EXISTING_HASHA)));
-        }
-
         @Test
-        void givenHaDoesNotExist_thenReturnNotFound() {
+        void givenNonExistingHa_thenReturnNotFound() {
             final UnterabschnittUpdateDTO requestDTO = new UnterabschnittUpdateDTO("Test", NON_EXISTING_HASHA);
 
             restTestClient.put()
@@ -298,6 +289,16 @@ class UnterabschnittIntegrationTest {
                     .accept(MediaType.APPLICATION_JSON)
                     .exchange()
                     .expectStatus().isNotFound();
+        }
+
+        private static Stream<Arguments> invalidInputRequests() {
+            return Stream.of(
+                    arguments(
+                            "bezeichnung too short",
+                            new UnterabschnittUpdateDTO("", EXISTING_HASHA)),
+                    arguments(
+                            "bezeichnung too long",
+                            new UnterabschnittUpdateDTO("a".repeat(201), EXISTING_HASHA)));
         }
 
         @ParameterizedTest(name = "{0}")
@@ -318,7 +319,8 @@ class UnterabschnittIntegrationTest {
             return Stream.of(
                     Arguments.of("admin", HttpStatus.OK),
                     Arguments.of("sachbearbeitung", HttpStatus.FORBIDDEN),
-                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN));
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN),
+                    Arguments.of("no-role", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -364,7 +366,8 @@ class UnterabschnittIntegrationTest {
             return Stream.of(
                     Arguments.of("admin", HttpStatus.OK),
                     Arguments.of("sachbearbeitung", HttpStatus.FORBIDDEN),
-                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN));
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN),
+                    Arguments.of("no-role", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -430,7 +433,8 @@ class UnterabschnittIntegrationTest {
             return Stream.of(
                     Arguments.of("admin", HttpStatus.OK),
                     Arguments.of("sachbearbeitung", HttpStatus.FORBIDDEN),
-                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN));
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN),
+                    Arguments.of("no-role", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
