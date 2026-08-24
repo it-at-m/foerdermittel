@@ -128,11 +128,12 @@ class UnterabschnittServiceTest {
         void givenHaNotExists_thenThrowNotFoundException() {
             final String ha = "99";
             final String ua = "K";
-            final Unterabschnitt entityToInsert = new Unterabschnitt(ua, BEZEICHNUNG, null);
+            final Unterabschnitt entityToUpdate = new Unterabschnitt(ua, BEZEICHNUNG, null);
 
+            when(unterabschnittRepository.findById(ua)).thenReturn(Optional.of(entityToUpdate));
             when(hauptabschnittService.getHauptabschnitt(ha)).thenThrow(NotFoundException.class);
 
-            Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.updateUnterabschnitt(entityToInsert, ua, ha));
+            Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.updateUnterabschnitt(entityToUpdate, ua, ha));
         }
 
         @Test
