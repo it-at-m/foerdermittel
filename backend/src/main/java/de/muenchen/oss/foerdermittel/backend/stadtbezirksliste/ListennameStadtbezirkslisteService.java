@@ -51,7 +51,10 @@ public class ListennameStadtbezirkslisteService {
                     assignment.getStadtbezirk().getStadtbezirk()));
         });
 
-        log.debug("Create Listenname {}", listenname);
+        log.debug(
+                "Create Listenname with kurzBez '{}' and bezeichnung '{}'",
+                listenname.getKurzbez(),
+                listenname.getBezeichnung());
         return listennameRepository.insert(listenname);
     }
 
