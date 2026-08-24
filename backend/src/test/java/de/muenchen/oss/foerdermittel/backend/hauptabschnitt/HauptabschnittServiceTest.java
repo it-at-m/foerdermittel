@@ -59,6 +59,23 @@ class HauptabschnittServiceTest {
     }
 
     @Nested
+    class GetAllHauptabschnitte {
+        @Test
+        void givenTwoHauptabschnitte_thenReturnCorrectList() {
+            final Hauptabschnitt first = new Hauptabschnitt("K", "Test 1");
+            final Hauptabschnitt second = new Hauptabschnitt("L", "Test 2");
+
+            when(hauptabschnittRepository.findAll())
+                    .thenReturn(List.of(first, second));
+
+            final List<Hauptabschnitt> result = unitUnderTest.getAllHauptabschnitte();
+
+            verify(hauptabschnittRepository, times(1)).findAll();
+            assertThat(result).containsExactlyInAnyOrder(first, second);
+        }
+    }
+
+    @Nested
     class GetHauptabschnitt {
 
         @Test

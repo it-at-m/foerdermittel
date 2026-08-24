@@ -35,7 +35,7 @@ public class UnterabschnittService {
     public UnterabschnittFormContext getUnterabschnittFormContext() {
         log.info("Get Unterabschnitt form context");
 
-        final List<UnterabschnittFormContextHauptabschnitt> hauptabschnitte = hauptabschnittService.getHauptabschnitte()
+        final List<UnterabschnittFormContextHauptabschnitt> hauptabschnitte = hauptabschnittService.getAllHauptabschnitte()
                 .stream()
                 .map(hauptabschnitt -> new UnterabschnittFormContextHauptabschnitt(
                         hauptabschnitt.getHa(),

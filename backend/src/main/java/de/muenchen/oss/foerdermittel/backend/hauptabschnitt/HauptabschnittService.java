@@ -29,7 +29,7 @@ public class HauptabschnittService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public List<Hauptabschnitt> getHauptabschnitte() {
+    public List<Hauptabschnitt> getAllHauptabschnitte() {
         log.info("Get Hauptabschnitte");
 
         return StreamSupport.stream(

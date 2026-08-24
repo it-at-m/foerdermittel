@@ -208,7 +208,7 @@ class UnterabschnittServiceTest {
             final Hauptabschnitt hauptabschnitt = new Hauptabschnitt("H1", BEZEICHNUNG);
 
             when(unterabschnittRepository.findAllUas()).thenReturn(allUas);
-            when(hauptabschnittService.getHauptabschnitte())
+            when(hauptabschnittService.getAllHauptabschnitte())
                     .thenReturn(List.of(hauptabschnitt));
 
             // When
@@ -216,7 +216,7 @@ class UnterabschnittServiceTest {
 
             // Then
             verify(unterabschnittRepository).findAllUas();
-            verify(hauptabschnittService).getHauptabschnitte();
+            verify(hauptabschnittService).getAllHauptabschnitte();
 
             assertThat(formContext.uas()).isEqualTo(allUas);
             assertThat(formContext.hasHas()).containsExactly(new UnterabschnittFormContextHauptabschnitt("H1", BEZEICHNUNG));
