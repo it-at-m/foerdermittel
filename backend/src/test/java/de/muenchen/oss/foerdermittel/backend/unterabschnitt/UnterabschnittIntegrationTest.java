@@ -58,6 +58,7 @@ class UnterabschnittIntegrationTest {
     private static final String EXISTING_ID = "L";
     private static final String NON_EXISTING_ID = "K";
     private static final String EXISTING_HASHA = "ha";
+    private static final String EXISTING_HASHA_2 = "hb";
     private static final String NON_EXISTING_HASHA = "xx";
 
     @Autowired
@@ -69,8 +70,10 @@ class UnterabschnittIntegrationTest {
     public void setUp() {
         unterabschnittRepository.deleteAll();
         hauptabschnittRepository.deleteAll();
-        final Hauptabschnitt exampleHa = new Hauptabschnitt("ha", "bz");
+        final Hauptabschnitt exampleHa = new Hauptabschnitt(EXISTING_HASHA, "bz");
+        final Hauptabschnitt exampleHa2 = new Hauptabschnitt(EXISTING_HASHA_2, "bz2");
         final Hauptabschnitt savedHa = hauptabschnittRepository.save(exampleHa);
+        hauptabschnittRepository.save(exampleHa2);
         final Unterabschnitt exampleEntity = new Unterabschnitt(EXISTING_ID, "Test", savedHa);
         unterabschnittRepository.save(exampleEntity);
     }
@@ -238,7 +241,7 @@ class UnterabschnittIntegrationTest {
 
         @Test
         void givenEntityExists_thenEntityIsUpdated() {
-            final UnterabschnittUpdateDTO requestDTO = new UnterabschnittUpdateDTO("Test aktualisiert", EXISTING_HASHA);
+            final UnterabschnittUpdateDTO requestDTO = new UnterabschnittUpdateDTO("Test aktualisiert", EXISTING_HASHA_2);
 
             final UnterabschnittResponseDTO responseDTO = restTestClient.put()
                     .uri("/unterabschnitte/{id}", EXISTING_ID)
@@ -253,6 +256,7 @@ class UnterabschnittIntegrationTest {
                         assertNotNull(theEntityResponseDTO);
                         assertThat(theEntityResponseDTO.id()).isEqualTo(EXISTING_ID);
                         assertThat(theEntityResponseDTO.bezeichnung()).isEqualTo(requestDTO.bezeichnung());
+                        assertThat(theEntityResponseDTO.hasHa()).isEqualTo(requestDTO.hasHa());
                     })
                     .returnResult()
                     .getResponseBody();
