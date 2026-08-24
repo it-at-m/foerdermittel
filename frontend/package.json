@@ -21,13 +21,13 @@
   },
   "dependencies": {
     "@fontsource/roboto": "5.3.0",
-    "@vueuse/core": "14.3.0",
-    "@vueuse/router": "14.3.0",
-    "pinia": "4.0.2",
+    "@vueuse/core": "14.4.0",
+    "@vueuse/router": "14.4.0",
+    "pinia": "4.0.3",
     "vue": "3.5.39",
     "vue-i18n": "11.4.8",
     "vue-router": "5.2.0",
-    "vuetify": "4.1.7"
+    "vuetify": "4.1.10"
   },
   "devDependencies": {
     "@cyclonedx/cyclonedx-npm": "6.0.1",
