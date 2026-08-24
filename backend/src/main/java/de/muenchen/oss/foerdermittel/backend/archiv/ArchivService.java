@@ -39,9 +39,9 @@ public class ArchivService {
     public ArchivFormContext getArchivFormContext() {
         log.info("Get Archiv form context");
 
-        List<Long> archivIds = archivRepository.findAllWithProjekt();
+        final List<Long> archivIds = archivRepository.findAllWithProjekt();
 
-        List<ProjektResponseDTO> projekte = StreamSupport
+        final List<ProjektResponseDTO> projekte = StreamSupport
                 .stream(projektRepository.findAll().spliterator(), false)
                 .map(projektMapper::toDTO)
                 .toList();
@@ -63,9 +63,9 @@ public class ArchivService {
         foundArchiveintrag.setNotizen(archiv.getNotizen());
 
         if (archiv.getProjekt() != null && archiv.getProjekt().getProjnr() != null) {
-            String projnr = archiv.getProjekt().getProjnr();
+            final String projnr = archiv.getProjekt().getProjnr();
 
-            Projekt projekt = projektRepository.findById(projnr)
+            final Projekt projekt = projektRepository.findById(projnr)
                     .orElseThrow(() -> new EntityNotFoundException(
                             "Projekt mit Projektnummer " + projnr + " wurde nicht gefunden"));
 
@@ -81,9 +81,9 @@ public class ArchivService {
     public Archiv createArchiv(final Archiv archiv) {
         log.debug("Create Archiveintrag {}", archiv);
 
-        String projnr = archiv.getProjekt().getProjnr();
+        final String projnr = archiv.getProjekt().getProjnr();
 
-        Projekt projekt = projektRepository.findById(projnr)
+        final Projekt projekt = projektRepository.findById(projnr)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Projekt mit Projektnummer " + projnr + " wurde nicht gefunden"));
 
@@ -95,7 +95,7 @@ public class ArchivService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteArchiv(final Long archivID) {
         log.debug("Delete Archiv with ID {}", archivID);
-        Archiv archiv = ServiceUtils.getEntityOrThrowNotFoundException(archivID, archivRepository);
+        final Archiv archiv = ServiceUtils.getEntityOrThrowNotFoundException(archivID, archivRepository);
         archivRepository.delete(archiv);
     }
 

@@ -5,12 +5,14 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public record ArchivResponseDTO(@NotNull Long id, @NotNull LocalDate speicherDatum,
+public record ArchivResponseDTO(
+        @NotNull Long id,
+        LocalDate speicherDatum,
         @NotNull Boolean speicherAkt,
         @NotNull Boolean speicherRechnungen,
-        @NotNull LocalDate mikroDatPlan,
-        @NotNull LocalDate mikroDat,
-        @NotNull String notizen,
+        LocalDate mikroDatPlan,
+        LocalDate mikroDat,
+        String notizen,
         @NotNull String projnr,
         @NotNull String pname,
         @NotNull String pstrasse,

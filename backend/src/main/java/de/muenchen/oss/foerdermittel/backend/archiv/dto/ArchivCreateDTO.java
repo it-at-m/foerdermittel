@@ -1,14 +1,16 @@
 package de.muenchen.oss.foerdermittel.backend.archiv.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
-public record ArchivCreateDTO(@NotNull LocalDate speicherDatum,
+public record ArchivCreateDTO(
+        LocalDate speicherDatum,
         @NotNull Boolean speicherAkt,
         @NotNull Boolean speicherRechnungen,
-        @NotNull LocalDate mikroDatPlan,
-        @NotNull LocalDate mikroDat,
-        @NotNull String notizen,
-        @NotNull String projnr) {
+        LocalDate mikroDatPlan,
+        LocalDate mikroDat,
+        String notizen,
+        @NotBlank String projnr) {
 }

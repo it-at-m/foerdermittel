@@ -68,7 +68,6 @@
     },
     "archiv": {
       "modelName": "Archiv",
-      "id": "ID",
       "speicherDatum": "Ablage in Speicher am",
       "speicherAkt": "Akt im Speicher",
       "speicherRechnungen": "Rechnung im Speicher",
@@ -78,7 +77,7 @@
       "projnr": "Projnr",
       "pname": "Name",
       "pstrasse": "Straße",
-      "fob_fb": "FB"
+      "fobFb": "FB"
     },
     "haushaltsjahr": {
       "modelName": "Haushaltsjahr | Haushaltsjahre"

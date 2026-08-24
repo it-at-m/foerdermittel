@@ -554,7 +554,7 @@ paths:
     put:
       tags:
       - archiv-controller
-      operationId: updateArchivNotiz
+      operationId: updateArchiv
       parameters:
       - name: id
         in: path
@@ -586,7 +586,8 @@ paths:
         in: path
         required: true
         schema:
-          type: string
+          type: integer
+          format: int64
       responses:
         "200":
           description: OK
@@ -1348,7 +1349,7 @@ paths:
     get:
       tags:
       - archiv-controller
-      operationId: getArchiveintrag
+      operationId: getArchiveintraege
       parameters:
       - name: page
         in: query
@@ -1390,7 +1391,7 @@ paths:
     post:
       tags:
       - archiv-controller
-      operationId: createArchive
+      operationId: createArchiv
       requestBody:
         content:
           application/json:
@@ -2062,11 +2063,7 @@ components:
           type: string
     ArchivUpdateDTO:
       required:
-      - mikroDat
-      - mikroDatPlan
-      - notizen
       - speicherAkt
-      - speicherDatum
       - speicherRechnungen
       type: object
       properties:
@@ -2089,14 +2086,10 @@ components:
       required:
       - fob_fb
       - id
-      - mikroDat
-      - mikroDatPlan
-      - notizen
       - pname
       - projnr
       - pstrasse
       - speicherAkt
-      - speicherDatum
       - speicherRechnungen
       type: object
       properties:
@@ -2344,12 +2337,8 @@ components:
           type: string
     ArchivCreateDTO:
       required:
-      - mikroDat
-      - mikroDatPlan
-      - notizen
       - projnr
       - speicherAkt
-      - speicherDatum
       - speicherRechnungen
       type: object
       properties:
@@ -2369,6 +2358,7 @@ components:
         notizen:
           type: string
         projnr:
+          minLength: 1
           type: string
     PageMetadata:
       type: object

@@ -61,7 +61,7 @@ class FoerderbereichIntegrationTest {
     @BeforeEach
     public void setUp() {
         foerderbereichRepository.deleteAll();
-        final Foerderbereich exampleEntity = new Foerderbereich(new BigDecimal(EXISTING_ID), "Test", false, true, false, true, List.of());
+        final Foerderbereich exampleEntity = new Foerderbereich(new BigDecimal(EXISTING_ID), "Test", false, true, false, true);
         foerderbereichRepository.save(exampleEntity);
     }
 

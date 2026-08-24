@@ -3,7 +3,7 @@ import type {
   ArchivResponseDTO,
   CreateArchivRequest,
   DeleteArchivRequest,
-  GetArchiveintragRequest,
+  GetArchiveintraegeRequest,
   PagedModelArchivResponseDTO,
   UpdateArchivRequest,
 } from "@/api/generated/foerdermittel-backend";
@@ -17,7 +17,7 @@ import {
 export const {
   useCreate: useCreateArchiv,
   useUpdate: useUpdateArchiv,
-  useGetAll: useGetArchive,
+  useGetAll: useGetArchiv,
   useDelete: useDeleteArchiv,
   useContext: useGetArchivFormContext,
 } = requireComposables(
@@ -27,14 +27,14 @@ export const {
     UpdateArchivRequest,
     never,
     DeleteArchivRequest,
-    GetArchiveintragRequest,
+    GetArchiveintraegeRequest,
     ArchivResponseDTO,
     PagedModelArchivResponseDTO,
     ArchivFormContext
   >(ArchivControllerApi, {
-    create: (api, req) => api.createArchive(req),
-    update: (api, req) => api.updateArchivNotiz(req),
-    getAll: (api, req) => api.getArchiveintrag(req),
+    create: (api, req) => api.createArchiv(req),
+    update: (api, req) => api.updateArchiv(req),
+    getAll: (api, req) => api.getArchiveintraege(req),
     delete: (api, req) => api.deleteArchiv(req),
     context: (api) => api.getArchivFormContext(),
   })

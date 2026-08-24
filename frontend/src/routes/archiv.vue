@@ -11,16 +11,17 @@
         :domain-key="domainKey"
         :enable-actions="isAdmin"
         :items="archive?.content ?? []"
+        :expandable="true"
         :total-items="archive?.page?.totalElements ?? 0"
         @delete="handleDelete"
         @create="handleCreate"
         @update="handleUpdate"
       >
-        <template #form="{ item, updateItem, updateValidity, inputDisplayMode }">
+        <template #form="{ item, updateValidity, inputDisplayMode }">
           <archiv-form
+            v-if="archivFormContext"
             ref="archivForm"
             :model-value="item"
-            @update:model-value="updateItem"
             :display-mode="inputDisplayMode"
             :projekte="projekte"
             @is-valid="updateValidity"
@@ -52,6 +53,21 @@
         <template #[`item.mikroDat`]="{ item }">
           {{ formatDate(item.mikroDat) }}
         </template>
+
+        <template #expanded="{ item }">
+          <div class="pa-4">
+            <div class="text-subtitle-2 mb-2">
+              {{ t("model.archiv.notizen") }}
+            </div>
+
+            <div
+              class="text-body-2"
+              style="white-space: pre-wrap"
+            >
+              {{ item.notizen || "—" }}
+            </div>
+          </div>
+        </template>
       </crud-card>
     </template>
   </base-view>
@@ -62,7 +78,7 @@ import type { ArchivResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
 import { mdiCheck } from "@mdi/js";
-import { computed, onMounted, useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -71,28 +87,29 @@ import ArchivForm from "@/components/forms/ArchivForm.vue";
 import {
   useCreateArchiv,
   useDeleteArchiv,
-  useGetArchive,
+  useGetArchiv,
   useGetArchivFormContext,
   useUpdateArchiv,
 } from "@/composables/api/useArchivApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
 import usePagination from "@/composables/usePagination";
 import { Role } from "@/types/Role";
-import { formatDate } from "@/util/date";
 
 const domainKey = "model.archiv.modelName";
 
-const { t } = useI18n();
-
 const isAdmin = useHasAnyRole(Role.ADMIN);
 
-const {
-  data: archivFormContext,
-  call: getArchivFormContext,
-  loading: archivFormContextLoading,
-} = useGetArchivFormContext();
+definePage({
+  meta: {
+    hasAnyRole: [
+      Role.SACHBEARBEITUNG,
+      Role.SACHBEARBEITUNG_HAUSHALT,
+      Role.ADMIN,
+    ],
+  },
+});
 
-const projekte = computed(() => archivFormContext.value?.projekte ?? []);
+const { t } = useI18n();
 
 const headers: DataTableHeader<Partial<ArchivResponseDTO>>[] = [
   {
@@ -105,7 +122,7 @@ const headers: DataTableHeader<Partial<ArchivResponseDTO>>[] = [
     title: t("model.archiv.speicherDatum"),
     value: "speicherDatum",
     align: "center",
-    width: 120,
+    width: 110,
   },
   {
     title: t("model.archiv.speicherAkt"),
@@ -123,16 +140,16 @@ const headers: DataTableHeader<Partial<ArchivResponseDTO>>[] = [
     title: t("model.archiv.mikroDatPlan"),
     value: "mikroDatPlan",
     align: "center",
-    width: 120,
+    width: 110,
   },
   {
     title: t("model.archiv.mikroDat"),
     value: "mikroDat",
     align: "center",
-    width: 120,
+    width: 110,
   },
   {
-    title: t("model.archiv.fob_fb"),
+    title: t("model.archiv.fobFb"),
     value: "fobFb",
     align: "center",
     width: 50,
@@ -140,113 +157,120 @@ const headers: DataTableHeader<Partial<ArchivResponseDTO>>[] = [
   {
     title: t("model.archiv.pstrasse"),
     value: "pstrasse",
-    align: "center",
+    align: "start",
     width: 180,
   },
   {
     title: t("model.archiv.pname"),
     value: "pname",
-    align: "center",
+    align: "start",
     width: 150,
-  },
-  {
-    title: t("model.archiv.notizen"),
-    value: "notizen",
-    width: 250,
   },
 ];
 
 const EMPTY_ITEM_TEMPLATE: Partial<ArchivResponseDTO> = {
-    projnr: undefined,
-    speicherDatum: null,
-    mikroDatPlan: null,
-    mikroDat: null,
-    speicherAkt: false,
-    speicherRechnungen: false,
-    notizen: "",
+  projnr: undefined,
+  speicherDatum: undefined,
+  mikroDatPlan: undefined,
+  mikroDat: undefined,
+  speicherAkt: false,
+  speicherRechnungen: false,
+  notizen: undefined,
 };
 
 const {
+  data: archivFormContext,
+  call: getArchivFormContext,
+  loading: getArchivFormContextLoading,
+} = useGetArchivFormContext();
+
+const {
   data: archive,
-  call: getArchive,
-  loading: archiveLoading,
-} = useGetArchive();
+  call: getArchiveintraege,
+  loading: getArchivLoading,
+} = useGetArchiv();
+
+const projekte = computed(() => archivFormContext.value?.projekte ?? []);
 
 type ArchivFormType = InstanceType<typeof ArchivForm>;
-
 const archivFormRef = useTemplateRef<ArchivFormType>("archivForm");
-
-onMounted(async () => {
-  await Promise.all([getArchive(), getArchivFormContext()]);
-});
 
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
   computed(() => archive.value?.page?.totalPages),
-  getArchive,
+  getArchiveintraege,
   isAdmin,
-  undefined,
-  () => archivFormRef.value?.validate()
+  getArchivFormContext,
+  async () => {
+    await archivFormRef.value?.validate();
+  }
 );
 
 const {
   call: createArchiv,
-  loading: createLoading,
-  error: createError,
+  loading: createArchivLoading,
+  error: createArchivError,
 } = useCreateArchiv();
 
-async function handleCreate(dto: Partial<ArchivResponseDTO>) {
+const handleCreate = async (archivCreateDTO: Partial<ArchivResponseDTO>) => {
+  const model = archivCreateDTO as ArchivResponseDTO;
+
   await createArchiv({
-    archivCreateDTO: dto as ArchivResponseDTO,
+    archivCreateDTO: model,
   });
 
-  if (createError.value) {
-    await onFailure(t("common.message.createdError", [t(domainKey)]));
-  } else {
+  if (!createArchivError.value) {
     await onSuccess(t("common.message.created", [t(domainKey)]));
+  } else {
+    await onFailure(t("common.message.createdError", [t(domainKey)]));
   }
-}
+};
 
 const {
   call: updateArchiv,
-  loading: updateLoading,
-  error: updateError,
+  loading: updateArchivLoading,
+  error: updateArchivError,
 } = useUpdateArchiv();
 
-async function handleUpdate(dto: Partial<ArchivResponseDTO>) {
+const handleUpdate = async (archivUpdateDTO: Partial<ArchivResponseDTO>) => {
+  const model = archivUpdateDTO as ArchivResponseDTO;
   await updateArchiv({
-    id: dto.id!,
-    archivUpdateDTO: dto as ArchivResponseDTO,
+    id: model.id,
+    archivUpdateDTO: model,
   });
 
-  if (updateError.value) {
-    await onFailure(t("common.message.updatedError", [t(domainKey)]));
-  } else {
+  if (!updateArchivError.value) {
     await onSuccess(t("common.message.updated", [t(domainKey)]));
+  } else {
+    onFailure(t("common.message.updatedError", [t(domainKey)]));
   }
-}
+};
 
 const {
   call: deleteArchiv,
-  loading: deleteLoading,
-  error: deleteError,
+  loading: deleteArchivLoading,
+  error: deleteArchivError,
 } = useDeleteArchiv();
 
-async function handleDelete(id: string) {
-  await deleteArchiv({ id });
-
-  if (deleteError.value) {
-    await onFailure(t("common.message.deletedError", [t(domainKey)]));
-  } else {
+const handleDelete = async (id: string) => {
+  await deleteArchiv({
+    id: Number(id),
+  });
+  if (!deleteArchivError.value) {
     await onSuccess(t("common.message.deleted", [t(domainKey)]));
+  } else {
+    onFailure(t("common.message.deletedError", [t(domainKey)]));
   }
-}
+};
+
+const formatDate = (value?: string | null) =>
+  value ? value.split("-").reverse().join(".") : "";
 
 const loading = computed(
   () =>
-    archiveLoading.value ||
-    archivFormContextLoading.value ||
-    createLoading.value ||
-    updateLoading.value ||
-    deleteLoading.value
+    getArchivLoading.value ||
+    getArchivFormContextLoading.value ||
+    createArchivLoading.value ||
+    updateArchivLoading.value ||
+    deleteArchivLoading.value
 );
 </script>
