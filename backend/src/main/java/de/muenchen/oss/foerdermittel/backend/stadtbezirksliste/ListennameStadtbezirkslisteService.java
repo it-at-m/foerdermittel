@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class StadtbezirkslisteService {
+public class ListennameStadtbezirkslisteService {
 
     private final ListennameRepository listennameRepository;
     private final StadtbezirkslisteRepository stadtbezirkslisteRepository;

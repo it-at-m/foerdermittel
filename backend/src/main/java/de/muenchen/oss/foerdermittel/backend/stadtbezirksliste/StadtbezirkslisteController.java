@@ -38,12 +38,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class StadtbezirkslisteController {
 
     private final ListennameStadtbezirkslisteMapper listennameStadtbezirkslisteMapper;
-    private final StadtbezirkslisteService stadtbezirkslisteService;
+    private final ListennameStadtbezirkslisteService listennameStadtbezirkslisteService;
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public StadtbezirkslisteResponseDTO getStadtbezirkliste(@PathVariable final String id) {
-        return listennameStadtbezirkslisteMapper.toDTO(stadtbezirkslisteService.getListenname(id));
+        return listennameStadtbezirkslisteMapper.toDTO(listennameStadtbezirkslisteService.getListenname(id));
     }
 
     @GetMapping
@@ -51,7 +51,7 @@ public class StadtbezirkslisteController {
     public Page<StadtbezirkslisteResponseDTO> getStadtbezirklistenByPageable(@ParameterObject @PageableDefault(
             sort = "kurzbez"
     ) final Pageable pageable) {
-        final Page<Listenname> pageWithStadtbezirk = stadtbezirkslisteService.getAllListennamen(pageable);
+        final Page<Listenname> pageWithStadtbezirk = listennameStadtbezirkslisteService.getAllListennamen(pageable);
         final List<StadtbezirkslisteResponseDTO> stadtbezirkslisteResponseDTOList = pageWithStadtbezirk.getContent().stream()
                 .map(listennameStadtbezirkslisteMapper::toDTO)
                 .toList();
@@ -61,7 +61,7 @@ public class StadtbezirkslisteController {
     @GetMapping("/form-context")
     @ResponseStatus(HttpStatus.OK)
     public StadtbezirkslisteFormContext getStadtbezirkslisteFormContext() {
-        return stadtbezirkslisteService.getStadtbezirksListeFormContext();
+        return listennameStadtbezirkslisteService.getStadtbezirksListeFormContext();
     }
 
     @PostMapping
@@ -69,7 +69,7 @@ public class StadtbezirkslisteController {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public StadtbezirkslisteResponseDTO createListenname(@Valid @RequestBody final ListennameCreateDTO listennameCreateDTO) {
         return listennameStadtbezirkslisteMapper
-                .toDTO(stadtbezirkslisteService.createListenname(listennameStadtbezirkslisteMapper.toEntity(listennameCreateDTO)));
+                .toDTO(listennameStadtbezirkslisteService.createListenname(listennameStadtbezirkslisteMapper.toEntity(listennameCreateDTO)));
     }
 
     @PutMapping("/{id}")
@@ -79,7 +79,7 @@ public class StadtbezirkslisteController {
             @PathVariable("id") final String listennameId) {
 
         return listennameStadtbezirkslisteMapper.toDTO(
-                stadtbezirkslisteService.updateListenname(
+                listennameStadtbezirkslisteService.updateListenname(
                         listennameStadtbezirkslisteMapper.toEntity(listennameUpdateDTO),
                         listennameId));
     }
@@ -90,6 +90,6 @@ public class StadtbezirkslisteController {
     public void deleteListenname(
             @PathVariable final String kurzbez) {
 
-        stadtbezirkslisteService.deleteListenname(kurzbez);
+        listennameStadtbezirkslisteService.deleteListenname(kurzbez);
     }
 }

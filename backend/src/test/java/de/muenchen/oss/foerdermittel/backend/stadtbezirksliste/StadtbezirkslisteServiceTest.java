@@ -36,7 +36,7 @@ class StadtbezirkslisteServiceTest {
     private StadtbezirkslisteRepository stadtbezirkslisteRepository;
 
     @InjectMocks
-    private StadtbezirkslisteService unitUnderTest;
+    private ListennameStadtbezirkslisteService unitUnderTest;
 
     @Nested
     class GetListenname {
