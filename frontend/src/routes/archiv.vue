@@ -262,8 +262,10 @@ const handleDelete = async (id: string) => {
   }
 };
 
-const formatDate = (value?: string | null) =>
-  value ? value.split("-").reverse().join(".") : "";
+const formatDate = (value?: Date | null) =>
+  value
+    ? value.toLocaleDateString("de-DE")
+    : "";
 
 const loading = computed(
   () =>

@@ -14,9 +14,6 @@
           "disallowAdditionalPropertiesIfNotPresent": false,
           "validationAttributes": true
         },
-        "typeMappings": {
-          "Date": "string"
-        },
         "templateDir": "openapi-generator-templates"
       }
     }

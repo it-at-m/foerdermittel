@@ -16,6 +16,7 @@ import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -106,11 +107,11 @@ class ArchivIntegrationTest {
         void givenArchiveExists_thenReturnPageOfArchiveEntries() {
 
             final ArchivCreateDTO requestDTO = new ArchivCreateDTO(
-                    LocalDate.of(2026, 1, 10),
+                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
                     true,
                     false,
-                    LocalDate.of(2026, 2, 10),
-                    LocalDate.of(2026, 3, 10),
+                    OffsetDateTime.parse("2024-09-16T22:00:00Z"),
+                    OffsetDateTime.parse("2024-09-17T22:00:00Z"),
                     "Test",
                     EXISTING_PROJNR);
 
@@ -144,11 +145,14 @@ class ArchivIntegrationTest {
 
                                 final ArchivResponseDTO archiv = content.getFirst();
 
-                                assertThat(archiv.speicherDatum()).isEqualTo(LocalDate.of(2026, 1, 10));
+                                assertThat(archiv.speicherDatum())
+                                        .isEqualTo(OffsetDateTime.parse("2024-09-16T00:00:00Z"));
                                 assertThat(archiv.speicherAkt()).isTrue();
                                 assertThat(archiv.speicherRechnungen()).isFalse();
-                                assertThat(archiv.mikroDatPlan()).isEqualTo(LocalDate.of(2026, 2, 10));
-                                assertThat(archiv.mikroDat()).isEqualTo(LocalDate.of(2026, 3, 10));
+                                assertThat(archiv.mikroDatPlan())
+                                        .isEqualTo(OffsetDateTime.parse("2024-09-17T00:00:00Z"));
+                                assertThat(archiv.mikroDat())
+                                        .isEqualTo(OffsetDateTime.parse("2024-09-18T00:00:00Z"));
                                 assertThat(archiv.notizen()).isEqualTo("Test");
                                 assertThat(archiv.projnr()).isEqualTo(EXISTING_PROJNR);
                             });
@@ -208,11 +212,11 @@ class ArchivIntegrationTest {
         void givenValidRequest_thenArchivIsCreated() {
 
             final ArchivCreateDTO requestDTO = new ArchivCreateDTO(
-                    LocalDate.of(2026, 1, 10),
+                    OffsetDateTime.parse("2024-09-15T00:00:00Z"),
                     true,
                     false,
-                    LocalDate.of(2026, 2, 10),
-                    LocalDate.of(2026, 3, 10),
+                    OffsetDateTime.parse("2024-09-16T00:00:00Z"),
+                    OffsetDateTime.parse("2024-09-17T00:00:00Z"),
                     "Archiv Test",
                     EXISTING_PROJNR);
 
@@ -230,13 +234,27 @@ class ArchivIntegrationTest {
                     .value(response -> {
 
                         assertNotNull(response);
-                        assertThat(response.speicherDatum()).isEqualTo(requestDTO.speicherDatum());
-                        assertThat(response.speicherAkt()).isEqualTo(requestDTO.speicherAkt());
-                        assertThat(response.speicherRechnungen()).isEqualTo(requestDTO.speicherRechnungen());
-                        assertThat(response.mikroDatPlan()).isEqualTo(requestDTO.mikroDatPlan());
-                        assertThat(response.mikroDat()).isEqualTo(requestDTO.mikroDat());
-                        assertThat(response.notizen()).isEqualTo(requestDTO.notizen());
-                        assertThat(response.projnr()).isEqualTo(EXISTING_PROJNR);
+
+                        assertThat(response.speicherDatum())
+                                .isEqualTo(requestDTO.speicherDatum());
+
+                        assertThat(response.speicherAkt())
+                                .isEqualTo(requestDTO.speicherAkt());
+
+                        assertThat(response.speicherRechnungen())
+                                .isEqualTo(requestDTO.speicherRechnungen());
+
+                        assertThat(response.mikroDatPlan())
+                                .isEqualTo(requestDTO.mikroDatPlan());
+
+                        assertThat(response.mikroDat())
+                                .isEqualTo(requestDTO.mikroDat());
+
+                        assertThat(response.notizen())
+                                .isEqualTo(requestDTO.notizen());
+
+                        assertThat(response.projnr())
+                                .isEqualTo(EXISTING_PROJNR);
                     })
                     .returnResult()
                     .getResponseBody();
@@ -249,25 +267,39 @@ class ArchivIntegrationTest {
 
             final Archiv archiv = entity.get();
 
-            assertThat(archiv.getSpeicherDatum()).isEqualTo(requestDTO.speicherDatum());
-            assertThat(archiv.getSpeicherAkt()).isEqualTo(requestDTO.speicherAkt());
-            assertThat(archiv.getSpeicherRechnungen()).isEqualTo(requestDTO.speicherRechnungen());
-            assertThat(archiv.getMikroDatPlan()).isEqualTo(requestDTO.mikroDatPlan());
-            assertThat(archiv.getMikroDat()).isEqualTo(requestDTO.mikroDat());
-            assertThat(archiv.getNotizen()).isEqualTo(requestDTO.notizen());
+            assertThat(archiv.getSpeicherDatum())
+                    .isEqualTo(requestDTO.speicherDatum().toLocalDate());
+
+            assertThat(archiv.getSpeicherAkt())
+                    .isEqualTo(requestDTO.speicherAkt());
+
+            assertThat(archiv.getSpeicherRechnungen())
+                    .isEqualTo(requestDTO.speicherRechnungen());
+
+            assertThat(archiv.getMikroDatPlan())
+                    .isEqualTo(requestDTO.mikroDatPlan().toLocalDate());
+
+            assertThat(archiv.getMikroDat())
+                    .isEqualTo(requestDTO.mikroDat().toLocalDate());
+
+            assertThat(archiv.getNotizen())
+                    .isEqualTo(requestDTO.notizen());
+
             assertThat(archiv.getProjekt()).isNotNull();
-            assertThat(archiv.getProjekt().getProjnr()).isEqualTo(EXISTING_PROJNR);
+
+            assertThat(archiv.getProjekt().getProjnr())
+                    .isEqualTo(EXISTING_PROJNR);
         }
 
         @Test
         void givenProjectDoesNotExist_thenReturnInternalServerError() {
 
             final ArchivCreateDTO requestDTO = new ArchivCreateDTO(
-                    LocalDate.of(2026, 1, 10),
+                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
                     true,
                     false,
-                    LocalDate.of(2026, 2, 10),
-                    LocalDate.of(2026, 3, 10),
+                    OffsetDateTime.parse("2024-09-16T22:00:00Z"),
+                    OffsetDateTime.parse("2024-09-17T22:00:00Z"),
                     "Test",
                     "9999999");
 
@@ -302,11 +334,11 @@ class ArchivIntegrationTest {
                     arguments(
                             "projnr is null",
                             new ArchivCreateDTO(
-                                    LocalDate.of(2026, 1, 10),
+                                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
                                     true,
                                     false,
-                                    LocalDate.of(2026, 2, 10),
-                                    LocalDate.of(2026, 3, 10),
+                                    OffsetDateTime.parse("2024-09-16T22:00:00Z"),
+                                    OffsetDateTime.parse("2024-09-17T22:00:00Z"),
                                     "Test",
                                     null)));
         }
@@ -325,11 +357,11 @@ class ArchivIntegrationTest {
                 final HttpStatus httpStatus) {
 
             final ArchivCreateDTO requestDTO = new ArchivCreateDTO(
-                    LocalDate.of(2026, 1, 10),
+                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
                     true,
                     false,
-                    LocalDate.of(2026, 2, 10),
-                    LocalDate.of(2026, 3, 10),
+                    OffsetDateTime.parse("2024-09-16T22:00:00Z"),
+                    OffsetDateTime.parse("2024-09-17T22:00:00Z"),
                     "Test",
                     EXISTING_PROJNR);
 
@@ -353,11 +385,11 @@ class ArchivIntegrationTest {
         void givenArchivExists_thenArchivIsUpdated() {
 
             final ArchivCreateDTO createDTO = new ArchivCreateDTO(
-                    LocalDate.of(2026, 1, 10),
+                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
                     true,
                     false,
-                    LocalDate.of(2026, 2, 10),
-                    LocalDate.of(2026, 3, 10),
+                    OffsetDateTime.parse("2024-09-16T22:00:00Z"),
+                    OffsetDateTime.parse("2024-09-17T22:00:00Z"),
                     "Alt",
                     EXISTING_PROJNR);
 
@@ -376,11 +408,11 @@ class ArchivIntegrationTest {
             assertThat(created).isNotNull();
 
             final ArchivUpdateDTO updateDTO = new ArchivUpdateDTO(
-                    LocalDate.of(2026, 4, 10),
-                    false,
+                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
                     true,
-                    LocalDate.of(2026, 5, 10),
-                    LocalDate.of(2026, 6, 10),
+                    false,
+                    OffsetDateTime.parse("2024-09-16T22:00:00Z"),
+                    OffsetDateTime.parse("2024-09-17T22:00:00Z"),
                     "Aktualisierte Notiz");
 
             final ArchivResponseDTO responseDTO = restTestClient.put()
@@ -398,13 +430,28 @@ class ArchivIntegrationTest {
 
                         assertNotNull(response);
                         assertThat(response.id()).isEqualTo(created.id());
-                        assertThat(response.speicherDatum()).isEqualTo(updateDTO.speicherDatum());
-                        assertThat(response.speicherAkt()).isEqualTo(updateDTO.speicherAkt());
-                        assertThat(response.speicherRechnungen()).isEqualTo(updateDTO.speicherRechnungen());
-                        assertThat(response.mikroDatPlan()).isEqualTo(updateDTO.mikroDatPlan());
-                        assertThat(response.mikroDat()).isEqualTo(updateDTO.mikroDat());
-                        assertThat(response.notizen()).isEqualTo(updateDTO.notizen());
-                        assertThat(response.projnr()).isEqualTo(EXISTING_PROJNR);
+
+                        // ResponseDTO: LocalDate -> OffsetDateTime
+                        assertThat(response.speicherDatum())
+                                .isEqualTo(OffsetDateTime.parse("2024-09-16T00:00:00Z"));
+
+                        assertThat(response.speicherAkt())
+                                .isEqualTo(updateDTO.speicherAkt());
+
+                        assertThat(response.speicherRechnungen())
+                                .isEqualTo(updateDTO.speicherRechnungen());
+
+                        assertThat(response.mikroDatPlan())
+                                .isEqualTo(OffsetDateTime.parse("2024-09-17T00:00:00Z"));
+
+                        assertThat(response.mikroDat())
+                                .isEqualTo(OffsetDateTime.parse("2024-09-18T00:00:00Z"));
+
+                        assertThat(response.notizen())
+                                .isEqualTo(updateDTO.notizen());
+
+                        assertThat(response.projnr())
+                                .isEqualTo(EXISTING_PROJNR);
                     })
                     .returnResult()
                     .getResponseBody();
@@ -414,24 +461,39 @@ class ArchivIntegrationTest {
             final Optional<Archiv> entity = archivRepository.findById(created.id());
 
             assertThat(entity).isPresent();
-            assertThat(entity.get().getSpeicherDatum()).isEqualTo(updateDTO.speicherDatum());
-            assertThat(entity.get().getSpeicherAkt()).isEqualTo(updateDTO.speicherAkt());
-            assertThat(entity.get().getSpeicherRechnungen()).isEqualTo(updateDTO.speicherRechnungen());
-            assertThat(entity.get().getMikroDatPlan()).isEqualTo(updateDTO.mikroDatPlan());
-            assertThat(entity.get().getMikroDat()).isEqualTo(updateDTO.mikroDat());
-            assertThat(entity.get().getNotizen()).isEqualTo(updateDTO.notizen());
-            assertThat(entity.get().getProjekt().getProjnr()).isEqualTo(EXISTING_PROJNR);
+
+            // Entity: LocalDate
+            assertThat(entity.get().getSpeicherDatum())
+                    .isEqualTo(LocalDate.of(2024, 9, 16));
+
+            assertThat(entity.get().getSpeicherAkt())
+                    .isEqualTo(updateDTO.speicherAkt());
+
+            assertThat(entity.get().getSpeicherRechnungen())
+                    .isEqualTo(updateDTO.speicherRechnungen());
+
+            assertThat(entity.get().getMikroDatPlan())
+                    .isEqualTo(LocalDate.of(2024, 9, 17));
+
+            assertThat(entity.get().getMikroDat())
+                    .isEqualTo(LocalDate.of(2024, 9, 18));
+
+            assertThat(entity.get().getNotizen())
+                    .isEqualTo(updateDTO.notizen());
+
+            assertThat(entity.get().getProjekt().getProjnr())
+                    .isEqualTo(EXISTING_PROJNR);
         }
 
         @Test
         void givenArchivDoesNotExist_thenReturnNotFound() {
 
             final ArchivUpdateDTO updateDTO = new ArchivUpdateDTO(
-                    LocalDate.of(2026, 4, 10),
-                    false,
+                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
                     true,
-                    LocalDate.of(2026, 5, 10),
-                    LocalDate.of(2026, 6, 10),
+                    false,
+                    OffsetDateTime.parse("2024-09-16T22:00:00Z"),
+                    OffsetDateTime.parse("2024-09-17T22:00:00Z"),
                     "Test");
 
             restTestClient.put()
@@ -458,11 +520,11 @@ class ArchivIntegrationTest {
                 final HttpStatus httpStatus) {
 
             final ArchivCreateDTO createDTO = new ArchivCreateDTO(
-                    LocalDate.of(2026, 1, 10),
+                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
                     true,
                     false,
-                    LocalDate.of(2026, 2, 10),
-                    LocalDate.of(2026, 3, 10),
+                    OffsetDateTime.parse("2024-09-16T22:00:00Z"),
+                    OffsetDateTime.parse("2024-09-17T22:00:00Z"),
                     "Test",
                     EXISTING_PROJNR);
 
@@ -481,11 +543,11 @@ class ArchivIntegrationTest {
             assertThat(created).isNotNull();
 
             final ArchivUpdateDTO updateDTO = new ArchivUpdateDTO(
-                    LocalDate.of(2026, 4, 10),
-                    false,
+                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
                     true,
-                    LocalDate.of(2026, 5, 10),
-                    LocalDate.of(2026, 6, 10),
+                    false,
+                    OffsetDateTime.parse("2024-09-16T22:00:00Z"),
+                    OffsetDateTime.parse("2024-09-17T22:00:00Z"),
                     "Test");
 
             restTestClient.put()
@@ -508,11 +570,11 @@ class ArchivIntegrationTest {
         void givenArchivExists_thenArchivIsDeleted() {
 
             final ArchivCreateDTO createDTO = new ArchivCreateDTO(
-                    LocalDate.of(2026, 1, 10),
+                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
                     true,
                     false,
-                    LocalDate.of(2026, 2, 10),
-                    LocalDate.of(2026, 3, 10),
+                    OffsetDateTime.parse("2024-09-16T22:00:00Z"),
+                    OffsetDateTime.parse("2024-09-17T22:00:00Z"),
                     "Test",
                     EXISTING_PROJNR);
 
@@ -566,11 +628,11 @@ class ArchivIntegrationTest {
                 final HttpStatus httpStatus) {
 
             final ArchivCreateDTO createDTO = new ArchivCreateDTO(
-                    LocalDate.of(2026, 1, 10),
+                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
                     true,
                     false,
-                    LocalDate.of(2026, 2, 10),
-                    LocalDate.of(2026, 3, 10),
+                    OffsetDateTime.parse("2024-09-16T22:00:00Z"),
+                    OffsetDateTime.parse("2024-09-17T22:00:00Z"),
                     "Test",
                     EXISTING_PROJNR);
 
