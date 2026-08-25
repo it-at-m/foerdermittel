@@ -141,12 +141,13 @@
       "modelName": "Stadtbezirksliste | Stadtbezirkslisten",
       "lnaKurzbez": "Listenname",
       "bezeichnung": "Bezeichnung",
-      "bezStadtbezirk": "Bezirk",
+      "bezStadtbezirk": "Bezirk | Bezirke",
       "listeBezeichnung": "Notiz",
       "stadtBezirkeDerListe": "Stadtbezirke der Liste",
       "addBezirke": "Bezirk hinzufügen",
       "noDistricts": "Noch keine Stadtbezirke hinzugefügt",
-      "selectHint": "Wähle unten einen Stadtbezirk aus."
+      "selectHint": "Wähle unten einen Stadtbezirk aus.",
+      "stadtbezirkeAdded": "{0} Bezirk hinzugefügt | {0} Bezirke hinzugefügt"
     },
     "stichwortbereich": {
       "modelName": "Stichwortbereich | Stichwortbereiche",

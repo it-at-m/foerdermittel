@@ -48,9 +48,13 @@
           {{ t("model.stadtbezirksliste.stadtBezirkeDerListe") }}
         </div>
         <div class="text-body-2 text-medium-emphasis">
-          {{ assignedStadtbezirkeCount }}
-          {{ assignedStadtbezirkeCount === 1 ? "Bezirk" : "Bezirke" }}
-          hinzugefügt
+          {{
+            t(
+              "model.stadtbezirksliste.stadtbezirkeAdded",
+              [assignedStadtbezirkeCount],
+              assignedStadtbezirkeCount
+            )
+          }}
         </div>
       </div>
       <v-spacer />
