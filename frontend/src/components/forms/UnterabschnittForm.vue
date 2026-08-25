@@ -16,7 +16,7 @@
             UnterabschnittCreateDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="hasHa"
-          :label="t('model.unterabschnitt.hasHa')"
+          :label="t('model.hauptabschnitt.ha')"
         />
       </v-col>
     </v-row>

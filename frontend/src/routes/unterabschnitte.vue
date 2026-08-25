@@ -26,6 +26,21 @@
             @is-valid="updateValidity"
           />
         </template>
+        <template #[`item.hasHa`]="{ item }">
+          <v-tooltip
+            :text="item.haBezeichnung"
+            location="right"
+          >
+            <template #activator="{ props }">
+              <v-chip
+                v-bind="props"
+                :append-icon="mdiArrowRight"
+                to="hauptabschnitte"
+                >{{ item.hasHa }}
+              </v-chip>
+            </template>
+          </v-tooltip>
+        </template>
       </crud-card>
     </template>
   </base-view>
@@ -35,6 +50,7 @@
 import type { UnterabschnittResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
+import { mdiArrowRight } from "@mdi/js";
 import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -60,28 +76,20 @@ const { t } = useI18n();
 
 const headers: DataTableHeader<Partial<UnterabschnittResponseDTO>>[] = [
   {
-    title: t("model.unterabschnitt.hasHa"),
-    value: "hasHa",
-    align: "center",
-    width: 80,
-  },
-  {
-    title: t("model.unterabschnitt.haBezeichnung"),
-    value: "haBezeichnung",
-    align: "start",
-    width: 150,
-  },
-  {
     title: t("model.unterabschnitt.ua"),
     value: "ua",
     align: "center",
-    width: 80,
+    width: 120,
+  },
+  {
+    title: t("model.hauptabschnitt.ha"),
+    value: "hasHa",
+    align: "center",
+    width: 120,
   },
   {
     title: t("model.unterabschnitt.bezeichnung"),
     value: "bezeichnung",
-    align: "start",
-    width: 350,
   },
 ];
 
