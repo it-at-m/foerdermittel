@@ -433,7 +433,7 @@ class ArchivIntegrationTest {
 
                         // ResponseDTO: LocalDate -> OffsetDateTime
                         assertThat(response.speicherDatum())
-                                .isEqualTo(OffsetDateTime.parse("2024-09-16T00:00:00Z"));
+                                .isEqualTo(OffsetDateTime.parse("2024-09-15T00:00:00Z"));
 
                         assertThat(response.speicherAkt())
                                 .isEqualTo(updateDTO.speicherAkt());
@@ -442,10 +442,10 @@ class ArchivIntegrationTest {
                                 .isEqualTo(updateDTO.speicherRechnungen());
 
                         assertThat(response.mikroDatPlan())
-                                .isEqualTo(OffsetDateTime.parse("2024-09-17T00:00:00Z"));
+                                .isEqualTo(OffsetDateTime.parse("2024-09-16T00:00:00Z"));
 
                         assertThat(response.mikroDat())
-                                .isEqualTo(OffsetDateTime.parse("2024-09-18T00:00:00Z"));
+                                .isEqualTo(OffsetDateTime.parse("2024-09-17T00:00:00Z"));
 
                         assertThat(response.notizen())
                                 .isEqualTo(updateDTO.notizen());
@@ -464,7 +464,7 @@ class ArchivIntegrationTest {
 
             // Entity: LocalDate
             assertThat(entity.get().getSpeicherDatum())
-                    .isEqualTo(LocalDate.of(2024, 9, 16));
+                    .isEqualTo(LocalDate.of(2024, 9, 15));
 
             assertThat(entity.get().getSpeicherAkt())
                     .isEqualTo(updateDTO.speicherAkt());
@@ -473,10 +473,10 @@ class ArchivIntegrationTest {
                     .isEqualTo(updateDTO.speicherRechnungen());
 
             assertThat(entity.get().getMikroDatPlan())
-                    .isEqualTo(LocalDate.of(2024, 9, 17));
+                    .isEqualTo(LocalDate.of(2024, 9, 16));
 
             assertThat(entity.get().getMikroDat())
-                    .isEqualTo(LocalDate.of(2024, 9, 18));
+                    .isEqualTo(LocalDate.of(2024, 9, 17));
 
             assertThat(entity.get().getNotizen())
                     .isEqualTo(updateDTO.notizen());
