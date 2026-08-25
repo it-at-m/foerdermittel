@@ -98,7 +98,7 @@ function onValidityChanged(newIsValid: boolean | null) {
 const rules = useRules();
 
 function getHaTitle(item: UnterabschnittFormContextHauptabschnitt) {
-  return item ? `${item.ha} (${item.bezeichnung})`: "";
+  return item ? `${item.ha} (${item.bezeichnung})` : "";
 }
 
 const formRef = useTemplateRef<VForm>("form");
