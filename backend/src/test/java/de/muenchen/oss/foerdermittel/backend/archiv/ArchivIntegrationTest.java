@@ -385,11 +385,11 @@ class ArchivIntegrationTest {
         void givenArchivExists_thenArchivIsUpdated() {
 
             final ArchivCreateDTO createDTO = new ArchivCreateDTO(
-                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+                    OffsetDateTime.parse("2024-09-15T00:00:00Z"),
                     true,
                     false,
-                    OffsetDateTime.parse("2024-09-16T22:00:00Z"),
-                    OffsetDateTime.parse("2024-09-17T22:00:00Z"),
+                    OffsetDateTime.parse("2024-09-16T00:00:00Z"),
+                    OffsetDateTime.parse("2024-09-17T00:00:00Z"),
                     "Alt",
                     EXISTING_PROJNR);
 
@@ -408,11 +408,11 @@ class ArchivIntegrationTest {
             assertThat(created).isNotNull();
 
             final ArchivUpdateDTO updateDTO = new ArchivUpdateDTO(
-                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+                    OffsetDateTime.parse("2024-09-15T00:00:00Z"),
                     true,
                     false,
-                    OffsetDateTime.parse("2024-09-16T22:00:00Z"),
-                    OffsetDateTime.parse("2024-09-17T22:00:00Z"),
+                    OffsetDateTime.parse("2024-09-16T00:00:00Z"),
+                    OffsetDateTime.parse("2024-09-17T00:00:00Z"),
                     "Aktualisierte Notiz");
 
             final ArchivResponseDTO responseDTO = restTestClient.put()
