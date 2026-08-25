@@ -336,10 +336,10 @@ const navigationItems: NavigationItem[] = [
         },
       },
       {
-        title: t("model.listenname.modelName", 2),
-      },
-      {
         title: t("model.stadtbezirksliste.modelName", 2),
+        props: {
+          to: "/stadtbezirkslisten",
+        },
       },
       {
         title: t("model.stichwortbereich.modelName", 2),
