@@ -39,9 +39,7 @@ public class UnterabschnittController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<UnterabschnittResponseDTO> getUnterabschnitte(@ParameterObject @PageableDefault(
-            sort = "hasHa"
-    ) final Pageable pageable) {
+    public Page<UnterabschnittResponseDTO> getUnterabschnitte(@ParameterObject @PageableDefault(sort = { "hasHa", "ua" }) final Pageable pageable) {
         final Page<Unterabschnitt> pageWithUnterabschnitt = unterabschnittService.getUnterabschnitte(pageable);
         final List<UnterabschnittResponseDTO> unterabschnittResponseDTOList = pageWithUnterabschnitt.getContent().stream()
                 .map(unterabschnittMapper::toDTO)
