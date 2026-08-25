@@ -9,8 +9,8 @@
         <fm-autocomplete
           v-model="modelValue.hasHa"
           :display-mode="displayMode"
-          :items="HaItems"
-          item-title="anzeige"
+          :items="unterabschnittFormContext.hasHas"
+          :item-title="getHaTitle"
           item-value="ha"
           :validation-attribute-map="
             UnterabschnittCreateDTOPropertyValidationAttributesMap
@@ -58,12 +58,13 @@
 <script setup lang="ts">
 import type {
   UnterabschnittFormContext,
+  UnterabschnittFormContextHauptabschnitt,
   UnterabschnittResponseDTO,
 } from "@/api/generated/foerdermittel-backend";
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
 
-import { computed, ref, useTemplateRef } from "vue";
+import { ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRules } from "vuetify/labs/rules";
 
@@ -96,12 +97,9 @@ function onValidityChanged(newIsValid: boolean | null) {
 
 const rules = useRules();
 
-const HaItems = computed(() =>
-  unterabschnittFormContext.hasHas.map((hauptabschnitt) => ({
-    ...hauptabschnitt,
-    anzeige: `${hauptabschnitt.ha} (${hauptabschnitt.bezeichnung})`,
-  }))
-);
+const getHaTitle = (item: UnterabschnittFormContextHauptabschnitt) => {
+  return item ? `${item.ha} (${item.bezeichnung})`: "";
+};
 
 const formRef = useTemplateRef<VForm>("form");
 
