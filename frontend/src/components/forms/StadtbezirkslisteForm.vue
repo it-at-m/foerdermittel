@@ -161,7 +161,6 @@
             :item-title="formatStadtbezirk"
             :return-object="true"
             :label="t('model.stadtbezirksliste.bezStadtbezirk')"
-            variant="outlined"
             density="compact"
             :menu-props="{
               location: 'bottom',
@@ -177,7 +176,6 @@
           <fm-text-field
             v-model="newBezeichnung"
             :label="t('model.stadtbezirksliste.listeBezeichnung')"
-            variant="outlined"
             density="compact"
             :validation-attribute-map="
               StadtbezirkslisteAssignmentResponseDTOPropertyValidationAttributesMap
@@ -262,7 +260,7 @@ const assignedStadtbezirkeCount = computed(
 );
 
 function formatStadtbezirk(stadtbezirk: StadtbezirkResponseDTO) {
-  return `${stadtbezirk.id} - ${stadtbezirk.bezeichnung}`;
+  return stadtbezirk ? `${stadtbezirk.id} (${stadtbezirk.bezeichnung})` : "";
 }
 
 const selectedStadtbezirk = ref<StadtbezirkResponseDTO | null>(null);
