@@ -111,6 +111,16 @@ const { t } = useI18n();
 
 const isAdmin = useHasAnyRole(Role.ADMIN);
 
+definePage({
+  meta: {
+    hasAnyRole: [
+      Role.SACHBEARBEITUNG,
+      Role.SACHBEARBEITUNG_HAUSHALT,
+      Role.ADMIN,
+    ],
+  },
+});
+
 const headers: DataTableHeader<Partial<StadtbezirkslisteResponseDTO>>[] = [
   {
     title: t("model.stadtbezirksliste.lnaKurzbez"),
@@ -206,11 +216,10 @@ const {
   error: deleteStadtbezirkslisteError,
 } = useDeleteStadtbezirksliste();
 
-const handleDelete = async (kurzbez: string) => {
+const handleDelete = async (id: string) => {
   await deleteStadtbezirksliste({
-    kurzbez,
+    id,
   });
-
   if (!deleteStadtbezirkslisteError.value) {
     await onSuccess(t("common.message.deleted", [t(domainKey)]));
   } else {

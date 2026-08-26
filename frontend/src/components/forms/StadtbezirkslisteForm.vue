@@ -103,9 +103,8 @@
             />
           </div>
 
-          <v-btn
+          <v-icon-btn
             :icon="mdiDelete"
-            variant="text"
             class="ml-2"
             :disabled="displayMode === InputDisplayMode.READ"
             @click="removeStadtbezirk(stadtbezirk.stadtbezirkId!)"
@@ -156,6 +155,7 @@
         >
           <fm-autocomplete
             v-model="selectedStadtbezirk"
+            :display-mode="displayMode"
             :loading="stadtbezirkLoading"
             :items="availableStadtbezirke"
             :item-title="formatStadtbezirk"
@@ -175,6 +175,7 @@
         >
           <fm-text-field
             v-model="newBezeichnung"
+            :display-mode="displayMode"
             :label="t('model.stadtbezirksliste.listeBezeichnung')"
             density="compact"
             :validation-attribute-map="
@@ -194,7 +195,9 @@
             variant="tonal"
             block
             height="40"
-            :disabled="!selectedStadtbezirk"
+            :disabled="
+              !selectedStadtbezirk || displayMode === InputDisplayMode.READ
+            "
             @click="addStadtbezirk"
           >
             {{ t("common.action.add") }}

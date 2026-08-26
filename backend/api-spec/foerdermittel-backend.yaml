@@ -181,6 +181,21 @@ paths:
                 $ref: "#/components/schemas/StadtbezirkslisteResponseDTO"
       security:
       - bearerAuth: []
+    delete:
+      tags:
+      - stadtbezirksliste-controller
+      operationId: deleteListenname
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /stadtbezirke/{id}:
     put:
       tags:
@@ -1848,22 +1863,6 @@ paths:
             application/json:
               schema:
                 type: object
-  /stadtbezirkslisten/{kurzbez}:
-    delete:
-      tags:
-      - stadtbezirksliste-controller
-      operationId: deleteListenname
-      parameters:
-      - name: kurzbez
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-      security:
-      - bearerAuth: []
 components:
   schemas:
     UnterabschnittUpdateDTO:

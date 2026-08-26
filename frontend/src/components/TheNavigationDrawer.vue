@@ -80,7 +80,7 @@ const rolesText = computed(() =>
   userInfoStore.currentRoles.length
     ? userInfoStore.currentRoles
         .map((role) => t(`common.roles.${role}`))
-        .join(",")
+        .join(", ")
     : t("common.roles.noRole")
 );
 
