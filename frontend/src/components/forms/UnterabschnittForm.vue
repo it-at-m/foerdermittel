@@ -9,6 +9,7 @@
         <fm-autocomplete
           v-model="modelValue.hasHa"
           :display-mode="displayMode"
+          disable-edit
           :items="unterabschnittFormContext.hasHas"
           :item-title="getHaTitle"
           item-value="ha"
@@ -26,7 +27,6 @@
         <fm-text-field
           v-model="modelValue.ua"
           :display-mode="displayMode"
-          :disabled="!modelValue.hasHa"
           disable-edit
           :validation-attribute-map="
             UnterabschnittCreateDTOPropertyValidationAttributesMap
@@ -43,7 +43,6 @@
         <fm-text-field
           v-model="modelValue.bezeichnung"
           :display-mode="displayMode"
-          :disabled="!modelValue.hasHa"
           :validation-attribute-map="
             UnterabschnittCreateDTOPropertyValidationAttributesMap
           "
