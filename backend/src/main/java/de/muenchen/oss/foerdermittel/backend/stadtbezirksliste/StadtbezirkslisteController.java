@@ -84,11 +84,11 @@ public class StadtbezirkslisteController {
                         listennameId));
     }
 
-    @DeleteMapping("/{kurzbez}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteListenname(
-            @PathVariable final String kurzbez) {
+            @PathVariable("id") final String kurzbez) {
 
         listennameStadtbezirkslisteService.deleteListenname(kurzbez);
     }

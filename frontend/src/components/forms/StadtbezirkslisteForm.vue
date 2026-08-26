@@ -103,9 +103,8 @@
             />
           </div>
 
-          <v-btn
+          <v-icon-btn
             :icon="mdiDelete"
-            variant="text"
             class="ml-2"
             :disabled="displayMode === InputDisplayMode.READ"
             @click="removeStadtbezirk(stadtbezirk.stadtbezirkId!)"
@@ -156,12 +155,12 @@
         >
           <fm-autocomplete
             v-model="selectedStadtbezirk"
+            :display-mode="displayMode"
             :loading="stadtbezirkLoading"
             :items="availableStadtbezirke"
             :item-title="formatStadtbezirk"
             :return-object="true"
             :label="t('model.stadtbezirksliste.bezStadtbezirk')"
-            variant="outlined"
             density="compact"
             :menu-props="{
               location: 'bottom',
@@ -176,8 +175,8 @@
         >
           <fm-text-field
             v-model="newBezeichnung"
+            :display-mode="displayMode"
             :label="t('model.stadtbezirksliste.listeBezeichnung')"
-            variant="outlined"
             density="compact"
             :validation-attribute-map="
               StadtbezirkslisteAssignmentResponseDTOPropertyValidationAttributesMap
@@ -196,7 +195,9 @@
             variant="tonal"
             block
             height="40"
-            :disabled="!selectedStadtbezirk"
+            :disabled="
+              !selectedStadtbezirk || displayMode === InputDisplayMode.READ
+            "
             @click="addStadtbezirk"
           >
             {{ t("common.action.add") }}
@@ -262,7 +263,7 @@ const assignedStadtbezirkeCount = computed(
 );
 
 function formatStadtbezirk(stadtbezirk: StadtbezirkResponseDTO) {
-  return `${stadtbezirk.id} - ${stadtbezirk.bezeichnung}`;
+  return stadtbezirk ? `${stadtbezirk.id} (${stadtbezirk.bezeichnung})` : "";
 }
 
 const selectedStadtbezirk = ref<StadtbezirkResponseDTO | null>(null);

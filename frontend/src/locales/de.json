@@ -165,7 +165,9 @@
       "bezeichnung": "Bezeichnung"
     },
     "unterabschnitt": {
-      "modelName": "Unterabschnitt | Unterabschnitte"
+      "modelName": "Unterabschnitt | Unterabschnitte",
+      "ua": "Unterabschnitt",
+      "bezeichnung": "Bezeichnung"
     },
     "benutzerhinweis": {
       "modelName": "Benutzerhinweis | Benutzerhinweise",

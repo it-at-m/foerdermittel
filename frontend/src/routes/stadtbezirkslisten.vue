@@ -35,7 +35,9 @@
               <v-col cols="2">{{
                 t("model.stadtbezirksliste.bezStadtbezirk")
               }}</v-col>
-              <v-col cols="4"></v-col>
+              <v-col cols="4">
+                {{ t("model.stadtbezirk.bezeichnung") }}
+              </v-col>
               <v-col cols="6">{{
                 t("model.stadtbezirksliste.listeBezeichnung")
               }}</v-col>
@@ -59,8 +61,15 @@
               v-for="stadtbezirk in item.assignedStadtbezirke"
               :key="stadtbezirk.stadtbezirkId"
             >
-              <v-row class="py-2 pl-6">
-                <v-col cols="2">{{ stadtbezirk.stadtbezirkId }}</v-col>
+              <v-row class="py-2 pl-6 d-flex align-center">
+                <v-col cols="2">
+                  <v-chip
+                    :append-icon="mdiArrowRight"
+                    to="stadtbezirke"
+                  >
+                    {{ stadtbezirk.stadtbezirkId }}
+                  </v-chip>
+                </v-col>
                 <v-col cols="4">{{ stadtbezirk.stadtbezirkBezeichnung }}</v-col>
                 <v-col cols="6">{{ stadtbezirk.bezeichnung }}</v-col>
               </v-row>
@@ -78,6 +87,7 @@
 import type { StadtbezirkslisteResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
+import { mdiArrowRight } from "@mdi/js";
 import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -100,6 +110,16 @@ const domainKey = "model.stadtbezirksliste.modelName";
 const { t } = useI18n();
 
 const isAdmin = useHasAnyRole(Role.ADMIN);
+
+definePage({
+  meta: {
+    hasAnyRole: [
+      Role.SACHBEARBEITUNG,
+      Role.SACHBEARBEITUNG_HAUSHALT,
+      Role.ADMIN,
+    ],
+  },
+});
 
 const headers: DataTableHeader<Partial<StadtbezirkslisteResponseDTO>>[] = [
   {
@@ -196,11 +216,10 @@ const {
   error: deleteStadtbezirkslisteError,
 } = useDeleteStadtbezirksliste();
 
-const handleDelete = async (kurzbez: string) => {
+const handleDelete = async (id: string) => {
   await deleteStadtbezirksliste({
-    kurzbez,
+    id,
   });
-
   if (!deleteStadtbezirkslisteError.value) {
     await onSuccess(t("common.message.deleted", [t(domainKey)]));
   } else {
