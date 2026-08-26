@@ -110,30 +110,16 @@ class UnterabschnittServiceTest {
             final Unterabschnitt expectedEntity = new Unterabschnitt(id, "updated", storedHa);
 
             when(unterabschnittRepository.findById(id)).thenReturn(Optional.of(foundEntity));
-            when(hauptabschnittService.getHauptabschnitt(ha)).thenReturn(storedHa);
             when(unterabschnittRepository.update(foundEntity)).thenReturn(expectedEntity);
 
             // When
-            final Unterabschnitt result = unitUnderTest.updateUnterabschnitt(entityToUpdate, id, ha);
+            final Unterabschnitt result = unitUnderTest.updateUnterabschnitt(entityToUpdate, id);
 
             // Then
             verify(unterabschnittRepository).findById(id);
-            verify(hauptabschnittService).getHauptabschnitt(ha);
             verify(unterabschnittRepository).update(foundEntity);
 
             assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
-        }
-
-        @Test
-        void givenHaNotExists_thenThrowNotFoundException() {
-            final String ha = "99";
-            final String ua = "K";
-            final Unterabschnitt entityToUpdate = new Unterabschnitt(ua, BEZEICHNUNG, null);
-
-            when(unterabschnittRepository.findById(ua)).thenReturn(Optional.of(entityToUpdate));
-            when(hauptabschnittService.getHauptabschnitt(ha)).thenThrow(NotFoundException.class);
-
-            Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.updateUnterabschnitt(entityToUpdate, ua, ha));
         }
 
         @Test
@@ -148,7 +134,7 @@ class UnterabschnittServiceTest {
             when(unterabschnittRepository.findById(id)).thenReturn(Optional.empty());
 
             // When
-            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.updateUnterabschnitt(entityToUpdate, id, ha));
+            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.updateUnterabschnitt(entityToUpdate, id));
 
             // Then
             verify(unterabschnittRepository, times(1)).findById(id);

@@ -58,7 +58,7 @@ public class UnterabschnittMapperTest {
         @Test
         void givenUpdateDTO_thenReturnsCorrectEntity() {
             // Given
-            final UnterabschnittUpdateDTO dto = new UnterabschnittUpdateDTO("Test 2", "H");
+            final UnterabschnittUpdateDTO dto = new UnterabschnittUpdateDTO("Test 2");
 
             // When
             final Unterabschnitt entity = unterabschnittMapper.toEntity(dto);

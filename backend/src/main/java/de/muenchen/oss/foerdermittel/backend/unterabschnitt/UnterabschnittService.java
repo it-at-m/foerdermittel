@@ -56,13 +56,10 @@ public class UnterabschnittService {
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    public Unterabschnitt updateUnterabschnitt(final Unterabschnitt unterabschnitt, final String ua, final String ha) {
+    public Unterabschnitt updateUnterabschnitt(final Unterabschnitt unterabschnitt, final String ua) {
         final Unterabschnitt foundUnterabschnitt = ServiceUtils.getEntityOrThrowNotFoundException(ua, unterabschnittRepository);
 
-        final Hauptabschnitt hauptabschnitt = hauptabschnittService.getHauptabschnitt(ha);
-
         foundUnterabschnitt.setBezeichnung(unterabschnitt.getBezeichnung());
-        foundUnterabschnitt.setHasHa(hauptabschnitt);
 
         log.debug("Update Unterabschnitt {}", foundUnterabschnitt);
         return unterabschnittRepository.update(foundUnterabschnitt);

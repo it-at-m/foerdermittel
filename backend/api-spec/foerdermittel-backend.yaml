@@ -1869,17 +1869,11 @@ components:
     UnterabschnittUpdateDTO:
       required:
       - bezeichnung
-      - hasHa
       type: object
       properties:
         bezeichnung:
           maxLength: 200
           minLength: 1
-          type: string
-        hasHa:
-          maxLength: 2
-          minLength: 1
-          pattern: "^[a-zA-Z0-9]+$"
           type: string
     UnterabschnittResponseDTO:
       required:

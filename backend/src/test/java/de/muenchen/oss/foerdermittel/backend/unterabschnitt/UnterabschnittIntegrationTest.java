@@ -241,7 +241,7 @@ class UnterabschnittIntegrationTest {
 
         @Test
         void givenEntityExists_thenEntityIsUpdated() {
-            final UnterabschnittUpdateDTO requestDTO = new UnterabschnittUpdateDTO("Test aktualisiert", EXISTING_HASHA_2);
+            final UnterabschnittUpdateDTO requestDTO = new UnterabschnittUpdateDTO("Test aktualisiert");
 
             final UnterabschnittResponseDTO responseDTO = restTestClient.put()
                     .uri("/unterabschnitte/{id}", EXISTING_ID)
@@ -256,7 +256,6 @@ class UnterabschnittIntegrationTest {
                         assertNotNull(theEntityResponseDTO);
                         assertThat(theEntityResponseDTO.id()).isEqualTo(EXISTING_ID);
                         assertThat(theEntityResponseDTO.bezeichnung()).isEqualTo(requestDTO.bezeichnung());
-                        assertThat(theEntityResponseDTO.hasHa()).isEqualTo(requestDTO.hasHa());
                     })
                     .returnResult()
                     .getResponseBody();
@@ -266,28 +265,14 @@ class UnterabschnittIntegrationTest {
             assertThat(entity).isPresent();
             assertThat(entity.get().getBezeichnung()).isEqualTo(requestDTO.bezeichnung());
             assertThat(entity.get().getHasHa()).isNotNull();
-            assertThat(entity.get().getHasHa().getHa()).isEqualTo(requestDTO.hasHa());
         }
 
         @Test
         void givenEntityNotExists_thenReturnNotFound() {
-            final UnterabschnittUpdateDTO requestDTO = new UnterabschnittUpdateDTO("Test aktualisiert", EXISTING_HASHA);
+            final UnterabschnittUpdateDTO requestDTO = new UnterabschnittUpdateDTO("Test aktualisiert");
 
             restTestClient.put()
                     .uri("/unterabschnitte/{id}", NON_EXISTING_ID)
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
-                    .body(requestDTO)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .exchange()
-                    .expectStatus().isNotFound();
-        }
-
-        @Test
-        void givenNonExistingHa_thenReturnNotFound() {
-            final UnterabschnittUpdateDTO requestDTO = new UnterabschnittUpdateDTO("Test", NON_EXISTING_HASHA);
-
-            restTestClient.put()
-                    .uri("/unterabschnitte/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -299,10 +284,10 @@ class UnterabschnittIntegrationTest {
             return Stream.of(
                     arguments(
                             "bezeichnung too short",
-                            new UnterabschnittUpdateDTO("", EXISTING_HASHA)),
+                            new UnterabschnittUpdateDTO("")),
                     arguments(
                             "bezeichnung too long",
-                            new UnterabschnittUpdateDTO("a".repeat(201), EXISTING_HASHA)));
+                            new UnterabschnittUpdateDTO("a".repeat(201))));
         }
 
         @ParameterizedTest(name = "{0}")
@@ -330,7 +315,7 @@ class UnterabschnittIntegrationTest {
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
         @MethodSource("authorizationMappings")
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
-            final UnterabschnittUpdateDTO requestDTO = new UnterabschnittUpdateDTO("Test aktualisiert", EXISTING_HASHA);
+            final UnterabschnittUpdateDTO requestDTO = new UnterabschnittUpdateDTO("Test aktualisiert");
 
             restTestClient.put()
                     .uri("/unterabschnitte/{id}", EXISTING_ID)

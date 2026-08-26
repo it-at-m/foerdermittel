@@ -71,8 +71,7 @@ public class UnterabschnittController {
         return unterabschnittMapper.toDTO(
                 unterabschnittService.updateUnterabschnitt(
                         unterabschnitt,
-                        unterabschnittId,
-                        unterabschnittUpdateDTO.hasHa()));
+                        unterabschnittId));
     }
 
     @DeleteMapping("/{id}")
