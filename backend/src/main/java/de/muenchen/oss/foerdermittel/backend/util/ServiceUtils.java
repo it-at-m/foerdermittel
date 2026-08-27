@@ -14,4 +14,10 @@ public final class ServiceUtils {
     public static <T, I> T getEntityOrThrowNotFoundException(final I id, final CrudRepository<T, I> repository) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(String.format(MSG_NOT_FOUND, id)));
     }
+
+    public static <T, I> void checkExistsOrThrowNotFoundException(final I id, final CrudRepository<T, I> repository) {
+        if (!repository.existsById(id)) {
+            throw new NotFoundException(String.format(MSG_NOT_FOUND, id));
+        }
+    }
 }
