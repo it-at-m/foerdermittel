@@ -52,4 +52,10 @@ public class StichwortbereichService {
         ServiceUtils.getEntityOrThrowNotFoundException(bereich, stichwortbereichRepository);
         stichwortbereichRepository.deleteById(bereich);
     }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public void checkExistsById(final String id) {
+        ServiceUtils.checkExistsOrThrowNotFoundException(id, stichwortbereichRepository);
+    }
 }

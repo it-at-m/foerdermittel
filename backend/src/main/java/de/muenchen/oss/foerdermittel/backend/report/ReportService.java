@@ -3,6 +3,7 @@ package de.muenchen.oss.foerdermittel.backend.report;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichwortbereicheDTO;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import de.muenchen.oss.foerdermittel.backend.stichwortbereich.StichwortbereichService;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
@@ -17,6 +18,7 @@ public class ReportService {
 
     public static final String SORT_PARAMETER = "P_SORT";
 
+    private final StichwortbereichService stichwortbereichService;
     private final JasperReportService jasperReportService;
     private final ReportMapper reportMapper;
 
@@ -24,12 +26,14 @@ public class ReportService {
     @Transactional(readOnly = true)
     public GeneratedReport generateReportStichwortbereiche(
             final ReportStichwortbereicheDTO parameters) {
+        stichwortbereichService.checkExistsById(parameters.bereich());
         return generateReport(reportMapper.toJasperParameters(parameters), ReportType.FMW_ABLAGEINDEX, ReportFormat.PDF,
                 "ORDER BY stb_bereich ASC, nr ASC, wort ASC");
     }
 
     /**
      * Utility function to create a {@link GeneratedReport}.
+     *
      * @param jasperParameters parameters to fill the report with
      * @param reportType type of the report to generate
      * @param reportFormat format of the report to generate
