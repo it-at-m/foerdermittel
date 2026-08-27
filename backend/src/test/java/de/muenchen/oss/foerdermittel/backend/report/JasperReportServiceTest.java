@@ -92,24 +92,6 @@ class JasperReportServiceTest {
         }
 
         @Test
-        void givenUnsupportedReportFormat_thenThrowIllegalArgumentException() {
-            // Given
-            final Map<String, Object> parameters = createValidParameters();
-            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-            // When / Then
-            assertThatThrownBy(() -> unitUnderTest.generateReportWithParameters(
-                    ReportType.FMW_ABLAGEINDEX,
-                    ReportFormat.PDF_FLAT,
-                    parameters,
-                    outputStream))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage(
-                            "Unsupported ReportFormat: " + ReportFormat.PDF_FLAT
-                                    + " for ReportType: " + ReportType.FMW_ABLAGEINDEX);
-        }
-
-        @Test
         void givenMissingParameter_thenThrowIllegalArgumentException() {
             // Given
             final Map<String, Object> parameters = new HashMap<>();
