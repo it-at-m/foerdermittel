@@ -24,7 +24,7 @@ public class HauptabschnittService {
     @Transactional(readOnly = true)
     public Hauptabschnitt getHauptabschnitt(final String ha) {
         log.info("Get Hauptabschnitt with ha {}", ha);
-        return ServiceUtils.getEntityOrThrowNotFoundException(ha, hauptabschnittRepository);
+        return ServiceUtils.getEntityOrThrowNotFoundException(ha, hauptabschnittRepository, Hauptabschnitt.class);
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
@@ -60,7 +60,7 @@ public class HauptabschnittService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Hauptabschnitt updateHauptabschnitt(final Hauptabschnitt hauptabschnitt, final String ha) {
-        final Hauptabschnitt foundHauptabschnitt = ServiceUtils.getEntityOrThrowNotFoundException(ha, hauptabschnittRepository);
+        final Hauptabschnitt foundHauptabschnitt = ServiceUtils.getEntityOrThrowNotFoundException(ha, hauptabschnittRepository, Hauptabschnitt.class);
         foundHauptabschnitt.setBezeichnung(hauptabschnitt.getBezeichnung());
         log.debug("Update Hauptabschnitt {}", foundHauptabschnitt);
         return hauptabschnittRepository.update(foundHauptabschnitt);
@@ -69,7 +69,7 @@ public class HauptabschnittService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteHauptabschnitt(final String ha) {
         log.debug("Delete Hauptabschnitt with ID {}", ha);
-        ServiceUtils.getEntityOrThrowNotFoundException(ha, hauptabschnittRepository);
+        ServiceUtils.getEntityOrThrowNotFoundException(ha, hauptabschnittRepository, Hauptabschnitt.class);
         hauptabschnittRepository.deleteById(ha);
     }
 }

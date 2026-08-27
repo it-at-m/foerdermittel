@@ -42,4 +42,10 @@ public class GlobalExceptionHandler {
         return problemDetail;
     }
 
+    @ExceptionHandler(NotFoundException.class)
+    public ProblemDetail handleNotFound(
+            final NotFoundException exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
+    }
+
 }

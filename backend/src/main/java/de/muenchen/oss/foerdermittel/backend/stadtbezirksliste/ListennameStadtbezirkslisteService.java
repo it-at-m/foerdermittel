@@ -25,7 +25,7 @@ public class ListennameStadtbezirkslisteService {
     @Transactional(readOnly = true)
     public Listenname getListenname(final String kurzBez) {
         log.info("Get Listenname with ID {}", kurzBez);
-        return ServiceUtils.getEntityOrThrowNotFoundException(kurzBez, listennameRepository);
+        return ServiceUtils.getEntityOrThrowNotFoundException(kurzBez, listennameRepository, Listenname.class);
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
@@ -61,7 +61,7 @@ public class ListennameStadtbezirkslisteService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Listenname updateListenname(final Listenname listenname, final String kurzBez) {
         final Listenname foundListenname = ServiceUtils.getEntityOrThrowNotFoundException(
-                kurzBez, listennameRepository);
+                kurzBez, listennameRepository, Listenname.class);
 
         foundListenname.setBezeichnung(listenname.getBezeichnung());
         foundListenname.updateStadtbezirke(listenname.getStadtbezirkslisten(), kurzBez);
@@ -81,7 +81,7 @@ public class ListennameStadtbezirkslisteService {
 
         final Listenname listenname = ServiceUtils.getEntityOrThrowNotFoundException(
                 kurzBez,
-                listennameRepository);
+                listennameRepository, Listenname.class);
 
         listennameRepository.delete(listenname);
     }

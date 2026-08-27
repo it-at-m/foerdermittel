@@ -67,8 +67,7 @@ class StadtbezirkslisteServiceTest {
 
             // Then
             verify(listennameRepository, times(1)).findById(KURZBEZ);
-            assertThat(exception.getMessage())
-                    .isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", KURZBEZ));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Listenname.class.getSimpleName(), KURZBEZ));
         }
     }
 
@@ -187,8 +186,7 @@ class StadtbezirkslisteServiceTest {
             // Then
             verify(listennameRepository, times(1)).findById(KURZBEZ);
             verify(listennameRepository, never()).update(entity);
-            assertThat(exception.getMessage())
-                    .isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", KURZBEZ));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Listenname.class.getSimpleName(), KURZBEZ));
         }
     }
 
@@ -234,8 +232,7 @@ class StadtbezirkslisteServiceTest {
             // Then
             verify(listennameRepository, times(1)).findById(KURZBEZ);
             verify(listennameRepository, never()).deleteById(KURZBEZ);
-            assertThat(exception.getMessage())
-                    .isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", KURZBEZ));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Listenname.class.getSimpleName(), KURZBEZ));
         }
     }
 }

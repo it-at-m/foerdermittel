@@ -112,7 +112,7 @@ class StadtbezirkServiceTest {
             // Then
             verify(stadtbezirkRepository, times(1)).findById(id);
             verify(stadtbezirkRepository, never()).update(entityToUpdate);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Stadtbezirk.class.getSimpleName(), id));
         }
     }
 
@@ -145,7 +145,7 @@ class StadtbezirkServiceTest {
             // Then
             verify(stadtbezirkRepository, times(1)).findById(id);
             verify(stadtbezirkRepository, never()).deleteById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Stadtbezirk.class.getSimpleName(), id));
         }
     }
 

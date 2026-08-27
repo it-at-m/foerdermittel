@@ -57,7 +57,7 @@ public class UnterabschnittService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Unterabschnitt updateUnterabschnitt(final Unterabschnitt unterabschnitt, final String ua) {
-        final Unterabschnitt foundUnterabschnitt = ServiceUtils.getEntityOrThrowNotFoundException(ua, unterabschnittRepository);
+        final Unterabschnitt foundUnterabschnitt = ServiceUtils.getEntityOrThrowNotFoundException(ua, unterabschnittRepository, Unterabschnitt.class);
 
         foundUnterabschnitt.setBezeichnung(unterabschnitt.getBezeichnung());
 
@@ -68,7 +68,7 @@ public class UnterabschnittService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteUnterabschnitt(final String ua) {
         log.debug("Delete Unterabschnitt with ID {}", ua);
-        ServiceUtils.getEntityOrThrowNotFoundException(ua, unterabschnittRepository);
+        ServiceUtils.getEntityOrThrowNotFoundException(ua, unterabschnittRepository, Unterabschnitt.class);
         unterabschnittRepository.deleteById(ua);
     }
 }

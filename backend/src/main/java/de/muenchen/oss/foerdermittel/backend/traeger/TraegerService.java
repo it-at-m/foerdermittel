@@ -42,7 +42,7 @@ public class TraegerService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Traeger updateTraeger(final Traeger traeger, final BigDecimal traegerId) {
         final Traeger foundTraeger = ServiceUtils.getEntityOrThrowNotFoundException(
-                traegerId, traegerRepository);
+                traegerId, traegerRepository, Traeger.class);
 
         foundTraeger.setBezeichnung(traeger.getBezeichnung());
         log.debug("Update Traeger {}", foundTraeger);
@@ -52,7 +52,7 @@ public class TraegerService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteTraeger(final BigDecimal traegerId) {
         log.debug("Delete Traeger with ID {}", traegerId);
-        ServiceUtils.getEntityOrThrowNotFoundException(traegerId, traegerRepository);
+        ServiceUtils.getEntityOrThrowNotFoundException(traegerId, traegerRepository, Traeger.class);
         traegerRepository.deleteById(traegerId);
     }
 }

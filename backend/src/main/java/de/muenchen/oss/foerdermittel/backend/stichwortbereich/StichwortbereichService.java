@@ -40,7 +40,8 @@ public class StichwortbereichService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Stichwortbereich updateStichwortbereich(final Stichwortbereich stichwortbereich, final String bereich) {
-        final Stichwortbereich foundStichwortbereich = ServiceUtils.getEntityOrThrowNotFoundException(bereich, stichwortbereichRepository);
+        final Stichwortbereich foundStichwortbereich = ServiceUtils.getEntityOrThrowNotFoundException(bereich, stichwortbereichRepository,
+                Stichwortbereich.class);
         foundStichwortbereich.setBezeichnung(stichwortbereich.getBezeichnung());
         log.debug("Update Stichwortbereich {}", foundStichwortbereich);
         return stichwortbereichRepository.update(foundStichwortbereich);
@@ -49,13 +50,13 @@ public class StichwortbereichService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteStichwortbereich(final String bereich) {
         log.debug("Delete Stichwortbereich with ID {}", bereich);
-        ServiceUtils.getEntityOrThrowNotFoundException(bereich, stichwortbereichRepository);
+        ServiceUtils.getEntityOrThrowNotFoundException(bereich, stichwortbereichRepository, Stichwortbereich.class);
         stichwortbereichRepository.deleteById(bereich);
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public void checkExistsById(final String id) {
-        ServiceUtils.checkExistsOrThrowNotFoundException(id, stichwortbereichRepository);
+        ServiceUtils.checkExistsOrThrowNotFoundException(id, stichwortbereichRepository, Stichwortbereich.class);
     }
 }

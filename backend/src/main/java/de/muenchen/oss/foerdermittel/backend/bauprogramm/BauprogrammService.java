@@ -41,7 +41,7 @@ public class BauprogrammService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Bauprogramm updateBauprogramm(final Bauprogramm bauprogramm, final BigDecimal bauprogrammId) {
-        final Bauprogramm foundBauprogramm = ServiceUtils.getEntityOrThrowNotFoundException(bauprogrammId, bauprogrammRepository);
+        final Bauprogramm foundBauprogramm = ServiceUtils.getEntityOrThrowNotFoundException(bauprogrammId, bauprogrammRepository, Bauprogramm.class);
         foundBauprogramm.setBezeichnung(bauprogramm.getBezeichnung());
         log.debug("Update Bauprogramm {}", foundBauprogramm);
         return bauprogrammRepository.update(foundBauprogramm);
@@ -50,7 +50,7 @@ public class BauprogrammService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteBauprogramm(final BigDecimal bauprogrammId) {
         log.debug("Delete Bauprogramm with ID {}", bauprogrammId);
-        ServiceUtils.getEntityOrThrowNotFoundException(bauprogrammId, bauprogrammRepository);
+        ServiceUtils.getEntityOrThrowNotFoundException(bauprogrammId, bauprogrammRepository, Bauprogramm.class);
         bauprogrammRepository.deleteById(bauprogrammId);
     }
 

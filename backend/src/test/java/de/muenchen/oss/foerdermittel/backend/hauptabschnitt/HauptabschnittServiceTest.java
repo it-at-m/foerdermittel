@@ -108,7 +108,7 @@ class HauptabschnittServiceTest {
             // Then
             verify(hauptabschnittRepository, times(1)).findById(ha);
 
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", ha));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Hauptabschnitt.class.getSimpleName(), ha));
         }
     }
 
@@ -164,7 +164,7 @@ class HauptabschnittServiceTest {
             // Then
             verify(hauptabschnittRepository, times(1)).findById(id);
             verify(hauptabschnittRepository, never()).update(entityToUpdate);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Hauptabschnitt.class.getSimpleName(), id));
         }
     }
 
@@ -197,7 +197,7 @@ class HauptabschnittServiceTest {
             // Then
             verify(hauptabschnittRepository, times(1)).findById(id);
             verify(hauptabschnittRepository, never()).deleteById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Hauptabschnitt.class.getSimpleName(), id));
         }
     }
 
