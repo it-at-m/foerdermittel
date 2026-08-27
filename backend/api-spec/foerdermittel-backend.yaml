@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: foerdermittel-backend
   description: Backend component for the application foerdermittel
-  version: 0.1.0-SNAPSHOT
+  version: 0.2.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -1610,6 +1610,23 @@ paths:
                 $ref: "#/components/schemas/SiedlungsgebietFormContext"
       security:
       - bearerAuth: []
+  /report/stichwortbereiche:
+    get:
+      tags:
+      - report-controller
+      operationId: reportStichwortbereiche
+      parameters:
+      - name: bereich
+        in: query
+        required: true
+        schema:
+          maxLength: 30
+          minLength: 1
+          pattern: "^[A-Z0-9\\-]+$"
+          type: string
+      responses:
+        "200":
+          description: OK
   /referate/form-context:
     get:
       tags:
