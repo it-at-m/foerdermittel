@@ -2,14 +2,18 @@ package de.muenchen.oss.foerdermittel.backend.report;
 
 import static de.muenchen.oss.foerdermittel.backend.report.ReportService.SORT_PARAMETER;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichwortbereicheDTO;
+import de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich;
+import de.muenchen.oss.foerdermittel.backend.stichwortbereich.StichwortbereichService;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,6 +21,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import net.sf.jasperreports.engine.JRException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +31,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class ReportServiceTest {
+
+    @Mock
+    private StichwortbereichService stichwortbereichService;
 
     @Mock
     private JasperReportService jasperReportService;
@@ -88,6 +96,26 @@ class ReportServiceTest {
                     ReportFormat.PDF,
                     jasperParameters,
                     outputStream);
+        }
+
+        @Test
+        void givenNotFound_thenShouldThrowNotFoundException() {
+            // Given
+            final String bereich = "test";
+            final ReportStichwortbereicheDTO parameters = new ReportStichwortbereicheDTO(bereich);
+
+            doThrow(new NotFoundException(Stichwortbereich.class, bereich))
+                    .when(stichwortbereichService)
+                    .checkExistsById(bereich);
+
+            // When
+            final Exception exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> reportService.generateReportStichwortbereiche(parameters));
+
+            // Then
+            verify(stichwortbereichService, times(1)).checkExistsById(bereich);
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Stichwortbereich.class.getSimpleName(), bereich));
         }
 
     }
