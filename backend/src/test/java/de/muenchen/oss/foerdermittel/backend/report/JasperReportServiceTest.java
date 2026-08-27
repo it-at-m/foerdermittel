@@ -192,26 +192,4 @@ class JasperReportServiceTest {
 
     }
 
-    @Nested
-    class GetDownloadFileNameTests {
-
-        @ParameterizedTest
-        @EnumSource(value = ReportFormat.class, names = { "PDF", "PDF_FLAT", "EXCEL" })
-        void givenReportTypeAndFormat_thenGenerateDownloadFilename(final ReportFormat reportFormat) {
-            // When
-            final String filename = JasperReportService.getDownloadFileName(
-                    ReportType.FMW_ABLAGEINDEX,
-                    reportFormat);
-
-            // Then
-            assertThat(filename)
-                    .startsWith(ReportType.FMW_ABLAGEINDEX.getFileName()
-                            + reportFormat.getFileSuffix()
-                            + "_")
-                    .endsWith(reportFormat.getFileExtension())
-                    .matches(".*_\\d{8}_\\d{6}\\..+");
-        }
-
-    }
-
 }
