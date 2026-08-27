@@ -59,6 +59,60 @@ class HauptabschnittServiceTest {
     }
 
     @Nested
+    class GetAllHauptabschnitte {
+        @Test
+        void givenTwoHauptabschnitte_thenReturnCorrectList() {
+            final Hauptabschnitt first = new Hauptabschnitt("K", "Test 1");
+            final Hauptabschnitt second = new Hauptabschnitt("L", "Test 2");
+
+            when(hauptabschnittRepository.findAll())
+                    .thenReturn(List.of(first, second));
+
+            final List<Hauptabschnitt> result = unitUnderTest.getAllHauptabschnitte();
+
+            verify(hauptabschnittRepository, times(1)).findAll();
+            assertThat(result).containsExactlyInAnyOrder(first, second);
+        }
+    }
+
+    @Nested
+    class GetHauptabschnitt {
+
+        @Test
+        void givenIdExists_thenReturnEntity() {
+            // Given
+            final String ha = "H4";
+            final Hauptabschnitt expectedEntity = new Hauptabschnitt(ha, BEZEICHNUNG);
+
+            when(hauptabschnittRepository.findById(ha)).thenReturn(Optional.of(expectedEntity));
+
+            // When
+            final Hauptabschnitt result = unitUnderTest.getHauptabschnitt(ha);
+
+            // Then
+            verify(hauptabschnittRepository, times(1)).findById(ha);
+
+            assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
+        }
+
+        @Test
+        void givenIdNotExists_thenThrowNotFoundException() {
+            // Given
+            final String ha = "99";
+
+            when(hauptabschnittRepository.findById(ha)).thenReturn(Optional.empty());
+
+            // When
+            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.getHauptabschnitt(ha));
+
+            // Then
+            verify(hauptabschnittRepository, times(1)).findById(ha);
+
+            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", ha));
+        }
+    }
+
+    @Nested
     class CreateHauptabschnitt {
         @Test
         void givenHauptabschnitt_thenCallInsertEntity() {

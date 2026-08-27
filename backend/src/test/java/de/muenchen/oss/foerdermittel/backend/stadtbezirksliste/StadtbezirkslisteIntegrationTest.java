@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.hauptabschnitt;
+package de.muenchen.oss.foerdermittel.backend.stadtbezirksliste;
 
 import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_TEST_PROFILE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -7,11 +7,9 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
 import de.muenchen.oss.foerdermittel.backend.TestUtils;
-import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittCreateDTO;
-import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittResponseDTO;
-import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittUpdateDTO;
-import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
-import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittRepository;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameCreateDTO;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameUpdateDTO;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.StadtbezirkslisteResponseDTO;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -42,7 +40,7 @@ import org.testcontainers.utility.DockerImageName;
 @AutoConfigureRestTestClient
 @ActiveProfiles(profiles = { SPRING_TEST_PROFILE })
 @Import(TestSecurityConfiguration.class)
-class HauptabschnittIntegrationTest {
+class StadtbezirkslisteIntegrationTest {
 
     @Autowired
     private RestTestClient restTestClient;
@@ -53,32 +51,27 @@ class HauptabschnittIntegrationTest {
     private static final PostgreSQLContainer POSTGRE_SQL_CONTAINER = new PostgreSQLContainer(
             DockerImageName.parse(TestUtils.getImageFromDockerCompose("postgres")));
 
-    private static final String EXISTING_ID = "L";
-    private static final String NON_EXISTING_ID = "K";
+    private static final String EXISTING_ID = "SL1";
+    private static final String NON_EXISTING_ID = "ABC";
 
     @Autowired
-    private HauptabschnittRepository hauptabschnittRepository;
-    @Autowired
-    private UnterabschnittRepository unterabschnittRepository;
+    private ListennameRepository listennameRepository;
 
     @BeforeEach
     public void setUp() {
-        unterabschnittRepository.deleteAll();
-        hauptabschnittRepository.deleteAll();
-        final Hauptabschnitt exampleEntity = new Hauptabschnitt(EXISTING_ID, "Test");
-        final Unterabschnitt exampleUa = new Unterabschnitt("ua", "Test", exampleEntity);
-        hauptabschnittRepository.save(exampleEntity);
-        unterabschnittRepository.save(exampleUa);
+        listennameRepository.deleteAll();
+        final Listenname exampleEntity = new Listenname("SL1", "test", List.of());
+        listennameRepository.save(exampleEntity);
     }
 
     @Nested
-    class GetHauptabschnitte {
+    class GetStadtbezirksliste {
 
         @Test
         void givenPageable_thenReturnPageOfEntities() {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/hauptabschnitte")
+                            .path("/stadtbezirkslisten")
                             .queryParam("page", "0")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
@@ -87,7 +80,7 @@ class HauptabschnittIntegrationTest {
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
                     .expectBody()
                     .jsonPath("$.content")
-                    .value(new ParameterizedTypeReference<List<HauptabschnittResponseDTO>>() {
+                    .value(new ParameterizedTypeReference<List<StadtbezirkslisteResponseDTO>>() {
                     }, content -> assertThat(content.size()).isEqualTo(1));
         }
 
@@ -104,9 +97,55 @@ class HauptabschnittIntegrationTest {
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/hauptabschnitte")
+                            .path("/stadtbezirkslisten")
                             .queryParam("page", "0")
                             .build())
+                    .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
+                    .exchange()
+                    .expectStatus().isEqualTo(httpStatus);
+        }
+
+        @Test
+        void givenExistingId_thenReturnEntity() {
+            restTestClient.get()
+                    .uri("/stadtbezirkslisten/{id}", EXISTING_ID)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                    .expectBody(StadtbezirkslisteResponseDTO.class)
+                    .value(response -> {
+                        assertNotNull(response);
+                        assertThat(response.id()).isEqualTo(EXISTING_ID);
+                        assertThat(response.bezeichnung()).isEqualTo("test");
+                    });
+        }
+
+        @Test
+        void givenNonExistingId_thenReturnNotFound() {
+            restTestClient.get()
+                    .uri("/stadtbezirkslisten/{id}", NON_EXISTING_ID)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                    .exchange()
+                    .expectStatus().isNotFound();
+        }
+
+        private static Stream<Arguments> authorizationMappingsForGetById() {
+            return Stream.of(
+                    Arguments.of("admin", HttpStatus.OK),
+                    Arguments.of("sachbearbeitung", HttpStatus.OK),
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.OK),
+                    Arguments.of("no-role", HttpStatus.FORBIDDEN));
+        }
+
+        @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
+        @MethodSource("authorizationMappingsForGetById")
+        void givenRole_thenReturnStatusForGetById(
+                final String role,
+                final HttpStatus httpStatus) {
+
+            restTestClient.get()
+                    .uri("/stadtbezirkslisten/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()
                     .expectStatus().isEqualTo(httpStatus);
@@ -115,42 +154,42 @@ class HauptabschnittIntegrationTest {
     }
 
     @Nested
-    class CreateHauptabschnitt {
+    class CreateStadtbezirksliste {
 
         @Test
         void givenEntityNotExists_thenEntityIsSaved() {
-            final HauptabschnittCreateDTO requestDTO = new HauptabschnittCreateDTO(NON_EXISTING_ID, "Test");
+            final ListennameCreateDTO requestDTO = new ListennameCreateDTO(NON_EXISTING_ID, "Test", List.of());
 
-            final HauptabschnittResponseDTO responseDTO = restTestClient.post()
-                    .uri("/hauptabschnitte")
+            final StadtbezirkslisteResponseDTO responseDTO = restTestClient.post()
+                    .uri("/stadtbezirkslisten")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
                     .exchange()
                     .expectStatus().isCreated()
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(HauptabschnittResponseDTO.class)
+                    .expectBody(StadtbezirkslisteResponseDTO.class)
                     .value(response -> {
                         assertThat(response).isNotNull();
-                        assertThat(response.ha()).isEqualTo(requestDTO.ha());
+                        assertThat(response.kurzbez()).isEqualTo(requestDTO.kurzbez());
                         assertThat(response.bezeichnung()).isEqualTo(requestDTO.bezeichnung());
                     })
                     .returnResult()
                     .getResponseBody();
 
             assertThat(responseDTO).isNotNull();
-            final Optional<Hauptabschnitt> entity = hauptabschnittRepository.findById(responseDTO.id());
+            final Optional<Listenname> entity = listennameRepository.findById(responseDTO.id());
             assertThat(entity).isPresent();
-            assertThat(entity.get().getHa()).isEqualTo(requestDTO.ha());
+            assertThat(entity.get().getKurzbez()).isEqualTo(requestDTO.kurzbez());
             assertThat(entity.get().getBezeichnung()).isEqualTo(requestDTO.bezeichnung());
         }
 
         @Test
         void givenEntityAlreadyExists_thenReturnConflict() {
-            final HauptabschnittCreateDTO requestDTO = new HauptabschnittCreateDTO(EXISTING_ID, "Test");
+            final ListennameCreateDTO requestDTO = new ListennameCreateDTO(EXISTING_ID, "Test", List.of());
 
             restTestClient.post()
-                    .uri("/hauptabschnitte")
+                    .uri("/stadtbezirkslisten")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -161,24 +200,27 @@ class HauptabschnittIntegrationTest {
         private static Stream<Arguments> invalidInputRequests() {
             return Stream.of(
                     arguments(
-                            "ha too long",
-                            new HauptabschnittCreateDTO("ABC", "Test")),
+                            "listenname too long",
+                            new ListennameCreateDTO("SL00", "Test", List.of())),
+                    arguments(
+                            "listenname too short",
+                            new ListennameCreateDTO("", "Test", List.of())),
                     arguments(
                             "bezeichnung too short",
-                            new HauptabschnittCreateDTO("9", "")),
+                            new ListennameCreateDTO("SL1", "", List.of())),
                     arguments(
                             "bezeichnung too long",
-                            new HauptabschnittCreateDTO("A", "a".repeat(201))));
+                            new ListennameCreateDTO("SL1", "a".repeat(201), List.of())));
         }
 
         @ParameterizedTest(name = "{0}")
         @MethodSource("invalidInputRequests")
         void givenInvalidInput_thenReturnBadRequest(
                 final String description,
-                final HauptabschnittCreateDTO requestDTO) {
+                final ListennameCreateDTO requestDTO) {
 
             restTestClient.post()
-                    .uri("/hauptabschnitte")
+                    .uri("/stadtbezirkslisten")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -197,10 +239,10 @@ class HauptabschnittIntegrationTest {
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
         @MethodSource("authorizationMappings")
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
-            final HauptabschnittCreateDTO requestDTO = new HauptabschnittCreateDTO(NON_EXISTING_ID, "Test");
+            final ListennameCreateDTO requestDTO = new ListennameCreateDTO(NON_EXISTING_ID, "Test", List.of());
 
             restTestClient.post()
-                    .uri("/hauptabschnitte")
+                    .uri("/stadtbezirkslisten")
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -211,21 +253,21 @@ class HauptabschnittIntegrationTest {
     }
 
     @Nested
-    class UpdateHauptabschnitt {
+    class UpdateStadtbezirksliste {
 
         @Test
         void givenEntityExists_thenEntityIsUpdated() {
-            final HauptabschnittUpdateDTO requestDTO = new HauptabschnittUpdateDTO("Test aktualisiert");
+            final ListennameUpdateDTO requestDTO = new ListennameUpdateDTO("Test aktualisiert", List.of());
 
-            final HauptabschnittResponseDTO responseDTO = restTestClient.put()
-                    .uri("/hauptabschnitte/{id}", EXISTING_ID)
+            final StadtbezirkslisteResponseDTO responseDTO = restTestClient.put()
+                    .uri("/stadtbezirkslisten/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
                     .exchange()
                     .expectStatus().isOk()
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(HauptabschnittResponseDTO.class)
+                    .expectBody(StadtbezirkslisteResponseDTO.class)
                     .value(theEntityResponseDTO -> {
                         assertNotNull(theEntityResponseDTO);
                         assertThat(theEntityResponseDTO.id()).isEqualTo(EXISTING_ID);
@@ -235,17 +277,17 @@ class HauptabschnittIntegrationTest {
                     .getResponseBody();
 
             assertThat(responseDTO).isNotNull();
-            final Optional<Hauptabschnitt> entity = hauptabschnittRepository.findById(EXISTING_ID);
+            final Optional<Listenname> entity = listennameRepository.findById(EXISTING_ID);
             assertThat(entity).isPresent();
             assertThat(entity.get().getBezeichnung()).isEqualTo(requestDTO.bezeichnung());
         }
 
         @Test
         void givenEntityNotExists_thenReturnNotFound() {
-            final HauptabschnittUpdateDTO requestDTO = new HauptabschnittUpdateDTO("Test aktualisiert");
+            final ListennameUpdateDTO requestDTO = new ListennameUpdateDTO("Test aktualisiert", List.of());
 
             restTestClient.put()
-                    .uri("/hauptabschnitte/{id}", NON_EXISTING_ID)
+                    .uri("/stadtbezirkslisten/{id}", NON_EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -257,19 +299,19 @@ class HauptabschnittIntegrationTest {
             return Stream.of(
                     arguments(
                             "bezeichnung too short",
-                            new HauptabschnittUpdateDTO("")),
+                            new ListennameUpdateDTO("", List.of())),
                     arguments(
                             "bezeichnung too long",
-                            new HauptabschnittUpdateDTO("a".repeat(201))));
+                            new ListennameUpdateDTO("a".repeat(201), List.of())));
         }
 
         @ParameterizedTest(name = "{0}")
         @MethodSource("invalidInputRequests")
         void givenInvalidInput_thenReturnBadRequest(
                 final String description,
-                final HauptabschnittUpdateDTO requestDTO) {
+                final ListennameUpdateDTO requestDTO) {
             restTestClient.put()
-                    .uri("/hauptabschnitte/{id}", EXISTING_ID)
+                    .uri("/stadtbezirkslisten/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -288,10 +330,10 @@ class HauptabschnittIntegrationTest {
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
         @MethodSource("authorizationMappings")
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
-            final HauptabschnittUpdateDTO requestDTO = new HauptabschnittUpdateDTO("Test aktualisiert");
+            final ListennameUpdateDTO requestDTO = new ListennameUpdateDTO("Test aktualisiert", List.of());
 
             restTestClient.put()
-                    .uri("/hauptabschnitte/{id}", EXISTING_ID)
+                    .uri("/stadtbezirkslisten/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -302,33 +344,23 @@ class HauptabschnittIntegrationTest {
     }
 
     @Nested
-    class DeleteHauptabschnitt {
-
-        @Test
-        void givenEntityHasUa_thenReturnConflict() {
-            restTestClient.delete()
-                    .uri("/hauptabschnitte/{id}", EXISTING_ID)
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
-                    .exchange()
-                    .expectStatus().isEqualTo(HttpStatus.CONFLICT);
-        }
+    class DeleteStadtbezirksliste {
 
         @Test
         void givenEntityIdExists_thenEntityIsDeleted() {
-            unterabschnittRepository.deleteAll();
             restTestClient.delete()
-                    .uri("/hauptabschnitte/{id}", EXISTING_ID)
+                    .uri("/stadtbezirkslisten/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus().isOk();
 
-            assertThat(hauptabschnittRepository.findById(EXISTING_ID)).isEmpty();
+            assertThat(listennameRepository.findById(EXISTING_ID)).isEmpty();
         }
 
         @Test
         void givenEntityIdNotExists_thenReturnNotFound() {
             restTestClient.delete()
-                    .uri("/hauptabschnitte/{id}", NON_EXISTING_ID)
+                    .uri("/stadtbezirkslisten/{id}", NON_EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus().isNotFound();
@@ -345,9 +377,8 @@ class HauptabschnittIntegrationTest {
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
         @MethodSource("authorizationMappings")
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
-            unterabschnittRepository.deleteAll();
             restTestClient.delete()
-                    .uri("/hauptabschnitte/{id}", EXISTING_ID)
+                    .uri("/stadtbezirkslisten/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()
                     .expectStatus().isEqualTo(httpStatus);
@@ -356,51 +387,50 @@ class HauptabschnittIntegrationTest {
     }
 
     @Nested
-    class GetHauptabschnittFormContext {
+    class GetStadtbezirkFormContext {
 
         @Test
         void givenNoEntitiesExist_thenReturnEmptyFormContext() {
             // Given
-            unterabschnittRepository.deleteAll();
-            hauptabschnittRepository.deleteAll();
+            listennameRepository.deleteAll();
 
             // When
-            final HauptabschnittFormContext result = restTestClient.get()
+            final StadtbezirkslisteFormContext result = restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/hauptabschnitte/form-context")
+                            .path("/stadtbezirkslisten/form-context")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus().isOk()
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(HauptabschnittFormContext.class)
+                    .expectBody(StadtbezirkslisteFormContext.class)
                     .returnResult()
                     .getResponseBody();
 
             // Then
             assertThat(result).isNotNull();
-            assertThat(result.has()).isEmpty();
+            assertThat(result.stadtbezirkslistenIds()).isEmpty();
         }
 
         @Test
         void givenEntitiesExist_thenReturnCorrectFormContext() {
             // When
-            final HauptabschnittFormContext result = restTestClient.get()
+            final StadtbezirkslisteFormContext result = restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/hauptabschnitte/form-context")
+                            .path("/stadtbezirkslisten/form-context")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus().isOk()
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(HauptabschnittFormContext.class)
+                    .expectBody(StadtbezirkslisteFormContext.class)
                     .returnResult()
                     .getResponseBody();
 
             // Then
             assertThat(result).isNotNull();
-            assertThat(result.has()).hasSize(1);
-            assertThat(result.has().getFirst()).isEqualTo(EXISTING_ID);
+            assertThat(result.stadtbezirkslistenIds()).hasSize(1);
+            assertThat(result.stadtbezirkslistenIds().getFirst()).isEqualToNormalizingUnicode(EXISTING_ID);
         }
 
         private static Stream<Arguments> authorizationMappings() {
@@ -416,13 +446,12 @@ class HauptabschnittIntegrationTest {
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/hauptabschnitte/form-context")
+                            .path("/stadtbezirkslisten/form-context")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()
                     .expectStatus().isEqualTo(httpStatus);
         }
-
     }
 
 }

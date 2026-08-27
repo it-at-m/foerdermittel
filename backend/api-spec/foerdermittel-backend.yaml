@@ -13,6 +13,47 @@ tags:
     description: Spring Boot Actuator Web API Documentation
     url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
 paths:
+  /unterabschnitte/{id}:
+    put:
+      tags:
+      - unterabschnitt-controller
+      operationId: updateUnterabschnitt
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnterabschnittUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnterabschnittResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - unterabschnitt-controller
+      operationId: deleteUnterabschnitt
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /traeger/{id}:
     put:
       tags:
@@ -84,6 +125,66 @@ paths:
       tags:
       - stichwortbereich-controller
       operationId: deleteStichwortbereich
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /stadtbezirkslisten/{id}:
+    get:
+      tags:
+      - stadtbezirksliste-controller
+      operationId: getStadtbezirkliste
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkslisteResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - stadtbezirksliste-controller
+      operationId: updateListenname
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListennameUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkslisteResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - stadtbezirksliste-controller
+      operationId: deleteListenname
       parameters:
       - name: id
         in: path
@@ -550,6 +651,68 @@ paths:
           description: OK
       security:
       - bearerAuth: []
+  /unterabschnitte:
+    get:
+      tags:
+      - unterabschnitt-controller
+      operationId: getUnterabschnitte
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "hasHa,ASC"
+          - "ua,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelUnterabschnittResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - unterabschnitt-controller
+      operationId: createUnterabschnitt
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnterabschnittCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnterabschnittResponseDTO"
+      security:
+      - bearerAuth: []
   /traeger:
     get:
       tags:
@@ -670,6 +833,67 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/StichwortbereichResponseDTO"
+      security:
+      - bearerAuth: []
+  /stadtbezirkslisten:
+    get:
+      tags:
+      - stadtbezirksliste-controller
+      operationId: getStadtbezirklistenByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "kurzbez,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelStadtbezirkslisteResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - stadtbezirksliste-controller
+      operationId: createListenname
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListennameCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkslisteResponseDTO"
       security:
       - bearerAuth: []
   /stadtbezirke:
@@ -1302,6 +1526,20 @@ paths:
                 $ref: "#/components/schemas/BauleitungResponseDTO"
       security:
       - bearerAuth: []
+  /unterabschnitte/form-context:
+    get:
+      tags:
+      - unterabschnitt-controller
+      operationId: getUnterabschnittFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnterabschnittFormContext"
+      security:
+      - bearerAuth: []
   /traeger/form-context:
     get:
       tags:
@@ -1328,6 +1566,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/StichwortbereichFormContext"
+      security:
+      - bearerAuth: []
+  /stadtbezirkslisten/form-context:
+    get:
+      tags:
+      - stadtbezirksliste-controller
+      operationId: getStadtbezirkslisteFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkslisteFormContext"
       security:
       - bearerAuth: []
   /stadtbezirke/form-context:
@@ -1685,6 +1937,34 @@ paths:
                 type: object
 components:
   schemas:
+    UnterabschnittUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    UnterabschnittResponseDTO:
+      required:
+      - bezeichnung
+      - haBezeichnung
+      - hasHa
+      - id
+      - ua
+      type: object
+      properties:
+        id:
+          type: string
+        ua:
+          type: string
+        bezeichnung:
+          type: string
+        hasHa:
+          type: string
+        haBezeichnung:
+          type: string
     TraegerUpdateDTO:
       required:
       - bezeichnung
@@ -1730,6 +2010,49 @@ components:
           type: string
         bezeichnung:
           type: string
+    ListennameUpdateDTO:
+      required:
+      - assignedStadtbezirke
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+        assignedStadtbezirke:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkslisteAssignmentResponseDTO"
+    StadtbezirkslisteAssignmentResponseDTO:
+      type: object
+      properties:
+        stadtbezirkId:
+          type: number
+        stadtbezirkBezeichnung:
+          type: string
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    StadtbezirkslisteResponseDTO:
+      required:
+      - assignedStadtbezirke
+      - bezeichnung
+      - id
+      - kurzbez
+      type: object
+      properties:
+        id:
+          type: string
+        kurzbez:
+          type: string
+        bezeichnung:
+          type: string
+        assignedStadtbezirke:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkslisteAssignmentResponseDTO"
     StadtbezirkUpdateDTO:
       required:
       - bezeichnung
@@ -2014,6 +2337,27 @@ components:
           type: string
         bezeichnung:
           type: string
+    UnterabschnittCreateDTO:
+      required:
+      - bezeichnung
+      - hasHa
+      - ua
+      type: object
+      properties:
+        ua:
+          maxLength: 2
+          minLength: 1
+          pattern: "^[a-zA-Z0-9]+$"
+          type: string
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+        hasHa:
+          maxLength: 2
+          minLength: 1
+          pattern: "^[a-zA-Z0-9]+$"
+          type: string
     TraegerCreateDTO:
       required:
       - bezeichnung
@@ -2044,6 +2388,26 @@ components:
           maxLength: 200
           minLength: 1
           type: string
+    ListennameCreateDTO:
+      required:
+      - assignedStadtbezirke
+      - bezeichnung
+      - kurzbez
+      type: object
+      properties:
+        kurzbez:
+          maxLength: 3
+          minLength: 1
+          pattern: "^[A-Z0-9]+$"
+          type: string
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+        assignedStadtbezirke:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkslisteAssignmentResponseDTO"
     StadtbezirkCreateDTO:
       required:
       - bezeichnung
@@ -2245,6 +2609,39 @@ components:
         totalPages:
           type: integer
           format: int64
+    PagedModelUnterabschnittResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnterabschnittResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    UnterabschnittFormContext:
+      required:
+      - hasHas
+      - uas
+      type: object
+      properties:
+        uas:
+          type: array
+          items:
+            type: string
+        hasHas:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnterabschnittFormContextHauptabschnitt"
+    UnterabschnittFormContextHauptabschnitt:
+      required:
+      - bezeichnung
+      - ha
+      type: object
+      properties:
+        ha:
+          type: string
+        bezeichnung:
+          type: string
     PagedModelTraegerResponseDTO:
       type: object
       properties:
@@ -2278,6 +2675,24 @@ components:
       type: object
       properties:
         bereiche:
+          type: array
+          items:
+            type: string
+    PagedModelStadtbezirkslisteResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkslisteResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    StadtbezirkslisteFormContext:
+      required:
+      - stadtbezirkslistenIds
+      type: object
+      properties:
+        stadtbezirkslistenIds:
           type: array
           items:
             type: string

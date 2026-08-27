@@ -2,6 +2,8 @@ package de.muenchen.oss.foerdermittel.backend.hauptabschnitt;
 
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
+import java.util.List;
+import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -17,6 +19,24 @@ import org.springframework.transaction.annotation.Transactional;
 public class HauptabschnittService {
 
     private final HauptabschnittRepository hauptabschnittRepository;
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public Hauptabschnitt getHauptabschnitt(final String ha) {
+        log.info("Get Hauptabschnitt with ha {}", ha);
+        return ServiceUtils.getEntityOrThrowNotFoundException(ha, hauptabschnittRepository);
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<Hauptabschnitt> getAllHauptabschnitte() {
+        log.info("Get Hauptabschnitte");
+
+        return StreamSupport.stream(
+                hauptabschnittRepository.findAll().spliterator(),
+                false)
+                .toList();
+    }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
