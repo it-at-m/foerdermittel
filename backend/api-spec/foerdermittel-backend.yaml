@@ -2563,6 +2563,20 @@ components:
             $ref: "#/components/schemas/UnterabschnittResponseDTO"
         page:
           $ref: "#/components/schemas/PageMetadata"
+    HauptabschnittFormContextDTO:
+      required:
+      - bezeichnung
+      - ha
+      type: object
+      properties:
+        ha:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+      description: DTO for Hauptabschnitt to be used in other FormContexts other than
+        its own.
     UnterabschnittFormContext:
       required:
       - hasHas
@@ -2576,17 +2590,7 @@ components:
         hasHas:
           type: array
           items:
-            $ref: "#/components/schemas/UnterabschnittFormContextHauptabschnitt"
-    UnterabschnittFormContextHauptabschnitt:
-      required:
-      - bezeichnung
-      - ha
-      type: object
-      properties:
-        ha:
-          type: string
-        bezeichnung:
-          type: string
+            $ref: "#/components/schemas/HauptabschnittFormContextDTO"
     PagedModelTraegerResponseDTO:
       type: object
       properties:

@@ -1,12 +1,12 @@
 package de.muenchen.oss.foerdermittel.backend.unterabschnitt;
 
-import de.muenchen.oss.foerdermittel.backend.unterabschnitt.dto.UnterabschnittFormContextHauptabschnitt;
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittFormContextDTO;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 public record UnterabschnittFormContext(
         @NotNull List<String> uas,
-        @NotNull List<UnterabschnittFormContextHauptabschnitt> hasHas) {
+        @NotNull List<HauptabschnittFormContextDTO> hasHas) {
 
     public UnterabschnittFormContext {
         uas = List.copyOf(uas);
