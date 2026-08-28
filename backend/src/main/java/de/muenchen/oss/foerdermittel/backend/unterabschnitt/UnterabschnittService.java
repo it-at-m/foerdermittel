@@ -3,9 +3,7 @@ package de.muenchen.oss.foerdermittel.backend.unterabschnitt;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.HauptabschnittService;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
-import de.muenchen.oss.foerdermittel.backend.unterabschnitt.dto.UnterabschnittFormContextHauptabschnitt;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -35,16 +33,9 @@ public class UnterabschnittService {
     public UnterabschnittFormContext getUnterabschnittFormContext() {
         log.info("Get Unterabschnitt form context");
 
-        final List<UnterabschnittFormContextHauptabschnitt> hauptabschnitte = hauptabschnittService.getAllHauptabschnitte()
-                .stream()
-                .map(hauptabschnitt -> new UnterabschnittFormContextHauptabschnitt(
-                        hauptabschnitt.getHa(),
-                        hauptabschnitt.getBezeichnung()))
-                .toList();
-
         return new UnterabschnittFormContext(
                 unterabschnittRepository.findAllUas(),
-                hauptabschnitte);
+                hauptabschnittService.getHauptabschnittFormContextDTOs());
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
