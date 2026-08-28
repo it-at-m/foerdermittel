@@ -56,8 +56,8 @@
 
 <script setup lang="ts">
 import type {
+  HauptabschnittFormContextDTO,
   UnterabschnittFormContext,
-  UnterabschnittFormContextHauptabschnitt,
   UnterabschnittResponseDTO,
 } from "@/api/generated/foerdermittel-backend";
 import type { DeepReadonly } from "vue";
@@ -96,7 +96,7 @@ function onValidityChanged(newIsValid: boolean | null) {
 
 const rules = useRules();
 
-function getHaTitle(item: UnterabschnittFormContextHauptabschnitt) {
+function getHaTitle(item: HauptabschnittFormContextDTO) {
   return item ? `${item.ha} (${item.bezeichnung})` : "";
 }
 
