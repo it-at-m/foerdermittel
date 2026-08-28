@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: foerdermittel-backend
   description: Backend component for the application foerdermittel
-  version: 0.1.0-SNAPSHOT
+  version: 0.2.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -349,6 +349,47 @@ paths:
       tags:
       - publikation-controller
       operationId: deletePublikation
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /projekte/{id}:
+    put:
+      tags:
+      - projekt-controller
+      operationId: updateProjekt
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjektUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjektResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - projekt-controller
+      operationId: deleteProjekt
       parameters:
       - name: id
         in: path
@@ -1140,6 +1181,97 @@ paths:
                 $ref: "#/components/schemas/PublikationResponseDTO"
       security:
       - bearerAuth: []
+  /projekte:
+    get:
+      tags:
+      - projekt-controller
+      operationId: getProjekte
+      parameters:
+      - name: projnr
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: fobFb
+        in: query
+        required: false
+        schema:
+          type: number
+      - name: kurKurzbez
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: uasUa
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: pname
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: pstrasse
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "projnr,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelProjektResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - projekt-controller
+      operationId: createProjekt
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjektCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjektResponseDTO"
+      security:
+      - bearerAuth: []
   /kurzbezeichnungen:
     get:
       tags:
@@ -1638,76 +1770,18 @@ paths:
                 $ref: "#/components/schemas/PublikationFormContext"
       security:
       - bearerAuth: []
-  /projekte:
+  /projekte/form-context:
     get:
       tags:
       - projekt-controller
-      operationId: getProjekte
-      parameters:
-      - name: projnr
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: fobFb
-        in: query
-        required: false
-        schema:
-          type: number
-      - name: kurKurzbez
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: uasUa
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: pname
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: pstrasse
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: page
-        in: query
-        description: Zero-based page index (0..N)
-        required: false
-        schema:
-          minimum: 0
-          type: integer
-          default: 0
-      - name: size
-        in: query
-        description: The size of the page to be returned
-        required: false
-        schema:
-          minimum: 1
-          type: integer
-          default: 10
-      - name: sort
-        in: query
-        description: "Sorting criteria in the format: property,(asc|desc). Default\
-          \ sort order is ascending. Multiple sort criteria are supported."
-        required: false
-        schema:
-          type: array
-          items:
-            type: string
-          default:
-          - "projnr,ASC"
+      operationId: getProjektFormContext
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PagedModelProjektResponseDTO"
+                $ref: "#/components/schemas/ProjektFormContext"
       security:
       - bearerAuth: []
   /kurzbezeichnungen/form-context:
@@ -2144,6 +2218,38 @@ components:
           type: string
         bezeichnung:
           type: string
+    ProjektUpdateDTO:
+      type: object
+      properties:
+        pname:
+          maxLength: 100
+          minLength: 1
+          type: string
+        pstrasse:
+          maxLength: 100
+          minLength: 1
+          type: string
+    ProjektResponseDTO:
+      type: object
+      properties:
+        projnr:
+          type: string
+        fobFb:
+          type: number
+        kurKurzbez:
+          type: string
+        uasUa:
+          type: string
+        jahr:
+          type: string
+        lfdnr1:
+          type: string
+        lfdnr2:
+          type: string
+        pname:
+          type: string
+        pstrasse:
+          type: string
     KurzbezeichnungUpdateDTO:
       required:
       - bezeichnung
@@ -2468,6 +2574,60 @@ components:
           maxLength: 200
           minLength: 1
           type: string
+    ProjektCreateDTO:
+      required:
+      - fobFb
+      - jahr
+      - kurKurzbez
+      - lfdnr1
+      - lfdnr2
+      - projnr
+      - uasUa
+      type: object
+      properties:
+        projnr:
+          maxLength: 7
+          minLength: 7
+          pattern: "^[A-Z0-9]{7}$"
+          type: string
+        fobFb:
+          maximum: 99
+          minimum: 0
+          type: integer
+          format: int32
+        kurKurzbez:
+          maxLength: 3
+          minLength: 1
+          pattern: "^[A-Z0-9]+$"
+          type: string
+        uasUa:
+          maxLength: 2
+          minLength: 1
+          pattern: "^[A-Z0-9]+$"
+          type: string
+        jahr:
+          maximum: 99
+          minimum: 0
+          type: integer
+          format: int32
+        lfdnr1:
+          maximum: 9
+          minimum: 0
+          type: integer
+          format: int32
+        lfdnr2:
+          maximum: 99
+          minimum: 0
+          type: integer
+          format: int32
+        pname:
+          maxLength: 100
+          minLength: 0
+          type: string
+        pstrasse:
+          maxLength: 100
+          minLength: 0
+          type: string
     KurzbezeichnungCreateDTO:
       required:
       - bezeichnung
@@ -2777,21 +2937,15 @@ components:
             $ref: "#/components/schemas/ProjektResponseDTO"
         page:
           $ref: "#/components/schemas/PageMetadata"
-    ProjektResponseDTO:
+    ProjektFormContext:
+      required:
+      - projekte
       type: object
       properties:
-        projnr:
-          type: string
-        fobFb:
-          type: number
-        kurKurzbez:
-          type: string
-        uasUa:
-          type: string
-        pname:
-          type: string
-        pstrasse:
-          type: string
+        projekte:
+          type: array
+          items:
+            type: string
     PagedModelKurzbezeichnungResponseDTO:
       type: object
       properties:

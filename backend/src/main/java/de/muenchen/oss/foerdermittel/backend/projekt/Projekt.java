@@ -30,6 +30,15 @@ public class Projekt {
     @Column(name = "uas_ua", length = 2)
     private String uasUa;
 
+    @Column(name = "jahr", length = 2)
+    private String jahr;
+
+    @Column(name = "lfdnr1", length = 1)
+    private String lfdnr1;
+
+    @Column(name = "lfdnr2", length = 2)
+    private String lfdnr2;
+
     @Column(name = "pname", length = 100)
     private String pname;
 

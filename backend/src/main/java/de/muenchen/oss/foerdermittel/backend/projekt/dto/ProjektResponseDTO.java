@@ -9,6 +9,9 @@ public record ProjektResponseDTO(
         BigDecimal fobFb,
         String kurKurzbez,
         String uasUa,
+        String jahr,
+        String lfdnr1,
+        String lfdnr2,
         String pname,
         String pstrasse
 ) {
