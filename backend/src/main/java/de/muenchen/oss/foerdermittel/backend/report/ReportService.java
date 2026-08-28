@@ -2,18 +2,22 @@ package de.muenchen.oss.foerdermittel.backend.report;
 
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichwortbereicheDTO;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichwortbereicheFormContext;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.StichwortbereichService;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class ReportService {
 
     public static final String SORT_PARAMETER = "P_SORT";
@@ -29,6 +33,13 @@ public class ReportService {
         stichwortbereichService.checkExistsById(parameters.bereich());
         return generateReport(reportMapper.toJasperParameters(parameters), ReportType.FMW_ABLAGEINDEX, ReportFormat.PDF,
                 "ORDER BY stb_bereich ASC, nr ASC, wort ASC");
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public ReportStichwortbereicheFormContext getReportStichwortbereicheFormContext() {
+        log.info("Get ReportStichwortbereiche form context");
+        return new ReportStichwortbereicheFormContext(stichwortbereichService.getStichwortbereichFormContextDTOs());
     }
 
     /**

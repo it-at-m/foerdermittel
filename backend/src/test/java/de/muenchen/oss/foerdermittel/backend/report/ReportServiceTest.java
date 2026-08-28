@@ -12,13 +12,16 @@ import static org.mockito.Mockito.when;
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichwortbereicheDTO;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichwortbereicheFormContext;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.StichwortbereichService;
+import de.muenchen.oss.foerdermittel.backend.stichwortbereich.dto.StichwortbereichFormContextDTO;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.sf.jasperreports.engine.JRException;
 import org.junit.jupiter.api.Assertions;
@@ -116,6 +119,26 @@ class ReportServiceTest {
             // Then
             verify(stichwortbereichService, times(1)).checkExistsById(bereich);
             assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Stichwortbereich.class.getSimpleName(), bereich));
+        }
+
+    }
+
+    @Nested
+    class GetReportStichwortbereicheFormContext {
+
+        @Test
+        void givenEntitiesExists_thenReturnCorrectFormContext() {
+            // Given
+            final List<StichwortbereichFormContextDTO> allBereiche = List.of(new StichwortbereichFormContextDTO("K", "Test"),
+                    new StichwortbereichFormContextDTO("L", "Test 2"), new StichwortbereichFormContextDTO("M", "Test 3"));
+            when(stichwortbereichService.getStichwortbereichFormContextDTOs()).thenReturn(allBereiche);
+
+            // When
+            final ReportStichwortbereicheFormContext formContext = reportService.getReportStichwortbereicheFormContext();
+
+            // Then
+            verify(stichwortbereichService, times(1)).getStichwortbereichFormContextDTOs();
+            assertThat(formContext.bereiche()).isEqualTo(allBereiche);
         }
 
     }
