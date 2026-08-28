@@ -4,6 +4,8 @@ import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper
 public interface HauptabschnittMapper {
 
@@ -15,5 +17,9 @@ public interface HauptabschnittMapper {
 
     @Mapping(target = "ha", ignore = true)
     Hauptabschnitt toEntity(HauptabschnittUpdateDTO hauptabschnittUpdateDTO);
+
+    HauptabschnittFormContextDTO toFormContext(Hauptabschnitt hauptabschnitt);
+
+    List<HauptabschnittFormContextDTO> toFormContext(List<Hauptabschnitt> hauptabschnittList);
 
 }
