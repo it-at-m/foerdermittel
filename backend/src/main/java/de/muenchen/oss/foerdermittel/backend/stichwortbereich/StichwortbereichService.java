@@ -1,7 +1,10 @@
 package de.muenchen.oss.foerdermittel.backend.stichwortbereich;
 
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import de.muenchen.oss.foerdermittel.backend.stichwortbereich.dto.StichwortbereichFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.stichwortbereich.dto.StichwortbereichMapper;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -17,6 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class StichwortbereichService {
 
     private final StichwortbereichRepository stichwortbereichRepository;
+    private final StichwortbereichMapper stichwortbereichMapper;
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<StichwortbereichFormContextDTO> getStichwortbereichFormContextDTOs() {
+        return stichwortbereichMapper.toFormContext(stichwortbereichRepository.findAll());
+    }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
