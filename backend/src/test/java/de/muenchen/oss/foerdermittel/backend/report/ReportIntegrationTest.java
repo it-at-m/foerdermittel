@@ -7,8 +7,10 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
 import de.muenchen.oss.foerdermittel.backend.TestUtils;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichwortbereicheDTO;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichwortbereicheFormContext;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.StichwortbereichRepository;
+import de.muenchen.oss.foerdermittel.backend.stichwortbereich.dto.StichwortbereichFormContextDTO;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -149,6 +151,87 @@ public class ReportIntegrationTest {
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus().isBadRequest();
+        }
+
+    }
+
+    @Nested
+    class GetReportStichwortbereicheFormContext {
+
+        private static final String EXISTING_ID = "TEST";
+        private static final Stichwortbereich EXAMPLE_ENTITY = new Stichwortbereich(EXISTING_ID, "Test");
+
+        @BeforeEach
+        public void setUp() {
+            stichwortbereichRepository.deleteAll();
+            stichwortbereichRepository.save(EXAMPLE_ENTITY);
+        }
+
+        @Test
+        void givenNoEntitiesExist_thenReturnEmptyFormContext() {
+            // Given
+            stichwortbereichRepository.deleteAll();
+
+            // When
+            final ReportStichwortbereicheFormContext result = restTestClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/report/stichwortbereiche/form-context")
+                            .build())
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                    .expectBody(ReportStichwortbereicheFormContext.class)
+                    .returnResult()
+                    .getResponseBody();
+
+            // Then
+            assertThat(result).isNotNull();
+            assertThat(result.bereiche()).isEmpty();
+        }
+
+        @Test
+        void givenEntitiesExist_thenReturnCorrectFormContext() {
+            // Given
+            final StichwortbereichFormContextDTO expected = new StichwortbereichFormContextDTO(EXAMPLE_ENTITY.getBereich(), EXAMPLE_ENTITY.getBezeichnung());
+
+            // When
+            final ReportStichwortbereicheFormContext result = restTestClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/report/stichwortbereiche/form-context")
+                            .build())
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                    .expectBody(ReportStichwortbereicheFormContext.class)
+                    .returnResult()
+                    .getResponseBody();
+
+            // Then
+            assertThat(result).isNotNull();
+            assertThat(result.bereiche()).hasSize(1);
+            assertThat(result.bereiche().getFirst()).isEqualTo(expected);
+        }
+
+        private static Stream<Arguments> authorizationMappings() {
+            return Stream.of(
+                    Arguments.of("admin", HttpStatus.OK),
+                    Arguments.of("sachbearbeitung", HttpStatus.OK),
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.OK),
+                    Arguments.of("no-role", HttpStatus.FORBIDDEN));
+        }
+
+        @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
+        @MethodSource("authorizationMappings")
+        void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
+            restTestClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/report/stichwortbereiche/form-context")
+                            .build())
+                    .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
+                    .exchange()
+                    .expectStatus().isEqualTo(httpStatus);
         }
 
     }
