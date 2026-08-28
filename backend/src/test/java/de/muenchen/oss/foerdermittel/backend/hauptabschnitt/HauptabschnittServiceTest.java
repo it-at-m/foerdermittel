@@ -9,11 +9,10 @@ import static org.mockito.Mockito.when;
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittMapper;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -217,7 +216,8 @@ class HauptabschnittServiceTest {
         void givenEntitiesExists_thenReturnCorrectList() {
             // Given
             final List<Hauptabschnitt> allHas = List.of(new Hauptabschnitt("L", "Test"), new Hauptabschnitt("K", "Test 2"), new Hauptabschnitt("M", "Test 3"));
-            final List<HauptabschnittFormContextDTO> mappedHas = List.of(new HauptabschnittFormContextDTO("L", "Test"), new HauptabschnittFormContextDTO("K", "Test 2"), new HauptabschnittFormContextDTO("M", "Test 3"));
+            final List<HauptabschnittFormContextDTO> mappedHas = List.of(new HauptabschnittFormContextDTO("L", "Test"),
+                    new HauptabschnittFormContextDTO("K", "Test 2"), new HauptabschnittFormContextDTO("M", "Test 3"));
             when(hauptabschnittRepository.findAll()).thenReturn(allHas);
             when(hauptabschnittMapper.toFormContext(allHas)).thenReturn(mappedHas);
 

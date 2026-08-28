@@ -1,10 +1,9 @@
 package de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto;
 
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.List;
 
 @Mapper
 public interface HauptabschnittMapper {

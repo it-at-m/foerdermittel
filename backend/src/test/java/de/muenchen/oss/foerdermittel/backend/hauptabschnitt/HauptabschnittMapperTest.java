@@ -8,11 +8,10 @@ import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittFo
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittMapper;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittUpdateDTO;
+import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-
-import java.util.List;
 
 public class HauptabschnittMapperTest {
 
@@ -104,12 +103,10 @@ public class HauptabschnittMapperTest {
             assertThat(dto)
                     .extracting(
                             HauptabschnittFormContextDTO::ha,
-                            HauptabschnittFormContextDTO::bezeichnung
-                    )
+                            HauptabschnittFormContextDTO::bezeichnung)
                     .containsExactly(
                             tuple("K", "test"),
-                            tuple("L", "test 2")
-                    );
+                            tuple("L", "test 2"));
         }
 
     }
