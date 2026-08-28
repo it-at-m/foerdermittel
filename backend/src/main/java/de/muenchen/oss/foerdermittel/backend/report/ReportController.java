@@ -21,7 +21,7 @@ public class ReportController {
     private final ReportService reportService;
 
     @GetMapping("/stichwortbereiche")
-    public void reportStichwortbereiche(
+    public void getReportStichwortbereiche(
             @Valid @ParameterObject final ReportStichwortbereicheDTO parameters,
             final HttpServletResponse response)
             throws IOException, SQLException, JRException {
