@@ -9,7 +9,7 @@ import static org.mockito.Mockito.when;
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.HauptabschnittService;
-import de.muenchen.oss.foerdermittel.backend.unterabschnitt.dto.UnterabschnittFormContextHauptabschnitt;
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittFormContextDTO;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -192,21 +192,21 @@ class UnterabschnittServiceTest {
         void givenEntitiesExist_thenReturnCorrectFormContext() {
             // Given
             final List<String> allUas = List.of("L", "K", "M");
-            final Hauptabschnitt hauptabschnitt = new Hauptabschnitt("H1", BEZEICHNUNG);
+            final HauptabschnittFormContextDTO dto = new HauptabschnittFormContextDTO("H1", BEZEICHNUNG);
 
             when(unterabschnittRepository.findAllUas()).thenReturn(allUas);
-            when(hauptabschnittService.getAllHauptabschnitte())
-                    .thenReturn(List.of(hauptabschnitt));
+            when(hauptabschnittService.getHauptabschnittFormContextDTOs())
+                    .thenReturn(List.of(dto));
 
             // When
             final UnterabschnittFormContext formContext = unitUnderTest.getUnterabschnittFormContext();
 
             // Then
             verify(unterabschnittRepository).findAllUas();
-            verify(hauptabschnittService).getAllHauptabschnitte();
+            verify(hauptabschnittService).getHauptabschnittFormContextDTOs();
 
             assertThat(formContext.uas()).isEqualTo(allUas);
-            assertThat(formContext.hasHas()).containsExactly(new UnterabschnittFormContextHauptabschnitt("H1", BEZEICHNUNG));
+            assertThat(formContext.hasHas()).containsExactly(dto);
         }
     }
 }

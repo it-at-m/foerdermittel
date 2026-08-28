@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: foerdermittel-backend
   description: Backend component for the application foerdermittel
-  version: 0.1.0-SNAPSHOT
+  version: 0.2.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -2546,6 +2546,20 @@ components:
             $ref: "#/components/schemas/UnterabschnittResponseDTO"
         page:
           $ref: "#/components/schemas/PageMetadata"
+    HauptabschnittFormContextDTO:
+      required:
+      - bezeichnung
+      - ha
+      type: object
+      properties:
+        ha:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+      description: DTO for Hauptabschnitt to be used in other FormContexts other than
+        its own.
     UnterabschnittFormContext:
       required:
       - hasHas
@@ -2559,17 +2573,7 @@ components:
         hasHas:
           type: array
           items:
-            $ref: "#/components/schemas/UnterabschnittFormContextHauptabschnitt"
-    UnterabschnittFormContextHauptabschnitt:
-      required:
-      - bezeichnung
-      - ha
-      type: object
-      properties:
-        ha:
-          type: string
-        bezeichnung:
-          type: string
+            $ref: "#/components/schemas/HauptabschnittFormContextDTO"
     PagedModelTraegerResponseDTO:
       type: object
       properties:

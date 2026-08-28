@@ -1,9 +1,10 @@
 package de.muenchen.oss.foerdermittel.backend.hauptabschnitt;
 
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittMapper;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.util.List;
-import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class HauptabschnittService {
 
     private final HauptabschnittRepository hauptabschnittRepository;
+    private final HauptabschnittMapper hauptabschnittMapper;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -29,13 +31,8 @@ public class HauptabschnittService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public List<Hauptabschnitt> getAllHauptabschnitte() {
-        log.info("Get Hauptabschnitte");
-
-        return StreamSupport.stream(
-                hauptabschnittRepository.findAll().spliterator(),
-                false)
-                .toList();
+    public List<HauptabschnittFormContextDTO> getHauptabschnittFormContextDTOs() {
+        return hauptabschnittMapper.toFormContext(hauptabschnittRepository.findAll());
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)

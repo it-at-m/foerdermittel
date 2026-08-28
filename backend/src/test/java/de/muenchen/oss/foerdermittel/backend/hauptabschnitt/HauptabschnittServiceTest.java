@@ -1,12 +1,15 @@
 package de.muenchen.oss.foerdermittel.backend.hauptabschnitt;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittMapper;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +32,9 @@ class HauptabschnittServiceTest {
 
     @Mock
     private HauptabschnittRepository hauptabschnittRepository;
+
+    @Mock
+    private HauptabschnittMapper hauptabschnittMapper;
 
     @InjectMocks
     private HauptabschnittService unitUnderTest;
@@ -55,23 +61,6 @@ class HauptabschnittServiceTest {
             // Then
             verify(hauptabschnittRepository, times(1)).findAll(pageable);
             assertThat(result).isEqualTo(expectedPage);
-        }
-    }
-
-    @Nested
-    class GetAllHauptabschnitte {
-        @Test
-        void givenTwoHauptabschnitte_thenReturnCorrectList() {
-            final Hauptabschnitt first = new Hauptabschnitt("K", "Test 1");
-            final Hauptabschnitt second = new Hauptabschnitt("L", "Test 2");
-
-            when(hauptabschnittRepository.findAll())
-                    .thenReturn(List.of(first, second));
-
-            final List<Hauptabschnitt> result = unitUnderTest.getAllHauptabschnitte();
-
-            verify(hauptabschnittRepository, times(1)).findAll();
-            assertThat(result).containsExactlyInAnyOrder(first, second);
         }
     }
 
@@ -216,6 +205,36 @@ class HauptabschnittServiceTest {
             // Then
             verify(hauptabschnittRepository, times(1)).findAllHas();
             assertThat(formContext.has()).isEqualTo(allHas);
+        }
+
+    }
+
+    @Nested
+    class GetHauptabschnittFormContextDTOs {
+
+        @Test
+        void givenEntitiesExists_thenReturnCorrectList() {
+            // Given
+            final List<Hauptabschnitt> allHas = List.of(new Hauptabschnitt("L", "Test"), new Hauptabschnitt("K", "Test 2"), new Hauptabschnitt("M", "Test 3"));
+            final List<HauptabschnittFormContextDTO> mappedHas = List.of(new HauptabschnittFormContextDTO("L", "Test"),
+                    new HauptabschnittFormContextDTO("K", "Test 2"), new HauptabschnittFormContextDTO("M", "Test 3"));
+            when(hauptabschnittRepository.findAll()).thenReturn(allHas);
+            when(hauptabschnittMapper.toFormContext(allHas)).thenReturn(mappedHas);
+
+            // When
+            final List<HauptabschnittFormContextDTO> result = unitUnderTest.getHauptabschnittFormContextDTOs();
+
+            // Then
+            verify(hauptabschnittRepository, times(1)).findAll();
+            assertThat(result)
+                    .hasSize(3)
+                    .extracting(
+                            HauptabschnittFormContextDTO::ha,
+                            HauptabschnittFormContextDTO::bezeichnung)
+                    .containsExactly(
+                            tuple("L", "Test"),
+                            tuple("K", "Test 2"),
+                            tuple("M", "Test 3"));
         }
 
     }
