@@ -1614,7 +1614,7 @@ paths:
     get:
       tags:
       - report-controller
-      operationId: reportStichwortbereiche
+      operationId: getReportStichwortbereiche
       parameters:
       - name: bereich
         in: query
@@ -1627,6 +1627,22 @@ paths:
       responses:
         "200":
           description: OK
+      security:
+      - bearerAuth: []
+  /report/stichwortbereiche/form-context:
+    get:
+      tags:
+      - report-controller
+      operationId: getReportStichwortbereicheFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportStichwortbereicheFormContext"
+      security:
+      - bearerAuth: []
   /referate/form-context:
     get:
       tags:
@@ -2681,6 +2697,29 @@ components:
           type: array
           items:
             type: number
+    ReportStichwortbereicheFormContext:
+      required:
+      - bereiche
+      type: object
+      properties:
+        bereiche:
+          type: array
+          items:
+            $ref: "#/components/schemas/StichwortbereichFormContextDTO"
+    StichwortbereichFormContextDTO:
+      required:
+      - bereich
+      - bezeichnung
+      type: object
+      properties:
+        bereich:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+      description: DTO for Stichwortbereich to be used in other FormContexts other
+        than its own.
     PagedModelReferatResponseDTO:
       type: object
       properties:
