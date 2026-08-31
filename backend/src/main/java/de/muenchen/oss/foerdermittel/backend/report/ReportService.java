@@ -1,8 +1,8 @@
 package de.muenchen.oss.foerdermittel.backend.report;
 
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichwortbereicheDTO;
-import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichwortbereicheFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.StichwortbereichService;
 import java.time.LocalDateTime;
@@ -28,8 +28,8 @@ public class ReportService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public GeneratedReport generateReportStichwortbereiche(
-            final ReportStichwortbereicheDTO parameters) {
+    public GeneratedReport generateReportStichworte(
+            final ReportStichworteDTO parameters) {
         stichwortbereichService.checkExistsById(parameters.bereich());
         return generateReport(reportMapper.toJasperParameters(parameters), ReportType.FMW_ABLAGEINDEX, ReportFormat.PDF,
                 "ORDER BY stb_bereich ASC, nr ASC, wort ASC");
@@ -37,9 +37,9 @@ public class ReportService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public ReportStichwortbereicheFormContext getReportStichwortbereicheFormContext() {
-        log.info("Get ReportStichwortbereiche form context");
-        return new ReportStichwortbereicheFormContext(stichwortbereichService.getStichwortbereichFormContextDTOs());
+    public ReportStichworteFormContext getReportStichworte() {
+        log.info("Get ReportStichworte form context");
+        return new ReportStichworteFormContext(stichwortbereichService.getStichwortbereichFormContextDTOs());
     }
 
     /**

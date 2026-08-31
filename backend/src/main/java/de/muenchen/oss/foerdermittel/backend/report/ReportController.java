@@ -1,8 +1,8 @@
 package de.muenchen.oss.foerdermittel.backend.report;
 
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichwortbereicheDTO;
-import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichwortbereicheFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -29,21 +29,21 @@ public class ReportController {
 
     private final ReportService reportService;
 
-    @GetMapping("/stichwortbereiche")
+    @GetMapping("/stichworte")
     @ResponseStatus(HttpStatus.OK)
-    public void getReportStichwortbereiche(
-            @Valid @ParameterObject final ReportStichwortbereicheDTO parameters,
+    public void getReportStichworte(
+            @Valid @ParameterObject final ReportStichworteDTO parameters,
             final HttpServletResponse response)
             throws IOException, SQLException, JRException {
-        final GeneratedReport generatedReport = reportService.generateReportStichwortbereiche(parameters);
+        final GeneratedReport generatedReport = reportService.generateReportStichworte(parameters);
         setMetadata(response, generatedReport);
         generatedReport.writer().write(response.getOutputStream());
     }
 
-    @GetMapping(value = "/stichwortbereiche/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/stichworte/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ReportStichwortbereicheFormContext getReportStichwortbereicheFormContext() {
-        return reportService.getReportStichwortbereicheFormContext();
+    public ReportStichworteFormContext getReportStichworteFormContext() {
+        return reportService.getReportStichworte();
     }
 
     private static void setMetadata(final HttpServletResponse response, final GeneratedReport generatedReport) {

@@ -1610,11 +1610,11 @@ paths:
                 $ref: "#/components/schemas/SiedlungsgebietFormContext"
       security:
       - bearerAuth: []
-  /report/stichwortbereiche:
+  /report/stichworte:
     get:
       tags:
       - report-controller
-      operationId: getReportStichwortbereiche
+      operationId: getReportStichworte
       parameters:
       - name: bereich
         in: query
@@ -1629,18 +1629,18 @@ paths:
           description: OK
       security:
       - bearerAuth: []
-  /report/stichwortbereiche/form-context:
+  /report/stichworte/form-context:
     get:
       tags:
       - report-controller
-      operationId: getReportStichwortbereicheFormContext
+      operationId: getReportStichworteFormContext
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ReportStichwortbereicheFormContext"
+                $ref: "#/components/schemas/ReportStichworteFormContext"
       security:
       - bearerAuth: []
   /referate/form-context:
@@ -2697,7 +2697,7 @@ components:
           type: array
           items:
             type: number
-    ReportStichwortbereicheFormContext:
+    ReportStichworteFormContext:
       required:
       - bereiche
       type: object

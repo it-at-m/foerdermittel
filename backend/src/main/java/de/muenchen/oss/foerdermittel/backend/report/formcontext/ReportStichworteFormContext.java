@@ -5,8 +5,8 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-public record ReportStichwortbereicheFormContext(@NotNull List<StichwortbereichFormContextDTO> bereiche) {
-    public ReportStichwortbereicheFormContext {
+public record ReportStichworteFormContext(@NotNull List<StichwortbereichFormContextDTO> bereiche) {
+    public ReportStichworteFormContext {
         bereiche = List.copyOf(bereiche);
     }
 }

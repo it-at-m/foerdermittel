@@ -6,8 +6,8 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
 import de.muenchen.oss.foerdermittel.backend.TestUtils;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichwortbereicheDTO;
-import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichwortbereicheFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.StichwortbereichRepository;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.dto.StichwortbereichFormContextDTO;
@@ -55,7 +55,7 @@ public class ReportIntegrationTest {
     private StichwortbereichRepository stichwortbereichRepository;
 
     @Nested
-    class GetReportStichwortbereiche {
+    class GetReportStichworte {
 
         private static final String EXISTING_ID = "TEST";
 
@@ -128,20 +128,20 @@ public class ReportIntegrationTest {
             return Stream.of(
                     arguments(
                             "bereich too short",
-                            new ReportStichwortbereicheDTO("")),
+                            new ReportStichworteDTO("")),
                     arguments(
                             "bereich too long",
-                            new ReportStichwortbereicheDTO("a".repeat(31))),
+                            new ReportStichworteDTO("a".repeat(31))),
                     arguments(
                             "bereich wrong symbol",
-                            new ReportStichwortbereicheDTO("$")));
+                            new ReportStichworteDTO("$")));
         }
 
         @ParameterizedTest(name = "{0}")
         @MethodSource("invalidInputRequests")
         void givenInvalidInput_thenReturnBadRequest(
                 final String description,
-                final ReportStichwortbereicheDTO requestDTO) {
+                final ReportStichworteDTO requestDTO) {
 
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
@@ -156,7 +156,7 @@ public class ReportIntegrationTest {
     }
 
     @Nested
-    class GetReportStichwortbereicheFormContext {
+    class GetReportStichworteFormContext {
 
         private static final String EXISTING_ID = "TEST";
         private static final Stichwortbereich EXAMPLE_ENTITY = new Stichwortbereich(EXISTING_ID, "Test");
@@ -173,7 +173,7 @@ public class ReportIntegrationTest {
             stichwortbereichRepository.deleteAll();
 
             // When
-            final ReportStichwortbereicheFormContext result = restTestClient.get()
+            final ReportStichworteFormContext result = restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/report/stichwortbereiche/form-context")
                             .build())
@@ -181,7 +181,7 @@ public class ReportIntegrationTest {
                     .exchange()
                     .expectStatus().isOk()
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(ReportStichwortbereicheFormContext.class)
+                    .expectBody(ReportStichworteFormContext.class)
                     .returnResult()
                     .getResponseBody();
 
@@ -196,7 +196,7 @@ public class ReportIntegrationTest {
             final StichwortbereichFormContextDTO expected = new StichwortbereichFormContextDTO(EXAMPLE_ENTITY.getBereich(), EXAMPLE_ENTITY.getBezeichnung());
 
             // When
-            final ReportStichwortbereicheFormContext result = restTestClient.get()
+            final ReportStichworteFormContext result = restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/report/stichwortbereiche/form-context")
                             .build())
@@ -204,7 +204,7 @@ public class ReportIntegrationTest {
                     .exchange()
                     .expectStatus().isOk()
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(ReportStichwortbereicheFormContext.class)
+                    .expectBody(ReportStichworteFormContext.class)
                     .returnResult()
                     .getResponseBody();
 

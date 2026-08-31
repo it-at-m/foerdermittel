@@ -11,8 +11,8 @@ import static org.mockito.Mockito.when;
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichwortbereicheDTO;
-import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichwortbereicheFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.StichwortbereichService;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.dto.StichwortbereichFormContextDTO;
@@ -48,19 +48,19 @@ class ReportServiceTest {
     private ReportService reportService;
 
     @Nested
-    class GenerateReportStichwortbereiche {
+    class GenerateReportStichworte {
 
         @Test
         void givenNoWriteInteraction_thenShouldGenerateCorrectGeneratedReport() {
             // Given
-            final ReportStichwortbereicheDTO parameters = mock(ReportStichwortbereicheDTO.class);
+            final ReportStichworteDTO parameters = mock(ReportStichworteDTO.class);
 
             final Map<String, Object> jasperParameters = new HashMap<>();
             when(reportMapper.toJasperParameters(parameters))
                     .thenReturn(jasperParameters);
 
             // When
-            final GeneratedReport generatedReport = reportService.generateReportStichwortbereiche(parameters);
+            final GeneratedReport generatedReport = reportService.generateReportStichworte(parameters);
 
             // Then
             verify(reportMapper, times(1)).toJasperParameters(parameters);
@@ -81,7 +81,7 @@ class ReportServiceTest {
         @Test
         void givenWriteInteraction_thenShouldCallJasperServiceCorrectly() throws JRException, SQLException, IOException {
             // Given
-            final ReportStichwortbereicheDTO parameters = mock(ReportStichwortbereicheDTO.class);
+            final ReportStichworteDTO parameters = mock(ReportStichworteDTO.class);
 
             final Map<String, Object> jasperParameters = new HashMap<>();
             when(reportMapper.toJasperParameters(parameters))
@@ -90,7 +90,7 @@ class ReportServiceTest {
             final OutputStream outputStream = new ByteArrayOutputStream();
 
             // When
-            final GeneratedReport generatedReport = reportService.generateReportStichwortbereiche(parameters);
+            final GeneratedReport generatedReport = reportService.generateReportStichworte(parameters);
             generatedReport.writer().write(outputStream);
 
             // Then
@@ -105,7 +105,7 @@ class ReportServiceTest {
         void givenNotFound_thenShouldThrowNotFoundException() {
             // Given
             final String bereich = "test";
-            final ReportStichwortbereicheDTO parameters = new ReportStichwortbereicheDTO(bereich);
+            final ReportStichworteDTO parameters = new ReportStichworteDTO(bereich);
 
             doThrow(new NotFoundException(Stichwortbereich.class, bereich))
                     .when(stichwortbereichService)
@@ -114,7 +114,7 @@ class ReportServiceTest {
             // When
             final Exception exception = Assertions.assertThrows(
                     NotFoundException.class,
-                    () -> reportService.generateReportStichwortbereiche(parameters));
+                    () -> reportService.generateReportStichworte(parameters));
 
             // Then
             verify(stichwortbereichService, times(1)).checkExistsById(bereich);
@@ -124,7 +124,7 @@ class ReportServiceTest {
     }
 
     @Nested
-    class GetReportStichwortbereicheFormContext {
+    class GetReportStichworteFormContext {
 
         @Test
         void givenEntitiesExists_thenReturnCorrectFormContext() {
@@ -134,7 +134,7 @@ class ReportServiceTest {
             when(stichwortbereichService.getStichwortbereichFormContextDTOs()).thenReturn(allBereiche);
 
             // When
-            final ReportStichwortbereicheFormContext formContext = reportService.getReportStichwortbereicheFormContext();
+            final ReportStichworteFormContext formContext = reportService.getReportStichworte();
 
             // Then
             verify(stichwortbereichService, times(1)).getStichwortbereichFormContextDTOs();
