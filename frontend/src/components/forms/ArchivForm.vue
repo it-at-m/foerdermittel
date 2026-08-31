@@ -85,7 +85,7 @@
 <script setup lang="ts">
 import type {
   ArchivResponseDTO,
-  ProjektResponseDTO,
+  ProjektFormContextDTO,
 } from "@/api/generated/foerdermittel-backend";
 import type { VForm } from "vuetify/components";
 
@@ -104,7 +104,7 @@ const { t } = useI18n();
 const rules = useRules();
 
 const { projekte, displayMode = InputDisplayMode.CREATE } = defineProps<{
-  projekte: ProjektResponseDTO[];
+  projekte: ProjektFormContextDTO[];
   displayMode?: InputDisplayMode;
 }>();
 
