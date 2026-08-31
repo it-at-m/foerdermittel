@@ -10,6 +10,8 @@ import de.muenchen.oss.foerdermittel.backend.TestUtils;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittUpdateDTO;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -56,12 +58,17 @@ class HauptabschnittIntegrationTest {
 
     @Autowired
     private HauptabschnittRepository hauptabschnittRepository;
+    @Autowired
+    private UnterabschnittRepository unterabschnittRepository;
 
     @BeforeEach
     public void setUp() {
+        unterabschnittRepository.deleteAll();
         hauptabschnittRepository.deleteAll();
         final Hauptabschnitt exampleEntity = new Hauptabschnitt(EXISTING_ID, "Test");
+        final Unterabschnitt exampleUa = new Unterabschnitt("ua", "Test", exampleEntity);
         hauptabschnittRepository.save(exampleEntity);
+        unterabschnittRepository.save(exampleUa);
     }
 
     @Nested
@@ -298,7 +305,17 @@ class HauptabschnittIntegrationTest {
     class DeleteHauptabschnitt {
 
         @Test
+        void givenEntityHasUa_thenReturnConflict() {
+            restTestClient.delete()
+                    .uri("/hauptabschnitte/{id}", EXISTING_ID)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                    .exchange()
+                    .expectStatus().isEqualTo(HttpStatus.CONFLICT);
+        }
+
+        @Test
         void givenEntityIdExists_thenEntityIsDeleted() {
+            unterabschnittRepository.deleteAll();
             restTestClient.delete()
                     .uri("/hauptabschnitte/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
@@ -328,6 +345,7 @@ class HauptabschnittIntegrationTest {
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
         @MethodSource("authorizationMappings")
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
+            unterabschnittRepository.deleteAll();
             restTestClient.delete()
                     .uri("/hauptabschnitte/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
@@ -343,6 +361,7 @@ class HauptabschnittIntegrationTest {
         @Test
         void givenNoEntitiesExist_thenReturnEmptyFormContext() {
             // Given
+            unterabschnittRepository.deleteAll();
             hauptabschnittRepository.deleteAll();
 
             // When

@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: foerdermittel-backend
   description: Backend component for the application foerdermittel
-  version: 0.1.0-SNAPSHOT
+  version: 0.2.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -13,6 +13,47 @@ tags:
     description: Spring Boot Actuator Web API Documentation
     url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
 paths:
+  /unterabschnitte/{id}:
+    put:
+      tags:
+      - unterabschnitt-controller
+      operationId: updateUnterabschnitt
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnterabschnittUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnterabschnittResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - unterabschnitt-controller
+      operationId: deleteUnterabschnitt
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /traeger/{id}:
     put:
       tags:
@@ -84,6 +125,66 @@ paths:
       tags:
       - stichwortbereich-controller
       operationId: deleteStichwortbereich
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /stadtbezirkslisten/{id}:
+    get:
+      tags:
+      - stadtbezirksliste-controller
+      operationId: getStadtbezirkliste
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkslisteResponseDTO"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - stadtbezirksliste-controller
+      operationId: updateListenname
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListennameUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkslisteResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - stadtbezirksliste-controller
+      operationId: deleteListenname
       parameters:
       - name: id
         in: path
@@ -550,47 +651,66 @@ paths:
           description: OK
       security:
       - bearerAuth: []
-  /archiv/{id}:
-    put:
+  /unterabschnitte:
+    get:
       tags:
-      - archiv-controller
-      operationId: updateArchiv
+      - unterabschnitt-controller
+      operationId: getUnterabschnitte
       parameters:
-      - name: id
-        in: path
-        required: true
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
         schema:
+          minimum: 0
           type: integer
-          format: int64
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ArchivUpdateDTO"
-        required: true
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "hasHa,ASC"
+          - "ua,ASC"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ArchivResponseDTO"
+                $ref: "#/components/schemas/PagedModelUnterabschnittResponseDTO"
       security:
       - bearerAuth: []
-    delete:
+    post:
       tags:
-      - archiv-controller
-      operationId: deleteArchiv
-      parameters:
-      - name: id
-        in: path
+      - unterabschnitt-controller
+      operationId: createUnterabschnitt
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnterabschnittCreateDTO"
         required: true
-        schema:
-          type: integer
-          format: int64
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnterabschnittResponseDTO"
       security:
       - bearerAuth: []
   /traeger:
@@ -713,6 +833,67 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/StichwortbereichResponseDTO"
+      security:
+      - bearerAuth: []
+  /stadtbezirkslisten:
+    get:
+      tags:
+      - stadtbezirksliste-controller
+      operationId: getStadtbezirklistenByPageable
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "kurzbez,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelStadtbezirkslisteResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - stadtbezirksliste-controller
+      operationId: createListenname
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListennameCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkslisteResponseDTO"
       security:
       - bearerAuth: []
   /stadtbezirke:
@@ -1345,66 +1526,18 @@ paths:
                 $ref: "#/components/schemas/BauleitungResponseDTO"
       security:
       - bearerAuth: []
-  /archiv:
+  /unterabschnitte/form-context:
     get:
       tags:
-      - archiv-controller
-      operationId: getArchiveintraege
-      parameters:
-      - name: page
-        in: query
-        description: Zero-based page index (0..N)
-        required: false
-        schema:
-          minimum: 0
-          type: integer
-          default: 0
-      - name: size
-        in: query
-        description: The size of the page to be returned
-        required: false
-        schema:
-          minimum: 1
-          type: integer
-          default: 10
-      - name: sort
-        in: query
-        description: "Sorting criteria in the format: property,(asc|desc). Default\
-          \ sort order is ascending. Multiple sort criteria are supported."
-        required: false
-        schema:
-          type: array
-          items:
-            type: string
-          default:
-          - "projekt.projnr,ASC"
-          - "speicherDatum,ASC"
+      - unterabschnitt-controller
+      operationId: getUnterabschnittFormContext
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PagedModelArchivResponseDTO"
-      security:
-      - bearerAuth: []
-    post:
-      tags:
-      - archiv-controller
-      operationId: createArchiv
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ArchivCreateDTO"
-        required: true
-      responses:
-        "201":
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ArchivResponseDTO"
+                $ref: "#/components/schemas/UnterabschnittFormContext"
       security:
       - bearerAuth: []
   /traeger/form-context:
@@ -1433,6 +1566,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/StichwortbereichFormContext"
+      security:
+      - bearerAuth: []
+  /stadtbezirkslisten/form-context:
+    get:
+      tags:
+      - stadtbezirksliste-controller
+      operationId: getStadtbezirkslisteFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StadtbezirkslisteFormContext"
       security:
       - bearerAuth: []
   /stadtbezirke/form-context:
@@ -1573,20 +1720,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BauleitungFormContext"
-      security:
-      - bearerAuth: []
-  /archiv/form-context:
-    get:
-      tags:
-      - archiv-controller
-      operationId: getArchivFormContext
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ArchivFormContext"
       security:
       - bearerAuth: []
   /actuator:
@@ -1732,6 +1865,34 @@ paths:
                 type: object
 components:
   schemas:
+    UnterabschnittUpdateDTO:
+      required:
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    UnterabschnittResponseDTO:
+      required:
+      - bezeichnung
+      - haBezeichnung
+      - hasHa
+      - id
+      - ua
+      type: object
+      properties:
+        id:
+          type: string
+        ua:
+          type: string
+        bezeichnung:
+          type: string
+        hasHa:
+          type: string
+        haBezeichnung:
+          type: string
     TraegerUpdateDTO:
       required:
       - bezeichnung
@@ -1777,6 +1938,49 @@ components:
           type: string
         bezeichnung:
           type: string
+    ListennameUpdateDTO:
+      required:
+      - assignedStadtbezirke
+      - bezeichnung
+      type: object
+      properties:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+        assignedStadtbezirke:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkslisteAssignmentResponseDTO"
+    StadtbezirkslisteAssignmentResponseDTO:
+      type: object
+      properties:
+        stadtbezirkId:
+          type: number
+        stadtbezirkBezeichnung:
+          type: string
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+    StadtbezirkslisteResponseDTO:
+      required:
+      - assignedStadtbezirke
+      - bezeichnung
+      - id
+      - kurzbez
+      type: object
+      properties:
+        id:
+          type: string
+        kurzbez:
+          type: string
+        bezeichnung:
+          type: string
+        assignedStadtbezirke:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkslisteAssignmentResponseDTO"
     StadtbezirkUpdateDTO:
       required:
       - bezeichnung
@@ -2061,64 +2265,27 @@ components:
           type: string
         bezeichnung:
           type: string
-    ArchivUpdateDTO:
+    UnterabschnittCreateDTO:
       required:
-      - speicherAkt
-      - speicherRechnungen
+      - bezeichnung
+      - hasHa
+      - ua
       type: object
       properties:
-        speicherDatum:
+        ua:
+          maxLength: 2
+          minLength: 1
+          pattern: "^[a-zA-Z0-9]+$"
           type: string
-          format: date-time
-        speicherAkt:
-          type: boolean
-        speicherRechnungen:
-          type: boolean
-        mikroDatPlan:
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
           type: string
-          format: date-time
-        mikroDat:
+        hasHa:
+          maxLength: 2
+          minLength: 1
+          pattern: "^[a-zA-Z0-9]+$"
           type: string
-          format: date-time
-        notizen:
-          type: string
-    ArchivResponseDTO:
-      required:
-      - fob_fb
-      - id
-      - pname
-      - projnr
-      - pstrasse
-      - speicherAkt
-      - speicherRechnungen
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        speicherDatum:
-          type: string
-          format: date-time
-        speicherAkt:
-          type: boolean
-        speicherRechnungen:
-          type: boolean
-        mikroDatPlan:
-          type: string
-          format: date-time
-        mikroDat:
-          type: string
-          format: date-time
-        notizen:
-          type: string
-        projnr:
-          type: string
-        pname:
-          type: string
-        pstrasse:
-          type: string
-        fob_fb:
-          type: number
     TraegerCreateDTO:
       required:
       - bezeichnung
@@ -2149,6 +2316,26 @@ components:
           maxLength: 200
           minLength: 1
           type: string
+    ListennameCreateDTO:
+      required:
+      - assignedStadtbezirke
+      - bezeichnung
+      - kurzbez
+      type: object
+      properties:
+        kurzbez:
+          maxLength: 3
+          minLength: 1
+          pattern: "^[A-Z0-9]+$"
+          type: string
+        bezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+        assignedStadtbezirke:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkslisteAssignmentResponseDTO"
     StadtbezirkCreateDTO:
       required:
       - bezeichnung
@@ -2335,31 +2522,6 @@ components:
           maxLength: 200
           minLength: 1
           type: string
-    ArchivCreateDTO:
-      required:
-      - projnr
-      - speicherAkt
-      - speicherRechnungen
-      type: object
-      properties:
-        speicherDatum:
-          type: string
-          format: date-time
-        speicherAkt:
-          type: boolean
-        speicherRechnungen:
-          type: boolean
-        mikroDatPlan:
-          type: string
-          format: date-time
-        mikroDat:
-          type: string
-          format: date-time
-        notizen:
-          type: string
-        projnr:
-          minLength: 1
-          type: string
     PageMetadata:
       type: object
       properties:
@@ -2375,6 +2537,43 @@ components:
         totalPages:
           type: integer
           format: int64
+    PagedModelUnterabschnittResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnterabschnittResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    HauptabschnittFormContextDTO:
+      required:
+      - bezeichnung
+      - ha
+      type: object
+      properties:
+        ha:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+      description: DTO for Hauptabschnitt to be used in other FormContexts other than
+        its own.
+    UnterabschnittFormContext:
+      required:
+      - hasHas
+      - uas
+      type: object
+      properties:
+        uas:
+          type: array
+          items:
+            type: string
+        hasHas:
+          type: array
+          items:
+            $ref: "#/components/schemas/HauptabschnittFormContextDTO"
     PagedModelTraegerResponseDTO:
       type: object
       properties:
@@ -2408,6 +2607,24 @@ components:
       type: object
       properties:
         bereiche:
+          type: array
+          items:
+            type: string
+    PagedModelStadtbezirkslisteResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkslisteResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    StadtbezirkslisteFormContext:
+      required:
+      - stadtbezirkslistenIds
+      type: object
+      properties:
+        stadtbezirkslistenIds:
           type: array
           items:
             type: string
@@ -2591,46 +2808,6 @@ components:
           type: array
           items:
             type: string
-    PagedModelArchivResponseDTO:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: "#/components/schemas/ArchivResponseDTO"
-        page:
-          $ref: "#/components/schemas/PageMetadata"
-    ArchivFormContext:
-      required:
-      - archivId
-      - projekte
-      type: object
-      properties:
-        archivId:
-          type: array
-          items:
-            type: integer
-            format: int64
-        projekte:
-          type: array
-          items:
-            $ref: "#/components/schemas/ProjektResponseDTO"
-    ProjektResponseDTO:
-      required:
-      - foerderbereich
-      - pname
-      - projnr
-      - pstrasse
-      type: object
-      properties:
-        projnr:
-          type: string
-        pname:
-          type: string
-        pstrasse:
-          type: string
-        foerderbereich:
-          type: string
     Link:
       type: object
       properties:

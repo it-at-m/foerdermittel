@@ -80,7 +80,7 @@ const rolesText = computed(() =>
   userInfoStore.currentRoles.length
     ? userInfoStore.currentRoles
         .map((role) => t(`common.roles.${role}`))
-        .join(",")
+        .join(", ")
     : t("common.roles.noRole")
 );
 
@@ -339,10 +339,10 @@ const navigationItems: NavigationItem[] = [
         },
       },
       {
-        title: t("model.listenname.modelName", 2),
-      },
-      {
         title: t("model.stadtbezirksliste.modelName", 2),
+        props: {
+          to: "/stadtbezirkslisten",
+        },
       },
       {
         title: t("model.stichwortbereich.modelName", 2),
@@ -364,6 +364,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.unterabschnitt.modelName", 2),
+        props: {
+          to: "/unterabschnitte",
+        },
       },
     ],
   },
