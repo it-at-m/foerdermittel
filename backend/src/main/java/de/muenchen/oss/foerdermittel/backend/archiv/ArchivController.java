@@ -78,9 +78,8 @@ public class ArchivController {
         final Archiv archiv = archivMapper.toEntity(archivUpdateDTO);
 
         return archivMapper.toDTO(archivService.updateArchiv(archiv,
-                        archivId));
+                archivId));
     }
-
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

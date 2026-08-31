@@ -155,7 +155,6 @@ class ArchivIntegrationTest {
                             });
         }
 
-
         @Test
         void givenNoArchiveExists_thenReturnEmptyPage() {
 

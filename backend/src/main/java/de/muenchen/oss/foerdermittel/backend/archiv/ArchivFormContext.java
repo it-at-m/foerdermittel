@@ -1,7 +1,6 @@
 package de.muenchen.oss.foerdermittel.backend.archiv;
 
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektResponseDTO;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.List;

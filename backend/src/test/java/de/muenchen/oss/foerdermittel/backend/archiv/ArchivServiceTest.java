@@ -58,15 +58,13 @@ class ArchivServiceTest {
 
             final List<Archiv> entities = List.of(archiv1, archiv2);
 
-            final Page<Archiv> expectedPage =
-                    new PageImpl<>(entities, pageable, entities.size());
+            final Page<Archiv> expectedPage = new PageImpl<>(entities, pageable, entities.size());
 
             when(archivRepository.findAll(pageable))
                     .thenReturn(expectedPage);
 
             // When
-            final Page<Archiv> result =
-                    unitUnderTest.getArchiveintraege(pageable);
+            final Page<Archiv> result = unitUnderTest.getArchiveintraege(pageable);
 
             // Then
             verify(archivRepository, times(1))
@@ -85,19 +83,17 @@ class ArchivServiceTest {
             // Given
             final List<Long> archivIds = List.of(1L, 2L, 3L);
 
-            final ProjektFormContextDTO projektDTO1 =
-                    new ProjektFormContextDTO(
-                            PROJNR,
-                            "Test Projekt",
-                            "Test Strasse",
-                            "11");
+            final ProjektFormContextDTO projektDTO1 = new ProjektFormContextDTO(
+                    PROJNR,
+                    "Test Projekt",
+                    "Test Strasse",
+                    "11");
 
-            final ProjektFormContextDTO projektDTO2 =
-                    new ProjektFormContextDTO(
-                            OTHER_PROJNR,
-                            "Test Projekt 2",
-                            "Test Strasse 2",
-                            "12");
+            final ProjektFormContextDTO projektDTO2 = new ProjektFormContextDTO(
+                    OTHER_PROJNR,
+                    "Test Projekt 2",
+                    "Test Strasse 2",
+                    "12");
 
             final List<ProjektFormContextDTO> projekte = List.of(projektDTO1, projektDTO2);
 
@@ -127,8 +123,7 @@ class ArchivServiceTest {
             final Projekt projekt = new Projekt();
             projekt.setProjnr(PROJNR);
 
-            final Archiv archiv =
-                    createArchiv(null, null);
+            final Archiv archiv = createArchiv(null, null);
 
             final Archiv expectedArchiv = createArchiv(ARCHIV_ID, PROJNR);
             expectedArchiv.setProjekt(projekt);
@@ -150,24 +145,21 @@ class ArchivServiceTest {
         @Test
         void givenProjektDoesNotExist_thenThrowEntityNotFoundException() {
             // Given
-            final Archiv archiv =
-                    createArchiv(null, null);
+            final Archiv archiv = createArchiv(null, null);
 
-            final EntityNotFoundException exception =
-                    new EntityNotFoundException(
-                            "Projekt mit Projektnummer "
-                                    + PROJNR
-                                    + " wurde nicht gefunden");
+            final EntityNotFoundException exception = new EntityNotFoundException(
+                    "Projekt mit Projektnummer "
+                            + PROJNR
+                            + " wurde nicht gefunden");
 
             when(projektService.getProjekt(PROJNR)).thenThrow(exception);
 
             // When
-            final EntityNotFoundException result =
-                    Assertions.assertThrows(
-                            EntityNotFoundException.class,
-                            () -> unitUnderTest.createArchiv(
-                                    archiv,
-                                    PROJNR));
+            final EntityNotFoundException result = Assertions.assertThrows(
+                    EntityNotFoundException.class,
+                    () -> unitUnderTest.createArchiv(
+                            archiv,
+                            PROJNR));
 
             // Then
             verify(projektService, times(1)).getProjekt(PROJNR);
@@ -186,15 +178,12 @@ class ArchivServiceTest {
             final Projekt existingProjekt = new Projekt();
             existingProjekt.setProjnr(PROJNR);
 
-            final Archiv foundArchiv =
-                    createArchiv(ARCHIV_ID, PROJNR);
+            final Archiv foundArchiv = createArchiv(ARCHIV_ID, PROJNR);
             foundArchiv.setProjekt(existingProjekt);
 
-            final Archiv archivToUpdate =
-                    createArchiv(null, null);
+            final Archiv archivToUpdate = createArchiv(null, null);
 
-            final Archiv expectedArchiv =
-                    createArchiv(ARCHIV_ID, PROJNR);
+            final Archiv expectedArchiv = createArchiv(ARCHIV_ID, PROJNR);
             expectedArchiv.setProjekt(existingProjekt);
 
             when(archivRepository.findById(ARCHIV_ID))
@@ -204,10 +193,9 @@ class ArchivServiceTest {
                     .thenReturn(expectedArchiv);
 
             // When
-            final Archiv result =
-                    unitUnderTest.updateArchiv(
-                            archivToUpdate,
-                            ARCHIV_ID);
+            final Archiv result = unitUnderTest.updateArchiv(
+                    archivToUpdate,
+                    ARCHIV_ID);
 
             // Then
             verify(archivRepository, times(1)).findById(ARCHIV_ID);
@@ -232,12 +220,11 @@ class ArchivServiceTest {
             when(archivRepository.findById(ARCHIV_ID)).thenReturn(Optional.empty());
 
             // When
-            final Exception exception =
-                    Assertions.assertThrows(
-                            NotFoundException.class,
-                            () -> unitUnderTest.updateArchiv(
-                                    archiv,
-                                    ARCHIV_ID));
+            final Exception exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> unitUnderTest.updateArchiv(
+                            archiv,
+                            ARCHIV_ID));
 
             // Then
             verify(archivRepository, times(1)).findById(ARCHIV_ID);
@@ -300,10 +287,9 @@ class ArchivServiceTest {
             when(archivRepository.findById(ARCHIV_ID)).thenReturn(Optional.empty());
 
             // When
-            final Exception exception =
-                    Assertions.assertThrows(
-                            NotFoundException.class,
-                            () -> unitUnderTest.deleteArchiv(ARCHIV_ID));
+            final Exception exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> unitUnderTest.deleteArchiv(ARCHIV_ID));
 
             // Then
             verify(archivRepository, times(1)).findById(ARCHIV_ID);

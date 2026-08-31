@@ -1,11 +1,9 @@
 package de.muenchen.oss.foerdermittel.backend.archiv;
 
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
-import de.muenchen.oss.foerdermittel.backend.projekt.ProjektRepository;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -51,8 +49,7 @@ public class ArchivService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Archiv updateArchiv(final Archiv archiv, final Long archivId) {
-        final Archiv foundArchiveintrag =
-                ServiceUtils.getEntityOrThrowNotFoundException(archivId, archivRepository);
+        final Archiv foundArchiveintrag = ServiceUtils.getEntityOrThrowNotFoundException(archivId, archivRepository);
 
         foundArchiveintrag.setSpeicherDatum(archiv.getSpeicherDatum());
         foundArchiveintrag.setSpeicherAkt(archiv.getSpeicherAkt());
