@@ -1,6 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.archiv;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -8,9 +9,8 @@ import static org.mockito.Mockito.when;
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
-import de.muenchen.oss.foerdermittel.backend.projekt.ProjektRepository;
-import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektMapper;
-import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektResponseDTO;
+import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.List;
@@ -38,10 +38,7 @@ class ArchivServiceTest {
     private ArchivRepository archivRepository;
 
     @Mock
-    private ProjektRepository projektRepository;
-
-    @Mock
-    private ProjektMapper projektMapper;
+    private ProjektService projektService;
 
     @InjectMocks
     private ArchivService unitUnderTest;
@@ -61,13 +58,15 @@ class ArchivServiceTest {
 
             final List<Archiv> entities = List.of(archiv1, archiv2);
 
-            final Page<Archiv> expectedPage = new PageImpl<>(entities, pageable, entities.size());
+            final Page<Archiv> expectedPage =
+                    new PageImpl<>(entities, pageable, entities.size());
 
             when(archivRepository.findAll(pageable))
                     .thenReturn(expectedPage);
 
             // When
-            final Page<Archiv> result = unitUnderTest.getArchiveintraege(pageable);
+            final Page<Archiv> result =
+                    unitUnderTest.getArchiveintraege(pageable);
 
             // Then
             verify(archivRepository, times(1))
@@ -86,28 +85,35 @@ class ArchivServiceTest {
             // Given
             final List<Long> archivIds = List.of(1L, 2L, 3L);
 
-            final Projekt projekt1 = new Projekt();
-            projekt1.setProjnr(PROJNR);
+            final ProjektFormContextDTO projektDTO1 =
+                    new ProjektFormContextDTO(
+                            PROJNR,
+                            "Test Projekt",
+                            "Test Strasse",
+                            "11");
 
-            final Projekt projekt2 = new Projekt();
-            projekt2.setProjnr(OTHER_PROJNR);
+            final ProjektFormContextDTO projektDTO2 =
+                    new ProjektFormContextDTO(
+                            OTHER_PROJNR,
+                            "Test Projekt 2",
+                            "Test Strasse 2",
+                            "12");
 
-            final ProjektResponseDTO projektDTO1 = mockProjektResponseDTO();
-            final ProjektResponseDTO projektDTO2 = mockProjektResponseDTO();
+            final List<ProjektFormContextDTO> projekte = List.of(projektDTO1, projektDTO2);
 
             when(archivRepository.findAllWithProjekt()).thenReturn(archivIds);
-            when(projektRepository.findAll()).thenReturn(List.of(projekt1, projekt2));
-            when(projektMapper.toDTO(projekt1)).thenReturn(projektDTO1);
-            when(projektMapper.toDTO(projekt2)).thenReturn(projektDTO2);
 
+            when(projektService.getProjektFormContextDTOs()).thenReturn(projekte);
+
+            // When
             final ArchivFormContext result = unitUnderTest.getArchivFormContext();
 
+            // Then
             verify(archivRepository, times(1)).findAllWithProjekt();
-            verify(projektRepository, times(1)).findAll();
-            verify(projektMapper, times(1)).toDTO(projekt1);
-            verify(projektMapper, times(1)).toDTO(projekt2);
+            verify(projektService, times(1)).getProjektFormContextDTOs();
 
             assertThat(result.archivId()).isEqualTo(archivIds);
+
             assertThat(result.projekte()).containsExactly(projektDTO1, projektDTO2);
         }
     }
@@ -121,56 +127,53 @@ class ArchivServiceTest {
             final Projekt projekt = new Projekt();
             projekt.setProjnr(PROJNR);
 
-            final Archiv archiv = createArchiv(null, PROJNR);
-
-            archiv.setProjekt(projekt);
+            final Archiv archiv =
+                    createArchiv(null, null);
 
             final Archiv expectedArchiv = createArchiv(ARCHIV_ID, PROJNR);
             expectedArchiv.setProjekt(projekt);
 
-            when(projektRepository.findById(PROJNR)).thenReturn(Optional.of(projekt));
-
+            when(projektService.getProjekt(PROJNR)).thenReturn(projekt);
             when(archivRepository.insert(archiv)).thenReturn(expectedArchiv);
 
-            final Archiv result = unitUnderTest.createArchiv(archiv);
+            // When
+            final Archiv result = unitUnderTest.createArchiv(archiv, PROJNR);
 
-            verify(projektRepository, times(1)).findById(PROJNR);
-
+            // Then
+            verify(projektService, times(1)).getProjekt(PROJNR);
             verify(archivRepository, times(1)).insert(archiv);
 
             assertThat(archiv.getProjekt()).isSameAs(projekt);
-
-            assertThat(result)
-                    .usingRecursiveComparison()
-                    .isEqualTo(expectedArchiv);
+            assertThat(result).usingRecursiveComparison().isEqualTo(expectedArchiv);
         }
 
         @Test
         void givenProjektDoesNotExist_thenThrowEntityNotFoundException() {
             // Given
-            final Projekt projekt = new Projekt();
-            projekt.setProjnr(PROJNR);
+            final Archiv archiv =
+                    createArchiv(null, null);
 
-            final Archiv archiv = createArchiv(null, PROJNR);
-            archiv.setProjekt(projekt);
-
-            when(projektRepository.findById(PROJNR)).thenReturn(Optional.empty());
-
-            final EntityNotFoundException exception = Assertions.assertThrows(
-                    EntityNotFoundException.class,
-                    () -> unitUnderTest.createArchiv(archiv));
-
-            verify(projektRepository, times(1))
-                    .findById(PROJNR);
-
-            verify(archivRepository, never())
-                    .insert(archiv);
-
-            assertThat(exception.getMessage())
-                    .isEqualTo(
+            final EntityNotFoundException exception =
+                    new EntityNotFoundException(
                             "Projekt mit Projektnummer "
                                     + PROJNR
                                     + " wurde nicht gefunden");
+
+            when(projektService.getProjekt(PROJNR)).thenThrow(exception);
+
+            // When
+            final EntityNotFoundException result =
+                    Assertions.assertThrows(
+                            EntityNotFoundException.class,
+                            () -> unitUnderTest.createArchiv(
+                                    archiv,
+                                    PROJNR));
+
+            // Then
+            verify(projektService, times(1)).getProjekt(PROJNR);
+            verify(archivRepository, never()).insert(any(Archiv.class));
+
+            assertThat(result.getMessage()).isEqualTo("Projekt mit Projektnummer " + PROJNR + " wurde nicht gefunden");
         }
     }
 
@@ -180,29 +183,35 @@ class ArchivServiceTest {
         @Test
         void givenArchivExists_thenUpdateArchiv() {
             // Given
-            final Projekt projekt = new Projekt();
-            projekt.setProjnr(PROJNR);
+            final Projekt existingProjekt = new Projekt();
+            existingProjekt.setProjnr(PROJNR);
 
-            final Archiv foundArchiv = createArchiv(ARCHIV_ID, PROJNR);
+            final Archiv foundArchiv =
+                    createArchiv(ARCHIV_ID, PROJNR);
+            foundArchiv.setProjekt(existingProjekt);
 
-            final Archiv archivToUpdate = createArchiv(null, PROJNR);
+            final Archiv archivToUpdate =
+                    createArchiv(null, null);
 
-            final Archiv expectedArchiv = createArchiv(ARCHIV_ID, PROJNR);
+            final Archiv expectedArchiv =
+                    createArchiv(ARCHIV_ID, PROJNR);
+            expectedArchiv.setProjekt(existingProjekt);
 
-            when(archivRepository.findById(ARCHIV_ID)).thenReturn(Optional.of(foundArchiv));
+            when(archivRepository.findById(ARCHIV_ID))
+                    .thenReturn(Optional.of(foundArchiv));
 
-            when(projektRepository.findById(PROJNR)).thenReturn(Optional.of(projekt));
+            when(archivRepository.update(foundArchiv))
+                    .thenReturn(expectedArchiv);
 
-            when(archivRepository.update(foundArchiv)).thenReturn(expectedArchiv);
+            // When
+            final Archiv result =
+                    unitUnderTest.updateArchiv(
+                            archivToUpdate,
+                            ARCHIV_ID);
 
-            archivToUpdate.setProjekt(projekt);
-
-            final Archiv result = unitUnderTest.updateArchiv(
-                    archivToUpdate,
-                    ARCHIV_ID);
-
+            // Then
             verify(archivRepository, times(1)).findById(ARCHIV_ID);
-            verify(projektRepository, times(1)).findById(PROJNR);
+            verify(projektService, never()).getProjekt(any());
             verify(archivRepository, times(1)).update(foundArchiv);
 
             assertThat(foundArchiv.getSpeicherDatum()).isEqualTo(archivToUpdate.getSpeicherDatum());
@@ -211,71 +220,31 @@ class ArchivServiceTest {
             assertThat(foundArchiv.getMikroDatPlan()).isEqualTo(archivToUpdate.getMikroDatPlan());
             assertThat(foundArchiv.getMikroDat()).isEqualTo(archivToUpdate.getMikroDat());
             assertThat(foundArchiv.getNotizen()).isEqualTo(archivToUpdate.getNotizen());
-            assertThat(foundArchiv.getProjekt()).isSameAs(projekt);
-            assertThat(result)
-                    .usingRecursiveComparison()
-                    .isEqualTo(expectedArchiv);
+            assertThat(foundArchiv.getProjekt()).isSameAs(existingProjekt);
+            assertThat(result).usingRecursiveComparison().isEqualTo(expectedArchiv);
         }
 
         @Test
         void givenArchivDoesNotExist_thenThrowNotFoundException() {
             // Given
-            final Archiv archiv = createArchiv(null, PROJNR);
+            final Archiv archiv = createArchiv(null, null);
 
-            when(archivRepository.findById(ARCHIV_ID))
-                    .thenReturn(Optional.empty());
+            when(archivRepository.findById(ARCHIV_ID)).thenReturn(Optional.empty());
 
-            final Exception exception = Assertions.assertThrows(
-                    NotFoundException.class,
-                    () -> unitUnderTest.updateArchiv(
-                            archiv,
-                            ARCHIV_ID));
-
-            verify(archivRepository, times(1)).findById(ARCHIV_ID);
-
-            verify(archivRepository, never()).update(archiv);
-
-            assertThat(exception.getMessage())
-                    .isEqualTo(
-                            String.format(
-                                    "404 NOT_FOUND \"Could not find entity with ID %s\"",
+            // When
+            final Exception exception =
+                    Assertions.assertThrows(
+                            NotFoundException.class,
+                            () -> unitUnderTest.updateArchiv(
+                                    archiv,
                                     ARCHIV_ID));
-        }
 
-        @Test
-        void givenNewProjektDoesNotExist_thenThrowEntityNotFoundException() {
-            // Given
-            final Archiv foundArchiv = createArchiv(ARCHIV_ID, PROJNR);
-
-            final Projekt projekt = new Projekt();
-
-            projekt.setProjnr(OTHER_PROJNR);
-
-            final Archiv archivToUpdate = createArchiv(null, OTHER_PROJNR);
-
-            archivToUpdate.setProjekt(projekt);
-
-            when(archivRepository.findById(ARCHIV_ID))
-                    .thenReturn(Optional.of(foundArchiv));
-
-            when(projektRepository.findById(OTHER_PROJNR))
-                    .thenReturn(Optional.empty());
-
-            final EntityNotFoundException exception = Assertions.assertThrows(
-                    EntityNotFoundException.class,
-                    () -> unitUnderTest.updateArchiv(
-                            archivToUpdate,
-                            ARCHIV_ID));
-
+            // Then
             verify(archivRepository, times(1)).findById(ARCHIV_ID);
-            verify(projektRepository, times(1)).findById(OTHER_PROJNR);
-            verify(archivRepository, never()).update(foundArchiv);
+            verify(projektService, never()).getProjekt(any());
+            verify(archivRepository, never()).update(any(Archiv.class));
 
-            assertThat(exception.getMessage())
-                    .isEqualTo(
-                            "Projekt mit Projektnummer "
-                                    + OTHER_PROJNR
-                                    + " wurde nicht gefunden");
+            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", ARCHIV_ID));
         }
 
         @Test
@@ -285,7 +254,6 @@ class ArchivServiceTest {
             existingProjekt.setProjnr(PROJNR);
 
             final Archiv foundArchiv = createArchiv(ARCHIV_ID, PROJNR);
-
             foundArchiv.setProjekt(existingProjekt);
 
             final Archiv archivToUpdate = createArchiv(null, null);
@@ -295,12 +263,12 @@ class ArchivServiceTest {
             when(archivRepository.findById(ARCHIV_ID)).thenReturn(Optional.of(foundArchiv));
             when(archivRepository.update(foundArchiv)).thenReturn(foundArchiv);
 
-            final Archiv result = unitUnderTest.updateArchiv(
-                    archivToUpdate,
-                    ARCHIV_ID);
+            // When
+            final Archiv result = unitUnderTest.updateArchiv(archivToUpdate, ARCHIV_ID);
 
+            // Then
             verify(archivRepository, times(1)).findById(ARCHIV_ID);
-            verify(projektRepository, never()).findById(PROJNR);
+            verify(projektService, never()).getProjekt(any());
             verify(archivRepository, times(1)).update(foundArchiv);
 
             assertThat(foundArchiv.getProjekt()).isSameAs(existingProjekt);
@@ -316,26 +284,30 @@ class ArchivServiceTest {
             // Given
             final Archiv archiv = createArchiv(ARCHIV_ID, PROJNR);
 
-            when(archivRepository.findById(ARCHIV_ID))
-                    .thenReturn(Optional.of(archiv));
+            when(archivRepository.findById(ARCHIV_ID)).thenReturn(Optional.of(archiv));
 
+            // When
             unitUnderTest.deleteArchiv(ARCHIV_ID);
 
+            // Then
             verify(archivRepository, times(1)).findById(ARCHIV_ID);
             verify(archivRepository, times(1)).delete(archiv);
         }
 
         @Test
         void givenArchivDoesNotExist_thenThrowNotFoundException() {
-
+            // Given
             when(archivRepository.findById(ARCHIV_ID)).thenReturn(Optional.empty());
 
-            final Exception exception = Assertions.assertThrows(
-                    NotFoundException.class,
-                    () -> unitUnderTest.deleteArchiv(ARCHIV_ID));
+            // When
+            final Exception exception =
+                    Assertions.assertThrows(
+                            NotFoundException.class,
+                            () -> unitUnderTest.deleteArchiv(ARCHIV_ID));
 
+            // Then
             verify(archivRepository, times(1)).findById(ARCHIV_ID);
-            verify(archivRepository, never()).delete(org.mockito.ArgumentMatchers.any(Archiv.class));
+            verify(archivRepository, never()).delete(any(Archiv.class));
 
             assertThat(exception.getMessage())
                     .isEqualTo(
@@ -366,13 +338,5 @@ class ArchivServiceTest {
         }
 
         return archiv;
-    }
-
-    private static ProjektResponseDTO mockProjektResponseDTO() {
-        return new ProjektResponseDTO(
-                PROJNR,
-                "Test Projekt",
-                "Test Strasse",
-                "11");
     }
 }

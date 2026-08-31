@@ -63,16 +63,24 @@ public class ArchivController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ArchivResponseDTO createArchiv(@Valid @RequestBody final ArchivCreateDTO archivCreateDTO) {
-        return archivMapper.toDTO(archivService.createArchiv(archivMapper.toEntity(archivCreateDTO)));
+
+        final Archiv archiv = archivMapper.toEntity(archivCreateDTO);
+
+        return archivMapper.toDTO(archivService.createArchiv(archiv, archivCreateDTO.projnr()));
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ArchivResponseDTO updateArchiv(@Valid @RequestBody final ArchivUpdateDTO archivUpdateDTO,
+    public ArchivResponseDTO updateArchiv(
+            @Valid @RequestBody final ArchivUpdateDTO archivUpdateDTO,
             @PathVariable("id") final Long archivId) {
-        return archivMapper
-                .toDTO(archivService.updateArchiv(archivMapper.toEntity(archivUpdateDTO), archivId));
+
+        final Archiv archiv = archivMapper.toEntity(archivUpdateDTO);
+
+        return archivMapper.toDTO(archivService.updateArchiv(archiv,
+                        archivId));
     }
+
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

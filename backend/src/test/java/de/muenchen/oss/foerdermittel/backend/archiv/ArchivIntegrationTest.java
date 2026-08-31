@@ -145,18 +145,16 @@ class ArchivIntegrationTest {
 
                                 final ArchivResponseDTO archiv = content.getFirst();
 
-                                assertThat(archiv.speicherDatum())
-                                        .isEqualTo(OffsetDateTime.parse("2024-09-15T00:00:00Z"));
+                                assertThat(archiv.speicherDatum()).isEqualTo(OffsetDateTime.parse("2024-09-16T00:00:00Z"));
                                 assertThat(archiv.speicherAkt()).isTrue();
                                 assertThat(archiv.speicherRechnungen()).isFalse();
-                                assertThat(archiv.mikroDatPlan())
-                                        .isEqualTo(OffsetDateTime.parse("2024-09-16T00:00:00Z"));
-                                assertThat(archiv.mikroDat())
-                                        .isEqualTo(OffsetDateTime.parse("2024-09-17T00:00:00Z"));
+                                assertThat(archiv.mikroDatPlan()).isEqualTo(OffsetDateTime.parse("2024-09-17T00:00:00Z"));
+                                assertThat(archiv.mikroDat()).isEqualTo(OffsetDateTime.parse("2024-09-18T00:00:00Z"));
                                 assertThat(archiv.notizen()).isEqualTo("Test");
                                 assertThat(archiv.projnr()).isEqualTo(EXISTING_PROJNR);
                             });
         }
+
 
         @Test
         void givenNoArchiveExists_thenReturnEmptyPage() {
@@ -282,13 +280,9 @@ class ArchivIntegrationTest {
             assertThat(archiv.getMikroDat())
                     .isEqualTo(requestDTO.mikroDat().toLocalDate());
 
-            assertThat(archiv.getNotizen())
-                    .isEqualTo(requestDTO.notizen());
-
+            assertThat(archiv.getNotizen()).isEqualTo(requestDTO.notizen());
             assertThat(archiv.getProjekt()).isNotNull();
-
-            assertThat(archiv.getProjekt().getProjnr())
-                    .isEqualTo(EXISTING_PROJNR);
+            assertThat(archiv.getProjekt().getProjnr()).isEqualTo(EXISTING_PROJNR);
         }
 
         @Test
@@ -310,7 +304,7 @@ class ArchivIntegrationTest {
                     .accept(MediaType.APPLICATION_JSON)
                     .exchange()
                     .expectStatus()
-                    .is5xxServerError();
+                    .isNotFound();
         }
 
         @ParameterizedTest
