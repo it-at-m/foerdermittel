@@ -154,7 +154,6 @@ class ArchivIntegrationTest {
                                 assertThat(archiv.projnr()).isEqualTo(EXISTING_PROJNR);
                             });
 
-
         }
 
         @Test
