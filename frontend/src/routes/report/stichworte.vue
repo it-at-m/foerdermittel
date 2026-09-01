@@ -23,13 +23,13 @@
 
 <script setup lang="ts">
 import type { GetReportStichworteRequest } from "@/api/generated/foerdermittel-backend";
-import ReportStichworteForm from "@/components/forms/report/ReportStichworteForm.vue";
 
 import { computed, onMounted, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
 import ReportCard from "@/components/common/ReportCard.vue";
+import ReportStichworteForm from "@/components/forms/report/ReportStichworteForm.vue";
 import {
   useGetReportStichworteFormContext,
   useGetReportStichworteOpts,
@@ -114,6 +114,6 @@ const onFailure = async (msg: string) => {
 };
 
 async function validate() {
-    await reportStichworteFormRef?.value?.validate();
+  await reportStichworteFormRef?.value?.validate();
 }
 </script>
