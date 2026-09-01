@@ -2,16 +2,14 @@ import type { Ref } from "vue";
 
 import { readonly, ref } from "vue";
 
-export default function useAPI<TResponse>(
-  apiMethod: () => Promise<TResponse>
-): {
+export function useAPI<TResponse>(apiMethod: () => Promise<TResponse>): {
   loading: Readonly<Ref<boolean>>;
   error: Readonly<Ref<boolean>>;
   data: Readonly<Ref<TResponse>>;
   call: () => Promise<void>;
 };
 
-export default function useAPI<TRequest, TResponse>(
+export function useAPI<TRequest, TResponse>(
   apiMethod: (params: TRequest) => Promise<TResponse>
 ): {
   loading: Readonly<Ref<boolean>>;
@@ -27,7 +25,7 @@ export default function useAPI<TRequest, TResponse>(
  * @param apiMethod - The API method to be called.
  * @returns An object containing the state of the API call and a method to execute the call.
  */
-export default function useAPI<TRequest, TResponse>(
+export function useAPI<TRequest, TResponse>(
   apiMethod:
     ((params: TRequest) => Promise<TResponse>) | (() => Promise<TResponse>)
 ) {

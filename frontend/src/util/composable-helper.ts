@@ -2,7 +2,7 @@ import type { ApiCtor } from "@/api/ApiFactory";
 
 import { ApiFactory } from "@/api/ApiFactory";
 import { BaseAPI } from "@/api/generated/foerdermittel-backend";
-import useAPI from "@/composables/useAPI";
+import { useAPI, useAPICall } from "@/composables/useAPI";
 
 export function createAPIComposables<
   Api extends BaseAPI,
