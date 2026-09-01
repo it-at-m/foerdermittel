@@ -40,18 +40,12 @@ public class StadtbezirkslisteController {
     private final ListennameStadtbezirkslisteMapper listennameStadtbezirkslisteMapper;
     private final ListennameStadtbezirkslisteService listennameStadtbezirkslisteService;
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public StadtbezirkslisteResponseDTO getStadtbezirkliste(@PathVariable final String id) {
-        return listennameStadtbezirkslisteMapper.toDTO(listennameStadtbezirkslisteService.getListenname(id));
-    }
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<StadtbezirkslisteResponseDTO> getStadtbezirklistenByPageable(@ParameterObject @PageableDefault(
+    public Page<StadtbezirkslisteResponseDTO> getStadtbezirklisten(@ParameterObject @PageableDefault(
             sort = "kurzbez"
     ) final Pageable pageable) {
-        final Page<Listenname> pageWithStadtbezirk = listennameStadtbezirkslisteService.getAllListennamen(pageable);
+        final Page<Listenname> pageWithStadtbezirk = listennameStadtbezirkslisteService.getListennamen(pageable);
         final List<StadtbezirkslisteResponseDTO> stadtbezirkslisteResponseDTOList = pageWithStadtbezirk.getContent().stream()
                 .map(listennameStadtbezirkslisteMapper::toDTO)
                 .toList();

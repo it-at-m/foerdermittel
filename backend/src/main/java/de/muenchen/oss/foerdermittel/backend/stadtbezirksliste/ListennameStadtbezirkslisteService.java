@@ -23,14 +23,7 @@ public class ListennameStadtbezirkslisteService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public Listenname getListenname(final String kurzBez) {
-        log.info("Get Listenname with ID {}", kurzBez);
-        return ServiceUtils.getEntityOrThrowNotFoundException(kurzBez, listennameRepository, Listenname.class);
-    }
-
-    @PreAuthorize(Authorities.HAS_ANY_ROLE)
-    @Transactional(readOnly = true)
-    public Page<Listenname> getAllListennamen(final Pageable pageable) {
+    public Page<Listenname> getListennamen(final Pageable pageable) {
         log.info("Get all Listennamen with Pageable {}", pageable);
         return listennameRepository.findAll(pageable);
     }
