@@ -70,7 +70,7 @@ public class ReportIntegrationTest {
         void givenExists_thenReturnFile() {
             final RestTestClient.ResponseSpec response = restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/report/stichwortbereiche")
+                            .path("/report/stichworte")
                             .queryParam("bereich", EXISTING_ID)
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
@@ -84,7 +84,7 @@ public class ReportIntegrationTest {
         void givenNotExists_thenReturnNotFound() {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/report/stichwortbereiche")
+                            .path("/report/stichworte")
                             .queryParam("bereich", "NOTFOUND")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
@@ -96,7 +96,7 @@ public class ReportIntegrationTest {
         void givenMissingArgument_thenReturnBadRequest() {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/report/stichwortbereiche")
+                            .path("/report/stichworte")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
                     .exchange()
@@ -116,7 +116,7 @@ public class ReportIntegrationTest {
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/report/stichwortbereiche")
+                            .path("/report/stichworte")
                             .queryParam("bereich", EXISTING_ID)
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
@@ -145,7 +145,7 @@ public class ReportIntegrationTest {
 
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/report/stichwortbereiche")
+                            .path("/report/stichworte")
                             .queryParam("bereich", requestDTO.bereich())
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
@@ -175,7 +175,7 @@ public class ReportIntegrationTest {
             // When
             final ReportStichworteFormContext result = restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/report/stichwortbereiche/form-context")
+                            .path("/report/stichworte/form-context")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
@@ -198,7 +198,7 @@ public class ReportIntegrationTest {
             // When
             final ReportStichworteFormContext result = restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/report/stichwortbereiche/form-context")
+                            .path("/report/stichworte/form-context")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
@@ -227,7 +227,7 @@ public class ReportIntegrationTest {
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/report/stichwortbereiche/form-context")
+                            .path("/report/stichworte/form-context")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()
