@@ -1,6 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -43,5 +44,15 @@ public class Projekt implements Serializable {
             nullable = false
     )
     private Foerderbereich foerderbereich;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "bez_stadtbezirk",
+            referencedColumnName = "stadtbezirk",
+            nullable = false
+    )
+    private Stadtbezirk stadtbezirk;
+
+
 
 }
