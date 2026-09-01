@@ -1,7 +1,7 @@
 import type {
   CreateListennameRequest,
   DeleteListennameRequest,
-  GetStadtbezirklistenByPageableRequest,
+  GetStadtbezirklistenRequest,
   PagedModelStadtbezirkslisteResponseDTO,
   StadtbezirkslisteFormContext,
   StadtbezirkslisteResponseDTO,
@@ -27,14 +27,14 @@ export const {
     UpdateListennameRequest,
     never,
     DeleteListennameRequest,
-    GetStadtbezirklistenByPageableRequest,
+    GetStadtbezirklistenRequest,
     StadtbezirkslisteResponseDTO,
     PagedModelStadtbezirkslisteResponseDTO,
     StadtbezirkslisteFormContext
   >(StadtbezirkslisteControllerApi, {
     create: (api, req) => api.createListenname(req),
     update: (api, req) => api.updateListenname(req),
-    getAll: (api, req) => api.getStadtbezirklistenByPageable(req),
+    getAll: (api, req) => api.getStadtbezirklisten(req),
     delete: (api, req) => api.deleteListenname(req),
     context: (api) => api.getStadtbezirkslisteFormContext(),
   })
