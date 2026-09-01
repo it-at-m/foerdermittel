@@ -269,6 +269,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.ablageindex.modelName", 2),
+        props: {
+          to: "/report/stichworte",
+        },
       },
       {
         title: t("model.benutzerhinweis.modelName", 2),
