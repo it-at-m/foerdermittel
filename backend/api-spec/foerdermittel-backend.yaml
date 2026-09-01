@@ -137,25 +137,6 @@ paths:
       security:
       - bearerAuth: []
   /stadtbezirkslisten/{id}:
-    get:
-      tags:
-      - stadtbezirksliste-controller
-      operationId: getStadtbezirkliste
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StadtbezirkslisteResponseDTO"
-      security:
-      - bearerAuth: []
     put:
       tags:
       - stadtbezirksliste-controller
@@ -839,7 +820,7 @@ paths:
     get:
       tags:
       - stadtbezirksliste-controller
-      operationId: getStadtbezirklistenByPageable
+      operationId: getStadtbezirklisten
       parameters:
       - name: page
         in: query
