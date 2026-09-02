@@ -6,12 +6,14 @@ export interface ApiComposable<TRequest, TResponse> {
   loading: Readonly<Ref<boolean>>;
   error: Readonly<Ref<boolean>>;
   data: Readonly<Ref<TResponse>>;
-  call: (params: TRequest) => Promise<void>;
+  call: (
+    ...args: [TRequest] extends [void] ? [] : [params: TRequest]
+  ) => Promise<void>;
 }
 
 export default function useAPI<TResponse>(
   apiMethod: () => Promise<TResponse>
-): ApiComposable<never, TResponse>;
+): ApiComposable<void, TResponse>;
 
 export default function useAPI<TRequest, TResponse>(
   apiMethod: (params: TRequest) => Promise<TResponse>

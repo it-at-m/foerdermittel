@@ -42,7 +42,7 @@ export interface ApiComposables<
       page?: PageMetadata;
     }
   >;
-  context: ApiComposable<never, TContextResponse>;
+  context: ApiComposable<void, TContextResponse>;
   create: ApiComposable<TCreateRequest, TCreateResponse>;
   update: ApiComposable<TUpdateRequest, TUpdateResponse>;
   delete: ApiComposable<TDeleteRequest, void>;
