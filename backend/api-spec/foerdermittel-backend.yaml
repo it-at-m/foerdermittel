@@ -1602,11 +1602,6 @@ paths:
         required: true
         schema:
           $ref: "#/components/schemas/ReportStichworteDTO"
-      - name: format
-        in: query
-        required: true
-        schema:
-          $ref: "#/components/schemas/ReportFormat"
       responses:
         "200":
           description: OK
@@ -2690,12 +2685,6 @@ components:
           minLength: 1
           pattern: "^[A-Z0-9\\-]+$"
           type: string
-    ReportFormat:
-      type: string
-      enum:
-      - PDF
-      - PDF_FLAT
-      - EXCEL
     ReportStichworteFormContext:
       required:
       - bereiche

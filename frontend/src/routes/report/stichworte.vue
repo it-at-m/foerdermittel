@@ -62,7 +62,6 @@ const EMPTY_ITEM_TEMPLATE: Partial<GetReportStichworteRequest> = {
   parameters: {
     bereich: "",
   },
-  format: "PDF",
 };
 
 const {
