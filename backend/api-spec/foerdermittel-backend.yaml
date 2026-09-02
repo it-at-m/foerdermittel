@@ -2222,7 +2222,6 @@ components:
           type: integer
           format: int64
         termin:
-          minLength: 1
           type: string
           format: date-time
         ueberwachung:
