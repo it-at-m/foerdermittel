@@ -5,13 +5,15 @@
   >
     <v-row>
       <v-col cols="12">
-        <!-- TODO ADD VALIDATION ATTRIBUTE MAP -->
         <fm-autocomplete
-          v-model="modelValue.bereich"
-          :additional-rules="[rules.required()]"
+          v-model="modelValue.parameters!.bereich"
           :items="reportStichworteFormContext.bereiche"
           :item-title="getBereichTitle"
           item-value="bereich"
+          :validation-attribute-map="
+            ReportStichworteDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bereich"
           :label="t('model.stichwortbereich.modelName')"
         />
       </v-col>
@@ -30,8 +32,10 @@ import type { VForm } from "vuetify/components";
 
 import { useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRules } from "vuetify/labs/rules";
 
+import {
+  ReportStichworteDTOPropertyValidationAttributesMap,
+} from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 
 const { t } = useI18n();
@@ -52,7 +56,6 @@ function onValidityChanged(newIsValid: boolean | null) {
   emit("isValid", newIsValid);
 }
 
-const rules = useRules();
 const formRef = useTemplateRef<VForm>("form");
 async function validate() {
   if (formRef.value) {
