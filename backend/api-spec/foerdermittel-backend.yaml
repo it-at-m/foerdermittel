@@ -1597,14 +1597,16 @@ paths:
       - report-controller
       operationId: getReportStichworte
       parameters:
-      - name: bereich
+      - name: parameters
         in: query
         required: true
         schema:
-          maxLength: 30
-          minLength: 1
-          pattern: "^[A-Z0-9\\-]+$"
-          type: string
+          $ref: "#/components/schemas/ReportStichworteDTO"
+      - name: format
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportFormat"
       responses:
         "200":
           description: OK
@@ -2678,6 +2680,22 @@ components:
           type: array
           items:
             type: number
+    ReportStichworteDTO:
+      required:
+      - bereich
+      type: object
+      properties:
+        bereich:
+          maxLength: 30
+          minLength: 1
+          pattern: "^[A-Z0-9\\-]+$"
+          type: string
+    ReportFormat:
+      type: string
+      enum:
+      - PDF
+      - PDF_FLAT
+      - EXCEL
     ReportStichworteFormContext:
       required:
       - bereiche

@@ -8,15 +8,17 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.io.IOException;
 import java.sql.SQLException;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JRException;
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,7 +34,8 @@ public class ReportController {
     @GetMapping("/stichworte")
     @ResponseStatus(HttpStatus.OK)
     public void getReportStichworte(
-            @Valid @ParameterObject final ReportStichworteDTO parameters,
+            @Valid @ModelAttribute final ReportStichworteDTO parameters,
+            @RequestParam final ReportFormat format,
             final HttpServletResponse response)
             throws IOException, SQLException, JRException {
         final GeneratedReport generatedReport = reportService.generateReportStichworte(parameters);
