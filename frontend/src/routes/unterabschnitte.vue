@@ -1,28 +1,26 @@
 <template>
   <base-view :domain-key="domainKey">
     <template #default="{ baseViewLoading }">
-      <!-- @vue-generic {Partial<UnterabschnittResponseDTO>} -->
       <crud-card
-        ref="crudRef"
-        v-model="dataTableOptions"
         :empty-item-template="EMPTY_ITEM_TEMPLATE"
-        :loading="loading || baseViewLoading"
+        :loading="baseViewLoading"
         :table-headers="headers"
+        :api="unterabschnittApi"
         :domain-key="domainKey"
         :enable-actions="isAdmin"
-        :items="unterabschnitte?.content ?? []"
-        :total-items="unterabschnitte?.page?.totalElements ?? 0"
-        @delete="handleDelete"
-        @create="handleCreate"
-        @update="handleUpdate"
+        :should-load-form-context="isAdmin"
+        :handle-create="handleCreate"
+        :handle-update="handleUpdate"
+        :handle-delete="handleDelete"
+        :form-ref="unterabschnittFormRef"
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <unterabschnitt-form
-            v-if="unterabschnittFormContext"
+            v-if="unterabschnittApi.context.data"
             ref="unterabschnittForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
-            :unterabschnitt-form-context="unterabschnittFormContext"
+            :unterabschnitt-form-context="unterabschnittApi.context.data.value!"
             @is-valid="updateValidity"
           />
         </template>
@@ -51,21 +49,14 @@ import type { UnterabschnittResponseDTO } from "@/api/generated/foerdermittel-ba
 import type { DataTableHeader } from "vuetify/framework";
 
 import { mdiArrowRight } from "@mdi/js";
-import { computed, useTemplateRef } from "vue";
+import { useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
 import UnterabschnittForm from "@/components/forms/UnterabschnittForm.vue";
-import {
-  useCreateUnterabschnitt,
-  useDeleteUnterabschnitt,
-  useGetUnterabschnitte,
-  useGetUnterabschnittFormContext,
-  useUpdateUnterabschnitt,
-} from "@/composables/api/useUnterabschnittApi";
+import { useUnterabschnittApi } from "@/composables/api/useUnterabschnittApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
-import usePagination from "@/composables/usePagination";
 import { Role } from "@/types/Role";
 
 const domainKey = "model.unterabschnitt.modelName";
@@ -100,36 +91,12 @@ const EMPTY_ITEM_TEMPLATE: Partial<UnterabschnittResponseDTO> = {
   haBezeichnung: "",
 };
 
-const {
-  data: unterabschnitte,
-  call: getUnterabschnitte,
-  loading: getUnterabschnitteLoading,
-} = useGetUnterabschnitte();
-
-const {
-  data: unterabschnittFormContext,
-  call: getUnterabschnittFormContext,
-  loading: getUnterabschnittFormContextLoading,
-} = useGetUnterabschnittFormContext();
+const unterabschnittApi = useUnterabschnittApi();
 
 type UnterabschnittFormType = InstanceType<typeof UnterabschnittForm>;
 
 const unterabschnittFormRef =
   useTemplateRef<UnterabschnittFormType>("unterabschnittForm");
-
-const { dataTableOptions, onSuccess, onFailure } = usePagination(
-  computed(() => unterabschnitte.value?.page?.totalPages),
-  getUnterabschnitte,
-  isAdmin,
-  getUnterabschnittFormContext,
-  () => unterabschnittFormRef.value?.validate()
-);
-
-const {
-  call: createUnterabschnitt,
-  loading: createUnterabschnittLoading,
-  error: createUnterabschnitteError,
-} = useCreateUnterabschnitt();
 
 const handleCreate = async (
   unterabschnittCreateDTO: Partial<UnterabschnittResponseDTO>
@@ -137,22 +104,11 @@ const handleCreate = async (
   // TODO: some type checking improvements
   const model = unterabschnittCreateDTO as UnterabschnittResponseDTO;
 
-  await createUnterabschnitt({
+  await unterabschnittApi.create.call({
     unterabschnittCreateDTO: model,
   });
-
-  if (!createUnterabschnitteError.value) {
-    await onSuccess(t("common.message.created", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.createdError", [t(domainKey)]));
-  }
+  return !unterabschnittApi.create.error.value;
 };
-
-const {
-  call: updateUnterabschnitt,
-  loading: updateUnterabschnittLoading,
-  error: updateUnterabschnitteError,
-} = useUpdateUnterabschnitt();
 
 const handleUpdate = async (
   unterabschnittUpdateDTO: Partial<UnterabschnittResponseDTO>
@@ -160,42 +116,18 @@ const handleUpdate = async (
   // TODO: some type checking improvements
   const model = unterabschnittUpdateDTO as UnterabschnittResponseDTO;
 
-  await updateUnterabschnitt({
+  await unterabschnittApi.update.call({
     id: model.id,
     unterabschnittUpdateDTO: model,
   });
 
-  if (!updateUnterabschnitteError.value) {
-    await onSuccess(t("common.message.updated", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.updatedError", [t(domainKey)]));
-  }
+  return !unterabschnittApi.update.error.value;
 };
-
-const {
-  call: deleteUnterabschnitt,
-  loading: deleteUnterabschnittLoading,
-  error: deleteUnterabschnitteError,
-} = useDeleteUnterabschnitt();
 
 const handleDelete = async (id: string) => {
-  await deleteUnterabschnitt({
+  await unterabschnittApi.delete.call({
     id,
   });
-
-  if (!deleteUnterabschnitteError.value) {
-    await onSuccess(t("common.message.deleted", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.deletedError", [t(domainKey)]));
-  }
+  return !unterabschnittApi.delete.error.value;
 };
-
-const loading = computed(
-  () =>
-    getUnterabschnitteLoading.value ||
-    getUnterabschnittFormContextLoading.value ||
-    createUnterabschnittLoading.value ||
-    updateUnterabschnittLoading.value ||
-    deleteUnterabschnittLoading.value
-);
 </script>
