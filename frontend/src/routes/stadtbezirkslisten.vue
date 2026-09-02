@@ -163,7 +163,7 @@ const handleUpdate = async (
 
 const handleDelete = async (id: string) => {
   await stadtbezirkslisteApi.delete.call({
-    kurzbez: id,
+    id,
   });
   return !stadtbezirkslisteApi.delete.error.value;
 };
