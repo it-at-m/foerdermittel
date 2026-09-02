@@ -55,7 +55,7 @@ public class ProjektterminService {
         foundProjekttermin.setZustaendig(projekttermin.getZustaendig());
         foundProjekttermin.setTelefon(projekttermin.getTelefon());
         foundProjekttermin.setNotizen(projekttermin.getNotizen());
-        foundProjekttermin.setUeberwachung(projekttermin.isUeberwachung());
+        foundProjekttermin.setUeberwachung(projekttermin.getUeberwachung());
 
         log.debug("Update Projekttermin: {}", foundProjekttermin);
 

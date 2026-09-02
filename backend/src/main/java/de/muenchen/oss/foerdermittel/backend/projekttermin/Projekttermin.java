@@ -2,10 +2,7 @@ package de.muenchen.oss.foerdermittel.backend.projekttermin;
 
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,7 +35,7 @@ public class Projekttermin implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
@@ -48,16 +45,17 @@ public class Projekttermin implements Serializable {
   @NotNull private Projekt projekt;
 
     @Column(name = "termin")
+    @NotNull
     private LocalDate termin;
 
     @Column(name = "zustaendig")
-    @NotNull @Size(min = 1, max = 60) String zustaendig;
+    @Size(min = 1, max = 30) private String zustaendig;
 
     @Column(name = "ueberwachung")
-    @NotNull boolean ueberwachung;
+    private Boolean ueberwachung;
 
     @Column(name = "telefon")
-    @NotNull @Size(min = 1, max = 30) String telefon;
+    @Size(min = 1, max = 30) private String telefon;
 
     @Column(name = "notizen")
     private String notizen;

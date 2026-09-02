@@ -1,11 +1,12 @@
 package de.muenchen.oss.foerdermittel.backend.projekttermin.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.OffsetDateTime;
 
 public record ProjektterminUpdateDTO(
-        @NotBlank OffsetDateTime termin,
+        @NotNull OffsetDateTime termin,
         Boolean ueberwachung,
         String zustaendig,
         String telefon,
