@@ -16,13 +16,11 @@
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <kurzbezeichnung-form
-            v-if="kurzbezeichnungApi.context.data"
+            v-if="kurzbezeichnungFormContext"
             ref="kurzbezeichnungForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
-            :kurzbezeichnung-form-context="
-              kurzbezeichnungApi.context.data.value!
-            "
+            :kurzbezeichnung-form-context="kurzbezeichnungFormContext"
             @is-valid="updateValidity"
           />
         </template>
@@ -35,7 +33,7 @@
 import type { KurzbezeichnungResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -77,6 +75,10 @@ const EMPTY_ITEM_TEMPLATE: Partial<KurzbezeichnungResponseDTO> = {
 };
 
 const kurzbezeichnungApi = useKurzbezeichnungApi();
+
+const kurzbezeichnungFormContext = computed(
+  () => kurzbezeichnungApi.context.data.value
+);
 
 type KurzbezeichnungFormType = InstanceType<typeof KurzbezeichnungForm>;
 const kurzbezeichnungFormRef = useTemplateRef<KurzbezeichnungFormType>(

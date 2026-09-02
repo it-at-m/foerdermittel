@@ -16,11 +16,11 @@
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <bauprogramm-form
-            v-if="bauprogrammApi.context.data"
+            v-if="bauprogrammFormContext"
             ref="bauprogrammForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
-            :bauprogramm-form-context="bauprogrammApi.context.data.value!"
+            :bauprogramm-form-context="bauprogrammFormContext"
             @is-valid="updateValidity"
           />
         </template>
@@ -33,7 +33,7 @@
 import type { BauprogrammResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -79,6 +79,10 @@ const bauprogrammFormRef =
   useTemplateRef<BauprogrammFormType>("bauprogrammForm");
 
 const bauprogrammApi = useBauprogrammApi();
+
+const bauprogrammFormContext = computed(
+  () => bauprogrammApi.context.data.value
+);
 
 const handleCreate = async (
   bauprogrammCreateDTO: Partial<BauprogrammResponseDTO>

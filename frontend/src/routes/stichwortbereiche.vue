@@ -16,13 +16,11 @@
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <stichwortbereich-form
-            v-if="stichwortbereichApi.context.data"
+            v-if="stichwortbereichFormContext"
             ref="stichwortbereichForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
-            :stichwortbereich-form-context="
-              stichwortbereichApi.context.data.value!
-            "
+            :stichwortbereich-form-context="stichwortbereichFormContext"
             @is-valid="updateValidity"
           />
         </template>
@@ -35,7 +33,7 @@
 import type { StichwortbereichResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -76,6 +74,10 @@ const EMPTY_ITEM_TEMPLATE: Partial<StichwortbereichResponseDTO> = {
 };
 
 const stichwortbereichApi = useStichwortbereichApi();
+
+const stichwortbereichFormContext = computed(
+  () => stichwortbereichApi.context.data.value
+);
 
 type StichwortbereichFormType = InstanceType<typeof StichwortbereichForm>;
 const stichwortbereichFormRef = useTemplateRef<StichwortbereichFormType>(

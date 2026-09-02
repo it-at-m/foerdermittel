@@ -16,11 +16,11 @@
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <foerderbereich-form
-            v-if="foerderbereichApi.context.data"
+            v-if="foerderbereichFormContext"
             ref="foerderbereichForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
-            :foerderbereich-form-context="foerderbereichApi.context.data.value!"
+            :foerderbereich-form-context="foerderbereichFormContext"
             @is-valid="updateValidity"
           />
         </template>
@@ -58,7 +58,7 @@ import type { FoerderbereichResponseDTO } from "@/api/generated/foerdermittel-ba
 import type { DataTableHeader } from "vuetify/framework";
 
 import { mdiCheck } from "@mdi/js";
-import { useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -131,6 +131,10 @@ const EMPTY_ITEM_TEMPLATE: Partial<FoerderbereichResponseDTO> = {
 };
 
 const foerderbereichApi = useFoerderbereichApi();
+
+const foerderbereichFormContext = computed(
+  () => foerderbereichApi.context.data.value
+);
 
 type FoerderbereichFormType = InstanceType<typeof FoerderbereichForm>;
 const foerderbereichFormRef =

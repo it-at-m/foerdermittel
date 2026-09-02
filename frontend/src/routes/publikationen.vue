@@ -16,11 +16,11 @@
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <publikation-form
-            v-if="publikationApi.context.data"
+            v-if="publikationFormContext"
             ref="publikationForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
-            :publikation-form-context="publikationApi.context.data.value!"
+            :publikation-form-context="publikationFormContext"
             @is-valid="updateValidity"
           />
         </template>
@@ -33,7 +33,7 @@
 import type { PublikationResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -75,6 +75,10 @@ const EMPTY_ITEM_TEMPLATE: Partial<PublikationResponseDTO> = {
 };
 
 const publikationApi = usePublikationApi();
+
+const publikationFormContext = computed(
+  () => publikationApi.context.data.value
+);
 
 type PublikationFormType = InstanceType<typeof PublikationForm>;
 const publikationFormRef =

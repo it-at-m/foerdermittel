@@ -16,13 +16,11 @@
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <siedlungsgebiet-form
-            v-if="siedlungsgebietApi.context.data"
+            v-if="siedlungsgebietFormContext"
             ref="siedlungsgebietForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
-            :siedlungsgebiet-form-context="
-              siedlungsgebietApi.context.data.value!
-            "
+            :siedlungsgebiet-form-context="siedlungsgebietFormContext"
             @is-valid="updateValidity"
           />
         </template>
@@ -35,7 +33,7 @@
 import type { SiedlungsgebietResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -77,6 +75,10 @@ const EMPTY_ITEM_TEMPLATE: Partial<SiedlungsgebietResponseDTO> = {
 };
 
 const siedlungsgebietApi = useSiedlungsgebietApi();
+
+const siedlungsgebietFormContext = computed(
+  () => siedlungsgebietApi.context.data.value
+);
 
 type SiedlungsgebietFormType = InstanceType<typeof SiedlungsgebietForm>;
 const siedlungsgebietFormRef = useTemplateRef<SiedlungsgebietFormType>(

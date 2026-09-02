@@ -16,11 +16,11 @@
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <traeger-form
-            v-if="traegerApi.context.data"
+            v-if="traegerFormContext"
             ref="traegerForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
-            :traeger-form-context="traegerApi.context.data.value!"
+            :traeger-form-context="traegerFormContext"
             @is-valid="updateValidity"
           />
         </template>
@@ -33,7 +33,7 @@
 import type { TraegerResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -75,6 +75,8 @@ const EMPTY_ITEM_TEMPLATE: Partial<TraegerResponseDTO> = {
 };
 
 const traegerApi = useTraegerApi();
+
+const traegerFormContext = computed(() => traegerApi.context.data.value);
 
 type TraegerFormType = InstanceType<typeof TraegerForm>;
 const traegerFormRef = useTemplateRef<TraegerFormType>("traegerForm");

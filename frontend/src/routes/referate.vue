@@ -16,11 +16,11 @@
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <referat-form
-            v-if="referatApi.context.data"
+            v-if="referatFormContext"
             ref="referatForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
-            :referat-form-context="referatApi.context.data.value!"
+            :referat-form-context="referatFormContext"
             @is-valid="updateValidity"
           />
         </template>
@@ -33,7 +33,7 @@
 import type { ReferatResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -75,6 +75,8 @@ const EMPTY_ITEM_TEMPLATE: Partial<ReferatResponseDTO> = {
 };
 
 const referatApi = useReferatApi();
+
+const referatFormContext = computed(() => referatApi.context.data.value);
 
 type ReferatFormType = InstanceType<typeof ReferatForm>;
 const referatFormRef = useTemplateRef<ReferatFormType>("referatForm");

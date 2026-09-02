@@ -16,11 +16,11 @@
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <unterabschnitt-form
-            v-if="unterabschnittApi.context.data"
+            v-if="unterabschnittFormContext"
             ref="unterabschnittForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
-            :unterabschnitt-form-context="unterabschnittApi.context.data.value!"
+            :unterabschnitt-form-context="unterabschnittFormContext"
             @is-valid="updateValidity"
           />
         </template>
@@ -49,7 +49,7 @@ import type { UnterabschnittResponseDTO } from "@/api/generated/foerdermittel-ba
 import type { DataTableHeader } from "vuetify/framework";
 
 import { mdiArrowRight } from "@mdi/js";
-import { useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -92,6 +92,10 @@ const EMPTY_ITEM_TEMPLATE: Partial<UnterabschnittResponseDTO> = {
 };
 
 const unterabschnittApi = useUnterabschnittApi();
+
+const unterabschnittFormContext = computed(
+  () => unterabschnittApi.context.data.value
+);
 
 type UnterabschnittFormType = InstanceType<typeof UnterabschnittForm>;
 

@@ -16,11 +16,11 @@
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <bauleitung-form
-            v-if="bauleitungApi.context.data"
+            v-if="bauleitungFormContext"
             ref="bauleitungForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
-            :bauleitung-form-context="bauleitungApi.context.data.value!"
+            :bauleitung-form-context="bauleitungFormContext"
             @is-valid="updateValidity"
           />
         </template>
@@ -33,7 +33,7 @@
 import type { BauleitungResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -75,6 +75,8 @@ const EMPTY_ITEM_TEMPLATE: Partial<BauleitungResponseDTO> = {
 };
 
 const bauleitungApi = useBauleitungApi();
+
+const bauleitungFormContext = computed(() => bauleitungApi.context.data.value);
 
 type BauleitungFormType = InstanceType<typeof BauleitungForm>;
 const bauleitungFormRef = useTemplateRef<BauleitungFormType>("bauleitungForm");

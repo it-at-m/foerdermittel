@@ -16,11 +16,11 @@
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <stadtbezirk-form
-            v-if="stadtbezirkApi.context.data"
+            v-if="stadtbezirkFormContext"
             ref="stadtbezirkForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
-            :stadtbezirk-form-context="stadtbezirkApi.context.data.value!"
+            :stadtbezirk-form-context="stadtbezirkFormContext"
             @is-valid="updateValidity"
           />
         </template>
@@ -33,7 +33,7 @@
 import type { StadtbezirkResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -75,6 +75,10 @@ const EMPTY_ITEM_TEMPLATE: Partial<StadtbezirkResponseDTO> = {
 };
 
 const stadtbezirkApi = useStadtbezirkApi();
+
+const stadtbezirkFormContext = computed(
+  () => stadtbezirkApi.context.data.value
+);
 
 type StadtbezirkFormType = InstanceType<typeof StadtbezirkForm>;
 const stadtbezirkFormRef =

@@ -16,11 +16,11 @@
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <krankenhaus-form
-            v-if="krankenhausApi.context.data"
+            v-if="krankenhausFormContext"
             ref="krankenhausForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
-            :krankenhaus-form-context="krankenhausApi.context.data.value!"
+            :krankenhaus-form-context="krankenhausFormContext"
             @is-valid="updateValidity"
           />
         </template>
@@ -33,7 +33,7 @@
 import type { KrankenhausResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -79,6 +79,10 @@ const krankenhausFormRef =
   useTemplateRef<KrankenhausFormType>("krankenhausForm");
 
 const krankenhausApi = useKrankenhausApi();
+
+const krankenhausFormContext = computed(
+  () => krankenhausApi.context.data.value
+);
 
 const handleCreate = async (
   krankenhausCreateDTO: Partial<KrankenhausResponseDTO>

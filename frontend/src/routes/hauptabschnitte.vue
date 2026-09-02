@@ -16,11 +16,11 @@
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <hauptabschnitt-form
-            v-if="hauptabschnittApi.context.data"
+            v-if="hauptabschnittFormContext"
             ref="hauptabschnittForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
-            :hauptabschnitt-form-context="hauptabschnittApi.context.data.value!"
+            :hauptabschnitt-form-context="hauptabschnittFormContext"
             @is-valid="updateValidity"
           />
         </template>
@@ -33,7 +33,7 @@
 import type { HauptabschnittResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -75,6 +75,10 @@ const EMPTY_ITEM_TEMPLATE: Partial<HauptabschnittResponseDTO> = {
 };
 
 const hauptabschnittApi = useHauptabschnittApi();
+
+const hauptabschnittFormContext = computed(
+  () => hauptabschnittApi.context.data.value
+);
 
 type HauptabschnittFormType = InstanceType<typeof HauptabschnittForm>;
 const hauptabschnittFormRef =
