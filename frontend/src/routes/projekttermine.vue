@@ -3,42 +3,35 @@
     <template #default="{ baseViewLoading }">
       <!-- @vue-generic {Partial<ProjektterminResponseDTO>} -->
       <crud-card
-          ref="crudRef"
-          v-model="dataTableOptions"
-          :empty-item-template="EMPTY_ITEM_TEMPLATE"
-          :loading="loading || baseViewLoading"
-          :table-headers="headers"
-          :domain-key="domainKey"
-          :enable-actions="isAdmin"
-          :items="projekttermine?.content ?? []"
-          :expandable="true"
-          :total-items="projekttermine?.page?.totalElements ?? 0"
-          @delete="handleDelete"
-          @create="handleCreate"
-          @update="handleUpdate"
+        ref="crudRef"
+        v-model="dataTableOptions"
+        :empty-item-template="EMPTY_ITEM_TEMPLATE"
+        :loading="loading || baseViewLoading"
+        :table-headers="headers"
+        :domain-key="domainKey"
+        :enable-actions="isAdmin"
+        :items="projekttermine?.content ?? []"
+        :expandable="true"
+        :total-items="projekttermine?.page?.totalElements ?? 0"
+        @delete="handleDelete"
+        @create="handleCreate"
+        @update="handleUpdate"
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <projekttermin-form
-              v-if="projektterminFormContext"
-              ref="projektterminForm"
-              :model-value="item"
-              :display-mode="inputDisplayMode"
-              :projekte="projekte"
-              @is-valid="updateValidity"
+            v-if="projektterminFormContext"
+            ref="projektterminForm"
+            :model-value="item"
+            :display-mode="inputDisplayMode"
+            :projekte="projekte"
+            @is-valid="updateValidity"
           />
         </template>
 
         <template #[`item.ueberwachung`]="{ item }">
           <v-icon
-              v-if="item.ueberwachung"
-              :icon="mdiCheck"
-          />
-        </template>
-
-        <template #[`item.speicherRechnungen`]="{ item }">
-          <v-icon
-              v-if="item.speicherRechnungen"
-              :icon="mdiCheck"
+            v-if="item.ueberwachung"
+            :icon="mdiCheck"
           />
         </template>
 
@@ -53,8 +46,8 @@
             </div>
 
             <div
-                class="text-body-2"
-                style="white-space: pre-wrap"
+              class="text-body-2"
+              style="white-space: pre-wrap"
             >
               {{ item.notizen || "—" }}
             </div>
@@ -114,20 +107,27 @@ const headers: DataTableHeader<Partial<ProjektterminResponseDTO>>[] = [
     title: t("model.termin.termin"),
     value: "termin",
     align: "center",
-    width: 110,
-  },
-  {
-    title: t("model.termin.telefon"),
-    value: "telefon",
-    align: "center",
-    width: 110,
+    width: 100,
   },
   {
     title: t("model.termin.zustaendig"),
     value: "zustaendig",
-    align: "center",
+    align: "start",
     width: 110,
   },
+  {
+    title: t("model.termin.ueberwachung"),
+    value: "ueberwachung",
+    align: "center",
+    width: 50,
+  },
+  {
+    title: t("model.termin.telefon"),
+    value: "telefon",
+    align: "start",
+    width: 110,
+  },
+
   {
     title: t("model.termin.fobFb"),
     value: "fobFb",
@@ -171,23 +171,24 @@ const {
 
 const {
   data: projekttermine,
-  call: getProjekttermineintraege,
+  call: getProjekttermine,
   loading: getProjektterminLoading,
 } = useGetProjekttermin();
 
 const projekte = computed(() => projektterminFormContext.value?.projekte ?? []);
 
 type ProjektterminFormType = InstanceType<typeof ProjektterminForm>;
-const projektterminFormRef = useTemplateRef<ProjektterminFormType>("projektterminForm");
+const projektterminFormRef =
+  useTemplateRef<ProjektterminFormType>("projektterminForm");
 
 const { dataTableOptions, onSuccess, onFailure } = usePagination(
-    computed(() => projekttermine.value?.page?.totalPages),
-    getProjekttermineintraege,
-    isAdmin,
-    getProjektterminFormContext,
-    async () => {
-      await projektterminFormRef.value?.validate();
-    }
+  computed(() => projekttermine.value?.page?.totalPages),
+  getProjekttermine,
+  isAdmin,
+  getProjektterminFormContext,
+  async () => {
+    await projektterminFormRef.value?.validate();
+  }
 );
 
 const {
@@ -196,7 +197,9 @@ const {
   error: createProjektterminError,
 } = useCreateProjekttermin();
 
-const handleCreate = async (projektterminCreateDTO: Partial<ProjektterminResponseDTO>) => {
+const handleCreate = async (
+  projektterminCreateDTO: Partial<ProjektterminResponseDTO>
+) => {
   const model = projektterminCreateDTO as ProjektterminResponseDTO;
 
   await createProjekttermin({
@@ -216,7 +219,9 @@ const {
   error: updateProjektterminError,
 } = useUpdateProjekttermin();
 
-const handleUpdate = async (projektterminUpdateDTO: Partial<ProjektterminResponseDTO>) => {
+const handleUpdate = async (
+  projektterminUpdateDTO: Partial<ProjektterminResponseDTO>
+) => {
   const model = projektterminUpdateDTO as ProjektterminResponseDTO;
   await updateProjekttermin({
     id: model.id,
@@ -248,14 +253,14 @@ const handleDelete = async (id: string) => {
 };
 
 const formatDate = (value?: Date | null) =>
-    value ? value.toLocaleDateString("de-DE") : "";
+  value ? value.toLocaleDateString("de-DE") : "";
 
 const loading = computed(
-    () =>
-        getProjektterminLoading.value ||
-        getProjektterminFormContextLoading.value ||
-        createProjektterminLoading.value ||
-        updateProjektterminLoading.value ||
-        deleteProjektterminLoading.value
+  () =>
+    getProjektterminLoading.value ||
+    getProjektterminFormContextLoading.value ||
+    createProjektterminLoading.value ||
+    updateProjektterminLoading.value ||
+    deleteProjektterminLoading.value
 );
 </script>

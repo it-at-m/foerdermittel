@@ -1,8 +1,17 @@
 package de.muenchen.oss.foerdermittel.backend.projekttermin;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
+import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
+import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
 import jakarta.persistence.EntityNotFoundException;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -18,17 +27,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
-import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
-import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
-import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ProjektterminServiceTest {
@@ -329,4 +327,3 @@ public class ProjektterminServiceTest {
         return projekttermin;
     }
 }
-

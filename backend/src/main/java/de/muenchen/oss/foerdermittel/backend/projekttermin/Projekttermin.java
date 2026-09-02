@@ -1,16 +1,23 @@
 package de.muenchen.oss.foerdermittel.backend.projekttermin;
 
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.FetchType;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import java.io.Serial;
+import java.io.Serializable;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serial;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.LocalDate;
 
 /**
  * This class represents a Termine.
@@ -40,13 +47,13 @@ public class Projekttermin implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
             name = "pro_projnr",
-           referencedColumnName = "projnr",
-            nullable = false)
-  @NotNull private Projekt projekt;
+            referencedColumnName = "projnr",
+            nullable = false
+    )
+    @NotNull private Projekt projekt;
 
-    @Column(name = "termin")
-    @NotNull
-    private LocalDate termin;
+    @Column(name = "termin", nullable = false)
+    @NotNull private LocalDate termin;
 
     @Column(name = "zustaendig")
     @Size(min = 1, max = 30) private String zustaendig;
@@ -60,12 +67,4 @@ public class Projekttermin implements Serializable {
     @Column(name = "notizen")
     private String notizen;
 
-
-
-
-
-
-
-
 }
-

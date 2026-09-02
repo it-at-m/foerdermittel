@@ -7,8 +7,7 @@ import java.util.List;
 
 public record ProjektterminFormContext(
         @NotNull List<Long> terminID,
-        @NotNull List<ProjektFormContextDTO> projekte
-) {
+        @NotNull List<ProjektFormContextDTO> projekte) {
     public ProjektterminFormContext {
         terminID = List.copyOf(terminID);
         projekte = List.copyOf(projekte);

@@ -1,5 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.projekttermin;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekttermin.dto.ProjektterminCreateDTO;
@@ -7,15 +9,12 @@ import de.muenchen.oss.foerdermittel.backend.projekttermin.dto.ProjektterminMapp
 import de.muenchen.oss.foerdermittel.backend.projekttermin.dto.ProjektterminResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.projekttermin.dto.ProjektterminUpdateDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.mapstruct.factory.Mappers;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 
 public class ProjektterminMapperTest {
 

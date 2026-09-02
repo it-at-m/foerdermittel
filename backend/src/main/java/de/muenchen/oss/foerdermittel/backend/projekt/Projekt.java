@@ -53,6 +53,4 @@ public class Projekt implements Serializable {
     )
     private Stadtbezirk stadtbezirk;
 
-
-
 }

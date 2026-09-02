@@ -8,7 +8,7 @@ import java.time.OffsetDateTime;
 
 public record ProjektterminResponseDTO(
         @NotNull Long id,
-        @NotBlank OffsetDateTime termin,
+        @NotNull OffsetDateTime termin,
         Boolean ueberwachung,
         String zustaendig,
         String telefon,
@@ -17,6 +17,5 @@ public record ProjektterminResponseDTO(
         @NotNull String pname,
         @NotNull String pstrasse,
         @NotNull BigDecimal fob_fb,
-        @NotNull BigDecimal bez_stadtbezirk
-        ) {
+        @NotNull BigDecimal bez_stadtbezirk) {
 }

@@ -11,6 +11,5 @@ public record ProjektterminCreateDTO(
         String zustaendig,
         String telefon,
         String notizen,
-        @NotBlank String projnr
-) {
+        @NotBlank String projnr) {
 }
