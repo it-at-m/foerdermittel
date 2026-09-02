@@ -59,7 +59,10 @@ const { t } = useI18n();
 const title = t("common.generics.reportTitle", [t(domainKey, 2)]);
 
 const EMPTY_ITEM_TEMPLATE: Partial<GetReportStichworteRequest> = {
-  bereich: "",
+  parameters: {
+    bereich: "",
+  },
+  format: "PDF",
 };
 
 const {
@@ -80,11 +83,13 @@ const loading = computed(
     getReportStichworteFormContextLoading.value
 );
 
-async function handleDownload(params: Partial<GetReportStichworteRequest>) {
+async function handleDownload(
+  queryParams: Partial<GetReportStichworteRequest>
+) {
   // TODO: some type checking improvements
-  const model = params as GetReportStichworteRequest;
+  const model = queryParams as GetReportStichworteRequest;
   const urlOpts = await getReportStichworteOpts(model);
-  if (!getReportStichworteOptsError.value) {
+  if (!getReportStichworteOptsError.value && urlOpts) {
     await onSuccess(t("common.message.created", [t("common.word.report")]));
     const url = toURL(urlOpts);
     openURL(url);
