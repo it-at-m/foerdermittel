@@ -33,9 +33,7 @@ import type { VForm } from "vuetify/components";
 import { useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
-import {
-  ReportStichworteDTOPropertyValidationAttributesMap,
-} from "@/api/generated/foerdermittel-backend";
+import { ReportStichworteDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 
 const { t } = useI18n();
