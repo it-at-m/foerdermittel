@@ -1,12 +1,15 @@
 package de.muenchen.oss.foerdermittel.backend.hauptabschnitt;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittMapper;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +32,9 @@ class HauptabschnittServiceTest {
 
     @Mock
     private HauptabschnittRepository hauptabschnittRepository;
+
+    @Mock
+    private HauptabschnittMapper hauptabschnittMapper;
 
     @InjectMocks
     private HauptabschnittService unitUnderTest;
@@ -55,6 +61,43 @@ class HauptabschnittServiceTest {
             // Then
             verify(hauptabschnittRepository, times(1)).findAll(pageable);
             assertThat(result).isEqualTo(expectedPage);
+        }
+    }
+
+    @Nested
+    class GetHauptabschnitt {
+
+        @Test
+        void givenIdExists_thenReturnEntity() {
+            // Given
+            final String ha = "H4";
+            final Hauptabschnitt expectedEntity = new Hauptabschnitt(ha, BEZEICHNUNG);
+
+            when(hauptabschnittRepository.findById(ha)).thenReturn(Optional.of(expectedEntity));
+
+            // When
+            final Hauptabschnitt result = unitUnderTest.getHauptabschnitt(ha);
+
+            // Then
+            verify(hauptabschnittRepository, times(1)).findById(ha);
+
+            assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
+        }
+
+        @Test
+        void givenIdNotExists_thenThrowNotFoundException() {
+            // Given
+            final String ha = "99";
+
+            when(hauptabschnittRepository.findById(ha)).thenReturn(Optional.empty());
+
+            // When
+            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.getHauptabschnitt(ha));
+
+            // Then
+            verify(hauptabschnittRepository, times(1)).findById(ha);
+
+            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", ha));
         }
     }
 
@@ -162,6 +205,36 @@ class HauptabschnittServiceTest {
             // Then
             verify(hauptabschnittRepository, times(1)).findAllHas();
             assertThat(formContext.has()).isEqualTo(allHas);
+        }
+
+    }
+
+    @Nested
+    class GetHauptabschnittFormContextDTOs {
+
+        @Test
+        void givenEntitiesExists_thenReturnCorrectList() {
+            // Given
+            final List<Hauptabschnitt> allHas = List.of(new Hauptabschnitt("L", "Test"), new Hauptabschnitt("K", "Test 2"), new Hauptabschnitt("M", "Test 3"));
+            final List<HauptabschnittFormContextDTO> mappedHas = List.of(new HauptabschnittFormContextDTO("L", "Test"),
+                    new HauptabschnittFormContextDTO("K", "Test 2"), new HauptabschnittFormContextDTO("M", "Test 3"));
+            when(hauptabschnittRepository.findAll()).thenReturn(allHas);
+            when(hauptabschnittMapper.toFormContext(allHas)).thenReturn(mappedHas);
+
+            // When
+            final List<HauptabschnittFormContextDTO> result = unitUnderTest.getHauptabschnittFormContextDTOs();
+
+            // Then
+            verify(hauptabschnittRepository, times(1)).findAll();
+            assertThat(result)
+                    .hasSize(3)
+                    .extracting(
+                            HauptabschnittFormContextDTO::ha,
+                            HauptabschnittFormContextDTO::bezeichnung)
+                    .containsExactly(
+                            tuple("L", "Test"),
+                            tuple("K", "Test 2"),
+                            tuple("M", "Test 3"));
         }
 
     }

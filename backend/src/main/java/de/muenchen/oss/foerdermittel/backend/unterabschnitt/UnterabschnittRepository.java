@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.hauptabschnitt;
+package de.muenchen.oss.foerdermittel.backend.unterabschnitt;
 
 import de.muenchen.oss.foerdermittel.backend.common.InsertAndUpdateRepository;
 import java.util.List;
@@ -8,10 +8,10 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface HauptabschnittRepository extends PagingAndSortingRepository<Hauptabschnitt, String>, ListCrudRepository<Hauptabschnitt, String>,
-        InsertAndUpdateRepository<Hauptabschnitt> {
+public interface UnterabschnittRepository extends PagingAndSortingRepository<Unterabschnitt, String>, ListCrudRepository<Unterabschnitt, String>,
+        InsertAndUpdateRepository<Unterabschnitt> {
 
-    @Query("SELECT h.ha FROM Hauptabschnitt h")
-    List<String> findAllHas();
+    @Query("SELECT u.ua FROM Unterabschnitt u")
+    List<String> findAllUas();
 
 }
