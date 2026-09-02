@@ -1,7 +1,7 @@
 import type { ApiCtor } from "@/api/ApiFactory";
 import type { PageMetadata } from "@/api/generated/foerdermittel-backend";
+import type { ApiComposable } from "@/composables/useAPI";
 import type { Pageable } from "@/types/Pageable";
-import type { Ref } from "vue";
 
 import { ApiFactory } from "@/api/ApiFactory";
 import { BaseAPI } from "@/api/generated/foerdermittel-backend";
@@ -26,13 +26,6 @@ export interface ApiComposableMethods<
   context?: (api: Api) => Promise<Context>;
 }
 
-interface ApiComposable<TRequest, TResponse> {
-  loading: Readonly<Ref<boolean>>;
-  error: Readonly<Ref<boolean>>;
-  data: Readonly<Ref<TResponse | undefined, TResponse | undefined>>;
-  call: (params: TRequest) => Promise<void>;
-}
-
 export interface ApiComposables<
   TGetResponse,
   TContextResponse,
@@ -49,7 +42,7 @@ export interface ApiComposables<
       page?: PageMetadata;
     }
   >;
-  context: ApiComposable<void, TContextResponse>;
+  context: ApiComposable<never, TContextResponse>;
   create: ApiComposable<TCreateRequest, TCreateResponse>;
   update: ApiComposable<TUpdateRequest, TUpdateResponse>;
   delete: ApiComposable<TDeleteRequest, void>;
