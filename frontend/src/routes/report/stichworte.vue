@@ -89,9 +89,9 @@ async function handleDownload(
   const model = queryParams as GetReportStichworteRequest;
   const urlOpts = await getReportStichworteOpts(model);
   if (!getReportStichworteOptsError.value && urlOpts) {
-    await onSuccess(t("common.message.created", [t("common.word.report")]));
     const url = toURL(urlOpts);
     openURL(url);
+    await onSuccess();
   } else {
     await onFailure(
       t("common.message.createdError", [t("common.word.report")])
@@ -105,8 +105,7 @@ const reportStichworteFormRef = useTemplateRef<ReportStichworteFormRef>(
 );
 
 const snackbarStore = useSnackbarStore();
-const onSuccess = async (msg: string) => {
-  snackbarStore.push({ text: msg, color: STATUS_INDICATORS.SUCCESS });
+const onSuccess = async () => {
   await getReportStichworteFormContext();
 };
 const onFailure = async (msg: string) => {

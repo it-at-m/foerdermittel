@@ -26,17 +26,6 @@ export function toURL(requestOpts: RequestOpts) {
   return url;
 }
 
-export function openURL(url: URL, blank = false) {
-  const link = document.createElement("a");
-  link.href = url.toString();
-
-  if (blank) {
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-  }
-
-  document.body.appendChild(link);
-
-  link.click();
-  link.remove();
+export function openURL(url: URL) {
+  window.open(url.toString(), "_blank", "noopener,noreferrer");
 }
