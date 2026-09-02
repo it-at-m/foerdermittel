@@ -105,6 +105,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.termin.modelName", 2),
+        props: {
+          to: "/projekttermin",
+        },
       },
       {
         title: t("model.istkosten.modelName"),
