@@ -88,7 +88,6 @@ const handleCreate = async (
   await bauprogrammApi.create.call({
     bauprogrammCreateDTO: model,
   });
-  return !bauprogrammApi.create.error.value;
 };
 
 const handleUpdate = async (
@@ -100,13 +99,11 @@ const handleUpdate = async (
     id: model.id,
     bauprogrammUpdateDTO: model,
   });
-  return !bauprogrammApi.update.error.value;
 };
 
 const handleDelete = async (id: string) => {
   await bauprogrammApi.delete.call({
     id,
   });
-  return !bauprogrammApi.delete.error.value;
 };
 </script>

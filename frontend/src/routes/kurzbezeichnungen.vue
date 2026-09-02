@@ -91,7 +91,6 @@ const handleCreate = async (
   await kurzbezeichnungApi.create.call({
     kurzbezeichnungCreateDTO: model,
   });
-  return !kurzbezeichnungApi.create.error.value;
 };
 
 const handleUpdate = async (
@@ -103,13 +102,11 @@ const handleUpdate = async (
     id: model.id,
     kurzbezeichnungUpdateDTO: model,
   });
-  return !kurzbezeichnungApi.update.error.value;
 };
 
 const handleDelete = async (id: string) => {
   await kurzbezeichnungApi.delete.call({
     id,
   });
-  return !kurzbezeichnungApi.delete.error.value;
 };
 </script>

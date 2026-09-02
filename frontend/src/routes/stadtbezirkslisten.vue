@@ -146,7 +146,6 @@ const handleCreate = async (
   await stadtbezirkslisteApi.create.call({
     listennameCreateDTO: model,
   });
-  return !stadtbezirkslisteApi.create.error.value;
 };
 
 const handleUpdate = async (
@@ -158,13 +157,11 @@ const handleUpdate = async (
     id: model.id,
     listennameUpdateDTO: model,
   });
-  return !stadtbezirkslisteApi.update.error.value;
 };
 
 const handleDelete = async (id: string) => {
   await stadtbezirkslisteApi.delete.call({
     id,
   });
-  return !stadtbezirkslisteApi.delete.error.value;
 };
 </script>

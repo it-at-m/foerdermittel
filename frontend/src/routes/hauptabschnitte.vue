@@ -88,7 +88,6 @@ const handleCreate = async (
   await hauptabschnittApi.create.call({
     hauptabschnittCreateDTO: model,
   });
-  return !hauptabschnittApi.create.error.value;
 };
 
 const handleUpdate = async (
@@ -100,13 +99,11 @@ const handleUpdate = async (
     id: model.id,
     hauptabschnittUpdateDTO: model,
   });
-  return !hauptabschnittApi.update.error.value;
 };
 
 const handleDelete = async (id: string) => {
   await hauptabschnittApi.delete.call({
     id,
   });
-  return !hauptabschnittApi.delete.error.value;
 };
 </script>

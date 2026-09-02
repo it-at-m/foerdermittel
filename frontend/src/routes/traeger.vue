@@ -85,7 +85,6 @@ const handleCreate = async (traegerCreateDTO: Partial<TraegerResponseDTO>) => {
   await traegerApi.create.call({
     traegerCreateDTO: model,
   });
-  return !traegerApi.create.error.value;
 };
 
 const handleUpdate = async (traegerUpdateDTO: Partial<TraegerResponseDTO>) => {
@@ -95,13 +94,11 @@ const handleUpdate = async (traegerUpdateDTO: Partial<TraegerResponseDTO>) => {
     id: model.id,
     traegerUpdateDTO: model,
   });
-  return !traegerApi.update.error.value;
 };
 
 const handleDelete = async (id: string) => {
   await traegerApi.delete.call({
     id,
   });
-  return !traegerApi.delete.error.value;
 };
 </script>

@@ -85,7 +85,6 @@ const handleCreate = async (referatCreateDTO: Partial<ReferatResponseDTO>) => {
   await referatApi.create.call({
     referatCreateDTO: model,
   });
-  return !referatApi.create.error.value;
 };
 
 const handleUpdate = async (referatUpdateDTO: Partial<ReferatResponseDTO>) => {
@@ -95,13 +94,11 @@ const handleUpdate = async (referatUpdateDTO: Partial<ReferatResponseDTO>) => {
     id: model.id,
     referatUpdateDTO: model,
   });
-  return !referatApi.update.error.value;
 };
 
 const handleDelete = async (id: string) => {
   await referatApi.delete.call({
     id,
   });
-  return !referatApi.delete.error.value;
 };
 </script>

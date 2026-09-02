@@ -88,7 +88,6 @@ const handleCreate = async (
   await stadtbezirkApi.create.call({
     stadtbezirkCreateDTO: model,
   });
-  return !stadtbezirkApi.create.error.value;
 };
 
 const handleUpdate = async (
@@ -100,13 +99,11 @@ const handleUpdate = async (
     id: model.id,
     stadtbezirkUpdateDTO: model,
   });
-  return !stadtbezirkApi.update.error.value;
 };
 
 const handleDelete = async (id: string) => {
   await stadtbezirkApi.delete.call({
     id,
   });
-  return !stadtbezirkApi.delete.error.value;
 };
 </script>

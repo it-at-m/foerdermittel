@@ -144,7 +144,6 @@ const handleCreate = async (
   await foerderbereichApi.create.call({
     foerderbereichCreateDTO: model,
   });
-  return !foerderbereichApi.create.error.value;
 };
 
 const handleUpdate = async (
@@ -156,13 +155,11 @@ const handleUpdate = async (
     id: model.id,
     foerderbereichUpdateDTO: model,
   });
-  return !foerderbereichApi.update.error.value;
 };
 
 const handleDelete = async (id: string) => {
   await foerderbereichApi.delete.call({
     id,
   });
-  return !foerderbereichApi.delete.error.value;
 };
 </script>

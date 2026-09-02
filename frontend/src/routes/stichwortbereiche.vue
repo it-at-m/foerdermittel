@@ -90,7 +90,6 @@ const handleCreate = async (
   await stichwortbereichApi.create.call({
     stichwortbereichCreateDTO: model,
   });
-  return !stichwortbereichApi.create.error.value;
 };
 
 const handleUpdate = async (
@@ -102,13 +101,11 @@ const handleUpdate = async (
     id: model.id,
     stichwortbereichUpdateDTO: model,
   });
-  return !stichwortbereichApi.update.error.value;
 };
 
 const handleDelete = async (id: string) => {
   await stichwortbereichApi.delete.call({
     id,
   });
-  return !stichwortbereichApi.delete.error.value;
 };
 </script>

@@ -107,7 +107,6 @@ const handleCreate = async (
   await unterabschnittApi.create.call({
     unterabschnittCreateDTO: model,
   });
-  return !unterabschnittApi.create.error.value;
 };
 
 const handleUpdate = async (
@@ -120,14 +119,11 @@ const handleUpdate = async (
     id: model.id,
     unterabschnittUpdateDTO: model,
   });
-
-  return !unterabschnittApi.update.error.value;
 };
 
 const handleDelete = async (id: string) => {
   await unterabschnittApi.delete.call({
     id,
   });
-  return !unterabschnittApi.delete.error.value;
 };
 </script>

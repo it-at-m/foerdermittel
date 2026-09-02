@@ -91,7 +91,6 @@ const handleCreate = async (
   await siedlungsgebietApi.create.call({
     siedlungsgebietCreateDTO: model,
   });
-  return !siedlungsgebietApi.create.error.value;
 };
 
 const handleUpdate = async (
@@ -103,13 +102,11 @@ const handleUpdate = async (
     id: model.id,
     siedlungsgebietUpdateDTO: model,
   });
-  return !siedlungsgebietApi.update.error.value;
 };
 
 const handleDelete = async (id: string) => {
   await siedlungsgebietApi.delete.call({
     id,
   });
-  return !siedlungsgebietApi.delete.error.value;
 };
 </script>

@@ -200,9 +200,9 @@ const {
   expandable?: boolean;
   dialogWidth?: DialogWidth;
   shouldLoadFormContext: boolean;
-  handleCreate: (item: TGetResponse) => Awaitable<boolean>;
-  handleUpdate: (item: TGetResponse) => Awaitable<boolean>;
-  handleDelete: (id: string) => Awaitable<boolean>;
+  handleCreate: (item: TGetResponse) => Awaitable<boolean | void>;
+  handleUpdate: (item: TGetResponse) => Awaitable<boolean | void>;
+  handleDelete: (id: string) => Awaitable<boolean | void>;
   formRef?: { validate: () => unknown } | null | undefined;
 }>();
 
@@ -360,13 +360,15 @@ const onFailure = async (msg: string) => {
 
 const saveItem = async () => {
   if (isEditing.value && activeItem.value.id) {
-    if (await handleUpdate(activeItem.value)) {
+    const updateResult = await handleUpdate(activeItem.value);
+    if (updateResult ?? !api.update.error.value) {
       await onSuccess(t("common.message.updated", [t(domainKey)]));
     } else {
       await onFailure(t("common.message.updatedError", [t(domainKey)]));
     }
   } else {
-    if (await handleCreate(activeItem.value)) {
+    const createResult = await handleCreate(activeItem.value);
+    if (createResult ?? !api.create.error.value) {
       await onSuccess(t("common.message.created", [t(domainKey)]));
     } else {
       await onFailure(t("common.message.createdError", [t(domainKey)]));
@@ -376,7 +378,8 @@ const saveItem = async () => {
 
 const deleteItem = async () => {
   if (!activeItem.value.id) return;
-  if (await handleDelete(activeItem.value.id)) {
+  const deleteResult = await handleDelete(activeItem.value.id);
+  if (deleteResult ?? !api.delete.error.value) {
     await onSuccess(t("common.message.deleted", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.deletedError", [t(domainKey)]));

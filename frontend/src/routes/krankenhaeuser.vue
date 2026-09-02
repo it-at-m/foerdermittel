@@ -88,7 +88,6 @@ const handleCreate = async (
   await krankenhausApi.create.call({
     krankenhausCreateDTO: model,
   });
-  return !krankenhausApi.create.error.value;
 };
 
 const handleUpdate = async (
@@ -100,13 +99,11 @@ const handleUpdate = async (
     id: model.id,
     krankenhausUpdateDTO: model,
   });
-  return !krankenhausApi.update.error.value;
 };
 
 const handleDelete = async (id: string) => {
   await krankenhausApi.delete.call({
     id,
   });
-  return !krankenhausApi.delete.error.value;
 };
 </script>

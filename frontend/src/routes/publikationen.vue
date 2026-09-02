@@ -88,7 +88,6 @@ const handleCreate = async (
   await publikationApi.create.call({
     publikationCreateDTO: model,
   });
-  return !publikationApi.create.error.value;
 };
 
 const handleUpdate = async (
@@ -100,13 +99,11 @@ const handleUpdate = async (
     id: model.id,
     publikationUpdateDTO: model,
   });
-  return !publikationApi.update.error.value;
 };
 
 const handleDelete = async (id: string) => {
   await publikationApi.delete.call({
     id,
   });
-  return !publikationApi.delete.error.value;
 };
 </script>
