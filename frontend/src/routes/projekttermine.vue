@@ -113,7 +113,7 @@ const headers: DataTableHeader<Partial<ProjektterminResponseDTO>>[] = [
     title: t("model.termin.zustaendig"),
     value: "zustaendig",
     align: "start",
-    width: 110,
+    width: 150,
   },
   {
     title: t("model.termin.ueberwachung"),

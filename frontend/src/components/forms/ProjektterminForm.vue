@@ -5,7 +5,7 @@
     @update:model-value="onValidityChanged"
   >
     <v-row>
-      <v-col cols="3">
+      <v-col cols="6">
         <fm-autocomplete
           v-model="modelValue.projnr"
           :items="projektItems"
@@ -35,28 +35,28 @@
           clearable
         />
       </v-col>
-
-      <v-col cols="6">
-        <fm-checkbox
-          v-model="modelValue.ueberwachung"
-          :display-mode="displayMode"
-          :label="t('model.termin.ueberwachung')"
+        <v-col cols="2">
+          <fm-checkbox
+              v-model="modelValue.ueberwachung"
+              :display-mode="displayMode"
+              :label="t('model.termin.ueberwachung')"
+          />
+        </v-col>
+      </v-row>
+    <v-row>
+      <v-col cols="4">
+        <fm-text-field
+            v-model="modelValue.zustaendig"
+            :display-mode="displayMode"
+            :label="t('model.termin.zustaendig')"
         />
       </v-col>
 
-      <v-col cols="6">
+      <v-col cols="4">
         <fm-text-field
           v-model="modelValue.telefon"
           :display-mode="displayMode"
           :label="t('model.termin.telefon')"
-        />
-      </v-col>
-
-      <v-col cols="6">
-        <fm-text-field
-          v-model="modelValue.zustaendig"
-          :display-mode="displayMode"
-          :label="t('model.termin.zustaendig')"
         />
       </v-col>
     </v-row>
