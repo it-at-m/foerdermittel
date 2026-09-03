@@ -137,25 +137,6 @@ paths:
       security:
       - bearerAuth: []
   /stadtbezirkslisten/{id}:
-    get:
-      tags:
-      - stadtbezirksliste-controller
-      operationId: getStadtbezirkliste
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StadtbezirkslisteResponseDTO"
-      security:
-      - bearerAuth: []
     put:
       tags:
       - stadtbezirksliste-controller
@@ -839,7 +820,7 @@ paths:
     get:
       tags:
       - stadtbezirksliste-controller
-      operationId: getStadtbezirklistenByPageable
+      operationId: getStadtbezirklisten
       parameters:
       - name: page
         in: query
@@ -1608,6 +1589,36 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SiedlungsgebietFormContext"
+      security:
+      - bearerAuth: []
+  /report/stichworte:
+    get:
+      tags:
+      - report-controller
+      operationId: getReportStichworte
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportStichworteDTO"
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /report/stichworte/form-context:
+    get:
+      tags:
+      - report-controller
+      operationId: getReportStichworteFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportStichworteFormContext"
       security:
       - bearerAuth: []
   /referate/form-context:
@@ -2664,6 +2675,39 @@ components:
           type: array
           items:
             type: number
+    ReportStichworteDTO:
+      required:
+      - bereich
+      type: object
+      properties:
+        bereich:
+          maxLength: 30
+          minLength: 1
+          pattern: "^[A-Z0-9\\-]+$"
+          type: string
+    ReportStichworteFormContext:
+      required:
+      - bereiche
+      type: object
+      properties:
+        bereiche:
+          type: array
+          items:
+            $ref: "#/components/schemas/StichwortbereichFormContextDTO"
+    StichwortbereichFormContextDTO:
+      required:
+      - bereich
+      - bezeichnung
+      type: object
+      properties:
+        bereich:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+      description: DTO for Stichwortbereich to be used in other FormContexts other
+        than its own.
     PagedModelReferatResponseDTO:
       type: object
       properties:

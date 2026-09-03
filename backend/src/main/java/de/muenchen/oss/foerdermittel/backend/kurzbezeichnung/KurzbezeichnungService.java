@@ -40,7 +40,7 @@ public class KurzbezeichnungService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Kurzbezeichnung updateKurzbezeichnung(final Kurzbezeichnung kurzbezeichnung, final String kurzBez) {
-        final Kurzbezeichnung foundKurzbezeichnung = ServiceUtils.getEntityOrThrowNotFoundException(kurzBez, kurzbezeichnungRepository);
+        final Kurzbezeichnung foundKurzbezeichnung = ServiceUtils.getEntityOrThrowNotFoundException(kurzBez, kurzbezeichnungRepository, Kurzbezeichnung.class);
         foundKurzbezeichnung.setBezeichnung(kurzbezeichnung.getBezeichnung());
         log.debug("Update Kurzbezeichnung {}", foundKurzbezeichnung);
         return kurzbezeichnungRepository.update(foundKurzbezeichnung);
@@ -49,7 +49,7 @@ public class KurzbezeichnungService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteKurzbezeichnung(final String kurzBez) {
         log.debug("Delete Kurzbezeichnung with ID {}", kurzBez);
-        ServiceUtils.getEntityOrThrowNotFoundException(kurzBez, kurzbezeichnungRepository);
+        ServiceUtils.getEntityOrThrowNotFoundException(kurzBez, kurzbezeichnungRepository, Kurzbezeichnung.class);
         kurzbezeichnungRepository.deleteById(kurzBez);
     }
 }

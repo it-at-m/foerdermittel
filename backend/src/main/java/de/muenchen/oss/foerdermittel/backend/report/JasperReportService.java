@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
@@ -48,8 +46,6 @@ public class JasperReportService {
     public void generateReportWithParameters(final ReportType reportType, final ReportFormat reportFormat, final Map<String, Object> parameters,
             final OutputStream outputStream)
             throws IOException, SQLException, JRException {
-        checkReportFormat(reportType, reportFormat);
-
         final JasperReport jasperReport = loadCompiledReport(reportType, reportFormat);
 
         checkParameters(jasperReport, parameters);
@@ -61,20 +57,6 @@ public class JasperReportService {
                     connection);
             exportReport(jasperPrint, reportFormat, outputStream);
         }
-    }
-
-    /**
-     * Calculates the file name depending on the desires report type and report format and uses
-     * timestamps as prefixes
-     *
-     * @param reportType requested report type
-     * @param reportFormat requested report format
-     * @return file name of the file to be generated
-     */
-    public static String getDownloadFileName(final ReportType reportType, final ReportFormat reportFormat) {
-        final String timestamp = LocalDateTime.now()
-                .format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
-        return reportType.getFileName() + reportFormat.getFileSuffix() + "_" + timestamp + reportFormat.getFileExtension();
     }
 
     /**
@@ -116,19 +98,6 @@ public class JasperReportService {
                 throw new IllegalArgumentException(
                         "Unknown JasperReports parameter: " + parameterName);
             }
-        }
-    }
-
-    /**
-     * Checks if a given reportFormat is valid for a given ReportType.
-     *
-     * @param reportType the ReportType to check against
-     * @param reportFormat the ReportFormat to check
-     */
-    private static void checkReportFormat(final ReportType reportType, final ReportFormat reportFormat) {
-        if (!reportType.supportsFormat(reportFormat)) {
-            throw new IllegalArgumentException(
-                    "Unsupported ReportFormat: " + reportFormat + " for ReportType: " + reportType);
         }
     }
 

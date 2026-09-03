@@ -65,7 +65,7 @@ class StadtbezirkslisteIntegrationTest {
     }
 
     @Nested
-    class GetStadtbezirksliste {
+    class GetStadtbezirkslisten {
 
         @Test
         void givenPageable_thenReturnPageOfEntities() {
@@ -387,7 +387,7 @@ class StadtbezirkslisteIntegrationTest {
     }
 
     @Nested
-    class GetStadtbezirkFormContext {
+    class GetStadtbezirkslisteFormContext {
 
         @Test
         void givenNoEntitiesExist_thenReturnEmptyFormContext() {

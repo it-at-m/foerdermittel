@@ -1,8 +1,9 @@
 import type { ApiCtor } from "@/api/ApiFactory";
+import type { RequestOpts } from "@/api/generated/foerdermittel-backend";
 
 import { ApiFactory } from "@/api/ApiFactory";
 import { BaseAPI } from "@/api/generated/foerdermittel-backend";
-import useAPI from "@/composables/useAPI";
+import { useAPI, useAPICall } from "@/composables/useAPI";
 
 export function createAPIComposables<
   Api extends BaseAPI,
@@ -44,6 +45,31 @@ export function createAPIComposables<
     }),
     ...(deleteFn && {
       useDelete: () => useAPI((req: DeleteReq) => deleteFn(api, req)),
+    }),
+    ...(context && {
+      useContext: () => useAPI(() => context(api)),
+    }),
+  };
+}
+
+export function createReportAPIComposables<
+  Api extends BaseAPI,
+  GetReq,
+  Context,
+>(
+  ApiClass: ApiCtor<Api>,
+  methods: {
+    getOpts?: (api: Api, req: GetReq) => Promise<RequestOpts>;
+    context?: (api: Api) => Promise<Context>;
+  }
+) {
+  const api = ApiFactory.getInstance(ApiClass);
+
+  const { getOpts, context } = methods;
+
+  return {
+    ...(getOpts && {
+      useGetOpts: () => useAPICall((req: GetReq) => getOpts(api, req)),
     }),
     ...(context && {
       useContext: () => useAPI(() => context(api)),
