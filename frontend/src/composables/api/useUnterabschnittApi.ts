@@ -7,6 +7,7 @@ import type {
   UnterabschnittResponseDTO,
   UpdateUnterabschnittRequest,
 } from "@/api/generated/foerdermittel-backend";
+import type { ApiComposables } from "@/util/composable-helper";
 
 import { UnterabschnittControllerApi } from "@/api/generated/foerdermittel-backend";
 import {
@@ -39,3 +40,21 @@ export const {
     context: (api) => api.getUnterabschnittFormContext(),
   })
 );
+
+export function useUnterabschnittApi(): ApiComposables<
+  UnterabschnittResponseDTO,
+  UnterabschnittFormContext,
+  CreateUnterabschnittRequest,
+  UnterabschnittResponseDTO,
+  UpdateUnterabschnittRequest,
+  UnterabschnittResponseDTO,
+  DeleteUnterabschnittRequest
+> {
+  return {
+    getAll: useGetUnterabschnitte(),
+    context: useGetUnterabschnittFormContext(),
+    create: useCreateUnterabschnitt(),
+    update: useUpdateUnterabschnitt(),
+    delete: useDeleteUnterabschnitt(),
+  };
+}

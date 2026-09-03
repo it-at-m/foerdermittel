@@ -1,20 +1,18 @@
 <template>
   <base-view :domain-key="domainKey">
     <template #default="{ baseViewLoading }">
-      <!-- @vue-generic {Partial<BauprogrammResponseDTO>} -->
       <crud-card
-        ref="crudRef"
-        v-model="dataTableOptions"
         :empty-item-template="EMPTY_ITEM_TEMPLATE"
-        :loading="baseViewLoading || loading"
+        :loading="baseViewLoading"
         :table-headers="headers"
+        :api="bauprogrammApi"
         :domain-key="domainKey"
         :enable-actions="isAdmin"
-        :items="bauprogramme?.content ?? []"
-        :total-items="bauprogramme?.page?.totalElements ?? 0"
-        @delete="handleDelete"
-        @create="handleCreate"
-        @update="handleUpdate"
+        :should-load-form-context="isAdmin"
+        :handle-create="handleCreate"
+        :handle-update="handleUpdate"
+        :handle-delete="handleDelete"
+        :form-ref="bauprogrammFormRef"
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <bauprogramm-form
@@ -41,15 +39,8 @@ import { useI18n } from "vue-i18n";
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
 import BauprogrammForm from "@/components/forms/BauprogrammForm.vue";
-import {
-  useCreateBauprogramm,
-  useDeleteBauprogramm,
-  useGetBauprogramme,
-  useGetBauprogrammFormContext,
-  useUpdateBauprogramm,
-} from "@/composables/api/useBauprogrammApi";
+import { useBauprogrammApi } from "@/composables/api/useBauprogrammApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
-import usePagination from "@/composables/usePagination";
 import { Role } from "@/types/Role";
 
 const domainKey = "model.bauprogramm.modelName";
@@ -83,96 +74,40 @@ const EMPTY_ITEM_TEMPLATE: Partial<BauprogrammResponseDTO> = {
   bezeichnung: "",
 };
 
-const {
-  data: bauprogramme,
-  call: getBauprogramme,
-  loading: getBauprogrammeLoading,
-} = useGetBauprogramme();
-
-const {
-  data: bauprogrammFormContext,
-  call: getBauprogrammFormContext,
-  loading: getBauprogrammFormContextLoading,
-} = useGetBauprogrammFormContext();
-
 type BauprogrammFormType = InstanceType<typeof BauprogrammForm>;
 const bauprogrammFormRef =
   useTemplateRef<BauprogrammFormType>("bauprogrammForm");
 
-const { dataTableOptions, onSuccess, onFailure } = usePagination(
-  computed(() => bauprogramme.value?.page?.totalPages),
-  getBauprogramme,
-  isAdmin,
-  getBauprogrammFormContext,
-  () => bauprogrammFormRef.value?.validate()
-);
+const bauprogrammApi = useBauprogrammApi();
 
-const {
-  call: createBauprogramm,
-  loading: createBauprogrammLoading,
-  error: createBauprogrammeError,
-} = useCreateBauprogramm();
+const bauprogrammFormContext = computed(
+  () => bauprogrammApi.context.data.value
+);
 
 const handleCreate = async (
   bauprogrammCreateDTO: Partial<BauprogrammResponseDTO>
 ) => {
   // TODO: some type checking improvements
   const model = bauprogrammCreateDTO as BauprogrammResponseDTO;
-  await createBauprogramm({
+  await bauprogrammApi.create.call({
     bauprogrammCreateDTO: model,
   });
-  if (!createBauprogrammeError.value) {
-    await onSuccess(t("common.message.created", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.createdError", [t(domainKey)]));
-  }
 };
-
-const {
-  call: updateBauprogramm,
-  loading: updateBauprogrammLoading,
-  error: updateBauprogrammError,
-} = useUpdateBauprogramm();
 
 const handleUpdate = async (
   bauprogrammUpdateDTO: Partial<BauprogrammResponseDTO>
 ) => {
   // TODO: some type checking improvements
   const model = bauprogrammUpdateDTO as BauprogrammResponseDTO;
-  await updateBauprogramm({
+  await bauprogrammApi.update.call({
     id: model.id,
     bauprogrammUpdateDTO: model,
   });
-  if (!updateBauprogrammError.value) {
-    await onSuccess(t("common.message.updated", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.updatedError", [t(domainKey)]));
-  }
 };
-
-const {
-  call: deleteBauprogramm,
-  loading: deleteBauprogrammLoading,
-  error: deleteBauprogrammError,
-} = useDeleteBauprogramm();
 
 const handleDelete = async (id: string) => {
-  await deleteBauprogramm({
+  await bauprogrammApi.delete.call({
     id,
   });
-  if (!deleteBauprogrammError.value) {
-    await onSuccess(t("common.message.deleted", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.deletedError", [t(domainKey)]));
-  }
 };
-
-const loading = computed(
-  () =>
-    getBauprogrammeLoading.value ||
-    getBauprogrammFormContextLoading.value ||
-    createBauprogrammLoading.value ||
-    updateBauprogrammLoading.value ||
-    deleteBauprogrammLoading.value
-);
 </script>
