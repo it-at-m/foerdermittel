@@ -75,8 +75,8 @@
           v-model:search="search"
           fixed-header
           :headers="tableHeadersWithActions"
-          :items="api.getAll.data.value?.content ?? []"
-          :items-length="api.getAll.data.value?.page?.totalElements ?? 0"
+          :items="getAllData.content ?? []"
+          :items-length="getAllData.page?.totalElements ?? 0"
           :loading="loading"
           :show-expand="expandable"
           expand-strategy="single"
@@ -215,6 +215,10 @@ const loading = computed(
     api.update.loading.value ||
     api.delete.loading.value
 );
+
+const getAllData = computed(() => {
+  return api.getAll.data.value;
+});
 
 const { dataTableOptions, refetchEntities } = usePagination(
   computed(() => api.getAll.data.value?.page?.totalPages),
