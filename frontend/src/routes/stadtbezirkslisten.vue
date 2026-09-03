@@ -1,21 +1,19 @@
 <template>
   <base-view :domain-key="domainKey">
     <template #default="{ baseViewLoading }">
-      <!-- @vue-generic {Partial<StadtbezirkslisteResponseDTO>} -->
       <crud-card
-        ref="crudRef"
-        v-model="dataTableOptions"
         :empty-item-template="EMPTY_ITEM_TEMPLATE"
-        :loading="loading || baseViewLoading"
+        :loading="baseViewLoading"
         :table-headers="headers"
+        :api="stadtbezirkslisteApi"
         :domain-key="domainKey"
         :enable-actions="isAdmin"
         :expandable="true"
-        :items="stadtbezirkslisten?.content ?? []"
-        :total-items="stadtbezirkslisten?.page?.totalElements ?? 0"
-        @delete="handleDelete"
-        @create="handleCreate"
-        @update="handleUpdate"
+        :should-load-form-context="isAdmin"
+        :handle-create="handleCreate"
+        :handle-update="handleUpdate"
+        :handle-delete="handleDelete"
+        :form-ref="stadtbezirkslisteFormRef"
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <stadtbezirksliste-form
@@ -94,15 +92,8 @@ import { useI18n } from "vue-i18n";
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
 import StadtbezirkslisteForm from "@/components/forms/StadtbezirkslisteForm.vue";
-import {
-  useCreateListenname,
-  useDeleteStadtbezirksliste,
-  useGetStadtbezirkslisteFormContext,
-  useGetStadtbezirkslisten,
-  useUpdateListenname,
-} from "@/composables/api/useStadtbezirkslisteApi";
+import { useStadtbezirkslisteApi } from "@/composables/api/useStadtbezirkslisteApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
-import usePagination from "@/composables/usePagination";
 import { Role } from "@/types/Role";
 
 const domainKey = "model.stadtbezirksliste.modelName";
@@ -139,17 +130,11 @@ const EMPTY_ITEM_TEMPLATE: Partial<StadtbezirkslisteResponseDTO> = {
   assignedStadtbezirke: [],
 };
 
-const {
-  data: stadtbezirkslisten,
-  call: getStadtbezirkslisten,
-  loading: getStadtbezirkslistenLoading,
-} = useGetStadtbezirkslisten();
+const stadtbezirkslisteApi = useStadtbezirkslisteApi();
 
-const {
-  data: stadtbezirkslisteFormContext,
-  call: getStadtbezirkslisteFormContext,
-  loading: getStadtbezirkslisteFormContextLoading,
-} = useGetStadtbezirkslisteFormContext();
+const stadtbezirkslisteFormContext = computed(
+  () => stadtbezirkslisteApi.context.data.value
+);
 
 type StadtbezirkslisteFormType = InstanceType<typeof StadtbezirkslisteForm>;
 
@@ -157,82 +142,30 @@ const stadtbezirkslisteFormRef = useTemplateRef<StadtbezirkslisteFormType>(
   "stadtbezirkslisteForm"
 );
 
-const { dataTableOptions, onSuccess, onFailure } = usePagination(
-  computed(() => stadtbezirkslisten.value?.page?.totalPages),
-  getStadtbezirkslisten,
-  isAdmin,
-  getStadtbezirkslisteFormContext,
-  () => stadtbezirkslisteFormRef.value?.validate()
-);
-
-const {
-  call: createListenname,
-  loading: createListennameLoading,
-  error: createListennameError,
-} = useCreateListenname();
-
 const handleCreate = async (
   stadtbezirkslisteCreateDTO: Partial<StadtbezirkslisteResponseDTO>
 ) => {
   const model = stadtbezirkslisteCreateDTO as StadtbezirkslisteResponseDTO;
 
-  await createListenname({
+  await stadtbezirkslisteApi.create.call({
     listennameCreateDTO: model,
   });
-
-  if (!createListennameError.value) {
-    await onSuccess(t("common.message.created", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.createdError", [t(domainKey)]));
-  }
 };
-
-const {
-  call: updateListenname,
-  loading: updateListennameLoading,
-  error: updateListennameError,
-} = useUpdateListenname();
 
 const handleUpdate = async (
   stadtbezirkslisteUpdateDTO: Partial<StadtbezirkslisteResponseDTO>
 ) => {
   const model = stadtbezirkslisteUpdateDTO as StadtbezirkslisteResponseDTO;
 
-  await updateListenname({
+  await stadtbezirkslisteApi.update.call({
     id: model.id,
     listennameUpdateDTO: model,
   });
-
-  if (!updateListennameError.value) {
-    await onSuccess(t("common.message.updated", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.updatedError", [t(domainKey)]));
-  }
 };
-
-const {
-  call: deleteStadtbezirksliste,
-  loading: deleteStadtbezirkslisteLoading,
-  error: deleteStadtbezirkslisteError,
-} = useDeleteStadtbezirksliste();
 
 const handleDelete = async (id: string) => {
-  await deleteStadtbezirksliste({
+  await stadtbezirkslisteApi.delete.call({
     id,
   });
-  if (!deleteStadtbezirkslisteError.value) {
-    await onSuccess(t("common.message.deleted", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.deletedError", [t(domainKey)]));
-  }
 };
-
-const loading = computed(
-  () =>
-    getStadtbezirkslistenLoading.value ||
-    getStadtbezirkslisteFormContextLoading.value ||
-    createListennameLoading.value ||
-    updateListennameLoading.value ||
-    deleteStadtbezirkslisteLoading.value
-);
 </script>

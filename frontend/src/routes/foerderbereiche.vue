@@ -1,20 +1,18 @@
 <template>
   <base-view :domain-key="domainKey">
     <template #default="{ baseViewLoading }">
-      <!-- @vue-generic {Partial<FoerderbereichResponseDTO>} -->
       <crud-card
-        ref="crudRef"
-        v-model="dataTableOptions"
         :empty-item-template="EMPTY_ITEM_TEMPLATE"
-        :loading="loading || baseViewLoading"
+        :loading="baseViewLoading"
         :table-headers="headers"
+        :api="foerderbereichApi"
         :domain-key="domainKey"
         :enable-actions="isAdmin"
-        :items="foerderbereiche?.content ?? []"
-        :total-items="foerderbereiche?.page?.totalElements ?? 0"
-        @delete="handleDelete"
-        @create="handleCreate"
-        @update="handleUpdate"
+        :should-load-form-context="isAdmin"
+        :handle-create="handleCreate"
+        :handle-update="handleUpdate"
+        :handle-delete="handleDelete"
+        :form-ref="foerderbereichFormRef"
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <foerderbereich-form
@@ -66,15 +64,8 @@ import { useI18n } from "vue-i18n";
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
 import FoerderbereichForm from "@/components/forms/FoerderbereichForm.vue";
-import {
-  useCreateFoerderbereich,
-  useDeleteFoerderbereich,
-  useGetFoerderbereiche,
-  useGetFoerderbereichFormContext,
-  useUpdateFoerderbereich,
-} from "@/composables/api/useFoerderbereichApi";
+import { useFoerderbereichApi } from "@/composables/api/useFoerderbereichApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
-import usePagination from "@/composables/usePagination";
 import { Role } from "@/types/Role";
 
 const domainKey = "model.foerderbereich.modelName";
@@ -139,96 +130,40 @@ const EMPTY_ITEM_TEMPLATE: Partial<FoerderbereichResponseDTO> = {
   nichtRelevant: false,
 };
 
-const {
-  data: foerderbereiche,
-  call: getFoerderbereiche,
-  loading: getFoerderbereicheLoading,
-} = useGetFoerderbereiche();
+const foerderbereichApi = useFoerderbereichApi();
 
-const {
-  data: foerderbereichFormContext,
-  call: getFoerderbereichFormContext,
-  loading: getFoerderbereichFormContextLoading,
-} = useGetFoerderbereichFormContext();
+const foerderbereichFormContext = computed(
+  () => foerderbereichApi.context.data.value
+);
 
 type FoerderbereichFormType = InstanceType<typeof FoerderbereichForm>;
 const foerderbereichFormRef =
   useTemplateRef<FoerderbereichFormType>("foerderbereichForm");
-
-const { dataTableOptions, onSuccess, onFailure } = usePagination(
-  computed(() => foerderbereiche.value?.page?.totalPages),
-  getFoerderbereiche,
-  isAdmin,
-  getFoerderbereichFormContext,
-  () => foerderbereichFormRef.value?.validate()
-);
-
-const {
-  call: createFoerderbereich,
-  loading: createFoerderbereichLoading,
-  error: createFoerderbereichError,
-} = useCreateFoerderbereich();
 
 const handleCreate = async (
   foerderbereichCreateDTO: Partial<FoerderbereichResponseDTO>
 ) => {
   // TODO: some type checking improvements
   const model = foerderbereichCreateDTO as FoerderbereichResponseDTO;
-  await createFoerderbereich({
+  await foerderbereichApi.create.call({
     foerderbereichCreateDTO: model,
   });
-  if (!createFoerderbereichError.value) {
-    await onSuccess(t("common.message.created", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.createdError", [t(domainKey)]));
-  }
 };
-
-const {
-  call: updateFoerderbereich,
-  loading: updateFoerderbereichLoading,
-  error: updateFoerderbereichError,
-} = useUpdateFoerderbereich();
 
 const handleUpdate = async (
   foerderbereichUpdateDTO: Partial<FoerderbereichResponseDTO>
 ) => {
   // TODO: some type checking improvements
   const model = foerderbereichUpdateDTO as FoerderbereichResponseDTO;
-  await updateFoerderbereich({
+  await foerderbereichApi.update.call({
     id: model.id,
     foerderbereichUpdateDTO: model,
   });
-  if (!updateFoerderbereichError.value) {
-    await onSuccess(t("common.message.updated", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.updatedError", [t(domainKey)]));
-  }
 };
-
-const {
-  call: deleteFoerderbereich,
-  loading: deleteFoerderbereichLoading,
-  error: deleteFoerderbereichError,
-} = useDeleteFoerderbereich();
 
 const handleDelete = async (id: string) => {
-  await deleteFoerderbereich({
+  await foerderbereichApi.delete.call({
     id,
   });
-  if (!deleteFoerderbereichError.value) {
-    await onSuccess(t("common.message.deleted", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.deletedError", [t(domainKey)]));
-  }
 };
-
-const loading = computed(
-  () =>
-    getFoerderbereicheLoading.value ||
-    getFoerderbereichFormContextLoading.value ||
-    createFoerderbereichLoading.value ||
-    updateFoerderbereichLoading.value ||
-    deleteFoerderbereichLoading.value
-);
 </script>

@@ -7,6 +7,7 @@ import type {
   SiedlungsgebietResponseDTO,
   UpdateSiedlungsgebietRequest,
 } from "@/api/generated/foerdermittel-backend";
+import type { ApiComposables } from "@/util/composable-helper";
 
 import { SiedlungsgebietControllerApi } from "@/api/generated/foerdermittel-backend";
 import {
@@ -39,3 +40,21 @@ export const {
     context: (api) => api.getSiedlungsgebietFormContext(),
   })
 );
+
+export function useSiedlungsgebietApi(): ApiComposables<
+  SiedlungsgebietResponseDTO,
+  SiedlungsgebietFormContext,
+  CreateSiedlungsgebietRequest,
+  SiedlungsgebietResponseDTO,
+  UpdateSiedlungsgebietRequest,
+  SiedlungsgebietResponseDTO,
+  DeleteSiedlungsgebietRequest
+> {
+  return {
+    getAll: useGetSiedlungsgebiete(),
+    context: useGetSiedlungsgebietFormContext(),
+    create: useCreateSiedlungsgebiet(),
+    update: useUpdateSiedlungsgebiet(),
+    delete: useDeleteSiedlungsgebiet(),
+  };
+}
