@@ -5,7 +5,7 @@ import { readonly, ref } from "vue";
 export interface ApiComposable<TRequest, TResponse> {
   loading: Readonly<Ref<boolean>>;
   error: Readonly<Ref<boolean>>;
-  data: Readonly<Ref<TResponse>>;
+  data: Readonly<Ref<TResponse | undefined>>;
   call: (
     ...args: [TRequest] extends [void] ? [] : [params: TRequest]
   ) => Promise<void>;

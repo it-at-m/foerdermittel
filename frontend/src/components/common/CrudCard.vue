@@ -75,8 +75,8 @@
           v-model:search="search"
           fixed-header
           :headers="tableHeadersWithActions"
-          :items="getAllData.content ?? []"
-          :items-length="getAllData.page?.totalElements ?? 0"
+          :items="getAllData?.content ?? []"
+          :items-length="getAllData?.page?.totalElements ?? 0"
           :loading="loading"
           :show-expand="expandable"
           expand-strategy="single"
@@ -348,9 +348,9 @@ const onSuccess = async (msg: string) => {
     text: msg,
     color: STATUS_INDICATORS.SUCCESS,
   });
+  closeDialog();
   await refetchEntities();
   await loadFormContext();
-  closeDialog();
 };
 
 const onFailure = async (msg: string) => {
