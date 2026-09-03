@@ -25,14 +25,14 @@
     <v-row>
       <v-col cols="4">
         <fm-date-input
-          v-model="modelValue.termin"
-          :display-mode="displayMode"
-          :label="t('model.termin.termin')"
-          :validation-attribute-map="
-            ProjektterminCreateDTOPropertyValidationAttributesMap
-          "
-          :rules="[rules.required()]"
-          clearable
+            v-model="modelValue.termin"
+            :display-mode="displayMode"
+            :label="t('model.termin.termin')"
+            :validation-attribute-map="
+    ProjektterminCreateDTOPropertyValidationAttributesMap
+  "
+            :additional-rules="terminRules"
+            clearable
         />
       </v-col>
         <v-col cols="2">
@@ -93,6 +93,8 @@ import { InputDisplayMode } from "@/types/InputDisplayMode";
 
 const { t } = useI18n();
 const rules = useRules();
+
+const terminRules = [rules.required()];
 
 const { projekte, displayMode = InputDisplayMode.CREATE } = defineProps<{
   projekte: ProjektFormContextDTO[];
