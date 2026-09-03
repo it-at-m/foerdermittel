@@ -1,21 +1,18 @@
 <template>
   <base-view :domain-key="domainKey">
     <template #default="{ baseViewLoading }">
-      <!-- @vue-generic {Partial<ArchivResponseDTO>} -->
       <crud-card
-        ref="crudRef"
-        v-model="dataTableOptions"
-        :empty-item-template="EMPTY_ITEM_TEMPLATE"
-        :loading="loading || baseViewLoading"
-        :table-headers="headers"
-        :domain-key="domainKey"
-        :enable-actions="isAdmin"
-        :items="archive?.content ?? []"
-        :expandable="true"
-        :total-items="archive?.page?.totalElements ?? 0"
-        @delete="handleDelete"
-        @create="handleCreate"
-        @update="handleUpdate"
+          :empty-item-template="EMPTY_ITEM_TEMPLATE"
+          :loading="baseViewLoading"
+          :table-headers="headers"
+          :api="archivApi"
+          :domain-key="domainKey"
+          :enable-actions="isAdmin"
+          :should-load-form-context="isAdmin"
+          :handle-create="handleCreate"
+          :handle-update="handleUpdate"
+          :handle-delete="handleDelete"
+          :form-ref="archivFormRef"
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <archiv-form
@@ -84,15 +81,8 @@ import { useI18n } from "vue-i18n";
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
 import ArchivForm from "@/components/forms/ArchivForm.vue";
-import {
-  useCreateArchiv,
-  useDeleteArchiv,
-  useGetArchiv,
-  useGetArchivFormContext,
-  useUpdateArchiv,
-} from "@/composables/api/useArchivApi";
+import { useArchivApi } from "@/composables/api/useArchivApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
-import usePagination from "@/composables/usePagination";
 import { Role } from "@/types/Role";
 
 const domainKey = "model.archiv.modelName";
@@ -178,99 +168,41 @@ const EMPTY_ITEM_TEMPLATE: Partial<ArchivResponseDTO> = {
   notizen: undefined,
 };
 
-const {
-  data: archivFormContext,
-  call: getArchivFormContext,
-  loading: getArchivFormContextLoading,
-} = useGetArchivFormContext();
 
-const {
-  data: archive,
-  call: getArchiveintraege,
-  loading: getArchivLoading,
-} = useGetArchiv();
+const archivApi = useArchivApi();
+
+const archivFormContext = computed(() => archivApi.context.data.value);
 
 const projekte = computed(() => archivFormContext.value?.projekte ?? []);
 
 type ArchivFormType = InstanceType<typeof ArchivForm>;
 const archivFormRef = useTemplateRef<ArchivFormType>("archivForm");
 
-const { dataTableOptions, onSuccess, onFailure } = usePagination(
-  computed(() => archive.value?.page?.totalPages),
-  getArchiveintraege,
-  isAdmin,
-  getArchivFormContext,
-  async () => {
-    await archivFormRef.value?.validate();
-  }
-);
-
-const {
-  call: createArchiv,
-  loading: createArchivLoading,
-  error: createArchivError,
-} = useCreateArchiv();
-
 const handleCreate = async (archivCreateDTO: Partial<ArchivResponseDTO>) => {
   const model = archivCreateDTO as ArchivResponseDTO;
 
-  await createArchiv({
+  await archivApi.create.call({
     archivCreateDTO: model,
   });
 
-  if (!createArchivError.value) {
-    await onSuccess(t("common.message.created", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.createdError", [t(domainKey)]));
-  }
 };
-
-const {
-  call: updateArchiv,
-  loading: updateArchivLoading,
-  error: updateArchivError,
-} = useUpdateArchiv();
 
 const handleUpdate = async (archivUpdateDTO: Partial<ArchivResponseDTO>) => {
   const model = archivUpdateDTO as ArchivResponseDTO;
-  await updateArchiv({
+  await archivApi.update.call({
     id: model.id,
     archivUpdateDTO: model,
   });
 
-  if (!updateArchivError.value) {
-    await onSuccess(t("common.message.updated", [t(domainKey)]));
-  } else {
-    onFailure(t("common.message.updatedError", [t(domainKey)]));
-  }
 };
 
-const {
-  call: deleteArchiv,
-  loading: deleteArchivLoading,
-  error: deleteArchivError,
-} = useDeleteArchiv();
-
 const handleDelete = async (id: string) => {
-  await deleteArchiv({
+  await archivApi.delete.call({
     id: Number(id),
   });
-  if (!deleteArchivError.value) {
-    await onSuccess(t("common.message.deleted", [t(domainKey)]));
-  } else {
-    onFailure(t("common.message.deletedError", [t(domainKey)]));
-  }
 };
 
 const formatDate = (value?: Date | null) =>
   value ? value.toLocaleDateString("de-DE") : "";
 
-const loading = computed(
-  () =>
-    getArchivLoading.value ||
-    getArchivFormContextLoading.value ||
-    createArchivLoading.value ||
-    updateArchivLoading.value ||
-    deleteArchivLoading.value
-);
 </script>

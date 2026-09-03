@@ -7,6 +7,7 @@ import type {
   PagedModelArchivResponseDTO,
   UpdateArchivRequest,
 } from "@/api/generated/foerdermittel-backend";
+import type { ApiComposables } from "@/util/composable-helper";
 
 import { ArchivControllerApi } from "@/api/generated/foerdermittel-backend";
 import {
@@ -39,3 +40,21 @@ export const {
     context: (api) => api.getArchivFormContext(),
   })
 );
+
+export function useArchivApi(): ApiComposables<
+    ArchivResponseDTO,
+    ArchivFormContext,
+    CreateArchivRequest,
+    ArchivResponseDTO,
+    UpdateArchivRequest,
+    ArchivResponseDTO,
+    DeleteArchivRequest
+> {
+  return {
+    getAll: useGetArchiv(),
+    context: useGetArchivFormContext(),
+    create: useCreateArchiv(),
+    update: useUpdateArchiv(),
+    delete: useDeleteArchiv(),
+  };
+}
