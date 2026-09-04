@@ -377,6 +377,14 @@
                     </dependency>
                 </dependencies>
                 <configuration>
+                    <pom>
+                        <sortPom>
+                            <expandEmptyElements>false</expandEmptyElements>
+                            <nrOfIndentSpace>4</nrOfIndentSpace>
+                            <!-- Required for proper Maven release -->
+                            <spaceBeforeCloseEmptyElement>true</spaceBeforeCloseEmptyElement>
+                        </sortPom>
+                    </pom>
                     <java>
                         <includes>
                             <include>src/main/java/**/*.java</include> <!-- Check application code -->
