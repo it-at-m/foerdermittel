@@ -1,13 +1,10 @@
 package de.muenchen.oss.foerdermittel.backend.security;
 
-import org.springframework.security.access.prepost.PreAuthorize;
-
-/**
- * Each possible authority in this project is represented by a constant in this class.
- * The constants are used within the {@link org.springframework.stereotype.Controller} or
- * {@link org.springframework.stereotype.Service} classes in the method security annotations
- * (e.g. {@link PreAuthorize}).
- */
+/// Each possible authority in this project is represented by a constant in this class.
+///
+/// The constants are used within the [org.springframework.stereotype.Controller] or
+/// [org.springframework.stereotype.Service] classes in the method security annotations (e.g.
+/// [org.springframework.security.access.prepost.PreAuthorize]).
 public final class Authorities {
     public static final String HAS_ROLE_ADMIN = "hasAnyRole('admin')";
     public static final String HAS_ROLE_SACHBEARBEITUNG_HAUSHALT = "hasAnyRole('sachbearbeitunghaushalt', 'admin')";
