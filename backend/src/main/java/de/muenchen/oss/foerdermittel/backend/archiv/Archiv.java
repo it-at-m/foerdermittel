@@ -18,6 +18,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/// This class represents a Archiv.
+///
+/// The entity's attributes are mapped to the corresponding database columns.
+///
+
 @Entity
 @Data
 @AllArgsConstructor
