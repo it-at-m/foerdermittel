@@ -80,7 +80,7 @@ public class ProjektterminServiceTest {
     class GetProjektterminFormContext {
 
         @Test
-        void givenProjektTERMIN_IDsAndProjekte_thenReturnCorrectFormContext() {
+        void givenProjektterminIdsAndProjekte_thenReturnCorrectFormContext() {
             // Given
             final List<Long> terminIds = List.of(1L, 2L, 3L);
 
