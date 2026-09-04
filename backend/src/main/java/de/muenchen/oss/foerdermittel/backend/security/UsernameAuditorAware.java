@@ -6,10 +6,8 @@ import org.jspecify.annotations.NonNull;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 
-/**
- * {@link AuditorAware} implementation that uses the username of the
- * currently authenticated user for Spring Data JPA auditing via {@link AuthUtils} bean.
- */
+/// [AuditorAware] implementation that uses the username of the
+/// currently authenticated user for Spring Data JPA auditing via [AuthUtils] bean.
 @Component("usernameAuditorAware")
 @RequiredArgsConstructor
 public class UsernameAuditorAware implements AuditorAware<String> {
