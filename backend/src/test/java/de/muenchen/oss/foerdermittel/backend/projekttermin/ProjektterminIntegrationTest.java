@@ -253,7 +253,7 @@ public class ProjektterminIntegrationTest {
 
             assertThat(responseDTO).isNotNull();
 
-            final Optional<Projekttermin> entity = projektterminRepository.findById(responseDTO.id());
+            final Optional<Projekttermin> entity = projektterminRepository.findById(Long.valueOf(responseDTO.id()));
 
             assertThat(entity).isPresent();
 
@@ -416,7 +416,7 @@ public class ProjektterminIntegrationTest {
 
             assertThat(responseDTO).isNotNull();
 
-            final Optional<Projekttermin> entity = projektterminRepository.findById(created.id());
+            final Optional<Projekttermin> entity = projektterminRepository.findById(Long.valueOf(created.id()));
 
             assertThat(entity).isPresent();
 
@@ -539,7 +539,7 @@ public class ProjektterminIntegrationTest {
                     .expectStatus()
                     .isOk();
 
-            assertThat(projektterminRepository.findById(created.id()))
+            assertThat(projektterminRepository.findById(Long.valueOf(created.id())))
                     .isEmpty();
         }
 

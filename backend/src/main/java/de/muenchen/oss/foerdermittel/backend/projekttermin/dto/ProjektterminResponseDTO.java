@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
 public record ProjektterminResponseDTO(
-        @NotNull Long id,
+        @NotNull String id,
         @NotNull OffsetDateTime termin,
         Boolean ueberwachung,
         String zustaendig,

@@ -5,6 +5,7 @@ import de.muenchen.oss.foerdermittel.backend.projekttermin.dto.ProjektterminCrea
 import de.muenchen.oss.foerdermittel.backend.projekttermin.dto.ProjektterminMapper;
 import de.muenchen.oss.foerdermittel.backend.projekttermin.dto.ProjektterminResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.projekttermin.dto.ProjektterminUpdateDTO;
+import de.muenchen.oss.foerdermittel.backend.util.ControllerUtils;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -71,18 +72,18 @@ public class ProjektterminController {
     @ResponseStatus(HttpStatus.OK)
     public ProjektterminResponseDTO updateProjekttermin(
             @Valid @RequestBody final ProjektterminUpdateDTO projektterminUpdateDTO,
-            @PathVariable("id") final Long terminID) {
+            @PathVariable("id") final String terminID) {
 
         final Projekttermin projekttermin = projektterminMapper.toEntity(projektterminUpdateDTO);
 
         return projektterminMapper.toDTO(projektterminService.updateProjekttermin(projekttermin,
-                terminID));
+                ControllerUtils.convertStringToLong(terminID)));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteProjekttermin(@PathVariable("id") final Long terminID) {
-        projektterminService.deleteProjekttermin(terminID);
+    public void deleteProjekttermin(@PathVariable("id") final String terminID) {
+        projektterminService.deleteProjekttermin(ControllerUtils.convertStringToLong(terminID));
     }
 
 }

@@ -50,7 +50,7 @@ public class ProjektterminMapperTest {
             final ProjektterminResponseDTO dto = projektterminMapper.toDTO(entity);
 
             assertThat(dto).isNotNull();
-            assertThat(dto.id()).isEqualTo(entity.getId());
+            assertThat(dto.id()).isEqualTo(entity.getId().toString());
             assertThat(dto.termin()).isEqualTo(OffsetDateTime.parse("2024-09-14T00:00:00Z"));
             assertThat(dto.zustaendig()).isEqualTo(entity.getZustaendig());
             assertThat(dto.telefon()).isEqualTo(entity.getTelefon());
