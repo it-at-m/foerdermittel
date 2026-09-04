@@ -5,7 +5,6 @@ package de.muenchen.oss.foerdermittel.backend.security;
 /// The constants are used within the [org.springframework.stereotype.Controller] or
 /// [org.springframework.stereotype.Service] classes in the method security annotations (e.g.
 /// [org.springframework.security.access.prepost.PreAuthorize]).
-@SuppressWarnings("PMD.DataClass")
 public final class Authorities {
     public static final String HAS_ROLE_ADMIN = "hasAnyRole('admin')";
     public static final String HAS_ROLE_SACHBEARBEITUNG_HAUSHALT = "hasAnyRole('sachbearbeitunghaushalt', 'admin')";
