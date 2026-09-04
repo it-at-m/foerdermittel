@@ -25,30 +25,30 @@
     <v-row>
       <v-col cols="4">
         <fm-date-input
-            v-model="modelValue.termin"
-            :display-mode="displayMode"
-            :label="t('model.termin.termin')"
-            :validation-attribute-map="
-    ProjektterminCreateDTOPropertyValidationAttributesMap
-  "
-            :additional-rules="terminRules"
-            clearable
+          v-model="modelValue.termin"
+          :display-mode="displayMode"
+          :label="t('model.termin.termin')"
+          :validation-attribute-map="
+            ProjektterminCreateDTOPropertyValidationAttributesMap
+          "
+          :additional-rules="terminRules"
+          clearable
         />
       </v-col>
-        <v-col cols="2">
-          <fm-checkbox
-              v-model="modelValue.ueberwachung"
-              :display-mode="displayMode"
-              :label="t('model.termin.ueberwachung')"
-          />
-        </v-col>
-      </v-row>
+      <v-col cols="2">
+        <fm-checkbox
+          v-model="modelValue.ueberwachung"
+          :display-mode="displayMode"
+          :label="t('model.termin.ueberwachung')"
+        />
+      </v-col>
+    </v-row>
     <v-row>
       <v-col cols="4">
         <fm-text-field
-            v-model="modelValue.zustaendig"
-            :display-mode="displayMode"
-            :label="t('model.termin.zustaendig')"
+          v-model="modelValue.zustaendig"
+          :display-mode="displayMode"
+          :label="t('model.termin.zustaendig')"
         />
       </v-col>
 
