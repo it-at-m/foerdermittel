@@ -259,7 +259,7 @@ class ArchivIntegrationTest {
 
             assertThat(responseDTO).isNotNull();
 
-            final Optional<Archiv> entity = archivRepository.findById(responseDTO.id());
+            final Optional<Archiv> entity = archivRepository.findById(Long.valueOf(responseDTO.id()));
 
             assertThat(entity).isPresent();
 
@@ -452,7 +452,8 @@ class ArchivIntegrationTest {
 
             assertThat(responseDTO).isNotNull();
 
-            final Optional<Archiv> entity = archivRepository.findById(created.id());
+            final Optional<Archiv> entity = archivRepository.findById(Long.valueOf(created.id()));
+            ;
 
             assertThat(entity).isPresent();
 
@@ -593,8 +594,9 @@ class ArchivIntegrationTest {
                     .expectStatus()
                     .isOk();
 
-            assertThat(archivRepository.findById(created.id()))
+            assertThat(archivRepository.findById(Long.valueOf(created.id())))
                     .isEmpty();
+
         }
 
         @Test

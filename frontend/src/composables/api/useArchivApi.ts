@@ -42,13 +42,13 @@ export const {
 );
 
 export function useArchivApi(): ApiComposables<
-    ArchivResponseDTO,
-    ArchivFormContext,
-    CreateArchivRequest,
-    ArchivResponseDTO,
-    UpdateArchivRequest,
-    ArchivResponseDTO,
-    DeleteArchivRequest
+  ArchivResponseDTO,
+  ArchivFormContext,
+  CreateArchivRequest,
+  ArchivResponseDTO,
+  UpdateArchivRequest,
+  ArchivResponseDTO,
+  DeleteArchivRequest
 > {
   return {
     getAll: useGetArchiv(),

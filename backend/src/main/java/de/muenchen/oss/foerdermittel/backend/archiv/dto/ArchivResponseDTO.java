@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
 public record ArchivResponseDTO(
-        @NotNull Long id,
+        @NotNull String id,
         OffsetDateTime speicherDatum,
         @NotNull Boolean speicherAkt,
         @NotNull Boolean speicherRechnungen,

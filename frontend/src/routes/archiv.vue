@@ -2,17 +2,18 @@
   <base-view :domain-key="domainKey">
     <template #default="{ baseViewLoading }">
       <crud-card
-          :empty-item-template="EMPTY_ITEM_TEMPLATE"
-          :loading="baseViewLoading"
-          :table-headers="headers"
-          :api="archivApi"
-          :domain-key="domainKey"
-          :enable-actions="isAdmin"
-          :should-load-form-context="isAdmin"
-          :handle-create="handleCreate"
-          :handle-update="handleUpdate"
-          :handle-delete="handleDelete"
-          :form-ref="archivFormRef"
+        :empty-item-template="EMPTY_ITEM_TEMPLATE"
+        :loading="baseViewLoading"
+        :table-headers="headers"
+        :api="archivApi"
+        :domain-key="domainKey"
+        :enable-actions="isAdmin"
+        :should-load-form-context="isAdmin"
+        :handle-create="handleCreate"
+        :handle-update="handleUpdate"
+        :handle-delete="handleDelete"
+        :form-ref="archivFormRef"
+        :expandable="true"
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <archiv-form
@@ -168,7 +169,6 @@ const EMPTY_ITEM_TEMPLATE: Partial<ArchivResponseDTO> = {
   notizen: undefined,
 };
 
-
 const archivApi = useArchivApi();
 
 const archivFormContext = computed(() => archivApi.context.data.value);
@@ -184,25 +184,23 @@ const handleCreate = async (archivCreateDTO: Partial<ArchivResponseDTO>) => {
   await archivApi.create.call({
     archivCreateDTO: model,
   });
-
 };
 
 const handleUpdate = async (archivUpdateDTO: Partial<ArchivResponseDTO>) => {
   const model = archivUpdateDTO as ArchivResponseDTO;
+
   await archivApi.update.call({
     id: model.id,
     archivUpdateDTO: model,
   });
-
 };
 
 const handleDelete = async (id: string) => {
   await archivApi.delete.call({
-    id: Number(id),
+    id,
   });
 };
 
 const formatDate = (value?: Date | null) =>
   value ? value.toLocaleDateString("de-DE") : "";
-
 </script>

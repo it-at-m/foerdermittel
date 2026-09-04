@@ -46,7 +46,7 @@ class ArchivMapperTest {
             final ArchivResponseDTO dto = archivMapper.toDTO(entity);
 
             assertThat(dto).isNotNull();
-            assertThat(dto.id()).isEqualTo(entity.getId());
+            assertThat(dto.id()).isEqualTo(entity.getId().toString());
             assertThat(dto.speicherDatum()).isEqualTo(OffsetDateTime.parse("2024-09-14T00:00:00Z"));
             assertThat(dto.speicherAkt()).isEqualTo(entity.getSpeicherAkt());
             assertThat(dto.speicherRechnungen()).isEqualTo(entity.getSpeicherRechnungen());

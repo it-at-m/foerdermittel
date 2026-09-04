@@ -5,6 +5,7 @@ import de.muenchen.oss.foerdermittel.backend.archiv.dto.ArchivMapper;
 import de.muenchen.oss.foerdermittel.backend.archiv.dto.ArchivResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.archiv.dto.ArchivUpdateDTO;
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
+import de.muenchen.oss.foerdermittel.backend.util.ControllerUtils;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -73,18 +74,18 @@ public class ArchivController {
     @ResponseStatus(HttpStatus.OK)
     public ArchivResponseDTO updateArchiv(
             @Valid @RequestBody final ArchivUpdateDTO archivUpdateDTO,
-            @PathVariable("id") final Long archivId) {
+            @PathVariable("id") final String archivId) {
 
         final Archiv archiv = archivMapper.toEntity(archivUpdateDTO);
 
         return archivMapper.toDTO(archivService.updateArchiv(archiv,
-                archivId));
+                ControllerUtils.convertStringToLong(archivId)));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteArchiv(@PathVariable("id") final Long archivID) {
-        archivService.deleteArchiv(archivID);
+    public void deleteArchiv(@PathVariable("id") final String archivID) {
+        archivService.deleteArchiv(ControllerUtils.convertStringToLong(archivID));
     }
 
 }
