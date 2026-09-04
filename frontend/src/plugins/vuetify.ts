@@ -78,6 +78,7 @@ export default createVuetify({
       persistentPlaceholder: true,
       autoSelectFirst: true,
       clearOnSelect: true,
+      openOnFocus: true,
     },
   },
   theme: {
