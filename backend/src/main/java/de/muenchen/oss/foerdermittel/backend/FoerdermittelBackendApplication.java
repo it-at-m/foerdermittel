@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 @ConfigurationPropertiesScan
 @SuppressWarnings("PMD.UseUtilityClass")
 public class FoerdermittelBackendApplication {
-    public static void main(final String[] args) {
+    /* package */ static void main(final String... args) {
         SpringApplication.run(FoerdermittelBackendApplication.class, args);
     }
 }
