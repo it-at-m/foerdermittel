@@ -1,9 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type { maxRule, minRule } from "@/plugins/rules";
 import type { ValidationAttributes } from "@/types/OpenAPIValidationAttributes";
 import type { ValidationRule } from "vuetify/framework";
 import type { RuleAliases } from "vuetify/labs/rules";
 
+import { requiredTrimmedRule } from "@/plugins/rules";
 import { toTrimmedString } from "@/util/formatter";
 
 /**
@@ -21,11 +20,17 @@ import { toTrimmedString } from "@/util/formatter";
  * @param rules all available {@link RuleAliases} typically retrieved via `useRules` composable from Vuetify
  * @param validationAttributes a generated *ValidationAttributesMap object
  * @param property property of the model object to calculate the {@link ValidationRule}s for.
+ * @param trimRequired trimms all strings before a required validation, true by default
  */
 export function mapOpenAPIToVuetifyValidationRules<
   T extends Record<string, ValidationAttributes>,
   K extends keyof T,
->(rules: RuleAliases, validationAttributes: T, property: K): ValidationRule[] {
+>(
+  rules: RuleAliases,
+  validationAttributes: T,
+  property: K,
+  trimRequired = true
+): ValidationRule[] {
   const attributes = validationAttributes[property];
   const result: ValidationRule[] = [];
 
@@ -38,7 +43,7 @@ export function mapOpenAPIToVuetifyValidationRules<
 
   // Required
   if (attributes.required !== undefined && attributes.required) {
-    result.push(rules.required());
+    result.push(trimRequired ? requiredTrimmedRule() : rules.required());
   }
 
   // Strings
@@ -106,13 +111,18 @@ export function getOpenAPIValidationConstraint<
 /**
  * Deep equal compares two objects using trimmed string values
  * <br>
- * <b>Note:</b> Does not work for non-plain objects e.g. Date, Map, Set, RegExp, ...
+ * <b>Note:</b> Does not work for non-plain objects e.g. Map, Set, RegExp, ...
  * @param a object a
  * @param b object b
  */
 export function deepEqualTrimmed(a: unknown, b: unknown): boolean {
   if (typeof a === "string" && typeof b === "string") {
     return toTrimmedString(a) === toTrimmedString(b);
+  }
+
+  // Treat null and undefined as equal
+  if (a == null && b == null) {
+    return true;
   }
 
   if (a === b) {
@@ -123,8 +133,11 @@ export function deepEqualTrimmed(a: unknown, b: unknown): boolean {
     return a.getTime() === b.getTime();
   }
 
-  if (Array.isArray(a) && Array.isArray(b)) {
+  // If only one side is an array, they are not equal
+  if (Array.isArray(a) || Array.isArray(b)) {
     return (
+      Array.isArray(a) &&
+      Array.isArray(b) &&
       a.length === b.length &&
       a.every((item, i) => deepEqualTrimmed(item, b[i]))
     );
