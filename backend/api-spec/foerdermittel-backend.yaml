@@ -370,8 +370,7 @@ paths:
         in: path
         required: true
         schema:
-          type: integer
-          format: int64
+          type: string
       requestBody:
         content:
           application/json:
@@ -396,8 +395,7 @@ paths:
         in: path
         required: true
         schema:
-          type: integer
-          format: int64
+          type: string
       responses:
         "200":
           description: OK
@@ -2219,8 +2217,7 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
         termin:
           type: string
           format: date-time
@@ -2748,8 +2745,9 @@ components:
         bezeichnung:
           type: string
           description: ""
-      description: DTO for Hauptabschnitt to be used in other FormContexts other than
-        its own.
+      description: |-
+        DTO for [de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt] to be used in
+        other FormContexts other than its own.
     UnterabschnittFormContext:
       required:
       - hasHas
