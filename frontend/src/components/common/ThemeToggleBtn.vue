@@ -4,7 +4,8 @@
     location="right"
   >
     <template #activator="{ props }">
-      <v-btn
+      <v-icon-btn
+        variant="text"
         color="accent"
         v-bind="props"
         :icon="isDark ? mdiWeatherSunny : mdiWeatherNight"

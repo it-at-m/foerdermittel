@@ -65,7 +65,7 @@ import type { VForm } from "vuetify/components";
 
 import { ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRules } from "vuetify/labs/rules";
+import { useRules } from "vuetify";
 
 import { UnterabschnittCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
