@@ -20,12 +20,12 @@ public class GlobalExceptionHandler {
         final Throwable cause = ex.getCause();
 
         return switch (cause) {
-        case ConstraintViolationException ignored ->
+        case ConstraintViolationException _ ->
             ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, "Entity violates a database constraint");
         case PropertyValueException pve ->
             ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
                     String.format("Missing required field '%s' for entity '%s'", pve.getPropertyName(), pve.getEntityName()));
-        case DataException ignored ->
+        case DataException _ ->
             ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Invalid field value");
         case null, default -> ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected data integrity violation");
         };
