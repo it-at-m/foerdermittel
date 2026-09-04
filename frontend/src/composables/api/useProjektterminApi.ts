@@ -7,6 +7,7 @@ import type {
   ProjektterminResponseDTO,
   UpdateProjektterminRequest,
 } from "@/api/generated/foerdermittel-backend";
+import type { ApiComposables } from "@/util/composable-helper";
 
 import { ProjektterminControllerApi } from "@/api/generated/foerdermittel-backend";
 import {
@@ -39,3 +40,21 @@ export const {
     context: (api) => api.getProjektterminFormContext(),
   })
 );
+
+export function useProjektterminApi(): ApiComposables<
+  ProjektterminResponseDTO,
+  ProjektterminFormContext,
+  CreateProjektterminRequest,
+  ProjektterminResponseDTO,
+  UpdateProjektterminRequest,
+  ProjektterminResponseDTO,
+  DeleteProjektterminRequest
+> {
+  return {
+    getAll: useGetProjekttermin(),
+    context: useGetProjektterminFormContext(),
+    create: useCreateProjekttermin(),
+    update: useUpdateProjekttermin(),
+    delete: useDeleteProjekttermin(),
+  };
+}

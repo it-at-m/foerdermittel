@@ -1,21 +1,19 @@
 <template>
   <base-view :domain-key="domainKey">
     <template #default="{ baseViewLoading }">
-      <!-- @vue-generic {Partial<ProjektterminResponseDTO>} -->
       <crud-card
-        ref="crudRef"
-        v-model="dataTableOptions"
         :empty-item-template="EMPTY_ITEM_TEMPLATE"
-        :loading="loading || baseViewLoading"
+        :loading="baseViewLoading"
         :table-headers="headers"
+        :api="projektterminApi"
         :domain-key="domainKey"
         :enable-actions="isAdmin"
-        :items="projekttermine?.content ?? []"
+        :should-load-form-context="isAdmin"
+        :handle-create="handleCreate"
+        :handle-update="handleUpdate"
+        :handle-delete="handleDelete"
+        :form-ref="projektterminFormRef"
         :expandable="true"
-        :total-items="projekttermine?.page?.totalElements ?? 0"
-        @delete="handleDelete"
-        @create="handleCreate"
-        @update="handleUpdate"
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <projekttermin-form
@@ -69,15 +67,8 @@ import { useI18n } from "vue-i18n";
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
 import ProjektterminForm from "@/components/forms/ProjektterminForm.vue";
-import {
-  useCreateProjekttermin,
-  useDeleteProjekttermin,
-  useGetProjekttermin,
-  useGetProjektterminFormContext,
-  useUpdateProjekttermin,
-} from "@/composables/api/useProjektterminApi";
+import { useProjektterminApi } from "@/composables/api/useProjektterminApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
-import usePagination from "@/composables/usePagination";
 import { Role } from "@/types/Role";
 
 const domainKey = "model.termin.modelName";
@@ -163,17 +154,11 @@ const EMPTY_ITEM_TEMPLATE: Partial<ProjektterminResponseDTO> = {
   notizen: undefined,
 };
 
-const {
-  data: projektterminFormContext,
-  call: getProjektterminFormContext,
-  loading: getProjektterminFormContextLoading,
-} = useGetProjektterminFormContext();
+const projektterminApi = useProjektterminApi();
 
-const {
-  data: projekttermine,
-  call: getProjekttermine,
-  loading: getProjektterminLoading,
-} = useGetProjekttermin();
+const projektterminFormContext = computed(
+  () => projektterminApi.context.data.value
+);
 
 const projekte = computed(() => projektterminFormContext.value?.projekte ?? []);
 
@@ -181,86 +166,32 @@ type ProjektterminFormType = InstanceType<typeof ProjektterminForm>;
 const projektterminFormRef =
   useTemplateRef<ProjektterminFormType>("projektterminForm");
 
-const { dataTableOptions, onSuccess, onFailure } = usePagination(
-  computed(() => projekttermine.value?.page?.totalPages),
-  getProjekttermine,
-  isAdmin,
-  getProjektterminFormContext,
-  async () => {
-    await projektterminFormRef.value?.validate();
-  }
-);
-
-const {
-  call: createProjekttermin,
-  loading: createProjektterminLoading,
-  error: createProjektterminError,
-} = useCreateProjekttermin();
-
 const handleCreate = async (
   projektterminCreateDTO: Partial<ProjektterminResponseDTO>
 ) => {
   const model = projektterminCreateDTO as ProjektterminResponseDTO;
 
-  await createProjekttermin({
+  await projektterminApi.create.call({
     projektterminCreateDTO: model,
   });
-
-  if (!createProjektterminError.value) {
-    await onSuccess(t("common.message.created", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.createdError", [t(domainKey)]));
-  }
 };
-
-const {
-  call: updateProjekttermin,
-  loading: updateProjektterminLoading,
-  error: updateProjektterminError,
-} = useUpdateProjekttermin();
 
 const handleUpdate = async (
   projektterminUpdateDTO: Partial<ProjektterminResponseDTO>
 ) => {
   const model = projektterminUpdateDTO as ProjektterminResponseDTO;
-  await updateProjekttermin({
+  await projektterminApi.update.call({
     id: model.id,
     projektterminUpdateDTO: model,
   });
-
-  if (!updateProjektterminError.value) {
-    await onSuccess(t("common.message.updated", [t(domainKey)]));
-  } else {
-    onFailure(t("common.message.updatedError", [t(domainKey)]));
-  }
 };
 
-const {
-  call: deleteProjekttermin,
-  loading: deleteProjektterminLoading,
-  error: deleteProjektterminError,
-} = useDeleteProjekttermin();
-
 const handleDelete = async (id: string) => {
-  await deleteProjekttermin({
-    id: Number(id),
+  await projektterminApi.delete.call({
+    id,
   });
-  if (!deleteProjektterminError.value) {
-    await onSuccess(t("common.message.deleted", [t(domainKey)]));
-  } else {
-    onFailure(t("common.message.deletedError", [t(domainKey)]));
-  }
 };
 
 const formatDate = (value?: Date | null) =>
   value ? value.toLocaleDateString("de-DE") : "";
-
-const loading = computed(
-  () =>
-    getProjektterminLoading.value ||
-    getProjektterminFormContextLoading.value ||
-    createProjektterminLoading.value ||
-    updateProjektterminLoading.value ||
-    deleteProjektterminLoading.value
-);
 </script>
