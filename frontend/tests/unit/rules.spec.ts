@@ -26,6 +26,18 @@ describe("min rule tests", () => {
     // then
     assert.isTrue(result);
   });
+
+  test("Throws no error when undefined", () => {
+    // given
+    const num = undefined;
+    const validationRule = minRule(10);
+
+    // when
+    const result = validationRule(num);
+
+    // then
+    assert.isTrue(result);
+  });
 });
 
 describe("max rule tests", () => {
@@ -52,14 +64,26 @@ describe("max rule tests", () => {
     // then
     assert.isTrue(result);
   });
+
+  test("Throws no error when undefined", () => {
+    // given
+    const num = undefined;
+    const validationRule = maxRule(10);
+
+    // when
+    const result = validationRule(num);
+
+    // then
+    assert.isTrue(result);
+  });
 });
 
 describe("unique rule tests", () => {
-  test("Throws an error when value already exists and no currentValue", () => {
+  test("Throws an error when value already exists and no initialValue", () => {
     // given
     const newValue = 10;
     const existingValues = [5, 8, 10];
-    const validationRule = uniqueRule(existingValues, null);
+    const validationRule = uniqueRule(existingValues, undefined);
 
     // when
     const result = validationRule(newValue);
@@ -72,7 +96,7 @@ describe("unique rule tests", () => {
     // given
     const newValue = 10;
     const existingValues = [5, 8];
-    const validationRule = uniqueRule(existingValues, null);
+    const validationRule = uniqueRule(existingValues, undefined);
 
     // when
     const result = validationRule(newValue);
@@ -81,9 +105,22 @@ describe("unique rule tests", () => {
     assert.isTrue(result);
   });
 
-  test("Throws no error when value still exists and is currentValue", () => {
+  test("Throws no error when value still exists and is initialValue", () => {
     // given
     const newValue = 10;
+    const existingValues = [5, 8, 10];
+    const validationRule = uniqueRule(existingValues, newValue);
+
+    // when
+    const result = validationRule(newValue);
+
+    // then
+    assert.isTrue(result);
+  });
+
+  test("Throws no error when undefined", () => {
+    // given
+    const newValue = undefined;
     const existingValues = [5, 8, 10];
     const validationRule = uniqueRule(existingValues, newValue);
 

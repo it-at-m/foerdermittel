@@ -81,7 +81,7 @@ import type { VForm } from "vuetify/components";
 
 import { ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRules } from "vuetify/labs/rules";
+import { useRules } from "vuetify";
 
 import { FoerderbereichCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
