@@ -17,12 +17,11 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-/// This class represents an auditable entity using Spring JPA Auditing
-/// and allows storage of creation and modification timestamps and usernames.
+/// This class represents an auditable entity using Spring JPA Auditing and allows storage of
+/// creation and modification timestamps and usernames.
 ///
-/// **Note:** A
-/// [de.muenchen.oss.foerdermittel.backend.configuration.JPAAuditingConfiguration] is required
-/// in order to function correctly.
+/// **Note:** A [de.muenchen.oss.foerdermittel.backend.configuration.JPAAuditingConfiguration] is
+/// required in order to function correctly.
 ///
 ///
 /// @see <a href=

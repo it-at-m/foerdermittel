@@ -20,7 +20,8 @@ public class JacksonConfiguration {
     }
 
     /// This deserializer trims leading and trailing whitespaces and normalizes whitespaces in between
-    /// characters to singular whitespaces. Additionally, whitespace before and after newline are removed.
+    /// characters to singular whitespaces. Additionally, whitespace before and after newline
+    /// are removed.
     /* package */ static class TrimStringDeserializer extends ValueDeserializer<String> {
         @Override
         public String deserialize(final JsonParser p, final DeserializationContext ctx) {
