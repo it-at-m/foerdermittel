@@ -1,8 +1,8 @@
 openapi: 3.0.1
 info:
-  title: '@project.artifactId@'
-  description: '@project.description@'
-  version: '@project.version@'
+  title: foerdermittel-backend
+  description: Backend component for the application foerdermittel
+  version: 0.2.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -661,8 +661,7 @@ paths:
         in: path
         required: true
         schema:
-          type: integer
-          format: int64
+          type: string
       requestBody:
         content:
           application/json:
@@ -687,8 +686,7 @@ paths:
         in: path
         required: true
         schema:
-          type: integer
-          format: int64
+          type: string
       responses:
         "200":
           description: OK
@@ -2417,8 +2415,7 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
         speicherDatum:
           type: string
           format: date-time
