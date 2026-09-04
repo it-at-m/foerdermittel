@@ -25,8 +25,7 @@ public final class ControllerUtils {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
                     "Invalid ID: " + value,
-                    ex
-            );
+                    ex);
         }
     }
 }
