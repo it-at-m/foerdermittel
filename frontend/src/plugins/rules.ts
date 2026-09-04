@@ -4,59 +4,66 @@ import { createRulesPlugin } from "vuetify";
 
 import vuetify from "@/plugins/vuetify";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type CustomRule = (...args: any[]) => (value: any) => string | boolean;
+/**
+ * Custom type required as CustomValidationRuleBuilder type from Vuetify is not accessible.
+ */
+type CustomRule<RuleArgs extends unknown[], RuleValue> = (
+  ...args: RuleArgs
+) => (value: RuleValue) => string | boolean;
+
+/**
+ * Custom type for use in {@link uniqueRule}.
+ */
+type UniqueRule = <T>(
+  values: T[],
+  initialValue?: T,
+  err?: string
+) => (value: T) => string | boolean;
 
 /**
  * Creates a validation rule that ensures a value is not below a minimum.
  *
- * By default, the minimum value is inclusive, meaning values equal to
- * `minNumber` are considered valid. When `exclusive` is `true`, the value
- * must be strictly greater than `minNumber`.
- *
- * @param minNumber - Minimum allowed value.
- * @param exclusive - Whether `minNumber` itself should be considered invalid.
- * @param err - Custom error message returned when the value is below the minimum.
+ * @param minNumber - Minimum allowed value
+ * @param exclusive - Sets `value` to be strictly greater than `minNumber`
+ * @param err - Optional custom error message
  * @returns A validation function returning `true` for valid values or an error
  *   message when the minimum is not met.
  */
-const minRule: CustomRule = (
-  minNumber: number,
+const minRule: CustomRule<[number, boolean?, string?], number> = (
+  minNumber,
   exclusive = false,
-  err?: string
+  err
 ) => {
   return (v) =>
-    exclusive
-      ? v > minNumber || err || `Der Wert muss größer als ${minNumber} sein.`
-      : v >= minNumber ||
-        err ||
-        `Der Wert muss mindestens ${minNumber} betragen.`;
+    v == null ||
+    (exclusive ? v > minNumber : v >= minNumber) ||
+    err ||
+    (exclusive
+      ? `Der Wert muss größer als ${minNumber} sein.`
+      : `Der Wert muss mindestens ${minNumber} betragen.`);
 };
 
 /**
  * Creates a validation rule that ensures a value does not exceed a maximum.
  *
- * By default, the maximum value is inclusive, meaning values equal to
- * `maxNumber` are considered valid. When `exclusive` is `true`, the value
- * must be strictly less than `maxNumber`.
- *
- * @param maxNumber - Maximum allowed value.
- * @param exclusive - Whether `maxNumber` itself should be considered invalid.
- * @param err - Custom error message returned when the value exceeds the maximum.
+ * @param maxNumber - Maximum allowed value
+ * @param exclusive - Sets `value` to be strictly smaller than `maxNumber`
+ * @param err - Optional custom error message
  * @returns A validation function returning `true` for valid values or an error
  *   message when the maximum is exceeded.
  */
-const maxRule: CustomRule = (
-  maxNumber: number,
+const maxRule: CustomRule<[number, boolean?, string?], number> = (
+  maxNumber,
   exclusive = false,
-  err?: string
+  err?
 ) => {
   return (v) =>
-    exclusive
-      ? v < maxNumber || err || `Der Wert muss kleiner als ${maxNumber} sein.`
-      : v <= maxNumber ||
-        err ||
-        `Der Wert darf höchstens ${maxNumber} betragen.`;
+    v == null ||
+    (exclusive ? v < maxNumber : v <= maxNumber) ||
+    err ||
+    (exclusive
+      ? `Der Wert muss kleiner als ${maxNumber} sein.`
+      : `Der Wert darf höchstens ${maxNumber} betragen.`);
 };
 
 /**
@@ -66,21 +73,16 @@ const maxRule: CustomRule = (
  * This is useful when editing an existing entity, where its current value
  * naturally appears in the list of existing values.
  *
- * @param values - Values against which the value is checked for uniqueness.
- * @param initialValue - The current value of the entity being edited. This
- *   value is considered valid even if it is included in `values`.
- * @param err - Optional custom error message returned when the value is not unique.
+ * @param values - Values against which the value is checked for uniqueness
+ * @param initialValue - The current value of the entity being edited
+ * @param err - Optional custom error message
  * @returns A validation function that returns `true` when the value is unique,
  *   or an error message when it is already present.
  */
-const uniqueRule: CustomRule = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  values: any[],
-  initialValue = undefined,
-  err?: string
-) => {
+const uniqueRule: UniqueRule = (values, initialValue = undefined, err?) => {
   return (v) =>
-    (initialValue !== undefined && v === initialValue) ||
+    v == null ||
+    (initialValue != null && v === initialValue) ||
     !values.includes(v) ||
     err ||
     `Der Wert ${v} ist bereits vorhanden.`;
