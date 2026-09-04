@@ -5,8 +5,8 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-/// DTO for [de.muenchen.oss.foerdermittel.backend.archiv.Archiv] to be used in
-/// other FormContexts other than its own.
+/// DTO for [de.muenchen.oss.foerdermittel.backend.archiv.Archiv] to be used in other FormContexts
+/// other than its own.
 ///
 /// @param archivId
 /// @param projekte
