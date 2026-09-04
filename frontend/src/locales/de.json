@@ -68,7 +68,17 @@
       "modelName": "Ist-Kosten"
     },
     "archiv": {
-      "modelName": "Archiv"
+      "modelName": "Archiv",
+      "speicherDatum": "Ablage in Speicher am",
+      "speicherAkt": "Akt im Speicher",
+      "speicherRechnungen": "Rechnung im Speicher",
+      "mikroDatPlan": "Mikrofiches bestellt",
+      "mikroDat": "Mikrofiches erhalten",
+      "notizen": "Notizen",
+      "projnr": "Projnr",
+      "pname": "Name",
+      "pstrasse": "Straße",
+      "fobFb": "FB"
     },
     "haushaltsjahr": {
       "modelName": "Haushaltsjahr | Haushaltsjahre"
