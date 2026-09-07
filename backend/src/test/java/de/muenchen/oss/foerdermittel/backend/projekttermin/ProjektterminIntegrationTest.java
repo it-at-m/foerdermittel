@@ -315,7 +315,43 @@ public class ProjektterminIntegrationTest {
                                     "Max Mustermann",
                                     "1334566",
                                     "Test",
-                                    null)));
+                                    null)),
+                    arguments(
+                            "zustaendig is empty",
+                            new ProjektterminCreateDTO(
+                                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+                                    true,
+                                    "",
+                                    "1334566",
+                                    "Test",
+                                    EXISTING_PROJNR)),
+                    arguments(
+                            "zustaendig is too long",
+                            new ProjektterminCreateDTO(
+                                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+                                    true,
+                                    "1234567890123456789012345678901",
+                                    "1334566",
+                                    "Test",
+                                    EXISTING_PROJNR)),
+                    arguments(
+                            "telefon is empty",
+                            new ProjektterminCreateDTO(
+                                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+                                    true,
+                                    "Max Mustermann",
+                                    "",
+                                    "Test",
+                                    EXISTING_PROJNR)),
+                    arguments(
+                            "telefon is too long",
+                            new ProjektterminCreateDTO(
+                                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+                                    true,
+                                    "Max Mustermann",
+                                    "1234567890123456789012345678901",
+                                    "Test",
+                                    EXISTING_PROJNR)));
         }
 
         private static Stream<Arguments> authorizationMappings() {
