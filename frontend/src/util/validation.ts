@@ -2,8 +2,21 @@ import type { ValidationAttributes } from "@/types/OpenAPIValidationAttributes";
 import type { ValidationRule } from "vuetify/framework";
 import type { RuleAliases } from "vuetify/labs/rules";
 
-import { requiredTrimmedRule } from "@/plugins/rules";
 import { toTrimmedString } from "@/util/formatter";
+
+function withTrimmedStringValue(
+  rule: ValidationRule,
+  trimStringValues: boolean
+): ValidationRule {
+  if (!trimStringValues || typeof rule !== "function") {
+    return rule;
+  }
+
+  return ((value: unknown) =>
+    rule(
+      typeof value === "string" ? toTrimmedString(value) : value
+    )) as ValidationRule;
+}
 
 /**
  * Calculates Vuetify {@link ValidationRule}s for a single input component using *ValidationAttributesMap object generated using OpenAPIGenerator typescript-fetch generator
@@ -20,7 +33,7 @@ import { toTrimmedString } from "@/util/formatter";
  * @param rules all available {@link RuleAliases} typically retrieved via `useRules` composable from Vuetify
  * @param validationAttributes a generated *ValidationAttributesMap object
  * @param property property of the model object to calculate the {@link ValidationRule}s for.
- * @param trimRequired trimms all strings before a required validation, true by default
+ * @param trimStringValues trims strings before validation. Use this for inputs whose model is trimmed before it is sent to the API.
  */
 export function mapOpenAPIToVuetifyValidationRules<
   T extends Record<string, ValidationAttributes>,
@@ -29,7 +42,7 @@ export function mapOpenAPIToVuetifyValidationRules<
   rules: RuleAliases,
   validationAttributes: T,
   property: K,
-  trimRequired = true
+  trimStringValues = false
 ): ValidationRule[] {
   const attributes = validationAttributes[property];
   const result: ValidationRule[] = [];
@@ -43,7 +56,7 @@ export function mapOpenAPIToVuetifyValidationRules<
 
   // Required
   if (attributes.required !== undefined && attributes.required) {
-    result.push(trimRequired ? requiredTrimmedRule() : rules.required());
+    result.push(withTrimmedStringValue(rules.required(), trimStringValues));
   }
 
   // Strings
@@ -52,20 +65,35 @@ export function mapOpenAPIToVuetifyValidationRules<
     attributes.maxLength !== undefined &&
     attributes.minLength === attributes.maxLength
   ) {
-    result.push(rules.strictLength(attributes.minLength));
+    result.push(
+      withTrimmedStringValue(
+        rules.strictLength(attributes.minLength),
+        trimStringValues
+      )
+    );
   } else {
     if (attributes.minLength !== undefined && attributes.minLength > 0) {
-      result.push(rules.minLength(attributes.minLength));
+      result.push(
+        withTrimmedStringValue(
+          rules.minLength(attributes.minLength),
+          trimStringValues
+        )
+      );
     }
 
     if (attributes.maxLength !== undefined && attributes.maxLength > 0) {
-      result.push(rules.maxLength(attributes.maxLength));
+      result.push(
+        withTrimmedStringValue(
+          rules.maxLength(attributes.maxLength),
+          trimStringValues
+        )
+      );
     }
   }
 
   if (attributes.pattern !== undefined) {
     const regex = new RegExp(attributes.pattern.replace(/^\/|\/$/g, ""));
-    result.push(rules.pattern(regex));
+    result.push(withTrimmedStringValue(rules.pattern(regex), trimStringValues));
   }
 
   // Numbers
