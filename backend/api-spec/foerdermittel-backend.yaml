@@ -2757,8 +2757,9 @@ components:
         bezeichnung:
           type: string
           description: ""
-      description: DTO for Hauptabschnitt to be used in other FormContexts other than
-        its own.
+      description: |-
+        DTO for [de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt] to be used in
+        other FormContexts other than its own.
     UnterabschnittFormContext:
       required:
       - hasHas
@@ -3024,13 +3025,18 @@ components:
       properties:
         archivId:
           type: array
+          description: ""
           items:
             type: integer
             format: int64
         projekte:
           type: array
+          description: ""
           items:
             $ref: "#/components/schemas/ProjektFormContextDTO"
+      description: |-
+        DTO for [de.muenchen.oss.foerdermittel.backend.archiv.Archiv] to be used in other FormContexts
+        other than its own.
     ProjektFormContextDTO:
       required:
       - foerderbereich
