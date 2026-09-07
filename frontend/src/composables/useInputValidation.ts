@@ -1,9 +1,9 @@
-import type { ValidationAttributes } from "@/types/OpenAPIValidationAttributes";
+import type { ValidationAttributes } from "@/util/validation";
 import type { MaybeRefOrGetter } from "vue";
 import type { ValidationRule } from "vuetify/framework";
 
 import { computed, toValue } from "vue";
-import { useRules } from "vuetify/labs/rules";
+import { useRules } from "vuetify";
 
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 import {
