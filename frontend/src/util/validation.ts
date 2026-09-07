@@ -157,8 +157,10 @@ export function deepEqualTrimmed(a: unknown, b: unknown): boolean {
     return true;
   }
 
-  if (a instanceof Date && b instanceof Date) {
-    return a.getTime() === b.getTime();
+  if (a instanceof Date || b instanceof Date) {
+    return (
+      a instanceof Date && b instanceof Date && a.getTime() === b.getTime()
+    );
   }
 
   // If only one side is an array, they are not equal
