@@ -2948,8 +2948,8 @@ components:
           items:
             $ref: "#/components/schemas/ProjektFormContextDTO"
       description: |-
-        DTO for [de.muenchen.oss.foerdermittel.backend.projekttermin.Projekttermin] to be used in other FormContexts
-        other than its own.
+        DTO for [de.muenchen.oss.foerdermittel.backend.projekttermin.Projekttermin] to be used in other
+        FormContexts other than its own.
     PagedModelKurzbezeichnungResponseDTO:
       type: object
       properties:
