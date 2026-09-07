@@ -19,13 +19,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * This class represents a Termine.
- * <p>
- * The entity's attributes are mapped to the corresponding database columns.
- * </p>
- */
-@SuppressWarnings("PMD.LinguisticNaming")
+/// This class represents a Projekttermin.
+///
+/// The entity's attributes are mapped to the corresponding database columns.
+///
+
 @Entity
 @Data
 @AllArgsConstructor
