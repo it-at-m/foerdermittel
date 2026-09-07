@@ -359,7 +359,7 @@ public class ProjektterminIntegrationTest {
         void givenProjektterminExists_thenProjektterminIsUpdated() {
 
             final ProjektterminCreateDTO createDTO = new ProjektterminCreateDTO(
-                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+                    OffsetDateTime.parse("2024-09-15T00:00:00Z"),
                     true,
                     "Max Mustermann",
                     "1334566",
@@ -381,7 +381,7 @@ public class ProjektterminIntegrationTest {
             assertThat(created).isNotNull();
 
             final ProjektterminUpdateDTO updateDTO = new ProjektterminUpdateDTO(
-                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+                    OffsetDateTime.parse("2024-09-15T00:00:00Z"),
                     true,
                     "Max Mustermann",
                     "1334566",
@@ -404,7 +404,7 @@ public class ProjektterminIntegrationTest {
                         assertThat(response.id()).isEqualTo(created.id());
 
                         // ResponseDTO: LocalDate -> OffsetDateTime
-                        assertThat(response.termin()).isEqualTo(OffsetDateTime.parse("2024-09-16T00:00:00Z"));
+                        assertThat(response.termin()).isEqualTo(OffsetDateTime.parse("2024-09-15T00:00:00Z"));
                         assertThat(response.ueberwachung()).isEqualTo(updateDTO.ueberwachung());
                         assertThat(response.zustaendig()).isEqualTo(updateDTO.zustaendig());
                         assertThat(response.telefon()).isEqualTo(updateDTO.telefon());
@@ -421,7 +421,7 @@ public class ProjektterminIntegrationTest {
             assertThat(entity).isPresent();
 
             // Entity: LocalDate
-            assertThat(entity.get().getTermin()).isEqualTo(LocalDate.of(2024, 9, 16));
+            assertThat(entity.get().getTermin()).isEqualTo(LocalDate.of(2024, 9, 15));
             assertThat(entity.get().getUeberwachung()).isEqualTo(updateDTO.ueberwachung());
             assertThat(entity.get().getZustaendig()).isEqualTo(updateDTO.zustaendig());
             assertThat(entity.get().getTelefon()).isEqualTo(updateDTO.telefon());
