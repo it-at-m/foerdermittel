@@ -146,7 +146,7 @@ class StadtbezirkslisteServiceTest {
 
             final Stadtbezirksliste oldAssignment = new Stadtbezirksliste(null, null, stadtbezirk, "old");
 
-            final Listenname foundEntity = new Listenname(KURZBEZ, "old", new java.util.ArrayList<>(List.of(oldAssignment)));
+            final Listenname foundEntity = new Listenname(KURZBEZ, "old", new ArrayList<>(List.of(oldAssignment)));
 
             final Stadtbezirksliste newAssignment = new Stadtbezirksliste(null, null, stadtbezirk, "new");
 

@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,11 +20,9 @@ import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * Wrapper for HttpServletRequest that performs NFC conversion.
- *
- * @see java.text.Normalizer
- */
+/// Wrapper for [HttpServletRequest] that performs NFC conversion.
+///
+/// @see java.text.Normalizer
 @Slf4j
 public class NfcRequest extends HttpServletRequestWrapper implements HttpServletRequest {
 
@@ -120,11 +119,7 @@ public class NfcRequest extends HttpServletRequestWrapper implements HttpServlet
         return NfcHelper.nfcConverter(getOriginalRequest().getRequestURL());
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * Only the username is converted to nfc. Password won't be touched!
-     */
+    /// {@inheritDoc} Only the username is converted to nfc. Password won't be touched!
     @Override
     public void login(final String username, final String password) throws ServletException {
         getOriginalRequest().login(NfcHelper.nfcConverter(username), password);
@@ -182,10 +177,11 @@ public class NfcRequest extends HttpServletRequestWrapper implements HttpServlet
     public ServletInputStream getInputStream() throws IOException {
 
         final String encoding = getOriginalRequest().getCharacterEncoding();
+        final Charset charset = encoding == null ? StandardCharsets.UTF_8 : Charset.forName(encoding);
 
         final String content;
         try (InputStream is = getOriginalRequest().getInputStream()) {
-            content = new String(is.readAllBytes(), encoding);
+            content = new String(is.readAllBytes(), charset);
         }
 
         log.debug("Converting InputStream data to NFC.");
