@@ -12,7 +12,7 @@ public interface ProjektterminMapper {
     String OFFSET_TO_LOCAL_DATE = "offSetDateTimeToLocalDate";
     String LOCAL_DATE_TO_OFFSET = "localDateToOffSetDate";
 
-    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "id", target = "id")
     @Mapping(source = "projekt.projnr", target = "projnr")
     @Mapping(source = "projekt.pname", target = "pname")
     @Mapping(source = "projekt.pstrasse", target = "pstrasse")
