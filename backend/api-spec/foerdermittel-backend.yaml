@@ -2200,8 +2200,12 @@ components:
         ueberwachung:
           type: boolean
         zustaendig:
+          maxLength: 30
+          minLength: 1
           type: string
         telefon:
+          maxLength: 30
+          minLength: 1
           type: string
         notizen:
           type: string
@@ -2575,8 +2579,12 @@ components:
         ueberwachung:
           type: boolean
         zustaendig:
+          maxLength: 30
+          minLength: 1
           type: string
         telefon:
+          maxLength: 30
+          minLength: 1
           type: string
         notizen:
           type: string
@@ -2930,13 +2938,18 @@ components:
       properties:
         terminID:
           type: array
+          description: ""
           items:
             type: integer
             format: int64
         projekte:
           type: array
+          description: ""
           items:
             $ref: "#/components/schemas/ProjektFormContextDTO"
+      description: |-
+        DTO for [de.muenchen.oss.foerdermittel.backend.projekttermin.Projekttermin] to be used in other FormContexts
+        other than its own.
     PagedModelKurzbezeichnungResponseDTO:
       type: object
       properties:
