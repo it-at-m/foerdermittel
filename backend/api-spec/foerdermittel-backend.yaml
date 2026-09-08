@@ -2569,8 +2569,9 @@ components:
         bezeichnung:
           type: string
           description: ""
-      description: DTO for Hauptabschnitt to be used in other FormContexts other than
-        its own.
+      description: |-
+        DTO for [de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt] to be used in
+        other FormContexts other than its own.
     UnterabschnittFormContext:
       required:
       - hasHas
@@ -2706,8 +2707,8 @@ components:
         bezeichnung:
           type: string
           description: ""
-      description: DTO for Stichwortbereich to be used in other FormContexts other
-        than its own.
+      description: "DTO for [de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich]\
+        \ to be used in other FormContexts other than its own."
     PagedModelReferatResponseDTO:
       type: object
       properties:
