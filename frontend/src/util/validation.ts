@@ -36,6 +36,12 @@ export interface VuetifyRuleAliases {
   max?: (value: number, exclusive?: boolean) => ValidationRule;
 }
 
+/**
+ * Wraps a validation rule to trim string values before validating them when requested.
+ *
+ * @param rule validation rule to wrap
+ * @param trimStringValues whether string values should be trimmed before validation
+ */
 function withTrimmedStringValue(
   rule: ValidationRule,
   trimStringValues: boolean
