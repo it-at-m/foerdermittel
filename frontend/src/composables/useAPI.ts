@@ -1,6 +1,7 @@
 import type { Ref } from "vue";
 
 import { readonly, ref } from "vue";
+import type { RequestOpts } from "@/api/generated/foerdermittel-backend";
 
 export interface ApiComposable<TRequest, TResponse> {
   loading: Readonly<Ref<boolean>>;
@@ -9,6 +10,14 @@ export interface ApiComposable<TRequest, TResponse> {
   call: (
     ...args: [TRequest] extends [void] ? [] : [params: TRequest]
   ) => Promise<void>;
+}
+
+export interface ReportApiComposable<TRequest> {
+  loading: Readonly<Ref<boolean>>;
+  error: Readonly<Ref<boolean>>;
+  call: (
+    ...args: [TRequest] extends [void] ? [] : [params: TRequest]
+  ) => Promise<RequestOpts | undefined>;
 }
 
 export function useAPI<TResponse>(

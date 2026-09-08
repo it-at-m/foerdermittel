@@ -1,9 +1,6 @@
 import type { ApiCtor } from "@/api/ApiFactory";
-import type {
-  PageMetadata,
-  RequestOpts,
-} from "@/api/generated/foerdermittel-backend";
-import type { ApiComposable } from "@/composables/useAPI";
+import type { PageMetadata, RequestOpts } from "@/api/generated/foerdermittel-backend";
+import type { ApiComposable, ReportApiComposable } from "@/composables/useAPI";
 import type { Pageable } from "@/types/Pageable";
 
 import { ApiFactory } from "@/api/ApiFactory";
@@ -49,6 +46,14 @@ export interface ApiComposables<
   create: ApiComposable<TCreateRequest, TCreateResponse>;
   update: ApiComposable<TUpdateRequest, TUpdateResponse>;
   delete: ApiComposable<TDeleteRequest, void>;
+}
+
+export interface ReportApiComposables<
+  TGetOptsRequest,
+  TContextResponse,
+> {
+  getOpts: ReportApiComposable<TGetOptsRequest>;
+  context: ApiComposable<void, TContextResponse>;
 }
 
 export function createAPIComposables<
