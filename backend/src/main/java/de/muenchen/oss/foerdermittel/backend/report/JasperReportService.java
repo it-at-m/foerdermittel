@@ -30,19 +30,17 @@ public class JasperReportService {
 
     private final DataSource dataSource;
 
-    /**
-     * Generates a Jasper report file as byte array given a specific report type, parameters and the
-     * desired report format.
-     *
-     * @param reportType requested report type
-     * @param reportFormat requested report format
-     * @param parameters user provided parameters
-     * @param outputStream the output stream to write the generated file content to
-     * @throws IOException when access to the requested report located in the classpath was not possible
-     * @throws SQLException when an error with the database connection occurs
-     * @throws JRException when JasperReport related error (e.g. loading, filling or exporting the
-     *             report) occur
-     */
+    /// Generates a Jasper report file as byte array given a specific [ReportType], parameters and the
+    /// desired [ReportFormat].
+    ///
+    /// @param reportType requested report type
+    /// @param reportFormat requested report format
+    /// @param parameters user provided parameters
+    /// @param outputStream the output stream to write the generated file content to
+    /// @throws IOException when access to the requested report located in the classpath was not possible
+    /// @throws SQLException when an error with the database connection occurs
+    /// @throws JRException when JasperReport related error (e.g. loading, filling or exporting the
+    ///             report) occur
     public void generateReportWithParameters(final ReportType reportType, final ReportFormat reportFormat, final Map<String, Object> parameters,
             final OutputStream outputStream)
             throws IOException, SQLException, JRException {
@@ -59,27 +57,23 @@ public class JasperReportService {
         }
     }
 
-    /**
-     * Loads a compiled {@code .jasper} file from class path using a given ReportType.
-     *
-     * @param reportType type of report to load
-     * @param reportFormat format of the report to generate
-     * @return JasperReport object
-     * @throws IOException when error in file access occurs
-     * @throws JRException when error loading the file content as a JasperReport occurs
-     */
+    /// Loads a compiled `.jasper` file from class path using a given [ReportType].
+    ///
+    /// @param reportType type of report to load
+    /// @param reportFormat format of the report to generate
+    /// @return JasperReport object
+    /// @throws IOException when error in file access occurs
+    /// @throws JRException when error loading the file content as a JasperReport occurs
     private static JasperReport loadCompiledReport(final ReportType reportType, final ReportFormat reportFormat) throws IOException, JRException {
         final String path = "reports/" + reportType.getFileName() + reportFormat.getFileSuffix() + ".jasper";
         final ClassPathResource resource = new ClassPathResource(path);
         return (JasperReport) JRLoader.loadObject(resource.getURL());
     }
 
-    /**
-     * Checks if provided parameters match the expected parameters of a given JasperReport
-     *
-     * @param jasperReport the report to check against
-     * @param parameters the provided parameters by the user
-     */
+    /// Checks if provided parameters match the expected parameters of a given [JasperReport]
+    ///
+    /// @param jasperReport the report to check against
+    /// @param parameters the provided parameters by the user
     private static void checkParameters(final JasperReport jasperReport, final Map<String, Object> parameters) {
         final Set<String> definedParameterNames = Arrays.stream(jasperReport.getParameters())
                 .filter(parameter -> !parameter.isSystemDefined())
@@ -101,14 +95,12 @@ public class JasperReportService {
         }
     }
 
-    /**
-     * Exports a filled JasperPrint as a byte array to construct {@code .pdf} or {@code .xlsx} files.
-     *
-     * @param jasperPrint the filled jasper print object
-     * @param reportFormat the desired ReportFormat
-     * @param outputStream the output stream to write the generated file content to
-     * @throws JRException when error in file export occurs
-     */
+    /// Exports a filled [JasperPrint] as a byte array to construct `.pdf` or `.xlsx` files.
+    ///
+    /// @param jasperPrint the filled jasper print object
+    /// @param reportFormat the desired ReportFormat
+    /// @param outputStream the output stream to write the generated file content to
+    /// @throws JRException when error in file export occurs
     private static void exportReport(final JasperPrint jasperPrint, final ReportFormat reportFormat, final OutputStream outputStream) throws JRException {
         switch (reportFormat) {
         case PDF, PDF_FLAT -> JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
@@ -116,13 +108,11 @@ public class JasperReportService {
         }
     }
 
-    /**
-     * Exports a filled JasperPrint as a byte array reprenting a {@code .xlsx} file.
-     *
-     * @param jasperPrint the filled jasper print object
-     * @param outputStream the output stream to write the generated file content to
-     * @throws JRException when error in file creation occurs
-     */
+    /// Exports a filled [JasperPrint] as a byte array representing a `.xlsx` file.
+    ///
+    /// @param jasperPrint the filled jasper print object
+    /// @param outputStream the output stream to write the generated file content to
+    /// @throws JRException when error in file creation occurs
     private static void exportReportToXlsx(final JasperPrint jasperPrint, final OutputStream outputStream) throws JRException {
         final JRXlsxExporter exporter = new JRXlsxExporter();
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));

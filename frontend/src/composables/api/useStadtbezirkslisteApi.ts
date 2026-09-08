@@ -7,6 +7,7 @@ import type {
   StadtbezirkslisteResponseDTO,
   UpdateListennameRequest,
 } from "@/api/generated/foerdermittel-backend";
+import type { ApiComposables } from "@/util/composable-helper";
 
 import { StadtbezirkslisteControllerApi } from "@/api/generated/foerdermittel-backend";
 import {
@@ -39,3 +40,21 @@ export const {
     context: (api) => api.getStadtbezirkslisteFormContext(),
   })
 );
+
+export function useStadtbezirkslisteApi(): ApiComposables<
+  StadtbezirkslisteResponseDTO,
+  StadtbezirkslisteFormContext,
+  CreateListennameRequest,
+  StadtbezirkslisteResponseDTO,
+  UpdateListennameRequest,
+  StadtbezirkslisteResponseDTO,
+  DeleteListennameRequest
+> {
+  return {
+    getAll: useGetStadtbezirkslisten(),
+    context: useGetStadtbezirkslisteFormContext(),
+    create: useCreateListenname(),
+    update: useUpdateListenname(),
+    delete: useDeleteStadtbezirksliste(),
+  };
+}
