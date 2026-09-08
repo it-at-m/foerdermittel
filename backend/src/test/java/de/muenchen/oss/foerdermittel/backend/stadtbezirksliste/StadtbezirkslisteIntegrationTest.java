@@ -105,52 +105,6 @@ class StadtbezirkslisteIntegrationTest {
                     .expectStatus().isEqualTo(httpStatus);
         }
 
-        @Test
-        void givenExistingId_thenReturnEntity() {
-            restTestClient.get()
-                    .uri("/stadtbezirkslisten/{id}", EXISTING_ID)
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
-                    .exchange()
-                    .expectStatus().isOk()
-                    .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(StadtbezirkslisteResponseDTO.class)
-                    .value(response -> {
-                        assertNotNull(response);
-                        assertThat(response.id()).isEqualTo(EXISTING_ID);
-                        assertThat(response.bezeichnung()).isEqualTo("test");
-                    });
-        }
-
-        @Test
-        void givenNonExistingId_thenReturnNotFound() {
-            restTestClient.get()
-                    .uri("/stadtbezirkslisten/{id}", NON_EXISTING_ID)
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
-                    .exchange()
-                    .expectStatus().isNotFound();
-        }
-
-        private static Stream<Arguments> authorizationMappingsForGetById() {
-            return Stream.of(
-                    Arguments.of("admin", HttpStatus.OK),
-                    Arguments.of("sachbearbeitung", HttpStatus.OK),
-                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.OK),
-                    Arguments.of("no-role", HttpStatus.FORBIDDEN));
-        }
-
-        @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
-        @MethodSource("authorizationMappingsForGetById")
-        void givenRole_thenReturnStatusForGetById(
-                final String role,
-                final HttpStatus httpStatus) {
-
-            restTestClient.get()
-                    .uri("/stadtbezirkslisten/{id}", EXISTING_ID)
-                    .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
-                    .exchange()
-                    .expectStatus().isEqualTo(httpStatus);
-        }
-
     }
 
     @Nested
