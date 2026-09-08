@@ -9,10 +9,8 @@ import org.springframework.stereotype.Component;
 public class ReportMapper {
 
     public Map<String, Object> toJasperParameters(final ReportStichworteDTO dto) {
-        Map<String, Object> parameters = new HashMap<>();
-
+        final Map<String, Object> parameters = new HashMap<>();
         parameters.put("P_BEREICH", dto.bereich());
-
         return parameters;
     }
 
