@@ -1,8 +1,40 @@
-import type { ValidationAttributes } from "@/types/OpenAPIValidationAttributes";
-import type { ValidationRule } from "vuetify/framework";
-import type { RuleAliases } from "vuetify/labs/rules";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { maxRule, minRule } from "@/plugins/rules";
+import type { ValidationRule } from "vuetify";
 
 import { toTrimmedString } from "@/util/formatter";
+
+/**
+ * Type that holds a sub-set of attributes in generated *ValidationAttributesMap types via the OpenAPI generator.
+ * Only the attributes that are mappable to a corresponding Vuetify {@link VuetifyRuleAliases} are included.
+ */
+export interface ValidationAttributes {
+  dataType?: string;
+  required?: boolean;
+  maxLength?: number;
+  minLength?: number;
+  pattern?: string;
+  maximum?: number;
+  exclusiveMaximum?: boolean;
+  minimum?: number;
+  exclusiveMinimum?: boolean;
+}
+
+/**
+ * Type that mimics supported OpenAPI-relevant Vuetify provided rules of type RuleAliases (as the type is not publicly exported).
+ * Additionally, the type holds OpenAPI-relevant custom rules defined in `plugins/rules.ts`
+ * */
+export interface VuetifyRuleAliases {
+  required: () => ValidationRule;
+  strictLength: (length: number) => ValidationRule;
+  minLength: (length: number) => ValidationRule;
+  maxLength: (length: number) => ValidationRule;
+  pattern: (pattern: RegExp) => ValidationRule;
+  number: () => ValidationRule;
+  // OpenAPI supported custom rules
+  min?: (value: number, exclusive?: boolean) => ValidationRule;
+  max?: (value: number, exclusive?: boolean) => ValidationRule;
+}
 
 function withTrimmedStringValue(
   rule: ValidationRule,
@@ -21,16 +53,16 @@ function withTrimmedStringValue(
 /**
  * Calculates Vuetify {@link ValidationRule}s for a single input component using *ValidationAttributesMap object generated using OpenAPIGenerator typescript-fetch generator
  * Supported rules currently are:
- * - {@link RuleAliases.required}
- * - {@link RuleAliases.strictLength}
- * - {@link RuleAliases.minLength}
- * - {@link RuleAliases.maxLength}
- * - {@link RuleAliases.pattern}
- * - {@link RuleAliases.number}
+ * - {@link VuetifyRuleAliases.required}
+ * - {@link VuetifyRuleAliases.strictLength}
+ * - {@link VuetifyRuleAliases.minLength}
+ * - {@link VuetifyRuleAliases.maxLength}
+ * - {@link VuetifyRuleAliases.pattern}
+ * - {@link VuetifyRuleAliases.number}
  * - Custom {@link minRule} implementation
  * - Custom {@link maxRule} implementation
  *
- * @param rules all available {@link RuleAliases} typically retrieved via `useRules` composable from Vuetify
+ * @param rules all available {@link VuetifyRuleAliases} typically retrieved via `useRules` composable from Vuetify
  * @param validationAttributes a generated *ValidationAttributesMap object
  * @param property property of the model object to calculate the {@link ValidationRule}s for.
  * @param trimStringValues trims strings before validation. Use this for inputs whose model is trimmed before it is sent to the API.
@@ -39,7 +71,7 @@ export function mapOpenAPIToVuetifyValidationRules<
   T extends Record<string, ValidationAttributes>,
   K extends keyof T,
 >(
-  rules: RuleAliases,
+  rules: VuetifyRuleAliases,
   validationAttributes: T,
   property: K,
   trimStringValues = false
@@ -101,12 +133,12 @@ export function mapOpenAPIToVuetifyValidationRules<
     result.push(rules.number());
   }
 
-  if (attributes.minimum !== undefined && rules["min"]) {
-    result.push(rules["min"](attributes.minimum, attributes.exclusiveMinimum));
+  if (attributes.minimum !== undefined && rules.min) {
+    result.push(rules.min(attributes.minimum, attributes.exclusiveMinimum));
   }
 
-  if (attributes.maximum !== undefined && rules["max"]) {
-    result.push(rules["max"](attributes.maximum, attributes.exclusiveMaximum));
+  if (attributes.maximum !== undefined && rules.max) {
+    result.push(rules.max(attributes.maximum, attributes.exclusiveMaximum));
   }
 
   return result;
