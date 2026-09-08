@@ -236,12 +236,9 @@ public class ReportIntegrationTest {
 
     }
 
-    /**
-     * Utility expectation that checks for non JSON, plain or Octet content type, validates a body
-     * exists and checks the correct headers.
-     *
-     * @param response Response retrieved using a {@link WebTestClient}
-     */
+    /// Utility expectation that checks for non JSON, plain or Octet content type, validates a body exists and checks the correct headers.
+    ///
+    /// @param response Response retrieved using a [WebTestClient]
     private static void expectFileResponse(RestTestClient.ResponseSpec response) {
         response
                 .expectHeader()
