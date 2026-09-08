@@ -1,13 +1,14 @@
 <template>
   <v-form
     ref="form"
+    :disabled="!reportStichworteFormContext"
     @update:model-value="onValidityChanged"
   >
     <v-row>
       <v-col cols="12">
         <fm-autocomplete
           v-model="modelValue.parameters!.bereich"
-          :items="reportStichworteFormContext.bereiche"
+          :items="reportStichworteFormContext?.bereiche"
           :item-title="getBereichTitle"
           item-value="bereich"
           :validation-attribute-map="
@@ -43,7 +44,7 @@ const modelValue = defineModel<Partial<GetReportStichworteRequest>>({
 });
 
 const { reportStichworteFormContext } = defineProps<{
-  reportStichworteFormContext: DeepReadonly<ReportStichworteFormContext>;
+  reportStichworteFormContext?: DeepReadonly<ReportStichworteFormContext>;
 }>();
 
 const emit = defineEmits<{

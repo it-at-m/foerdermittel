@@ -14,7 +14,7 @@
             :append-icon="mdiDownload"
             :text="t('common.action.download')"
             :disabled="loading || !isFormSlotValid"
-            @click="download"
+            @click="handleDownload"
           />
         </v-col>
       </v-row>
@@ -31,29 +31,71 @@
   </v-card>
 </template>
 
-<script setup lang="ts" generic="T">
+<script setup lang="ts" generic="TGetOptsRequest, TContextResponse extends {}">
+import type { ReportApiComposables } from "@/util/composable-helper";
+
 import { mdiDownload } from "@mdi/js";
-import { ref, toRaw } from "vue";
+import { computed, onMounted, ref, toRaw } from "vue";
 import { useI18n } from "vue-i18n";
+
+import { STATUS_INDICATORS } from "@/constants";
+import { useSnackbarStore } from "@/stores/snackbar";
+import { openURL, toURL } from "@/util/url-helper";
 
 const { t } = useI18n();
 
-const { emptyItemTemplate, loading = false } = defineProps<{
-  emptyItemTemplate: T;
+const {
+  emptyFormTemplate,
+  loading: loadingProp = false,
+  api,
+  formRef,
+} = defineProps<{
+  emptyFormTemplate: Partial<TGetOptsRequest>;
   loading?: boolean;
+  api: ReportApiComposables<TGetOptsRequest, TContextResponse>;
+  formRef?: { validate: () => unknown } | null | undefined;
 }>();
 
-const currentValue = ref(structuredClone(toRaw(emptyItemTemplate)));
+const loading = computed(
+  () => loadingProp || api.getOpts.loading.value || api.context.loading.value
+);
+
+const currentValue = ref(structuredClone(toRaw(emptyFormTemplate)));
 
 const isFormSlotValid = ref(false);
 const updateFormValidity = (valid: boolean | null) => {
   isFormSlotValid.value = !!valid;
 };
 
-const emit = defineEmits<{
-  download: [item: T];
-}>();
-const download = () => {
-  emit("download", currentValue.value);
+onMounted(async () => {
+  await loadFormContext();
+});
+
+const loadFormContext = async () => {
+  await api.context.call();
+};
+
+async function handleDownload() {
+  const model = currentValue.value as TGetOptsRequest;
+  const urlOpts = await api.getOpts.call(model);
+  if (!api.getOpts.error.value && urlOpts) {
+    const url = toURL(urlOpts);
+    openURL(url);
+    await onSuccess();
+  } else {
+    await onFailure(
+      t("common.message.createdError", [t("common.word.report")])
+    );
+  }
+}
+
+const snackbarStore = useSnackbarStore();
+const onSuccess = async () => {
+  await loadFormContext();
+};
+const onFailure = async (msg: string) => {
+  snackbarStore.push({ text: msg, color: STATUS_INDICATORS.ERROR });
+  await loadFormContext();
+  await formRef?.validate();
 };
 </script>
