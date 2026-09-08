@@ -84,7 +84,8 @@ public class ReportService {
         }
     }
 
-    /// Calculates the file name depending on the desires [ReportType] and [ReportFormat] and uses timestamps as prefixes
+    /// Calculates the file name depending on the desires [ReportType] and [ReportFormat] and uses
+    /// timestamps as prefixes
     ///
     /// @param reportType requested report type
     /// @param reportFormat requested report format
