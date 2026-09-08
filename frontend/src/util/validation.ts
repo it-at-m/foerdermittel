@@ -40,13 +40,13 @@ export interface VuetifyRuleAliases {
  * Wraps a validation rule to trim string values before validating them when requested.
  *
  * @param rule validation rule to wrap
- * @param trimStringValues whether string values should be trimmed before validation
+ * @param enabled whether string values should be trimmed before validation
  */
-function withTrimmedStringValue(
+function applyStringTrimming(
   rule: ValidationRule,
-  trimStringValues: boolean
+  enabled: boolean
 ): ValidationRule {
-  if (!trimStringValues || typeof rule !== "function") {
+  if (!enabled || typeof rule !== "function") {
     return rule;
   }
 
@@ -94,7 +94,7 @@ export function mapOpenAPIToVuetifyValidationRules<
 
   // Required
   if (attributes.required !== undefined && attributes.required) {
-    result.push(withTrimmedStringValue(rules.required(), trimStringValues));
+    result.push(applyStringTrimming(rules.required(), trimStringValues));
   }
 
   // Strings
@@ -104,7 +104,7 @@ export function mapOpenAPIToVuetifyValidationRules<
     attributes.minLength === attributes.maxLength
   ) {
     result.push(
-      withTrimmedStringValue(
+      applyStringTrimming(
         rules.strictLength(attributes.minLength),
         trimStringValues
       )
@@ -112,7 +112,7 @@ export function mapOpenAPIToVuetifyValidationRules<
   } else {
     if (attributes.minLength !== undefined && attributes.minLength > 0) {
       result.push(
-        withTrimmedStringValue(
+        applyStringTrimming(
           rules.minLength(attributes.minLength),
           trimStringValues
         )
@@ -121,7 +121,7 @@ export function mapOpenAPIToVuetifyValidationRules<
 
     if (attributes.maxLength !== undefined && attributes.maxLength > 0) {
       result.push(
-        withTrimmedStringValue(
+        applyStringTrimming(
           rules.maxLength(attributes.maxLength),
           trimStringValues
         )
@@ -131,7 +131,7 @@ export function mapOpenAPIToVuetifyValidationRules<
 
   if (attributes.pattern !== undefined) {
     const regex = new RegExp(attributes.pattern.replace(/^\/|\/$/g, ""));
-    result.push(withTrimmedStringValue(rules.pattern(regex), trimStringValues));
+    result.push(applyStringTrimming(rules.pattern(regex), trimStringValues));
   }
 
   // Numbers
