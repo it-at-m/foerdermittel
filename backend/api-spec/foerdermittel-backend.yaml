@@ -1605,6 +1605,11 @@ paths:
       responses:
         "200":
           description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
       security:
       - bearerAuth: []
   /report/stichworte/form-context:
@@ -2707,8 +2712,9 @@ components:
         bezeichnung:
           type: string
           description: ""
-      description: "DTO for [de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich]\
-        \ to be used in other FormContexts other than its own."
+      description: |-
+        DTO for [de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich] to be used in
+        other FormContexts other than its own.
     PagedModelReferatResponseDTO:
       type: object
       properties:

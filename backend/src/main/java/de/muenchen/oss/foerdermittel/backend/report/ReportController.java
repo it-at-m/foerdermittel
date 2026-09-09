@@ -3,6 +3,10 @@ package de.muenchen.oss.foerdermittel.backend.report;
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -32,6 +36,18 @@ public class ReportController {
 
     @GetMapping("/stichworte")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            responses = @ApiResponse(
+                    responseCode = "200",
+                    description = "OK",
+                    content = {
+                            @Content(
+                                    mediaType = MediaType.APPLICATION_PDF_VALUE,
+                                    schema = @Schema(type = "string", format = "binary")
+                            )
+                    }
+            )
+    )
     public void getReportStichworte(
             @Valid @ModelAttribute final ReportStichworteDTO parameters,
             final HttpServletResponse response)

@@ -19,7 +19,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleValidation(final MethodArgumentNotValidException ex) {
-        final ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+        final ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST,
                 "Validation failed. One or more request parameters are invalid.");
 
         final List<Map<String, String>> errors = ex.getBindingResult()
@@ -27,7 +28,9 @@ public class GlobalExceptionHandler {
                 .stream()
                 .map(error -> Map.of(
                         "field", error.getField(),
-                        "message", error.getDefaultMessage()))
+                        "message", error.getDefaultMessage() != null
+                                ? error.getDefaultMessage()
+                                : "Validation failed."))
                 .toList();
 
         problemDetail.setProperty("errors", errors);
