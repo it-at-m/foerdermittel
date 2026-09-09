@@ -25,21 +25,13 @@
           />
         </template>
         <template #[`item.hasHa`]="{ item }">
-          <!--          <router-link   to="hauptabschnitte">{{ item.hasHa }} - {{ item.haBezeichnung }}</router-link>-->
-          <v-tooltip
-            :text="item.haBezeichnung"
-            location="right"
-          >
-            <template #activator="{ props }">
-              <v-chip
-                v-bind="props"
-                label
-                :append-icon="mdiArrowTopRight"
-                to="hauptabschnitte"
-                >{{ item.hasHa }}
-              </v-chip>
-            </template>
-          </v-tooltip>
+          <v-chip
+            v-tooltip:end="item.haBezeichnung"
+            label
+            :append-icon="mdiArrowTopRight"
+            to="hauptabschnitte"
+            >{{ item.hasHa }}
+          </v-chip>
         </template>
       </crud-card>
     </template>

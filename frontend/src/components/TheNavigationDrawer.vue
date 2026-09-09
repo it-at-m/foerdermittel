@@ -13,25 +13,18 @@
 
         <v-spacer />
 
-        <v-tooltip
-          :text="
+        <v-icon-btn
+          v-tooltip:start="
             expandOnHover
               ? t('component.theNavigationDrawer.pin')
               : t('component.theNavigationDrawer.unpin')
           "
-          location="left"
-        >
-          <template #activator="{ props }">
-            <v-icon-btn
-              :style="{ visibility: isRail ? 'hidden' : 'visible' }"
-              v-bind="props"
-              variant="text"
-              color="accent"
-              :icon="expandOnHover ? mdiPinOutline : mdiPin"
-              @click="expandOnHover = !expandOnHover"
-            />
-          </template>
-        </v-tooltip>
+          :style="{ visibility: isRail ? 'hidden' : 'visible' }"
+          variant="text"
+          color="accent"
+          :icon="expandOnHover ? mdiPinOutline : mdiPin"
+          @click="expandOnHover = !expandOnHover"
+        />
       </div>
 
       <v-list>

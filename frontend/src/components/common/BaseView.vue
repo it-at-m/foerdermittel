@@ -21,19 +21,12 @@
       </v-col>
       <v-col cols="auto">
         <slot name="actions" />
-        <v-tooltip
-          :text="benutzerhinweisOpenText"
-          location="left"
-        >
-          <template #activator="{ props }">
-            <v-icon-btn
-              :icon="mdiHelpCircle"
-              v-bind="props"
-              :aria-label="benutzerhinweisOpenText"
-              @click="showBenutzerhinweisDialog = true"
-            />
-          </template>
-        </v-tooltip>
+        <v-icon-btn
+          v-tooltip:start="benutzerhinweisOpenText"
+          :icon="mdiHelpCircle"
+          :aria-label="benutzerhinweisOpenText"
+          @click="showBenutzerhinweisDialog = true"
+        />
       </v-col>
     </v-row>
     <v-divider class="my-4" />
