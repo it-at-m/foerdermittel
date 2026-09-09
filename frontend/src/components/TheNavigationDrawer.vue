@@ -5,51 +5,50 @@
     :expand-on-hover="expandOnHover"
     class="d-flex flex-column"
   >
-    <div class="d-flex flex-column h-100">
-      <div class="d-flex align-center px-2 py-2">
-        <span class="text-h6 ml-2 font-weight-bold">
-          {{ isRail ? t("common.appAbbrev") : t("common.appName") }}
-        </span>
+    <div class="d-flex align-center px-2 py-2">
+      <span class="text-h6 ml-2 font-weight-bold">
+        {{ isRail ? t("common.appAbbrev") : t("common.appName") }}
+      </span>
 
-        <v-spacer />
+      <v-spacer />
 
+      <div
+        class="d-flex align-center"
+        :style="{ visibility: isRail ? 'hidden' : 'visible' }"
+      >
+        <theme-toggle-btn />
         <v-icon-btn
           v-tooltip:start="
             expandOnHover
               ? t('component.theNavigationDrawer.pin')
               : t('component.theNavigationDrawer.unpin')
           "
-          :style="{ visibility: isRail ? 'hidden' : 'visible' }"
           variant="text"
           color="accent"
           :icon="expandOnHover ? mdiPinOutline : mdiPin"
           @click="expandOnHover = !expandOnHover"
         />
       </div>
-
-      <v-list>
-        <v-list-item
-          :prepend-avatar="avatarUrl"
-          :subtitle="rolesText"
-          :title="userInfoStore.userInfo?.name"
-        />
-      </v-list>
-
-      <v-divider />
-
-      <v-list
-        v-if="hasRole"
-        :items="navigationItems"
-        open-strategy="single"
-        nav
-        density="compact"
-        :color="isRail ? 'transparent' : 'accent'"
-      />
-
-      <div class="mt-auto pa-2">
-        <theme-toggle-btn />
-      </div>
     </div>
+
+    <v-list>
+      <v-list-item
+        :prepend-avatar="avatarUrl"
+        :subtitle="rolesText"
+        :title="userInfoStore.userInfo?.name"
+      />
+    </v-list>
+
+    <v-divider />
+
+    <v-list
+      v-if="hasRole"
+      :items="navigationItems"
+      open-strategy="single"
+      nav
+      density="compact"
+      :color="isRail ? 'transparent' : 'accent'"
+    />
   </v-navigation-drawer>
 </template>
 
