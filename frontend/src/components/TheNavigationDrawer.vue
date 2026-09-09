@@ -2,10 +2,10 @@
   <v-navigation-drawer
     v-model:rail="isRail"
     color="grey-darken-4"
-    :expand-on-hover="expandOnHover"
+    :expand-on-hover="expandOnHover && !autocompleteMenuOpen"
     class="d-flex flex-column"
   >
-    <div class="d-flex align-center px-2 py-2">
+    <div class="d-flex align-center px-2 pt-2">
       <span class="text-h6 ml-2 font-weight-bold">
         {{ isRail ? t("common.appAbbrev") : t("common.appName") }}
       </span>
@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <v-list>
+    <v-list class="pt-0">
       <v-list-item
         :prepend-avatar="avatarUrl"
         :subtitle="rolesText"
@@ -41,8 +41,23 @@
 
     <v-divider />
 
+    <v-autocomplete
+      v-if="!isRail"
+      v-model="selectedTo"
+      theme="dark"
+      class="px-2 pt-2"
+      :items="searchableNavigationItems"
+      :label="t('component.theNavigationDrawer.search')"
+      variant="outlined"
+      density="compact"
+      hide-details
+      hide-no-data
+      @update:menu="autocompleteMenuOpen = $event"
+      @update:model-value="navigateToNavigationItem"
+    />
+
     <v-list
-      v-if="hasRole"
+      v-if="hasRole && !autocompleteMenuOpen"
       :items="navigationItems"
       open-strategy="single"
       nav
@@ -67,6 +82,8 @@ import {
 } from "@mdi/js";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
+import { VAutocomplete } from "vuetify/components";
 
 import { getAvatarHref } from "@/api/ad2imageavatar-client";
 import ThemeToggleBtn from "@/components/common/ThemeToggleBtn.vue";
@@ -382,4 +399,42 @@ const navigationItems: NavigationItem[] = [
     ],
   },
 ];
+
+const selectedTo = ref<string | null>(null);
+
+const searchableNavigationItems = computed(() =>
+  navigationItems.flatMap((parent) => {
+    const children = (parent.children ?? [])
+      .filter(
+        (child) =>
+          child.props?.to && child.props.to !== router.currentRoute.value.path
+      )
+      .map((child) => ({
+        title: child.title,
+        value: child.props?.to,
+      }));
+
+    if (!children.length) {
+      return [];
+    }
+
+    return [
+      {
+        type: "subheader" as const,
+        title: parent.title,
+      },
+      ...children,
+    ];
+  })
+);
+
+const autocompleteMenuOpen = ref(false);
+
+const router = useRouter();
+function navigateToNavigationItem(route: string | null) {
+  selectedTo.value = null;
+  if (route) {
+    router.push(route);
+  }
+}
 </script>

@@ -210,7 +210,8 @@
   "component": {
     "theNavigationDrawer": {
       "pin": "Navigationsleiste anheften",
-      "unpin": "Navigationsleiste lösen"
+      "unpin": "Navigationsleiste lösen",
+      "search": "Navigationselemente durchsuchen"
     },
     "unsavedChangesDialog": {
       "title": "Ungespeicherte Änderungen",
