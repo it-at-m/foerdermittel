@@ -1,5 +1,6 @@
 {
   "common": {
+    "appAbbrev": "FM",
     "appName": "Fördermittel",
     "word": {
       "management": "Verwaltung",
@@ -208,7 +209,8 @@
   },
   "component": {
     "theNavigationDrawer": {
-      "loggedIn": "Angemeldet als:"
+      "pin": "Navigationsleiste anheften",
+      "unpin": "Navigationsleiste lösen"
     },
     "unsavedChangesDialog": {
       "title": "Ungespeicherte Änderungen",

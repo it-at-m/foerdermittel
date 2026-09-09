@@ -1,52 +1,62 @@
 <template>
   <v-navigation-drawer
+    v-model:rail="isRail"
     color="grey-darken-4"
-    width="20%"
+    :expand-on-hover="expandOnHover"
+    class="d-flex flex-column"
   >
-    <v-container>
-      <div class="text-center mb-5">
-        <p class="text-headline-small font-weight-bold">
-          {{ t("common.appName") }}
-        </p>
+    <div class="d-flex flex-column h-100">
+      <div class="d-flex align-center px-2 py-2">
+        <span class="text-h6 ml-2 font-weight-bold">
+          {{ isRail ? t("common.appAbbrev") : t("common.appName") }}
+        </span>
+
+        <v-spacer />
+
+        <v-tooltip
+          :text="
+            expandOnHover
+              ? t('component.theNavigationDrawer.pin')
+              : t('component.theNavigationDrawer.unpin')
+          "
+          location="left"
+        >
+          <template #activator="{ props }">
+            <v-icon-btn
+              :style="{ visibility: isRail ? 'hidden' : 'visible' }"
+              v-bind="props"
+              variant="text"
+              color="accent"
+              :icon="expandOnHover ? mdiPinOutline : mdiPin"
+              @click="expandOnHover = !expandOnHover"
+            />
+          </template>
+        </v-tooltip>
       </div>
-      <div
-        v-if="userInfoStore.userInfo?.preferred_username"
-        class="text-center"
-      >
-        <ad2-image-avatar
-          :username="userInfoStore.userInfo.preferred_username"
+
+      <v-list>
+        <v-list-item
+          :prepend-avatar="avatarUrl"
+          :subtitle="rolesText"
+          :title="userInfoStore.userInfo?.name"
         />
-        <div class="mb-5">
-          <p>{{ t("component.theNavigationDrawer.loggedIn") }}</p>
+      </v-list>
 
-          <v-tooltip
-            location="right"
-            :text="rolesText"
-          >
-            <template #activator="{ props }">
-              <v-chip
-                label
-                v-bind="props"
-                >{{ userInfoStore.userInfo.name }}</v-chip
-              >
-            </template>
-          </v-tooltip>
-        </div>
-        <theme-toggle-btn />
-      </div>
-    </v-container>
+      <v-divider />
 
-    <v-divider />
-
-    <v-container v-if="hasRole">
       <v-list
+        v-if="hasRole"
         :items="navigationItems"
         open-strategy="single"
         nav
         density="compact"
-        color="accent"
+        :color="isRail ? 'transparent' : 'accent'"
       />
-    </v-container>
+
+      <div class="mt-auto pa-2">
+        <theme-toggle-btn />
+      </div>
+    </div>
   </v-navigation-drawer>
 </template>
 
@@ -59,12 +69,14 @@ import {
   mdiFileChart,
   mdiMagnify,
   mdiNote,
+  mdiPin,
+  mdiPinOutline,
   mdiSitemap,
 } from "@mdi/js";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
-import Ad2ImageAvatar from "@/components/common/Ad2ImageAvatar.vue";
+import { getAvatarHref } from "@/api/ad2imageavatar-client";
 import ThemeToggleBtn from "@/components/common/ThemeToggleBtn.vue";
 import useHasAnyRole from "@/composables/useHasAnyRole";
 import { useUserInfoStore } from "@/stores/userinfo";
@@ -86,6 +98,13 @@ const rolesText = computed(() =>
         .join(", ")
     : t("common.roles.noRole")
 );
+
+const isRail = ref(true);
+const expandOnHover = ref(true);
+
+const avatarUrl = computed(() => {
+  return getAvatarHref(userInfoStore.userInfo?.preferred_username ?? "");
+});
 
 const navigationItems: NavigationItem[] = [
   {
