@@ -1,6 +1,6 @@
 <template>
   <v-icon-btn
-    v-tooltip:end="changeText"
+    v-tooltip:start="changeText"
     variant="text"
     color="accent"
     :icon="isDark ? mdiWeatherSunny : mdiWeatherNight"

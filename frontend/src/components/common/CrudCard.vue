@@ -73,6 +73,7 @@
           v-model:page="page"
           v-model:sort-by="sortBy"
           v-model:search="search"
+          v-model:expanded="expanded"
           fixed-header
           :headers="tableHeadersWithActions"
           :items="getAllData?.content ?? []"
@@ -82,6 +83,10 @@
           expand-strategy="single"
           height="10"
           class="flex-grow-1 w-100"
+          :row-props="{
+            class: expandable ? 'cursor-pointer, hover-row' : 'cursor-auto',
+          }"
+          @click:row="onRowClick"
         >
           <template #loading>
             <p>{{ t("common.message.loading", [domainPlural]) }}</p>
@@ -94,11 +99,11 @@
             <v-icon-btn
               :icon="mdiPencil"
               class="mr-1"
-              @click="openEdit(item)"
+              @click.stop="openEdit(item)"
             />
             <v-icon-btn
               :icon="mdiDelete"
-              @click="openDelete(item)"
+              @click.stop="openDelete(item)"
             />
           </template>
           <!-- Slot for rendering the expansion panel -->
@@ -106,7 +111,7 @@
             v-if="expandable"
             #expanded="{ item }"
           >
-            <div class="pa-10 bg-grey-lighten-5">
+            <div class="pa-10">
               <slot
                 name="form"
                 :item="item"
@@ -307,6 +312,8 @@ const isEditing = computed<boolean>(() => !!activeItem.value.id);
 
 const isFormSlotValid = ref(false);
 
+const expanded = ref<string[]>([]);
+
 // --- Lifecycle Handlers ---
 
 onMounted(async () => {
@@ -314,6 +321,30 @@ onMounted(async () => {
 });
 
 // --- Functions ---
+
+const onRowClick = (event: MouseEvent, { item }: { item: TGetResponse }) => {
+  if (expandable) {
+    const target = event.target as HTMLElement;
+
+    // Ignore clicks on action buttons and other interactive elements.
+    if (target.closest("button, a, input, textarea, select, [role='button']")) {
+      return;
+    }
+
+    // Ignore the built-in Vuetify expand button.
+    if (target.closest(".v-data-table__expand-icon")) {
+      return;
+    }
+
+    if (!item.id) return;
+
+    if (expanded.value.includes(item.id)) {
+      expanded.value = [];
+    } else {
+      expanded.value = [item.id];
+    }
+  }
+};
 
 const loadFormContext = async () => {
   if (shouldLoadFormContext) {
@@ -409,5 +440,8 @@ const discardDialogChanges = () => {
 <style scoped>
 :deep(table) {
   table-layout: fixed;
+}
+:deep(.hover-row:hover) {
+  background: rgba(var(--v-theme-on-surface), var(--v-hover-opacity));
 }
 </style>
