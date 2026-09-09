@@ -25,6 +25,7 @@
           />
         </template>
         <template #[`item.hasHa`]="{ item }">
+          <!--          <router-link   to="hauptabschnitte">{{ item.hasHa }} - {{ item.haBezeichnung }}</router-link>-->
           <v-tooltip
             :text="item.haBezeichnung"
             location="right"
@@ -32,7 +33,8 @@
             <template #activator="{ props }">
               <v-chip
                 v-bind="props"
-                :append-icon="mdiArrowRight"
+                label
+                :append-icon="mdiArrowTopRight"
                 to="hauptabschnitte"
                 >{{ item.hasHa }}
               </v-chip>
@@ -48,7 +50,7 @@
 import type { UnterabschnittResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { mdiArrowRight } from "@mdi/js";
+import { mdiArrowTopRight } from "@mdi/js";
 import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
