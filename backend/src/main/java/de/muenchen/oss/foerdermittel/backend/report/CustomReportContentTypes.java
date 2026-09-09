@@ -1,6 +1,6 @@
 package de.muenchen.oss.foerdermittel.backend.report;
 
-public class CustomReportContentTypes {
+public final class CustomReportContentTypes {
     public static final String EXCEL_CONTENT_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
     private CustomReportContentTypes() {
