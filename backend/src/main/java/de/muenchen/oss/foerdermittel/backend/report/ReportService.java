@@ -47,7 +47,8 @@ public class ReportService {
     /// @param jasperParameters parameters to fill the report with
     /// @param reportType type of the report to generate
     /// @param reportFormat format of the report to generate
-    /// @param sort optional sort parameter to pass manually instead of in the mapped parameters
+    /// @param sort sort parameter (SQL statement) to use for the Jasper report (passed seperate due to
+    ///            SQL injection prevention)
     /// @return the generated report with file metadata
     private GeneratedReport generateReport(
             final Map<String, Object> jasperParameters,
@@ -57,8 +58,10 @@ public class ReportService {
 
         checkReportFormat(reportType, reportFormat);
 
-        if (sort != null && !jasperParameters.containsKey(SORT_PARAMETER)) {
+        if (sort != null) {
             jasperParameters.put(SORT_PARAMETER, sort);
+        } else {
+            jasperParameters.remove(SORT_PARAMETER);
         }
 
         return new GeneratedReport(
