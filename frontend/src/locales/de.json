@@ -211,7 +211,7 @@
     "theNavigationDrawer": {
       "pin": "Navigationsleiste anheften",
       "unpin": "Navigationsleiste lösen",
-      "search": "Navigationselemente durchsuchen"
+      "search": "Navigation durchsuchen"
     },
     "unsavedChangesDialog": {
       "title": "Ungespeicherte Änderungen",

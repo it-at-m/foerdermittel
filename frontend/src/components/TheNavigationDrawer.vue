@@ -4,6 +4,7 @@
     color="grey-darken-4"
     :expand-on-hover="expandOnHover && !autocompleteMenuOpen"
     class="d-flex flex-column"
+    width="20%"
   >
     <div class="d-flex align-center px-2 pt-2">
       <span class="text-h6 ml-2 font-weight-bold">
