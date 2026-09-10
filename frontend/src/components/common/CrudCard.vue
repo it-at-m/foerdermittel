@@ -91,15 +91,17 @@
           </template>
           <!-- Static actions for edit and delete -->
           <template #[`item.actions`]="{ item }">
-            <v-icon-btn
-              :icon="mdiPencil"
-              class="mr-1"
-              @click="openEdit(item)"
-            />
-            <v-icon-btn
-              :icon="mdiDelete"
-              @click="openDelete(item)"
-            />
+            <fm-button-group>
+              <v-icon-btn
+                :icon="mdiPencil"
+                class="mr-1"
+                @click="openEdit(item)"
+              />
+              <v-icon-btn
+                :icon="mdiDelete"
+                @click="openDelete(item)"
+              />
+            </fm-button-group>
           </template>
           <!-- Slot for rendering the expansion panel -->
           <template
@@ -154,6 +156,7 @@ import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 import ConfirmCard from "@/components/common/ConfirmCard.vue";
+import FmButtonGroup from "@/components/common/FmButtonGroup.vue";
 import UnsavedChangesDialog from "@/components/common/UnsavedChangesDialog.vue";
 import { useDirtyFlag } from "@/composables/useDirtyFlag";
 import usePagination from "@/composables/usePagination";
