@@ -111,7 +111,7 @@ class BauprogrammServiceTest {
             // Then
             verify(bauprogrammRepository, times(1)).findById(id);
             verify(bauprogrammRepository, never()).update(entityToUpdate);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Bauprogramm.class.getSimpleName(), id));
         }
     }
 
@@ -144,7 +144,7 @@ class BauprogrammServiceTest {
             // Then
             verify(bauprogrammRepository, times(1)).findById(id);
             verify(bauprogrammRepository, never()).deleteById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Bauprogramm.class.getSimpleName(), id));
         }
     }
 

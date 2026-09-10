@@ -1,11 +1,14 @@
 import type { ApiCtor } from "@/api/ApiFactory";
-import type { PageMetadata } from "@/api/generated/foerdermittel-backend";
-import type { ApiComposable } from "@/composables/useAPI";
+import type {
+  PageMetadata,
+  RequestOpts,
+} from "@/api/generated/foerdermittel-backend";
+import type { ApiComposable, ReportApiComposable } from "@/composables/useAPI";
 import type { Pageable } from "@/types/Pageable";
 
 import { ApiFactory } from "@/api/ApiFactory";
 import { BaseAPI } from "@/api/generated/foerdermittel-backend";
-import useAPI from "@/composables/useAPI";
+import { useAPI, useAPICall } from "@/composables/useAPI";
 
 export interface ApiComposableMethods<
   Api extends BaseAPI,
@@ -46,6 +49,11 @@ export interface ApiComposables<
   create: ApiComposable<TCreateRequest, TCreateResponse>;
   update: ApiComposable<TUpdateRequest, TUpdateResponse>;
   delete: ApiComposable<TDeleteRequest, void>;
+}
+
+export interface ReportApiComposables<TGetOptsRequest, TContextResponse> {
+  getOpts: ReportApiComposable<TGetOptsRequest>;
+  context: ApiComposable<void, TContextResponse>;
 }
 
 export function createAPIComposables<
@@ -91,6 +99,31 @@ export function createAPIComposables<
     }),
     ...(deleteFn && {
       useDelete: () => useAPI((req: DeleteReq) => deleteFn(api, req)),
+    }),
+    ...(context && {
+      useContext: () => useAPI(() => context(api)),
+    }),
+  };
+}
+
+export function createReportAPIComposables<
+  Api extends BaseAPI,
+  GetReq,
+  Context,
+>(
+  ApiClass: ApiCtor<Api>,
+  methods: {
+    getOpts?: (api: Api, req: GetReq) => Promise<RequestOpts>;
+    context?: (api: Api) => Promise<Context>;
+  }
+) {
+  const api = ApiFactory.getInstance(ApiClass);
+
+  const { getOpts, context } = methods;
+
+  return {
+    ...(getOpts && {
+      useGetOpts: () => useAPICall((req: GetReq) => getOpts(api, req)),
     }),
     ...(context && {
       useContext: () => useAPI(() => context(api)),
