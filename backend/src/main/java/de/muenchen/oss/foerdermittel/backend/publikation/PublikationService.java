@@ -40,7 +40,7 @@ public class PublikationService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Publikation updatePublikation(final Publikation publikation, final String kurzform) {
-        final Publikation foundPublikation = ServiceUtils.getEntityOrThrowNotFoundException(kurzform, publikationRepository);
+        final Publikation foundPublikation = ServiceUtils.getEntityOrThrowNotFoundException(kurzform, publikationRepository, Publikation.class);
         foundPublikation.setBezeichnung(publikation.getBezeichnung());
         log.debug("Update Publikation {}", foundPublikation);
         return publikationRepository.update(foundPublikation);
@@ -49,7 +49,7 @@ public class PublikationService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deletePublikation(final String kurzform) {
         log.debug("Delete Publikation with ID {}", kurzform);
-        ServiceUtils.getEntityOrThrowNotFoundException(kurzform, publikationRepository);
+        ServiceUtils.getEntityOrThrowNotFoundException(kurzform, publikationRepository, Publikation.class);
         publikationRepository.deleteById(kurzform);
     }
 }

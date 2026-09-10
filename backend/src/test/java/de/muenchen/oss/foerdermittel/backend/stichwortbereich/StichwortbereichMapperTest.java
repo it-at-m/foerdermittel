@@ -1,11 +1,14 @@
 package de.muenchen.oss.foerdermittel.backend.stichwortbereich;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.dto.StichwortbereichCreateDTO;
+import de.muenchen.oss.foerdermittel.backend.stichwortbereich.dto.StichwortbereichFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.dto.StichwortbereichMapper;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.dto.StichwortbereichResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.dto.StichwortbereichUpdateDTO;
+import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -63,6 +66,47 @@ public class StichwortbereichMapperTest {
             assertThat(entity).isNotNull();
             assertThat(entity.getBereich()).isNull();
             assertThat(entity.getBezeichnung()).isEqualTo(dto.bezeichnung());
+        }
+
+    }
+
+    @Nested
+    class ToFormContextDTO {
+
+        @Test
+        void givenEntity_thenReturnsCorrectDTO() {
+            // given
+            final Stichwortbereich entity = new Stichwortbereich("K", "test");
+
+            // when
+            final StichwortbereichFormContextDTO dto = stichwortbereichMapper.toFormContext(entity);
+
+            // then
+            assertThat(dto).isNotNull();
+            assertThat(dto.bereich()).isEqualTo(entity.getBereich());
+            assertThat(dto.bezeichnung()).isEqualTo(entity.getBezeichnung());
+        }
+
+        @Test
+        void givenList_thenReturnsCorrectDTO() {
+            // given
+            final Stichwortbereich entity1 = new Stichwortbereich("K", "test");
+            final Stichwortbereich entity2 = new Stichwortbereich("L", "test 2");
+            final List<Stichwortbereich> list = List.of(entity1, entity2);
+
+            // when
+            final List<StichwortbereichFormContextDTO> dto = stichwortbereichMapper.toFormContext(list);
+
+            // then
+            assertThat(dto).isNotNull();
+            assertThat(dto).hasSize(list.size());
+            assertThat(dto)
+                    .extracting(
+                            StichwortbereichFormContextDTO::bereich,
+                            StichwortbereichFormContextDTO::bezeichnung)
+                    .containsExactly(
+                            tuple("K", "test"),
+                            tuple("L", "test 2"));
         }
 
     }

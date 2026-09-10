@@ -76,7 +76,7 @@ const { t } = useI18n();
 
 const route = useRoute();
 // always contains a valid route name, implemented fallback only to make vue-tsc happy without building to generate route-map.d.ts
-const routeName = computed(() => (route.name as string).replace("/", ""));
+const routeName = computed(() => (route.name as string).replaceAll("/", ""));
 
 const emptyItemTemplate = computed<Partial<BenutzerhinweisResponseDTO>>(() => {
   return {
