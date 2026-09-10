@@ -109,7 +109,7 @@ class ReportServiceTest {
 
             doThrow(new NotFoundException(Stichwortbereich.class, bereich))
                     .when(stichwortbereichService)
-                    .checkExistsById(bereich);
+                    .checkExistsByBereich(bereich);
 
             // When
             final Exception exception = Assertions.assertThrows(
@@ -117,7 +117,7 @@ class ReportServiceTest {
                     () -> reportService.generateReportStichworte(parameters));
 
             // Then
-            verify(stichwortbereichService, times(1)).checkExistsById(bereich);
+            verify(stichwortbereichService, times(1)).checkExistsByBereich(bereich);
             assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Stichwortbereich.class.getSimpleName(), bereich));
         }
 

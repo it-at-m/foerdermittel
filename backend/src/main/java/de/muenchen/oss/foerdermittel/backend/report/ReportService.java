@@ -30,7 +30,7 @@ public class ReportService {
     @Transactional(readOnly = true)
     public GeneratedReport generateReportStichworte(
             final ReportStichworteDTO parameters) {
-        stichwortbereichService.checkExistsById(parameters.bereich());
+        stichwortbereichService.checkExistsByBereich(parameters.bereich());
         return generateReport(reportMapper.toJasperParameters(parameters), ReportType.FMW_ABLAGEINDEX, ReportFormat.PDF,
                 "ORDER BY stb_bereich ASC, nr ASC, wort ASC");
     }
@@ -67,13 +67,11 @@ public class ReportService {
         return new GeneratedReport(
                 getDownloadFileName(reportType, reportFormat),
                 reportFormat.getContentType(),
-                outputStream -> {
-                    jasperReportService.generateReportWithParameters(
-                            reportType,
-                            reportFormat,
-                            jasperParameters,
-                            outputStream);
-                });
+                outputStream -> jasperReportService.generateReportWithParameters(
+                        reportType,
+                        reportFormat,
+                        jasperParameters,
+                        outputStream));
     }
 
     /// Checks if a given [ReportFormat] is valid for a given [ReportType].

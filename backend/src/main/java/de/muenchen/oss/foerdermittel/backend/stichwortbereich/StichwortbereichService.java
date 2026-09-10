@@ -66,7 +66,7 @@ public class StichwortbereichService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public void checkExistsById(final String id) {
-        ServiceUtils.checkExistsOrThrowNotFoundException(id, stichwortbereichRepository, Stichwortbereich.class);
+    public void checkExistsByBereich(final String bereich) {
+        ServiceUtils.checkExistsOrThrowNotFoundException(bereich, stichwortbereichRepository, Stichwortbereich.class);
     }
 }
