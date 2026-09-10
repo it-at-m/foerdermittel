@@ -45,7 +45,7 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
 
         <!-- Reporting -->
-        <jasperreports.version>6.21.4</jasperreports.version>
+        <jasperreports.version>6.21.5</jasperreports.version>
 
         <!-- Linting & Formatting -->
         <spotless-maven-plugin.version>3.10.2</spotless-maven-plugin.version>
@@ -225,6 +225,12 @@
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
+            <version>${jasperreports.version}</version>
+        </dependency>
+        <!-- Required for font variants (bold, italicized) to work properly -->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-fonts</artifactId>
             <version>${jasperreports.version}</version>
         </dependency>
 
