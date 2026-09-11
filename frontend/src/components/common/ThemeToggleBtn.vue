@@ -1,19 +1,12 @@
 <template>
-  <v-tooltip
-    :text="changeText"
-    location="right"
-  >
-    <template #activator="{ props }">
-      <v-icon-btn
-        variant="text"
-        color="accent"
-        v-bind="props"
-        :icon="isDark ? mdiWeatherSunny : mdiWeatherNight"
-        :aria-label="changeText"
-        @click="toggleTheme"
-      />
-    </template>
-  </v-tooltip>
+  <v-icon-btn
+    v-tooltip:start="changeText"
+    variant="text"
+    color="accent"
+    :icon="isDark ? mdiWeatherSunny : mdiWeatherNight"
+    :aria-label="changeText"
+    @click="toggleTheme"
+  />
 </template>
 
 <script setup lang="ts">
