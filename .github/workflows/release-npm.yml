@@ -41,12 +41,6 @@ jobs:
         uses: it-at-m/lhm_actions/action-templates/actions/action-npm-build@54b32c7d11363cad45838c9a3d8a8560b93f0e8c # v1.5.4
         with:
           app-path: ${{ inputs.app-path }}
-      # necessary to publish to npm registry
-      # docs: https://it-at-m.github.io/lhm_actions/workflows.html#npm
-      # - id: publish
-      #   shell: bash
-      #   working-directory: ./${{ inputs.app-path }}
-      #   run: npm publish --provenance --access public
 
   release-npm-image:
     needs: release-npm-artifact
@@ -57,13 +51,14 @@ jobs:
       - uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@54b32c7d11363cad45838c9a3d8a8560b93f0e8c # v1.5.4
         with:
           path: ${{ inputs.app-path }}
-          image-name: ${{ inputs.app-path }}
           artifact-name: ${{ needs.release-npm-artifact.outputs.ARTIFACT_NAME }}
-          registry-password: ${{ secrets.GITHUB_TOKEN }}
-          registry-username: ${{ github.actor }}
+          image-name: ${{ inputs.app-path }}
           image-tags: |
             type=semver,pattern={{version}},value=${{ needs.release-npm-artifact.outputs.ARTIFACT_VERSION }}
             type=raw,value=latest
+          platforms: "linux/amd64,linux/arm64"
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          registry-username: ${{ github.actor }}
 
   release-npm-github:
     needs: release-npm-artifact
