@@ -84,7 +84,7 @@
           height="10"
           class="flex-grow-1 w-100"
           :row-props="{
-            class: expandable ? 'cursor-pointer, hover-row' : 'cursor-auto',
+            class: expandable ? 'cursor-pointer hover-row' : 'cursor-auto',
           }"
           @click:row="onRowClick"
         >
