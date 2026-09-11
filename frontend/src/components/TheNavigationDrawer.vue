@@ -114,6 +114,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.archiv.modelName"),
+        props: {
+          to: "/archiv",
+        },
       },
       {
         title: t("model.haushaltsjahr.modelName", 2),
