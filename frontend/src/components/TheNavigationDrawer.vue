@@ -1,52 +1,70 @@
 <template>
   <v-navigation-drawer
+    v-model:rail="isRail"
     color="grey-darken-4"
+    :expand-on-hover="expandOnHover && !autocompleteMenuOpen"
+    class="d-flex flex-column"
     width="20%"
   >
-    <v-container>
-      <div class="text-center mb-5">
-        <p class="text-headline-small font-weight-bold">
-          {{ t("common.appName") }}
-        </p>
-      </div>
-      <div
-        v-if="userInfoStore.userInfo?.preferred_username"
-        class="text-center"
-      >
-        <ad2-image-avatar
-          :username="userInfoStore.userInfo.preferred_username"
-        />
-        <div class="mb-5">
-          <p>{{ t("component.theNavigationDrawer.loggedIn") }}</p>
+    <div class="d-flex align-center px-2 pt-2">
+      <span class="text-h6 ml-2 font-weight-bold">
+        {{ isRail ? t("common.appAbbrev") : t("common.appName") }}
+      </span>
 
-          <v-tooltip
-            location="right"
-            :text="rolesText"
-          >
-            <template #activator="{ props }">
-              <v-chip
-                label
-                v-bind="props"
-                >{{ userInfoStore.userInfo.name }}</v-chip
-              >
-            </template>
-          </v-tooltip>
-        </div>
+      <v-spacer />
+
+      <div
+        class="d-flex align-center"
+        :style="{ visibility: isRail ? 'hidden' : 'visible' }"
+      >
         <theme-toggle-btn />
+        <v-icon-btn
+          v-tooltip:start="
+            expandOnHover
+              ? t('component.theNavigationDrawer.pin')
+              : t('component.theNavigationDrawer.unpin')
+          "
+          variant="text"
+          color="accent"
+          :icon="expandOnHover ? mdiPinOutline : mdiPin"
+          @click="expandOnHover = !expandOnHover"
+        />
       </div>
-    </v-container>
+    </div>
+
+    <v-list class="pt-0">
+      <v-list-item
+        :prepend-avatar="avatarUrl"
+        :subtitle="rolesText"
+        :title="userInfoStore.userInfo?.name"
+      />
+    </v-list>
 
     <v-divider />
 
-    <v-container v-if="hasRole">
-      <v-list
-        :items="navigationItems"
-        open-strategy="single"
-        nav
-        density="compact"
-        color="accent"
-      />
-    </v-container>
+    <v-autocomplete
+      v-if="!isRail"
+      v-model="selectedTo"
+      theme="dark"
+      class="px-2 pt-2"
+      :items="searchableNavigationItems"
+      :label="t('component.theNavigationDrawer.search')"
+      variant="outlined"
+      density="compact"
+      hide-details
+      hide-no-data
+      @update:menu="autocompleteMenuOpen = $event"
+      @update:model-value="navigateToNavigationItem"
+    />
+
+    <v-list
+      v-if="hasRole && !autocompleteMenuOpen"
+      :items="navigationItems"
+      open-strategy="single"
+      nav
+      density="compact"
+      :color="isRail ? 'transparent' : 'accent'"
+    />
   </v-navigation-drawer>
 </template>
 
@@ -59,12 +77,16 @@ import {
   mdiFileChart,
   mdiMagnify,
   mdiNote,
+  mdiPin,
+  mdiPinOutline,
   mdiSitemap,
 } from "@mdi/js";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
+import { VAutocomplete } from "vuetify/components";
 
-import Ad2ImageAvatar from "@/components/common/Ad2ImageAvatar.vue";
+import { getAvatarHref } from "@/api/ad2imageavatar-client";
 import ThemeToggleBtn from "@/components/common/ThemeToggleBtn.vue";
 import useHasAnyRole from "@/composables/useHasAnyRole";
 import { useUserInfoStore } from "@/stores/userinfo";
@@ -86,6 +108,13 @@ const rolesText = computed(() =>
         .join(", ")
     : t("common.roles.noRole")
 );
+
+const isRail = ref(true);
+const expandOnHover = ref(true);
+
+const avatarUrl = computed(() => {
+  return getAvatarHref(userInfoStore.userInfo?.preferred_username ?? "");
+});
 
 const navigationItems: NavigationItem[] = [
   {
@@ -374,4 +403,42 @@ const navigationItems: NavigationItem[] = [
     ],
   },
 ];
+
+const selectedTo = ref<string | null>(null);
+
+const searchableNavigationItems = computed(() =>
+  navigationItems.flatMap((parent) => {
+    const children = (parent.children ?? [])
+      .filter(
+        (child) =>
+          child.props?.to && child.props.to !== router.currentRoute.value.path
+      )
+      .map((child) => ({
+        title: child.title,
+        value: child.props?.to,
+      }));
+
+    if (!children.length) {
+      return [];
+    }
+
+    return [
+      {
+        type: "subheader" as const,
+        title: parent.title,
+      },
+      ...children,
+    ];
+  })
+);
+
+const autocompleteMenuOpen = ref(false);
+
+const router = useRouter();
+function navigateToNavigationItem(route: string | null) {
+  selectedTo.value = null;
+  if (route) {
+    router.push(route);
+  }
+}
 </script>
