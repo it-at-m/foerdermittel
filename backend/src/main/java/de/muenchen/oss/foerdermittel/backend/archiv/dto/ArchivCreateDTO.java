@@ -3,14 +3,14 @@ package de.muenchen.oss.foerdermittel.backend.archiv.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDate;
 
 public record ArchivCreateDTO(
-        OffsetDateTime speicherDatum,
+        LocalDate speicherDatum,
         @NotNull Boolean speicherAkt,
         @NotNull Boolean speicherRechnungen,
-        OffsetDateTime mikroDatPlan,
-        OffsetDateTime mikroDat,
+        LocalDate mikroDatPlan,
+        LocalDate mikroDat,
         String notizen,
         @NotBlank String projnr) {
 }
