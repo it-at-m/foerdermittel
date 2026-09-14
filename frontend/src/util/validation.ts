@@ -86,10 +86,14 @@ export function mapOpenAPIToVuetifyValidationRules<
   K extends keyof T,
 >(
   rules: VuetifyRuleAliases,
-  validationAttributes: T,
-  property: K,
+  validationAttributes?: T,
+  property?: K,
   trimStringValues = false
 ): ValidationRule[] {
+  if (!validationAttributes || property === undefined) {
+    return [];
+  }
+
   const attributes = validationAttributes[property];
   const result: ValidationRule[] = [];
 
