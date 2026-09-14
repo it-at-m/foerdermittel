@@ -75,7 +75,8 @@ const { required, allRules, counter, canNotEdit } = useInputValidation(
   disableEdit,
   additionalRules,
   validationAttributeMap,
-  validationAttributeKey
+  validationAttributeKey,
+  true
 );
 
 const model = defineModel<string>();

@@ -37,6 +37,26 @@ export interface VuetifyRuleAliases {
 }
 
 /**
+ * Wraps a validation rule to trim string values before validating them when requested.
+ *
+ * @param rule validation rule to wrap
+ * @param enabled whether string values should be trimmed before validation
+ */
+function applyStringTrimming(
+  rule: ValidationRule,
+  enabled: boolean
+): ValidationRule {
+  if (!enabled || typeof rule !== "function") {
+    return rule;
+  }
+
+  return ((value: unknown) =>
+    rule(
+      typeof value === "string" ? toTrimmedString(value) : value
+    )) as ValidationRule;
+}
+
+/**
  * Calculates Vuetify {@link ValidationRule}s for a single input component using *ValidationAttributesMap object generated using OpenAPIGenerator typescript-fetch generator
  * Supported rules currently are:
  * - {@link VuetifyRuleAliases.required}
@@ -51,6 +71,7 @@ export interface VuetifyRuleAliases {
  * @param rules all available {@link VuetifyRuleAliases} typically retrieved via `useRules` composable from Vuetify
  * @param validationAttributes a generated *ValidationAttributesMap object
  * @param property property of the model object to calculate the {@link ValidationRule}s for.
+ * @param trimStringValues trims strings before validation. Use this for inputs whose model is trimmed before it is sent to the API.
  */
 export function mapOpenAPIToVuetifyValidationRules<
   T extends Record<string, ValidationAttributes>,
@@ -58,7 +79,8 @@ export function mapOpenAPIToVuetifyValidationRules<
 >(
   rules: VuetifyRuleAliases,
   validationAttributes: T,
-  property: K
+  property: K,
+  trimStringValues = false
 ): ValidationRule[] {
   const attributes = validationAttributes[property];
   const result: ValidationRule[] = [];
@@ -72,7 +94,7 @@ export function mapOpenAPIToVuetifyValidationRules<
 
   // Required
   if (attributes.required !== undefined && attributes.required) {
-    result.push(rules.required());
+    result.push(applyStringTrimming(rules.required(), trimStringValues));
   }
 
   // Strings
@@ -81,20 +103,35 @@ export function mapOpenAPIToVuetifyValidationRules<
     attributes.maxLength !== undefined &&
     attributes.minLength === attributes.maxLength
   ) {
-    result.push(rules.strictLength(attributes.minLength));
+    result.push(
+      applyStringTrimming(
+        rules.strictLength(attributes.minLength),
+        trimStringValues
+      )
+    );
   } else {
     if (attributes.minLength !== undefined && attributes.minLength > 0) {
-      result.push(rules.minLength(attributes.minLength));
+      result.push(
+        applyStringTrimming(
+          rules.minLength(attributes.minLength),
+          trimStringValues
+        )
+      );
     }
 
     if (attributes.maxLength !== undefined && attributes.maxLength > 0) {
-      result.push(rules.maxLength(attributes.maxLength));
+      result.push(
+        applyStringTrimming(
+          rules.maxLength(attributes.maxLength),
+          trimStringValues
+        )
+      );
     }
   }
 
   if (attributes.pattern !== undefined) {
     const regex = new RegExp(attributes.pattern.replace(/^\/|\/$/g, ""));
-    result.push(rules.pattern(regex));
+    result.push(applyStringTrimming(rules.pattern(regex), trimStringValues));
   }
 
   // Numbers
@@ -140,7 +177,7 @@ export function getOpenAPIValidationConstraint<
 /**
  * Deep equal compares two objects using trimmed string values
  * <br>
- * <b>Note:</b> Does not work for non-plain objects e.g. Date, Map, Set, RegExp, ...
+ * <b>Note:</b> Does not work for non-plain objects e.g. Map, Set, RegExp, ...
  * @param a object a
  * @param b object b
  */
@@ -149,16 +186,26 @@ export function deepEqualTrimmed(a: unknown, b: unknown): boolean {
     return toTrimmedString(a) === toTrimmedString(b);
   }
 
+  // Treat null and undefined as equal
+  if (a == null && b == null) {
+    return true;
+  }
+
   if (a === b) {
     return true;
   }
 
-  if (a instanceof Date && b instanceof Date) {
-    return a.getTime() === b.getTime();
+  if (a instanceof Date || b instanceof Date) {
+    return (
+      a instanceof Date && b instanceof Date && a.getTime() === b.getTime()
+    );
   }
 
-  if (Array.isArray(a) && Array.isArray(b)) {
+  // If only one side is an array, they are not equal
+  if (Array.isArray(a) || Array.isArray(b)) {
     return (
+      Array.isArray(a) &&
+      Array.isArray(b) &&
       a.length === b.length &&
       a.every((item, i) => deepEqualTrimmed(item, b[i]))
     );

@@ -41,7 +41,8 @@ public class FoerderbereichService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Foerderbereich updateFoerderbereich(final Foerderbereich foerderbereich, final BigDecimal foerderbereichId) {
-        final Foerderbereich foundFoerderbereich = ServiceUtils.getEntityOrThrowNotFoundException(foerderbereichId, foerderbereichRepository);
+        final Foerderbereich foundFoerderbereich = ServiceUtils.getEntityOrThrowNotFoundException(foerderbereichId, foerderbereichRepository,
+                Foerderbereich.class);
         foundFoerderbereich.setBezeichnung(foerderbereich.getBezeichnung());
         foundFoerderbereich.setFinanzausgleich(foerderbereich.getFinanzausgleich());
         foundFoerderbereich.setJahresstatistik(foerderbereich.getJahresstatistik());
@@ -54,7 +55,7 @@ public class FoerderbereichService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteFoerderbereich(final BigDecimal foerderbereichId) {
         log.debug("Delete Foerderbereich with ID {}", foerderbereichId);
-        ServiceUtils.getEntityOrThrowNotFoundException(foerderbereichId, foerderbereichRepository);
+        ServiceUtils.getEntityOrThrowNotFoundException(foerderbereichId, foerderbereichRepository, Foerderbereich.class);
         foerderbereichRepository.deleteById(foerderbereichId);
     }
 
