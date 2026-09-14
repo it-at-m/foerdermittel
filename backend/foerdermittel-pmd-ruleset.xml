@@ -11,6 +11,7 @@
 <rule ref="refarch-pmd-ruleset.xml">
     <!-- Excluded because pre-existing database scheme uses equal table and column names -->
     <exclude name="AvoidFieldNameMatchingTypeName"/>
+    <exclude name="LinguisticNaming"/>
 </rule>
 
 </ruleset>

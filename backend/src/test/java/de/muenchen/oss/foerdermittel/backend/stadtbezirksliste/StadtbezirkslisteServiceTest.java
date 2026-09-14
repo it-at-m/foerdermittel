@@ -39,41 +39,7 @@ class StadtbezirkslisteServiceTest {
     private ListennameStadtbezirkslisteService unitUnderTest;
 
     @Nested
-    class GetListenname {
-
-        @Test
-        void givenKurzbezExists_thenReturnEntity() {
-            // Given
-            final Listenname entity = new Listenname(KURZBEZ, BEZEICHNUNG, List.of());
-            when(listennameRepository.findById(KURZBEZ)).thenReturn(Optional.of(entity));
-
-            // When
-            final Listenname result = unitUnderTest.getListenname(KURZBEZ);
-
-            // Then
-            verify(listennameRepository, times(1)).findById(KURZBEZ);
-            assertThat(result).usingRecursiveComparison().isEqualTo(entity);
-        }
-
-        @Test
-        void givenKurzbezNotExists_thenThrowNotFoundException() {
-            // Given
-            when(listennameRepository.findById(KURZBEZ)).thenReturn(Optional.empty());
-
-            // When
-            final Exception exception = Assertions.assertThrows(
-                    NotFoundException.class,
-                    () -> unitUnderTest.getListenname(KURZBEZ));
-
-            // Then
-            verify(listennameRepository, times(1)).findById(KURZBEZ);
-            assertThat(exception.getMessage())
-                    .isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", KURZBEZ));
-        }
-    }
-
-    @Nested
-    class GetAllListennamen {
+    class GetListennamen {
 
         @Test
         void givenPageable_thenReturnPageOfEntities() {
@@ -85,7 +51,7 @@ class StadtbezirkslisteServiceTest {
             when(listennameRepository.findAll(pageable)).thenReturn(expectedPage);
 
             // When
-            final Page<Listenname> result = unitUnderTest.getAllListennamen(pageable);
+            final Page<Listenname> result = unitUnderTest.getListennamen(pageable);
 
             // Then
             verify(listennameRepository, times(1)).findAll(pageable);
@@ -187,8 +153,7 @@ class StadtbezirkslisteServiceTest {
             // Then
             verify(listennameRepository, times(1)).findById(KURZBEZ);
             verify(listennameRepository, never()).update(entity);
-            assertThat(exception.getMessage())
-                    .isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", KURZBEZ));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Listenname.class.getSimpleName(), KURZBEZ));
         }
     }
 
@@ -234,8 +199,7 @@ class StadtbezirkslisteServiceTest {
             // Then
             verify(listennameRepository, times(1)).findById(KURZBEZ);
             verify(listennameRepository, never()).deleteById(KURZBEZ);
-            assertThat(exception.getMessage())
-                    .isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", KURZBEZ));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Listenname.class.getSimpleName(), KURZBEZ));
         }
     }
 }

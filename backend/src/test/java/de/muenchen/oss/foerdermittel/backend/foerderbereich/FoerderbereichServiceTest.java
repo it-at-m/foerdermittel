@@ -111,7 +111,7 @@ class FoerderbereichServiceTest {
             // Then
             verify(foerderbereichRepository, times(1)).findById(id);
             verify(foerderbereichRepository, never()).update(entityToUpdate);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Foerderbereich.class.getSimpleName(), id));
         }
     }
 
@@ -144,7 +144,7 @@ class FoerderbereichServiceTest {
             // Then
             verify(foerderbereichRepository, times(1)).findById(id);
             verify(foerderbereichRepository, never()).deleteById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Foerderbereich.class.getSimpleName(), id));
         }
     }
 

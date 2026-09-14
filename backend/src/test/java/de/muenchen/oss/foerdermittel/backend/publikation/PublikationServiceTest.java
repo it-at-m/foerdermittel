@@ -110,7 +110,7 @@ class PublikationServiceTest {
             // Then
             verify(publikationRepository, times(1)).findById(id);
             verify(publikationRepository, never()).update(entityToUpdate);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Publikation.class.getSimpleName(), id));
         }
     }
 
@@ -143,7 +143,7 @@ class PublikationServiceTest {
             // Then
             verify(publikationRepository, times(1)).findById(id);
             verify(publikationRepository, never()).deleteById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Publikation.class.getSimpleName(), id));
         }
     }
 

@@ -110,7 +110,7 @@ class KrankenhausServiceTest {
             // Then
             verify(krankenhausRepository, times(1)).findById(id);
             verify(krankenhausRepository, never()).update(entityToUpdate);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Krankenhaus.class.getSimpleName(), id));
         }
     }
 
@@ -143,7 +143,7 @@ class KrankenhausServiceTest {
             // Then
             verify(krankenhausRepository, times(1)).findById(id);
             verify(krankenhausRepository, never()).deleteById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Krankenhaus.class.getSimpleName(), id));
         }
     }
 
