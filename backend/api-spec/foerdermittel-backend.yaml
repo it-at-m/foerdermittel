@@ -2390,17 +2390,17 @@ components:
       properties:
         speicherDatum:
           type: string
-          format: date-time
+          format: date
         speicherAkt:
           type: boolean
         speicherRechnungen:
           type: boolean
         mikroDatPlan:
           type: string
-          format: date-time
+          format: date
         mikroDat:
           type: string
-          format: date-time
+          format: date
         notizen:
           type: string
     ArchivResponseDTO:
@@ -2418,17 +2418,17 @@ components:
           type: string
         speicherDatum:
           type: string
-          format: date-time
+          format: date
         speicherAkt:
           type: boolean
         speicherRechnungen:
           type: boolean
         mikroDatPlan:
           type: string
-          format: date-time
+          format: date
         mikroDat:
           type: string
-          format: date-time
+          format: date
         notizen:
           type: string
         projnr:
@@ -2705,17 +2705,17 @@ components:
       properties:
         speicherDatum:
           type: string
-          format: date-time
+          format: date
         speicherAkt:
           type: boolean
         speicherRechnungen:
           type: boolean
         mikroDatPlan:
           type: string
-          format: date-time
+          format: date
         mikroDat:
           type: string
-          format: date-time
+          format: date
         notizen:
           type: string
         projnr:
