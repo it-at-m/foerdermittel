@@ -1,4 +1,5 @@
 import type {
+  GetReportProjektuebersichtRequest,
   GetReportStichworteRequest,
   ReportStichworteFormContext,
 } from "@/api/generated/foerdermittel-backend";
@@ -31,5 +32,29 @@ export function useReportStichworteApi(): ReportApiComposables<
   return {
     getOpts: useGetReportStichworteOpts(),
     context: useGetReportStichworteFormContext(),
+  };
+}
+
+export const {
+  useGetOpts: useGetReportProjektuebersichtOpts,
+  useContext: useGetReportProjektuebersichtFormContext,
+} = requireComposables(
+  createReportAPIComposables<
+    ReportControllerApi,
+    GetReportProjektuebersichtRequest,
+    object
+  >(ReportControllerApi, {
+    getOpts: (api, req) => api.getReportProjektuebersichtRequestOpts(req),
+    context: (api) => api.getReportProjektuebersichtFormContext(),
+  })
+);
+
+export function useReportProjektuebersichtApi(): ReportApiComposables<
+  GetReportProjektuebersichtRequest,
+  object
+> {
+  return {
+    getOpts: useGetReportProjektuebersichtOpts(),
+    context: useGetReportProjektuebersichtFormContext(),
   };
 }

@@ -20,10 +20,10 @@ import javax.sql.rowset.RowSetMetaDataImpl;
 import javax.sql.rowset.RowSetProvider;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ClassPathResource;
@@ -32,6 +32,8 @@ import org.springframework.core.io.ClassPathResource;
 class JasperReportServiceTest {
 
     private static final String BEREICH_PARAMETER = "P_BEREICH";
+    private static final String NOTIZ_PARAMETER = "P_NOTIZ";
+    private static final String PROJNR_PARAMETER = "P_PROJNR";
     private static final String SORT_PARAMETER = "P_SORT";
 
     @Mock
@@ -46,8 +48,15 @@ class JasperReportServiceTest {
     @Mock
     private DatabaseMetaData databaseMetaData;
 
-    @InjectMocks
     private JasperReportService unitUnderTest;
+
+    @BeforeEach
+    void setUp() {
+        final JasperReportsConfiguration jasperReportsConfiguration = new JasperReportsConfiguration();
+        unitUnderTest = new JasperReportService(
+                dataSource,
+                jasperReportsConfiguration.jasperFillManager(jasperReportsConfiguration.jasperReportsContext()));
+    }
 
     @Nested
     class GenerateReportWithParametersTests {
@@ -64,6 +73,20 @@ class JasperReportServiceTest {
                     .filteredOn(parameter -> parameter.getName().equals(BEREICH_PARAMETER))
                     .singleElement()
                     .satisfies(parameter -> assertThat(parameter.getValueClassName())
+                            .isEqualTo(String.class.getName()));
+        }
+
+        @Test
+        void givenCompiledProjektuebersichtReport_thenContainsExpectedStringParameters() throws Exception {
+            // Given
+            final JasperReport jasperReport = (JasperReport) JRLoader.loadObject(
+                    new ClassPathResource("reports/FMW_PROJEKTE3_R.jasper")
+                            .getURL());
+
+            // Then
+            assertThat(jasperReport.getParameters())
+                    .filteredOn(parameter -> parameter.getName().equals(PROJNR_PARAMETER) || parameter.getName().equals(NOTIZ_PARAMETER))
+                    .allSatisfy(parameter -> assertThat(parameter.getValueClassName())
                             .isEqualTo(String.class.getName()));
         }
 

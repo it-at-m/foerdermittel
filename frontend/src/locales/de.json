@@ -53,7 +53,9 @@
   },
   "model": {
     "projekt": {
-      "modelName": "Projekt | Projekte"
+      "modelName": "Projekt | Projekte",
+      "projnr": "Projektnummer",
+      "ausgabeNotiz": "Ausgabe Notiz"
     },
     "antrag": {
       "modelName": "Antrag | Anträge"

@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 public class JasperReportService {
 
     private final DataSource dataSource;
+    private final JasperFillManager jasperFillManager;
 
     /// Generates a Jasper report file as byte array given a specific [ReportType], parameters and the
     /// desired [ReportFormat].
@@ -49,7 +50,7 @@ public class JasperReportService {
         checkParameters(jasperReport, parameters);
 
         try (Connection connection = dataSource.getConnection()) {
-            final JasperPrint jasperPrint = JasperFillManager.fillReport(
+            final JasperPrint jasperPrint = jasperFillManager.fill(
                     jasperReport,
                     parameters,
                     connection);

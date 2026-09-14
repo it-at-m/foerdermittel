@@ -1626,6 +1626,41 @@ paths:
                 $ref: "#/components/schemas/ReportStichworteFormContext"
       security:
       - bearerAuth: []
+  /report/projektuebersicht:
+    get:
+      tags:
+      - report-controller
+      operationId: getReportProjektuebersicht
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportProjektuebersichtDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/projektuebersicht/form-context:
+    get:
+      tags:
+      - report-controller
+      operationId: getReportProjektuebersichtFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportProjektuebersichtFormContext"
+      security:
+      - bearerAuth: []
   /referate/form-context:
     get:
       tags:
@@ -2700,6 +2735,18 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/StichwortbereichFormContextDTO"
+    ReportProjektuebersichtDTO:
+      required:
+      - projnr
+      type: object
+      properties:
+        projnr:
+          minLength: 1
+          type: string
+        notiz:
+          type: boolean
+    ReportProjektuebersichtFormContext:
+      type: object
     StichwortbereichFormContextDTO:
       required:
       - bereich

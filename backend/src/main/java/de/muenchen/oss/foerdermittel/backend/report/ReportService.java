@@ -1,7 +1,9 @@
 package de.muenchen.oss.foerdermittel.backend.report;
 
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportProjektuebersichtDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportProjektuebersichtFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.StichwortbereichService;
@@ -40,6 +42,22 @@ public class ReportService {
     public ReportStichworteFormContext getReportStichworte() {
         log.info("Get ReportStichworte form context");
         return new ReportStichworteFormContext(stichwortbereichService.getStichwortbereichFormContextDTOs());
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public GeneratedReport generateReportProjektuebersicht(final ReportProjektuebersichtDTO parameters) {
+        Map<String, Object> jasperParameters = reportMapper.toJasperParameters(parameters);
+        jasperParameters.put("P_PNAME", "<insert name from model here>");
+        jasperParameters.put("P_PSTRASSE", "<insert strasse from model here>");
+        return generateReport(jasperParameters, ReportType.FMW_PROJEKTE3, ReportFormat.PDF, null);
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public ReportProjektuebersichtFormContext getReportProjektuebersicht() {
+        log.info("Get ReportProjektuebersicht form context");
+        return new ReportProjektuebersichtFormContext();
     }
 
     /// Utility function to create a [GeneratedReport].
