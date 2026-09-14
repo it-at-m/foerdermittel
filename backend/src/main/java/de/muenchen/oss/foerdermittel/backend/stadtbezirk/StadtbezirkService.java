@@ -42,7 +42,7 @@ public class StadtbezirkService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Stadtbezirk updateStadtbezirk(final Stadtbezirk stadtbezirk, final BigDecimal stadtbezirkId) {
         final Stadtbezirk foundStadtbezirk = ServiceUtils.getEntityOrThrowNotFoundException(
-                stadtbezirkId, stadtbezirkRepository);
+                stadtbezirkId, stadtbezirkRepository, Stadtbezirk.class);
 
         foundStadtbezirk.setBezeichnung(stadtbezirk.getBezeichnung());
         log.debug("Update Stadtbezirk {}", foundStadtbezirk);
@@ -52,7 +52,7 @@ public class StadtbezirkService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteStadtbezirk(final BigDecimal stadtbezirkId) {
         log.debug("Delete Stadtbezirk with ID {}", stadtbezirkId);
-        ServiceUtils.getEntityOrThrowNotFoundException(stadtbezirkId, stadtbezirkRepository);
+        ServiceUtils.getEntityOrThrowNotFoundException(stadtbezirkId, stadtbezirkRepository, Stadtbezirk.class);
         stadtbezirkRepository.deleteById(stadtbezirkId);
     }
 }

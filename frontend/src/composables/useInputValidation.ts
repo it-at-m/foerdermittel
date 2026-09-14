@@ -18,7 +18,8 @@ export function useInputValidation(
   validationAttributeMap?: MaybeRefOrGetter<
     Record<string, ValidationAttributes> | undefined
   >,
-  validationAttributeKey?: MaybeRefOrGetter<string | undefined>
+  validationAttributeKey?: MaybeRefOrGetter<string | undefined>,
+  trimStringValues = false
 ) {
   const required = computed(() => {
     const resolvedValidationAttributeMap = toValue(validationAttributeMap);
@@ -49,7 +50,8 @@ export function useInputValidation(
       ...mapOpenAPIToVuetifyValidationRules(
         rules,
         resolvedValidationAttributeMap,
-        resolvedValidationAttributeKey
+        resolvedValidationAttributeKey,
+        trimStringValues
       ),
       ...toValue(additionalRules),
     ];

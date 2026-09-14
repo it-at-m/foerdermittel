@@ -141,7 +141,7 @@ class UnterabschnittServiceTest {
             verify(unterabschnittRepository, never()).update(Mockito.any(Unterabschnitt.class));
             verify(hauptabschnittService, never()).getHauptabschnitt(Mockito.anyString());
 
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Unterabschnitt.class.getSimpleName(), id));
         }
     }
 
@@ -177,11 +177,7 @@ class UnterabschnittServiceTest {
             // Then
             verify(unterabschnittRepository, times(1)).findById(id);
             verify(unterabschnittRepository, never()).deleteById(id);
-            assertThat(exception.getMessage())
-                    .isEqualTo(
-                            String.format(
-                                    "404 NOT_FOUND \"Could not find entity with ID %s\"",
-                                    id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Unterabschnitt.class.getSimpleName(), id));
         }
     }
 

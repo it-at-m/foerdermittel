@@ -1,15 +1,11 @@
 package de.muenchen.oss.foerdermittel.backend.common;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
-
 /// Exception if data cannot be found.
 @SuppressWarnings("PMD.MissingSerialVersionUID")
-public class NotFoundException extends ResponseStatusException {
-    /// NotFoundException constructor
-    ///
-    /// @param message Exception message
-    public NotFoundException(final String message) {
-        super(HttpStatus.NOT_FOUND, message);
+public class NotFoundException extends RuntimeException {
+    /// @param targetClass entity class that was requested
+    /// @param id id of the entity
+    public <I> NotFoundException(final Class<?> targetClass, final I id) {
+        super(String.format("The %s with ID %s was not found.", targetClass.getSimpleName(), id));
     }
 }
