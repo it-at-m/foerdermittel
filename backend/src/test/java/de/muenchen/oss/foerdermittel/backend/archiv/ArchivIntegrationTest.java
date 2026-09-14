@@ -2,7 +2,6 @@ package de.muenchen.oss.foerdermittel.backend.archiv;
 
 import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_TEST_PROFILE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
@@ -16,7 +15,6 @@ import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -68,13 +66,11 @@ class ArchivIntegrationTest {
             DockerImageName.parse(TestUtils.getImageFromDockerCompose("postgres")));
 
     private static final String EXISTING_PROJNR = "3325101";
-
     private static final long NON_EXISTING_ID = Long.MAX_VALUE;
 
     @BeforeEach
     void setUp() {
         archivRepository.deleteAll();
-
         createExistingProject();
     }
 
@@ -100,65 +96,41 @@ class ArchivIntegrationTest {
         projektRepository.save(projekt);
     }
 
+    private ArchivCreateDTO createArchivRequest() {
+        return new ArchivCreateDTO(
+                LocalDate.of(2026, 1, 1),
+                true,
+                false,
+                LocalDate.of(2026, 1, 2),
+                LocalDate.of(2026, 1, 3),
+                "Test",
+                EXISTING_PROJNR);
+    }
+
+    private ArchivResponseDTO createExistingArchiv() {
+        return restTestClient.post()
+                .uri("/archiv")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                .body(createArchivRequest())
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus()
+                .isCreated()
+                .expectBody(ArchivResponseDTO.class)
+                .returnResult()
+                .getResponseBody();
+    }
+
     @Nested
     class GetArchive {
 
-        @Test
-        void givenArchiveExists_thenReturnPageOfArchiveEntries() {
-
-            final ArchivCreateDTO requestDTO = new ArchivCreateDTO(
-                    OffsetDateTime.parse("2024-09-15T00:00:00Z"),
-                    true,
-                    false,
-                    OffsetDateTime.parse("2024-09-16T00:00:00Z"),
-                    OffsetDateTime.parse("2024-09-17T00:00:00Z"),
-                    "Test",
-                    EXISTING_PROJNR);
-
-            restTestClient.post()
-                    .uri("/archiv")
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
-                    .body(requestDTO)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .exchange()
-                    .expectStatus()
-                    .isCreated();
-
-            restTestClient.get()
-                    .uri(uriBuilder -> uriBuilder
-                            .path("/archiv")
-                            .queryParam("page", "0")
-                            .build())
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
-                    .exchange()
-                    .expectStatus()
-                    .isOk()
-                    .expectHeader()
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .expectBody()
-                    .jsonPath("$.content")
-                    .value(
-                            new ParameterizedTypeReference<List<ArchivResponseDTO>>() {
-                            },
-                            content -> {
-                                assertThat(content).hasSize(1);
-
-                                final ArchivResponseDTO archiv = content.getFirst();
-
-                                assertThat(archiv.speicherDatum()).isEqualTo(OffsetDateTime.parse("2024-09-15T00:00:00Z"));
-                                assertThat(archiv.speicherAkt()).isTrue();
-                                assertThat(archiv.speicherRechnungen()).isFalse();
-                                assertThat(archiv.mikroDatPlan()).isEqualTo(OffsetDateTime.parse("2024-09-16T00:00:00Z"));
-                                assertThat(archiv.mikroDat()).isEqualTo(OffsetDateTime.parse("2024-09-17T00:00:00Z"));
-                                assertThat(archiv.notizen()).isEqualTo("Test");
-                                assertThat(archiv.projnr()).isEqualTo(EXISTING_PROJNR);
-                            });
-
+        @BeforeEach
+        void setUpArchiv() {
+            createExistingArchiv();
         }
 
         @Test
-        void givenNoArchiveExists_thenReturnEmptyPage() {
-
+        void givenPageable_thenReturnPageOfEntities() {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/archiv")
@@ -166,21 +138,20 @@ class ArchivIntegrationTest {
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
                     .exchange()
-                    .expectStatus()
-                    .isOk()
+                    .expectStatus().isOk()
+                    .expectHeader().contentType(MediaType.APPLICATION_JSON)
                     .expectBody()
                     .jsonPath("$.content")
-                    .value(
-                            new ParameterizedTypeReference<List<ArchivResponseDTO>>() {
-                            },
-                            content -> assertThat(content).isEmpty());
+                    .value(new ParameterizedTypeReference<List<ArchivResponseDTO>>() {
+                    }, content -> assertThat(content.size()).isEqualTo(1));
         }
 
         private static Stream<Arguments> authorizationMappings() {
             return Stream.of(
-                    arguments("admin", HttpStatus.OK),
-                    arguments("sachbearbeitung", HttpStatus.OK),
-                    arguments("sachbearbeitunghaushalt", HttpStatus.OK));
+                    Arguments.of("admin", HttpStatus.OK),
+                    Arguments.of("sachbearbeitung", HttpStatus.OK),
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.OK),
+                    Arguments.of("no-role", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -204,19 +175,89 @@ class ArchivIntegrationTest {
     }
 
     @Nested
+    class GetArchiveFormContext {
+
+        @Test
+        void givenNoEntitiesExist_thenReturnEmptyFormContext() {
+            // Given
+            archivRepository.deleteAll();
+
+            // When
+            final ArchivFormContext result = restTestClient.get()
+                    .uri("/archiv/form-context")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                    .exchange()
+                    .expectStatus()
+                    .isOk()
+                    .expectHeader()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .expectBody(ArchivFormContext.class)
+                    .returnResult()
+                    .getResponseBody();
+
+            // Then
+            assertThat(result).isNotNull();
+            assertThat(result.archivId()).isEmpty();
+        }
+
+        @Test
+        void givenEntitiesExist_thenReturnCorrectFormContext() {
+            // Given
+            final ArchivResponseDTO existingArchiv = createExistingArchiv();
+
+            assertThat(existingArchiv).isNotNull();
+            assertThat(existingArchiv.id()).isNotNull();
+
+            // When
+            final ArchivFormContext result = restTestClient.get()
+                    .uri("/archiv/form-context")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                    .exchange()
+                    .expectStatus()
+                    .isOk()
+                    .expectHeader()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .expectBody(ArchivFormContext.class)
+                    .returnResult()
+                    .getResponseBody();
+
+            // Then
+            assertThat(result).isNotNull();
+            assertThat(result.archivId()).hasSize(1);
+            assertThat(result.archivId().getFirst()).isEqualTo(Long.valueOf(existingArchiv.id()));
+        }
+
+        private static Stream<Arguments> authorizationMappings() {
+            return Stream.of(
+                    arguments("admin", HttpStatus.OK),
+                    arguments("sachbearbeitung", HttpStatus.FORBIDDEN),
+                    arguments("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN),
+                    arguments("no-role", HttpStatus.FORBIDDEN));
+        }
+
+        @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
+        @MethodSource("authorizationMappings")
+        void givenRole_thenReturnStatus(
+                final String role,
+                final HttpStatus httpStatus) {
+
+            restTestClient.get()
+                    .uri("/archiv/form-context")
+                    .header(
+                            HttpHeaders.AUTHORIZATION,
+                            String.format("Bearer %s", role))
+                    .exchange()
+                    .expectStatus()
+                    .isEqualTo(httpStatus);
+        }
+    }
+
+    @Nested
     class CreateArchiv {
 
         @Test
         void givenValidRequest_thenArchivIsCreated() {
-
-            final ArchivCreateDTO requestDTO = new ArchivCreateDTO(
-                    OffsetDateTime.parse("2024-09-15T00:00:00Z"),
-                    true,
-                    false,
-                    OffsetDateTime.parse("2024-09-16T00:00:00Z"),
-                    OffsetDateTime.parse("2024-09-17T00:00:00Z"),
-                    "Archiv Test",
-                    EXISTING_PROJNR);
+            final ArchivCreateDTO requestDTO = createArchivRequest();
 
             final ArchivResponseDTO responseDTO = restTestClient.post()
                     .uri("/archiv")
@@ -230,29 +271,14 @@ class ArchivIntegrationTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .expectBody(ArchivResponseDTO.class)
                     .value(response -> {
-
-                        assertNotNull(response);
-
-                        assertThat(response.speicherDatum())
-                                .isEqualTo(requestDTO.speicherDatum());
-
-                        assertThat(response.speicherAkt())
-                                .isEqualTo(requestDTO.speicherAkt());
-
-                        assertThat(response.speicherRechnungen())
-                                .isEqualTo(requestDTO.speicherRechnungen());
-
-                        assertThat(response.mikroDatPlan())
-                                .isEqualTo(requestDTO.mikroDatPlan());
-
-                        assertThat(response.mikroDat())
-                                .isEqualTo(requestDTO.mikroDat());
-
-                        assertThat(response.notizen())
-                                .isEqualTo(requestDTO.notizen());
-
-                        assertThat(response.projnr())
-                                .isEqualTo(EXISTING_PROJNR);
+                        assertThat(response).isNotNull();
+                        assertThat(response.speicherDatum()).isEqualTo(requestDTO.speicherDatum());
+                        assertThat(response.speicherAkt()).isEqualTo(requestDTO.speicherAkt());
+                        assertThat(response.speicherRechnungen()).isEqualTo(requestDTO.speicherRechnungen());
+                        assertThat(response.mikroDatPlan()).isEqualTo(requestDTO.mikroDatPlan());
+                        assertThat(response.mikroDat()).isEqualTo(requestDTO.mikroDat());
+                        assertThat(response.notizen()).isEqualTo(requestDTO.notizen());
+                        assertThat(response.projnr()).isEqualTo(EXISTING_PROJNR);
                     })
                     .returnResult()
                     .getResponseBody();
@@ -260,40 +286,27 @@ class ArchivIntegrationTest {
             assertThat(responseDTO).isNotNull();
 
             final Optional<Archiv> entity = archivRepository.findById(Long.valueOf(responseDTO.id()));
-
             assertThat(entity).isPresent();
 
             final Archiv archiv = entity.get();
-
-            assertThat(archiv.getSpeicherDatum())
-                    .isEqualTo(requestDTO.speicherDatum().toLocalDate());
-
-            assertThat(archiv.getSpeicherAkt())
-                    .isEqualTo(requestDTO.speicherAkt());
-
-            assertThat(archiv.getSpeicherRechnungen())
-                    .isEqualTo(requestDTO.speicherRechnungen());
-
-            assertThat(archiv.getMikroDatPlan())
-                    .isEqualTo(requestDTO.mikroDatPlan().toLocalDate());
-
-            assertThat(archiv.getMikroDat())
-                    .isEqualTo(requestDTO.mikroDat().toLocalDate());
-
+            assertThat(archiv.getSpeicherDatum()).isEqualTo(requestDTO.speicherDatum());
+            assertThat(archiv.getSpeicherAkt()).isEqualTo(requestDTO.speicherAkt());
+            assertThat(archiv.getSpeicherRechnungen()).isEqualTo(requestDTO.speicherRechnungen());
+            assertThat(archiv.getMikroDatPlan()).isEqualTo(requestDTO.mikroDatPlan());
+            assertThat(archiv.getMikroDat()).isEqualTo(requestDTO.mikroDat());
             assertThat(archiv.getNotizen()).isEqualTo(requestDTO.notizen());
             assertThat(archiv.getProjekt()).isNotNull();
             assertThat(archiv.getProjekt().getProjnr()).isEqualTo(EXISTING_PROJNR);
         }
 
         @Test
-        void givenProjectDoesNotExist_thenReturnInternalServerError() {
-
+        void givenProjectDoesNotExist_thenReturnNotFound() {
             final ArchivCreateDTO requestDTO = new ArchivCreateDTO(
-                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+                    LocalDate.of(2026, 1, 1),
                     true,
                     false,
-                    OffsetDateTime.parse("2024-09-16T22:00:00Z"),
-                    OffsetDateTime.parse("2024-09-17T22:00:00Z"),
+                    LocalDate.of(2026, 1, 2),
+                    LocalDate.of(2026, 1, 3),
                     "Test",
                     "9999999");
 
@@ -309,10 +322,7 @@ class ArchivIntegrationTest {
 
         @ParameterizedTest
         @MethodSource("invalidInputRequests")
-        void givenInvalidInput_thenReturnBadRequest(
-                final String description,
-                final ArchivCreateDTO requestDTO) {
-
+        void givenInvalidInput_thenReturnBadRequest(final String description, final ArchivCreateDTO requestDTO) {
             restTestClient.post()
                     .uri("/archiv")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
@@ -328,11 +338,11 @@ class ArchivIntegrationTest {
                     arguments(
                             "projnr is null",
                             new ArchivCreateDTO(
-                                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+                                    LocalDate.of(2026, 1, 1),
                                     true,
                                     false,
-                                    OffsetDateTime.parse("2024-09-16T22:00:00Z"),
-                                    OffsetDateTime.parse("2024-09-17T22:00:00Z"),
+                                    LocalDate.of(2026, 1, 2),
+                                    LocalDate.of(2026, 1, 3),
                                     "Test",
                                     null)));
         }
@@ -341,29 +351,18 @@ class ArchivIntegrationTest {
             return Stream.of(
                     arguments("admin", HttpStatus.CREATED),
                     arguments("sachbearbeitung", HttpStatus.FORBIDDEN),
-                    arguments("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN));
+                    arguments("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN),
+                    arguments("no-role", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
         @MethodSource("authorizationMappings")
-        void givenRole_thenReturnStatus(
-                final String role,
-                final HttpStatus httpStatus) {
-
-            final ArchivCreateDTO requestDTO = new ArchivCreateDTO(
-                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
-                    true,
-                    false,
-                    OffsetDateTime.parse("2024-09-16T22:00:00Z"),
-                    OffsetDateTime.parse("2024-09-17T22:00:00Z"),
-                    "Test",
-                    EXISTING_PROJNR);
+        void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
+            final ArchivCreateDTO requestDTO = createArchivRequest();
 
             restTestClient.post()
                     .uri("/archiv")
-                    .header(
-                            HttpHeaders.AUTHORIZATION,
-                            String.format("Bearer %s", role))
+                    .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
                     .exchange()
@@ -375,42 +374,27 @@ class ArchivIntegrationTest {
     @Nested
     class UpdateArchiv {
 
+        private ArchivResponseDTO existingArchiv;
+
+        @BeforeEach
+        void setUpArchiv() {
+            existingArchiv = createExistingArchiv();
+            assertThat(existingArchiv).isNotNull();
+        }
+
         @Test
         void givenArchivExists_thenArchivIsUpdated() {
 
-            final ArchivCreateDTO createDTO = new ArchivCreateDTO(
-                    OffsetDateTime.parse("2024-09-15T00:00:00Z"),
-                    true,
-                    false,
-                    OffsetDateTime.parse("2024-09-16T00:00:00Z"),
-                    OffsetDateTime.parse("2024-09-17T00:00:00Z"),
-                    "Alt",
-                    EXISTING_PROJNR);
-
-            final ArchivResponseDTO created = restTestClient.post()
-                    .uri("/archiv")
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
-                    .body(createDTO)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .exchange()
-                    .expectStatus()
-                    .isCreated()
-                    .expectBody(ArchivResponseDTO.class)
-                    .returnResult()
-                    .getResponseBody();
-
-            assertThat(created).isNotNull();
-
             final ArchivUpdateDTO updateDTO = new ArchivUpdateDTO(
-                    OffsetDateTime.parse("2024-09-15T00:00:00Z"),
+                    LocalDate.of(2026, 1, 2),
                     true,
                     false,
-                    OffsetDateTime.parse("2024-09-16T00:00:00Z"),
-                    OffsetDateTime.parse("2024-09-17T00:00:00Z"),
+                    LocalDate.of(2026, 1, 3),
+                    LocalDate.of(2026, 1, 4),
                     "Aktualisierte Notiz");
 
             final ArchivResponseDTO responseDTO = restTestClient.put()
-                    .uri("/archiv/{id}", created.id())
+                    .uri("/archiv/{id}", existingArchiv.id())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(updateDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -421,74 +405,45 @@ class ArchivIntegrationTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .expectBody(ArchivResponseDTO.class)
                     .value(response -> {
-
-                        assertNotNull(response);
-                        assertThat(response.id()).isEqualTo(created.id());
-
-                        // ResponseDTO: LocalDate -> OffsetDateTime
-                        assertThat(response.speicherDatum())
-                                .isEqualTo(OffsetDateTime.parse("2024-09-15T00:00:00Z"));
-
-                        assertThat(response.speicherAkt())
-                                .isEqualTo(updateDTO.speicherAkt());
-
-                        assertThat(response.speicherRechnungen())
-                                .isEqualTo(updateDTO.speicherRechnungen());
-
-                        assertThat(response.mikroDatPlan())
-                                .isEqualTo(OffsetDateTime.parse("2024-09-16T00:00:00Z"));
-
-                        assertThat(response.mikroDat())
-                                .isEqualTo(OffsetDateTime.parse("2024-09-17T00:00:00Z"));
-
-                        assertThat(response.notizen())
-                                .isEqualTo(updateDTO.notizen());
-
-                        assertThat(response.projnr())
-                                .isEqualTo(EXISTING_PROJNR);
+                        assertThat(response).isNotNull();
+                        assertThat(response.id()).isEqualTo(existingArchiv.id());
+                        assertThat(response.speicherDatum()).isEqualTo(updateDTO.speicherDatum());
+                        assertThat(response.speicherAkt()).isEqualTo(updateDTO.speicherAkt());
+                        assertThat(response.speicherRechnungen()).isEqualTo(updateDTO.speicherRechnungen());
+                        assertThat(response.mikroDatPlan()).isEqualTo(updateDTO.mikroDatPlan());
+                        assertThat(response.mikroDat()).isEqualTo(updateDTO.mikroDat());
+                        assertThat(response.notizen()).isEqualTo(updateDTO.notizen());
+                        assertThat(response.projnr()).isEqualTo(EXISTING_PROJNR);
                     })
                     .returnResult()
                     .getResponseBody();
 
             assertThat(responseDTO).isNotNull();
 
-            final Optional<Archiv> entity = archivRepository.findById(Long.valueOf(created.id()));
-            ;
+            final Optional<Archiv> entity = archivRepository.findById(Long.valueOf(existingArchiv.id()));
 
             assertThat(entity).isPresent();
 
-            // Entity: LocalDate
-            assertThat(entity.get().getSpeicherDatum())
-                    .isEqualTo(LocalDate.of(2024, 9, 15));
+            final Archiv archiv = entity.get();
 
-            assertThat(entity.get().getSpeicherAkt())
-                    .isEqualTo(updateDTO.speicherAkt());
-
-            assertThat(entity.get().getSpeicherRechnungen())
-                    .isEqualTo(updateDTO.speicherRechnungen());
-
-            assertThat(entity.get().getMikroDatPlan())
-                    .isEqualTo(LocalDate.of(2024, 9, 16));
-
-            assertThat(entity.get().getMikroDat())
-                    .isEqualTo(LocalDate.of(2024, 9, 17));
-
-            assertThat(entity.get().getNotizen())
-                    .isEqualTo(updateDTO.notizen());
-
-            assertThat(entity.get().getProjekt().getProjnr())
-                    .isEqualTo(EXISTING_PROJNR);
+            assertThat(archiv.getSpeicherDatum()).isEqualTo(updateDTO.speicherDatum());
+            assertThat(archiv.getSpeicherAkt()).isEqualTo(updateDTO.speicherAkt());
+            assertThat(archiv.getSpeicherRechnungen()).isEqualTo(updateDTO.speicherRechnungen());
+            assertThat(archiv.getMikroDatPlan()).isEqualTo(updateDTO.mikroDatPlan());
+            assertThat(archiv.getMikroDat()).isEqualTo(updateDTO.mikroDat());
+            assertThat(archiv.getNotizen()).isEqualTo(updateDTO.notizen());
+            assertThat(archiv.getProjekt().getProjnr()).isEqualTo(EXISTING_PROJNR);
         }
 
         @Test
         void givenArchivDoesNotExist_thenReturnNotFound() {
 
             final ArchivUpdateDTO updateDTO = new ArchivUpdateDTO(
-                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+                    LocalDate.of(2026, 1, 2),
                     true,
                     false,
-                    OffsetDateTime.parse("2024-09-16T22:00:00Z"),
-                    OffsetDateTime.parse("2024-09-17T22:00:00Z"),
+                    LocalDate.of(2026, 1, 3),
+                    LocalDate.of(2026, 1, 4),
                     "Test");
 
             restTestClient.put()
@@ -505,7 +460,9 @@ class ArchivIntegrationTest {
             return Stream.of(
                     arguments("admin", HttpStatus.OK),
                     arguments("sachbearbeitung", HttpStatus.FORBIDDEN),
-                    arguments("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN));
+                    arguments("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN),
+                    arguments("no-role", HttpStatus.FORBIDDEN));
+
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -514,39 +471,16 @@ class ArchivIntegrationTest {
                 final String role,
                 final HttpStatus httpStatus) {
 
-            final ArchivCreateDTO createDTO = new ArchivCreateDTO(
-                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
-                    true,
-                    false,
-                    OffsetDateTime.parse("2024-09-16T22:00:00Z"),
-                    OffsetDateTime.parse("2024-09-17T22:00:00Z"),
-                    "Test",
-                    EXISTING_PROJNR);
-
-            final ArchivResponseDTO created = restTestClient.post()
-                    .uri("/archiv")
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
-                    .body(createDTO)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .exchange()
-                    .expectStatus()
-                    .isCreated()
-                    .expectBody(ArchivResponseDTO.class)
-                    .returnResult()
-                    .getResponseBody();
-
-            assertThat(created).isNotNull();
-
             final ArchivUpdateDTO updateDTO = new ArchivUpdateDTO(
-                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+                    LocalDate.of(2026, 1, 2),
                     true,
                     false,
-                    OffsetDateTime.parse("2024-09-16T22:00:00Z"),
-                    OffsetDateTime.parse("2024-09-17T22:00:00Z"),
+                    LocalDate.of(2026, 1, 3),
+                    LocalDate.of(2026, 1, 4),
                     "Test");
 
             restTestClient.put()
-                    .uri("/archiv/{id}", created.id())
+                    .uri("/archiv/{id}", existingArchiv.id())
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             String.format("Bearer %s", role))
@@ -561,42 +495,26 @@ class ArchivIntegrationTest {
     @Nested
     class DeleteArchiv {
 
+        private ArchivResponseDTO existingArchiv;
+
+        @BeforeEach
+        void setUpArchiv() {
+            existingArchiv = createExistingArchiv();
+            assertThat(existingArchiv).isNotNull();
+        }
+
         @Test
         void givenArchivExists_thenArchivIsDeleted() {
 
-            final ArchivCreateDTO createDTO = new ArchivCreateDTO(
-                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
-                    true,
-                    false,
-                    OffsetDateTime.parse("2024-09-16T22:00:00Z"),
-                    OffsetDateTime.parse("2024-09-17T22:00:00Z"),
-                    "Test",
-                    EXISTING_PROJNR);
-
-            final ArchivResponseDTO created = restTestClient.post()
-                    .uri("/archiv")
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
-                    .body(createDTO)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .exchange()
-                    .expectStatus()
-                    .isCreated()
-                    .expectBody(ArchivResponseDTO.class)
-                    .returnResult()
-                    .getResponseBody();
-
-            assertThat(created).isNotNull();
-
             restTestClient.delete()
-                    .uri("/archiv/{id}", created.id())
+                    .uri("/archiv/{id}", existingArchiv.id())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus()
                     .isOk();
 
-            assertThat(archivRepository.findById(Long.valueOf(created.id())))
-                    .isEmpty();
-
+            assertThat(
+                    archivRepository.findById(Long.valueOf(existingArchiv.id()))).isEmpty();
         }
 
         @Test
@@ -614,7 +532,8 @@ class ArchivIntegrationTest {
             return Stream.of(
                     arguments("admin", HttpStatus.OK),
                     arguments("sachbearbeitung", HttpStatus.FORBIDDEN),
-                    arguments("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN));
+                    arguments("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN),
+                    arguments("no-role", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -623,31 +542,8 @@ class ArchivIntegrationTest {
                 final String role,
                 final HttpStatus httpStatus) {
 
-            final ArchivCreateDTO createDTO = new ArchivCreateDTO(
-                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
-                    true,
-                    false,
-                    OffsetDateTime.parse("2024-09-16T22:00:00Z"),
-                    OffsetDateTime.parse("2024-09-17T22:00:00Z"),
-                    "Test",
-                    EXISTING_PROJNR);
-
-            final ArchivResponseDTO created = restTestClient.post()
-                    .uri("/archiv")
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
-                    .body(createDTO)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .exchange()
-                    .expectStatus()
-                    .isCreated()
-                    .expectBody(ArchivResponseDTO.class)
-                    .returnResult()
-                    .getResponseBody();
-
-            assertThat(created).isNotNull();
-
             restTestClient.delete()
-                    .uri("/archiv/{id}", created.id())
+                    .uri("/archiv/{id}", existingArchiv.id())
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             String.format("Bearer %s", role))

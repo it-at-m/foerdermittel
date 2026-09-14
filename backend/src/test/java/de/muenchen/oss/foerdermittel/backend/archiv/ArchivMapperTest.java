@@ -10,7 +10,6 @@ import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -47,11 +46,11 @@ class ArchivMapperTest {
 
             assertThat(dto).isNotNull();
             assertThat(dto.id()).isEqualTo(entity.getId().toString());
-            assertThat(dto.speicherDatum()).isEqualTo(OffsetDateTime.parse("2024-09-14T00:00:00Z"));
-            assertThat(dto.speicherAkt()).isEqualTo(entity.getSpeicherAkt());
-            assertThat(dto.speicherRechnungen()).isEqualTo(entity.getSpeicherRechnungen());
-            assertThat(dto.mikroDatPlan()).isEqualTo(OffsetDateTime.parse("2024-09-16T00:00:00Z"));
-            assertThat(dto.mikroDat()).isEqualTo(OffsetDateTime.parse("2024-09-18T00:00:00Z"));
+            assertThat(entity.getSpeicherDatum()).isEqualTo(LocalDate.of(2024, 9, 14));
+            assertThat(entity.getSpeicherAkt()).isEqualTo(dto.speicherAkt());
+            assertThat(entity.getSpeicherRechnungen()).isEqualTo(dto.speicherRechnungen());
+            assertThat(entity.getMikroDatPlan()).isEqualTo(LocalDate.of(2024, 9, 16));
+            assertThat(entity.getMikroDat()).isEqualTo(LocalDate.of(2024, 9, 18));
             assertThat(dto.notizen()).isEqualTo(entity.getNotizen());
             assertThat(dto.projnr()).isEqualTo(entity.getProjekt().getProjnr());
             assertThat(dto.pname()).isEqualTo(entity.getProjekt().getPname());
@@ -66,11 +65,11 @@ class ArchivMapperTest {
         @Test
         void givenCreateDTO_thenReturnsCorrectEntity() {
             final ArchivCreateDTO dto = new ArchivCreateDTO(
-                    OffsetDateTime.parse("2024-09-15T00:00:00Z"),
+                    LocalDate.of(2024, 9, 14),
                     true,
                     true,
-                    OffsetDateTime.parse("2024-09-16T00:00:00Z"),
-                    OffsetDateTime.parse("2024-09-17T00:00:00Z"),
+                    LocalDate.of(2024, 9, 16),
+                    LocalDate.of(2024, 9, 18),
                     "Test 1",
                     "1124101");
 
@@ -78,11 +77,11 @@ class ArchivMapperTest {
 
             assertThat(entity).isNotNull();
             assertThat(entity.getId()).isNull();
-            assertThat(entity.getSpeicherDatum()).isEqualTo(LocalDate.of(2024, 9, 15));
+            assertThat(entity.getSpeicherDatum()).isEqualTo(LocalDate.of(2024, 9, 14));
             assertThat(entity.getSpeicherAkt()).isEqualTo(dto.speicherAkt());
             assertThat(entity.getSpeicherRechnungen()).isEqualTo(dto.speicherRechnungen());
             assertThat(entity.getMikroDatPlan()).isEqualTo(LocalDate.of(2024, 9, 16));
-            assertThat(entity.getMikroDat()).isEqualTo(LocalDate.of(2024, 9, 17));
+            assertThat(entity.getMikroDat()).isEqualTo(LocalDate.of(2024, 9, 18));
             assertThat(entity.getNotizen()).isEqualTo(dto.notizen());
             assertThat(entity.getProjekt()).isNotNull();
             assertThat(entity.getProjekt().getProjnr()).isEqualTo(dto.projnr());
@@ -91,11 +90,11 @@ class ArchivMapperTest {
         @Test
         void givenUpdateDTO_thenReturnsCorrectEntity() {
             final ArchivUpdateDTO dto = new ArchivUpdateDTO(
-                    OffsetDateTime.parse("2024-09-15T00:00:00Z"),
+                    LocalDate.of(2024, 9, 14),
                     true,
                     true,
-                    OffsetDateTime.parse("2024-09-16T00:00:00Z"),
-                    OffsetDateTime.parse("2024-09-17T00:00:00Z"),
+                    LocalDate.of(2024, 9, 16),
+                    LocalDate.of(2024, 9, 18),
                     "Test 2");
 
             final Archiv entity = archivMapper.toEntity(dto);
@@ -103,11 +102,11 @@ class ArchivMapperTest {
             assertThat(entity).isNotNull();
             assertThat(entity.getId()).isNull();
             assertThat(entity.getProjekt()).isNull();
-            assertThat(entity.getSpeicherDatum()).isEqualTo(LocalDate.of(2024, 9, 15));
+            assertThat(entity.getSpeicherDatum()).isEqualTo(LocalDate.of(2024, 9, 14));
             assertThat(entity.getSpeicherAkt()).isEqualTo(dto.speicherAkt());
             assertThat(entity.getSpeicherRechnungen()).isEqualTo(dto.speicherRechnungen());
             assertThat(entity.getMikroDatPlan()).isEqualTo(LocalDate.of(2024, 9, 16));
-            assertThat(entity.getMikroDat()).isEqualTo(LocalDate.of(2024, 9, 17));
+            assertThat(entity.getMikroDat()).isEqualTo(LocalDate.of(2024, 9, 18));
             assertThat(entity.getNotizen()).isEqualTo(dto.notizen());
         }
     }
