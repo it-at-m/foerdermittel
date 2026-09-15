@@ -1,75 +1,54 @@
 import type { ValidationAttributes } from "@/util/validation";
-import type { MaybeRefOrGetter } from "vue";
-import type { ValidationRule } from "vuetify/framework";
+import type { ComputedRef, MaybeRefOrGetter } from "vue";
+import type { ValidationRule } from "vuetify";
 
 import { computed, toValue } from "vue";
-import { useRules } from "vuetify";
 
+import useOpenApiRules from "@/composables/useOpenApiRules";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
-import {
-  getOpenAPIValidationConstraint,
-  mapOpenAPIToVuetifyValidationRules,
-} from "@/util/validation";
+import { getOpenAPIValidationConstraint } from "@/util/validation";
 
 export function useInputValidation(
   displayMode: MaybeRefOrGetter<InputDisplayMode>,
   disableEdit: MaybeRefOrGetter<boolean>,
   additionalRules: MaybeRefOrGetter<ValidationRule[]> = [],
-  validationAttributeMap?: MaybeRefOrGetter<
+  validationAttributesMap?: MaybeRefOrGetter<
     Record<string, ValidationAttributes> | undefined
   >,
-  validationAttributeKey?: MaybeRefOrGetter<string | undefined>,
+  property?: MaybeRefOrGetter<string | undefined>,
   trimStringValues = false
 ) {
+  const openApiRules = useOpenApiRules({
+    validationAttributesMap,
+    property,
+    trimStringValues,
+  }) as ComputedRef<ValidationRule[]>;
+
   const required = computed(() => {
-    const resolvedValidationAttributeMap = toValue(validationAttributeMap);
-    const resolvedValidationAttributeKey = toValue(validationAttributeKey);
+    const map = toValue(validationAttributesMap);
+    const key = toValue(property);
 
     return (
-      (resolvedValidationAttributeMap &&
-        resolvedValidationAttributeKey &&
-        getOpenAPIValidationConstraint(
-          resolvedValidationAttributeMap,
-          resolvedValidationAttributeKey,
-          "required"
-        )) ??
+      (map && key && getOpenAPIValidationConstraint(map, key, "required")) ??
       false
     );
   });
 
-  const rules = useRules();
-  const allRules = computed(() => {
-    const resolvedValidationAttributeMap = toValue(validationAttributeMap);
-    const resolvedValidationAttributeKey = toValue(validationAttributeKey);
-
-    if (!resolvedValidationAttributeMap || !resolvedValidationAttributeKey) {
-      return toValue(additionalRules);
-    }
-
-    return [
-      ...mapOpenAPIToVuetifyValidationRules(
-        rules,
-        resolvedValidationAttributeMap,
-        resolvedValidationAttributeKey,
-        trimStringValues
-      ),
-      ...toValue(additionalRules),
-    ];
-  });
+  const allRules = computed(() => [
+    ...openApiRules.value,
+    ...toValue(additionalRules),
+  ]);
 
   const counter = computed(() => {
-    const resolvedValidationAttributeMap = toValue(validationAttributeMap);
-    const resolvedValidationAttributeKey = toValue(validationAttributeKey);
+    const map = toValue(validationAttributesMap);
+    const key = toValue(property);
 
-    if (!resolvedValidationAttributeMap || !resolvedValidationAttributeKey) {
+    if (!map || !key) {
       return undefined;
     }
 
-    return getOpenAPIValidationConstraint(
-      resolvedValidationAttributeMap,
-      resolvedValidationAttributeKey,
-      "maxLength"
-    ) as number | undefined;
+    return getOpenAPIValidationConstraint(map, key, "maxLength") as
+      number | undefined;
   });
 
   const canNotEdit = computed(
