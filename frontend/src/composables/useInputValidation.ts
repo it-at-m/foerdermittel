@@ -1,5 +1,5 @@
 import type { ValidationAttributes } from "@/util/validation";
-import type { MaybeRefOrGetter } from "vue";
+import type { ComputedRef, MaybeRefOrGetter } from "vue";
 import type { ValidationRule } from "vuetify";
 
 import { computed, toValue } from "vue";
@@ -12,21 +12,21 @@ export function useInputValidation(
   displayMode: MaybeRefOrGetter<InputDisplayMode>,
   disableEdit: MaybeRefOrGetter<boolean>,
   additionalRules: MaybeRefOrGetter<ValidationRule[]> = [],
-  validationAttributeMap?: MaybeRefOrGetter<
+  validationAttributesMap?: MaybeRefOrGetter<
     Record<string, ValidationAttributes> | undefined
   >,
-  validationAttributeKey?: MaybeRefOrGetter<string | undefined>,
+  property?: MaybeRefOrGetter<string | undefined>,
   trimStringValues = false
 ) {
-  const openApiRules = useOpenApiRules(
-    validationAttributeMap,
-    validationAttributeKey,
-    trimStringValues
-  );
+  const openApiRules = useOpenApiRules({
+    validationAttributesMap,
+    property,
+    trimStringValues,
+  }) as ComputedRef<ValidationRule[]>;
 
   const required = computed(() => {
-    const map = toValue(validationAttributeMap);
-    const key = toValue(validationAttributeKey);
+    const map = toValue(validationAttributesMap);
+    const key = toValue(property);
 
     return (
       (map && key && getOpenAPIValidationConstraint(map, key, "required")) ??
@@ -40,8 +40,8 @@ export function useInputValidation(
   ]);
 
   const counter = computed(() => {
-    const map = toValue(validationAttributeMap);
-    const key = toValue(validationAttributeKey);
+    const map = toValue(validationAttributesMap);
+    const key = toValue(property);
 
     if (!map || !key) {
       return undefined;

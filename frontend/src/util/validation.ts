@@ -90,7 +90,7 @@ export function mapOpenAPIToVuetifyValidationRules<
   property?: K,
   trimStringValues = false
 ): ValidationRule[] {
-  if (!validationAttributes || property === undefined) {
+  if (!validationAttributes || !property) {
     return [];
   }
 
