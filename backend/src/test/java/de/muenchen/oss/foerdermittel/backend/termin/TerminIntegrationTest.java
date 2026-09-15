@@ -11,14 +11,13 @@ import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichRepository;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektRepository;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
 import de.muenchen.oss.foerdermittel.backend.termin.dto.TerminCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.termin.dto.TerminResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.termin.dto.TerminUpdateDTO;
-import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
-import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -120,7 +119,7 @@ public class TerminIntegrationTest {
         void givenTerminExists_thenReturnPageOfTerminEntries() {
 
             final TerminCreateDTO requestDTO = new TerminCreateDTO(
-                    LocalDate.of(2024,9,15),
+                    LocalDate.of(2024, 9, 15),
                     true,
                     "Max Mustermann",
                     "12345678",
@@ -157,7 +156,7 @@ public class TerminIntegrationTest {
 
                                 final TerminResponseDTO termin = content.getFirst();
 
-                                assertThat(termin.termin()).isEqualTo(LocalDate.of(2024,9,15));
+                                assertThat(termin.termin()).isEqualTo(LocalDate.of(2024, 9, 15));
                                 assertThat(termin.ueberwachung()).isTrue();
                                 assertThat(termin.notizen()).isEqualTo("Test");
                                 assertThat(termin.projnr()).isEqualTo(EXISTING_PROJNR);
@@ -219,7 +218,7 @@ public class TerminIntegrationTest {
         void givenValidRequest_thenTerminIsCreated() {
 
             final TerminCreateDTO requestDTO = new TerminCreateDTO(
-                    LocalDate.of(2024,9,15),
+                    LocalDate.of(2024, 9, 15),
                     true,
                     "Max Mustermann",
                     "12345678",
@@ -272,7 +271,7 @@ public class TerminIntegrationTest {
         void givenProjectDoesNotExist_thenReturnInternalServerError() {
 
             final TerminCreateDTO requestDTO = new TerminCreateDTO(
-                    LocalDate.of(2024,9,15),
+                    LocalDate.of(2024, 9, 15),
                     true,
                     "Max Mustermann",
                     "12345678",
@@ -310,7 +309,7 @@ public class TerminIntegrationTest {
                     arguments(
                             "projnr is null",
                             new TerminCreateDTO(
-                                    LocalDate.of(2024,9,15),
+                                    LocalDate.of(2024, 9, 15),
                                     true,
                                     "Max Mustermann",
                                     "1334566",
@@ -319,7 +318,7 @@ public class TerminIntegrationTest {
                     arguments(
                             "zustaendig is empty",
                             new TerminCreateDTO(
-                                    LocalDate.of(2024,9,15),
+                                    LocalDate.of(2024, 9, 15),
                                     true,
                                     "",
                                     "1334566",
@@ -328,7 +327,7 @@ public class TerminIntegrationTest {
                     arguments(
                             "zustaendig is too long",
                             new TerminCreateDTO(
-                                    LocalDate.of(2024,9,15),
+                                    LocalDate.of(2024, 9, 15),
                                     true,
                                     "1234567890123456789012345678901",
                                     "1334566",
@@ -337,7 +336,7 @@ public class TerminIntegrationTest {
                     arguments(
                             "telefon is empty",
                             new TerminCreateDTO(
-                                    LocalDate.of(2024,9,15),
+                                    LocalDate.of(2024, 9, 15),
                                     true,
                                     "Max Mustermann",
                                     "",
@@ -346,7 +345,7 @@ public class TerminIntegrationTest {
                     arguments(
                             "telefon is too long",
                             new TerminCreateDTO(
-                                    LocalDate.of(2024,9,15),
+                                    LocalDate.of(2024, 9, 15),
                                     true,
                                     "Max Mustermann",
                                     "1234567890123456789012345678901",
@@ -368,7 +367,7 @@ public class TerminIntegrationTest {
                 final HttpStatus httpStatus) {
 
             final TerminCreateDTO requestDTO = new TerminCreateDTO(
-                    LocalDate.of(2024,9,15),
+                    LocalDate.of(2024, 9, 15),
                     true,
                     "Max Mustermann",
                     "1334566",
@@ -395,7 +394,7 @@ public class TerminIntegrationTest {
         void givenTerminExists_thenTerminIsUpdated() {
 
             final TerminCreateDTO createDTO = new TerminCreateDTO(
-                    LocalDate.of(2024,9,15),
+                    LocalDate.of(2024, 9, 15),
                     true,
                     "Max Mustermann",
                     "1334566",
@@ -417,7 +416,7 @@ public class TerminIntegrationTest {
             assertThat(created).isNotNull();
 
             final TerminUpdateDTO updateDTO = new TerminUpdateDTO(
-                    LocalDate.of(2024,9,15),
+                    LocalDate.of(2024, 9, 15),
                     true,
                     "Max Mustermann",
                     "1334566",
@@ -468,7 +467,7 @@ public class TerminIntegrationTest {
         void givenTerminDoesNotExist_thenReturnNotFound() {
 
             final TerminUpdateDTO updateDTO = new TerminUpdateDTO(
-                    LocalDate.of(2024,9,15),
+                    LocalDate.of(2024, 9, 15),
                     true,
                     "Max Mustermann",
                     "12345678",
@@ -498,7 +497,7 @@ public class TerminIntegrationTest {
                 final HttpStatus httpStatus) {
 
             final TerminCreateDTO createDTO = new TerminCreateDTO(
-                    LocalDate.of(2024,9,15),
+                    LocalDate.of(2024, 9, 15),
                     true,
                     "Max Mustermann",
                     "12345678",
@@ -520,7 +519,7 @@ public class TerminIntegrationTest {
             assertThat(created).isNotNull();
 
             final TerminUpdateDTO updateDTO = new TerminUpdateDTO(
-                    LocalDate.of(2024,9,15),
+                    LocalDate.of(2024, 9, 15),
                     true,
                     "Max Mustermann",
                     "12345678",
@@ -546,7 +545,7 @@ public class TerminIntegrationTest {
         void givenTerminExists_thenTerminIsDeleted() {
 
             final TerminCreateDTO createDTO = new TerminCreateDTO(
-                    LocalDate.of(2024,9,15),
+                    LocalDate.of(2024, 9, 15),
                     true,
                     "Max Mustermann",
                     "12345678",
@@ -603,7 +602,7 @@ public class TerminIntegrationTest {
                 final HttpStatus httpStatus) {
 
             final TerminCreateDTO createDTO = new TerminCreateDTO(
-                    LocalDate.of(2024,9,15),
+                    LocalDate.of(2024, 9, 15),
                     true,
                     "Max Mustermann",
                     "12345678",

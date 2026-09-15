@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 
 public record TerminUpdateDTO(
         @NotNull LocalDate termin,

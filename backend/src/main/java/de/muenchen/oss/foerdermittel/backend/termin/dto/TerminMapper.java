@@ -1,6 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.termin.dto;
 
-import de.muenchen.oss.foerdermittel.backend.common.TimeZoneMapper;
 import de.muenchen.oss.foerdermittel.backend.termin.Termin;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

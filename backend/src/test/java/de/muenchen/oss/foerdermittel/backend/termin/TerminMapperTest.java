@@ -4,14 +4,13 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import de.muenchen.oss.foerdermittel.backend.termin.dto.TerminCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.termin.dto.TerminMapper;
 import de.muenchen.oss.foerdermittel.backend.termin.dto.TerminResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.termin.dto.TerminUpdateDTO;
-import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -69,7 +68,7 @@ public class TerminMapperTest {
         @Test
         void givenCreateDTO_thenReturnsCorrectEntity() {
             final TerminCreateDTO dto = new TerminCreateDTO(
-                    LocalDate.of(2024,9,15),
+                    LocalDate.of(2024, 9, 15),
                     true,
                     "Max Mustermann",
                     "12345678",
@@ -92,7 +91,7 @@ public class TerminMapperTest {
         @Test
         void givenUpdateDTO_thenReturnsCorrectEntity() {
             final TerminUpdateDTO dto = new TerminUpdateDTO(
-                    LocalDate.of(2024,9,16),
+                    LocalDate.of(2024, 9, 16),
                     true,
                     "Max Mustermann",
                     "12345678",

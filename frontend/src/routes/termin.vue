@@ -156,19 +156,14 @@ const EMPTY_ITEM_TEMPLATE: Partial<TerminResponseDTO> = {
 
 const terminApi = useTerminApi();
 
-const terminFormContext = computed(
-  () => terminApi.context.data.value
-);
+const terminFormContext = computed(() => terminApi.context.data.value);
 
 const projekte = computed(() => terminFormContext.value?.projekte ?? []);
 
 type TerminFormType = InstanceType<typeof TerminForm>;
-const terminFormRef =
-  useTemplateRef<TerminFormType>("terminForm");
+const terminFormRef = useTemplateRef<TerminFormType>("terminForm");
 
-const handleCreate = async (
-  terminCreateDTO: Partial<TerminResponseDTO>
-) => {
+const handleCreate = async (terminCreateDTO: Partial<TerminResponseDTO>) => {
   const model = terminCreateDTO as TerminResponseDTO;
 
   await terminApi.create.call({
@@ -176,9 +171,7 @@ const handleCreate = async (
   });
 };
 
-const handleUpdate = async (
-  terminUpdateDTO: Partial<TerminResponseDTO>
-) => {
+const handleUpdate = async (terminUpdateDTO: Partial<TerminResponseDTO>) => {
   const model = terminUpdateDTO as TerminResponseDTO;
   await terminApi.update.call({
     id: model.id,

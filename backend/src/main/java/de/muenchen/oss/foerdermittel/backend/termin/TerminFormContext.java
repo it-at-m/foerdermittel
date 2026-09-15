@@ -5,8 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-/// DTO for [Termin] to be used in other
-/// FormContexts other than its own.
+/// DTO for [Termin] to be used in other FormContexts other than its own.
 ///
 /// @param terminID
 /// @param projekte

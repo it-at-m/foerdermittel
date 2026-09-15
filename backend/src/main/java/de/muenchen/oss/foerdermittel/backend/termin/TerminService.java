@@ -65,7 +65,7 @@ public class TerminService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteTermin(final Long terminID) {
         log.debug("Delete Termin: {}", terminID);
-        final Termin termin = ServiceUtils.getEntityOrThrowNotFoundException(terminID, terminRepository,Termin.class);
+        final Termin termin = ServiceUtils.getEntityOrThrowNotFoundException(terminID, terminRepository, Termin.class);
         terminRepository.delete(termin);
     }
 }
