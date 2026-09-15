@@ -125,7 +125,7 @@ class ArchivIntegrationTest {
     class GetArchive {
 
         @BeforeEach
-        void setUpArchiv() {
+        void setUp() {
             createExistingArchiv();
         }
 
@@ -377,7 +377,7 @@ class ArchivIntegrationTest {
         private ArchivResponseDTO existingArchiv;
 
         @BeforeEach
-        void setUpArchiv() {
+        void setUp() {
             existingArchiv = createExistingArchiv();
             assertThat(existingArchiv).isNotNull();
         }
@@ -498,7 +498,7 @@ class ArchivIntegrationTest {
         private ArchivResponseDTO existingArchiv;
 
         @BeforeEach
-        void setUpArchiv() {
+        void setUp() {
             existingArchiv = createExistingArchiv();
             assertThat(existingArchiv).isNotNull();
         }

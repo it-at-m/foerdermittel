@@ -234,7 +234,6 @@ class ArchivServiceTest {
             assertThat(exception.getMessage()).isEqualTo("The Archiv with ID " + ARCHIV_ID + " was not found.");
         }
 
-
         @Test
         void givenArchivWithoutProjekt_thenUpdateWithoutChangingProjekt() {
             // Given
