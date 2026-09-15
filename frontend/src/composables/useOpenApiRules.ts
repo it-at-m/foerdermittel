@@ -30,21 +30,22 @@ export default function useOpenApiRules<
  * attributes.
  *
  * See supported rules in {@link VuetifyRuleAliases}.
+ *
+ * @param validationAttributesMap OpenAPI-generated validation attributes map
+ * @param property Optional model property. If omitted, returns a factory function for the whole attributes map.
+ * @param trimStringValues Whether string values should be trimmed before validation.
  */
 export default function useOpenApiRules<
   T extends Record<string, ValidationAttributes>,
   K extends keyof T,
 >(
   validationAttributesMap: MaybeRefOrGetter<T | undefined>,
-  propertyOrTrim?: MaybeRefOrGetter<K> | MaybeRefOrGetter<boolean>,
+  property?: MaybeRefOrGetter<K | undefined>,
   trimStringValues?: MaybeRefOrGetter<boolean>
 ) {
   const rules = useRules();
 
-  const calculateRules = (
-    property: MaybeRefOrGetter<K | undefined>,
-    trimStringValues?: MaybeRefOrGetter<boolean>
-  ) =>
+  const calculateRules = (property: MaybeRefOrGetter<K | undefined>) =>
     computed(() =>
       mapOpenAPIToVuetifyValidationRules(
         rules,
@@ -54,29 +55,5 @@ export default function useOpenApiRules<
       )
     );
 
-  const isFactoryCall =
-    arguments.length === 1 ||
-    (arguments.length === 2 &&
-      typeof toValue(propertyOrTrim as MaybeRefOrGetter<unknown>) ===
-        "boolean");
-
-  if (isFactoryCall) {
-    const factoryTrim =
-      arguments.length === 2
-        ? (propertyOrTrim as MaybeRefOrGetter<boolean>)
-        : undefined;
-    return (property: MaybeRefOrGetter<K>) =>
-      calculateRules(property, factoryTrim);
-  }
-
-  // If the second argument is omitted, return a property factory.
-  if (propertyOrTrim === undefined) {
-    return (property: MaybeRefOrGetter<K>) =>
-      calculateRules(property, trimStringValues);
-  }
-
-  return calculateRules(
-    propertyOrTrim as MaybeRefOrGetter<K>,
-    trimStringValues
-  );
+  return property === undefined ? calculateRules : calculateRules(property);
 }

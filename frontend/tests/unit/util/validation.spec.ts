@@ -477,6 +477,12 @@ describe("mapOpenAPIToVuetifyValidationRules", () => {
       property: "value",
       expected: ["max-100-true"],
     },
+    {
+      description: "returns empty rules when undefined",
+      attributes: undefined,
+      property: undefined,
+      expected: [],
+    },
   ])("$description", ({ attributes, property, expected }) => {
     const result = mapOpenAPIToVuetifyValidationRules(
       rules,
