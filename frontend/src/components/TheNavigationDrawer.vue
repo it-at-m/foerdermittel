@@ -229,6 +229,9 @@ const navigationItems: NavigationItem[] = [
     children: [
       {
         title: t("domain.report.projektUebersicht"),
+        props: {
+          to: "/report/projektuebersicht",
+        },
       },
       {
         title: t("domain.report.projektUebersichtManagement"),

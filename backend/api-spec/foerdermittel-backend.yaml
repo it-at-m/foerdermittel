@@ -1626,6 +1626,41 @@ paths:
                 $ref: "#/components/schemas/ReportStichworteFormContext"
       security:
       - bearerAuth: []
+  /report/projektuebersicht:
+    get:
+      tags:
+      - report-controller
+      operationId: getReportProjektuebersicht
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportProjektuebersichtDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/projektuebersicht/form-context:
+    get:
+      tags:
+      - report-controller
+      operationId: getReportProjektuebersichtFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportProjektuebersichtFormContext"
+      security:
+      - bearerAuth: []
   /referate/form-context:
     get:
       tags:
@@ -2715,6 +2750,38 @@ components:
       description: |-
         DTO for [de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich] to be used in
         other FormContexts other than its own.
+    ReportProjektuebersichtDTO:
+      required:
+      - projnr
+      type: object
+      properties:
+        projnr:
+          minLength: 1
+          type: string
+        notiz:
+          type: boolean
+    ReportProjektuebersichtFormContext:
+      required:
+      - projekte
+      type: object
+      properties:
+        projekte:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportProjektuebersichtFormContextDTO"
+    ReportProjektuebersichtFormContextDTO:
+      required:
+      - pname
+      - projnr
+      - pstrasse
+      type: object
+      properties:
+        projnr:
+          type: string
+        pname:
+          type: string
+        pstrasse:
+          type: string
     PagedModelReferatResponseDTO:
       type: object
       properties:
