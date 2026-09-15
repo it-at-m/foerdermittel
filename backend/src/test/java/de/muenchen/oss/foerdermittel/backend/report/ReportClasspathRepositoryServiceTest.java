@@ -14,7 +14,7 @@ class ReportClasspathRepositoryServiceTest {
         final SimpleJasperReportsContext jasperReportsContext = new SimpleJasperReportsContext();
         final ReportClasspathRepositoryService unitUnderTest = new ReportClasspathRepositoryService(
                 jasperReportsContext,
-                getClass().getClassLoader());
+                Thread.currentThread().getContextClassLoader());
 
         // When
         final ReportResource reportResource = unitUnderTest.getResource(null, "FMW_PROJEKTE3_R_Q2.jasper", ReportResource.class);
@@ -32,7 +32,7 @@ class ReportClasspathRepositoryServiceTest {
         final SimpleJasperReportsContext jasperReportsContext = new SimpleJasperReportsContext();
         final ReportClasspathRepositoryService unitUnderTest = new ReportClasspathRepositoryService(
                 jasperReportsContext,
-                getClass().getClassLoader());
+                Thread.currentThread().getContextClassLoader());
 
         // When
         final ReportResource reportResource = unitUnderTest.getResource(null, "reports/FMW_PROJEKTE3_R_Q2.jasper", ReportResource.class);

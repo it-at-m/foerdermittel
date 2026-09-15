@@ -55,6 +55,8 @@
     "projekt": {
       "modelName": "Projekt | Projekte",
       "projnr": "Projektnummer",
+      "name": "Name",
+      "strasse": "Straße",
       "ausgabeNotiz": "Ausgabe Notiz"
     },
     "antrag": {

@@ -2735,18 +2735,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/StichwortbereichFormContextDTO"
-    ReportProjektuebersichtDTO:
-      required:
-      - projnr
-      type: object
-      properties:
-        projnr:
-          minLength: 1
-          type: string
-        notiz:
-          type: boolean
-    ReportProjektuebersichtFormContext:
-      type: object
     StichwortbereichFormContextDTO:
       required:
       - bereich
@@ -2762,6 +2750,38 @@ components:
       description: |-
         DTO for [de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich] to be used in
         other FormContexts other than its own.
+    ReportProjektuebersichtDTO:
+      required:
+      - projnr
+      type: object
+      properties:
+        projnr:
+          minLength: 1
+          type: string
+        notiz:
+          type: boolean
+    ReportProjektuebersichtFormContext:
+      required:
+      - projekte
+      type: object
+      properties:
+        projekte:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportProjektuebersichtFormContextDTO"
+    ReportProjektuebersichtFormContextDTO:
+      required:
+      - pname
+      - projnr
+      - pstrasse
+      type: object
+      properties:
+        projnr:
+          type: string
+        pname:
+          type: string
+        pstrasse:
+          type: string
     PagedModelReferatResponseDTO:
       type: object
       properties:

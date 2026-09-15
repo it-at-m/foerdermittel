@@ -28,6 +28,6 @@ public class JasperReportsConfiguration {
 
     private static ClassLoader getApplicationClassLoader() {
         final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-        return contextClassLoader == null ? JasperReportsConfiguration.class.getClassLoader() : contextClassLoader;
+        return contextClassLoader == null ? Thread.currentThread().getContextClassLoader() : contextClassLoader;
     }
 }

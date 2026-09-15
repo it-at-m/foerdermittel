@@ -33,6 +33,8 @@ class JasperReportServiceTest {
 
     private static final String BEREICH_PARAMETER = "P_BEREICH";
     private static final String NOTIZ_PARAMETER = "P_NOTIZ";
+    private static final String PNAME_PARAMETER = "P_PNAME";
+    private static final String PSTRASSE_PARAMETER = "P_PSTRASSE";
     private static final String PROJNR_PARAMETER = "P_PROJNR";
     private static final String SORT_PARAMETER = "P_SORT";
 
@@ -85,7 +87,11 @@ class JasperReportServiceTest {
 
             // Then
             assertThat(jasperReport.getParameters())
-                    .filteredOn(parameter -> parameter.getName().equals(PROJNR_PARAMETER) || parameter.getName().equals(NOTIZ_PARAMETER))
+                    .filteredOn(parameter -> parameter.getName().equals(PROJNR_PARAMETER)
+                            || parameter.getName().equals(NOTIZ_PARAMETER)
+                            || parameter.getName().equals(PNAME_PARAMETER)
+                            || parameter.getName().equals(PSTRASSE_PARAMETER))
+                    .hasSize(4)
                     .allSatisfy(parameter -> assertThat(parameter.getValueClassName())
                             .isEqualTo(String.class.getName()));
         }

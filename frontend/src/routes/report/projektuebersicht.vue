@@ -11,6 +11,9 @@
           <report-projektuebersicht-form
             ref="reportProjektuebersichtForm"
             :model-value="item"
+            :report-projektuebersicht-form-context="
+              reportProjektuebersichtFormContext
+            "
             @is-valid="updateValidity"
           />
         </template>
@@ -22,7 +25,7 @@
 <script setup lang="ts">
 import type { GetReportProjektuebersichtRequest } from "@/api/generated/foerdermittel-backend";
 
-import { useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -51,6 +54,9 @@ const EMPTY_FORM_TEMPLATE: Partial<GetReportProjektuebersichtRequest> = {
 };
 
 const reportProjektuebersichtApi = useReportProjektuebersichtApi();
+const reportProjektuebersichtFormContext = computed(
+  () => reportProjektuebersichtApi.context.data.value
+);
 
 type ReportProjektuebersichtFormRef = InstanceType<
   typeof ReportProjektuebersichtForm
