@@ -49,7 +49,7 @@ public class ArchivService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Archiv updateArchiv(final Archiv archiv, final Long archivId) {
-        final Archiv foundArchiveintrag = ServiceUtils.getEntityOrThrowNotFoundException(archivId, archivRepository);
+        final Archiv foundArchiveintrag = ServiceUtils.getEntityOrThrowNotFoundException(archivId, archivRepository, Archiv.class);
 
         foundArchiveintrag.setSpeicherDatum(archiv.getSpeicherDatum());
         foundArchiveintrag.setSpeicherAkt(archiv.getSpeicherAkt());
@@ -65,7 +65,7 @@ public class ArchivService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteArchiv(final Long archivID) {
         log.debug("Delete Archiv with ID {}", archivID);
-        final Archiv archiv = ServiceUtils.getEntityOrThrowNotFoundException(archivID, archivRepository);
+        final Archiv archiv = ServiceUtils.getEntityOrThrowNotFoundException(archivID, archivRepository, Archiv.class);
         archivRepository.delete(archiv);
     }
 
