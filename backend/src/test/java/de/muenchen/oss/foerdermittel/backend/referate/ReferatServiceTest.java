@@ -115,7 +115,7 @@ class ReferatServiceTest {
             // Then
             verify(referatRepository, times(1)).findById(id);
             verify(referatRepository, never()).update(entityToUpdate);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Referat.class.getSimpleName(), id));
         }
     }
 
@@ -148,7 +148,7 @@ class ReferatServiceTest {
             // Then
             verify(referatRepository, times(1)).findById(id);
             verify(referatRepository, never()).deleteById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Referat.class.getSimpleName(), id));
         }
     }
 

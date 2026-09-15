@@ -62,7 +62,8 @@
               <v-row class="py-2 pl-6 d-flex align-center">
                 <v-col cols="2">
                   <v-chip
-                    :append-icon="mdiArrowRight"
+                    label
+                    :append-icon="mdiArrowTopRight"
                     to="stadtbezirke"
                   >
                     {{ stadtbezirk.stadtbezirkId }}
@@ -85,7 +86,7 @@
 import type { StadtbezirkslisteResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { mdiArrowRight } from "@mdi/js";
+import { mdiArrowTopRight } from "@mdi/js";
 import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 

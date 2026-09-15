@@ -164,7 +164,6 @@
             density="compact"
             :menu-props="{
               location: 'bottom',
-              contained: true,
             }"
           />
         </v-col>

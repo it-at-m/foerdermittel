@@ -21,7 +21,6 @@ import lombok.NoArgsConstructor;
 ///
 /// The entity's attributes are mapped to the corresponding database columns.
 ///
-@SuppressWarnings("PMD.LinguisticNaming")
 @Entity
 @Data
 @AllArgsConstructor
