@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.projekttermin;
+package de.muenchen.oss.foerdermittel.backend.termin;
 
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import jakarta.persistence.Column;
@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "projekttermine")
-public class Projekttermin implements Serializable {
+public class Termin implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

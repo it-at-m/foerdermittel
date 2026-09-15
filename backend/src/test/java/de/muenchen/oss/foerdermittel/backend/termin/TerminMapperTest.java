@@ -1,13 +1,13 @@
-package de.muenchen.oss.foerdermittel.backend.projekttermin;
+package de.muenchen.oss.foerdermittel.backend.termin;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
-import de.muenchen.oss.foerdermittel.backend.projekttermin.dto.ProjektterminCreateDTO;
-import de.muenchen.oss.foerdermittel.backend.projekttermin.dto.ProjektterminMapper;
-import de.muenchen.oss.foerdermittel.backend.projekttermin.dto.ProjektterminResponseDTO;
-import de.muenchen.oss.foerdermittel.backend.projekttermin.dto.ProjektterminUpdateDTO;
+import de.muenchen.oss.foerdermittel.backend.termin.dto.TerminCreateDTO;
+import de.muenchen.oss.foerdermittel.backend.termin.dto.TerminMapper;
+import de.muenchen.oss.foerdermittel.backend.termin.dto.TerminResponseDTO;
+import de.muenchen.oss.foerdermittel.backend.termin.dto.TerminUpdateDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,9 +16,9 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
-public class ProjektterminMapperTest {
+public class TerminMapperTest {
 
-    private final ProjektterminMapper projektterminMapper = Mappers.getMapper(ProjektterminMapper.class);
+    private final TerminMapper terminMapper = Mappers.getMapper(TerminMapper.class);
 
     @Nested
     class ToDTO {
@@ -38,7 +38,7 @@ public class ProjektterminMapperTest {
             projekt.setFoerderbereich(foerderbereich);
             projekt.setStadtbezirk(stadtbezirk);
 
-            final Projekttermin entity = new Projekttermin(
+            final Termin entity = new Termin(
                     1L,
                     projekt,
                     LocalDate.of(2024, 9, 14),
@@ -47,11 +47,11 @@ public class ProjektterminMapperTest {
                     "12345678",
                     "Test");
 
-            final ProjektterminResponseDTO dto = projektterminMapper.toDTO(entity);
+            final TerminResponseDTO dto = terminMapper.toDTO(entity);
 
             assertThat(dto).isNotNull();
             assertThat(dto.id()).isEqualTo(entity.getId().toString());
-            assertThat(dto.termin()).isEqualTo(OffsetDateTime.parse("2024-09-14T00:00:00Z"));
+            assertThat(dto.termin()).isEqualTo(entity.getTermin());
             assertThat(dto.zustaendig()).isEqualTo(entity.getZustaendig());
             assertThat(dto.telefon()).isEqualTo(entity.getTelefon());
             assertThat(dto.notizen()).isEqualTo(entity.getNotizen());
@@ -68,19 +68,19 @@ public class ProjektterminMapperTest {
 
         @Test
         void givenCreateDTO_thenReturnsCorrectEntity() {
-            final ProjektterminCreateDTO dto = new ProjektterminCreateDTO(
-                    OffsetDateTime.parse("2024-09-15T00:00:00Z"),
+            final TerminCreateDTO dto = new TerminCreateDTO(
+                    LocalDate.of(2024,9,15),
                     true,
                     "Max Mustermann",
                     "12345678",
                     "Test 1",
                     "1124101");
 
-            final Projekttermin entity = projektterminMapper.toEntity(dto);
+            final Termin entity = terminMapper.toEntity(dto);
 
             assertThat(entity).isNotNull();
             assertThat(entity.getId()).isNull();
-            assertThat(entity.getTermin()).isEqualTo(LocalDate.of(2024, 9, 15));
+            assertThat(entity.getTermin()).isEqualTo(dto.termin());
             assertThat(entity.getZustaendig()).isEqualTo(dto.zustaendig());
             assertThat(entity.getTelefon()).isEqualTo(dto.telefon());
             assertThat(entity.getUeberwachung()).isEqualTo(dto.ueberwachung());
@@ -91,19 +91,19 @@ public class ProjektterminMapperTest {
 
         @Test
         void givenUpdateDTO_thenReturnsCorrectEntity() {
-            final ProjektterminUpdateDTO dto = new ProjektterminUpdateDTO(
-                    OffsetDateTime.parse("2024-09-16T00:00:00Z"),
+            final TerminUpdateDTO dto = new TerminUpdateDTO(
+                    LocalDate.of(2024,9,16),
                     true,
                     "Max Mustermann",
                     "12345678",
                     "Test 2");
 
-            final Projekttermin entity = projektterminMapper.toEntity(dto);
+            final Termin entity = terminMapper.toEntity(dto);
 
             assertThat(entity).isNotNull();
             assertThat(entity.getId()).isNull();
             assertThat(entity.getProjekt()).isNull();
-            assertThat(entity.getTermin()).isEqualTo(LocalDate.of(2024, 9, 16));
+            assertThat(entity.getTermin()).isEqualTo(dto.termin());
             assertThat(entity.getZustaendig()).isEqualTo(dto.zustaendig());
             assertThat(entity.getTelefon()).isEqualTo(dto.telefon());
             assertThat(entity.getNotizen()).isEqualTo(dto.notizen());

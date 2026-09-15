@@ -14,7 +14,7 @@
           :display-mode="displayMode"
           :label="t('model.termin.projnr')"
           :validation-attribute-map="
-            ProjektterminCreateDTOPropertyValidationAttributesMap
+            TerminCreateDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="projnr"
           :disable-edit="displayMode === InputDisplayMode.EDIT"
@@ -29,7 +29,7 @@
           :display-mode="displayMode"
           :label="t('model.termin.termin')"
           :validation-attribute-map="
-            ProjektterminCreateDTOPropertyValidationAttributesMap
+            TerminCreateDTOPropertyValidationAttributesMap
           "
           :additional-rules="terminRules"
           clearable
@@ -76,7 +76,7 @@
 <script setup lang="ts">
 import type {
   ProjektFormContextDTO,
-  ProjektterminResponseDTO,
+  TerminResponseDTO,
 } from "@/api/generated/foerdermittel-backend";
 import type { VForm } from "vuetify/components";
 
@@ -84,7 +84,7 @@ import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRules } from "vuetify";
 
-import { ProjektterminCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
+import { TerminCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
 import FmDateInput from "@/components/common/FmDateInput.vue";
@@ -101,7 +101,7 @@ const { projekte, displayMode = InputDisplayMode.CREATE } = defineProps<{
   displayMode?: InputDisplayMode;
 }>();
 
-const modelValue = defineModel<Partial<ProjektterminResponseDTO>>({
+const modelValue = defineModel<Partial<TerminResponseDTO>>({
   required: true,
 });
 

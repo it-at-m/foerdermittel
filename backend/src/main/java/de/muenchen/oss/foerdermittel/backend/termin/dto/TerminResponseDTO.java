@@ -1,13 +1,14 @@
-package de.muenchen.oss.foerdermittel.backend.projekttermin.dto;
+package de.muenchen.oss.foerdermittel.backend.termin.dto;
 
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
-public record ProjektterminResponseDTO(
+public record TerminResponseDTO(
         @NotNull String id,
-        @NotNull OffsetDateTime termin,
+        @NotNull LocalDate termin,
         Boolean ueberwachung,
         String zustaendig,
         String telefon,

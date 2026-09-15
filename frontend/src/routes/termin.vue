@@ -5,20 +5,20 @@
         :empty-item-template="EMPTY_ITEM_TEMPLATE"
         :loading="baseViewLoading"
         :table-headers="headers"
-        :api="projektterminApi"
+        :api="terminApi"
         :domain-key="domainKey"
         :enable-actions="isAdmin"
         :should-load-form-context="isAdmin"
         :handle-create="handleCreate"
         :handle-update="handleUpdate"
         :handle-delete="handleDelete"
-        :form-ref="projektterminFormRef"
+        :form-ref="terminFormRef"
         :expandable="true"
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
-          <projekttermin-form
-            v-if="projektterminFormContext"
-            ref="projektterminForm"
+          <termin-form
+            v-if="terminFormContext"
+            ref="terminForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
             :projekte="projekte"
@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ProjektterminResponseDTO } from "@/api/generated/foerdermittel-backend";
+import type { TerminResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
 import { mdiCheck } from "@mdi/js";
@@ -66,8 +66,8 @@ import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
-import ProjektterminForm from "@/components/forms/ProjektterminForm.vue";
-import { useProjektterminApi } from "@/composables/api/useProjektterminApi";
+import TerminForm from "@/components/forms/TerminForm.vue";
+import { useTerminApi } from "@/composables/api/useTerminApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
 import { Role } from "@/types/Role";
 
@@ -87,7 +87,7 @@ definePage({
 
 const { t } = useI18n();
 
-const headers: DataTableHeader<Partial<ProjektterminResponseDTO>>[] = [
+const headers: DataTableHeader<Partial<TerminResponseDTO>>[] = [
   {
     title: t("model.termin.projnr"),
     value: "projnr",
@@ -145,7 +145,7 @@ const headers: DataTableHeader<Partial<ProjektterminResponseDTO>>[] = [
   },
 ];
 
-const EMPTY_ITEM_TEMPLATE: Partial<ProjektterminResponseDTO> = {
+const EMPTY_ITEM_TEMPLATE: Partial<TerminResponseDTO> = {
   projnr: undefined,
   termin: undefined,
   zustaendig: undefined,
@@ -154,40 +154,40 @@ const EMPTY_ITEM_TEMPLATE: Partial<ProjektterminResponseDTO> = {
   notizen: undefined,
 };
 
-const projektterminApi = useProjektterminApi();
+const terminApi = useTerminApi();
 
-const projektterminFormContext = computed(
-  () => projektterminApi.context.data.value
+const terminFormContext = computed(
+  () => terminApi.context.data.value
 );
 
-const projekte = computed(() => projektterminFormContext.value?.projekte ?? []);
+const projekte = computed(() => terminFormContext.value?.projekte ?? []);
 
-type ProjektterminFormType = InstanceType<typeof ProjektterminForm>;
-const projektterminFormRef =
-  useTemplateRef<ProjektterminFormType>("projektterminForm");
+type TerminFormType = InstanceType<typeof TerminForm>;
+const terminFormRef =
+  useTemplateRef<TerminFormType>("terminForm");
 
 const handleCreate = async (
-  projektterminCreateDTO: Partial<ProjektterminResponseDTO>
+  terminCreateDTO: Partial<TerminResponseDTO>
 ) => {
-  const model = projektterminCreateDTO as ProjektterminResponseDTO;
+  const model = terminCreateDTO as TerminResponseDTO;
 
-  await projektterminApi.create.call({
-    projektterminCreateDTO: model,
+  await terminApi.create.call({
+    terminCreateDTO: model,
   });
 };
 
 const handleUpdate = async (
-  projektterminUpdateDTO: Partial<ProjektterminResponseDTO>
+  terminUpdateDTO: Partial<TerminResponseDTO>
 ) => {
-  const model = projektterminUpdateDTO as ProjektterminResponseDTO;
-  await projektterminApi.update.call({
+  const model = terminUpdateDTO as TerminResponseDTO;
+  await terminApi.update.call({
     id: model.id,
-    projektterminUpdateDTO: model,
+    terminUpdateDTO: model,
   });
 };
 
 const handleDelete = async (id: string) => {
-  await projektterminApi.delete.call({
+  await terminApi.delete.call({
     id,
   });
 };

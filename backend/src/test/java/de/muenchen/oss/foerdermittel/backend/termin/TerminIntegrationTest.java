@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.projekttermin;
+package de.muenchen.oss.foerdermittel.backend.termin;
 
 import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_TEST_PROFILE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -11,9 +11,9 @@ import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichRepository;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektRepository;
-import de.muenchen.oss.foerdermittel.backend.projekttermin.dto.ProjektterminCreateDTO;
-import de.muenchen.oss.foerdermittel.backend.projekttermin.dto.ProjektterminResponseDTO;
-import de.muenchen.oss.foerdermittel.backend.projekttermin.dto.ProjektterminUpdateDTO;
+import de.muenchen.oss.foerdermittel.backend.termin.dto.TerminCreateDTO;
+import de.muenchen.oss.foerdermittel.backend.termin.dto.TerminResponseDTO;
+import de.muenchen.oss.foerdermittel.backend.termin.dto.TerminUpdateDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
 import java.math.BigDecimal;
@@ -49,13 +49,13 @@ import org.testcontainers.utility.DockerImageName;
 @AutoConfigureRestTestClient
 @ActiveProfiles(profiles = { SPRING_TEST_PROFILE })
 @Import(TestSecurityConfiguration.class)
-public class ProjektterminIntegrationTest {
+public class TerminIntegrationTest {
 
     @Autowired
     private RestTestClient restTestClient;
 
     @Autowired
-    private ProjektterminRepository projektterminRepository;
+    private TerminRepository terminRepository;
 
     @Autowired
     private FoerderbereichRepository foerderbereichRepository;
@@ -78,7 +78,7 @@ public class ProjektterminIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        projektterminRepository.deleteAll();
+        terminRepository.deleteAll();
 
         createExistingProject();
     }
@@ -114,13 +114,13 @@ public class ProjektterminIntegrationTest {
     }
 
     @Nested
-    class GetProjekttermine {
+    class GetTermin {
 
         @Test
-        void givenProjektterminExists_thenReturnPageOfProjektterminEntries() {
+        void givenTerminExists_thenReturnPageOfTerminEntries() {
 
-            final ProjektterminCreateDTO requestDTO = new ProjektterminCreateDTO(
-                    OffsetDateTime.parse("2024-09-15T00:00:00Z"),
+            final TerminCreateDTO requestDTO = new TerminCreateDTO(
+                    LocalDate.of(2024,9,15),
                     true,
                     "Max Mustermann",
                     "12345678",
@@ -128,7 +128,7 @@ public class ProjektterminIntegrationTest {
                     EXISTING_PROJNR);
 
             restTestClient.post()
-                    .uri("/projekttermin")
+                    .uri("/termin")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -138,7 +138,7 @@ public class ProjektterminIntegrationTest {
 
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/projekttermin")
+                            .path("/termin")
                             .queryParam("page", "0")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
@@ -150,27 +150,27 @@ public class ProjektterminIntegrationTest {
                     .expectBody()
                     .jsonPath("$.content")
                     .value(
-                            new ParameterizedTypeReference<List<ProjektterminResponseDTO>>() {
+                            new ParameterizedTypeReference<List<TerminResponseDTO>>() {
                             },
                             content -> {
                                 assertThat(content).hasSize(1);
 
-                                final ProjektterminResponseDTO projekttermin = content.getFirst();
+                                final TerminResponseDTO termin = content.getFirst();
 
-                                assertThat(projekttermin.termin()).isEqualTo(OffsetDateTime.parse("2024-09-15T00:00:00Z"));
-                                assertThat(projekttermin.ueberwachung()).isTrue();
-                                assertThat(projekttermin.notizen()).isEqualTo("Test");
-                                assertThat(projekttermin.projnr()).isEqualTo(EXISTING_PROJNR);
+                                assertThat(termin.termin()).isEqualTo(LocalDate.of(2024,9,15));
+                                assertThat(termin.ueberwachung()).isTrue();
+                                assertThat(termin.notizen()).isEqualTo("Test");
+                                assertThat(termin.projnr()).isEqualTo(EXISTING_PROJNR);
                             });
 
         }
 
         @Test
-        void givenNoProjektterminExists_thenReturnEmptyPage() {
+        void givenNoTerminExists_thenReturnEmptyPage() {
 
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/projekttermin")
+                            .path("/termin")
                             .queryParam("page", "0")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
@@ -180,7 +180,7 @@ public class ProjektterminIntegrationTest {
                     .expectBody()
                     .jsonPath("$.content")
                     .value(
-                            new ParameterizedTypeReference<List<ProjektterminResponseDTO>>() {
+                            new ParameterizedTypeReference<List<TerminResponseDTO>>() {
                             },
                             content -> assertThat(content).isEmpty());
         }
@@ -200,7 +200,7 @@ public class ProjektterminIntegrationTest {
 
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/projekttermin")
+                            .path("/termin")
                             .queryParam("page", "0")
                             .build())
                     .header(
@@ -213,21 +213,21 @@ public class ProjektterminIntegrationTest {
     }
 
     @Nested
-    class CreateProjekttermin {
+    class CreateTermin {
 
         @Test
-        void givenValidRequest_thenProjektterminIsCreated() {
+        void givenValidRequest_thenTerminIsCreated() {
 
-            final ProjektterminCreateDTO requestDTO = new ProjektterminCreateDTO(
-                    OffsetDateTime.parse("2024-09-15T00:00:00Z"),
+            final TerminCreateDTO requestDTO = new TerminCreateDTO(
+                    LocalDate.of(2024,9,15),
                     true,
                     "Max Mustermann",
                     "12345678",
-                    "Projekttermin Test",
+                    "termin Test",
                     EXISTING_PROJNR);
 
-            final ProjektterminResponseDTO responseDTO = restTestClient.post()
-                    .uri("/projekttermin")
+            final TerminResponseDTO responseDTO = restTestClient.post()
+                    .uri("/termin")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -236,7 +236,7 @@ public class ProjektterminIntegrationTest {
                     .isCreated()
                     .expectHeader()
                     .contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(ProjektterminResponseDTO.class)
+                    .expectBody(TerminResponseDTO.class)
                     .value(response -> {
 
                         assertNotNull(response);
@@ -253,26 +253,26 @@ public class ProjektterminIntegrationTest {
 
             assertThat(responseDTO).isNotNull();
 
-            final Optional<Projekttermin> entity = projektterminRepository.findById(Long.valueOf(responseDTO.id()));
+            final Optional<Termin> entity = terminRepository.findById(Long.valueOf(responseDTO.id()));
 
             assertThat(entity).isPresent();
 
-            final Projekttermin projekttermin = entity.get();
+            final Termin termin = entity.get();
 
-            assertThat(projekttermin.getTermin()).isEqualTo(requestDTO.termin().toLocalDate());
-            assertThat(projekttermin.getUeberwachung()).isEqualTo(requestDTO.ueberwachung());
-            assertThat(projekttermin.getZustaendig()).isEqualTo(requestDTO.zustaendig());
-            assertThat(projekttermin.getTelefon()).isEqualTo(requestDTO.telefon());
-            assertThat(projekttermin.getNotizen()).isEqualTo(requestDTO.notizen());
-            assertThat(projekttermin.getProjekt()).isNotNull();
-            assertThat(projekttermin.getProjekt().getProjnr()).isEqualTo(EXISTING_PROJNR);
+            assertThat(termin.getTermin()).isEqualTo(requestDTO.termin());
+            assertThat(termin.getUeberwachung()).isEqualTo(requestDTO.ueberwachung());
+            assertThat(termin.getZustaendig()).isEqualTo(requestDTO.zustaendig());
+            assertThat(termin.getTelefon()).isEqualTo(requestDTO.telefon());
+            assertThat(termin.getNotizen()).isEqualTo(requestDTO.notizen());
+            assertThat(termin.getProjekt()).isNotNull();
+            assertThat(termin.getProjekt().getProjnr()).isEqualTo(EXISTING_PROJNR);
         }
 
         @Test
         void givenProjectDoesNotExist_thenReturnInternalServerError() {
 
-            final ProjektterminCreateDTO requestDTO = new ProjektterminCreateDTO(
-                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+            final TerminCreateDTO requestDTO = new TerminCreateDTO(
+                    LocalDate.of(2024,9,15),
                     true,
                     "Max Mustermann",
                     "12345678",
@@ -280,7 +280,7 @@ public class ProjektterminIntegrationTest {
                     "9999999");
 
             restTestClient.post()
-                    .uri("/projekttermin")
+                    .uri("/termin")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -293,10 +293,10 @@ public class ProjektterminIntegrationTest {
         @MethodSource("invalidInputRequests")
         void givenInvalidInput_thenReturnBadRequest(
                 final String description,
-                final ProjektterminCreateDTO requestDTO) {
+                final TerminCreateDTO requestDTO) {
 
             restTestClient.post()
-                    .uri("/projekttermin")
+                    .uri("/termin")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -309,8 +309,8 @@ public class ProjektterminIntegrationTest {
             return Stream.of(
                     arguments(
                             "projnr is null",
-                            new ProjektterminCreateDTO(
-                                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+                            new TerminCreateDTO(
+                                    LocalDate.of(2024,9,15),
                                     true,
                                     "Max Mustermann",
                                     "1334566",
@@ -318,8 +318,8 @@ public class ProjektterminIntegrationTest {
                                     null)),
                     arguments(
                             "zustaendig is empty",
-                            new ProjektterminCreateDTO(
-                                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+                            new TerminCreateDTO(
+                                    LocalDate.of(2024,9,15),
                                     true,
                                     "",
                                     "1334566",
@@ -327,8 +327,8 @@ public class ProjektterminIntegrationTest {
                                     EXISTING_PROJNR)),
                     arguments(
                             "zustaendig is too long",
-                            new ProjektterminCreateDTO(
-                                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+                            new TerminCreateDTO(
+                                    LocalDate.of(2024,9,15),
                                     true,
                                     "1234567890123456789012345678901",
                                     "1334566",
@@ -336,8 +336,8 @@ public class ProjektterminIntegrationTest {
                                     EXISTING_PROJNR)),
                     arguments(
                             "telefon is empty",
-                            new ProjektterminCreateDTO(
-                                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+                            new TerminCreateDTO(
+                                    LocalDate.of(2024,9,15),
                                     true,
                                     "Max Mustermann",
                                     "",
@@ -345,8 +345,8 @@ public class ProjektterminIntegrationTest {
                                     EXISTING_PROJNR)),
                     arguments(
                             "telefon is too long",
-                            new ProjektterminCreateDTO(
-                                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+                            new TerminCreateDTO(
+                                    LocalDate.of(2024,9,15),
                                     true,
                                     "Max Mustermann",
                                     "1234567890123456789012345678901",
@@ -367,8 +367,8 @@ public class ProjektterminIntegrationTest {
                 final String role,
                 final HttpStatus httpStatus) {
 
-            final ProjektterminCreateDTO requestDTO = new ProjektterminCreateDTO(
-                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+            final TerminCreateDTO requestDTO = new TerminCreateDTO(
+                    LocalDate.of(2024,9,15),
                     true,
                     "Max Mustermann",
                     "1334566",
@@ -376,7 +376,7 @@ public class ProjektterminIntegrationTest {
                     EXISTING_PROJNR);
 
             restTestClient.post()
-                    .uri("/projekttermin")
+                    .uri("/termin")
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             String.format("Bearer %s", role))
@@ -389,42 +389,42 @@ public class ProjektterminIntegrationTest {
     }
 
     @Nested
-    class UpdateProjekttermin {
+    class UpdateTermin {
 
         @Test
-        void givenProjektterminExists_thenProjektterminIsUpdated() {
+        void givenTerminExists_thenTerminIsUpdated() {
 
-            final ProjektterminCreateDTO createDTO = new ProjektterminCreateDTO(
-                    OffsetDateTime.parse("2024-09-15T00:00:00Z"),
+            final TerminCreateDTO createDTO = new TerminCreateDTO(
+                    LocalDate.of(2024,9,15),
                     true,
                     "Max Mustermann",
                     "1334566",
                     "Alt",
                     EXISTING_PROJNR);
 
-            final ProjektterminResponseDTO created = restTestClient.post()
-                    .uri("/projekttermin")
+            final TerminResponseDTO created = restTestClient.post()
+                    .uri("/termin")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(createDTO)
                     .accept(MediaType.APPLICATION_JSON)
                     .exchange()
                     .expectStatus()
                     .isCreated()
-                    .expectBody(ProjektterminResponseDTO.class)
+                    .expectBody(TerminResponseDTO.class)
                     .returnResult()
                     .getResponseBody();
 
             assertThat(created).isNotNull();
 
-            final ProjektterminUpdateDTO updateDTO = new ProjektterminUpdateDTO(
-                    OffsetDateTime.parse("2024-09-15T00:00:00Z"),
+            final TerminUpdateDTO updateDTO = new TerminUpdateDTO(
+                    LocalDate.of(2024,9,15),
                     true,
                     "Max Mustermann",
                     "1334566",
                     "Aktualisierte Notiz");
 
-            final ProjektterminResponseDTO responseDTO = restTestClient.put()
-                    .uri("/projekttermin/{id}", created.id())
+            final TerminResponseDTO responseDTO = restTestClient.put()
+                    .uri("/termin/{id}", created.id())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(updateDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -433,14 +433,13 @@ public class ProjektterminIntegrationTest {
                     .isOk()
                     .expectHeader()
                     .contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(ProjektterminResponseDTO.class)
+                    .expectBody(TerminResponseDTO.class)
                     .value(response -> {
 
                         assertNotNull(response);
                         assertThat(response.id()).isEqualTo(created.id());
 
-                        // ResponseDTO: LocalDate -> OffsetDateTime
-                        assertThat(response.termin()).isEqualTo(OffsetDateTime.parse("2024-09-15T00:00:00Z"));
+                        assertThat(response.termin()).isEqualTo(updateDTO.termin());
                         assertThat(response.ueberwachung()).isEqualTo(updateDTO.ueberwachung());
                         assertThat(response.zustaendig()).isEqualTo(updateDTO.zustaendig());
                         assertThat(response.telefon()).isEqualTo(updateDTO.telefon());
@@ -452,7 +451,7 @@ public class ProjektterminIntegrationTest {
 
             assertThat(responseDTO).isNotNull();
 
-            final Optional<Projekttermin> entity = projektterminRepository.findById(Long.valueOf(created.id()));
+            final Optional<Termin> entity = terminRepository.findById(Long.valueOf(created.id()));
 
             assertThat(entity).isPresent();
 
@@ -466,17 +465,17 @@ public class ProjektterminIntegrationTest {
         }
 
         @Test
-        void givenProjektterminDoesNotExist_thenReturnNotFound() {
+        void givenTerminDoesNotExist_thenReturnNotFound() {
 
-            final ProjektterminUpdateDTO updateDTO = new ProjektterminUpdateDTO(
-                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+            final TerminUpdateDTO updateDTO = new TerminUpdateDTO(
+                    LocalDate.of(2024,9,15),
                     true,
                     "Max Mustermann",
                     "12345678",
                     "Test");
 
             restTestClient.put()
-                    .uri("/projekttermin/{id}", NON_EXISTING_ID)
+                    .uri("/termin/{id}", NON_EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(updateDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -498,37 +497,37 @@ public class ProjektterminIntegrationTest {
                 final String role,
                 final HttpStatus httpStatus) {
 
-            final ProjektterminCreateDTO createDTO = new ProjektterminCreateDTO(
-                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+            final TerminCreateDTO createDTO = new TerminCreateDTO(
+                    LocalDate.of(2024,9,15),
                     true,
                     "Max Mustermann",
                     "12345678",
                     "Test",
                     EXISTING_PROJNR);
 
-            final ProjektterminResponseDTO created = restTestClient.post()
-                    .uri("/projekttermin")
+            final TerminResponseDTO created = restTestClient.post()
+                    .uri("/termin")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(createDTO)
                     .accept(MediaType.APPLICATION_JSON)
                     .exchange()
                     .expectStatus()
                     .isCreated()
-                    .expectBody(ProjektterminResponseDTO.class)
+                    .expectBody(TerminResponseDTO.class)
                     .returnResult()
                     .getResponseBody();
 
             assertThat(created).isNotNull();
 
-            final ProjektterminUpdateDTO updateDTO = new ProjektterminUpdateDTO(
-                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+            final TerminUpdateDTO updateDTO = new TerminUpdateDTO(
+                    LocalDate.of(2024,9,15),
                     true,
                     "Max Mustermann",
                     "12345678",
                     "Test");
 
             restTestClient.put()
-                    .uri("/projekttermin/{id}", created.id())
+                    .uri("/termin/{id}", created.id())
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             String.format("Bearer %s", role))
@@ -541,49 +540,49 @@ public class ProjektterminIntegrationTest {
     }
 
     @Nested
-    class DeleteProjekttermin {
+    class DeleteTermin {
 
         @Test
-        void givenProjektterminExists_thenProjektterminIsDeleted() {
+        void givenTerminExists_thenTerminIsDeleted() {
 
-            final ProjektterminCreateDTO createDTO = new ProjektterminCreateDTO(
-                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+            final TerminCreateDTO createDTO = new TerminCreateDTO(
+                    LocalDate.of(2024,9,15),
                     true,
                     "Max Mustermann",
                     "12345678",
                     "Test",
                     EXISTING_PROJNR);
 
-            final ProjektterminResponseDTO created = restTestClient.post()
-                    .uri("/projekttermin")
+            final TerminResponseDTO created = restTestClient.post()
+                    .uri("/termin")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(createDTO)
                     .accept(MediaType.APPLICATION_JSON)
                     .exchange()
                     .expectStatus()
                     .isCreated()
-                    .expectBody(ProjektterminResponseDTO.class)
+                    .expectBody(TerminResponseDTO.class)
                     .returnResult()
                     .getResponseBody();
 
             assertThat(created).isNotNull();
 
             restTestClient.delete()
-                    .uri("/projekttermin/{id}", created.id())
+                    .uri("/termin/{id}", created.id())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus()
                     .isOk();
 
-            assertThat(projektterminRepository.findById(Long.valueOf(created.id())))
+            assertThat(terminRepository.findById(Long.valueOf(created.id())))
                     .isEmpty();
         }
 
         @Test
-        void givenProjektterminDoesNotExist_thenReturnNotFound() {
+        void givenTerminDoesNotExist_thenReturnNotFound() {
 
             restTestClient.delete()
-                    .uri("/projekttermin/{id}", NON_EXISTING_ID)
+                    .uri("/termin/{id}", NON_EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus()
@@ -603,30 +602,30 @@ public class ProjektterminIntegrationTest {
                 final String role,
                 final HttpStatus httpStatus) {
 
-            final ProjektterminCreateDTO createDTO = new ProjektterminCreateDTO(
-                    OffsetDateTime.parse("2024-09-15T22:00:00Z"),
+            final TerminCreateDTO createDTO = new TerminCreateDTO(
+                    LocalDate.of(2024,9,15),
                     true,
                     "Max Mustermann",
                     "12345678",
                     "Test",
                     EXISTING_PROJNR);
 
-            final ProjektterminResponseDTO created = restTestClient.post()
-                    .uri("/projekttermin")
+            final TerminResponseDTO created = restTestClient.post()
+                    .uri("/termin")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(createDTO)
                     .accept(MediaType.APPLICATION_JSON)
                     .exchange()
                     .expectStatus()
                     .isCreated()
-                    .expectBody(ProjektterminResponseDTO.class)
+                    .expectBody(TerminResponseDTO.class)
                     .returnResult()
                     .getResponseBody();
 
             assertThat(created).isNotNull();
 
             restTestClient.delete()
-                    .uri("/projekttermin/{id}", created.id())
+                    .uri("/termin/{id}", created.id())
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             String.format("Bearer %s", role))

@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.projekttermin;
+package de.muenchen.oss.foerdermittel.backend.termin;
 
 import de.muenchen.oss.foerdermittel.backend.common.InsertAndUpdateRepository;
 import java.util.List;
@@ -8,10 +8,10 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProjektterminRepository extends PagingAndSortingRepository<Projekttermin, Long>, ListCrudRepository<Projekttermin, Long>,
-        InsertAndUpdateRepository<Projekttermin> {
+public interface TerminRepository extends PagingAndSortingRepository<Termin, Long>, ListCrudRepository<Termin, Long>,
+        InsertAndUpdateRepository<Termin> {
 
-    @Query("SELECT pt.id FROM Projekttermin pt")
-    List<Long> findAllProjekttermine();
+    @Query("SELECT pt.id FROM Termin pt")
+    List<Long> findAllTermine();
 
 }
