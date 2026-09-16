@@ -7,8 +7,6 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
 import de.muenchen.oss.foerdermittel.backend.TestUtils;
-import de.muenchen.oss.foerdermittel.backend.archiv.ArchivFormContext;
-import de.muenchen.oss.foerdermittel.backend.archiv.dto.ArchivResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichRepository;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
@@ -123,17 +121,17 @@ public class TerminIntegrationTest {
             EXISTING_PROJNR);
 
     private TerminResponseDTO createExistingTermin() {
-            return restTestClient.post()
-                    .uri("/termine")
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
-                    .body(createTerminRequest)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .exchange()
-                    .expectStatus()
-                    .isCreated()
-                    .expectBody(TerminResponseDTO.class)
-                    .returnResult()
-                    .getResponseBody();
+        return restTestClient.post()
+                .uri("/termine")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                .body(createTerminRequest)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus()
+                .isCreated()
+                .expectBody(TerminResponseDTO.class)
+                .returnResult()
+                .getResponseBody();
     }
 
     @Nested
@@ -226,7 +224,7 @@ public class TerminIntegrationTest {
         @Test
         void givenEntitiesExist_thenReturnCorrectFormContext() {
             // Given
-            final TerminResponseDTO existingTermin= createExistingTermin();
+            final TerminResponseDTO existingTermin = createExistingTermin();
 
             assertThat(existingTermin).isNotNull();
             assertThat(existingTermin.id()).isNotNull();
