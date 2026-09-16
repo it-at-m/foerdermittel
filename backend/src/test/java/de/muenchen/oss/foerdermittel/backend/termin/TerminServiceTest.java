@@ -233,7 +233,7 @@ public class TerminServiceTest {
             verify(projektService, never()).getProjekt(any());
             verify(terminRepository, never()).update(any(Termin.class));
 
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", TERMIN_ID));
+            assertThat(exception.getMessage()).isEqualTo("The Termin with ID " + TERMIN_ID + " was not found.");
         }
 
         @Test
@@ -297,11 +297,7 @@ public class TerminServiceTest {
             verify(terminRepository, times(1)).findById(TERMIN_ID);
             verify(terminRepository, never()).delete(any(Termin.class));
 
-            assertThat(exception.getMessage())
-                    .isEqualTo(
-                            String.format(
-                                    "404 NOT_FOUND \"Could not find entity with ID %s\"",
-                                    TERMIN_ID));
+            assertThat(exception.getMessage()).isEqualTo("The Termin with ID " + TERMIN_ID + " was not found.");
         }
     }
 

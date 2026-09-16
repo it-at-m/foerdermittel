@@ -7,6 +7,8 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
 import de.muenchen.oss.foerdermittel.backend.TestUtils;
+import de.muenchen.oss.foerdermittel.backend.archiv.ArchivFormContext;
+import de.muenchen.oss.foerdermittel.backend.archiv.dto.ArchivResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichRepository;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
@@ -112,32 +114,42 @@ public class TerminIntegrationTest {
         projektRepository.save(projekt);
     }
 
-    @Nested
-    class GetTermin {
+    final TerminCreateDTO createTerminRequest = new TerminCreateDTO(
+            LocalDate.of(2024, 9, 15),
+            true,
+            "Max Mustermann",
+            "12345678",
+            "Test",
+            EXISTING_PROJNR);
 
-        @Test
-        void givenTerminExists_thenReturnPageOfTerminEntries() {
-
-            final TerminCreateDTO requestDTO = new TerminCreateDTO(
-                    LocalDate.of(2024, 9, 15),
-                    true,
-                    "Max Mustermann",
-                    "12345678",
-                    "Test",
-                    EXISTING_PROJNR);
-
-            restTestClient.post()
-                    .uri("/termin")
+    private TerminResponseDTO createExistingTermin() {
+            return restTestClient.post()
+                    .uri("/termine")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
-                    .body(requestDTO)
+                    .body(createTerminRequest)
                     .accept(MediaType.APPLICATION_JSON)
                     .exchange()
                     .expectStatus()
-                    .isCreated();
+                    .isCreated()
+                    .expectBody(TerminResponseDTO.class)
+                    .returnResult()
+                    .getResponseBody();
+    }
+
+    @Nested
+    class GetTermin {
+
+        @BeforeEach
+        void setUp() {
+            createExistingTermin();
+        }
+
+        @Test
+        void givenPageable_thenReturnPageOfTerminEntries() {
 
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/termin")
+                            .path("/termine")
                             .queryParam("page", "0")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
@@ -153,42 +165,16 @@ public class TerminIntegrationTest {
                             },
                             content -> {
                                 assertThat(content).hasSize(1);
-
-                                final TerminResponseDTO termin = content.getFirst();
-
-                                assertThat(termin.termin()).isEqualTo(LocalDate.of(2024, 9, 15));
-                                assertThat(termin.ueberwachung()).isTrue();
-                                assertThat(termin.notizen()).isEqualTo("Test");
-                                assertThat(termin.projnr()).isEqualTo(EXISTING_PROJNR);
                             });
 
         }
 
-        @Test
-        void givenNoTerminExists_thenReturnEmptyPage() {
-
-            restTestClient.get()
-                    .uri(uriBuilder -> uriBuilder
-                            .path("/termin")
-                            .queryParam("page", "0")
-                            .build())
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
-                    .exchange()
-                    .expectStatus()
-                    .isOk()
-                    .expectBody()
-                    .jsonPath("$.content")
-                    .value(
-                            new ParameterizedTypeReference<List<TerminResponseDTO>>() {
-                            },
-                            content -> assertThat(content).isEmpty());
-        }
-
         private static Stream<Arguments> authorizationMappings() {
             return Stream.of(
-                    arguments("admin", HttpStatus.OK),
-                    arguments("sachbearbeitung", HttpStatus.OK),
-                    arguments("sachbearbeitunghaushalt", HttpStatus.OK));
+                    Arguments.of("admin", HttpStatus.OK),
+                    Arguments.of("sachbearbeitung", HttpStatus.OK),
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.OK),
+                    Arguments.of("no-role", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -199,9 +185,87 @@ public class TerminIntegrationTest {
 
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/termin")
+                            .path("/termine")
                             .queryParam("page", "0")
                             .build())
+                    .header(
+                            HttpHeaders.AUTHORIZATION,
+                            String.format("Bearer %s", role))
+                    .exchange()
+                    .expectStatus()
+                    .isEqualTo(httpStatus);
+        }
+    }
+
+    @Nested
+    class GetTerminFormContext {
+
+        @Test
+        void givenNoEntitiesExist_thenReturnEmptyFormContext() {
+            // Given
+            terminRepository.deleteAll();
+
+            // When
+            final TerminFormContext result = restTestClient.get()
+                    .uri("/termine/form-context")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                    .exchange()
+                    .expectStatus()
+                    .isOk()
+                    .expectHeader()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .expectBody(TerminFormContext.class)
+                    .returnResult()
+                    .getResponseBody();
+
+            // Then
+            assertThat(result).isNotNull();
+            assertThat(result.terminID()).isEmpty();
+        }
+
+        @Test
+        void givenEntitiesExist_thenReturnCorrectFormContext() {
+            // Given
+            final TerminResponseDTO existingTermin= createExistingTermin();
+
+            assertThat(existingTermin).isNotNull();
+            assertThat(existingTermin.id()).isNotNull();
+
+            // When
+            final TerminFormContext result = restTestClient.get()
+                    .uri("/termine/form-context")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
+                    .exchange()
+                    .expectStatus()
+                    .isOk()
+                    .expectHeader()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .expectBody(TerminFormContext.class)
+                    .returnResult()
+                    .getResponseBody();
+
+            // Then
+            assertThat(result).isNotNull();
+            assertThat(result.terminID()).hasSize(1);
+            assertThat(result.terminID().getFirst()).isEqualTo(Long.valueOf(existingTermin.id()));
+        }
+
+        private static Stream<Arguments> authorizationMappings() {
+            return Stream.of(
+                    arguments("admin", HttpStatus.OK),
+                    arguments("sachbearbeitung", HttpStatus.FORBIDDEN),
+                    arguments("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN),
+                    arguments("no-role", HttpStatus.FORBIDDEN));
+        }
+
+        @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
+        @MethodSource("authorizationMappings")
+        void givenRole_thenReturnStatus(
+                final String role,
+                final HttpStatus httpStatus) {
+
+            restTestClient.get()
+                    .uri("/termine/form-context")
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             String.format("Bearer %s", role))
@@ -226,7 +290,7 @@ public class TerminIntegrationTest {
                     EXISTING_PROJNR);
 
             final TerminResponseDTO responseDTO = restTestClient.post()
-                    .uri("/termin")
+                    .uri("/termine")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -268,7 +332,7 @@ public class TerminIntegrationTest {
         }
 
         @Test
-        void givenProjectDoesNotExist_thenReturnInternalServerError() {
+        void givenProjectDoesNotExist_thenReturnNotFound() {
 
             final TerminCreateDTO requestDTO = new TerminCreateDTO(
                     LocalDate.of(2024, 9, 15),
@@ -279,7 +343,7 @@ public class TerminIntegrationTest {
                     "9999999");
 
             restTestClient.post()
-                    .uri("/termin")
+                    .uri("/termine")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -295,7 +359,7 @@ public class TerminIntegrationTest {
                 final TerminCreateDTO requestDTO) {
 
             restTestClient.post()
-                    .uri("/termin")
+                    .uri("/termine")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -355,9 +419,10 @@ public class TerminIntegrationTest {
 
         private static Stream<Arguments> authorizationMappings() {
             return Stream.of(
-                    arguments("admin", HttpStatus.CREATED),
-                    arguments("sachbearbeitung", HttpStatus.FORBIDDEN),
-                    arguments("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN));
+                    Arguments.of("admin", HttpStatus.CREATED),
+                    Arguments.of("sachbearbeitung", HttpStatus.FORBIDDEN),
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN),
+                    Arguments.of("no-role", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -375,7 +440,7 @@ public class TerminIntegrationTest {
                     EXISTING_PROJNR);
 
             restTestClient.post()
-                    .uri("/termin")
+                    .uri("/termine")
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             String.format("Bearer %s", role))
@@ -390,30 +455,17 @@ public class TerminIntegrationTest {
     @Nested
     class UpdateTermin {
 
+        private TerminResponseDTO existingTermin;
+
+        @BeforeEach
+        void setUp() {
+
+            existingTermin = createExistingTermin();
+            assertThat(existingTermin).isNotNull();
+        }
+
         @Test
         void givenTerminExists_thenTerminIsUpdated() {
-
-            final TerminCreateDTO createDTO = new TerminCreateDTO(
-                    LocalDate.of(2024, 9, 15),
-                    true,
-                    "Max Mustermann",
-                    "1334566",
-                    "Alt",
-                    EXISTING_PROJNR);
-
-            final TerminResponseDTO created = restTestClient.post()
-                    .uri("/termin")
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
-                    .body(createDTO)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .exchange()
-                    .expectStatus()
-                    .isCreated()
-                    .expectBody(TerminResponseDTO.class)
-                    .returnResult()
-                    .getResponseBody();
-
-            assertThat(created).isNotNull();
 
             final TerminUpdateDTO updateDTO = new TerminUpdateDTO(
                     LocalDate.of(2024, 9, 15),
@@ -423,7 +475,7 @@ public class TerminIntegrationTest {
                     "Aktualisierte Notiz");
 
             final TerminResponseDTO responseDTO = restTestClient.put()
-                    .uri("/termin/{id}", created.id())
+                    .uri("/termine/{id}", existingTermin.id())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(updateDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -436,7 +488,7 @@ public class TerminIntegrationTest {
                     .value(response -> {
 
                         assertNotNull(response);
-                        assertThat(response.id()).isEqualTo(created.id());
+                        assertThat(response.id()).isEqualTo(existingTermin.id());
 
                         assertThat(response.termin()).isEqualTo(updateDTO.termin());
                         assertThat(response.ueberwachung()).isEqualTo(updateDTO.ueberwachung());
@@ -450,7 +502,7 @@ public class TerminIntegrationTest {
 
             assertThat(responseDTO).isNotNull();
 
-            final Optional<Termin> entity = terminRepository.findById(Long.valueOf(created.id()));
+            final Optional<Termin> entity = terminRepository.findById(Long.valueOf(existingTermin.id()));
 
             assertThat(entity).isPresent();
 
@@ -474,7 +526,7 @@ public class TerminIntegrationTest {
                     "Test");
 
             restTestClient.put()
-                    .uri("/termin/{id}", NON_EXISTING_ID)
+                    .uri("/termine/{id}", NON_EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(updateDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -485,9 +537,10 @@ public class TerminIntegrationTest {
 
         private static Stream<Arguments> authorizationMappings() {
             return Stream.of(
-                    arguments("admin", HttpStatus.OK),
-                    arguments("sachbearbeitung", HttpStatus.FORBIDDEN),
-                    arguments("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN));
+                    Arguments.of("admin", HttpStatus.OK),
+                    Arguments.of("sachbearbeitung", HttpStatus.FORBIDDEN),
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN),
+                    Arguments.of("no-role", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -505,7 +558,7 @@ public class TerminIntegrationTest {
                     EXISTING_PROJNR);
 
             final TerminResponseDTO created = restTestClient.post()
-                    .uri("/termin")
+                    .uri("/termine")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(createDTO)
                     .accept(MediaType.APPLICATION_JSON)
@@ -526,7 +579,7 @@ public class TerminIntegrationTest {
                     "Test");
 
             restTestClient.put()
-                    .uri("/termin/{id}", created.id())
+                    .uri("/termine/{id}", created.id())
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             String.format("Bearer %s", role))
@@ -541,39 +594,25 @@ public class TerminIntegrationTest {
     @Nested
     class DeleteTermin {
 
+        private TerminResponseDTO existingTermin;
+
+        @BeforeEach
+        void setUp() {
+            existingTermin = createExistingTermin();
+            assertThat(existingTermin).isNotNull();
+        }
+
         @Test
         void givenTerminExists_thenTerminIsDeleted() {
 
-            final TerminCreateDTO createDTO = new TerminCreateDTO(
-                    LocalDate.of(2024, 9, 15),
-                    true,
-                    "Max Mustermann",
-                    "12345678",
-                    "Test",
-                    EXISTING_PROJNR);
-
-            final TerminResponseDTO created = restTestClient.post()
-                    .uri("/termin")
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
-                    .body(createDTO)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .exchange()
-                    .expectStatus()
-                    .isCreated()
-                    .expectBody(TerminResponseDTO.class)
-                    .returnResult()
-                    .getResponseBody();
-
-            assertThat(created).isNotNull();
-
             restTestClient.delete()
-                    .uri("/termin/{id}", created.id())
+                    .uri("/termine/{id}", existingTermin.id())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus()
                     .isOk();
 
-            assertThat(terminRepository.findById(Long.valueOf(created.id())))
+            assertThat(terminRepository.findById(Long.valueOf(existingTermin.id())))
                     .isEmpty();
         }
 
@@ -581,7 +620,7 @@ public class TerminIntegrationTest {
         void givenTerminDoesNotExist_thenReturnNotFound() {
 
             restTestClient.delete()
-                    .uri("/termin/{id}", NON_EXISTING_ID)
+                    .uri("/termine/{id}", NON_EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus()
@@ -592,7 +631,8 @@ public class TerminIntegrationTest {
             return Stream.of(
                     arguments("admin", HttpStatus.OK),
                     arguments("sachbearbeitung", HttpStatus.FORBIDDEN),
-                    arguments("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN));
+                    arguments("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN),
+                    arguments("no-role", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -601,30 +641,8 @@ public class TerminIntegrationTest {
                 final String role,
                 final HttpStatus httpStatus) {
 
-            final TerminCreateDTO createDTO = new TerminCreateDTO(
-                    LocalDate.of(2024, 9, 15),
-                    true,
-                    "Max Mustermann",
-                    "12345678",
-                    "Test",
-                    EXISTING_PROJNR);
-
-            final TerminResponseDTO created = restTestClient.post()
-                    .uri("/termin")
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
-                    .body(createDTO)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .exchange()
-                    .expectStatus()
-                    .isCreated()
-                    .expectBody(TerminResponseDTO.class)
-                    .returnResult()
-                    .getResponseBody();
-
-            assertThat(created).isNotNull();
-
             restTestClient.delete()
-                    .uri("/termin/{id}", created.id())
+                    .uri("/termine/{id}", existingTermin.id())
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             String.format("Bearer %s", role))
