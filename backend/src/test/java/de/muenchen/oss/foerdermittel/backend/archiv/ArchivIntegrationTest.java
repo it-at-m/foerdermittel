@@ -13,14 +13,13 @@ import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichRepository;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektRepository;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-
-import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
-import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -64,7 +63,6 @@ class ArchivIntegrationTest {
 
     @Autowired
     private StadtbezirkRepository stadtbezirkRepository;
-
 
     @Container
     @ServiceConnection
