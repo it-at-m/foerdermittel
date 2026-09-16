@@ -9,11 +9,9 @@ import org.mapstruct.Mapping;
 public interface ProjektMapper {
 
     @Mapping(source = "foerderbereich.fb", target = "foerderbereich")
-    @Mapping(source = "stadtbezirk.stadtbezirk", target = "stadtbezirk")
     ProjektResponseDTO toDTO(Projekt projekt);
 
     @Mapping(source = "foerderbereich.fb", target = "foerderbereich")
-    @Mapping(source = "stadtbezirk.stadtbezirk", target = "stadtbezirk")
     ProjektFormContextDTO toFormContext(Projekt projekt);
 
     List<ProjektFormContextDTO> toFormContext(List<Projekt> projektList);
