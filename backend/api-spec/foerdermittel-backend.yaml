@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: foerdermittel-backend
   description: Backend component for the application foerdermittel
-  version: 0.2.0-SNAPSHOT
+  version: 0.3.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -95,7 +95,7 @@ paths:
           description: OK
       security:
       - bearerAuth: []
-  /termin/{id}:
+  /termine/{id}:
     put:
       tags:
       - termin-controller
@@ -837,7 +837,7 @@ paths:
                 $ref: "#/components/schemas/TraegerResponseDTO"
       security:
       - bearerAuth: []
-  /termin:
+  /termine:
     get:
       tags:
       - termin-controller
@@ -1741,7 +1741,7 @@ paths:
                 $ref: "#/components/schemas/TraegerFormContext"
       security:
       - bearerAuth: []
-  /termin/form-context:
+  /termine/form-context:
     get:
       tags:
       - termin-controller
@@ -3035,6 +3035,7 @@ components:
           description: ""
         stadtbezirk:
           type: number
+          description: ""
       description: DTO for Projekt to be used in other FormContexts other than its
         own.
     TerminFormContext:
@@ -3054,9 +3055,8 @@ components:
           description: ""
           items:
             $ref: "#/components/schemas/ProjektFormContextDTO"
-      description: |-
-        DTO for [Termin] to be used in other
-        FormContexts other than its own.
+      description: "DTO for [Termin] to be used in other FormContexts other than its\
+        \ own."
     PagedModelStichwortbereichResponseDTO:
       type: object
       properties:
@@ -3336,28 +3336,6 @@ components:
       description: |-
         DTO for [de.muenchen.oss.foerdermittel.backend.archiv.Archiv] to be used in other FormContexts
         other than its own.
-    ProjektFormContextDTO:
-      required:
-      - foerderbereich
-      - pname
-      - projnr
-      - pstrasse
-      type: object
-      properties:
-        projnr:
-          type: string
-          description: ""
-        pname:
-          type: string
-          description: ""
-        pstrasse:
-          type: string
-          description: ""
-        foerderbereich:
-          type: string
-          description: ""
-      description: DTO for Projekt to be used in other FormContexts other than its
-        own.
     Link:
       type: object
       properties:
