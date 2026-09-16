@@ -13,6 +13,7 @@
           item-value="projnr"
           :display-mode="displayMode"
           :label="t('model.termin.projnr')"
+          :rules="[rules.required()]"
           :validation-attribute-map="
             TerminCreateDTOPropertyValidationAttributesMap
           "
@@ -28,10 +29,7 @@
           v-model="modelValue.termin"
           :display-mode="displayMode"
           :label="t('model.termin.termin')"
-          :validation-attribute-map="
-            TerminCreateDTOPropertyValidationAttributesMap
-          "
-          :additional-rules="terminRules"
+          :rules="[rules.required()]"
           clearable
         />
       </v-col>
@@ -48,6 +46,10 @@
         <fm-text-field
           v-model="modelValue.zustaendig"
           :display-mode="displayMode"
+          :validation-attribute-map="
+            TerminCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="zustaendig"
           :label="t('model.termin.zustaendig')"
         />
       </v-col>
@@ -56,6 +58,10 @@
         <fm-text-field
           v-model="modelValue.telefon"
           :display-mode="displayMode"
+          :validation-attribute-map="
+            TerminCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="telefon"
           :label="t('model.termin.telefon')"
         />
       </v-col>
@@ -93,8 +99,6 @@ import { InputDisplayMode } from "@/types/InputDisplayMode";
 
 const { t } = useI18n();
 const rules = useRules();
-
-const terminRules = [rules.required()];
 
 const { projekte, displayMode = InputDisplayMode.CREATE } = defineProps<{
   projekte: ProjektFormContextDTO[];
