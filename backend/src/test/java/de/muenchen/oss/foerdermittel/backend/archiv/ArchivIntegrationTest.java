@@ -18,6 +18,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -59,6 +62,10 @@ class ArchivIntegrationTest {
     @Autowired
     private FoerderbereichRepository foerderbereichRepository;
 
+    @Autowired
+    private StadtbezirkRepository stadtbezirkRepository;
+
+
     @Container
     @ServiceConnection
     @SuppressWarnings("unused")
@@ -86,12 +93,20 @@ class ArchivIntegrationTest {
 
         foerderbereichRepository.save(foerderbereich);
 
+        final Stadtbezirk stadtbezirk = new Stadtbezirk();
+
+        stadtbezirk.setStadtbezirk(BigDecimal.valueOf(99));
+        stadtbezirk.setBezeichnung("Test Stadtbezirk 1");
+
+        stadtbezirkRepository.save(stadtbezirk);
+
         final Projekt projekt = new Projekt();
 
         projekt.setProjnr(EXISTING_PROJNR);
         projekt.setPname("Testprojekt");
         projekt.setPstrasse("Teststraße");
         projekt.setFoerderbereich(foerderbereich);
+        projekt.setStadtbezirk(stadtbezirk);
 
         projektRepository.save(projekt);
     }
