@@ -231,7 +231,7 @@ class ArchivServiceTest {
             verify(projektService, never()).getProjekt(any());
             verify(archivRepository, never()).update(any(Archiv.class));
 
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", ARCHIV_ID));
+            assertThat(exception.getMessage()).isEqualTo("The Archiv with ID " + ARCHIV_ID + " was not found.");
         }
 
         @Test
@@ -296,10 +296,7 @@ class ArchivServiceTest {
             verify(archivRepository, never()).delete(any(Archiv.class));
 
             assertThat(exception.getMessage())
-                    .isEqualTo(
-                            String.format(
-                                    "404 NOT_FOUND \"Could not find entity with ID %s\"",
-                                    ARCHIV_ID));
+                    .isEqualTo("The Archiv with ID " + ARCHIV_ID + " was not found.");
         }
     }
 

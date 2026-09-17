@@ -24,7 +24,7 @@ public class ProjektService {
     @Transactional(readOnly = true)
     public Projekt getProjekt(final String projekt) {
         log.info("Get Projekt {}", projekt);
-        return ServiceUtils.getEntityOrThrowNotFoundException(projekt, projektRepository);
+        return ServiceUtils.getEntityOrThrowNotFoundException(projekt, projektRepository, Projekt.class);
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
