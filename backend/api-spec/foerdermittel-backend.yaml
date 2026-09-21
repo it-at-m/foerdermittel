@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: foerdermittel-backend
   description: Backend component for the application foerdermittel
-  version: 0.2.0-SNAPSHOT
+  version: 0.3.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -1729,6 +1729,41 @@ paths:
                 $ref: "#/components/schemas/ReportStichworteFormContext"
       security:
       - bearerAuth: []
+  /report/projekt:
+    get:
+      tags:
+      - report-controller
+      operationId: getReportAuswertungProjekt
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportAuswertungProjekteDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/projekt/form-context:
+    get:
+      tags:
+      - report-controller
+      operationId: getReportAuswertungProjektFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportAuswertungProjektFormContext"
+      security:
+      - bearerAuth: []
   /referate/form-context:
     get:
       tags:
@@ -2914,6 +2949,86 @@ components:
       description: |-
         DTO for [de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich] to be used in
         other FormContexts other than its own.
+    ReportAuswertungProjekteDTO:
+      required:
+      - jahr
+      type: object
+      properties:
+        jahr:
+          minLength: 1
+          type: string
+        bez:
+          type: string
+        fb:
+          type: string
+        ua:
+          type: string
+        kurz:
+          type: string
+        pstrasse:
+          type: string
+        pname:
+          type: string
+        sgt:
+          type: string
+        sbl:
+          type: string
+        bpg:
+          type: string
+        krisofp:
+          type: string
+        kauf:
+          type: boolean
+        offen:
+          type: boolean
+        relevant:
+          type: boolean
+    ReportAuswertungProjektFormContext:
+      required:
+      - projekte
+      type: object
+      properties:
+        projekte:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportAuswertungProjektFormContextDTO"
+    ReportAuswertungProjektFormContextDTO:
+      required:
+      - bez
+      - bpg
+      - fb
+      - jahr
+      - krisofp
+      - kurz
+      - pname
+      - projnr
+      - pstrasse
+      - sgt
+      - ua
+      type: object
+      properties:
+        projnr:
+          type: string
+        jahr:
+          type: string
+        bez:
+          type: string
+        fb:
+          type: string
+        ua:
+          type: string
+        kurz:
+          type: string
+        pstrasse:
+          type: string
+        pname:
+          type: string
+        sgt:
+          type: string
+        bpg:
+          type: string
+        krisofp:
+          type: string
     PagedModelReferatResponseDTO:
       type: object
       properties:
