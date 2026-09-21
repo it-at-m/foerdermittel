@@ -6,15 +6,14 @@ import java.math.BigDecimal;
 
 public record ReportAuswertungProjektFormContextDTO(
         @NotNull String projnr,
-        @NotNull BigDecimal jahr,
-        @NotNull String sbl,
+        @NotNull String jahr,
         @NotNull String bez,
         @NotNull String fb,
         @NotNull String ua,
         @NotNull String kurz,
         @NotNull String pstrasse,
         @NotNull String pname,
-        @NotNull String foerderprogramm,
-        @NotNull String sbg,
-        @NotNull String bpg) {
+        @NotNull String sgt,
+        @NotNull String bpg,
+        @NotNull String krisofp) {
 }

@@ -49,22 +49,20 @@ public class ReportService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public GeneratedReport generateReportAuswertungProjekt(final ReportAuswertungProjekteDTO parameters) {
+    public GeneratedReport generateReportAuswertungProjekt(
+            final ReportAuswertungProjekteDTO parameters) {
 
-        final Projekt projekt = projektService.getProjekt(parameters.projnr());
-        final Map<String, Object> jasperParameters = reportMapper.toJasperParameters(parameters);
-        jasperParameters.put("P_JAHR", projekt.getJahr());
-        jasperParameters.put("P_BEZ", projekt.getStadtbezirk());
-        jasperParameters.put("P_SGT", projekt.getSiedlungsgebiet());
-        jasperParameters.put("P_BPG", projekt.getBauprogramm());
-        jasperParameters.put("P_FB", projekt.getFoerderbereich());
-        jasperParameters.put("P_KRISOFP", projekt.getKrisofp());
-        jasperParameters.put("P_UA", projekt.getUnterabschnitt());
-        jasperParameters.put("P_KURZ", projekt.getKurzbezeichnung());
-        jasperParameters.put("P_PSTRASSE", projekt.getPstrasse());
-        jasperParameters.put("P_PNAME", projekt.getPname());
-        return generateReport(jasperParameters, ReportType.FMW_PROJEKTE, ReportFormat.PDF, null);
+        final Map<String, Object> jasperParameters =
+                reportMapper.toJasperParameters(parameters);
+        log.debug("JasperReports Parameter Map: {}", parameters);
+
+        return generateReport(
+                jasperParameters,
+                ReportType.FMW_PROJEKTE,
+                ReportFormat.PDF,
+                "ORDER BY V_PROJNR ASC");
     }
+
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
