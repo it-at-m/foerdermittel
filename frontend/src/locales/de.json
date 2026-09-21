@@ -53,7 +53,21 @@
   },
   "model": {
     "projekt": {
-      "modelName": "Projekt | Projekte"
+      "modelName": "Projekt | Projekte",
+      "projnr": "Projektnummer",
+      "jahr": "Projektjahr",
+      "pname": "Projektname",
+      "pstrasse": "Projektstraße",
+      "krisofp": "Förderprogramm",
+      "offen": "Nur offene Projekte",
+      "kauf": "Nur Projekte mit Ankauf",
+      "relevant": "Nur relevante Projekte",
+      "bez": "Stadtbezirk",
+      "fb": "Förderbereich",
+      "ua": "Unterabschnitt",
+      "kurz": "Kurzbezeichnung",
+      "sgt": "Siedlungsgebiet",
+      "bpg": "Bauprogramm"
     },
     "antrag": {
       "modelName": "Antrag | Anträge"

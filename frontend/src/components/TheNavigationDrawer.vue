@@ -241,6 +241,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.projekt.modelName", 2),
+        props: {
+          to: "/report/auswertungprojekte",
+        },
       },
       {
         title: t("domain.report.checklisten"),
