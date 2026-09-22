@@ -1,6 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
 import de.muenchen.oss.foerdermittel.backend.common.InsertAndUpdateRepository;
+import de.muenchen.oss.foerdermittel.backend.projekt.dao.BasicProjektDAO;
 import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
@@ -15,6 +16,6 @@ public interface ProjektRepository extends PagingAndSortingRepository<Projekt, S
     List<String> findAllProjekte();
 
     @Query("SELECT p.projnr, p.pname, p.pstrasse FROM Projekt p")
-    List<Projekt> findAllWithOnlyBasicFields();
+    List<BasicProjektDAO> findAllAsBasic();
 
 }

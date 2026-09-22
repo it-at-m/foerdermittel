@@ -37,6 +37,6 @@ public class ProjektService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<ReportProjektuebersichtFormContextDTO> getReportProjektuebersichtFormContextDTOs() {
-        return projektMapper.toReportFormContext(projektRepository.findAll());
+        return projektMapper.toReportFormContext(projektRepository.findAllAsBasic());
     }
 }

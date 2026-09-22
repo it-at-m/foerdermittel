@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
+import de.muenchen.oss.foerdermittel.backend.projekt.dao.BasicProjektDAO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektMapper;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
 import java.util.List;
@@ -33,10 +34,11 @@ class ProjektServiceTest {
     @Test
     void givenProjects_thenMapsTheirReportFormContext() {
         // Given
-        final List<Projekt> projekte = List.of(mock(Projekt.class));
+        final List<BasicProjektDAO> projekte = List.of(
+                new BasicProjektDAO("P-123", "Projektname", "Projektstraße 1"));
         final List<ReportProjektuebersichtFormContextDTO> expected = List.of(
                 new ReportProjektuebersichtFormContextDTO("P-123", "Projektname", "Projektstraße 1"));
-        when(projektRepository.findAll()).thenReturn(projekte);
+        when(projektRepository.findAllAsBasic()).thenReturn(projekte);
         when(projektMapper.toReportFormContext(projekte)).thenReturn(expected);
 
         // When
@@ -44,7 +46,7 @@ class ProjektServiceTest {
 
         // Then
         assertThat(result).isEqualTo(expected);
-        verify(projektRepository, times(1)).findAll();
+        verify(projektRepository, times(1)).findAllAsBasic();
         verify(projektMapper, times(1)).toReportFormContext(projekte);
     }
 

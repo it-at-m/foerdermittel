@@ -28,7 +28,10 @@ public final class ReportClasspathRepositoryService extends DefaultRepositorySer
     }
 
     private static String resolveLocation(final String location) {
-        if (location != null && !location.startsWith(REPORTS_DIRECTORY)) {
+        if (location != null
+                && !location.startsWith(REPORTS_DIRECTORY)
+                && !location.startsWith("/")
+                && !location.matches("^[A-Za-z][A-Za-z0-9+.-]*:")) {
             return REPORTS_DIRECTORY + location;
         }
         return location;

@@ -1,6 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.projekt.dto;
 
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
+import de.muenchen.oss.foerdermittel.backend.projekt.dao.BasicProjektDAO;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,5 +16,5 @@ public interface ProjektMapper {
 
     List<ProjektFormContextDTO> toFormContext(List<Projekt> projektList);
 
-    List<ReportProjektuebersichtFormContextDTO> toReportFormContext(List<Projekt> projekte);
+    List<ReportProjektuebersichtFormContextDTO> toReportFormContext(List<BasicProjektDAO> projekte);
 }
