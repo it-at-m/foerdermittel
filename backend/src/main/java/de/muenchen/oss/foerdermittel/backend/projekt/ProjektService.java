@@ -1,11 +1,14 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektMapper;
+import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +21,21 @@ public class ProjektService {
     private final ProjektRepository projektRepository;
     private final ProjektMapper projektMapper;
 
-    public Projekt getProjekt(final String projnr) {
-        return ServiceUtils.getEntityOrThrowNotFoundException(projnr, projektRepository, Projekt.class);
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public Projekt getProjekt(final String projekt) {
+        log.info("Get Projekt {}", projekt);
+        return ServiceUtils.getEntityOrThrowNotFoundException(projekt, projektRepository, Projekt.class);
     }
 
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<ProjektFormContextDTO> getProjektFormContextDTOs() {
+        return projektMapper.toFormContext(projektRepository.findAll());
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
     public List<ReportProjektuebersichtFormContextDTO> getReportProjektuebersichtFormContextDTOs() {
         return projektMapper.toReportFormContext(projektRepository.findAll());
     }

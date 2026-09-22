@@ -28,7 +28,7 @@ public class Projekt implements Serializable {
 
     @Id
     @Column(name = "projnr", nullable = false)
-    @NotNull @Size(min = 1, max = 7) private String projnr;
+    @NotNull @Size(min = 1, max = 7) private String projnr; // angepasst von projektnr auf projnr, da im Mapper so verwendet
 
     @Column(name = "pname", nullable = false)
     @NotNull @Size(min = 1, max = 100) private String pname;
