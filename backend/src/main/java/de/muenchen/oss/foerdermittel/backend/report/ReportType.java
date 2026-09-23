@@ -7,7 +7,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ReportType {
-    FMW_ABLAGEINDEX(Set.of(ReportFormat.PDF));
+    FMW_ABLAGEINDEX(Set.of(ReportFormat.PDF)),
+    FMW_HAUSHALT1(Set.of(ReportFormat.PDF,ReportFormat.PDF_FLAT,ReportFormat.EXCEL));
 
     private final Set<ReportFormat> supportedFormats;
 

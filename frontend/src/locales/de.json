@@ -111,6 +111,9 @@
       "bauleitung": "Bauleitung",
       "bezeichnung": "Bezeichnung"
     },
+    "fipo": {
+      "modelName": "FIPO"
+    },
     "foerderbereich": {
       "modelName": "Förderbereich | Förderbereiche",
       "fb": "Förderbereich",
@@ -119,6 +122,9 @@
       "jahresstatistik": "Jahresstatistik",
       "kindergarten": "Kindergarten",
       "nichtRelevant": "Nicht relevant"
+    },
+    "haushalt1": {
+      "modelName": "Haushaltsplanung"
     },
     "krankenhaus": {
       "modelName": "Krankenhaus | Krankenhäuser",

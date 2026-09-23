@@ -1,10 +1,18 @@
 package de.muenchen.oss.foerdermittel.backend.report;
 
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichService;
+import de.muenchen.oss.foerdermittel.backend.hhplan.HhplanService;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1DTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportHaushalt1FormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkService;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.ListennameStadtbezirkslisteService;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.StichwortbereichService;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
@@ -23,8 +31,12 @@ public class ReportService {
     public static final String SORT_PARAMETER = "P_SORT";
 
     private final StichwortbereichService stichwortbereichService;
+    private final FoerderbereichService foerderbereichService;
+    private final ListennameStadtbezirkslisteService listennameStadtbezirkslisteService;
+    private final StadtbezirkService stadtbezirkService;
     private final JasperReportService jasperReportService;
     private final ReportMapper reportMapper;
+    private final HhplanService hhplanService;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -40,6 +52,40 @@ public class ReportService {
     public ReportStichworteFormContext getReportStichworte() {
         log.info("Get ReportStichworte form context");
         return new ReportStichworteFormContext(stichwortbereichService.getStichwortbereichFormContextDTOs());
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public GeneratedReport generateReportHaushalt1(
+            final ReportHaushalt1DTO parameters) {
+        if (!parameters.fb().isBlank()) foerderbereichService.checkExistsByFoerderbereich(new BigDecimal(parameters.fb()));
+        if (!parameters.sbl().isBlank()) listennameStadtbezirkslisteService.checkExistsByListenname(parameters.sbl());
+
+        final String orderBy = parameters.sort().getOrderBy();
+
+        return generateReport(reportMapper.toJasperParameters(parameters), ReportType.FMW_HAUSHALT1, ReportFormat.PDF,
+                orderBy );
+
+
+                    // "order by pro_projnr asc" );
+        //order by p_pstrasse asc, pro_projnr asc
+                //order by fipo asc
+                //order by P_FOB_FB, pro_projnr asc
+                //order by P_FOB_FB, p_pstrasse asc, pro_projnr asc
+                //order by P_FOB_FB, FIPO asc
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public ReportHaushalt1FormContext getReportHaushalt1() {
+        log.info("Get ReportHaushalt1 form context");
+        return new ReportHaushalt1FormContext(
+                foerderbereichService.getFoerderbereichFormContextDTOs(),
+                listennameStadtbezirkslisteService.getlistennameStadtbezirkslisteFormContextDTOs(),
+                stadtbezirkService.getStadtbezirkFormContextDTOs(),
+                hhplanService.getHhplanFormContextDTOs()
+                );
+
     }
 
     /// Utility function to create a [GeneratedReport].

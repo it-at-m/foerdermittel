@@ -292,6 +292,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.haushaltsplanung.modelName", 2),
+        props: {
+          to: "/report/haushaltsplanung",
+        },
       },
       {
         title: t("model.staedtebaufoerderung.modelName", 2),
