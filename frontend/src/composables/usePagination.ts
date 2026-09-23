@@ -4,10 +4,7 @@ import type { Ref } from "vue";
 import type { DataTableSortItem } from "vuetify";
 
 import { useRouteQuery } from "@vueuse/router";
-import { computed, onMounted, useTemplateRef, watch } from "vue";
-
-import { STATUS_INDICATORS } from "@/constants";
-import { useSnackbarStore } from "@/stores/snackbar";
+import { computed, watch } from "vue";
 
 export const ITEMS_PER_PAGE_OPTIONS = [10, 25, 50, 100];
 
@@ -58,10 +55,7 @@ function urlDecodeSortOptions(sortOptionString: string) {
 
 export default function usePagination(
   totalPages: Ref<number | undefined>,
-  getEntitiesFunction: (pageable: Pageable) => Promise<void>,
-  shouldLoadFormContext?: Ref<boolean>,
-  getFormContext?: () => void | Promise<void>,
-  validate?: () => void | Promise<void>
+  getEntitiesFunction: (pageable: Pageable) => Promise<void>
 ) {
   const page = useRouteQuery<string>("page", String(PAGINATION_DEFAULTS.page));
   const itemsPerPage = useRouteQuery<string>(
@@ -142,42 +136,12 @@ export default function usePagination(
     { immediate: true }
   );
 
-  onMounted(async () => {
-    await fetchFormContext();
-  });
-
-  const crudRef = useTemplateRef("crudRef");
-  const snackbarStore = useSnackbarStore();
-  const onSuccess = async (msg: string) => {
-    snackbarStore.push({ text: msg, color: STATUS_INDICATORS.SUCCESS });
-    if (crudRef.value) {
-      // @ts-expect-error closeDialog method always exists on the CrudCard component
-      crudRef.value.closeDialog();
-    }
+  async function refetchEntities() {
     await getEntitiesFunction(pageable.value);
-    await fetchFormContext();
-  };
-  const onFailure = async (msg: string) => {
-    snackbarStore.push({ text: msg, color: STATUS_INDICATORS.ERROR });
-    await fetchFormContext();
-    if (validate) {
-      await validate();
-    }
-  };
-
-  async function fetchFormContext() {
-    if (
-      shouldLoadFormContext &&
-      shouldLoadFormContext.value &&
-      getFormContext
-    ) {
-      await getFormContext();
-    }
   }
 
   return {
     dataTableOptions,
-    onSuccess,
-    onFailure,
+    refetchEntities,
   };
 }

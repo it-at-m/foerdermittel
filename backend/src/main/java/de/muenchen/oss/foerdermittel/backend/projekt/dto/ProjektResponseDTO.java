@@ -2,17 +2,18 @@ package de.muenchen.oss.foerdermittel.backend.projekt.dto;
 
 import lombok.Builder;
 import java.math.BigDecimal;
+import jakarta.validation.constraints.NotNull;
 
 @Builder
 public record ProjektResponseDTO(
-        String projnr,
-        BigDecimal fobFb,
-        String kurKurzbez,
-        String uasUa,
-        String jahr,
-        String lfdnr1,
-        String lfdnr2,
-        String pname,
-        String pstrasse
+        @NotNull String projnr,
+        @NotNull BigDecimal fobFb,
+        @NotNull String kurKurzbez,
+        @NotNull String uasUa,
+        @NotNull String jahr,
+        @NotNull String lfdnr1,
+        @NotNull String lfdnr2,
+        @NotNull String pname,
+        @NotNull String pstrasse
 ) {
 }

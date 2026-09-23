@@ -50,7 +50,6 @@ export default createVuetify({
       hideSpinButtons: true,
       showWeek: true,
       weekdayFormat: "short",
-      placeholder: "TT.MM.JJJJ",
     },
     VDialog: {
       maxWidth: "800px",
@@ -79,6 +78,8 @@ export default createVuetify({
       persistentPlaceholder: true,
       autoSelectFirst: true,
       clearOnSelect: true,
+      openOnFocus: true,
+      closeOnInputClick: true,
     },
   },
   theme: {

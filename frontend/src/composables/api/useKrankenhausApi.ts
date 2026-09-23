@@ -7,6 +7,7 @@ import type {
   PagedModelKrankenhausResponseDTO,
   UpdateKrankenhausRequest,
 } from "@/api/generated/foerdermittel-backend";
+import type { ApiComposables } from "@/util/composable-helper";
 
 import { KrankenhausControllerApi } from "@/api/generated/foerdermittel-backend";
 import {
@@ -39,3 +40,21 @@ export const {
     context: (api) => api.getKrankenhausFormContext(),
   })
 );
+
+export function useKrankenhausApi(): ApiComposables<
+  KrankenhausResponseDTO,
+  KrankenhausFormContext,
+  CreateKrankenhausRequest,
+  KrankenhausResponseDTO,
+  UpdateKrankenhausRequest,
+  KrankenhausResponseDTO,
+  DeleteKrankenhausRequest
+> {
+  return {
+    getAll: useGetKrankenhaeuser(),
+    context: useGetKrankenhausFormContext(),
+    create: useCreateKrankenhaus(),
+    update: useUpdateKrankenhaus(),
+    delete: useDeleteKrankenhaus(),
+  };
+}

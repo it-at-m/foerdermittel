@@ -1,6 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto;
 
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -15,5 +16,9 @@ public interface HauptabschnittMapper {
 
     @Mapping(target = "ha", ignore = true)
     Hauptabschnitt toEntity(HauptabschnittUpdateDTO hauptabschnittUpdateDTO);
+
+    HauptabschnittFormContextDTO toFormContext(Hauptabschnitt hauptabschnitt);
+
+    List<HauptabschnittFormContextDTO> toFormContext(List<Hauptabschnitt> hauptabschnittList);
 
 }

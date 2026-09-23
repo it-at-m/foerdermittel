@@ -44,16 +44,10 @@ class UnicodeFilterConfigurationTest {
 
     private static final String ENTITY_ENDPOINT_URL = "/bauprogramme";
 
-    /**
-     * Decomposed string:
-     * String "Ä-é" represented with unicode letters "A◌̈-e◌́"
-     */
+    /// Decomposed string: String "Ä-é" represented with unicode letters "A◌̈-e◌́"
     private static final String TEXT_ATTRIBUTE_DECOMPOSED = "\u0041\u0308-\u0065\u0301";
 
-    /**
-     * Composed string:
-     * String "Ä-é" represented with unicode letters "Ä-é".
-     */
+    /// Composed string: String "Ä-é" represented with unicode letters "Ä-é".
     private static final String TEXT_ATTRIBUTE_COMPOSED = "\u00c4-\u00e9";
 
     @Autowired

@@ -41,7 +41,7 @@ public class ReferatService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Referat updateReferat(final Referat referat, final BigDecimal referatId) {
-        final Referat foundReferat = ServiceUtils.getEntityOrThrowNotFoundException(referatId, referatRepository);
+        final Referat foundReferat = ServiceUtils.getEntityOrThrowNotFoundException(referatId, referatRepository, Referat.class);
         foundReferat.setBezeichnung(referat.getBezeichnung());
         log.debug("Update Referat {}", foundReferat);
         return referatRepository.update(foundReferat);
@@ -50,7 +50,7 @@ public class ReferatService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteReferat(final BigDecimal referatId) {
         log.debug("Delete Referat with ID {}", referatId);
-        ServiceUtils.getEntityOrThrowNotFoundException(referatId, referatRepository);
+        ServiceUtils.getEntityOrThrowNotFoundException(referatId, referatRepository, Referat.class);
         referatRepository.deleteById(referatId);
     }
 

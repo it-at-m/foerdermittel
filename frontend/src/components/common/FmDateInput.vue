@@ -39,7 +39,7 @@
     K extends keyof M & string
   "
 >
-import type { ValidationAttributes } from "@/types/OpenAPIValidationAttributes";
+import type { ValidationAttributes } from "@/util/validation";
 import type { ValidationRule } from "vuetify/framework";
 
 import { computed } from "vue";

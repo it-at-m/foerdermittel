@@ -45,7 +45,7 @@ import type { VForm } from "vuetify/components";
 
 import { ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRules } from "vuetify/labs/rules";
+import { useRules } from "vuetify";
 
 import { TraegerCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmNumberInput from "@/components/common/FmNumberInput.vue";

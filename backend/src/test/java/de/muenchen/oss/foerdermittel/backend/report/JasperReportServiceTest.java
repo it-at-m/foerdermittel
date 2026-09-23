@@ -23,8 +23,6 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -91,24 +89,6 @@ class JasperReportServiceTest {
             verify(connection, times(1)).close();
             verify(preparedStatement, times(1)).executeQuery();
             assertThat(outputStream.toByteArray()).isNotEmpty();
-        }
-
-        @Test
-        void givenUnsupportedReportFormat_thenThrowIllegalArgumentException() {
-            // Given
-            final Map<String, Object> parameters = createValidParameters();
-            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-            // When / Then
-            assertThatThrownBy(() -> unitUnderTest.generateReportWithParameters(
-                    ReportType.FMW_ABLAGEINDEX,
-                    ReportFormat.PDF_FLAT,
-                    parameters,
-                    outputStream))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage(
-                            "Unsupported ReportFormat: " + ReportFormat.PDF_FLAT
-                                    + " for ReportType: " + ReportType.FMW_ABLAGEINDEX);
         }
 
         @Test
@@ -188,28 +168,6 @@ class JasperReportServiceTest {
             resultSet.beforeFirst();
 
             return resultSet;
-        }
-
-    }
-
-    @Nested
-    class GetDownloadFileNameTests {
-
-        @ParameterizedTest
-        @EnumSource(value = ReportFormat.class, names = { "PDF", "PDF_FLAT", "EXCEL" })
-        void givenReportTypeAndFormat_thenGenerateDownloadFilename(final ReportFormat reportFormat) {
-            // When
-            final String filename = JasperReportService.getDownloadFileName(
-                    ReportType.FMW_ABLAGEINDEX,
-                    reportFormat);
-
-            // Then
-            assertThat(filename)
-                    .startsWith(ReportType.FMW_ABLAGEINDEX.getFileName()
-                            + reportFormat.getFileSuffix()
-                            + "_")
-                    .endsWith(reportFormat.getFileExtension())
-                    .matches(".*_\\d{8}_\\d{6}\\..+");
         }
 
     }

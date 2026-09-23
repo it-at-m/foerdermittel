@@ -9,32 +9,26 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.boot.web.servlet.FilterRegistration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-/**
- * <p>
- * Spring filter that performs an NFC normalization of all <em>safe textual</em> content.
- * </p>
- *
- * <strong>Please note:</strong>
- * <ul>
- * <li>All data streams associated with multipart requests are not normalized according to NFC.
- * The reason for this is that binary data streams are transferred here and these are generally not
- * simple text.
- * If necessary or useful, the application logic or a suitable library can or must carry out NFC
- * normalization.</li>
- * <li>NFC normalization can only be performed at the character level
- * and the conversion of binary data streams requires knowledge of the data format,
- * which implies knowledge of the charset used.
- * This makes NFC normalization in a generic filter seem sensible.</li>
- * </ul>
- *
- * @see java.text.Normalizer
- * @see HttpServletRequest#getPart(String)
- * @see HttpServletRequest#getParts()
- */
+/// Spring filter that performs an NFC normalization of all _safe textual_ content.
+///
+/// **Please note:**
+///
+/// - All data streams associated with multipart requests are not normalized according to NFC. The
+///   reason for this is that binary data streams are transferred here and these are generally not
+///   simple text. If necessary or useful, the application logic or a suitable library can or must
+///   carry out NFC normalization.
+/// - NFC normalization can only be performed at the character level and the conversion of binary
+///   data streams requires knowledge of the data format, which implies knowledge of the charset
+///   used.
+///
+/// @see java.text.Normalizer
+/// @see HttpServletRequest#getPart(String)
+/// @see HttpServletRequest#getParts()
 @Component
 @FilterRegistration(urlPatterns = "/*")
 @Slf4j
@@ -43,7 +37,7 @@ public class NfcRequestFilter extends OncePerRequestFilter {
     private static final Set<String> CONTENT_TYPES = new HashSet<>(Arrays.asList("text/plain", "application/json", "text/html"));
 
     @Override
-    protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain filterChain)
+    protected void doFilterInternal(final HttpServletRequest request, @NonNull final HttpServletResponse response, @NonNull final FilterChain filterChain)
             throws ServletException, IOException {
 
         log.debug("Request-Type={}", request.getClass().getName());

@@ -31,7 +31,7 @@
     K extends keyof M & string
   "
 >
-import type { ValidationAttributes } from "@/types/OpenAPIValidationAttributes";
+import type { ValidationAttributes } from "@/util/validation";
 import type { ValidationRule } from "vuetify/framework";
 
 import { useI18n } from "vue-i18n";
@@ -60,7 +60,8 @@ const { required, allRules, counter, canNotEdit } = useInputValidation(
   disableEdit,
   additionalRules,
   validationAttributeMap,
-  validationAttributeKey
+  validationAttributeKey,
+  true
 );
 
 const model = defineModel<string>();

@@ -7,6 +7,7 @@ import type {
   PagedModelKurzbezeichnungResponseDTO,
   UpdateKurzbezeichnungRequest,
 } from "@/api/generated/foerdermittel-backend";
+import type { ApiComposables } from "@/util/composable-helper";
 
 import { KurzbezeichnungControllerApi } from "@/api/generated/foerdermittel-backend";
 import {
@@ -39,3 +40,21 @@ export const {
     context: (api) => api.getKurzbezeichnungFormContext(),
   })
 );
+
+export function useKurzbezeichnungApi(): ApiComposables<
+  KurzbezeichnungResponseDTO,
+  KurzbezeichnungFormContext,
+  CreateKurzbezeichnungRequest,
+  KurzbezeichnungResponseDTO,
+  UpdateKurzbezeichnungRequest,
+  KurzbezeichnungResponseDTO,
+  DeleteKurzbezeichnungRequest
+> {
+  return {
+    getAll: useGetKurzbezeichnungen(),
+    context: useGetKurzbezeichnungFormContext(),
+    create: useCreateKurzbezeichnung(),
+    update: useUpdateKurzbezeichnung(),
+    delete: useDeleteKurzbezeichnung(),
+  };
+}

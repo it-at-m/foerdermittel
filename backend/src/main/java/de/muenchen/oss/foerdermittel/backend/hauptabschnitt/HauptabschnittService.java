@@ -1,9 +1,10 @@
 package de.muenchen.oss.foerdermittel.backend.hauptabschnitt;
 
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittMapper;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.util.List;
-import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,23 +20,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class HauptabschnittService {
 
     private final HauptabschnittRepository hauptabschnittRepository;
+    private final HauptabschnittMapper hauptabschnittMapper;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public Hauptabschnitt getHauptabschnitt(final String ha) {
         log.info("Get Hauptabschnitt with ha {}", ha);
-        return ServiceUtils.getEntityOrThrowNotFoundException(ha, hauptabschnittRepository);
+        return ServiceUtils.getEntityOrThrowNotFoundException(ha, hauptabschnittRepository, Hauptabschnitt.class);
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public List<Hauptabschnitt> getAllHauptabschnitte() {
-        log.info("Get Hauptabschnitte");
-
-        return StreamSupport.stream(
-                hauptabschnittRepository.findAll().spliterator(),
-                false)
-                .toList();
+    public List<HauptabschnittFormContextDTO> getHauptabschnittFormContextDTOs() {
+        return hauptabschnittMapper.toFormContext(hauptabschnittRepository.findAll());
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
@@ -60,7 +57,7 @@ public class HauptabschnittService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Hauptabschnitt updateHauptabschnitt(final Hauptabschnitt hauptabschnitt, final String ha) {
-        final Hauptabschnitt foundHauptabschnitt = ServiceUtils.getEntityOrThrowNotFoundException(ha, hauptabschnittRepository);
+        final Hauptabschnitt foundHauptabschnitt = ServiceUtils.getEntityOrThrowNotFoundException(ha, hauptabschnittRepository, Hauptabschnitt.class);
         foundHauptabschnitt.setBezeichnung(hauptabschnitt.getBezeichnung());
         log.debug("Update Hauptabschnitt {}", foundHauptabschnitt);
         return hauptabschnittRepository.update(foundHauptabschnitt);
@@ -69,7 +66,7 @@ public class HauptabschnittService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteHauptabschnitt(final String ha) {
         log.debug("Delete Hauptabschnitt with ID {}", ha);
-        ServiceUtils.getEntityOrThrowNotFoundException(ha, hauptabschnittRepository);
+        ServiceUtils.getEntityOrThrowNotFoundException(ha, hauptabschnittRepository, Hauptabschnitt.class);
         hauptabschnittRepository.deleteById(ha);
     }
 }

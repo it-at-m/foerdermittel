@@ -7,6 +7,7 @@ import type {
   ReferatResponseDTO,
   UpdateReferatRequest,
 } from "@/api/generated/foerdermittel-backend";
+import type { ApiComposables } from "@/util/composable-helper";
 
 import { ReferatControllerApi } from "@/api/generated/foerdermittel-backend";
 import {
@@ -39,3 +40,21 @@ export const {
     context: (api) => api.getReferatFormContext(),
   })
 );
+
+export function useReferatApi(): ApiComposables<
+  ReferatResponseDTO,
+  ReferatFormContext,
+  CreateReferatRequest,
+  ReferatResponseDTO,
+  UpdateReferatRequest,
+  ReferatResponseDTO,
+  DeleteReferatRequest
+> {
+  return {
+    getAll: useGetReferate(),
+    context: useGetReferatFormContext(),
+    create: useCreateReferat(),
+    update: useUpdateReferat(),
+    delete: useDeleteReferat(),
+  };
+}

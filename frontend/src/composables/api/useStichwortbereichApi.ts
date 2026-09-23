@@ -7,6 +7,7 @@ import type {
   StichwortbereichResponseDTO,
   UpdateStichwortbereichRequest,
 } from "@/api/generated/foerdermittel-backend";
+import type { ApiComposables } from "@/util/composable-helper";
 
 import { StichwortbereichControllerApi } from "@/api/generated/foerdermittel-backend";
 import {
@@ -39,3 +40,21 @@ export const {
     context: (api) => api.getStichwortbereichFormContext(),
   })
 );
+
+export function useStichwortbereichApi(): ApiComposables<
+  StichwortbereichResponseDTO,
+  StichwortbereichFormContext,
+  CreateStichwortbereichRequest,
+  StichwortbereichResponseDTO,
+  UpdateStichwortbereichRequest,
+  StichwortbereichResponseDTO,
+  DeleteStichwortbereichRequest
+> {
+  return {
+    getAll: useGetStichwortbereiche(),
+    context: useGetStichwortbereichFormContext(),
+    create: useCreateStichwortbereich(),
+    update: useUpdateStichwortbereich(),
+    delete: useDeleteStichwortbereich(),
+  };
+}

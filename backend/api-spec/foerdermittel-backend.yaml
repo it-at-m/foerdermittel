@@ -137,25 +137,6 @@ paths:
       security:
       - bearerAuth: []
   /stadtbezirkslisten/{id}:
-    get:
-      tags:
-      - stadtbezirksliste-controller
-      operationId: getStadtbezirkliste
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StadtbezirkslisteResponseDTO"
-      security:
-      - bearerAuth: []
     put:
       tags:
       - stadtbezirksliste-controller
@@ -692,6 +673,47 @@ paths:
           description: OK
       security:
       - bearerAuth: []
+  /archiv/{id}:
+    put:
+      tags:
+      - archiv-controller
+      operationId: updateArchiv
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArchivUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArchivResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - archiv-controller
+      operationId: deleteArchiv
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /unterabschnitte:
     get:
       tags:
@@ -880,7 +902,7 @@ paths:
     get:
       tags:
       - stadtbezirksliste-controller
-      operationId: getStadtbezirklistenByPageable
+      operationId: getStadtbezirklisten
       parameters:
       - name: page
         in: query
@@ -1658,6 +1680,68 @@ paths:
                 $ref: "#/components/schemas/BauleitungResponseDTO"
       security:
       - bearerAuth: []
+  /archiv:
+    get:
+      tags:
+      - archiv-controller
+      operationId: getArchiveintraege
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "projekt.projnr,ASC"
+          - "speicherDatum,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelArchivResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - archiv-controller
+      operationId: createArchiv
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArchivCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArchivResponseDTO"
+      security:
+      - bearerAuth: []
   /unterabschnitte/form-context:
     get:
       tags:
@@ -1740,6 +1824,41 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SiedlungsgebietFormContext"
+      security:
+      - bearerAuth: []
+  /report/stichworte:
+    get:
+      tags:
+      - report-controller
+      operationId: getReportStichworte
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportStichworteDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/stichworte/form-context:
+    get:
+      tags:
+      - report-controller
+      operationId: getReportStichworteFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportStichworteFormContext"
       security:
       - bearerAuth: []
   /referate/form-context:
@@ -1866,6 +1985,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BauleitungFormContext"
+      security:
+      - bearerAuth: []
+  /archiv/form-context:
+    get:
+      tags:
+      - archiv-controller
+      operationId: getArchivFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArchivFormContext"
       security:
       - bearerAuth: []
   /actuator:
@@ -2443,6 +2576,63 @@ components:
           type: string
         bezeichnung:
           type: string
+    ArchivUpdateDTO:
+      required:
+      - speicherAkt
+      - speicherRechnungen
+      type: object
+      properties:
+        speicherDatum:
+          type: string
+          format: date
+        speicherAkt:
+          type: boolean
+        speicherRechnungen:
+          type: boolean
+        mikroDatPlan:
+          type: string
+          format: date
+        mikroDat:
+          type: string
+          format: date
+        notizen:
+          type: string
+    ArchivResponseDTO:
+      required:
+      - fob_fb
+      - id
+      - pname
+      - projnr
+      - pstrasse
+      - speicherAkt
+      - speicherRechnungen
+      type: object
+      properties:
+        id:
+          type: string
+        speicherDatum:
+          type: string
+          format: date
+        speicherAkt:
+          type: boolean
+        speicherRechnungen:
+          type: boolean
+        mikroDatPlan:
+          type: string
+          format: date
+        mikroDat:
+          type: string
+          format: date
+        notizen:
+          type: string
+        projnr:
+          type: string
+        pname:
+          type: string
+        pstrasse:
+          type: string
+        fob_fb:
+          type: number
     UnterabschnittCreateDTO:
       required:
       - bezeichnung
@@ -2754,6 +2944,31 @@ components:
           maxLength: 200
           minLength: 1
           type: string
+    ArchivCreateDTO:
+      required:
+      - projnr
+      - speicherAkt
+      - speicherRechnungen
+      type: object
+      properties:
+        speicherDatum:
+          type: string
+          format: date
+        speicherAkt:
+          type: boolean
+        speicherRechnungen:
+          type: boolean
+        mikroDatPlan:
+          type: string
+          format: date
+        mikroDat:
+          type: string
+          format: date
+        notizen:
+          type: string
+        projnr:
+          minLength: 1
+          type: string
     PageMetadata:
       type: object
       properties:
@@ -2778,6 +2993,21 @@ components:
             $ref: "#/components/schemas/UnterabschnittResponseDTO"
         page:
           $ref: "#/components/schemas/PageMetadata"
+    HauptabschnittFormContextDTO:
+      required:
+      - bezeichnung
+      - ha
+      type: object
+      properties:
+        ha:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+      description: |-
+        DTO for [de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt] to be used in
+        other FormContexts other than its own.
     UnterabschnittFormContext:
       required:
       - hasHas
@@ -2791,17 +3021,7 @@ components:
         hasHas:
           type: array
           items:
-            $ref: "#/components/schemas/UnterabschnittFormContextHauptabschnitt"
-    UnterabschnittFormContextHauptabschnitt:
-      required:
-      - bezeichnung
-      - ha
-      type: object
-      properties:
-        ha:
-          type: string
-        bezeichnung:
-          type: string
+            $ref: "#/components/schemas/HauptabschnittFormContextDTO"
     PagedModelTraegerResponseDTO:
       type: object
       properties:
@@ -2892,6 +3112,40 @@ components:
           type: array
           items:
             type: number
+    ReportStichworteDTO:
+      required:
+      - bereich
+      type: object
+      properties:
+        bereich:
+          maxLength: 30
+          minLength: 1
+          pattern: "^[A-Z0-9\\-]+$"
+          type: string
+    ReportStichworteFormContext:
+      required:
+      - bereiche
+      type: object
+      properties:
+        bereiche:
+          type: array
+          items:
+            $ref: "#/components/schemas/StichwortbereichFormContextDTO"
+    StichwortbereichFormContextDTO:
+      required:
+      - bereich
+      - bezeichnung
+      type: object
+      properties:
+        bereich:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+      description: |-
+        DTO for [de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich] to be used in
+        other FormContexts other than its own.
     PagedModelReferatResponseDTO:
       type: object
       properties:
@@ -3054,6 +3308,57 @@ components:
           type: array
           items:
             type: string
+    PagedModelArchivResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/ArchivResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    ArchivFormContext:
+      required:
+      - archivId
+      - projekte
+      type: object
+      properties:
+        archivId:
+          type: array
+          description: ""
+          items:
+            type: integer
+            format: int64
+        projekte:
+          type: array
+          description: ""
+          items:
+            $ref: "#/components/schemas/ProjektFormContextDTO"
+      description: |-
+        DTO for [de.muenchen.oss.foerdermittel.backend.archiv.Archiv] to be used in other FormContexts
+        other than its own.
+    ProjektFormContextDTO:
+      required:
+      - foerderbereich
+      - pname
+      - projnr
+      - pstrasse
+      type: object
+      properties:
+        projnr:
+          type: string
+          description: ""
+        pname:
+          type: string
+          description: ""
+        pstrasse:
+          type: string
+          description: ""
+        foerderbereich:
+          type: string
+          description: ""
+      description: DTO for Projekt to be used in other FormContexts other than its
+        own.
     Link:
       type: object
       properties:

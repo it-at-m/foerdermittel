@@ -7,6 +7,7 @@ import type {
   PagedModelBauleitungResponseDTO,
   UpdateBauleitungRequest,
 } from "@/api/generated/foerdermittel-backend";
+import type { ApiComposables } from "@/util/composable-helper";
 
 import { BauleitungControllerApi } from "@/api/generated/foerdermittel-backend";
 import {
@@ -39,3 +40,21 @@ export const {
     context: (api) => api.getBauleitungFormContext(),
   })
 );
+
+export function useBauleitungApi(): ApiComposables<
+  BauleitungResponseDTO,
+  BauleitungFormContext,
+  CreateBauleitungRequest,
+  BauleitungResponseDTO,
+  UpdateBauleitungRequest,
+  BauleitungResponseDTO,
+  DeleteBauleitungRequest
+> {
+  return {
+    getAll: useGetBauleitungen(),
+    context: useGetBauleitungFormContext(),
+    create: useCreateBauleitung(),
+    update: useUpdateBauleitung(),
+    delete: useDeleteBauleitung(),
+  };
+}
