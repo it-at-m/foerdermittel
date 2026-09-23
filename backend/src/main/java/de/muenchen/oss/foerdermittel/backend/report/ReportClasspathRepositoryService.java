@@ -1,5 +1,6 @@
 package de.muenchen.oss.foerdermittel.backend.report;
 
+import java.util.regex.Pattern;
 import net.sf.jasperreports.engine.JasperReportsContext;
 import net.sf.jasperreports.repo.DefaultRepositoryService;
 import net.sf.jasperreports.repo.RepositoryContext;
@@ -16,6 +17,7 @@ import net.sf.jasperreports.repo.Resource;
 public final class ReportClasspathRepositoryService extends DefaultRepositoryService {
 
     private static final String REPORTS_DIRECTORY = "reports/";
+    private static final Pattern URI_SCHEME = Pattern.compile("^[A-Za-z][A-Za-z0-9+.-]*:");
 
     public ReportClasspathRepositoryService(final JasperReportsContext jasperReportsContext, final ClassLoader classLoader) {
         super(jasperReportsContext);
@@ -31,7 +33,7 @@ public final class ReportClasspathRepositoryService extends DefaultRepositorySer
         if (location != null
                 && !location.startsWith(REPORTS_DIRECTORY)
                 && !location.startsWith("/")
-                && !location.matches("^[A-Za-z][A-Za-z0-9+.-]*:")) {
+                && !URI_SCHEME.matcher(location).lookingAt()) {
             return REPORTS_DIRECTORY + location;
         }
         return location;
