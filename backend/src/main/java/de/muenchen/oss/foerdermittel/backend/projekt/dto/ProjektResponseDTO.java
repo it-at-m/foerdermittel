@@ -1,8 +1,8 @@
 package de.muenchen.oss.foerdermittel.backend.projekt.dto;
 
-import lombok.Builder;
-import java.math.BigDecimal;
 import jakarta.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import lombok.Builder;
 
 @Builder
 public record ProjektResponseDTO(
@@ -14,6 +14,5 @@ public record ProjektResponseDTO(
         @NotNull String lfdnr1,
         @NotNull String lfdnr2,
         @NotNull String pname,
-        @NotNull String pstrasse
-) {
+        @NotNull String pstrasse) {
 }

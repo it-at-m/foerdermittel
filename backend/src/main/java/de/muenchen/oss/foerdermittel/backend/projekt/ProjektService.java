@@ -2,9 +2,6 @@ package de.muenchen.oss.foerdermittel.backend.projekt;
 
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektMapper;
-import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
-import de.muenchen.oss.foerdermittel.backend.krankenhaus.Krankenhaus;
-import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungFormContext;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.util.List;
@@ -33,8 +30,7 @@ public class ProjektService {
 
         return projektRepository.findAll(
                 ProjektSpecifications.filter(filter),
-                pageable
-        );
+                pageable);
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
@@ -50,6 +46,7 @@ public class ProjektService {
         log.info("Get Projekt form context");
         return new ProjektFormContext(projektRepository.findAllProjekte());
     }
+
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<ProjektFormContextDTO> getProjektFormContextDTOs() {
@@ -64,7 +61,7 @@ public class ProjektService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Projekt updateProjekt(final Projekt projekt, final String ha) {
-        final Projekt foundProjekt = ServiceUtils.getEntityOrThrowNotFoundException(ha, projektRepository);
+        final Projekt foundProjekt = ServiceUtils.getEntityOrThrowNotFoundException(ha, projektRepository, Projekt.class);
         foundProjekt.setPname(projekt.getPname());
         log.debug("Update Projekt {}", foundProjekt);
         return projektRepository.update(foundProjekt);
@@ -73,7 +70,7 @@ public class ProjektService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteProjekt(final String ha) {
         log.debug("Delete Projekt with ID {}", ha);
-        ServiceUtils.getEntityOrThrowNotFoundException(ha, projektRepository);
+        ServiceUtils.getEntityOrThrowNotFoundException(ha, projektRepository, Projekt.class);
         projektRepository.deleteById(ha);
     }
 }

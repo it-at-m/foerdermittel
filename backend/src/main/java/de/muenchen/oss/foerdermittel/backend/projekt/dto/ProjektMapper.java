@@ -1,10 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.projekt.dto;
 
-import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
-import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittUpdateDTO;
-import de.muenchen.oss.foerdermittel.backend.krankenhaus.Krankenhaus;
-import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausCreateDTO;
-import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausUpdateDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import java.util.List;
 import org.mapstruct.Mapper;
@@ -13,7 +8,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ProjektMapper {
 
-    @Mapping(source = "foerderbereich.fb", target = "foerderbereich")
+//    @Mapping(source = "foerderbereich.fb", target = "foerderbereich")
     ProjektResponseDTO toDTO(Projekt projekt);
 
     @Mapping(source = "foerderbereich.fb", target = "foerderbereich")
