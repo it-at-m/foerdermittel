@@ -26,6 +26,7 @@ public class JasperReportsConfiguration {
         return JasperFillManager.getInstance(jasperReportsContext);
     }
 
+    @SuppressWarnings("PMD.UseProperClassLoader")
     private static ClassLoader getApplicationClassLoader() {
         final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
         return contextClassLoader == null ? JasperReportsConfiguration.class.getClassLoader() : contextClassLoader;
