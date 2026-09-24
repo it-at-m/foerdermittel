@@ -5,20 +5,27 @@
     @update:model-value="onValidityChanged"
   >
     <v-row>
-      <v-col cols="12">
-        <fm-text-field
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <fm-autocomplete
           v-model="modelValue.parameters!.haushaltsjahr"
+          :items="reportHaushalt1FormContext?.fipos"
+          :item-title="getHaushaltsjahrTitle"
           item-value="haushaltsjahr"
           :validation-attribute-map="
             ReportHaushalt1DTOPropertyValidationAttributesMap
           "
-          validation-attribute-key="haushaltsjahr"
-          :label="t('model.haushaltsjahr.modelName')"
+          validation-attribute-key="fipo"
+          :label="t('model.fipo.modelName')"
         />
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="12">
+
+      <v-col
+        cols="12"
+        md="6"
+      >
         <fm-autocomplete
           v-model="modelValue.parameters!.fb"
           :items="reportHaushalt1FormContext?.fbs"
@@ -33,7 +40,10 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <fm-autocomplete
           v-model="modelValue.parameters!.sbl"
           :items="reportHaushalt1FormContext?.sbls"
@@ -47,9 +57,10 @@
           @update:model-value="delete modelValue.parameters!.bez"
         />
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="12">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <fm-autocomplete
           v-model="modelValue.parameters!.bez"
           :items="reportHaushalt1FormContext?.bezs"
@@ -65,7 +76,10 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <fm-autocomplete
           v-model="modelValue.parameters!.fipo"
           :items="reportHaushalt1FormContext?.fipos"
@@ -78,15 +92,27 @@
           :label="t('model.fipo.modelName')"
         />
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="12">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-checkbox
           v-model="modelValue.parameters!.hh"
           item-value="hh"
-          label="HH"
+          :label="t('domain.report.haushalt1.hh')"
           true-value="1"
           false-value="0"
+        />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <v-select
+          v-model="modelValue.parameters!.sort"
+          :items="sortOptions"
+          item-value="value"
+          label="Sortierung"
+          variant="outlined"
         />
       </v-col>
     </v-row>
@@ -105,12 +131,14 @@ import type {
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
 
-import { useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
-import { ReportHaushalt1DTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
+import {
+  ReportHaushalt1DTOPropertyValidationAttributesMap,
+  ReportHaushalt1DTOSortEnum,
+} from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
-import FmTextField from "@/components/common/FmTextField.vue";
 
 const { t } = useI18n();
 
@@ -156,4 +184,31 @@ function getStadtbezirkTitle(item: StadtbezirkFormContextDTO) {
 function getFipoTitle(item: HhplanFormContextDTO) {
   return item ? `${item.fipo}` : "";
 }
+const gefilterteFipos = computed(() => {
+  const fipos = reportHaushalt1FormContext?.fipos ?? [];
+  const haushaltsjahr = modelValue.value.parameters?.haushaltsjahr;
+
+  if (!haushaltsjahr) {
+    return fipos;
+  }
+
+  return fipos.filter((item) => item.hhjJahr.toString() === haushaltsjahr);
+});
+
+function getHaushaltsjahrTitle(item: HhplanFormContextDTO) {
+  return item ? `${item.hhjJahr}` : "";
+}
+
+const haushaltsjahre = computed(() => {
+  const fipos = reportHaushalt1FormContext?.fipos ?? [];
+
+  return Array.from(
+    new Map(fipos.map((item) => [item.hhjJahr, item])).values()
+  );
+});
+
+const sortOptions = Object.keys(ReportHaushalt1DTOSortEnum).map((v) => ({
+  title: t(`domain.report.haushalt1.sortEnum.${v}`),
+  value: v,
+}));
 </script>

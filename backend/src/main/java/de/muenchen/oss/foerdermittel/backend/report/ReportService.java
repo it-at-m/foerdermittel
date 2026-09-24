@@ -3,6 +3,7 @@ package de.muenchen.oss.foerdermittel.backend.report;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichService;
 import de.muenchen.oss.foerdermittel.backend.hhplan.HhplanService;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1DTO;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1Sort;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportHaushalt1FormContext;
@@ -65,14 +66,6 @@ public class ReportService {
 
         return generateReport(reportMapper.toJasperParameters(parameters), ReportType.FMW_HAUSHALT1, ReportFormat.PDF,
                 orderBy );
-
-
-                    // "order by pro_projnr asc" );
-        //order by p_pstrasse asc, pro_projnr asc
-                //order by fipo asc
-                //order by P_FOB_FB, pro_projnr asc
-                //order by P_FOB_FB, p_pstrasse asc, pro_projnr asc
-                //order by P_FOB_FB, FIPO asc
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
