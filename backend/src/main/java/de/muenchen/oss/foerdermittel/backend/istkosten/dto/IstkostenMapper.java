@@ -8,7 +8,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 @Mapper
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public interface IstkostenMapper {
 
     @Mapping(source = "id.projnr", target = "projnr")
@@ -26,31 +25,31 @@ public interface IstkostenMapper {
     @Mapping(source = "projnr", target = "projekt.projnr")
     Istkosten toEntity(IstkostenCreateDTO istkostenCreateDTO);
 
+    @Mapping(target = "projekt", ignore = true)
+    @Mapping(target = "id", ignore = true)
     Istkosten toEntity(IstkostenUpdateDTO istkostenUpdateDTO);
 
     @Named("stringToPrimaryKey")
-    default IstkostenPrimaryKey mapStringToPrimaryKey(String id) {
+    default IstkostenPrimaryKey mapStringToPrimaryKey(final String id) {
         if (id == null || id.isEmpty()) {
             return null;
         }
-        String[] parts = id.split("-");
-        if (parts.length != 3) {
-            throw new IllegalArgumentException("Ungültiges ID-Format");
-        }
-        String projnr = parts[0];
-        BigDecimal jahr = new BigDecimal(parts[1]);
-        BigDecimal monat = new BigDecimal(parts[2]);
+        final String[] parts = id.split("-");
+
+        final String projnr = parts[0];
+        final BigDecimal jahr = new BigDecimal(parts[1]);
+        final BigDecimal monat = new BigDecimal(parts[2]);
         return new IstkostenPrimaryKey(projnr, jahr, monat);
     }
 
     @Named("buildIdString")
-    default String buildIdString(IstkostenPrimaryKey id) {
+    default String buildIdString(final IstkostenPrimaryKey id) {
         if (id == null) {
             return "";
         }
-        String projnr = id.getProjnr();
-        BigDecimal jahr = id.getJahr();
-        BigDecimal monat = id.getMonat();
+        final String projnr = id.getProjnr();
+        final BigDecimal jahr = id.getJahr();
+        final BigDecimal monat = id.getMonat();
 
         if (projnr == null || jahr == null || monat == null) {
             return "";
