@@ -2,16 +2,14 @@ package de.muenchen.oss.foerdermittel.backend.istkosten.dto;
 
 import de.muenchen.oss.foerdermittel.backend.istkosten.Istkosten;
 import de.muenchen.oss.foerdermittel.backend.istkosten.IstkostenPrimaryKey;
+import java.math.BigDecimal;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-import java.math.BigDecimal;
-
 @Mapper
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public interface IstkostenMapper {
-
 
     @Mapping(source = "id.projnr", target = "projnr")
     @Mapping(source = "id.jahr", target = "jahr")
@@ -28,11 +26,7 @@ public interface IstkostenMapper {
     @Mapping(source = "projnr", target = "projekt.projnr")
     Istkosten toEntity(IstkostenCreateDTO istkostenCreateDTO);
 
-
-
     Istkosten toEntity(IstkostenUpdateDTO istkostenUpdateDTO);
-
-
 
     @Named("stringToPrimaryKey")
     default IstkostenPrimaryKey mapStringToPrimaryKey(String id) {
@@ -64,6 +58,5 @@ public interface IstkostenMapper {
 
         return String.format("%s-%s-%s", projnr, jahr.toPlainString(), monat.toPlainString());
     }
-
 
 }

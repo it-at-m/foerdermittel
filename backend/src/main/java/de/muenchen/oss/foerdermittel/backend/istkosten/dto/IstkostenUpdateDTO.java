@@ -7,6 +7,5 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public record IstkostenUpdateDTO(
-        @NotNull @Min(0) @Digits(integer=12, fraction=0) BigDecimal istkosten
-) {
+        @NotNull @Min(0) @Digits(integer = 12, fraction = 0) BigDecimal istkosten) {
 }

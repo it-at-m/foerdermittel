@@ -1,17 +1,19 @@
 package de.muenchen.oss.foerdermittel.backend.istkosten;
 
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
-import de.muenchen.oss.foerdermittel.backend.istkosten.IstkostenPrimaryKey;
-import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.Listenname;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,7 +35,6 @@ public class Istkosten implements Serializable {
     @EmbeddedId
     private IstkostenPrimaryKey id;
 
-
     @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("projnr")
     @JoinColumn(
@@ -43,14 +44,7 @@ public class Istkosten implements Serializable {
     )
     @NotNull private Projekt projekt;
 
-
-    @NotNull
-    @Min(0)
-    @Digits(integer=12, fraction=0)
-    @Column(name = "istkosten", nullable = false)
+    @NotNull @Min(0) @Digits(integer = 12, fraction = 0) @Column(name = "istkosten", nullable = false)
     private BigDecimal istkosten;
-
-
-
 
 }

@@ -1,6 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.istkosten.dto;
 
-import de.muenchen.oss.foerdermittel.backend.istkosten.IstkostenPrimaryKey;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -14,6 +13,5 @@ public record IstkostenResponseDTO(
         @NotNull BigDecimal istkosten,
         @NotNull String pname,
         @NotNull String pstrasse,
-        @NotNull BigDecimal fob_fb
-){
+        @NotNull BigDecimal fob_fb) {
 }
