@@ -4,6 +4,7 @@ import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichFo
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkMapper;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.Listenname;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.math.BigDecimal;
 import java.util.List;
@@ -66,5 +67,11 @@ public class StadtbezirkService {
         log.debug("Delete Stadtbezirk with ID {}", stadtbezirkId);
         ServiceUtils.getEntityOrThrowNotFoundException(stadtbezirkId, stadtbezirkRepository, Stadtbezirk.class);
         stadtbezirkRepository.deleteById(stadtbezirkId);
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public void checkExistsByStadtbezirk(BigDecimal bez) {
+        ServiceUtils.checkExistsOrThrowNotFoundException(bez, stadtbezirkRepository, Stadtbezirk.class);
     }
 }

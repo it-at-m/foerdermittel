@@ -56,6 +56,7 @@ const EMPTY_FORM_TEMPLATE: Partial<GetReportHaushalt1Request> = {
     bez: "",
     hh: "0",
     sort: "PROJEKTNUMMER",
+    type: "PDF"
   },
 };
 

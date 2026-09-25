@@ -11,6 +11,9 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -30,6 +33,8 @@ class StadtbezirkServiceTest {
 
     @Mock
     private StadtbezirkRepository stadtbezirkRepository;
+    @Mock
+    private StadtbezirkMapper stadtbezirkMapper;
 
     @InjectMocks
     private StadtbezirkService unitUnderTest;
@@ -166,4 +171,103 @@ class StadtbezirkServiceTest {
             assertThat(formContext.stadtbezirke()).isEqualTo(allStadtbezirke);
         }
     }
-}
+
+    @Nested
+    class GetStadtbezirkFormContextDTOs {
+
+        @Test
+        void givenEntitiesExist_thenReturnCorrectFormContextDTOs() {
+            // Given
+            final Stadtbezirk entity1 = new Stadtbezirk(
+                    BigDecimal.valueOf(1),
+                    "Stadtbezirk 1");
+            final Stadtbezirk entity2 = new Stadtbezirk(
+                    BigDecimal.valueOf(2),
+                    "Stadtbezirk 2");
+
+            final List<Stadtbezirk> entities = List.of(entity1, entity2);
+
+            final List<StadtbezirkFormContextDTO> expected = List.of(
+                    new StadtbezirkFormContextDTO("1", "Stadtbezirk 1"),
+                    new StadtbezirkFormContextDTO("2", "Stadtbezirk 2"));
+
+            when(stadtbezirkRepository.findAll()).thenReturn(entities);
+            when(stadtbezirkMapper.toFormContext(entities)).thenReturn(expected);
+
+            // When
+            final List<StadtbezirkFormContextDTO> result =
+                    unitUnderTest.getStadtbezirkFormContextDTOs();
+
+            // Then
+            verify(stadtbezirkRepository, times(1)).findAll();
+            verify(stadtbezirkMapper, times(1)).toFormContext(entities);
+
+            assertThat(result).containsExactlyElementsOf(expected);
+        }
+    }
+
+    @Nested
+    class CheckExistsByStadtbezirk {
+
+        @Test
+        void givenStadtbezirkExists_thenReturnVoid() {
+            // Given
+            final BigDecimal bez = BigDecimal.valueOf(1);
+
+            when(stadtbezirkRepository.existsById(bez))
+                    .thenReturn(true);
+
+            // When
+            unitUnderTest.checkExistsByStadtbezirk(bez);
+
+            // Then
+            verify(stadtbezirkRepository, times(1)).existsById(bez);
+        }
+
+        @Test
+        void givenStadtbezirkNotExists_thenThrowNotFoundException() {
+            // Given
+            final BigDecimal bez = BigDecimal.valueOf(1);
+
+            when(stadtbezirkRepository.existsById(bez))
+                    .thenReturn(false);
+
+            // When
+            final Exception exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> unitUnderTest.checkExistsByStadtbezirk(bez));
+
+            // Then
+            verify(stadtbezirkRepository, times(1)).existsById(bez);
+
+            assertThat(exception.getMessage())
+                    .isEqualTo(String.format(
+                            "The %s with ID %s was not found.",
+                            Stadtbezirk.class.getSimpleName(),
+                            bez));
+        }
+    }
+
+    @Test
+        void givenStadtbezirkNotExists_thenThrowNotFoundException() {
+            // Given
+            final BigDecimal bez = BigDecimal.valueOf(1);
+
+        when(stadtbezirkRepository.existsById(bez))
+                .thenReturn(false);
+
+            // When
+            final Exception exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> unitUnderTest.checkExistsByStadtbezirk(bez));
+
+            // Then
+            verify(stadtbezirkRepository, times(1)).existsById(bez);
+            assertThat(exception.getMessage())
+                    .isEqualTo(String.format(
+                            "The %s with ID %s was not found.",
+                            Stadtbezirk.class.getSimpleName(),
+                            bez));
+        }
+    }
+

@@ -1,6 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.hhplan;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -34,9 +35,12 @@ public class Hhplan implements Serializable {
     // Variables //
     // ========= //
 
-    @Column(name = "hhj_jahr", nullable = false)
-    @Id
-    @Min(1900) @Max(2099) private BigDecimal hhjJahr;
+//    @Column(name = "hhj_jahr", nullable = false)
+//    @Id
+//    @Min(1900) @Max(2099) private BigDecimal hhjJahr;
+
+    @EmbeddedId
+    private HhplanPrimaryKey id;
 
     @Column(nullable = false)
     @NotBlank @Size(min = 0, max = 15) private String fipo;

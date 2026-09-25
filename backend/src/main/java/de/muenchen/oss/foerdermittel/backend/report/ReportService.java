@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 @Slf4j
@@ -59,12 +60,13 @@ public class ReportService {
     @Transactional(readOnly = true)
     public GeneratedReport generateReportHaushalt1(
             final ReportHaushalt1DTO parameters) {
-        if (!parameters.fb().isBlank()) foerderbereichService.checkExistsByFoerderbereich(new BigDecimal(parameters.fb()));
-        if (!parameters.sbl().isBlank()) listennameStadtbezirkslisteService.checkExistsByListenname(parameters.sbl());
+        if (StringUtils.hasText(parameters.fb())) foerderbereichService.checkExistsByFoerderbereich(new BigDecimal(parameters.fb()));
+        if (StringUtils.hasText(parameters.sbl())) listennameStadtbezirkslisteService.checkExistsByListenname(parameters.sbl());
+        if (StringUtils.hasText(parameters.bez())) stadtbezirkService.checkExistsByStadtbezirk(new BigDecimal(parameters.bez()));
 
         final String orderBy = parameters.sort().getOrderBy();
 
-        return generateReport(reportMapper.toJasperParameters(parameters), ReportType.FMW_HAUSHALT1, ReportFormat.PDF,
+        return generateReport(reportMapper.toJasperParameters(parameters), ReportType.FMW_HAUSHALT1, parameters.type(),
                 orderBy );
     }
 

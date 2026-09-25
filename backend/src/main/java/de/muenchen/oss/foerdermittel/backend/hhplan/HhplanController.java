@@ -42,7 +42,7 @@ public class HhplanController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<HhplanResponseDTO> getHhplan(@ParameterObject @PageableDefault(
-            sort = "hhjJahr"
+            sort = "id.hhjJahr"
     ) final Pageable pageable) {
         final Page<Hhplan> pageWithHhplan = hhplanService.getHhplan(pageable);
         final List<HhplanResponseDTO> hhplanResponseDTOList = pageWithHhplan.getContent().stream()

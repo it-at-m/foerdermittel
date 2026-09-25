@@ -13,6 +13,6 @@ public record ReportHaushalt1FormContext(@NotNull List<FoerderbereichFormContext
         fbs = List.copyOf(fbs);
         sbls = List.copyOf(sbls);
         bezs = List.copyOf(bezs);
-       fipos = List.copyOf(fipos);
+        fipos = List.copyOf(fipos);
     }
 }

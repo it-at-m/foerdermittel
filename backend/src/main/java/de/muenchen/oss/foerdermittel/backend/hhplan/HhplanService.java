@@ -6,6 +6,7 @@ import de.muenchen.oss.foerdermittel.backend.hhplan.HhplanRepository;
 import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanMapper;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,12 +47,4 @@ public class HhplanService {
         log.info("Get Hhplan form context");
         return new HhplanFormContext(hhplanRepository.findAllHhplan());
     }
-
-
-    @PreAuthorize(Authorities.HAS_ANY_ROLE)
-    @Transactional(readOnly = true)
-    public void checkExistsByHhplan(final BigDecimal bereich) {
-        ServiceUtils.checkExistsOrThrowNotFoundException(bereich, hhplanRepository, Hhplan.class);
-    }
-
 }

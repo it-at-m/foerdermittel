@@ -1856,7 +1856,7 @@ paths:
           items:
             type: string
           default:
-          - "hhjJahr,ASC"
+          - "id.hhjJahr,ASC"
       responses:
         "200":
           description: OK
@@ -3009,6 +3009,12 @@ components:
       description: |-
         DTO for [de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich] to be used in
         other FormContexts other than its own.
+    ReportFormat:
+      type: string
+      enum:
+      - PDF
+      - PDF_FLAT
+      - EXCEL
     ReportHaushalt1DTO:
       required:
       - haushaltsjahr
@@ -3037,6 +3043,8 @@ components:
           - FB_PROJEKTNUMMER
           - FB_STRASSE_PROJEKTNUMMER
           - FB_FIPO
+        type:
+          $ref: "#/components/schemas/ReportFormat"
     FoerderbereichFormContextDTO:
       required:
       - bezeichnung

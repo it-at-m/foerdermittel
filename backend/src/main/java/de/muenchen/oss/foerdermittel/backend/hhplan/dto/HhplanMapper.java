@@ -10,11 +10,11 @@ import java.util.List;
 @Mapper(uses = NumberMapper.class)
 public interface HhplanMapper {
 
-    @Mapping(source = "hhjJahr", target = "id", qualifiedByName = "bigDecimalToIntegerString")
-    @Mapping(source = "hhjJahr", target = "hhjJahr")
+    @Mapping(source = "id.hhjJahr", target = "id", qualifiedByName = "bigDecimalToIntegerString")
+    @Mapping(source = "id.hhjJahr", target = "hhjJahr")
     HhplanResponseDTO toDTO(Hhplan hhplan);
 
-
+    @Mapping(source = "id.hhjJahr", target = "hhjJahr")
     HhplanFormContextDTO toFormContext(Hhplan hhplan);
 
     List<HhplanFormContextDTO> toFormContext(List<Hhplan> hhplanList);

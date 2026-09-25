@@ -11,14 +11,14 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.haushaltsjahr"
-          :items="reportHaushalt1FormContext?.fipos"
+          :items="haushaltsjahre"
           :item-title="getHaushaltsjahrTitle"
           item-value="haushaltsjahr"
           :validation-attribute-map="
             ReportHaushalt1DTOPropertyValidationAttributesMap
           "
-          validation-attribute-key="fipo"
-          :label="t('model.fipo.modelName')"
+          validation-attribute-key="haushaltsjahr"
+          :label="t('model.haushaltsjahr.modelName')"
         />
       </v-col>
 
@@ -82,7 +82,7 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.fipo"
-          :items="reportHaushalt1FormContext?.fipos"
+          :items="gefilterteFipos"
           :item-title="getFipoTitle"
           item-value="fipo"
           :validation-attribute-map="
@@ -116,6 +116,17 @@
         />
       </v-col>
     </v-row>
+    <v-row>
+      <v-col cols="12">
+        <v-select
+          v-model="modelValue.parameters!.type"
+          :items="formatOptions"
+          item-value="value"
+          label="Format"
+          variant="outlined"
+        />
+      </v-col>
+    </v-row>
   </v-form>
 </template>
 
@@ -137,6 +148,7 @@ import { useI18n } from "vue-i18n";
 import {
   ReportHaushalt1DTOPropertyValidationAttributesMap,
   ReportHaushalt1DTOSortEnum,
+  ReportHaushalt1DTOToJSONTyped,
 } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 
@@ -188,11 +200,11 @@ const gefilterteFipos = computed(() => {
   const fipos = reportHaushalt1FormContext?.fipos ?? [];
   const haushaltsjahr = modelValue.value.parameters?.haushaltsjahr;
 
-  if (!haushaltsjahr) {
-    return fipos;
-  }
+  const gefiltert = !haushaltsjahr
+    ? fipos
+    : fipos.filter((item) => item.hhjJahr.toString() === haushaltsjahr);
 
-  return fipos.filter((item) => item.hhjJahr.toString() === haushaltsjahr);
+  return [...new Map(gefiltert.map((item) => [item.fipo, item])).values()];
 });
 
 function getHaushaltsjahrTitle(item: HhplanFormContextDTO) {
@@ -211,4 +223,19 @@ const sortOptions = Object.keys(ReportHaushalt1DTOSortEnum).map((v) => ({
   title: t(`domain.report.haushalt1.sortEnum.${v}`),
   value: v,
 }));
+
+const formatOptions = [
+  {
+    title: "PDF: Gruppierung Förderbereich",
+    value: "PDF",
+  },
+  {
+    title: "PDF: keine Gruppierung",
+    value: "PDF_FLAT",
+  },
+  {
+    title: "Excel",
+    value: "EXCEL",
+  },
+];
 </script>

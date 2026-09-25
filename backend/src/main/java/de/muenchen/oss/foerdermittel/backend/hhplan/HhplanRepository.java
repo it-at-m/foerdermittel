@@ -14,7 +14,7 @@ import java.util.List;
 public interface HhplanRepository extends PagingAndSortingRepository<Hhplan, BigDecimal>, ListCrudRepository<Hhplan, BigDecimal>,
         InsertAndUpdateRepository<Hhplan> {
 
-    @Query("SELECT h.hhjJahr FROM Hhplan h ORDER BY h.hhjJahr")
+    @Query("SELECT h.id.hhjJahr FROM Hhplan h ORDER BY h.id.hhjJahr")
     List<BigDecimal> findAllHhplan();
 
 }

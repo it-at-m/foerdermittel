@@ -10,15 +10,30 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichService;
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.hhplan.HhplanService;
+import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1DTO;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1Sort;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportHaushalt1FormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkService;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.ListennameStadtbezirkslisteService;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.StadtbezirkslisteFormContext;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameStadtbezirkslisteFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.StichwortbereichService;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.dto.StichwortbereichFormContextDTO;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +52,18 @@ class ReportServiceTest {
 
     @Mock
     private StichwortbereichService stichwortbereichService;
+
+    @Mock
+    private StadtbezirkService stadtbezirkService;
+
+    @Mock
+    private FoerderbereichService foerderbereichService;
+
+    @Mock
+    private ListennameStadtbezirkslisteService listennameStadtbezirkslisteService;
+
+    @Mock
+    private HhplanService hhplanService;
 
     @Mock
     private JasperReportService jasperReportService;
@@ -142,5 +169,123 @@ class ReportServiceTest {
         }
 
     }
+
+    @Nested
+    class GenerateReportHaushalt1 {
+
+//        @Test
+//        void givenNoWriteInteraction_thenShouldGenerateCorrectGeneratedReport() {
+//            // Given
+//            final ReportHaushalt1DTO parameters = mock(ReportHaushalt1DTO.class);
+//
+//            final Map<String, Object> jasperParameters = new HashMap<>();
+//            when(reportMapper.toJasperParameters(parameters))
+//                    .thenReturn(jasperParameters);
+//
+//
+//
+//            // When
+//            final GeneratedReport generatedReport = reportService.generateReportHaushalt1(parameters);
+//
+//            // Then
+//            verify(reportMapper, times(1)).toJasperParameters(parameters);
+//            verifyNoInteractions(jasperReportService);
+//
+//            assertThat(generatedReport).isNotNull();
+//            assertThat(generatedReport.contentType())
+//                    .isEqualTo(ReportFormat.PDF.getContentType());
+//            assertThat(generatedReport.fileName())
+//                    .startsWith(ReportType.FMW_HAUSHALT1.getFileName())
+//                    .endsWith(ReportFormat.PDF.getFileExtension());
+//            assertThat(jasperParameters)
+//                    .containsEntry(
+//                            SORT_PARAMETER,
+//                            "ORDER BY stb_bereich ASC, nr ASC, wort ASC");
+//        }
+
+//        @Test
+//        void givenWriteInteraction_thenShouldCallJasperServiceCorrectly() throws JRException, SQLException, IOException {
+//            // Given
+//            final ReportStichworteDTO parameters = mock(ReportStichworteDTO.class);
+//
+//            final Map<String, Object> jasperParameters = new HashMap<>();
+//            when(reportMapper.toJasperParameters(parameters))
+//                    .thenReturn(jasperParameters);
+//
+//            final OutputStream outputStream = new ByteArrayOutputStream();
+//
+//            // When
+//            final GeneratedReport generatedReport = reportService.generateReportStichworte(parameters);
+//            generatedReport.writer().write(outputStream);
+//
+//            // Then
+//            verify(jasperReportService, times(1)).generateReportWithParameters(
+//                    ReportType.FMW_ABLAGEINDEX,
+//                    ReportFormat.PDF,
+//                    jasperParameters,
+//                    outputStream);
+//        }
+//
+        @Test
+        void givenNotFound_thenShouldThrowNotFoundException() {
+            // Given
+            final String pjahr = "2024";
+            final String fb = "1";
+            final String fipo = "0000.000.123";
+            final String sbl ="1";
+            final String bez = "1";
+            final String hh = "1";
+            final ReportHaushalt1Sort sort = ReportHaushalt1Sort.FB_PROJEKTNUMMER;
+            final ReportFormat type = ReportFormat.PDF;
+            final ReportHaushalt1DTO parameters = new ReportHaushalt1DTO(pjahr,fb, fipo,sbl, bez,hh,sort,type );
+
+            doThrow(new NotFoundException(Foerderbereich.class, fb))
+                    .when(foerderbereichService)
+                    .checkExistsByFoerderbereich(new BigDecimal(fb));
+
+            // When
+            final Exception exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> reportService.generateReportHaushalt1(parameters));
+
+            // Then
+            verify(foerderbereichService, times(1)).checkExistsByFoerderbereich(new BigDecimal(fb));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Foerderbereich.class.getSimpleName(), fb));
+        }
+
+    }
+
+    @Nested
+    class GetReportHaushalt1FormContext {
+
+        @Test
+        void givenEntitiesExists_thenReturnCorrectFormContext() {
+            // Given
+            final List<StadtbezirkFormContextDTO> allStadtbezirke = List.of(new StadtbezirkFormContextDTO("K", "Test"),
+                    new StadtbezirkFormContextDTO("L", "Test 2"), new StadtbezirkFormContextDTO("M", "Test 3"));
+            when(stadtbezirkService.getStadtbezirkFormContextDTOs()).thenReturn(allStadtbezirke);
+
+            final List<FoerderbereichFormContextDTO> allFoerderbereiche = List.of(new FoerderbereichFormContextDTO("K", "Test"),
+                    new FoerderbereichFormContextDTO("L", "Test 2"), new FoerderbereichFormContextDTO("M", "Test 3"));
+            when(foerderbereichService.getFoerderbereichFormContextDTOs()).thenReturn(allFoerderbereiche);
+
+            final List<ListennameStadtbezirkslisteFormContextDTO> allStadtbezirkslisten = List.of(new ListennameStadtbezirkslisteFormContextDTO("K", "Test"),
+                    new ListennameStadtbezirkslisteFormContextDTO("L", "Test 2"), new ListennameStadtbezirkslisteFormContextDTO("M", "Test 3"));
+            when(listennameStadtbezirkslisteService.getlistennameStadtbezirkslisteFormContextDTOs()).thenReturn(allStadtbezirkslisten);
+
+            final List<HhplanFormContextDTO> allHhplan = List.of(new HhplanFormContextDTO(new BigDecimal(2024), "0000.0000.000.123"),
+                    new HhplanFormContextDTO(new BigDecimal(2025), "0000.0000.000.111"), new HhplanFormContextDTO(new BigDecimal(2023), "0000.0000.000.222"));
+            when(hhplanService.getHhplanFormContextDTOs()).thenReturn(allHhplan);
+            // When
+            final ReportHaushalt1FormContext formContext = reportService.getReportHaushalt1();
+
+            // Then
+            verify(stadtbezirkService, times(1)).getStadtbezirkFormContextDTOs();
+            assertThat(formContext.bezs()).isEqualTo(allStadtbezirke);
+        }
+
+    }
+
+
 
 }
