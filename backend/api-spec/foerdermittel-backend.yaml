@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: foerdermittel-backend
   description: Backend component for the application foerdermittel
-  version: 0.2.0-SNAPSHOT
+  version: 0.3.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -412,6 +412,47 @@ paths:
       tags:
       - krankenhaus-controller
       operationId: deleteKrankenhaus
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /istkosten/{id}:
+    put:
+      tags:
+      - istkosten-controller
+      operationId: updateIstkosten
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IstkostenUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IstkostenResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - istkosten-controller
+      operationId: deleteIstkosten
       parameters:
       - name: id
         in: path
@@ -1284,6 +1325,68 @@ paths:
                 $ref: "#/components/schemas/KrankenhausResponseDTO"
       security:
       - bearerAuth: []
+  /istkosten:
+    get:
+      tags:
+      - istkosten-controller
+      operationId: getIstkostenEintraege
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "id.jahr,DESC"
+          - "id.monat,DESC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelIstkostenResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - istkosten-controller
+      operationId: createIstkosten
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IstkostenCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IstkostenResponseDTO"
+      security:
+      - bearerAuth: []
   /hauptabschnitte:
     get:
       tags:
@@ -1785,6 +1888,20 @@ paths:
                 $ref: "#/components/schemas/KrankenhausFormContext"
       security:
       - bearerAuth: []
+  /istkosten/form-context:
+    get:
+      tags:
+      - istkosten-controller
+      operationId: getIstkostenFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IstkostenFormContext"
+      security:
+      - bearerAuth: []
   /hauptabschnitte/form-context:
     get:
       tags:
@@ -2249,6 +2366,44 @@ components:
           type: string
         bezeichnung:
           type: string
+    IstkostenUpdateDTO:
+      required:
+      - istkosten
+      type: object
+      properties:
+        istkosten:
+          minimum: 0
+          type: number
+    IstkostenResponseDTO:
+      required:
+      - fob_fb
+      - id
+      - istkosten
+      - jahr
+      - monat
+      - pname
+      - projnr
+      - pstrasse
+      type: object
+      properties:
+        id:
+          minLength: 1
+          type: string
+        projnr:
+          minLength: 1
+          type: string
+        jahr:
+          type: number
+        monat:
+          type: number
+        istkosten:
+          type: number
+        pname:
+          type: string
+        pstrasse:
+          type: string
+        fob_fb:
+          type: number
     HauptabschnittUpdateDTO:
       required:
       - bezeichnung
@@ -2616,6 +2771,28 @@ components:
           maxLength: 200
           minLength: 1
           type: string
+    IstkostenCreateDTO:
+      required:
+      - istkosten
+      - jahr
+      - monat
+      - projnr
+      type: object
+      properties:
+        projnr:
+          minLength: 1
+          type: string
+        jahr:
+          maximum: 2100
+          minimum: 1970
+          type: number
+        monat:
+          maximum: 12
+          minimum: 1
+          type: number
+        istkosten:
+          minimum: 0
+          type: number
     HauptabschnittCreateDTO:
       required:
       - bezeichnung
@@ -2986,6 +3163,69 @@ components:
           type: array
           items:
             type: string
+    PagedModelIstkostenResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/IstkostenResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    IstkostenFormContext:
+      required:
+      - istkosten
+      - projekte
+      type: object
+      properties:
+        istkosten:
+          type: array
+          items:
+            $ref: "#/components/schemas/IstkostenPrimaryKey"
+        projekte:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProjektFormContextDTO"
+    IstkostenPrimaryKey:
+      required:
+      - jahr
+      - monat
+      - projnr
+      type: object
+      properties:
+        projnr:
+          minLength: 1
+          type: string
+        jahr:
+          maximum: 2100
+          minimum: 1970
+          type: number
+        monat:
+          maximum: 12
+          minimum: 1
+          type: number
+    ProjektFormContextDTO:
+      required:
+      - foerderbereich
+      - pname
+      - projnr
+      - pstrasse
+      type: object
+      properties:
+        projnr:
+          type: string
+          description: ""
+        pname:
+          type: string
+          description: ""
+        pstrasse:
+          type: string
+          description: ""
+        foerderbereich:
+          type: string
+          description: ""
+      description: DTO for Projekt to be used in other FormContexts other than its
+        own.
     PagedModelHauptabschnittResponseDTO:
       type: object
       properties:
@@ -3087,28 +3327,6 @@ components:
       description: |-
         DTO for [de.muenchen.oss.foerdermittel.backend.archiv.Archiv] to be used in other FormContexts
         other than its own.
-    ProjektFormContextDTO:
-      required:
-      - foerderbereich
-      - pname
-      - projnr
-      - pstrasse
-      type: object
-      properties:
-        projnr:
-          type: string
-          description: ""
-        pname:
-          type: string
-          description: ""
-        pstrasse:
-          type: string
-          description: ""
-        foerderbereich:
-          type: string
-          description: ""
-      description: DTO for Projekt to be used in other FormContexts other than its
-        own.
     Link:
       type: object
       properties:
