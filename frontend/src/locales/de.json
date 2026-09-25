@@ -68,7 +68,14 @@
       "modelName": "Termin | Termine"
     },
     "istkosten": {
-      "modelName": "Ist-Kosten"
+      "modelName": "Ist-Kosten",
+      "istkosten": "Ist-kosten",
+      "jahr": "Jahr",
+      "monat": "Monat",
+      "projnr": "Projnr",
+      "pname": "Name",
+      "pstrasse": "Straße",
+      "fobFb": "FB"
     },
     "archiv": {
       "modelName": "Archiv",
