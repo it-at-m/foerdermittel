@@ -1,7 +1,11 @@
 package de.muenchen.oss.foerdermittel.backend.report;
 
+import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
+import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportProjektuebersichtDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportProjektuebersichtFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.StichwortbereichService;
@@ -25,6 +29,7 @@ public class ReportService {
     private final StichwortbereichService stichwortbereichService;
     private final JasperReportService jasperReportService;
     private final ReportMapper reportMapper;
+    private final ProjektService projektService;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -40,6 +45,23 @@ public class ReportService {
     public ReportStichworteFormContext getReportStichworte() {
         log.info("Get ReportStichworte form context");
         return new ReportStichworteFormContext(stichwortbereichService.getStichwortbereichFormContextDTOs());
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public GeneratedReport generateReportProjektuebersicht(final ReportProjektuebersichtDTO parameters) {
+        final Projekt projekt = projektService.getProjekt(parameters.projnr());
+        final Map<String, Object> jasperParameters = reportMapper.toJasperParameters(parameters);
+        jasperParameters.put("P_PNAME", projekt.getPname());
+        jasperParameters.put("P_PSTRASSE", projekt.getPstrasse());
+        return generateReport(jasperParameters, ReportType.FMW_PROJEKTE3, ReportFormat.PDF, null);
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public ReportProjektuebersichtFormContext getReportProjektuebersicht() {
+        log.info("Get ReportProjektuebersicht form context");
+        return new ReportProjektuebersichtFormContext(projektService.getReportProjektuebersichtFormContextDTOs());
     }
 
     /// Utility function to create a [GeneratedReport].
