@@ -145,9 +145,7 @@ import type { VForm } from "vuetify/components";
 import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
-import {
-  ReportHaushalt1DTOPropertyValidationAttributesMap,
-} from "@/api/generated/foerdermittel-backend";
+import { ReportHaushalt1DTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 
 const { t } = useI18n();
