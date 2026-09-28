@@ -148,9 +148,9 @@ import { useI18n } from "vue-i18n";
 import {
   ReportHaushalt1DTOPropertyValidationAttributesMap,
   ReportHaushalt1DTOSortEnum,
-  ReportHaushalt1DTOToJSONTyped,
 } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
+import { toCamelCase } from "@/util/string-utils";
 
 const { t } = useI18n();
 
@@ -220,21 +220,21 @@ const haushaltsjahre = computed(() => {
 });
 
 const sortOptions = Object.keys(ReportHaushalt1DTOSortEnum).map((v) => ({
-  title: t(`domain.report.haushalt1.sortEnum.${v}`),
+  title: t(`domain.report.haushalt1.sortEnum.${toCamelCase(v)}`),
   value: v,
 }));
 
 const formatOptions = [
   {
-    title: "PDF: Gruppierung Förderbereich",
+    title: t("domain.report.haushalt1.type.pdf"),
     value: "PDF",
   },
   {
-    title: "PDF: keine Gruppierung",
+    title: t("domain.report.haushalt1.type.pdfFlat"),
     value: "PDF_FLAT",
   },
   {
-    title: "Excel",
+    title: t("domain.report.haushalt1.type.excel"),
     value: "EXCEL",
   },
 ];

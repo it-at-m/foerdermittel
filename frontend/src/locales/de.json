@@ -219,12 +219,17 @@
         "modelName": "Haushaltsplanung | Haushaltsplanungen",
         "hh": "Ausgabe nur mit Haushaltszahlen",
         "sortEnum": {
-          "PROJEKTNUMMER": "Projektnummer",
-          "STRASSE": "Straße, Projektnummer",
-          "FIPO": "FIPO",
-          "FB_PROJEKTNUMMER": "Förderbereich, Projektnummer",
-          "FB_STRASSE_PROJEKTNUMMER": "Förderbereich, Straße, Projektnummer",
-          "FB_FIPO": "Förderbereich, FIPO"
+          "projektnummer": "Projektnummer",
+          "strasse": "Straße, Projektnummer",
+          "fipo": "FIPO",
+          "fbProjektnummer": "Förderbereich, Projektnummer",
+          "fbStrasseProjektnummer": "Förderbereich, Straße, Projektnummer",
+          "fbFipo": "Förderbereich, FIPO"
+        },
+        "type": {
+          "pdf": "PDF: Gruppierung Förderbereich",
+          "pdfFlat": "PDF: keine Gruppierung",
+          "excel": "Excel"
         }
       }
     }
