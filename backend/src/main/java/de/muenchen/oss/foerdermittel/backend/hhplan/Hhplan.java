@@ -30,10 +30,6 @@ public class Hhplan implements Serializable {
     // Variables //
     // ========= //
 
-    //    @Column(name = "hhj_jahr", nullable = false)
-    //    @Id
-    //    @Min(1900) @Max(2099) private BigDecimal hhjJahr;
-
     @EmbeddedId
     private HhplanPrimaryKey id;
 
