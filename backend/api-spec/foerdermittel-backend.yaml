@@ -3018,6 +3018,8 @@ components:
     ReportHaushalt1DTO:
       required:
       - haushaltsjahr
+      - sort
+      - type
       type: object
       properties:
         haushaltsjahr:

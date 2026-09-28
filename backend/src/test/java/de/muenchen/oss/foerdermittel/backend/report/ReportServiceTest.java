@@ -500,6 +500,9 @@ class ReportServiceTest {
             // Then
             verify(stadtbezirkService, times(1)).getStadtbezirkFormContextDTOs();
             assertThat(formContext.bezs()).isEqualTo(allStadtbezirke);
+            assertThat(formContext.sbls()).isEqualTo(allStadtbezirkslisten);
+            assertThat(formContext.fipos()).isEqualTo(allHhplan);
+            assertThat(formContext.fbs()).isEqualTo(allFoerderbereiche);
         }
 
     }

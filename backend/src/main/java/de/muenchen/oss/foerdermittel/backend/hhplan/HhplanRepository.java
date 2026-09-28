@@ -9,7 +9,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface HhplanRepository extends PagingAndSortingRepository<Hhplan, BigDecimal>, ListCrudRepository<Hhplan, BigDecimal>,
+public interface HhplanRepository extends PagingAndSortingRepository<Hhplan, HhplanPrimaryKey>, ListCrudRepository<Hhplan, HhplanPrimaryKey>,
         InsertAndUpdateRepository<Hhplan> {
 
     @Query("SELECT h.id.hhjJahr FROM Hhplan h ORDER BY h.id.hhjJahr")

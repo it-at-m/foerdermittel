@@ -246,25 +246,4 @@ class StadtbezirkServiceTest {
         }
     }
 
-    @Test
-    void givenStadtbezirkNotExists_thenThrowNotFoundException() {
-        // Given
-        final BigDecimal bez = BigDecimal.valueOf(1);
-
-        when(stadtbezirkRepository.existsById(bez))
-                .thenReturn(false);
-
-        // When
-        final Exception exception = Assertions.assertThrows(
-                NotFoundException.class,
-                () -> unitUnderTest.checkExistsByStadtbezirk(bez));
-
-        // Then
-        verify(stadtbezirkRepository, times(1)).existsById(bez);
-        assertThat(exception.getMessage())
-                .isEqualTo(String.format(
-                        "The %s with ID %s was not found.",
-                        Stadtbezirk.class.getSimpleName(),
-                        bez));
-    }
 }

@@ -2,6 +2,7 @@ package de.muenchen.oss.foerdermittel.backend.report.dto;
 
 import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public record ReportHaushalt1DTO(
@@ -11,6 +12,6 @@ public record ReportHaushalt1DTO(
         String sbl,
         String bez,
         String hh,
-        ReportHaushalt1Sort sort,
-        ReportFormat type) {
+        @NotNull ReportHaushalt1Sort sort,
+        @NotNull ReportFormat type) {
 }
