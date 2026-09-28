@@ -1,10 +1,8 @@
 package de.muenchen.oss.foerdermittel.backend.stadtbezirk;
 
-import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkMapper;
-import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.Listenname;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.math.BigDecimal;
 import java.util.List;
@@ -71,7 +69,7 @@ public class StadtbezirkService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public void checkExistsByStadtbezirk(BigDecimal bez) {
+    public void checkExistsByStadtbezirk(final BigDecimal bez) {
         ServiceUtils.checkExistsOrThrowNotFoundException(bez, stadtbezirkRepository, Stadtbezirk.class);
     }
 }

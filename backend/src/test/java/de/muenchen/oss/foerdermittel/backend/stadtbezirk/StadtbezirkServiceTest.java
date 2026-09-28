@@ -7,13 +7,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkMapper;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -195,8 +194,7 @@ class StadtbezirkServiceTest {
             when(stadtbezirkMapper.toFormContext(entities)).thenReturn(expected);
 
             // When
-            final List<StadtbezirkFormContextDTO> result =
-                    unitUnderTest.getStadtbezirkFormContextDTOs();
+            final List<StadtbezirkFormContextDTO> result = unitUnderTest.getStadtbezirkFormContextDTOs();
 
             // Then
             verify(stadtbezirkRepository, times(1)).findAll();
@@ -249,25 +247,24 @@ class StadtbezirkServiceTest {
     }
 
     @Test
-        void givenStadtbezirkNotExists_thenThrowNotFoundException() {
-            // Given
-            final BigDecimal bez = BigDecimal.valueOf(1);
+    void givenStadtbezirkNotExists_thenThrowNotFoundException() {
+        // Given
+        final BigDecimal bez = BigDecimal.valueOf(1);
 
         when(stadtbezirkRepository.existsById(bez))
                 .thenReturn(false);
 
-            // When
-            final Exception exception = Assertions.assertThrows(
-                    NotFoundException.class,
-                    () -> unitUnderTest.checkExistsByStadtbezirk(bez));
+        // When
+        final Exception exception = Assertions.assertThrows(
+                NotFoundException.class,
+                () -> unitUnderTest.checkExistsByStadtbezirk(bez));
 
-            // Then
-            verify(stadtbezirkRepository, times(1)).existsById(bez);
-            assertThat(exception.getMessage())
-                    .isEqualTo(String.format(
-                            "The %s with ID %s was not found.",
-                            Stadtbezirk.class.getSimpleName(),
-                            bez));
-        }
+        // Then
+        verify(stadtbezirkRepository, times(1)).existsById(bez);
+        assertThat(exception.getMessage())
+                .isEqualTo(String.format(
+                        "The %s with ID %s was not found.",
+                        Stadtbezirk.class.getSimpleName(),
+                        bez));
     }
-
+}

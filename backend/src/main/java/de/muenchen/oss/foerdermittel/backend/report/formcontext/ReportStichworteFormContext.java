@@ -1,7 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.report.formcontext;
 
-import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.StadtbezirkslisteFormContext;
-import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameStadtbezirkslisteFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.dto.StichwortbereichFormContextDTO;
 import jakarta.validation.constraints.NotNull;
 

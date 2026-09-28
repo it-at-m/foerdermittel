@@ -65,7 +65,6 @@ public class ReportController {
         return reportService.getReportStichworte();
     }
 
-
     @GetMapping("/haushalt1")
     @ResponseStatus(HttpStatus.OK)
     @Operation(

@@ -3,7 +3,6 @@ package de.muenchen.oss.foerdermittel.backend.report;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichService;
 import de.muenchen.oss.foerdermittel.backend.hhplan.HhplanService;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1DTO;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1Sort;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportHaushalt1FormContext;
@@ -67,7 +66,7 @@ public class ReportService {
         final String orderBy = parameters.sort().getOrderBy();
 
         return generateReport(reportMapper.toJasperParameters(parameters), ReportType.FMW_HAUSHALT1, parameters.type(),
-                orderBy );
+                orderBy);
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
@@ -78,8 +77,7 @@ public class ReportService {
                 foerderbereichService.getFoerderbereichFormContextDTOs(),
                 listennameStadtbezirkslisteService.getlistennameStadtbezirkslisteFormContextDTOs(),
                 stadtbezirkService.getStadtbezirkFormContextDTOs(),
-                hhplanService.getHhplanFormContextDTOs()
-                );
+                hhplanService.getHhplanFormContextDTOs());
 
     }
 

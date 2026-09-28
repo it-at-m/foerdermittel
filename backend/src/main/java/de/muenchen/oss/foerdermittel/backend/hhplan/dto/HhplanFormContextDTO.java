@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
-
 /// @param hhjJahr
 /// @param fipo
 public record HhplanFormContextDTO(

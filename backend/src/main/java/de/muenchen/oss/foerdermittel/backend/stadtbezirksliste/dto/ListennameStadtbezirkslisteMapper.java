@@ -1,14 +1,11 @@
 package de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto;
 
 import de.muenchen.oss.foerdermittel.backend.common.NumberMapper;
-import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
-import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.Listenname;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.StadtbezirkslisteFormContext;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.List;
 
 @Mapper(
         componentModel = "spring",

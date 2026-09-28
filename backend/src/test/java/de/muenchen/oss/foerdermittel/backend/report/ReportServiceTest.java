@@ -43,6 +43,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -173,71 +175,200 @@ class ReportServiceTest {
     @Nested
     class GenerateReportHaushalt1 {
 
-//        @Test
-//        void givenNoWriteInteraction_thenShouldGenerateCorrectGeneratedReport() {
-//            // Given
-//            final ReportHaushalt1DTO parameters = mock(ReportHaushalt1DTO.class);
-//
-//            final Map<String, Object> jasperParameters = new HashMap<>();
-//            when(reportMapper.toJasperParameters(parameters))
-//                    .thenReturn(jasperParameters);
-//
-//
-//
-//            // When
-//            final GeneratedReport generatedReport = reportService.generateReportHaushalt1(parameters);
-//
-//            // Then
-//            verify(reportMapper, times(1)).toJasperParameters(parameters);
-//            verifyNoInteractions(jasperReportService);
-//
-//            assertThat(generatedReport).isNotNull();
-//            assertThat(generatedReport.contentType())
-//                    .isEqualTo(ReportFormat.PDF.getContentType());
-//            assertThat(generatedReport.fileName())
-//                    .startsWith(ReportType.FMW_HAUSHALT1.getFileName())
-//                    .endsWith(ReportFormat.PDF.getFileExtension());
-//            assertThat(jasperParameters)
-//                    .containsEntry(
-//                            SORT_PARAMETER,
-//                            "ORDER BY stb_bereich ASC, nr ASC, wort ASC");
-//        }
-
-//        @Test
-//        void givenWriteInteraction_thenShouldCallJasperServiceCorrectly() throws JRException, SQLException, IOException {
-//            // Given
-//            final ReportStichworteDTO parameters = mock(ReportStichworteDTO.class);
-//
-//            final Map<String, Object> jasperParameters = new HashMap<>();
-//            when(reportMapper.toJasperParameters(parameters))
-//                    .thenReturn(jasperParameters);
-//
-//            final OutputStream outputStream = new ByteArrayOutputStream();
-//
-//            // When
-//            final GeneratedReport generatedReport = reportService.generateReportStichworte(parameters);
-//            generatedReport.writer().write(outputStream);
-//
-//            // Then
-//            verify(jasperReportService, times(1)).generateReportWithParameters(
-//                    ReportType.FMW_ABLAGEINDEX,
-//                    ReportFormat.PDF,
-//                    jasperParameters,
-//                    outputStream);
-//        }
-//
         @Test
-        void givenNotFound_thenShouldThrowNotFoundException() {
+        void givenAllParameters_thenShouldGenerateCorrectGeneratedReport() {
             // Given
-            final String pjahr = "2024";
+            final ReportHaushalt1DTO parameters = new ReportHaushalt1DTO(
+                    "2024",
+                    "1",
+                    "0000.000.123",
+                    "1",
+                    "1",
+                    "1",
+                    ReportHaushalt1Sort.FB_PROJEKTNUMMER,
+                    ReportFormat.PDF);
+
+            final Map<String, Object> jasperParameters = new HashMap<>();
+            when(reportMapper.toJasperParameters(parameters))
+                    .thenReturn(jasperParameters);
+
+            // When
+            final GeneratedReport generatedReport = reportService.generateReportHaushalt1(parameters);
+
+            // Then
+            verify(foerderbereichService, times(1))
+                    .checkExistsByFoerderbereich(new BigDecimal("1"));
+            verify(listennameStadtbezirkslisteService, times(1))
+                    .checkExistsByListenname("1");
+            verify(stadtbezirkService, times(1))
+                    .checkExistsByStadtbezirk(new BigDecimal("1"));
+            verify(reportMapper, times(1))
+                    .toJasperParameters(parameters);
+            verifyNoInteractions(jasperReportService);
+
+            assertThat(generatedReport).isNotNull();
+            assertThat(generatedReport.contentType())
+                    .isEqualTo(ReportFormat.PDF.getContentType());
+            assertThat(generatedReport.fileName())
+                    .startsWith(ReportType.FMW_HAUSHALT1.getFileName())
+                    .endsWith(ReportFormat.PDF.getFileExtension());
+            assertThat(jasperParameters)
+                    .containsEntry(
+                            SORT_PARAMETER,
+                            ReportHaushalt1Sort.FB_PROJEKTNUMMER.getOrderBy());
+        }
+
+        @Test
+        void givenBlankOptionalParameters_thenShouldNotCheckOptionalParameters() {
+            // Given
+            final ReportHaushalt1DTO parameters = new ReportHaushalt1DTO(
+                    "2024",
+                    "",
+                    "0000.000.123",
+                    " ",
+                    "   ",
+                    "1",
+                    ReportHaushalt1Sort.PROJEKTNUMMER,
+                    ReportFormat.PDF);
+
+            final Map<String, Object> jasperParameters = new HashMap<>();
+            when(reportMapper.toJasperParameters(parameters))
+                    .thenReturn(jasperParameters);
+
+            // When
+            final GeneratedReport generatedReport = reportService.generateReportHaushalt1(parameters);
+
+            // Then
+            verifyNoInteractions(
+                    foerderbereichService,
+                    listennameStadtbezirkslisteService,
+                    stadtbezirkService,
+                    jasperReportService);
+
+            verify(reportMapper, times(1))
+                    .toJasperParameters(parameters);
+
+            assertThat(generatedReport).isNotNull();
+            assertThat(jasperParameters)
+                    .containsEntry(
+                            SORT_PARAMETER,
+                            ReportHaushalt1Sort.PROJEKTNUMMER.getOrderBy());
+        }
+
+        @Test
+        void givenWriteInteraction_thenShouldCallJasperServiceCorrectly() throws JRException, SQLException, IOException {
+            // Given
+            final ReportHaushalt1DTO parameters = new ReportHaushalt1DTO(
+                    "2024",
+                    "1",
+                    "0000.000.123",
+                    "1",
+                    "1",
+                    "1",
+                    ReportHaushalt1Sort.FB_PROJEKTNUMMER,
+                    ReportFormat.PDF);
+
+            final Map<String, Object> jasperParameters = new HashMap<>();
+            when(reportMapper.toJasperParameters(parameters))
+                    .thenReturn(jasperParameters);
+
+            final OutputStream outputStream = new ByteArrayOutputStream();
+
+            // When
+            final GeneratedReport generatedReport = reportService.generateReportHaushalt1(parameters);
+            generatedReport.writer().write(outputStream);
+
+            // Then
+            verify(jasperReportService, times(1)).generateReportWithParameters(
+                    ReportType.FMW_HAUSHALT1,
+                    ReportFormat.PDF,
+                    jasperParameters,
+                    outputStream);
+        }
+
+        @ParameterizedTest
+        @EnumSource(ReportHaushalt1Sort.class)
+        void givenSort_thenShouldUseCorrectOrderBy(final ReportHaushalt1Sort sort) {
+            // Given
+            final ReportHaushalt1DTO parameters = new ReportHaushalt1DTO(
+                    "2024",
+                    "",
+                    "0000.000.123",
+                    "",
+                    "",
+                    "1",
+                    sort,
+                    ReportFormat.PDF);
+
+            final Map<String, Object> jasperParameters = new HashMap<>();
+            when(reportMapper.toJasperParameters(parameters))
+                    .thenReturn(jasperParameters);
+
+            // When
+            reportService.generateReportHaushalt1(parameters);
+
+            // Then
+            assertThat(jasperParameters)
+                    .containsEntry(SORT_PARAMETER, sort.getOrderBy());
+        }
+
+        @ParameterizedTest
+        @EnumSource(ReportFormat.class)
+        void givenReportFormat_thenShouldUseCorrectReportFormat(
+                final ReportFormat reportFormat) throws JRException, SQLException, IOException {
+
+            // Given
+            final ReportHaushalt1DTO parameters = new ReportHaushalt1DTO(
+                    "2024",
+                    "",
+                    "0000.000.123",
+                    "",
+                    "",
+                    "1",
+                    ReportHaushalt1Sort.PROJEKTNUMMER,
+                    reportFormat);
+
+            final Map<String, Object> jasperParameters = new HashMap<>();
+            when(reportMapper.toJasperParameters(parameters))
+                    .thenReturn(jasperParameters);
+
+            final OutputStream outputStream = new ByteArrayOutputStream();
+
+            // When
+            final GeneratedReport generatedReport = reportService.generateReportHaushalt1(parameters);
+
+            generatedReport.writer().write(outputStream);
+
+            // Then
+            verify(jasperReportService, times(1)).generateReportWithParameters(
+                    ReportType.FMW_HAUSHALT1,
+                    reportFormat,
+                    jasperParameters,
+                    outputStream);
+
+            assertThat(generatedReport.contentType())
+                    .isEqualTo(reportFormat.getContentType());
+
+            assertThat(generatedReport.fileName())
+                    .startsWith(
+                            ReportType.FMW_HAUSHALT1.getFileName()
+                                    + reportFormat.getFileSuffix())
+                    .endsWith(reportFormat.getFileExtension());
+        }
+
+        @Test
+        void givenFoerderbereichNotFound_thenShouldThrowNotFoundException() {
+            // Given
             final String fb = "1";
-            final String fipo = "0000.000.123";
-            final String sbl ="1";
-            final String bez = "1";
-            final String hh = "1";
-            final ReportHaushalt1Sort sort = ReportHaushalt1Sort.FB_PROJEKTNUMMER;
-            final ReportFormat type = ReportFormat.PDF;
-            final ReportHaushalt1DTO parameters = new ReportHaushalt1DTO(pjahr,fb, fipo,sbl, bez,hh,sort,type );
+            final ReportHaushalt1DTO parameters = new ReportHaushalt1DTO(
+                    "2024",
+                    fb,
+                    "0000.000.123",
+                    "1",
+                    "1",
+                    "1",
+                    ReportHaushalt1Sort.FB_PROJEKTNUMMER,
+                    ReportFormat.PDF);
 
             doThrow(new NotFoundException(Foerderbereich.class, fb))
                     .when(foerderbereichService)
@@ -249,10 +380,97 @@ class ReportServiceTest {
                     () -> reportService.generateReportHaushalt1(parameters));
 
             // Then
-            verify(foerderbereichService, times(1)).checkExistsByFoerderbereich(new BigDecimal(fb));
-            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Foerderbereich.class.getSimpleName(), fb));
+            verify(foerderbereichService, times(1))
+                    .checkExistsByFoerderbereich(new BigDecimal(fb));
+            verifyNoInteractions(
+                    listennameStadtbezirkslisteService,
+                    stadtbezirkService,
+                    reportMapper,
+                    jasperReportService);
+
+            assertThat(exception.getMessage())
+                    .isEqualTo(String.format(
+                            "The %s with ID %s was not found.",
+                            Foerderbereich.class.getSimpleName(),
+                            fb));
         }
 
+        @Test
+        void givenListennameStadtbezirkslisteNotFound_thenShouldThrowNotFoundException() {
+            // Given
+            final String sbl = "1";
+            final ReportHaushalt1DTO parameters = new ReportHaushalt1DTO(
+                    "2024",
+                    "1",
+                    "0000.000.123",
+                    sbl,
+                    "1",
+                    "1",
+                    ReportHaushalt1Sort.FB_PROJEKTNUMMER,
+                    ReportFormat.PDF);
+
+            doThrow(new NotFoundException(
+                    StadtbezirkslisteFormContext.class,
+                    sbl))
+                    .when(listennameStadtbezirkslisteService)
+                    .checkExistsByListenname(sbl);
+
+            // When
+            final Exception exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> reportService.generateReportHaushalt1(parameters));
+
+            // Then
+            verify(listennameStadtbezirkslisteService, times(1))
+                    .checkExistsByListenname(sbl);
+            verifyNoInteractions(
+                    stadtbezirkService,
+                    reportMapper,
+                    jasperReportService);
+
+            assertThat(exception.getMessage())
+                    .isEqualTo(String.format(
+                            "The %s with ID %s was not found.",
+                            StadtbezirkslisteFormContext.class.getSimpleName(),
+                            sbl));
+        }
+
+        @Test
+        void givenStadtbezirkNotFound_thenShouldThrowNotFoundException() {
+            // Given
+            final String bez = "1";
+            final ReportHaushalt1DTO parameters = new ReportHaushalt1DTO(
+                    "2024",
+                    "1",
+                    "0000.000.123",
+                    "1",
+                    bez,
+                    "1",
+                    ReportHaushalt1Sort.FB_PROJEKTNUMMER,
+                    ReportFormat.PDF);
+
+            doThrow(new NotFoundException(Stadtbezirk.class, bez))
+                    .when(stadtbezirkService)
+                    .checkExistsByStadtbezirk(new BigDecimal(bez));
+
+            // When
+            final Exception exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> reportService.generateReportHaushalt1(parameters));
+
+            // Then
+            verify(stadtbezirkService, times(1))
+                    .checkExistsByStadtbezirk(new BigDecimal(bez));
+            verifyNoInteractions(
+                    reportMapper,
+                    jasperReportService);
+
+            assertThat(exception.getMessage())
+                    .isEqualTo(String.format(
+                            "The %s with ID %s was not found.",
+                            Stadtbezirk.class.getSimpleName(),
+                            bez));
+        }
     }
 
     @Nested
@@ -285,7 +503,5 @@ class ReportServiceTest {
         }
 
     }
-
-
 
 }

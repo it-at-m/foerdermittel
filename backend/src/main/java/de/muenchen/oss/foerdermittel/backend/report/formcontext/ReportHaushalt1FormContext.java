@@ -8,7 +8,8 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-public record ReportHaushalt1FormContext(@NotNull List<FoerderbereichFormContextDTO> fbs, @NotNull List<ListennameStadtbezirkslisteFormContextDTO> sbls, @NotNull List<StadtbezirkFormContextDTO> bezs, @NotNull List<HhplanFormContextDTO> fipos) {
+public record ReportHaushalt1FormContext(@NotNull List<FoerderbereichFormContextDTO> fbs, @NotNull List<ListennameStadtbezirkslisteFormContextDTO> sbls,
+        @NotNull List<StadtbezirkFormContextDTO> bezs, @NotNull List<HhplanFormContextDTO> fipos) {
     public ReportHaushalt1FormContext {
         fbs = List.copyOf(fbs);
         sbls = List.copyOf(sbls);

@@ -9,7 +9,6 @@ public enum ReportHaushalt1Sort {
     FB_STRASSE_PROJEKTNUMMER("order by P_FOB_FB, p_pstrasse asc, pro_projnr asc"),
     FB_FIPO("order by P_FOB_FB, FIPO asc");
 
-
     private final String orderBy;
 
     ReportHaushalt1Sort(final String orderBy) {

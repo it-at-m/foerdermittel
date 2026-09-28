@@ -3,19 +3,14 @@ package de.muenchen.oss.foerdermittel.backend.hhplan;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import java.io.Serial;
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serial;
-import java.io.Serializable;
-import java.math.BigDecimal;
 
 /// This class represents a Hhplan.
 ///
@@ -35,9 +30,9 @@ public class Hhplan implements Serializable {
     // Variables //
     // ========= //
 
-//    @Column(name = "hhj_jahr", nullable = false)
-//    @Id
-//    @Min(1900) @Max(2099) private BigDecimal hhjJahr;
+    //    @Column(name = "hhj_jahr", nullable = false)
+    //    @Id
+    //    @Min(1900) @Max(2099) private BigDecimal hhjJahr;
 
     @EmbeddedId
     private HhplanPrimaryKey id;
