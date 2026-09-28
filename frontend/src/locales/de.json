@@ -216,16 +216,16 @@
       "bewilligungAuzahlungVergleich": "@:model.bewilligung.modelName und @:domain.auszahlung (Vergleich)",
       "fortsetzungsAntrag": "Fortsetzungsantrag | Fortsetzungsanträge",
       "haushalt1": {
-          "modelName": "Haushaltsplanung | Haushaltsplanungen",
-          "hh": "Ausgabe nur mit Haushaltszahlen",
-          "sortEnum": {
-            "PROJEKTNUMMER": "Projektnummer",
-            "STRASSE": "Straße, Projektnummer",
-            "FIPO": "FIPO",
-            "FB_PROJEKTNUMMER": "Förderbereich, Projektnummer",
-            "FB_STRASSE_PROJEKTNUMMER": "Förderbereich, Straße, Projektnummer",
-            "FB_FIPO": "Förderbereich, FIPO"
-          }
+        "modelName": "Haushaltsplanung | Haushaltsplanungen",
+        "hh": "Ausgabe nur mit Haushaltszahlen",
+        "sortEnum": {
+          "PROJEKTNUMMER": "Projektnummer",
+          "STRASSE": "Straße, Projektnummer",
+          "FIPO": "FIPO",
+          "FB_PROJEKTNUMMER": "Förderbereich, Projektnummer",
+          "FB_STRASSE_PROJEKTNUMMER": "Förderbereich, Straße, Projektnummer",
+          "FB_FIPO": "Förderbereich, FIPO"
+        }
       }
     }
   },
