@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 @Service
+
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
@@ -59,9 +60,15 @@ public class ReportService {
     @Transactional(readOnly = true)
     public GeneratedReport generateReportHaushalt1(
             final ReportHaushalt1DTO parameters) {
-        if (StringUtils.hasText(parameters.fb())) foerderbereichService.checkExistsByFoerderbereich(new BigDecimal(parameters.fb()));
-        if (StringUtils.hasText(parameters.sbl())) listennameStadtbezirkslisteService.checkExistsByListenname(parameters.sbl());
-        if (StringUtils.hasText(parameters.bez())) stadtbezirkService.checkExistsByStadtbezirk(new BigDecimal(parameters.bez()));
+        if (StringUtils.hasText(parameters.fb())) {
+            foerderbereichService.checkExistsByFoerderbereich(new BigDecimal(parameters.fb()));
+        }
+        if (StringUtils.hasText(parameters.sbl())) {
+            listennameStadtbezirkslisteService.checkExistsByListenname(parameters.sbl());
+        }
+        if (StringUtils.hasText(parameters.bez())) {
+            stadtbezirkService.checkExistsByStadtbezirk(new BigDecimal(parameters.bez()));
+        }
 
         final String orderBy = parameters.sort().getOrderBy();
 

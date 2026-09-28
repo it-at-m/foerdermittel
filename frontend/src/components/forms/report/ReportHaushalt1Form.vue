@@ -13,11 +13,11 @@
           v-model="modelValue.parameters!.haushaltsjahr"
           :items="haushaltsjahre"
           :item-title="getHaushaltsjahrTitle"
-          item-value="haushaltsjahr"
+          item-value="hhjJahr"
           :validation-attribute-map="
             ReportHaushalt1DTOPropertyValidationAttributesMap
           "
-          validation-attribute-key="haushaltsjahr"
+          validation-attribute-key="hhjahr"
           :label="t('model.haushaltsjahr.modelName')"
         />
       </v-col>
