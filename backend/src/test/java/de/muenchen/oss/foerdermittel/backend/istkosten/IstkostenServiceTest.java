@@ -15,6 +15,7 @@ import jakarta.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -111,7 +112,9 @@ class IstkostenServiceTest {
             verify(istkostenRepository, times(1)).findAllWithProjekt();
             verify(projektService, times(1)).getProjektFormContextDTOs();
 
-            assertThat(result.istkosten()).isEqualTo(istkostenIds);
+            assertThat(result.istkosten()).isEqualTo(istkostenIds.stream()
+                    .map(IstkostenPrimaryKey::toString)
+                    .collect(Collectors.toList()));
 
             assertThat(result.projekte()).containsExactly(projektDTO1, projektDTO2);
         }
