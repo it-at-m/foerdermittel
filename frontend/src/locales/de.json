@@ -216,7 +216,7 @@
       "bewilligungAuzahlungVergleich": "@:model.bewilligung.modelName und @:domain.auszahlung (Vergleich)",
       "fortsetzungsAntrag": "Fortsetzungsantrag | Fortsetzungsanträge",
       "haushalt1": {
-        "modelName": "Haushaltsplanung | Haushaltsplanungen",
+        "modelName": "Haushaltsplanung",
         "hh": "Ausgabe nur mit Haushaltszahlen",
         "sortEnum": {
           "projektnummer": "Projektnummer",

@@ -42,10 +42,10 @@ definePage({
   },
 });
 
-const domainKey = "domain.report.haushalt1.modelName";
-
 const { t } = useI18n();
-const title = t("common.generics.reportTitle", [t(domainKey, 1)]);
+const title = t("common.generics.reportTitle", [
+  t("domain.report.haushalt1.modelName", 1),
+]);
 
 const EMPTY_FORM_TEMPLATE: Partial<GetReportHaushalt1Request> = {
   parameters: {
