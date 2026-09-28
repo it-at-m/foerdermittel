@@ -14,10 +14,14 @@
           :display-mode="displayMode"
           :label="t('model.istkosten.projnr')"
           :rules="[rules.required()]"
-          :validation-attribute-map="IstkostenCreateDTOPropertyValidationAttributesMap"
+          :validation-attribute-map="
+            IstkostenCreateDTOPropertyValidationAttributesMap
+          "
           validation-attribute-key="projnr"
           :disable-edit="displayMode === InputDisplayMode.EDIT"
-          :error-messages="istkostenCombinationError ? [istkostenCombinationError] : []"
+          :error-messages="
+            istkostenCombinationError ? [istkostenCombinationError] : []
+          "
         />
       </v-col>
       <v-col cols="2">
@@ -28,7 +32,9 @@
           :label="t('model.istkosten.jahr')"
           min="1970"
           max="2100"
-          :validation-attribute-map="IstkostenCreateDTOPropertyValidationAttributesMap"
+          :validation-attribute-map="
+            IstkostenCreateDTOPropertyValidationAttributesMap
+          "
           validation-attribute-key="jahr"
           :disable-edit="displayMode === InputDisplayMode.EDIT"
           :error-messages="istkostenCombinationError ? [''] : []"
