@@ -13,11 +13,11 @@
           v-model="modelValue.parameters!.haushaltsjahr"
           :items="haushaltsjahre"
           :item-title="getHaushaltsjahrTitle"
-          item-value="hhjJahr"
+          item-value="haushaltsjahr"
           :validation-attribute-map="
             ReportHaushalt1DTOPropertyValidationAttributesMap
           "
-          validation-attribute-key="hhjahr"
+          validation-attribute-key="haushaltsjahr"
           :label="t('model.haushaltsjahr.modelName')"
         />
       </v-col>
@@ -219,10 +219,32 @@ const haushaltsjahre = computed(() => {
   );
 });
 
-const sortOptions = Object.keys(ReportHaushalt1DTOSortEnum).map((v) => ({
-  title: t(`domain.report.haushalt1.sortEnum.${toCamelCase(v)}`),
-  value: v,
-}));
+const sortOptions = [
+  {
+    title: t("domain.report.haushalt1.sortEnum.projektnummer"),
+    value: "PROJEKTNUMMER",
+  },
+  {
+    title: t("domain.report.haushalt1.sortEnum.strasse"),
+    value: "STRASSE",
+  },
+  {
+    title: t("domain.report.haushalt1.sortEnum.fipo"),
+    value: "FIPO",
+  },
+  {
+    title: t("domain.report.haushalt1.sortEnum.fbProjektnummer"),
+    value: "FB_PROJEKTNUMMER",
+  },
+  {
+    title: t("domain.report.haushalt1.sortEnum.fbStrasseProjektnummer"),
+    value: "FB_STRASSE_PROJEKTNUMMER",
+  },
+  {
+    title: t("domain.report.haushalt1.sortEnum.fbFipo"),
+    value: "FB_FIPO",
+  },
+];
 
 const formatOptions = [
   {
