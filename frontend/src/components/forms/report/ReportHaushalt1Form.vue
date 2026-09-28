@@ -147,10 +147,8 @@ import { useI18n } from "vue-i18n";
 
 import {
   ReportHaushalt1DTOPropertyValidationAttributesMap,
-  ReportHaushalt1DTOSortEnum,
 } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
-import { toCamelCase } from "@/util/string-utils";
 
 const { t } = useI18n();
 
