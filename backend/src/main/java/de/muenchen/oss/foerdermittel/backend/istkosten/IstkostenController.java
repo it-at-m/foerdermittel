@@ -65,7 +65,7 @@ public class IstkostenController {
     @ResponseStatus(HttpStatus.CREATED)
     public IstkostenResponseDTO createIstkosten(@Valid @RequestBody final IstkostenCreateDTO istkostenCreateDTO) {
         return istkostenMapper.toDTO(istkostenService.createIstkosten(istkostenMapper.toEntity(istkostenCreateDTO),
-                istkostenMapper.toEntity(istkostenCreateDTO).getId().getProjnr()));
+                istkostenCreateDTO.projnr()));
     }
 
     @PutMapping("/{id}")

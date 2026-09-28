@@ -34,12 +34,17 @@ public interface IstkostenMapper {
         if (id == null || id.isEmpty()) {
             return null;
         }
-        final String[] parts = id.split("-");
-
-        final String projnr = parts[0];
-        final BigDecimal jahr = new BigDecimal(parts[1]);
-        final BigDecimal monat = new BigDecimal(parts[2]);
-        return new IstkostenPrimaryKey(projnr, jahr, monat);
+        final int m = id.lastIndexOf('-');
+        final int j = m > 0 ? id.lastIndexOf('-', m - 1) : -1;
+        if (j <= 0) {
+            throw new IllegalArgumentException("Invalid Istkosten id: " + id);
+        }
+        try {
+            return new IstkostenPrimaryKey(id.substring(0, j),
+                    new BigDecimal(id.substring(j + 1, m)), new BigDecimal(id.substring(m + 1)));
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid Istkosten id: " + id, e);
+        }
     }
 
     @Named("buildIdString")

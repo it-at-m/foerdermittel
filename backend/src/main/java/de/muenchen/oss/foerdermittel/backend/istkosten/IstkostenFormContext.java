@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-public record IstkostenFormContext(@NotNull List<IstkostenPrimaryKey> istkosten,
+public record IstkostenFormContext(@NotNull List<String> istkosten,
         @NotNull List<ProjektFormContextDTO> projekte) {
     public IstkostenFormContext {
         istkosten = List.copyOf(istkosten);

@@ -39,9 +39,9 @@ class IstkostenMapperTest {
             assertThat(dto).isNotNull();
             assertThat(dto.id()).isEqualTo(entity.getId().toString());
             assertThat(entity.getId().getProjnr()).isEqualTo(dto.projnr());
-            assertThat(entity.getId().getJahr().compareTo(dto.jahr()));
-            assertThat(entity.getId().getMonat().compareTo(dto.monat()));
-            assertThat(entity.getIstkosten().compareTo(dto.istkosten()));
+            assertThat(entity.getId().getJahr()).isEqualByComparingTo(dto.jahr());
+            assertThat(entity.getId().getMonat()).isEqualByComparingTo(dto.monat());
+            assertThat(entity.getIstkosten()).isEqualByComparingTo(dto.istkosten());
             assertThat(dto.pname()).isEqualTo(entity.getProjekt().getPname());
             assertThat(dto.pstrasse()).isEqualTo(entity.getProjekt().getPstrasse());
             assertThat(dto.fob_fb()).isEqualTo(entity.getProjekt().getFoerderbereich().getFb());
@@ -58,9 +58,9 @@ class IstkostenMapperTest {
             final Istkosten entity = istkostenMapper.toEntity(dto);
 
             assertThat(entity).isNotNull();
-            assertThat(entity.getId().getJahr().compareTo(dto.jahr()));
-            assertThat(entity.getId().getMonat().compareTo(dto.monat()));
-            assertThat(entity.getIstkosten().compareTo(dto.istkosten()));
+            assertThat(entity.getId().getJahr()).isEqualByComparingTo(dto.jahr());
+            assertThat(entity.getId().getMonat()).isEqualByComparingTo(dto.monat());
+            assertThat(entity.getIstkosten()).isEqualByComparingTo(dto.istkosten());
             assertThat(entity.getProjekt()).isNotNull();
             assertThat(entity.getProjekt().getProjnr()).isEqualTo(dto.projnr());
         }
@@ -74,7 +74,7 @@ class IstkostenMapperTest {
             assertThat(entity).isNotNull();
             assertThat(entity.getId()).isNull();
             assertThat(entity.getProjekt()).isNull();
-            assertThat(entity.getIstkosten().compareTo(dto.istkosten()));
+            assertThat(entity.getIstkosten()).isEqualByComparingTo(dto.istkosten());
         }
     }
 }

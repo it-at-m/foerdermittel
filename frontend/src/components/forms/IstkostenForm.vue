@@ -19,6 +19,9 @@
           "
           validation-attribute-key="projnr"
           :disable-edit="displayMode === InputDisplayMode.EDIT"
+          :error-messages="
+            istkostenCombinationError ? [istkostenCombinationError] : []
+          "
         />
       </v-col>
       <v-col cols="2">
@@ -34,6 +37,7 @@
           "
           validation-attribute-key="jahr"
           :disable-edit="displayMode === InputDisplayMode.EDIT"
+          :error-messages="istkostenCombinationError ? [''] : []"
         ></fm-number-input>
       </v-col>
       <v-col cols="2">
@@ -44,6 +48,7 @@
           :rules="[rules.required()]"
           :display-mode="displayMode"
           :disable-edit="displayMode === InputDisplayMode.EDIT"
+          :error-messages="istkostenCombinationError ? [''] : []"
         />
       </v-col>
       <v-col cols="3">
@@ -51,8 +56,9 @@
           v-model="modelValue.istkosten"
           :display-mode="displayMode"
           min="0"
+          :additional-rules="[rules.max!(999999999999)]"
           :rules="[rules.required()]"
-          :label="t('model.istkosten.istkosten')"
+          :label="t('model.istkosten.modelName')"
         ></fm-number-input>
       </v-col>
     </v-row>
@@ -61,12 +67,14 @@
 
 <script setup lang="ts">
 import type {
+  IstkostenFormContext,
   IstkostenResponseDTO,
   ProjektFormContextDTO,
 } from "@/api/generated/foerdermittel-backend";
+import type { DeepReadonly} from "vue";
 import type { VForm } from "vuetify/components";
 
-import { computed, useTemplateRef } from "vue";
+import { computed, onMounted, ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRules } from "vuetify";
 
@@ -78,8 +86,13 @@ import { InputDisplayMode } from "@/types/InputDisplayMode";
 const { t } = useI18n();
 const rules = useRules();
 
-const { projekte, displayMode = InputDisplayMode.CREATE } = defineProps<{
+const {
+  projekte,
+  istkostenFormContext,
+  displayMode = InputDisplayMode.CREATE,
+} = defineProps<{
   projekte: ProjektFormContextDTO[];
+  istkostenFormContext: DeepReadonly<IstkostenFormContext>;
   displayMode?: InputDisplayMode;
 }>();
 
@@ -104,6 +117,20 @@ function onValidityChanged(value: boolean | null) {
 
 const formRef = useTemplateRef<VForm>("form");
 
+const initialValue = ref<{
+  projnr: string | undefined;
+  jahr: number | undefined;
+  monat: number | undefined;
+}>({ projnr: undefined, jahr: undefined, monat: undefined });
+
+onMounted(() => {
+  initialValue.value = {
+    projnr: modelValue.value.projnr,
+    jahr: modelValue.value.jahr,
+    monat: modelValue.value.monat,
+  };
+});
+
 async function validate(): Promise<boolean> {
   if (!formRef.value) {
     return false;
@@ -111,10 +138,40 @@ async function validate(): Promise<boolean> {
 
   const result = await formRef.value.validate();
 
-  emit("isValid", result.valid);
+  const isValid = result.valid && istkostenCombinationValid.value;
 
-  return result.valid;
+  emit("isValid", isValid);
+
+  return isValid;
 }
+
+const istkostenCombinationValid = computed(() => {
+  const { projnr, jahr, monat } = modelValue.value;
+
+  if (projnr == null || jahr == null || monat == null) {
+    return true;
+  }
+
+  if (
+    projnr === initialValue.value.projnr &&
+    jahr === initialValue.value.jahr &&
+    monat === initialValue.value.monat
+  ) {
+    return true;
+  }
+
+  const value = `${projnr}-${jahr}-${monat}`;
+
+  return !istkostenFormContext.istkosten.includes(value);
+});
+
+const istkostenCombinationError = computed(() => {
+  if (istkostenCombinationValid.value) {
+    return undefined;
+  }
+
+  return "Die ausgewählte Kombination aus Projektnummer, Jahr und Monat existiert schon";
+});
 
 defineExpose({
   validate,

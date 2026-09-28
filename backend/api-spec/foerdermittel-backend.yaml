@@ -3181,29 +3181,11 @@ components:
         istkosten:
           type: array
           items:
-            $ref: "#/components/schemas/IstkostenPrimaryKey"
+            type: string
         projekte:
           type: array
           items:
             $ref: "#/components/schemas/ProjektFormContextDTO"
-    IstkostenPrimaryKey:
-      required:
-      - jahr
-      - monat
-      - projnr
-      type: object
-      properties:
-        projnr:
-          minLength: 1
-          type: string
-        jahr:
-          maximum: 2100
-          minimum: 1970
-          type: number
-        monat:
-          maximum: 12
-          minimum: 1
-          type: number
     ProjektFormContextDTO:
       required:
       - foerderbereich

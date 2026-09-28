@@ -21,6 +21,7 @@
             :model-value="item"
             :display-mode="inputDisplayMode"
             :projekte="projekte"
+            :istkosten-form-context="istkostenFormContext"
             @is-valid="updateValidity"
           />
         </template>
@@ -79,7 +80,7 @@ const headers: DataTableHeader<Partial<IstkostenResponseDTO>>[] = [
     width: 110,
   },
   {
-    title: t("model.istkosten.istkosten"),
+    title: t("model.istkosten.modelName"),
     value: "istkosten",
     align: "center",
     width: 110,

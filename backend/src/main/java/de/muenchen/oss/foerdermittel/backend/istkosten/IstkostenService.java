@@ -12,6 +12,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.stream.Collectors;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -34,7 +36,9 @@ public class IstkostenService {
         log.info("Get Istkosten form context");
 
         return new IstkostenFormContext(
-                istkostenRepository.findAllWithProjekt(),
+                istkostenRepository.findAllWithProjekt().stream()
+                        .map(IstkostenPrimaryKey::toString)
+                        .collect(Collectors.toList()),
                 projektService.getProjektFormContextDTOs());
     }
 
