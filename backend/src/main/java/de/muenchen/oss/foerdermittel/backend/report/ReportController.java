@@ -1,8 +1,10 @@
 package de.muenchen.oss.foerdermittel.backend.report;
 
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportFortsetzungsantragDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1DTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportFortsetzungsantragFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportHaushalt1FormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
 import io.swagger.v3.oas.annotations.Operation;
@@ -97,6 +99,21 @@ public class ReportController {
     public ReportHaushalt1FormContext getReportHaushalt1FormContext() {
         return reportService.getReportHaushalt1();
     }
+
+
+    public void getReportFortsetzungsantrag(
+            @Valid @ModelAttribute final ReportFortsetzungsantragDTO parameters,
+            final HttpServletResponse response)
+            throws IOException, SQLException, JRException {
+        final GeneratedReport generatedReport = reportService.generateReportFortsetzungsantrag(parameters);
+        setMetadata(response, generatedReport);
+        generatedReport.writer().write(response.getOutputStream());
+    }
+
+    @GetMapping(value = "/fortsetzungsantrag/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ReportFortsetzungsantragFormContext getReportFortsetzungsantragFormContext() {
+        return reportService.getReportFortsetzungsantrag();
 
     private static void setMetadata(final HttpServletResponse response, final GeneratedReport generatedReport) {
         response.setContentType(generatedReport.contentType().toString());

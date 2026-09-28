@@ -2,9 +2,11 @@ package de.muenchen.oss.foerdermittel.backend.report;
 
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichService;
 import de.muenchen.oss.foerdermittel.backend.hhplan.HhplanService;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportFortsetzungsantragDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1DTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportFortsetzungsantragFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportHaushalt1FormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
@@ -56,6 +58,8 @@ public class ReportService {
         return new ReportStichworteFormContext(stichwortbereichService.getStichwortbereichFormContextDTOs());
     }
 
+    /// Haushalt1
+
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public GeneratedReport generateReportHaushalt1(
@@ -87,6 +91,33 @@ public class ReportService {
                 hhplanService.getHhplanFormContextDTOs());
 
     }
+
+
+    /// Fortsezungsantrag
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public GeneratedReport generateReportFortsetzungsantrag(
+            final ReportFortsetzungsantragDTO parameters) {
+        if (StringUtils.hasText(parameters.sbl())) {
+            listennameStadtbezirkslisteService.checkExistsByListenname(parameters.sbl());
+        }
+        if (StringUtils.hasText(parameters.bez())) {
+            stadtbezirkService.checkExistsByStadtbezirk(new BigDecimal(parameters.bez()));
+        }
+        return generateReport(reportMapper.toJasperParameters(parameters), ReportType.FMW_ABLAGEINDEX, ReportFormat.PDF,
+                "order by v_fob_fb asc, v_projnr asc, v_bdatum asc");
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public ReportFortsetzungsantragFormContext getReportFortsetzungsantrag() {
+        log.info("Get ReportFortsetzungsantrag form context");
+        return new ReportFortsetzungsantragFormContext(
+                listennameStadtbezirkslisteService.getlistennameStadtbezirkslisteFormContextDTOs(),
+                stadtbezirkService.getStadtbezirkFormContextDTOs());
+    }
+
 
     /// Utility function to create a [GeneratedReport].
     ///
