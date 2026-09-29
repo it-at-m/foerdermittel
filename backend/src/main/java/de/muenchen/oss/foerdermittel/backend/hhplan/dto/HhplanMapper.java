@@ -2,6 +2,7 @@ package de.muenchen.oss.foerdermittel.backend.hhplan.dto;
 
 import de.muenchen.oss.foerdermittel.backend.common.NumberMapper;
 import de.muenchen.oss.foerdermittel.backend.hhplan.Hhplan;
+import de.muenchen.oss.foerdermittel.backend.hhplan.dao.BasicHhplanDAO;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -18,4 +19,7 @@ public interface HhplanMapper {
 
     List<HhplanFormContextDTO> toFormContext(List<Hhplan> hhplanList);
 
+    ReportHhplanFormContextDTO toFormContext(BasicHhplanDAO hhplan);
+
+    List<HhplanFormContextDTO> toFormContextFromBasic(List<BasicHhplanDAO> hhplanList);
 }
