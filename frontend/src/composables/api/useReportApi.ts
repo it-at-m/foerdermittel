@@ -44,8 +44,11 @@ export const {
         GetReportAuswertungProjektRequest,
         ReportAuswertungProjektFormContext
     >(ReportControllerApi, {
-      getOpts: (api, req) => api.getReportAuswertungProjektRequestOpts(req),
-      context: (api) => api.getReportAuswertungProjektFormContext(),
+      getOpts: (api, req) =>
+          api.getReportAuswertungProjektRequestOpts(req),
+
+      context: (api) =>
+          api.getReportAuswertungProjektFormContext(),
     })
 );
 

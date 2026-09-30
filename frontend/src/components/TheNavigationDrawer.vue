@@ -240,7 +240,7 @@ const navigationItems: NavigationItem[] = [
         title: t("domain.report.annahmeAnordnungSAP"),
       },
       {
-        title: t("model.projekt.modelName", 2),
+        title: t("domain.report.auswertungProjekt.modelName"),
         props: {
           to: "/report/auswertungprojekte",
         },

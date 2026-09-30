@@ -58,16 +58,7 @@
       "jahr": "Projektjahr",
       "pname": "Projektname",
       "pstrasse": "Projektstraße",
-      "krisofp": "Förderprogramm",
-      "offen": "Nur offene Projekte",
-      "kauf": "Nur Projekte mit Ankauf",
-      "relevant": "Nur relevante Projekte",
-      "bez": "Stadtbezirk",
-      "fb": "Förderbereich",
-      "ua": "Unterabschnitt",
-      "kurz": "Kurzbezeichnung",
-      "sgt": "Siedlungsgebiet",
-      "bpg": "Bauprogramm"
+      "krisofp": "Förderprogramm"
     },
     "antrag": {
       "modelName": "Antrag | Anträge"
@@ -224,7 +215,21 @@
       "ausstGenehmigungVorzBeginn": "Ausst. Genehmigung vorz. Beginn",
       "bewilligungAuszahlungProjekt": "@:model.bewilligung.modelName und @:domain.auszahlung eines @:model.projekt.modelName{'s'}",
       "bewilligungAuzahlungVergleich": "@:model.bewilligung.modelName und @:domain.auszahlung (Vergleich)",
-      "fortsetzungsAntrag": "Fortsetzungsantrag | Fortsetzungsanträge"
+      "fortsetzungsAntrag": "Fortsetzungsantrag | Fortsetzungsanträge",
+      "auswertungProjekt": {
+        "modelName": "Auswertung Projekt",
+        "offen": "Nur offene Projekte",
+        "kauf": "Nur Projekte mit Ankauf",
+        "relevant": "Nur relevante Projekte",
+        "sortierung": "Sortierung",
+        "sortEnum": {
+          "stadtbezirkStrasse": "Stadtbezirk, Straße",
+          "projektnummer": "Projektnummer",
+          "strasseProjektnummer": "Straße, Projektnummer",
+          "foerderbereichProjektnummer": "Förderbereich, Projektnummer",
+          "foerderbereichStrasse": "Förderbereich, Straße"
+        }
+      }
     }
   },
   "view": {

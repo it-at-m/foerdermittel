@@ -5,84 +5,191 @@
   >
     <v-row>
       <v-col cols="12">
+        <fm-text-field
+            v-model="modelValue.parameters!.jahr"
+            :display-mode="InputDisplayMode.EDIT"
+            :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+            validation-attribute-key="jahr"
+            :label="t('model.projekt.jahr')"
+        />
+        <!-- Projektjahr -->
         <fm-autocomplete
             v-model="modelValue.parameters!.jahr"
-            :items="jahre"
+            :items="jahr"
+            :item-title="getProjektjahrTitle"
+            item-value="jahr"
+            :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+            validation-attribute-key="jahr"
             :label="t('model.projekt.jahr')"
         />
 
-        <fm-text-field
+        <!-- Stadtbezirk -->
+        <fm-autocomplete
             v-model="modelValue.parameters!.bez"
-            :display-mode="InputDisplayMode.EDIT"
-            :label="t('model.projekt.bez')"
+            :items="props.reportAuswertungProjektFormContext?.bezs ?? []"
+            :item-title="getStadtbezirkTitle"
+            item-value="stadtbezirk"
+            :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+            validation-attribute-key="bez"
+            :label="t('model.stadtbezirk.modelName')"
         />
 
-        <fm-text-field
+        <!-- Stadtbezirksliste -->
+        <fm-autocomplete
+            v-model="modelValue.parameters!.sbl"
+            :items="props.reportAuswertungProjektFormContext?.sbls ?? []"
+            :item-title="getStadtbezirkslisteTitle"
+            item-value="kurzbez"
+            :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+            validation-attribute-key="sbl"
+            :label="t('model.stadtbezirksliste.modelName')"
+        />
+
+        <!-- Förderbereich -->
+        <fm-autocomplete
             v-model="modelValue.parameters!.fb"
-            :display-mode="InputDisplayMode.EDIT"
-            :label="t('model.projekt.fb')"
+            :items="props.reportAuswertungProjektFormContext?.fbs ?? []"
+            :item-title="getFoerderbereichTitle"
+            item-value="fb"
+            :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+            validation-attribute-key="fb"
+            :label="t('model.foerderbereich.modelName')"
         />
 
-        <fm-text-field
+        <!-- Unterabschnitt -->
+        <fm-autocomplete
             v-model="modelValue.parameters!.ua"
-            :display-mode="InputDisplayMode.EDIT"
-            :label="t('model.projekt.ua')"
+            :items="props.reportAuswertungProjektFormContext?.uas ?? []"
+            :item-title="getUnterabschnittTitle"
+            item-value="ua"
+            :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+            validation-attribute-key="ua"
+            :label="t('model.unterabschnitt.modelName')"
         />
 
-        <fm-text-field
+        <!-- Kurzbezeichnung -->
+        <fm-autocomplete
             v-model="modelValue.parameters!.kurz"
-            :display-mode="InputDisplayMode.EDIT"
-            :label="t('model.projekt.kurz')"
+            :items="props.reportAuswertungProjektFormContext?.kurzs ?? []"
+            :item-title="getKurzbezeichnungTitle"
+            item-value="kurzbez"
+            :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+            validation-attribute-key="kurz"
+            :label="t('model.kurzbezeichnung.modelName')"
         />
 
+        <!-- Projektname -->
         <fm-text-field
             v-model="modelValue.parameters!.pname"
             :display-mode="InputDisplayMode.EDIT"
+            :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+            validation-attribute-key="pname"
             :label="t('model.projekt.pname')"
         />
 
+        <!-- Straße -->
         <fm-text-field
             v-model="modelValue.parameters!.pstrasse"
             :display-mode="InputDisplayMode.EDIT"
+            :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+            validation-attribute-key="pstrasse"
             :label="t('model.projekt.pstrasse')"
         />
 
-        <v-col cols="12">
-          <v-row>
-            <fm-checkbox
-                v-model="modelValue.parameters!.offen"
-                :label="t('model.projekt.offen')"
-            />
+        <!-- Zusätzliche Filter -->
+        <v-row class="mt-2">
+          <v-col cols="12">
+            <v-row>
+              <fm-checkbox
+                  v-model="modelValue.parameters!.offen"
+                  :label="t('domain.report.auswertungProjekt.offen')"
+                  true-value="1"
+                  false-value="0"
+              />
 
-            <fm-checkbox
-                v-model="modelValue.parameters!.kauf"
-                :label="t('model.projekt.kauf')"
-            />
+              <fm-checkbox
+                  v-model="modelValue.parameters!.kauf"
+                  :label="t('domain.report.auswertungProjekt.kauf')"
+                  true-value="1"
+                  false-value="0"
+              />
 
-            <fm-checkbox
-                v-model="modelValue.parameters!.relevant"
-                :label="t('model.projekt.relevant')"
-            />
-          </v-row>
-        </v-col>
+              <fm-checkbox
+                  v-model="modelValue.parameters!.relevant"
+                  :label="t('domain.report.auswertungProjekt.relevant')"
+                  true-value="1"
+                  false-value="0"
+              />
+            </v-row>
+          </v-col>
+        </v-row>
 
-        <fm-text-field
+        <!-- Sonderförderprogramm -->
+        <fm-autocomplete
             v-model="modelValue.parameters!.krisofp"
-            :display-mode="InputDisplayMode.EDIT"
+            :items="gefiltertKrisofp"
+            :item-title="getKrisofpTitle"
+            item-value="krisofp"
+            :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+            validation-attribute-key="krisofp"
             :label="t('model.projekt.krisofp')"
         />
 
-        <fm-text-field
+        <!-- Siedlungsgebiet -->
+        <fm-autocomplete
             v-model="modelValue.parameters!.sgt"
-            :display-mode="InputDisplayMode.EDIT"
-            :label="t('model.projekt.sgt')"
+            :items="props.reportAuswertungProjektFormContext?.sgts ?? []"
+            :item-title="getSiedlungsgebietTitle"
+            item-value="siedlungsgebiet"
+            :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+            validation-attribute-key="sgt"
+            :label="t('model.siedlungsgebiet.modelName')"
         />
 
-        <fm-text-field
+        <!-- Bauprogramm -->
+        <fm-autocomplete
             v-model="modelValue.parameters!.bpg"
-            :display-mode="InputDisplayMode.EDIT"
-            :label="t('model.projekt.bpg')"
+            :items="props.reportAuswertungProjektFormContext?.bpgs ?? []"
+            :item-title="getBauprogrammTitle"
+            item-value="bauprogramm"
+            :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+            validation-attribute-key="bpg"
+            :label="t('model.bauprogramm.modelName')"
         />
+
+        <!-- Sortierung -->
+        <fm-autocomplete
+            v-model="modelValue.parameters!.sort"
+            :items="sortOptions"
+            item-value="value"
+            item-title="title"
+            :label="t('domain.report.auswertungProjekt.sortierung')"
+        />
+
       </v-col>
     </v-row>
   </v-form>
@@ -91,17 +198,30 @@
 <script setup lang="ts">
 import type {
   GetReportAuswertungProjektRequest,
-  ReportAuswertungProjekteFormContext,
+  ReportAuswertungProjektFormContext,
+  FoerderbereichFormContextDTO,
+  ListennameStadtbezirkslisteFormContextDTO,
+  StadtbezirkFormContextDTO,
+  UnterabschnittFormContextDTO,
+  KurzbezeichnungFormContextDTO,
+  BauprogrammFormContextDTO,
+  SiedlungsgebietFormContextDTO,
 } from "@/api/generated/foerdermittel-backend";
-import type { DeepReadonly } from "vue";
+
 import type { VForm } from "vuetify/components";
 
-import { computed, useTemplateRef } from "vue";
+import {
+  computed,
+  type DeepReadonly,
+  useTemplateRef,
+} from "vue";
+
 import { useI18n } from "vue-i18n";
 
 import {
   ReportAuswertungProjekteDTOPropertyValidationAttributesMap,
 } from "@/api/generated/foerdermittel-backend";
+
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
@@ -109,39 +229,26 @@ import { InputDisplayMode } from "@/types/InputDisplayMode";
 
 const { t } = useI18n();
 
-const modelValue = defineModel<Partial<GetReportAuswertungProjektRequest>>({
-  required: true,
-});
+const modelValue =
+    defineModel<Partial<GetReportAuswertungProjektRequest>>({
+      required: true,
+    });
 
-const { reportAuswertungProjekteFormContext } = defineProps<{
-  reportAuswertungProjekteFormContext?: DeepReadonly<ReportAuswertungProjekteFormContext>;
+const props = defineProps<{
+  reportAuswertungProjektFormContext?: DeepReadonly<
+      ReportAuswertungProjektFormContext
+  >;
 }>();
 
 const emit = defineEmits<{
   isValid: [boolean | null];
 }>();
 
-/**
- * Die Jahre werden aus dem FormContext gelesen.
- *
- * Der FormContext enthält alle Projekte.
- * Der Benutzer wählt kein einzelnes Projekt aus.
- */
-const jahre = computed<string[]>(() => {
-  const projekte = reportAuswertungProjekteFormContext?.projekte ?? [];
-
-  return [...new Set(
-      projekte
-          .map((projekt) => projekt.jahr)
-          .filter((jahr): jahr is string => !!jahr)
-  )].sort((a, b) => Number(a) - Number(b));
-});
+const formRef = useTemplateRef<VForm>("form");
 
 function onValidityChanged(newIsValid: boolean | null) {
   emit("isValid", newIsValid);
 }
-
-const formRef = useTemplateRef<VForm>("form");
 
 async function validate() {
   if (formRef.value) {
@@ -152,4 +259,183 @@ async function validate() {
 defineExpose({
   validate,
 });
+
+/**
+ * Projektjahre aus dem FormContext.
+ *
+ * Beispiel:
+ * 24, 25, 26
+ */
+const jahr = computed(() => {
+  const projekte =
+      props.reportAuswertungProjektFormContext?.projekte ?? [];
+
+  return [...new Set(
+      projekte
+          .map((projekt) => projekt.jahr)
+          .filter(
+              (jahr): jahr is string =>
+                  jahr !== null && jahr !== undefined && jahr !== "",
+          ),
+  )].map((jahr) => ({
+    jahr,
+  }));
+});
+
+function getProjektjahrTitle(item: { jahr: string }) {
+  return item.jahr;
+}
+
+/**
+ * Sonderförderprogramme werden abhängig vom gewählten Jahr
+ * aus den Projekten des FormContext ermittelt.
+ */
+const gefiltertKrisofp = computed(() => {
+  const projekte =
+      props.reportAuswertungProjektFormContext?.projekte ?? [];
+
+  const selectedJahr =
+      modelValue.value.parameters?.jahr;
+
+  const projekteNachJahr = selectedJahr
+      ? projekte.filter(
+          (projekt) => projekt.jahr === selectedJahr,
+      )
+      : projekte;
+
+  return Array.from(
+      new Map(
+          projekteNachJahr
+              .filter(
+                  (projekt) =>
+                      projekt.krisofp !== null &&
+                      projekt.krisofp !== undefined &&
+                      projekt.krisofp !== "",
+              )
+              .map((projekt) => [
+                projekt.krisofp,
+                {
+                  krisofp: projekt.krisofp,
+                },
+              ]),
+      ).values(),
+  );
+});
+
+function getKrisofpTitle(item: { krisofp?: string | null }) {
+  return item?.krisofp ?? "";
+}
+
+/**
+ * Förderbereich.
+ */
+function getFoerderbereichTitle(
+    item: FoerderbereichFormContextDTO,
+) {
+  return item
+      ? `${item.fb} (${item.bezeichnung})`
+      : "";
+}
+
+/**
+ * Stadtbezirksliste.
+ */
+function getStadtbezirkslisteTitle(
+    item: ListennameStadtbezirkslisteFormContextDTO,
+) {
+  return item
+      ? `${item.kurzbez} (${item.bezeichnung})`
+      : "";
+}
+
+/**
+ * Stadtbezirk.
+ */
+function getStadtbezirkTitle(
+    item: StadtbezirkFormContextDTO,
+) {
+  return item
+      ? `${item.stadtbezirk} (${item.bezeichnung})`
+      : "";
+}
+
+/**
+ * Unterabschnitt.
+ */
+function getUnterabschnittTitle(
+    item: UnterabschnittFormContextDTO,
+) {
+  return item
+      ? `${item.ua} (${item.bezeichnung})`
+      : "";
+}
+
+/**
+ * Kurzbezeichnung.
+ */
+function getKurzbezeichnungTitle(
+    item: KurzbezeichnungFormContextDTO,
+) {
+  return item
+      ? `${item.kurzbez ?? ""} (${item.bezeichnung})`
+      : "";
+}
+
+/**
+ * Siedlungsgebiet.
+ */
+function getSiedlungsgebietTitle(
+    item: SiedlungsgebietFormContextDTO,
+) {
+  return item
+      ? `${item.siedlungsgebiet ?? ""} (${item.bezeichnung})`
+      : "";
+}
+
+/**
+ * Bauprogramm.
+ */
+function getBauprogrammTitle(
+    item: BauprogrammFormContextDTO,
+) {
+  return item
+      ? `${item.bauprogramm} (${item.bezeichnung})`
+      : "";
+}
+
+/**
+ * Sortierung.
+ */
+const sortOptions = computed(() => [
+  {
+    title: t(
+        "domain.report.auswertungProjekt.sortEnum.stadtbezirkStrasse",
+    ),
+    value: "STADTBEZIRK_STRASSE",
+  },
+  {
+    title: t(
+        "domain.report.auswertungProjekt.sortEnum.projektnummer",
+    ),
+    value: "PROJEKTNUMMER",
+  },
+  {
+    title: t(
+        "domain.report.auswertungProjekt.sortEnum.strasseProjektnummer",
+    ),
+    value: "STRASSE_PROJEKTNUMMER",
+  },
+  {
+    title: t(
+        "domain.report.auswertungProjekt.sortEnum.foerderbereichStrasse",
+    ),
+    value: "FOERDERBEREICH_STRASSE",
+  },
+  {
+    title: t(
+        "domain.report.auswertungProjekt.sortEnum.foerderbereichProjektnummer",
+    ),
+    value: "FOERDERBEREICH_PROJEKTNUMMER",
+  },
+]);
 </script>

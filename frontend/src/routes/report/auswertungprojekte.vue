@@ -1,5 +1,5 @@
 <template>
-  <base-view :title="t('domain.report.projektUebersicht')">
+  <base-view :title= "title">
     <template #default="{ baseViewLoading }">
       <report-card
           :empty-form-template="EMPTY_FORM_TEMPLATE"
@@ -9,11 +9,11 @@
       >
         <template #form="{ item, updateValidity }">
           <report-auswertung-projekte-form
-              ref="reportAuswertungProjekteForm"
+              ref="reportAuswertungProjektForm"
               :model-value="item"
-              :report-auswertung-projekte-form-context="
-              reportAuswertungProjekteFormContext
-            "
+              :report-auswertung-projekt-form-context="
+      reportAuswertungProjekteFormContext
+    "
               @is-valid="updateValidity"
           />
         </template>
@@ -46,20 +46,27 @@ definePage({
 
 const { t } = useI18n();
 
+const title = t("common.generics.reportTitle", [
+  t("domain.report.auswertungProjekt.modelName", 1),
+]);
+
 const EMPTY_FORM_TEMPLATE: Partial<GetReportAuswertungProjektRequest> = {
   parameters: {
     jahr: "",
-    sgt: "",
+    sbl: "",
     bez: "",
     fb: "",
     ua: "",
     kurz: "",
     pname: "",
     pstrasse: "",
-    foerderprogramm: "",
     krisofp: "",
-    sbg: "",
+    sgt: "",
     bpg: "",
+    kauf: "0",
+    offen: "0",
+    relevant: "0",
+    sort: "PROJEKTNUMMER",
   },
 };
 
