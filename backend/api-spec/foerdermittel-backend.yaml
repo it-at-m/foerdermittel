@@ -1729,7 +1729,7 @@ paths:
                 $ref: "#/components/schemas/ReportStichworteFormContext"
       security:
       - bearerAuth: []
-  /report/projekt:
+  /report/auswertungprojekte:
     get:
       tags:
       - report-controller
@@ -1750,7 +1750,7 @@ paths:
                 format: binary
       security:
       - bearerAuth: []
-  /report/projekt/form-context:
+  /report/auswertungprojekte/form-context:
     get:
       tags:
       - report-controller
@@ -2952,6 +2952,7 @@ components:
     ReportAuswertungProjekteDTO:
       required:
       - jahr
+      - sort
       type: object
       properties:
         jahr:
@@ -2978,57 +2979,170 @@ components:
         krisofp:
           type: string
         kauf:
-          type: boolean
+          type: string
         offen:
-          type: boolean
+          type: string
         relevant:
-          type: boolean
+          type: string
+        sort:
+          type: string
+          enum:
+          - STADTBEZIRK_STRASSE
+          - PROJEKTNUMMER
+          - STRASSE_PROJEKTNUMMER
+          - FOERDERBEREICH_STRASSE
+          - FOERDERBEREICH_PROJEKTNUMMER
+    BauprogrammFormContextDTO:
+      required:
+      - bauprogramm
+      - bezeichnung
+      type: object
+      properties:
+        bauprogramm:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+    FoerderbereichFormContextDTO:
+      required:
+      - bezeichnung
+      - fb
+      type: object
+      properties:
+        fb:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+    KurzbezeichnungFormContextDTO:
+      required:
+      - bezeichnung
+      - kurzbez
+      type: object
+      properties:
+        kurzbez:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+    ListennameStadtbezirkslisteFormContextDTO:
+      required:
+      - bezeichnung
+      - kurzbez
+      type: object
+      properties:
+        kurzbez:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
     ReportAuswertungProjektFormContext:
       required:
+      - bezs
+      - bpgs
+      - fbs
+      - kurzs
       - projekte
+      - sbls
+      - sgts
+      - uas
       type: object
       properties:
         projekte:
           type: array
           items:
             $ref: "#/components/schemas/ReportAuswertungProjektFormContextDTO"
+        fbs:
+          type: array
+          items:
+            $ref: "#/components/schemas/FoerderbereichFormContextDTO"
+        sbls:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
+        bezs:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
+        uas:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnterabschnittFormContextDTO"
+        kurzs:
+          type: array
+          items:
+            $ref: "#/components/schemas/KurzbezeichnungFormContextDTO"
+        bpgs:
+          type: array
+          items:
+            $ref: "#/components/schemas/BauprogrammFormContextDTO"
+        sgts:
+          type: array
+          items:
+            $ref: "#/components/schemas/SiedlungsgebietFormContextDTO"
     ReportAuswertungProjektFormContextDTO:
       required:
-      - bez
-      - bpg
-      - fb
       - jahr
-      - krisofp
-      - kurz
-      - pname
-      - projnr
-      - pstrasse
-      - sgt
-      - ua
       type: object
       properties:
-        projnr:
-          type: string
         jahr:
-          type: string
-        bez:
-          type: string
-        fb:
-          type: string
-        ua:
-          type: string
-        kurz:
           type: string
         pstrasse:
           type: string
         pname:
           type: string
-        sgt:
-          type: string
-        bpg:
-          type: string
         krisofp:
           type: string
+          enum:
+          - X
+          - "Y"
+          - Z
+          - W
+          - V
+          - K
+          - F
+          - S
+    SiedlungsgebietFormContextDTO:
+      required:
+      - bezeichnung
+      - siedlungsgebiet
+      type: object
+      properties:
+        siedlungsgebiet:
+          type: integer
+          description: ""
+          format: int32
+        bezeichnung:
+          type: string
+          description: ""
+    StadtbezirkFormContextDTO:
+      required:
+      - bezeichnung
+      - stadtbezirk
+      type: object
+      properties:
+        stadtbezirk:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+    UnterabschnittFormContextDTO:
+      required:
+      - bezeichnung
+      - ua
+      type: object
+      properties:
+        ua:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
     PagedModelReferatResponseDTO:
       type: object
       properties:
@@ -3204,26 +3318,17 @@ components:
         other than its own.
     ProjektFormContextDTO:
       required:
-      - foerderbereich
-      - pname
       - projnr
-      - pstrasse
       type: object
       properties:
         projnr:
           type: string
-          description: ""
-        pname:
-          type: string
-          description: ""
         pstrasse:
           type: string
-          description: ""
+        pname:
+          type: string
         foerderbereich:
           type: string
-          description: ""
-      description: DTO for Projekt to be used in other FormContexts other than its
-        own.
     Link:
       type: object
       properties:
