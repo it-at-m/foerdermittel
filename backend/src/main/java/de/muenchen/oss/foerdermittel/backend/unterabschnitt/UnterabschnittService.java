@@ -3,6 +3,8 @@ package de.muenchen.oss.foerdermittel.backend.unterabschnitt;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.HauptabschnittService;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.dto.UnterabschnittFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.dto.UnterabschnittMapper;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +14,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -20,6 +25,7 @@ public class UnterabschnittService {
 
     private final HauptabschnittService hauptabschnittService;
     private final UnterabschnittRepository unterabschnittRepository;
+    private final UnterabschnittMapper unterabschnittMapper;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -62,4 +68,17 @@ public class UnterabschnittService {
         ServiceUtils.getEntityOrThrowNotFoundException(ua, unterabschnittRepository, Unterabschnitt.class);
         unterabschnittRepository.deleteById(ua);
     }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<UnterabschnittFormContextDTO> getUnterabschnittFormContextDTOs() {
+        return unterabschnittMapper.toFormContext(unterabschnittRepository.findAll());
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public void checkExistsByUnterabschnitt(final String kurzform) {
+        ServiceUtils.checkExistsOrThrowNotFoundException(kurzform, unterabschnittRepository, Unterabschnitt.class);
+    }
+
 }

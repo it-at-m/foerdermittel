@@ -1,8 +1,12 @@
 package de.muenchen.oss.foerdermittel.backend.siedlungsgebiet;
 
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietMapper;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.math.BigDecimal;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class SiedlungsgebietService {
 
     private final SiedlungsgebietRepository siedlungsgebietRepository;
+    private final SiedlungsgebietMapper siedlungsgebietMapper;
+
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -55,4 +61,18 @@ public class SiedlungsgebietService {
         ServiceUtils.getEntityOrThrowNotFoundException(siedlungsgebietId, siedlungsgebietRepository, Siedlungsgebiet.class);
         siedlungsgebietRepository.deleteById(siedlungsgebietId);
     }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<SiedlungsgebietFormContextDTO> getSiedlungsgebietFormContextDTOs() {
+        return siedlungsgebietMapper.toFormContext(siedlungsgebietRepository.findAll());
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public void checkExistsBySiedlungsgebiet(final BigDecimal sgtId) {
+        ServiceUtils.checkExistsOrThrowNotFoundException(sgtId, siedlungsgebietRepository, Siedlungsgebiet.class);
+    }
+
+
 }

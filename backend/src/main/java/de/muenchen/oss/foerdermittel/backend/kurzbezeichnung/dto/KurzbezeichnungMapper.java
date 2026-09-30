@@ -4,6 +4,8 @@ import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public interface KurzbezeichnungMapper {
@@ -16,5 +18,9 @@ public interface KurzbezeichnungMapper {
 
     @Mapping(target = "kurzbez", ignore = true)
     Kurzbezeichnung toEntity(KurzbezeichnungUpdateDTO kurzbezeichnungUpdateDTO);
+
+    KurzbezeichnungFormContextDTO toFormContext(Kurzbezeichnung kurzbezeichnung);
+
+    List<KurzbezeichnungFormContextDTO> toFormContext(List<Kurzbezeichnung> kurzbezeichnungList);
 
 }

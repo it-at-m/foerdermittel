@@ -1,5 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.kurzbezeichnung;
 
+import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.dto.KurzbezeichnungFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.dto.KurzbezeichnungMapper;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -17,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class KurzbezeichnungService {
 
     private final KurzbezeichnungRepository kurzbezeichnungRepository;
+    private final KurzbezeichnungMapper kurzbezeichnungMapper;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -52,4 +58,18 @@ public class KurzbezeichnungService {
         ServiceUtils.getEntityOrThrowNotFoundException(kurzBez, kurzbezeichnungRepository, Kurzbezeichnung.class);
         kurzbezeichnungRepository.deleteById(kurzBez);
     }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<KurzbezeichnungFormContextDTO> getKurzbezeichnungFormContextDTOs() {
+        return kurzbezeichnungMapper.toFormContext(kurzbezeichnungRepository.findAll());
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public void checkExistsByKurzbezeichnung(final String KurzId) {
+        ServiceUtils.checkExistsOrThrowNotFoundException(KurzId, kurzbezeichnungRepository, Kurzbezeichnung.class);
+    }
+
+
 }

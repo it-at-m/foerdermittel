@@ -65,7 +65,7 @@ public class ReportController {
         return reportService.getReportStichworte();
     }
 
-    @GetMapping("/projekt")
+    @GetMapping("/auswertungprojekte")
     @ResponseStatus(HttpStatus.OK)
     @Operation(
             responses = @ApiResponse(
@@ -88,7 +88,7 @@ public class ReportController {
         generatedReport.writer().write(response.getOutputStream());
     }
 
-    @GetMapping(value = "/projekt/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/auswertungprojekte/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ReportAuswertungProjektFormContext getReportAuswertungProjektFormContext() {
         return reportService.getReportAuswertungProjekt();

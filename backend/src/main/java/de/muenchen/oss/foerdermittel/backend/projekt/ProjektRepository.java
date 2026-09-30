@@ -11,7 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface ProjektRepository extends PagingAndSortingRepository<Projekt, String>, ListCrudRepository<Projekt, String>,
         InsertAndUpdateRepository<Projekt> {
 
-    @Query("SELECT p.projnr FROM Projekt p")
-    List<String> findAllProjekte();
 
 }

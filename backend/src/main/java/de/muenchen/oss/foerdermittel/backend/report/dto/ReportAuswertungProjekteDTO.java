@@ -1,6 +1,10 @@
 package de.muenchen.oss.foerdermittel.backend.report.dto;
 
+import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
+import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 public record ReportAuswertungProjekteDTO(
         @NotBlank String jahr,
@@ -14,7 +18,8 @@ public record ReportAuswertungProjekteDTO(
         String sbl,
         String bpg,
         String krisofp,
-        Boolean kauf,
-        Boolean offen,
-        Boolean relevant) {
+        String kauf,
+        String offen,
+        String relevant,
+        @NotNull ReportAuwertungProjektSort sort) {
 }

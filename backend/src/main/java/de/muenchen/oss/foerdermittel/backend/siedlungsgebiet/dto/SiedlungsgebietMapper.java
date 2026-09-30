@@ -5,6 +5,8 @@ import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(uses = NumberMapper.class)
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public interface SiedlungsgebietMapper {
@@ -17,5 +19,9 @@ public interface SiedlungsgebietMapper {
 
     @Mapping(target = "siedlungsgebiet", ignore = true)
     Siedlungsgebiet toEntity(SiedlungsgebietUpdateDTO siedlungsgebietUpdateDTO);
+
+    SiedlungsgebietFormContextDTO toFormContext(Siedlungsgebiet Siedlungsgebiet);
+
+    List<SiedlungsgebietFormContextDTO> toFormContext(List<Siedlungsgebiet> siedlungsgebietList);
 
 }
