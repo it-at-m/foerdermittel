@@ -3,6 +3,8 @@ package de.muenchen.oss.foerdermittel.backend.stadtbezirksliste;
 import de.muenchen.oss.foerdermittel.backend.common.DeleteNotAllowedException;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameStadtbezirkslisteFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameStadtbezirkslisteMapper;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +14,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -20,6 +24,7 @@ public class ListennameStadtbezirkslisteService {
 
     private final ListennameRepository listennameRepository;
     private final StadtbezirkslisteRepository stadtbezirkslisteRepository;
+    private final ListennameStadtbezirkslisteMapper listennameStadtbezirkslisteMapper;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -78,5 +83,19 @@ public class ListennameStadtbezirkslisteService {
 
         listennameRepository.delete(listenname);
     }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<ListennameStadtbezirkslisteFormContextDTO> getlistennameStadtbezirkslisteFormContextDTOs() {
+        return listennameStadtbezirkslisteMapper.toFormContext(listennameRepository.findAll());
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public void checkExistsByListenname(final String listenname) {
+        ServiceUtils.checkExistsOrThrowNotFoundException(listenname, listennameRepository, Listenname.class);
+    }
+
+
 
 }

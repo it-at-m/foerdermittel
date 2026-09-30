@@ -2,8 +2,11 @@ package de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto;
 
 import de.muenchen.oss.foerdermittel.backend.common.NumberMapper;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkFormContext;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+
+import java.util.List;
 
 @Mapper(uses = NumberMapper.class)
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
@@ -17,5 +20,9 @@ public interface StadtbezirkMapper {
 
     @Mapping(target = "stadtbezirk", ignore = true)
     Stadtbezirk toEntity(StadtbezirkUpdateDTO stadtbezirkUpdateDTO);
+
+    StadtbezirkFormContext toFormContext(Stadtbezirk stadtbezirk);
+
+    List<StadtbezirkFormContextDTO> toFormContext(List<Stadtbezirk> stadtbezirkList);
 
 }

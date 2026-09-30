@@ -5,6 +5,8 @@ import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(uses = NumberMapper.class)
 public interface FoerderbereichMapper {
 
@@ -16,5 +18,9 @@ public interface FoerderbereichMapper {
 
     @Mapping(target = "fb", ignore = true)
     Foerderbereich toEntity(FoerderbereichUpdateDTO foerderbereichUpdateDTO);
+
+    FoerderbereichFormContextDTO toFormContext(Foerderbereich foerderbereich);
+
+    List<FoerderbereichFormContextDTO> toFormContext(List<Foerderbereich> foerderbereichList);
 
 }

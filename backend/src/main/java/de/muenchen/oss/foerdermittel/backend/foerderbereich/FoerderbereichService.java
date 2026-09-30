@@ -1,8 +1,12 @@
 package de.muenchen.oss.foerdermittel.backend.foerderbereich;
 
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichMapper;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.math.BigDecimal;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class FoerderbereichService {
 
     private final FoerderbereichRepository foerderbereichRepository;
+    private final FoerderbereichMapper foerderbereichMapper;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -57,6 +62,18 @@ public class FoerderbereichService {
         log.debug("Delete Foerderbereich with ID {}", foerderbereichId);
         ServiceUtils.getEntityOrThrowNotFoundException(foerderbereichId, foerderbereichRepository, Foerderbereich.class);
         foerderbereichRepository.deleteById(foerderbereichId);
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<FoerderbereichFormContextDTO> getFoerderbereichFormContextDTOs() {
+        return foerderbereichMapper.toFormContext(foerderbereichRepository.findAll());
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public void checkExistsByFoerderbereich(final BigDecimal bereich) {
+        ServiceUtils.checkExistsOrThrowNotFoundException(bereich, foerderbereichRepository, Foerderbereich.class);
     }
 
 }
