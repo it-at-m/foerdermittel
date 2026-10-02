@@ -1,7 +1,9 @@
 package de.muenchen.oss.foerdermittel.backend.report;
 
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportProjektuebersichtDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportProjektuebersichtFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -61,6 +63,35 @@ public class ReportController {
     @ResponseStatus(HttpStatus.OK)
     public ReportStichworteFormContext getReportStichworteFormContext() {
         return reportService.getReportStichworte();
+    }
+
+    @GetMapping("/projektuebersicht")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            responses = @ApiResponse(
+                    responseCode = "200",
+                    description = "OK",
+                    content = {
+                            @Content(
+                                    mediaType = MediaType.APPLICATION_PDF_VALUE,
+                                    schema = @Schema(type = "string", format = "binary")
+                            )
+                    }
+            )
+    )
+    public void getReportProjektuebersicht(
+            @Valid @ModelAttribute final ReportProjektuebersichtDTO parameters,
+            final HttpServletResponse response)
+            throws IOException, SQLException, JRException {
+        final GeneratedReport generatedReport = reportService.generateReportProjektuebersicht(parameters);
+        setMetadata(response, generatedReport);
+        generatedReport.writer().write(response.getOutputStream());
+    }
+
+    @GetMapping(value = "/projektuebersicht/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ReportProjektuebersichtFormContext getReportProjektuebersichtFormContext() {
+        return reportService.getReportProjektuebersicht();
     }
 
     private static void setMetadata(final HttpServletResponse response, final GeneratedReport generatedReport) {
