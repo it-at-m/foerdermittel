@@ -1,5 +1,7 @@
 import type {
+  GetReportHaushalt1Request,
   GetReportStichworteRequest,
+  ReportHaushalt1FormContext,
   ReportStichworteFormContext,
 } from "@/api/generated/foerdermittel-backend";
 import type { ReportApiComposables } from "@/util/composable-helper";
@@ -31,5 +33,31 @@ export function useReportStichworteApi(): ReportApiComposables<
   return {
     getOpts: useGetReportStichworteOpts(),
     context: useGetReportStichworteFormContext(),
+  };
+}
+
+//Haushalt1 Haushaltsplanung
+
+export const {
+  useGetOpts: useGetReportHaushalt1Opts,
+  useContext: useGetReportHaushalt1FormContext,
+} = requireComposables(
+  createReportAPIComposables<
+    ReportControllerApi,
+    GetReportHaushalt1Request,
+    ReportHaushalt1FormContext
+  >(ReportControllerApi, {
+    getOpts: (api, req) => api.getReportHaushalt1RequestOpts(req),
+    context: (api) => api.getReportHaushalt1FormContext(),
+  })
+);
+
+export function useReportHaushalt1Api(): ReportApiComposables<
+  GetReportHaushalt1Request,
+  ReportHaushalt1FormContext
+> {
+  return {
+    getOpts: useGetReportHaushalt1Opts(),
+    context: useGetReportHaushalt1FormContext(),
   };
 }

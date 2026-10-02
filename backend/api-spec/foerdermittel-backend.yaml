@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: foerdermittel-backend
   description: Backend component for the application foerdermittel
-  version: 0.2.0-SNAPSHOT
+  version: 0.3.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -1729,6 +1729,45 @@ paths:
                 $ref: "#/components/schemas/ReportStichworteFormContext"
       security:
       - bearerAuth: []
+  /report/haushalt1:
+    get:
+      tags:
+      - report-controller
+      operationId: getReportHaushalt1
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportHaushalt1DTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/haushalt1/form-context:
+    get:
+      tags:
+      - report-controller
+      operationId: getReportHaushalt1FormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportHaushalt1FormContext"
+      security:
+      - bearerAuth: []
   /referate/form-context:
     get:
       tags:
@@ -1783,6 +1822,62 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/KrankenhausFormContext"
+      security:
+      - bearerAuth: []
+  /hhplan:
+    get:
+      tags:
+      - hhplan-controller
+      operationId: getHhplan
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "id.hhjJahr,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelHhplanResponseDTO"
+      security:
+      - bearerAuth: []
+  /hhplan/form-context:
+    get:
+      tags:
+      - hhplan-controller
+      operationId: getHhplanFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HhplanFormContext"
       security:
       - bearerAuth: []
   /hauptabschnitte/form-context:
@@ -2914,6 +3009,116 @@ components:
       description: |-
         DTO for [de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich] to be used in
         other FormContexts other than its own.
+    ReportFormat:
+      type: string
+      enum:
+      - PDF
+      - PDF_FLAT
+      - EXCEL
+    ReportHaushalt1DTO:
+      required:
+      - haushaltsjahr
+      - sort
+      - type
+      type: object
+      properties:
+        haushaltsjahr:
+          minLength: 1
+          pattern: "\\d{4}"
+          type: string
+        fb:
+          type: string
+        fipo:
+          type: string
+        sbl:
+          type: string
+        bez:
+          type: string
+        hh:
+          type: string
+        sort:
+          type: string
+          enum:
+          - PROJEKTNUMMER
+          - STRASSE
+          - FIPO
+          - FB_PROJEKTNUMMER
+          - FB_STRASSE_PROJEKTNUMMER
+          - FB_FIPO
+        type:
+          $ref: "#/components/schemas/ReportFormat"
+    FoerderbereichFormContextDTO:
+      required:
+      - bezeichnung
+      - fb
+      type: object
+      properties:
+        fb:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+    HhplanFormContextDTO:
+      required:
+      - fipo
+      - hhjJahr
+      type: object
+      properties:
+        hhjJahr:
+          type: number
+          description: ""
+        fipo:
+          type: string
+          description: ""
+    ListennameStadtbezirkslisteFormContextDTO:
+      required:
+      - bezeichnung
+      - kurzbez
+      type: object
+      properties:
+        kurzbez:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+    ReportHaushalt1FormContext:
+      required:
+      - bezs
+      - fbs
+      - fipos
+      - sbls
+      type: object
+      properties:
+        fbs:
+          type: array
+          items:
+            $ref: "#/components/schemas/FoerderbereichFormContextDTO"
+        sbls:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
+        bezs:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
+        fipos:
+          type: array
+          items:
+            $ref: "#/components/schemas/HhplanFormContextDTO"
+    StadtbezirkFormContextDTO:
+      required:
+      - bezeichnung
+      - stadtbezirk
+      type: object
+      properties:
+        stadtbezirk:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
     PagedModelReferatResponseDTO:
       type: object
       properties:
@@ -2986,6 +3191,37 @@ components:
           type: array
           items:
             type: string
+    HhplanResponseDTO:
+      required:
+      - fipo
+      - hhjJahr
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        hhjJahr:
+          type: number
+        fipo:
+          type: string
+    PagedModelHhplanResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/HhplanResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    HhplanFormContext:
+      required:
+      - hhp
+      type: object
+      properties:
+        hhp:
+          type: array
+          items:
+            type: number
     PagedModelHauptabschnittResponseDTO:
       type: object
       properties:
