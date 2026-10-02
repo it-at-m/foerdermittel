@@ -3,6 +3,7 @@ package de.muenchen.oss.foerdermittel.backend.report;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammService;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichService;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungService;
+import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuswertungProjekteDTO;
@@ -19,6 +20,7 @@ import de.muenchen.oss.foerdermittel.backend.stichwortbereich.StichwortbereichSe
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittService;
@@ -40,7 +42,6 @@ public class ReportService {
     private final ListennameStadtbezirkslisteService listennameStadtbezirkslisteService;
     private final StadtbezirkService stadtbezirkService;
     private final KurzbezeichnungService kurzbezeichnungService;
-    private final ProjektService projectService;
     private final BauprogrammService bauprogrammService;
     private final UnterabschnittService unterabschnittService;
     private final SiedlungsgebietService siedlungsgebietService;
@@ -72,28 +73,38 @@ public class ReportService {
             final ReportAuswertungProjekteDTO parameters) {
 
         if (StringUtils.hasText(parameters.fb())) {
-            foerderbereichService.checkExistsByFoerderbereich(new BigDecimal(parameters.fb()));
+            foerderbereichService.checkExistsByFoerderbereich(
+                    new BigDecimal(parameters.fb()));
         }
+
         if (StringUtils.hasText(parameters.sbl())) {
-            listennameStadtbezirkslisteService.checkExistsByListenname(parameters.sbl());
+            listennameStadtbezirkslisteService.checkExistsByListenname(
+                    parameters.sbl());
         }
+
         if (StringUtils.hasText(parameters.bez())) {
-            stadtbezirkService.checkExistsByStadtbezirk(new BigDecimal(parameters.bez()));
+            stadtbezirkService.checkExistsByStadtbezirk(
+                    new BigDecimal(parameters.bez()));
         }
+
         if (StringUtils.hasText(parameters.ua())) {
-            unterabschnittService.checkExistsByUnterabschnitt(parameters.ua());
+            unterabschnittService.checkExistsByUnterabschnitt(
+                    parameters.ua());
         }
 
         if (StringUtils.hasText(parameters.sgt())) {
-            siedlungsgebietService.checkExistsBySiedlungsgebiet(new BigDecimal(parameters.sgt()));
+            siedlungsgebietService.checkExistsBySiedlungsgebiet(
+                    new BigDecimal(parameters.sgt()));
         }
 
         if (StringUtils.hasText(parameters.kurz())) {
-            kurzbezeichnungService.checkExistsByKurzbezeichnung(parameters.kurz());
+            kurzbezeichnungService.checkExistsByKurzbezeichnung(
+                    parameters.kurz());
         }
 
         if (StringUtils.hasText(parameters.bpg())) {
-            bauprogrammService.checkExistsByBauprogramm(new BigDecimal(parameters.bpg()));
+            bauprogrammService.checkExistsByBauprogramm(
+                    new BigDecimal(parameters.bpg()));
         }
 
         final String orderBy = parameters.sort().getOrderBy();
@@ -106,10 +117,12 @@ public class ReportService {
     }
 
 
+
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public ReportAuswertungProjektFormContext getReportAuswertungProjekt() {
         log.info("Get ReportProjektuebersicht form context");
+
         return new ReportAuswertungProjektFormContext(
                 projektService.getReportAuswertungProjektFormContextDTOs(),
                 foerderbereichService.getFoerderbereichFormContextDTOs(),
@@ -118,7 +131,9 @@ public class ReportService {
                 unterabschnittService.getUnterabschnittFormContextDTOs(),
                 kurzbezeichnungService.getKurzbezeichnungFormContextDTOs(),
                 bauprogrammService.getBauprogrammFormContextDTOs(),
-                siedlungsgebietService.getSiedlungsgebietFormContextDTOs());
+                siedlungsgebietService.getSiedlungsgebietFormContextDTOs(),
+                List.of(Krisofp.values())
+        );
     }
 
     /// Utility function to create a [GeneratedReport].

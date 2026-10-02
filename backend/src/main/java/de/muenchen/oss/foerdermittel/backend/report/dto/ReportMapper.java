@@ -3,8 +3,8 @@ package de.muenchen.oss.foerdermittel.backend.report.dto;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.util.StringUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 /// Component responsible for conversion between report DTOs and Jasper parameter maps.
 @Component
@@ -24,66 +24,55 @@ public class ReportMapper {
 
         final Map<String, Object> parameters = new HashMap<>();
 
+        // Eingabe-Filter
         parameters.put("P_JAHR", dto.jahr());
 
-        parameters.put(
-                "P_SBL",
-                StringUtils.hasText(dto.sbl())
-                        ? dto.sbl()
-                        : null
-        );
+        if (StringUtils.hasText(dto.fb())) {
+            parameters.put("P_FB", dto.fb());
+        } else {
+            parameters.put("P_FB", null);
+        }
 
-        parameters.put(
-                "P_BEZ",
-                StringUtils.hasText(dto.bez())
-                        ? dto.bez()
-                        : null
-        );
+        if (StringUtils.hasText(dto.ua())) {
+            parameters.put("P_UA", dto.ua());
+        } else {
+            parameters.put("P_UA", null);
+        }
 
-        parameters.put(
-                "P_FB",
-                StringUtils.hasText(dto.fb())
-                        ? dto.fb()
-                        : null
-        );
+        if (StringUtils.hasText(dto.kurz())) {
+            parameters.put("P_KURZ", dto.kurz());
+        } else {
+            parameters.put("P_KURZ", null);
+        }
 
-        parameters.put(
-                "P_UA",
-                StringUtils.hasText(dto.ua())
-                        ? dto.ua()
-                        : null
-        );
+        parameters.put("P_KRISOFP", dto.krisofp());
 
-        parameters.put(
-                "P_KURZ",
-                StringUtils.hasText(dto.kurz())
-                        ? dto.kurz()
-                        : null
-        );
+        if (StringUtils.hasText(dto.sgt())) {
+            parameters.put("P_SGT", dto.sgt());
+        } else {
+            parameters.put("P_SGT", null);
+        }
 
-        parameters.put(
-                "P_KRISOFP",
-                StringUtils.hasText(dto.krisofp())
-                        ? dto.krisofp()
-                        : null
-        );
-
-        parameters.put(
-                "P_SGT",
-                StringUtils.hasText(dto.sgt())
-                        ? dto.sgt()
-                        : null
-        );
-
-        parameters.put(
-                "P_BPG",
-                StringUtils.hasText(dto.bpg())
-                        ? dto.bpg()
-                        : null
-        );
+        if (StringUtils.hasText(dto.bpg())) {
+            parameters.put("P_BPG", dto.bpg());
+        } else {
+            parameters.put("P_BPG", null);
+        }
 
         parameters.put("P_PSTRASSE", dto.pstrasse());
         parameters.put("P_PNAME", dto.pname());
+
+        if (StringUtils.hasText(dto.sbl())) {
+            parameters.put("P_SBL", dto.sbl());
+        } else {
+            parameters.put("P_SBL", null);
+        }
+
+        if (StringUtils.hasText(dto.bez())) {
+            parameters.put("P_BEZ", dto.bez());
+        } else {
+            parameters.put("P_BEZ", null);
+        }
 
         parameters.put("P_KAUF", dto.kauf());
         parameters.put("P_OFFEN", dto.offen());

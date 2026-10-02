@@ -3,6 +3,7 @@ package de.muenchen.oss.foerdermittel.backend.report.formcontext;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.dto.KurzbezeichnungFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkFormContextDTO;
@@ -20,7 +21,8 @@ public record ReportAuswertungProjektFormContext(
         @NotNull List<UnterabschnittFormContextDTO> uas,
         @NotNull List<KurzbezeichnungFormContextDTO> kurzs,
         @NotNull List<BauprogrammFormContextDTO> bpgs,
-        @NotNull List<SiedlungsgebietFormContextDTO> sgts
+        @NotNull List<SiedlungsgebietFormContextDTO> sgts,
+        @NotNull List<Krisofp> krisofps
         ) {
     public ReportAuswertungProjektFormContext {
         projekte = List.copyOf(projekte);
@@ -31,6 +33,7 @@ public record ReportAuswertungProjektFormContext(
         kurzs = List.copyOf(kurzs);
         bpgs = List.copyOf(bpgs);
         sgts = List.copyOf(sgts);
+        krisofps = List.copyOf(krisofps);
 
     }
 }

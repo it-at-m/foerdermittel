@@ -5,6 +5,7 @@
   >
     <v-row>
       <v-col cols="12">
+        <!-- Projektjahr -->
         <fm-text-field
             v-model="modelValue.parameters!.jahr"
             :display-mode="InputDisplayMode.EDIT"
@@ -14,19 +15,6 @@
             validation-attribute-key="jahr"
             :label="t('model.projekt.jahr')"
         />
-        <!-- Projektjahr -->
-        <fm-autocomplete
-            v-model="modelValue.parameters!.jahr"
-            :items="jahr"
-            :item-title="getProjektjahrTitle"
-            item-value="jahr"
-            :validation-attribute-map="
-            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
-          "
-            validation-attribute-key="jahr"
-            :label="t('model.projekt.jahr')"
-        />
-
         <!-- Stadtbezirk -->
         <fm-autocomplete
             v-model="modelValue.parameters!.bez"
@@ -141,16 +129,15 @@
             </v-row>
           </v-col>
         </v-row>
-
-        <!-- Sonderförderprogramm -->
         <fm-autocomplete
             v-model="modelValue.parameters!.krisofp"
-            :items="gefiltertKrisofp"
+            :items="props.reportAuswertungProjektFormContext?.krisofps ?? []"
             :item-title="getKrisofpTitle"
-            item-value="krisofp"
+            :item-value="getKrisofpValue"
+            clearable
             :validation-attribute-map="
-            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
-          "
+        ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+    "
             validation-attribute-key="krisofp"
             :label="t('model.projekt.krisofp')"
         />
@@ -206,6 +193,7 @@ import type {
   KurzbezeichnungFormContextDTO,
   BauprogrammFormContextDTO,
   SiedlungsgebietFormContextDTO,
+  Krisofp,
 } from "@/api/generated/foerdermittel-backend";
 
 import type { VForm } from "vuetify/components";
@@ -273,58 +261,35 @@ const jahr = computed(() => {
   return [...new Set(
       projekte
           .map((projekt) => projekt.jahr)
-          .filter(
-              (jahr): jahr is string =>
-                  jahr !== null && jahr !== undefined && jahr !== "",
-          ),
-  )].map((jahr) => ({
-    jahr,
-  }));
+          .filter((jahr): jahr is string => !!jahr)
+          .map((jahr) => jahr.length === 2 ? `20${jahr}` : jahr),
+  )];
 });
 
-function getProjektjahrTitle(item: { jahr: string }) {
-  return item.jahr;
+function getProjektjahrTitle(item: string) {
+  return item;
 }
 
-/**
- * Sonderförderprogramme werden abhängig vom gewählten Jahr
- * aus den Projekten des FormContext ermittelt.
- */
-const gefiltertKrisofp = computed(() => {
-  const projekte =
-      props.reportAuswertungProjektFormContext?.projekte ?? [];
 
-  const selectedJahr =
-      modelValue.value.parameters?.jahr;
+const krisofpBezeichnungen = new Map<string, string>([
+  ["X", "1.+2. SIP - KriSoFö 2008-2014"],
+  ["Y", "3. SIP - Kinderbetreuung 2015-2019"],
+  ["Z", "4. SIP - Kinderbetreuung 2017-2020/2021"],
+  ["W", "5. SIP - Schulkindbetreuung Land (Hortförd. GS)"],
+  ["V", "Schulkindbetreuung - Bund (GaFöG)"],
+  ["K", "KJP II"],
+  ["F", "FAGplus15"],
+  ["S", "Startchancen-Programm (SCP)"],
+]);
 
-  const projekteNachJahr = selectedJahr
-      ? projekte.filter(
-          (projekt) => projekt.jahr === selectedJahr,
-      )
-      : projekte;
-
-  return Array.from(
-      new Map(
-          projekteNachJahr
-              .filter(
-                  (projekt) =>
-                      projekt.krisofp !== null &&
-                      projekt.krisofp !== undefined &&
-                      projekt.krisofp !== "",
-              )
-              .map((projekt) => [
-                projekt.krisofp,
-                {
-                  krisofp: projekt.krisofp,
-                },
-              ]),
-      ).values(),
-  );
-});
-
-function getKrisofpTitle(item: { krisofp?: string | null }) {
-  return item?.krisofp ?? "";
+function getKrisofpTitle(item: Krisofp) {
+  return `${item} (${krisofpBezeichnungen.get(item) ?? item})`;
 }
+
+function getKrisofpValue(item: Krisofp) {
+  return item;
+}
+
 
 /**
  * Förderbereich.

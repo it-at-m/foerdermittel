@@ -60,7 +60,6 @@ const EMPTY_FORM_TEMPLATE: Partial<GetReportAuswertungProjektRequest> = {
     kurz: "",
     pname: "",
     pstrasse: "",
-    krisofp: "",
     sgt: "",
     bpg: "",
     kauf: "0",

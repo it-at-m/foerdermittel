@@ -12,4 +12,5 @@ public interface ProjektRepository extends PagingAndSortingRepository<Projekt, S
         InsertAndUpdateRepository<Projekt> {
 
 
+
 }
