@@ -78,6 +78,7 @@ public class ReportController {
                                     mediaType = MediaType.APPLICATION_PDF_VALUE,
                                     schema = @Schema(type = "string", format = "binary")
                             ),
+
                             @Content(
                                     mediaType = CustomReportContentTypes.EXCEL_CONTENT_TYPE,
                                     schema = @Schema(type = "string", format = "binary")
@@ -101,6 +102,21 @@ public class ReportController {
     }
 
 
+    @GetMapping("/fortsetzungsantrag")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            responses = @ApiResponse(
+                    responseCode = "200",
+                    description = "OK",
+                    content = {
+                            @Content(
+                                    mediaType = MediaType.APPLICATION_PDF_VALUE,
+                                    schema = @Schema(type = "string", format = "binary")
+                            )
+                    }
+            )
+    )
+
     public void getReportFortsetzungsantrag(
             @Valid @ModelAttribute final ReportFortsetzungsantragDTO parameters,
             final HttpServletResponse response)
@@ -114,6 +130,7 @@ public class ReportController {
     @ResponseStatus(HttpStatus.OK)
     public ReportFortsetzungsantragFormContext getReportFortsetzungsantragFormContext() {
         return reportService.getReportFortsetzungsantrag();
+    }
 
     private static void setMetadata(final HttpServletResponse response, final GeneratedReport generatedReport) {
         response.setContentType(generatedReport.contentType().toString());

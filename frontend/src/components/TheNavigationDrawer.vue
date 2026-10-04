@@ -286,6 +286,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("domain.report.fortsetzungsAntrag", 2),
+        props: {
+          to: "/report/fortsetzungsantrag",
+        },
       },
       {
         title: t("domain.kinderbetreuungsEinrichtung", 2),

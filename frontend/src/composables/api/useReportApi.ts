@@ -1,6 +1,8 @@
 import type {
+  GetReportFortsetzungsantragRequest,
   GetReportHaushalt1Request,
   GetReportStichworteRequest,
+  ReportFortsetzungsantragFormContext,
   ReportHaushalt1FormContext,
   ReportStichworteFormContext,
 } from "@/api/generated/foerdermittel-backend";
@@ -59,5 +61,30 @@ export function useReportHaushalt1Api(): ReportApiComposables<
   return {
     getOpts: useGetReportHaushalt1Opts(),
     context: useGetReportHaushalt1FormContext(),
+  };
+}
+
+//Fortsetzungsantrag
+export const {
+  useGetOpts: useGetReportFortsetzungsantragOpts,
+  useContext: useGetReportFortsetzungsantragFormContext,
+} = requireComposables(
+  createReportAPIComposables<
+    ReportControllerApi,
+    GetReportFortsetzungsantragRequest,
+    ReportFortsetzungsantragFormContext
+  >(ReportControllerApi, {
+    getOpts: (api, req) => api.getReportFortsetzungsantragRequestOpts(req),
+    context: (api) => api.getReportFortsetzungsantragFormContext(),
+  })
+);
+
+export function useReportFortsetzungsantragApi(): ReportApiComposables<
+  GetReportFortsetzungsantragRequest,
+  ReportFortsetzungsantragFormContext
+> {
+  return {
+    getOpts: useGetReportFortsetzungsantragOpts(),
+    context: useGetReportFortsetzungsantragFormContext(),
   };
 }

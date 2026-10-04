@@ -105,7 +105,7 @@ public class ReportService {
         if (StringUtils.hasText(parameters.bez())) {
             stadtbezirkService.checkExistsByStadtbezirk(new BigDecimal(parameters.bez()));
         }
-        return generateReport(reportMapper.toJasperParameters(parameters), ReportType.FMW_ABLAGEINDEX, ReportFormat.PDF,
+        return generateReport(reportMapper.toJasperParameters(parameters), ReportType.FMW_BEWILL4, parameters.type(),
                 "order by v_fob_fb asc, v_projnr asc, v_bdatum asc");
     }
 

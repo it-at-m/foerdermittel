@@ -28,6 +28,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.servlet.client.RestTestClient;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -234,6 +235,47 @@ public class ReportIntegrationTest {
         }
 
     }
+
+    /// Fortsetzungsantrag
+    @Nested
+    class GetReportFortsetzungsantrag {
+
+        @Test
+        void givenMissingType_thenReturnBadRequest() {
+            restTestClient.get()
+                    .uri("/report/fortsetzungsantrag")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
+                    .exchange()
+                    .expectStatus().isBadRequest();
+        }
+
+        @Test
+        void givenUnknownStadtbezirksliste_thenReturnNotFound() {
+            restTestClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/report/fortsetzungsantrag")
+                            .queryParam("type", "PDF")
+                            .queryParam("sbl", "NOTFOUND")
+                            .build())
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
+                    .exchange()
+                    .expectStatus().isNotFound();
+        }
+
+        @Test
+        void givenUnknownStadtbezirk_thenReturnNotFound() {
+            restTestClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/report/fortsetzungsantrag")
+                            .queryParam("type", "PDF")
+                            .queryParam("bez", "999999")
+                            .build())
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
+                    .exchange()
+                    .expectStatus().isNotFound();
+        }
+    }
+
 
     /// Utility expectation that checks for non JSON, plain or Octet content type, validates a body
     /// exists and checks the correct headers.

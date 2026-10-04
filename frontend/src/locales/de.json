@@ -214,7 +214,15 @@
       "ausstGenehmigungVorzBeginn": "Ausst. Genehmigung vorz. Beginn",
       "bewilligungAuszahlungProjekt": "@:model.bewilligung.modelName und @:domain.auszahlung eines @:model.projekt.modelName{'s'}",
       "bewilligungAuzahlungVergleich": "@:model.bewilligung.modelName und @:domain.auszahlung (Vergleich)",
-      "fortsetzungsAntrag": "Fortsetzungsantrag | Fortsetzungsanträge",
+      "fortsetzungsAntrag": {
+        "modelName": "Fortsetzungsantrag | Fortsetzungsanträge",
+        "fag": "Nur FAG",
+        "ofPro": "Nur offene Projekte",
+        "type": {
+          "pdf": "PDF",
+          "excel": "Excel"
+        }
+      },
       "haushalt1": {
         "modelName": "Haushaltsplanung",
         "hh": "Ausgabe nur mit Haushaltszahlen",
