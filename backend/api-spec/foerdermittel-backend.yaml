@@ -2957,6 +2957,7 @@ components:
       properties:
         jahr:
           minLength: 1
+          pattern: "\\d{4}"
           type: string
         bez:
           type: string
@@ -2967,8 +2968,12 @@ components:
         kurz:
           type: string
         pstrasse:
+          maxLength: 30
+          minLength: 0
           type: string
         pname:
+          maxLength: 30
+          minLength: 0
           type: string
         sgt:
           type: string
@@ -2978,6 +2983,15 @@ components:
           type: string
         krisofp:
           type: string
+          enum:
+          - X
+          - "Y"
+          - Z
+          - W
+          - V
+          - K
+          - F
+          - S
         kauf:
           type: string
         offen:
@@ -3045,6 +3059,7 @@ components:
       - bezs
       - bpgs
       - fbs
+      - krisofps
       - kurzs
       - projekte
       - sbls
@@ -3084,6 +3099,19 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/SiedlungsgebietFormContextDTO"
+        krisofps:
+          type: array
+          items:
+            type: string
+            enum:
+            - X
+            - "Y"
+            - Z
+            - W
+            - V
+            - K
+            - F
+            - S
     ReportAuswertungProjektFormContextDTO:
       required:
       - jahr
