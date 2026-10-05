@@ -1,4 +1,6 @@
 import type {
+  GetReportHaushalt1Request,
+  GetReportProjektuebersichtRequest,
   GetReportStichworteRequest,
   ReportHaushalt1FormContext,
   ReportProjektuebersichtFormContext,
