@@ -3,7 +3,6 @@ package de.muenchen.oss.foerdermittel.backend.report.dto;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
