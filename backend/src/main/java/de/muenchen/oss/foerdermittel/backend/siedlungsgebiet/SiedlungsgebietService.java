@@ -24,7 +24,6 @@ public class SiedlungsgebietService {
     private final SiedlungsgebietRepository siedlungsgebietRepository;
     private final SiedlungsgebietMapper siedlungsgebietMapper;
 
-
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public Page<Siedlungsgebiet> getSiedlungsgebiete(final Pageable pageable) {
@@ -73,6 +72,5 @@ public class SiedlungsgebietService {
     public void checkExistsBySiedlungsgebiet(final BigDecimal sgtId) {
         ServiceUtils.checkExistsOrThrowNotFoundException(sgtId, siedlungsgebietRepository, Siedlungsgebiet.class);
     }
-
 
 }

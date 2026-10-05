@@ -41,8 +41,7 @@ public class ReportMapper {
                 "P_KRISOFP",
                 dto.krisofp() != null
                         ? dto.krisofp().name()
-                        : null
-        );
+                        : null);
 
         parameters.put("P_KAUF", dto.kauf());
         parameters.put("P_OFFEN", dto.offen());

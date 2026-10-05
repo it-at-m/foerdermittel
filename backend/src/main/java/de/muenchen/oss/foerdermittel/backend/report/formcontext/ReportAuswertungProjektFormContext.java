@@ -22,8 +22,7 @@ public record ReportAuswertungProjektFormContext(
         @NotNull List<KurzbezeichnungFormContextDTO> kurzs,
         @NotNull List<BauprogrammFormContextDTO> bpgs,
         @NotNull List<SiedlungsgebietFormContextDTO> sgts,
-        @NotNull List<Krisofp> krisofps
-        ) {
+        @NotNull List<Krisofp> krisofps) {
     public ReportAuswertungProjektFormContext {
         projekte = List.copyOf(projekte);
         fbs = List.copyOf(fbs);

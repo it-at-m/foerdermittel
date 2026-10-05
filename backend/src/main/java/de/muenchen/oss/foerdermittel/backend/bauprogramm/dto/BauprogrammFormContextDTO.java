@@ -7,6 +7,5 @@ import jakarta.validation.constraints.NotNull;
 
 public record BauprogrammFormContextDTO(
         @NotNull String bauprogramm,
-        @NotNull String bezeichnung
-) {
+        @NotNull String bezeichnung) {
 }

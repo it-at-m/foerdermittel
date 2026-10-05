@@ -73,5 +73,4 @@ public class StadtbezirkService {
         ServiceUtils.checkExistsOrThrowNotFoundException(bez, stadtbezirkRepository, Stadtbezirk.class);
     }
 
-
 }

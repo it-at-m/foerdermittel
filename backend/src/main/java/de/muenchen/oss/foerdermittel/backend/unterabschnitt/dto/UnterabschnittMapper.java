@@ -1,10 +1,9 @@
 package de.muenchen.oss.foerdermittel.backend.unterabschnitt.dto;
 
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.List;
 
 @Mapper
 public interface UnterabschnittMapper {

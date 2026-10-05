@@ -40,5 +40,4 @@ public class ProjektService {
         return projektMapper.toReportFormContext(projektRepository.findAll());
     }
 
-
 }

@@ -8,20 +8,16 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record ReportAuswertungProjekteDTO(
-        @NotBlank
-        @Pattern(regexp = "\\d{4}")
-        String jahr,
+        @NotBlank @Pattern(regexp = "\\d{4}") String jahr,
 
         String bez,
         String fb,
         String ua,
         String kurz,
 
-        @Size(max = 30)
-        String pstrasse,
+        @Size(max = 30) String pstrasse,
 
-        @Size(max = 30)
-        String pname,
+        @Size(max = 30) String pname,
 
         String sgt,
         String sbl,
@@ -32,9 +28,7 @@ public record ReportAuswertungProjekteDTO(
         String offen,
         String relevant,
 
-        @NotNull
-        ReportAuwertungProjektSort sort,
+        @NotNull ReportAuwertungProjektSort sort,
 
-        @NotNull
-        ReportFormat type) {
+        @NotNull ReportFormat type) {
 }

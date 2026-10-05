@@ -4,7 +4,6 @@ import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammService;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichService;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungService;
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
-import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuswertungProjekteDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
@@ -16,14 +15,12 @@ import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietServ
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkService;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.ListennameStadtbezirkslisteService;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.StichwortbereichService;
-
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittService;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-
-import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.flywaydb.core.internal.util.StringUtils;
@@ -116,8 +113,6 @@ public class ReportService {
                 orderBy);
     }
 
-
-
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public ReportAuswertungProjektFormContext getReportAuswertungProjekt() {
@@ -132,8 +127,7 @@ public class ReportService {
                 kurzbezeichnungService.getKurzbezeichnungFormContextDTOs(),
                 bauprogrammService.getBauprogrammFormContextDTOs(),
                 siedlungsgebietService.getSiedlungsgebietFormContextDTOs(),
-                List.of(Krisofp.values())
-        );
+                List.of(Krisofp.values()));
     }
 
     /// Utility function to create a [GeneratedReport].

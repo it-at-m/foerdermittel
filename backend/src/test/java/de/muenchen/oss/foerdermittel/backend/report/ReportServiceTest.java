@@ -17,11 +17,10 @@ import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichServic
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungService;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.dto.KurzbezeichnungFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungProjektFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuwertungProjektSort;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuswertungProjekteDTO;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuwertungProjektSort;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportAuswertungProjektFormContext;
@@ -37,7 +36,6 @@ import de.muenchen.oss.foerdermittel.backend.stichwortbereich.StichwortbereichSe
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.dto.StichwortbereichFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittService;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.dto.UnterabschnittFormContextDTO;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -46,7 +44,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import net.sf.jasperreports.engine.JRException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
@@ -103,18 +100,15 @@ class ReportServiceTest {
             // Given
             final String bereich = "TEST";
 
-            final ReportStichworteDTO parameters =
-                    new ReportStichworteDTO(bereich);
+            final ReportStichworteDTO parameters = new ReportStichworteDTO(bereich);
 
-            final Map<String, Object> jasperParameters =
-                    new HashMap<>();
+            final Map<String, Object> jasperParameters = new HashMap<>();
 
             when(reportMapper.toJasperParameters(parameters))
                     .thenReturn(jasperParameters);
 
             // When
-            final GeneratedReport generatedReport =
-                    reportService.generateReportStichworte(parameters);
+            final GeneratedReport generatedReport = reportService.generateReportStichworte(parameters);
 
             // Then
             verify(stichwortbereichService, times(1))
@@ -147,21 +141,17 @@ class ReportServiceTest {
             // Given
             final String bereich = "TEST";
 
-            final ReportStichworteDTO parameters =
-                    new ReportStichworteDTO(bereich);
+            final ReportStichworteDTO parameters = new ReportStichworteDTO(bereich);
 
-            final Map<String, Object> jasperParameters =
-                    new HashMap<>();
+            final Map<String, Object> jasperParameters = new HashMap<>();
 
             when(reportMapper.toJasperParameters(parameters))
                     .thenReturn(jasperParameters);
 
-            final OutputStream outputStream =
-                    new ByteArrayOutputStream();
+            final OutputStream outputStream = new ByteArrayOutputStream();
 
             // When
-            final GeneratedReport generatedReport =
-                    reportService.generateReportStichworte(parameters);
+            final GeneratedReport generatedReport = reportService.generateReportStichworte(parameters);
 
             generatedReport.writer().write(outputStream);
 
@@ -179,8 +169,7 @@ class ReportServiceTest {
             // Given
             final String bereich = "test";
 
-            final ReportStichworteDTO parameters =
-                    new ReportStichworteDTO(bereich);
+            final ReportStichworteDTO parameters = new ReportStichworteDTO(bereich);
 
             doThrow(new NotFoundException(
                     Stichwortbereich.class,
@@ -189,10 +178,9 @@ class ReportServiceTest {
                     .checkExistsByBereich(bereich);
 
             // When
-            final Exception exception =
-                    Assertions.assertThrows(
-                            NotFoundException.class,
-                            () -> reportService.generateReportStichworte(parameters));
+            final Exception exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> reportService.generateReportStichworte(parameters));
 
             // Then
             verify(stichwortbereichService, times(1))
@@ -213,19 +201,17 @@ class ReportServiceTest {
         @Test
         void givenEntitiesExists_thenReturnCorrectFormContext() {
             // Given
-            final List<StichwortbereichFormContextDTO> allBereiche =
-                    List.of(
-                            new StichwortbereichFormContextDTO("K", "Test"),
-                            new StichwortbereichFormContextDTO("L", "Test 2"),
-                            new StichwortbereichFormContextDTO("M", "Test 3"));
+            final List<StichwortbereichFormContextDTO> allBereiche = List.of(
+                    new StichwortbereichFormContextDTO("K", "Test"),
+                    new StichwortbereichFormContextDTO("L", "Test 2"),
+                    new StichwortbereichFormContextDTO("M", "Test 3"));
 
             when(stichwortbereichService
                     .getStichwortbereichFormContextDTOs())
                     .thenReturn(allBereiche);
 
             // When
-            final ReportStichworteFormContext formContext =
-                    reportService.getReportStichworte();
+            final ReportStichworteFormContext formContext = reportService.getReportStichworte();
 
             // Then
             verify(stichwortbereichService, times(1))
@@ -244,8 +230,7 @@ class ReportServiceTest {
          * a valid default sort value.
          */
         private ReportAuswertungProjekteDTO createProjektParameters() {
-            final ReportAuswertungProjekteDTO parameters =
-                    mock(ReportAuswertungProjekteDTO.class);
+            final ReportAuswertungProjekteDTO parameters = mock(ReportAuswertungProjekteDTO.class);
 
             when(parameters.fb()).thenReturn(null);
             when(parameters.sbl()).thenReturn(null);
@@ -264,18 +249,15 @@ class ReportServiceTest {
         @Test
         void givenNoFilters_thenShouldGenerateCorrectGeneratedReport() {
             // Given
-            final ReportAuswertungProjekteDTO parameters =
-                    createProjektParameters();
+            final ReportAuswertungProjekteDTO parameters = createProjektParameters();
 
-            final Map<String, Object> jasperParameters =
-                    new HashMap<>();
+            final Map<String, Object> jasperParameters = new HashMap<>();
 
             when(reportMapper.toJasperParameters(parameters))
                     .thenReturn(jasperParameters);
 
             // When
-            final GeneratedReport generatedReport =
-                    reportService.generateReportAuswertungProjekt(parameters);
+            final GeneratedReport generatedReport = reportService.generateReportAuswertungProjekt(parameters);
 
             // Then
             verify(reportMapper, times(1))
@@ -311,21 +293,17 @@ class ReportServiceTest {
                 throws JRException, SQLException, IOException {
 
             // Given
-            final ReportAuswertungProjekteDTO parameters =
-                    createProjektParameters();
+            final ReportAuswertungProjekteDTO parameters = createProjektParameters();
 
-            final Map<String, Object> jasperParameters =
-                    new HashMap<>();
+            final Map<String, Object> jasperParameters = new HashMap<>();
 
             when(reportMapper.toJasperParameters(parameters))
                     .thenReturn(jasperParameters);
 
-            final OutputStream outputStream =
-                    new ByteArrayOutputStream();
+            final OutputStream outputStream = new ByteArrayOutputStream();
 
             // When
-            final GeneratedReport generatedReport =
-                    reportService.generateReportAuswertungProjekt(parameters);
+            final GeneratedReport generatedReport = reportService.generateReportAuswertungProjekt(parameters);
 
             generatedReport.writer().write(outputStream);
 
@@ -341,8 +319,7 @@ class ReportServiceTest {
         @Test
         void givenFoerderbereich_thenShouldCheckFoerderbereich() {
             // Given
-            final ReportAuswertungProjekteDTO parameters =
-                    createProjektParameters();
+            final ReportAuswertungProjekteDTO parameters = createProjektParameters();
 
             when(parameters.fb()).thenReturn("123");
 
@@ -361,8 +338,7 @@ class ReportServiceTest {
         @Test
         void givenListennameStadtbezirksliste_thenShouldCheckListenname() {
             // Given
-            final ReportAuswertungProjekteDTO parameters =
-                    createProjektParameters();
+            final ReportAuswertungProjekteDTO parameters = createProjektParameters();
 
             when(parameters.sbl()).thenReturn("LISTE");
 
@@ -380,8 +356,7 @@ class ReportServiceTest {
         @Test
         void givenStadtbezirk_thenShouldCheckStadtbezirk() {
             // Given
-            final ReportAuswertungProjekteDTO parameters =
-                    createProjektParameters();
+            final ReportAuswertungProjekteDTO parameters = createProjektParameters();
 
             when(parameters.bez()).thenReturn("12");
 
@@ -400,8 +375,7 @@ class ReportServiceTest {
         @Test
         void givenUnterabschnitt_thenShouldCheckUnterabschnitt() {
             // Given
-            final ReportAuswertungProjekteDTO parameters =
-                    createProjektParameters();
+            final ReportAuswertungProjekteDTO parameters = createProjektParameters();
 
             when(parameters.ua()).thenReturn("UA01");
 
@@ -419,8 +393,7 @@ class ReportServiceTest {
         @Test
         void givenSiedlungsgebiet_thenShouldCheckSiedlungsgebiet() {
             // Given
-            final ReportAuswertungProjekteDTO parameters =
-                    createProjektParameters();
+            final ReportAuswertungProjekteDTO parameters = createProjektParameters();
 
             when(parameters.sgt()).thenReturn("15");
 
@@ -439,8 +412,7 @@ class ReportServiceTest {
         @Test
         void givenKurzbezeichnung_thenShouldCheckKurzbezeichnung() {
             // Given
-            final ReportAuswertungProjekteDTO parameters =
-                    createProjektParameters();
+            final ReportAuswertungProjekteDTO parameters = createProjektParameters();
 
             when(parameters.kurz()).thenReturn("KURZ");
 
@@ -458,8 +430,7 @@ class ReportServiceTest {
         @Test
         void givenBauprogramm_thenShouldCheckBauprogramm() {
             // Given
-            final ReportAuswertungProjekteDTO parameters =
-                    createProjektParameters();
+            final ReportAuswertungProjekteDTO parameters = createProjektParameters();
 
             when(parameters.bpg()).thenReturn("25");
 
@@ -478,8 +449,7 @@ class ReportServiceTest {
         @Test
         void givenEmptyFilters_thenShouldNotCheckAnyFilterService() {
             // Given
-            final ReportAuswertungProjekteDTO parameters =
-                    createProjektParameters();
+            final ReportAuswertungProjekteDTO parameters = createProjektParameters();
 
             when(parameters.fb()).thenReturn("");
             when(parameters.sbl()).thenReturn("");
@@ -509,25 +479,22 @@ class ReportServiceTest {
         @Test
         void givenFoerderbereichNotFound_thenShouldPropagateException() {
             // Given
-            final ReportAuswertungProjekteDTO parameters =
-                    mock(ReportAuswertungProjekteDTO.class);
+            final ReportAuswertungProjekteDTO parameters = mock(ReportAuswertungProjekteDTO.class);
 
             when(parameters.fb()).thenReturn("123");
 
-            final NotFoundException exception =
-                    new NotFoundException(
-                            Foerderbereich.class,
-                            "123");
+            final NotFoundException exception = new NotFoundException(
+                    Foerderbereich.class,
+                    "123");
 
             doThrow(exception)
                     .when(foerderbereichService)
                     .checkExistsByFoerderbereich(new BigDecimal("123"));
 
             // When
-            final Exception thrown =
-                    Assertions.assertThrows(
-                            NotFoundException.class,
-                            () -> reportService.generateReportAuswertungProjekt(parameters));
+            final Exception thrown = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> reportService.generateReportAuswertungProjekt(parameters));
 
             // Then
             assertThat(thrown).isSameAs(exception);
@@ -546,37 +513,29 @@ class ReportServiceTest {
         @Test
         void givenEntitiesExists_thenReturnCorrectFormContext() {
             // Given
-            final List<ReportAuswertungProjektFormContextDTO> projektContext =
-                    List.of(
-                            mock(ReportAuswertungProjektFormContextDTO.class));
+            final List<ReportAuswertungProjektFormContextDTO> projektContext = List.of(
+                    mock(ReportAuswertungProjektFormContextDTO.class));
 
-            final List<FoerderbereichFormContextDTO> foerderbereichContext =
-                    List.of(
-                            mock(FoerderbereichFormContextDTO.class));
+            final List<FoerderbereichFormContextDTO> foerderbereichContext = List.of(
+                    mock(FoerderbereichFormContextDTO.class));
 
-            final List<ListennameStadtbezirkslisteFormContextDTO> listennameContext =
-                    List.of(
-                            mock(ListennameStadtbezirkslisteFormContextDTO.class));
+            final List<ListennameStadtbezirkslisteFormContextDTO> listennameContext = List.of(
+                    mock(ListennameStadtbezirkslisteFormContextDTO.class));
 
-            final List<StadtbezirkFormContextDTO> stadtbezirkContext =
-                    List.of(
-                            mock(StadtbezirkFormContextDTO.class));
+            final List<StadtbezirkFormContextDTO> stadtbezirkContext = List.of(
+                    mock(StadtbezirkFormContextDTO.class));
 
-            final List<UnterabschnittFormContextDTO> unterabschnittContext =
-                    List.of(
-                            mock(UnterabschnittFormContextDTO.class));
+            final List<UnterabschnittFormContextDTO> unterabschnittContext = List.of(
+                    mock(UnterabschnittFormContextDTO.class));
 
-            final List<KurzbezeichnungFormContextDTO> kurzbezeichnungContext =
-                    List.of(
-                            mock(KurzbezeichnungFormContextDTO.class));
+            final List<KurzbezeichnungFormContextDTO> kurzbezeichnungContext = List.of(
+                    mock(KurzbezeichnungFormContextDTO.class));
 
-            final List<BauprogrammFormContextDTO> bauprogrammContext =
-                    List.of(
-                            mock(BauprogrammFormContextDTO.class));
+            final List<BauprogrammFormContextDTO> bauprogrammContext = List.of(
+                    mock(BauprogrammFormContextDTO.class));
 
-            final List<SiedlungsgebietFormContextDTO> siedlungsgebietContext =
-                    List.of(
-                            mock(SiedlungsgebietFormContextDTO.class));
+            final List<SiedlungsgebietFormContextDTO> siedlungsgebietContext = List.of(
+                    mock(SiedlungsgebietFormContextDTO.class));
 
             when(projektService.getReportAuswertungProjektFormContextDTOs())
                     .thenReturn(projektContext);
@@ -604,8 +563,7 @@ class ReportServiceTest {
                     .thenReturn(siedlungsgebietContext);
 
             // When
-            final ReportAuswertungProjektFormContext formContext =
-                    reportService.getReportAuswertungProjekt();
+            final ReportAuswertungProjektFormContext formContext = reportService.getReportAuswertungProjekt();
 
             // Then
             verify(projektService)

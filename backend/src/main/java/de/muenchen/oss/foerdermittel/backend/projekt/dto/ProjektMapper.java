@@ -18,5 +18,4 @@ public interface ProjektMapper {
 
     List<ReportAuswertungProjektFormContextDTO> toReportFormContext(List<Projekt> AuswertungProjekteListe);
 
-
 }

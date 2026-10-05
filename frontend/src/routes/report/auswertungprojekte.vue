@@ -1,20 +1,20 @@
 <template>
-  <base-view :title= "title">
+  <base-view :title="title">
     <template #default="{ baseViewLoading }">
       <report-card
-          :empty-form-template="EMPTY_FORM_TEMPLATE"
-          :loading="baseViewLoading"
-          :api="reportAuswertungProjekteApi"
-          :form-ref="reportAuswertungProjekteFormRef"
+        :empty-form-template="EMPTY_FORM_TEMPLATE"
+        :loading="baseViewLoading"
+        :api="reportAuswertungProjekteApi"
+        :form-ref="reportAuswertungProjekteFormRef"
       >
         <template #form="{ item, updateValidity }">
           <report-auswertung-projekte-form
-              ref="reportAuswertungProjekteForm"
-              :model-value="item"
-              :report-auswertung-projekt-form-context="
+            ref="reportAuswertungProjekteForm"
+            :model-value="item"
+            :report-auswertung-projekt-form-context="
               reportAuswertungProjekteFormContext
             "
-              @is-valid="updateValidity"
+            @is-valid="updateValidity"
           />
         </template>
       </report-card>
@@ -69,19 +69,18 @@ const EMPTY_FORM_TEMPLATE: Partial<GetReportAuswertungProjektRequest> = {
   },
 };
 
-const reportAuswertungProjekteApi =
-    useReportAuswertungProjekteApi();
+const reportAuswertungProjekteApi = useReportAuswertungProjekteApi();
 
 const reportAuswertungProjekteFormContext = computed(
-    () => reportAuswertungProjekteApi.context.data.value,
+  () => reportAuswertungProjekteApi.context.data.value
 );
 
 type ReportAuswertungProjekteFormRef = InstanceType<
-    typeof ReportAuswertungProjekteForm
+  typeof ReportAuswertungProjekteForm
 >;
 
 const reportAuswertungProjekteFormRef =
-    useTemplateRef<ReportAuswertungProjekteFormRef>(
-        "reportAuswertungProjekteForm",
-    );
+  useTemplateRef<ReportAuswertungProjekteFormRef>(
+    "reportAuswertungProjekteForm"
+  );
 </script>

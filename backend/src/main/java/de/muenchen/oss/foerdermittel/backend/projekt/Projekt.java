@@ -5,10 +5,14 @@ import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
-import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.Listenname;
-import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.Stadtbezirksliste;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serial;
@@ -94,6 +98,5 @@ public class Projekt implements Serializable {
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(name = "krisofp", columnDefinition = "projekte_krisofp")
     private Krisofp krisofp;
-
 
 }
