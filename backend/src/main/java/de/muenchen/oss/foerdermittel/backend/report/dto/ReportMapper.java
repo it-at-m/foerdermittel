@@ -3,8 +3,9 @@ package de.muenchen.oss.foerdermittel.backend.report.dto;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.flywaydb.core.internal.util.StringUtils;
+
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 /// Component responsible for conversion between report DTOs and Jasper parameter maps.
 @Component
