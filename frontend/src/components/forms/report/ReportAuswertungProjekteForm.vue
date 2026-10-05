@@ -6,15 +6,14 @@
     <v-row>
       <v-col cols="12">
         <!-- Projektjahr -->
-        <fm-text-field
+        <fm-autocomplete
             v-model="modelValue.parameters!.jahr"
-            :display-mode="InputDisplayMode.EDIT"
-            :validation-attribute-map="
-            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
-          "
-            validation-attribute-key="jahr"
+            :items="jahrOptions"
+            item-title="title"
+            item-value="value"
             :label="t('model.projekt.jahr')"
         />
+
         <!-- Stadtbezirk -->
         <fm-autocomplete
             v-model="modelValue.parameters!.bez"
@@ -254,7 +253,7 @@ defineExpose({
  * Beispiel:
  * 24, 25, 26
  */
-const jahr = computed(() => {
+const jahrOptions = computed(() => {
   const projekte =
       props.reportAuswertungProjektFormContext?.projekte ?? [];
 
@@ -262,13 +261,14 @@ const jahr = computed(() => {
       projekte
           .map((projekt) => projekt.jahr)
           .filter((jahr): jahr is string => !!jahr)
-          .map((jahr) => jahr.length === 2 ? `20${jahr}` : jahr),
-  )];
+          .map((jahr) =>
+              jahr.length === 2 ? `20${jahr}` : jahr,
+          ),
+  )].map((jahr) => ({
+    title: jahr,
+    value: jahr,
+  }));
 });
-
-function getProjektjahrTitle(item: string) {
-  return item;
-}
 
 
 const krisofpBezeichnungen = new Map<string, string>([

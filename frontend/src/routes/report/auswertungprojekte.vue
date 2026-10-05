@@ -9,11 +9,11 @@
       >
         <template #form="{ item, updateValidity }">
           <report-auswertung-projekte-form
-              ref="reportAuswertungProjektForm"
+              ref="reportAuswertungProjekteForm"
               :model-value="item"
               :report-auswertung-projekt-form-context="
-      reportAuswertungProjekteFormContext
-    "
+              reportAuswertungProjekteFormContext
+            "
               @is-valid="updateValidity"
           />
         </template>
@@ -69,7 +69,8 @@ const EMPTY_FORM_TEMPLATE: Partial<GetReportAuswertungProjektRequest> = {
   },
 };
 
-const reportAuswertungProjekteApi = useReportAuswertungProjekteApi();
+const reportAuswertungProjekteApi =
+    useReportAuswertungProjekteApi();
 
 const reportAuswertungProjekteFormContext = computed(
     () => reportAuswertungProjekteApi.context.data.value,
