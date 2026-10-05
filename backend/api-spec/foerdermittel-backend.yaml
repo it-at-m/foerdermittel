@@ -1787,6 +1787,10 @@ paths:
               schema:
                 type: string
                 format: binary
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
       security:
       - bearerAuth: []
   /report/fortsetzungsantrag/form-context:
@@ -3062,12 +3066,14 @@ components:
           pattern: "\\d{4}"
           type: string
         fb:
+          pattern: \d*
           type: string
         fipo:
           type: string
         sbl:
           type: string
         bez:
+          pattern: \d*
           type: string
         hh:
           type: string
@@ -3162,6 +3168,7 @@ components:
         sbl:
           type: string
         bez:
+          pattern: \d*
           type: string
         fag:
           type: string
