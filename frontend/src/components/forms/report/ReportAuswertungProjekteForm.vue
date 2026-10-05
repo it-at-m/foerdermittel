@@ -178,6 +178,17 @@
 
       </v-col>
     </v-row>
+    <v-row>
+      <v-col cols="12">
+        <v-select
+            v-model="modelValue.parameters!.type"
+            :items="formatOptions"
+            item-value="value"
+            label="Format"
+            variant="outlined"
+        />
+      </v-col>
+    </v-row>
   </v-form>
 </template>
 
@@ -403,4 +414,14 @@ const sortOptions = computed(() => [
     value: "FOERDERBEREICH_PROJEKTNUMMER",
   },
 ]);
+const formatOptions = [
+  {
+    title: t("domain.report.auswertungProjekt.type.pdf"),
+    value: "PDF",
+  },
+  {
+    title: t("domain.report.auswertungProjekt.type.excel"),
+    value: "EXCEL",
+  },
+];
 </script>
