@@ -98,7 +98,6 @@ class ReportMapperTest {
                 .containsEntry("P_BEZ", "BEZ")
                 .containsEntry("P_HH", "1");
 
-
     }
 
     @Test
