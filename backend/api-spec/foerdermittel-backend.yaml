@@ -1748,6 +1748,10 @@ paths:
               schema:
                 type: string
                 format: binary
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
       security:
       - bearerAuth: []
   /report/auswertungprojekte/form-context:
@@ -2953,6 +2957,7 @@ components:
       required:
       - jahr
       - sort
+      - type
       type: object
       properties:
         jahr:
@@ -3006,6 +3011,14 @@ components:
           - STRASSE_PROJEKTNUMMER
           - FOERDERBEREICH_STRASSE
           - FOERDERBEREICH_PROJEKTNUMMER
+        type:
+          $ref: "#/components/schemas/ReportFormat"
+    ReportFormat:
+      type: string
+      enum:
+      - PDF
+      - PDF_FLAT
+      - EXCEL
     BauprogrammFormContextDTO:
       required:
       - bauprogramm
