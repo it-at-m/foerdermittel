@@ -92,7 +92,6 @@ public class ReportService {
 
     }
 
-
     /// Fortsezungsantrag
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
@@ -117,7 +116,6 @@ public class ReportService {
                 listennameStadtbezirkslisteService.getlistennameStadtbezirkslisteFormContextDTOs(),
                 stadtbezirkService.getStadtbezirkFormContextDTOs());
     }
-
 
     /// Utility function to create a [GeneratedReport].
     ///

@@ -551,8 +551,7 @@ class ReportServiceTest {
         }
     }
 
-
-        @Nested
+    @Nested
     class GetReportFortsetzungsantragFormContext {
 
         @Test

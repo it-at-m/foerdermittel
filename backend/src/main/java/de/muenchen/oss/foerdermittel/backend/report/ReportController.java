@@ -101,7 +101,6 @@ public class ReportController {
         return reportService.getReportHaushalt1();
     }
 
-
     @GetMapping("/fortsetzungsantrag")
     @ResponseStatus(HttpStatus.OK)
     @Operation(

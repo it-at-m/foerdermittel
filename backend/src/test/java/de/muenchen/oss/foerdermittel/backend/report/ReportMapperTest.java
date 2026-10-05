@@ -20,8 +20,7 @@ class ReportMapperTest {
         final ReportStichworteDTO dto = new ReportStichworteDTO("TEST");
 
         // when
-        final Map<String, Object> parameters =
-                reportMapper.toJasperParameters(dto);
+        final Map<String, Object> parameters = reportMapper.toJasperParameters(dto);
 
         // then
         assertThat(parameters)
@@ -32,17 +31,15 @@ class ReportMapperTest {
     @Test
     void givenReportFortsetzungsantragDTO_thenReturnsCorrectParameters() {
         // given
-        final ReportFortsetzungsantragDTO dto =
-                new ReportFortsetzungsantragDTO(
-                        "SBL",
-                        "BEZ",
-                        "FAG",
-                        "1",
-                        ReportFormat.PDF);
+        final ReportFortsetzungsantragDTO dto = new ReportFortsetzungsantragDTO(
+                "SBL",
+                "BEZ",
+                "FAG",
+                "1",
+                ReportFormat.PDF);
 
         // when
-        final Map<String, Object> parameters =
-                reportMapper.toJasperParameters(dto);
+        final Map<String, Object> parameters = reportMapper.toJasperParameters(dto);
 
         // then
         assertThat(parameters)
@@ -56,17 +53,15 @@ class ReportMapperTest {
     @Test
     void givenReportFortsetzungsantragDTOWithBlankValues_thenReturnsNullParameters() {
         // given
-        final ReportFortsetzungsantragDTO dto =
-                new ReportFortsetzungsantragDTO(
-                        "",
-                        "",
-                        "1",
-                        "",
-                        ReportFormat.PDF);
+        final ReportFortsetzungsantragDTO dto = new ReportFortsetzungsantragDTO(
+                "",
+                "",
+                "1",
+                "",
+                ReportFormat.PDF);
 
         // when
-        final Map<String, Object> parameters =
-                reportMapper.toJasperParameters(dto);
+        final Map<String, Object> parameters = reportMapper.toJasperParameters(dto);
 
         // then
         assertThat(parameters)
@@ -78,22 +73,20 @@ class ReportMapperTest {
     }
 
     @Test
-    void givenReportHaushalt1DTO_thenReturnsCorrectParameters() {
+    void givenReportHaushaltDTO_thenReturnsCorrectParameters() {
         // given
-        final ReportHaushalt1DTO dto =
-                new ReportHaushalt1DTO(
-                        "2026",
-                        "FB",
-                        "FIPO",
-                        "SBL",
-                        "BEZ",
-                        "1",
-                        ReportHaushalt1Sort.FB_PROJEKTNUMMER,
-                        ReportFormat.PDF);
+        final ReportHaushalt1DTO dto = new ReportHaushalt1DTO(
+                "2026",
+                "FB",
+                "FIPO",
+                "SBL",
+                "BEZ",
+                "1",
+                ReportHaushalt1Sort.FB_PROJEKTNUMMER,
+                ReportFormat.PDF);
 
         // when
-        final Map<String, Object> parameters =
-                reportMapper.toJasperParameters(dto);
+        final Map<String, Object> parameters = reportMapper.toJasperParameters(dto);
 
         // then
         assertThat(parameters)
@@ -104,25 +97,25 @@ class ReportMapperTest {
                 .containsEntry("P_SBL", "SBL")
                 .containsEntry("P_BEZ", "BEZ")
                 .containsEntry("P_HH", "1");
+
+
     }
 
     @Test
-    void givenReportHaushalt1DTOWithBlankValues_thenReturnsNullParameters() {
+    void givenReportHaushaltDTOWithBlankValues_thenReturnsNullParameters() {
         // given
-        final ReportHaushalt1DTO dto =
-                new ReportHaushalt1DTO(
-                        "2026",
-                        "",
-                        " ",
-                        null,
-                        "",
-                        "0",
-                        ReportHaushalt1Sort.FB_PROJEKTNUMMER,
-                        ReportFormat.PDF);
+        final ReportHaushalt1DTO dto = new ReportHaushalt1DTO(
+                "2026",
+                "",
+                "",
+                null,
+                "",
+                "0",
+                ReportHaushalt1Sort.FB_PROJEKTNUMMER,
+                ReportFormat.PDF);
 
         // when
-        final Map<String, Object> parameters =
-                reportMapper.toJasperParameters(dto);
+        final Map<String, Object> parameters = reportMapper.toJasperParameters(dto);
 
         // then
         assertThat(parameters)

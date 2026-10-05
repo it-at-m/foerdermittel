@@ -11,7 +11,9 @@
           <report-fortsetzungsantrag-form
             ref="reportFortsetzungsantragForm"
             :model-value="item"
-            :report-fortsetzungsantrag-form-context="reportFortsetzungsantragFormContext"
+            :report-fortsetzungsantrag-form-context="
+              reportFortsetzungsantragFormContext
+            "
             @is-valid="updateValidity"
           />
         </template>
@@ -63,8 +65,11 @@ const reportFortsetzungsantragFormContext = computed(
   () => reportFortsetzungsantragApi.context.data.value
 );
 
-type ReportFortsetzungsantragFormRef = InstanceType<typeof ReportFortsetzungsantragForm>;
-const reportFortsetzungsantragFormRef = useTemplateRef<ReportFortsetzungsantragFormRef>(
-  "reportFortsetzungsantragForm"
-);
+type ReportFortsetzungsantragFormRef = InstanceType<
+  typeof ReportFortsetzungsantragForm
+>;
+const reportFortsetzungsantragFormRef =
+  useTemplateRef<ReportFortsetzungsantragFormRef>(
+    "reportFortsetzungsantragForm"
+  );
 </script>

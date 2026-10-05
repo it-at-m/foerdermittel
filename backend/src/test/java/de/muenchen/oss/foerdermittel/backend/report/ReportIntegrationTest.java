@@ -28,7 +28,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.servlet.client.RestTestClient;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -275,7 +274,6 @@ public class ReportIntegrationTest {
                     .expectStatus().isNotFound();
         }
     }
-
 
     /// Utility expectation that checks for non JSON, plain or Octet content type, validates a body
     /// exists and checks the correct headers.
