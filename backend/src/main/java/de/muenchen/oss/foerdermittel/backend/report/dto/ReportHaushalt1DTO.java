@@ -7,10 +7,10 @@ import jakarta.validation.constraints.Pattern;
 
 public record ReportHaushalt1DTO(
         @NotBlank @Pattern(regexp = "\\d{4}") String haushaltsjahr,
-        String fb,
+        @Pattern(regexp = "\\d*") String fb,
         String fipo,
         String sbl,
-        String bez,
+        @Pattern(regexp = "\\d*") String bez,
         String hh,
         @NotNull ReportHaushalt1Sort sort,
         @NotNull ReportFormat type) {
