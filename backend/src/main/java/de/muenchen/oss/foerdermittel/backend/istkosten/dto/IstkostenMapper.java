@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 @Mapper
 public interface IstkostenMapper {
@@ -34,17 +36,45 @@ public interface IstkostenMapper {
         if (id == null || id.isEmpty()) {
             return null;
         }
-        final int m = id.lastIndexOf('-');
-        final int j = m > 0 ? id.lastIndexOf('-', m - 1) : -1;
-        if (j <= 0) {
-            throw new IllegalArgumentException("Invalid Istkosten id: " + id);
+
+        final int lastDashIndex = id.lastIndexOf('-');
+        final int secondLastDashIndex = lastDashIndex > 0 ? id.lastIndexOf('-', lastDashIndex - 1) : -1;
+
+        if (secondLastDashIndex <= 0) {
+            throwInvalidId(id);
         }
+
         try {
-            return new IstkostenPrimaryKey(id.substring(0, j),
-                    new BigDecimal(id.substring(j + 1, m)), new BigDecimal(id.substring(m + 1)));
+            final BigDecimal jahr = parseYear(id, secondLastDashIndex, lastDashIndex);
+            final BigDecimal monat = parseMonth(id, lastDashIndex);
+            validateYearAndMonth(jahr, monat, id);
+            return new IstkostenPrimaryKey(id.substring(0, secondLastDashIndex), jahr, monat);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid Istkosten id: " + id, e);
+            throwInvalidId(id);
         }
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error");
+    }
+
+    private BigDecimal parseYear(final String id, final int start, final int end) {
+        return new BigDecimal(id.substring(start + 1, end));
+    }
+
+    private BigDecimal parseMonth(final String id, final int end) {
+        return new BigDecimal(id.substring(end + 1));
+    }
+
+    private void validateYearAndMonth(final BigDecimal jahr, final BigDecimal monat, final String id) {
+        if (jahr.scale() > 0 || monat.scale() > 0
+                || jahr.compareTo(BigDecimal.valueOf(1970)) < 0
+                || jahr.compareTo(BigDecimal.valueOf(2100)) > 0
+                || monat.compareTo(BigDecimal.ONE) < 0
+                || monat.compareTo(BigDecimal.valueOf(12)) > 0) {
+            throwInvalidId(id);
+        }
+    }
+
+    private void throwInvalidId(final String id) {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Istkosten id: " + id);
     }
 
     @Named("buildIdString")

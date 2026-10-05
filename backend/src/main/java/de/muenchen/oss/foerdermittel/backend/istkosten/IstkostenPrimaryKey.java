@@ -9,6 +9,8 @@ import jakarta.validation.constraints.NotNull;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,7 +35,10 @@ public class IstkostenPrimaryKey implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("%s-%s-%s", projnr, jahr.toPlainString(), monat.toPlainString());
+        return String.format("%s-%s-%s",
+                projnr,
+                jahr.setScale(0, RoundingMode.UNNECESSARY).toPlainString(),
+                monat.setScale(0, RoundingMode.UNNECESSARY).toPlainString());
     }
 
 }

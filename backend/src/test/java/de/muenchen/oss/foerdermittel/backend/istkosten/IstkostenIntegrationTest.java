@@ -220,7 +220,7 @@ class IstkostenIntegrationTest {
             // Then
             assertThat(result).isNotNull();
             assertThat(result.istkosten()).hasSize(1);
-            assertThat(result.istkosten().getFirst().equals(existingIstkosten.id()));
+            assertThat(result.istkosten().getFirst()).isEqualTo(existingIstkosten.id());
         }
 
         private static Stream<Arguments> authorizationMappings() {
@@ -465,8 +465,8 @@ class IstkostenIntegrationTest {
                     .isOk();
 
             assertThat(
-                    istkostenRepository.findById(new IstkostenPrimaryKey(existingIstkosten.projnr(), existingIstkosten.jahr(), existingIstkosten.monat()))
-                            .isEmpty());
+                    istkostenRepository.findById(new IstkostenPrimaryKey(existingIstkosten.projnr(), existingIstkosten.jahr(), existingIstkosten.monat())))
+                    .isEmpty();
         }
 
         @Test
