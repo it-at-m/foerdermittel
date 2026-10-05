@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 @RequiredArgsConstructor
 @RequestMapping("/report")
 @SecurityRequirement(name = OpenAPIDocumentationConfiguration.SECURITY_SCHEME_NAME)
