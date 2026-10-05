@@ -3,3 +3,9 @@ CVE-2025-10492
 
 # Not relevant because `.jasper` files are statically built into the jar, see https://security.snyk.io/vuln/SNYK-JAVA-NETSFJASPERREPORTS-16787146
 CVE-2026-6009
+
+# Present in dependency of @openapitools/openapi-generator-cli@2.14.0, ignored for now as it is a dev dependency and fix is in the next major release of basic-ftp
+CVE-2026-102990
+
+# Present in dependency of @vue/eslint-config-typescript, ignored for now as it is a dev dependency and no fix is available
+CVE-2026-93687
