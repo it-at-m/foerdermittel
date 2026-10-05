@@ -228,6 +228,10 @@
           "strasseProjektnummer": "Straße, Projektnummer",
           "foerderbereichProjektnummer": "Förderbereich, Projektnummer",
           "foerderbereichStrasse": "Förderbereich, Straße"
+        },
+        "type": {
+          "pdf": "PDF",
+          "excel": "Excel"
         }
       }
     }

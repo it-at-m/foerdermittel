@@ -75,6 +75,10 @@ public class ReportController {
                             @Content(
                                     mediaType = MediaType.APPLICATION_PDF_VALUE,
                                     schema = @Schema(type = "string", format = "binary")
+                            ),
+                            @Content(
+                                    mediaType = CustomReportContentTypes.EXCEL_CONTENT_TYPE,
+                                    schema = @Schema(type = "string", format = "binary")
                             )
                     }
             )

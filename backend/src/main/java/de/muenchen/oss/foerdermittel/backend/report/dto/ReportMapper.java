@@ -23,8 +23,6 @@ public class ReportMapper {
 
         final Map<String, Object> parameters = new HashMap<>();
 
-        // Jahr: API/Jasper vierstellig, z. B. 2025
-        // Die SQL-Abfrage wandelt für die DB auf 25 um.
         parameters.put("P_JAHR", nullIfBlank(dto.jahr()));
 
         parameters.put("P_FB", nullIfBlank(dto.fb()));
