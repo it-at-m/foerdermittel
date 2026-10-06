@@ -225,10 +225,6 @@ class ReportServiceTest {
     @Nested
     class GenerateReportAuswertungProjekte {
 
-        /**
-         * Creates a mocked DTO with all optional filters empty and
-         * a valid default sort value.
-         */
         private ReportAuswertungProjekteDTO createProjektParameters() {
             final ReportAuswertungProjekteDTO parameters = mock(ReportAuswertungProjekteDTO.class);
 

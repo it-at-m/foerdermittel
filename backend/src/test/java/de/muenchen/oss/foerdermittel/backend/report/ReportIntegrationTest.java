@@ -6,6 +6,8 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
 import de.muenchen.oss.foerdermittel.backend.TestUtils;
+import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
+import de.muenchen.oss.foerdermittel.backend.projekt.ProjektRepository;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich;
