@@ -66,7 +66,7 @@ const EMPTY_FORM_TEMPLATE: Partial<GetReportAuswertungProjektRequest> = {
     offen: "0",
     relevant: "0",
     sort: "PROJEKTNUMMER",
-  },
+    type: "PDF"  },
 };
 
 const reportAuswertungProjekteApi = useReportAuswertungProjekteApi();

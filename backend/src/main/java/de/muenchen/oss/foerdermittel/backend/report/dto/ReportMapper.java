@@ -23,7 +23,7 @@ public class ReportMapper {
 
         final Map<String, Object> parameters = new HashMap<>();
 
-        parameters.put("P_JAHR", nullIfBlank(dto.jahr()));
+        parameters.put("P_JAHR", dto.jahr());
 
         parameters.put("P_FB", nullIfBlank(dto.fb()));
         parameters.put("P_UA", nullIfBlank(dto.ua()));
@@ -33,7 +33,6 @@ public class ReportMapper {
         parameters.put("P_SBL", nullIfBlank(dto.sbl()));
         parameters.put("P_BEZ", nullIfBlank(dto.bez()));
 
-        // LIKE-Parameter
         parameters.put("P_PSTRASSE", toLikeParameter(dto.pstrasse()));
         parameters.put("P_PNAME", toLikeParameter(dto.pname()));
 
@@ -43,9 +42,9 @@ public class ReportMapper {
                         ? dto.krisofp().name()
                         : null);
 
-        parameters.put("P_KAUF", dto.kauf());
-        parameters.put("P_OFFEN", dto.offen());
-        parameters.put("P_RELEVANT", dto.relevant());
+        parameters.put("P_KAUF", nullIfBlank(dto.kauf()));
+        parameters.put("P_OFFEN", nullIfBlank(dto.offen()));
+        parameters.put("P_RELEVANT", nullIfBlank(dto.relevant()));
 
         return parameters;
     }
@@ -56,7 +55,7 @@ public class ReportMapper {
             return null;
         }
 
-        return value;
+        return value.trim();
     }
 
     private String toLikeParameter(final String value) {

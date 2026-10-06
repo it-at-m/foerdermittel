@@ -176,8 +176,6 @@
           :label="t('domain.report.auswertungProjekt.sortierung')"
         />
       </v-col>
-    </v-row>
-    <v-row>
       <v-col cols="12">
         <v-select
           v-model="modelValue.parameters!.type"
@@ -246,12 +244,6 @@ defineExpose({
   validate,
 });
 
-/**
- * Projektjahre aus dem FormContext.
- *
- * Beispiel:
- * 24, 25, 26
- */
 const jahrOptions = computed(() => {
   const projekte = props.reportAuswertungProjektFormContext?.projekte ?? [];
 
