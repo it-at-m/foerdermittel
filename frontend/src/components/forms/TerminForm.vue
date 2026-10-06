@@ -13,7 +13,6 @@
           item-value="projnr"
           :display-mode="displayMode"
           :label="t('model.termin.projnr')"
-          :rules="[rules.required()]"
           :validation-attribute-map="
             TerminCreateDTOPropertyValidationAttributesMap
           "
