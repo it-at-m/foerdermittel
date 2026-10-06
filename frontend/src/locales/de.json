@@ -217,7 +217,7 @@
       "bewilligungAuzahlungVergleich": "@:model.bewilligung.modelName und @:domain.auszahlung (Vergleich)",
       "fortsetzungsAntrag": "Fortsetzungsantrag | Fortsetzungsanträge",
       "auswertungProjekt": {
-        "modelName": "Auswertung Projekt",
+        "modelName": "Projekt",
         "offen": "Nur offene Projekte",
         "kauf": "Nur Projekte mit Ankauf",
         "relevant": "Nur relevante Projekte",
