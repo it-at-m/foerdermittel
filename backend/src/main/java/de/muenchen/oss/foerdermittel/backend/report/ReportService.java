@@ -30,6 +30,7 @@ import org.springframework.util.StringUtils;
 
 @Service
 @Slf4j
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 @RequiredArgsConstructor
 @Transactional
 public class ReportService {
