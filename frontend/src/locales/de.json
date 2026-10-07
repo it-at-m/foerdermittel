@@ -53,7 +53,11 @@
   },
   "model": {
     "projekt": {
-      "modelName": "Projekt | Projekte"
+      "modelName": "Projekt | Projekte",
+      "projnr": "Projektnummer",
+      "name": "Name",
+      "strasse": "Straße",
+      "ausgabeNotiz": "Ausgabe Notiz"
     },
     "antrag": {
       "modelName": "Antrag | Anträge"
@@ -65,7 +69,17 @@
       "modelName": "Abruf | Abrufe"
     },
     "termin": {
-      "modelName": "Termin | Termine"
+      "modelName": "Termin | Termine",
+      "termin": "Termin",
+      "ueberwachung": "TÜ",
+      "telefon": "Kontakt / Telefon",
+      "zustaendig": "Zuständig",
+      "notizen": "Notizen",
+      "projnr": "PROJNR",
+      "pname": "Name",
+      "pstrasse": "Straße",
+      "fobFb": "FB",
+      "bezStadtbezirk": "Bez."
     },
     "istkosten": {
       "modelName": "Ist-Kosten"

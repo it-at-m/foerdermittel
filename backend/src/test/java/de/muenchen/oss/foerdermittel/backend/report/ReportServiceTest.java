@@ -18,10 +18,15 @@ import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportFortsetzungsantragDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1DTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1Sort;
+import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
+import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportProjektuebersichtDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportFortsetzungsantragFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportHaushalt1FormContext;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportProjektuebersichtFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkService;
@@ -74,6 +79,9 @@ class ReportServiceTest {
 
     @Mock
     private ReportMapper reportMapper;
+
+    @Mock
+    private ProjektService projektService;
 
     @InjectMocks
     private ReportService reportService;
@@ -172,6 +180,88 @@ class ReportServiceTest {
             assertThat(formContext.bereiche()).isEqualTo(allBereiche);
         }
 
+    }
+
+    @Nested
+    class GenerateReportProjektuebersicht {
+
+        @Test
+        void givenExistingProjekt_thenAddsDatabaseValuesToJasperParameters() {
+            // Given
+            final ReportProjektuebersichtDTO parameters = new ReportProjektuebersichtDTO("P-123", true);
+            final Map<String, Object> jasperParameters = new HashMap<>();
+            final Projekt projekt = mock(Projekt.class);
+            when(reportMapper.toJasperParameters(parameters)).thenReturn(jasperParameters);
+            when(projektService.getProjekt(parameters.projnr())).thenReturn(projekt);
+            when(projekt.getPname()).thenReturn("Projektname");
+            when(projekt.getPstrasse()).thenReturn("Projektstraße 1");
+
+            // When
+            final GeneratedReport generatedReport = reportService.generateReportProjektuebersicht(parameters);
+
+            // Then
+            assertThat(generatedReport.fileName()).startsWith(ReportType.FMW_PROJEKTE3.getFileName());
+            assertThat(jasperParameters)
+                    .containsEntry("P_PNAME", "Projektname")
+                    .containsEntry("P_PSTRASSE", "Projektstraße 1")
+                    .doesNotContainKey(SORT_PARAMETER);
+            verify(projektService, times(1)).getProjekt(parameters.projnr());
+            verifyNoInteractions(jasperReportService);
+        }
+
+        @Test
+        void givenGeneratedReportIsWritten_thenUsesProjektuebersichtReport() throws JRException, SQLException, IOException {
+            // Given
+            final ReportProjektuebersichtDTO parameters = new ReportProjektuebersichtDTO("P-123", false);
+            final Map<String, Object> jasperParameters = new HashMap<>();
+            final Projekt projekt = mock(Projekt.class);
+            final OutputStream outputStream = new ByteArrayOutputStream();
+            when(reportMapper.toJasperParameters(parameters)).thenReturn(jasperParameters);
+            when(projektService.getProjekt(parameters.projnr())).thenReturn(projekt);
+
+            // When
+            reportService.generateReportProjektuebersicht(parameters).writer().write(outputStream);
+
+            // Then
+            verify(jasperReportService, times(1)).generateReportWithParameters(
+                    ReportType.FMW_PROJEKTE3,
+                    ReportFormat.PDF,
+                    jasperParameters,
+                    outputStream);
+        }
+
+        @Test
+        void givenMissingProjekt_thenDoesNotGenerateReport() {
+            // Given
+            final ReportProjektuebersichtDTO parameters = new ReportProjektuebersichtDTO("MISSING", false);
+            when(projektService.getProjekt(parameters.projnr()))
+                    .thenThrow(new NotFoundException(Projekt.class, parameters.projnr()));
+
+            // When / Then
+            Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> reportService.generateReportProjektuebersicht(parameters));
+            verifyNoInteractions(jasperReportService, reportMapper);
+        }
+    }
+
+    @Nested
+    class GetReportProjektuebersichtFormContext {
+
+        @Test
+        void givenProjectsExist_thenReturnsTheirFormContext() {
+            // Given
+            final List<ReportProjektuebersichtFormContextDTO> projekte = List.of(
+                    new ReportProjektuebersichtFormContextDTO("P-123", "Projektname", "Projektstraße 1"));
+            when(projektService.getReportProjektuebersichtFormContextDTOs()).thenReturn(projekte);
+
+            // When
+            final ReportProjektuebersichtFormContext formContext = reportService.getReportProjektuebersicht();
+
+            // Then
+            assertThat(formContext.projekte()).isEqualTo(projekte);
+            verify(projektService, times(1)).getReportProjektuebersichtFormContextDTOs();
+        }
     }
 
     @Nested
