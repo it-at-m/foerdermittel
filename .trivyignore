@@ -10,5 +10,7 @@ CVE-2026-102990
 # Present in dependency of @vue/eslint-config-typescript, ignored for now as it is a dev dependency and no fix is available
 CVE-2026-93687
 
-# Present in dependency of @cyclonedx/cyclonedx-npm, ignored for now as it is a dev dependency and no fix is available
-CVE-2026-93748
+# Following are in dependencies of markdownlint-cli which is a dev dependency and has no breaking fix available
+GHSA-r3ph-w7gj-g6xm
+CVE-2026-103923
+GHSA-r4xh-jqrq-34v2

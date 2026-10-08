@@ -7,6 +7,8 @@ import de.muenchen.oss.foerdermittel.backend.TestUtils;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichRepository;
 import de.muenchen.oss.foerdermittel.backend.projekt.dao.BasicProjektDAO;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
 import java.math.BigDecimal;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -36,13 +38,21 @@ class ProjektRepositoryIntegrationTest {
     @Autowired
     private FoerderbereichRepository foerderbereichRepository;
 
+    @Autowired
+    private StadtbezirkRepository stadtbezirkRepository;
+
     @Test
     void givenProjects_thenReturnsTheirBasicProjection() {
         // Given
         final Foerderbereich foerderbereich = new Foerderbereich(
                 BigDecimal.valueOf(99), "Test", false, false, false, false);
         foerderbereichRepository.save(foerderbereich);
-        projektRepository.save(new Projekt("P-123", "Projektname", "Projektstraße 1", foerderbereich));
+
+        final Stadtbezirk stadtbezirk = new Stadtbezirk(
+                BigDecimal.valueOf(99), "Test");
+        stadtbezirkRepository.save(stadtbezirk);
+
+        projektRepository.save(new Projekt("P-123", "Projektname", "Projektstraße 1", foerderbereich, stadtbezirk));
 
         // When
         final List<BasicProjektDAO> result = projektRepository.findAllAsBasic();
