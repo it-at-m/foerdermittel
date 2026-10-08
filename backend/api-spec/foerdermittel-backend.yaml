@@ -1462,6 +1462,7 @@ paths:
           default:
           - "id.jahr,DESC"
           - "id.monat,DESC"
+          - "id.projnr,DESC"
       responses:
         "200":
           description: OK
@@ -3502,28 +3503,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ProjektFormContextDTO"
-    ProjektFormContextDTO:
-      required:
-      - foerderbereich
-      - pname
-      - projnr
-      - pstrasse
-      type: object
-      properties:
-        projnr:
-          type: string
-          description: ""
-        pname:
-          type: string
-          description: ""
-        pstrasse:
-          type: string
-          description: ""
-        foerderbereich:
-          type: string
-          description: ""
-      description: DTO for Projekt to be used in other FormContexts other than its
-        own.
     PagedModelHauptabschnittResponseDTO:
       type: object
       properties:

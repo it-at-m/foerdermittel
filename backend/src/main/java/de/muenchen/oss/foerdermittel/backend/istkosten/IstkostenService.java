@@ -35,7 +35,7 @@ public class IstkostenService {
         log.info("Get Istkosten form context");
 
         return new IstkostenFormContext(
-                istkostenRepository.findAllWithProjekt().stream()
+                istkostenRepository.findAllIstkostenIds().stream()
                         .map(IstkostenPrimaryKey::toString)
                         .collect(Collectors.toList()),
                 projektService.getProjektFormContextDTOs());

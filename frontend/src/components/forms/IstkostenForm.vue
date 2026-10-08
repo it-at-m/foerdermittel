@@ -13,7 +13,6 @@
           item-value="projnr"
           :display-mode="displayMode"
           :label="t('model.istkosten.projnr')"
-          :rules="[rules.required()]"
           :validation-attribute-map="
             IstkostenCreateDTOPropertyValidationAttributesMap
           "
@@ -28,7 +27,6 @@
         <fm-number-input
           v-model="modelValue.jahr"
           :display-mode="displayMode"
-          :rules="[rules.required()]"
           :label="t('model.istkosten.jahr')"
           min="1970"
           max="2100"
@@ -45,7 +43,10 @@
           v-model="modelValue.monat"
           :items="monatOptions"
           :label="t('model.istkosten.monat')"
-          :rules="[rules.required()]"
+          :validation-attribute-map="
+            IstkostenCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="monat"
           :display-mode="displayMode"
           :disable-edit="displayMode === InputDisplayMode.EDIT"
           :error-messages="istkostenCombinationError ? [''] : []"
@@ -55,9 +56,15 @@
         <fm-number-input
           v-model="modelValue.istkosten"
           :display-mode="displayMode"
+          prefix="€"
+          grouping
+          class="currency-input"
           min="0"
           :additional-rules="[rules.max!(999999999999)]"
-          :rules="[rules.required()]"
+          :validation-attribute-map="
+            IstkostenCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="istkosten"
           :label="t('model.istkosten.modelName')"
         ></fm-number-input>
       </v-col>
@@ -179,3 +186,8 @@ defineExpose({
 
 const monatOptions = Array.from({ length: 12 }, (_, i) => i + 1);
 </script>
+<style>
+.currency-input :deep(input) {
+  text-align: right;
+}
+</style>

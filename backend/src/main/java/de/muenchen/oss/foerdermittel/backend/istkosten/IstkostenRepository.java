@@ -12,6 +12,6 @@ public interface IstkostenRepository extends ListCrudRepository<Istkosten, Istko
         InsertAndUpdateRepository<Istkosten> {
 
     @Query("SELECT i.id FROM Istkosten i")
-    List<IstkostenPrimaryKey> findAllWithProjekt();
+    List<IstkostenPrimaryKey> findAllIstkostenIds();
 
 }

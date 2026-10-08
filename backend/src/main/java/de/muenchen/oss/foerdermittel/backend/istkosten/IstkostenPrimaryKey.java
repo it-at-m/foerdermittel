@@ -10,6 +10,8 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,8 +35,39 @@ public class IstkostenPrimaryKey implements Serializable {
     @NotNull @Min(1) @Max(12) @Column(name = "monat")
     private BigDecimal monat;
 
+    private static final Pattern ID_PATTERN = Pattern.compile(
+            "^(?<id>\\d+)-(?<jahr>19[7-9]\\d|20\\d{2}|2100)-(?<monat>[1-9]|1[0-2])$");
+
+    public static IstkostenPrimaryKey toPrimaryKey(final String id) {
+        if (id == null || id.isEmpty()) {
+            return null;
+        }
+
+        final Matcher matcher = ID_PATTERN.matcher(id);
+
+        if (!matcher.matches()) {
+            throwInvalidId(id);
+        }
+
+        return new IstkostenPrimaryKey(
+                matcher.group("id"),
+                new BigDecimal(matcher.group("jahr")),
+                new BigDecimal(matcher.group("monat")));
+    }
+
+    private static void throwInvalidId(String id) {
+        throw new IllegalArgumentException("Ungültige ID: " + id);
+    }
+
     @Override
     public String toString() {
+        if (jahr == null) {
+            throw new IllegalStateException("Jahr darf nicht null sein");
+        }
+        if (monat == null) {
+            throw new IllegalStateException("Monat darf nicht null sein");
+        }
+
         return String.format("%s-%s-%s",
                 projnr,
                 jahr.setScale(0, RoundingMode.UNNECESSARY).toPlainString(),

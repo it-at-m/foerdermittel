@@ -46,6 +46,21 @@ class IstkostenMapperTest {
             assertThat(dto.pstrasse()).isEqualTo(entity.getProjekt().getPstrasse());
             assertThat(dto.fob_fb()).isEqualTo(entity.getProjekt().getFoerderbereich().getFb());
         }
+
+        @Test
+        void givenPrimaryKey_thenReturnsCorrectString() {
+            final String pn = "1124101";
+            final BigDecimal jahr = new BigDecimal(2026);
+            final BigDecimal monat = new BigDecimal(10);
+            final IstkostenPrimaryKey id = new IstkostenPrimaryKey(pn, jahr, monat);
+
+            final String result = istkostenMapper.buildIdString(id);
+            final String expectedResult = pn + "-" + jahr.toPlainString() + "-" + monat.toPlainString();
+
+            assertThat(result).isNotNull();
+            assertThat(result).isEqualTo(expectedResult);
+
+        }
     }
 
     @Nested
@@ -75,6 +90,22 @@ class IstkostenMapperTest {
             assertThat(entity.getId()).isNull();
             assertThat(entity.getProjekt()).isNull();
             assertThat(entity.getIstkosten()).isEqualByComparingTo(dto.istkosten());
+        }
+
+        @Test
+        void givenString_thenReturnsCorrectPrimaryKey() {
+            final String pn = "1124101";
+            final String jahr = "2026";
+            final String monat = "10";
+            final String id = pn + "-" + jahr + "-" + monat;
+
+            final IstkostenPrimaryKey result = istkostenMapper.mapStringToPrimaryKey(id);
+
+            assertThat(result).isNotNull();
+            assertThat(result.getProjnr()).isEqualTo(pn);
+            assertThat(result.getJahr()).isEqualTo(new BigDecimal(jahr));
+            assertThat(result.getMonat()).isEqualTo(new BigDecimal(monat));
+
         }
     }
 }

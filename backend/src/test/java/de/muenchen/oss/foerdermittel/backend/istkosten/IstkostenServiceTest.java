@@ -91,17 +91,19 @@ class IstkostenServiceTest {
                     PROJNR,
                     "Test Projekt",
                     "Test Strasse",
-                    "11");
+                    "11",
+                    BigDecimal.valueOf(13));
 
             final ProjektFormContextDTO projektDTO2 = new ProjektFormContextDTO(
                     OTHER_PROJNR,
                     "Test Projekt 2",
                     "Test Strasse 2",
-                    "12");
+                    "12",
+                    BigDecimal.valueOf(13));
 
             final List<ProjektFormContextDTO> projekte = List.of(projektDTO1, projektDTO2);
 
-            when(istkostenRepository.findAllWithProjekt()).thenReturn(istkostenIds);
+            when(istkostenRepository.findAllIstkostenIds()).thenReturn(istkostenIds);
 
             when(projektService.getProjektFormContextDTOs()).thenReturn(projekte);
 
@@ -109,7 +111,7 @@ class IstkostenServiceTest {
             final IstkostenFormContext result = unitUnderTest.getIstkostenFormContext();
 
             // Then
-            verify(istkostenRepository, times(1)).findAllWithProjekt();
+            verify(istkostenRepository, times(1)).findAllIstkostenIds();
             verify(projektService, times(1)).getProjektFormContextDTOs();
 
             assertThat(result.istkosten()).isEqualTo(istkostenIds.stream()

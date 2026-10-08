@@ -41,7 +41,7 @@ public class IstkostenController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<IstkostenResponseDTO> getIstkostenEintraege(
-            @ParameterObject @PageableDefault(sort = { "id.jahr", "id.monat" }, direction = Direction.DESC) final Pageable pageable) {
+            @ParameterObject @PageableDefault(sort = { "id.jahr", "id.monat", "id.projnr" }, direction = Direction.DESC) final Pageable pageable) {
 
         final Page<Istkosten> pageWithIstkosten = istkostenService.getIstkostenEintraege(pageable);
 
