@@ -82,11 +82,16 @@ const headers: DataTableHeader<Partial<IstkostenResponseDTO>>[] = [
   {
     title: t("model.istkosten.modelName"),
     key: "istkosten",
-    value: (item) =>
-      new Intl.NumberFormat("de-DE", {
-        style: "currency",
-        currency: "EUR",
-      }).format(item.istkosten),
+    value: (item) => {
+      const value = item.istkosten;
+      if (value !== undefined) {
+        return new Intl.NumberFormat("de-DE", {
+          style: "currency",
+          currency: "EUR",
+        }).format(value);
+      }
+      return "";
+    },
     align: "end",
     width: 110,
   },

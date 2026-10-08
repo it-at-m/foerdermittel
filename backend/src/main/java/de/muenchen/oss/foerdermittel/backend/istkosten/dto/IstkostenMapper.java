@@ -30,13 +30,17 @@ public interface IstkostenMapper {
 
     @Named("stringToPrimaryKey")
     default IstkostenPrimaryKey mapStringToPrimaryKey(final String id) {
-        if (id != null) {return IstkostenPrimaryKey.toPrimaryKey(id);}
+        if (id != null) {
+            return IstkostenPrimaryKey.toPrimaryKey(id);
+        }
         return null;
     }
 
     @Named("buildIdString")
     default String buildIdString(final IstkostenPrimaryKey id) {
-        if (id != null) {return id.toString();}
+        if (id != null) {
+            return id.toString();
+        }
         return null;
     }
 
