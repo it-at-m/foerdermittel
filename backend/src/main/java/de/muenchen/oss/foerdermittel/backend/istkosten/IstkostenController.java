@@ -8,6 +8,8 @@ import de.muenchen.oss.foerdermittel.backend.istkosten.dto.IstkostenUpdateDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import java.util.List;
+
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
@@ -71,14 +73,14 @@ public class IstkostenController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public IstkostenResponseDTO updateIstkosten(@Valid @RequestBody final IstkostenUpdateDTO istkostenUpdateDTO,
-            @PathVariable("id") final String istkostenId) {
+            @PathVariable("id") @Pattern(regexp = IstkostenPrimaryKey.PRIMARYKEY_REGEX) final String istkostenId) {
         return istkostenMapper
                 .toDTO(istkostenService.updateIstkosten(istkostenMapper.toEntity(istkostenUpdateDTO), istkostenMapper.mapStringToPrimaryKey(istkostenId)));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteIstkosten(@PathVariable("id") final String istkostenId) {
+    public void deleteIstkosten(@PathVariable("id") @Pattern(regexp = IstkostenPrimaryKey.PRIMARYKEY_REGEX) final String istkostenId) {
         istkostenService.deleteIstkosten(istkostenMapper.mapStringToPrimaryKey(istkostenId));
     }
 

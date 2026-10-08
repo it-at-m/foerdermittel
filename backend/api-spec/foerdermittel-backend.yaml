@@ -474,6 +474,7 @@ paths:
         in: path
         required: true
         schema:
+          pattern: "^(?<id>.+?)-(?<jahr>19[7-9]\\d|20\\d{2}|2100)-(?<monat>[1-9]|1[0-2])$"
           type: string
       requestBody:
         content:
@@ -499,6 +500,7 @@ paths:
         in: path
         required: true
         schema:
+          pattern: "^(?<id>.+?)-(?<jahr>19[7-9]\\d|20\\d{2}|2100)-(?<monat>[1-9]|1[0-2])$"
           type: string
       responses:
         "200":

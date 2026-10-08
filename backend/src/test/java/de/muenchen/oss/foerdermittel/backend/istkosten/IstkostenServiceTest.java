@@ -307,8 +307,6 @@ class IstkostenServiceTest {
         final Istkosten istkosten = new Istkosten();
 
         istkosten.setId(id);
-        //        istkosten.getId().setJahr(id.getJahr());
-        //        istkosten.getId().setMonat(id.getMonat());
         istkosten.setIstkosten(new BigDecimal(5000));
 
         if (projnr != null) {

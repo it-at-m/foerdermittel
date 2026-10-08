@@ -35,8 +35,9 @@ public class IstkostenPrimaryKey implements Serializable {
     @NotNull @Min(1) @Max(12) @Column(name = "monat")
     private BigDecimal monat;
 
+    public static final String PRIMARYKEY_REGEX = "^(?<id>.+?)-(?<jahr>19[7-9]\\d|20\\d{2}|2100)-(?<monat>[1-9]|1[0-2])$";
     private static final Pattern ID_PATTERN = Pattern.compile(
-            "^(?<id>\\d+)-(?<jahr>19[7-9]\\d|20\\d{2}|2100)-(?<monat>[1-9]|1[0-2])$");
+            PRIMARYKEY_REGEX);
 
     public static IstkostenPrimaryKey toPrimaryKey(final String id) {
         if (id == null || id.isEmpty()) {
