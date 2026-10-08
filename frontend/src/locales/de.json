@@ -125,6 +125,9 @@
       "bauleitung": "Bauleitung",
       "bezeichnung": "Bezeichnung"
     },
+    "fipo": {
+      "modelName": "FIPO"
+    },
     "foerderbereich": {
       "modelName": "Förderbereich | Förderbereiche",
       "fb": "Förderbereich",
@@ -134,6 +137,7 @@
       "kindergarten": "Kindergarten",
       "nichtRelevant": "Nicht relevant"
     },
+
     "krankenhaus": {
       "modelName": "Krankenhaus | Krankenhäuser",
       "krhname": "Kurzform",
@@ -224,7 +228,32 @@
       "ausstGenehmigungVorzBeginn": "Ausst. Genehmigung vorz. Beginn",
       "bewilligungAuszahlungProjekt": "@:model.bewilligung.modelName und @:domain.auszahlung eines @:model.projekt.modelName{'s'}",
       "bewilligungAuzahlungVergleich": "@:model.bewilligung.modelName und @:domain.auszahlung (Vergleich)",
-      "fortsetzungsAntrag": "Fortsetzungsantrag | Fortsetzungsanträge"
+      "fortsetzungsAntrag": {
+        "modelName": "Fortsetzungsantrag | Fortsetzungsanträge",
+        "fag": "Nur FAG",
+        "ofPro": "Nur offene Projekte",
+        "type": {
+          "pdf": "PDF",
+          "excel": "Excel"
+        }
+      },
+      "haushalt1": {
+        "modelName": "Haushaltsplanung",
+        "hh": "Ausgabe nur mit Haushaltszahlen",
+        "sortEnum": {
+          "projektnummer": "Projektnummer",
+          "strasse": "Straße, Projektnummer",
+          "fipo": "FIPO",
+          "fbProjektnummer": "Förderbereich, Projektnummer",
+          "fbStrasseProjektnummer": "Förderbereich, Straße, Projektnummer",
+          "fbFipo": "Förderbereich, FIPO"
+        },
+        "type": {
+          "pdf": "PDF: Gruppierung Förderbereich",
+          "pdfFlat": "PDF: keine Gruppierung",
+          "excel": "Excel"
+        }
+      }
     }
   },
   "view": {

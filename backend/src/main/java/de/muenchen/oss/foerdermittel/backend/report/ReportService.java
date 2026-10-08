@@ -1,14 +1,21 @@
 package de.muenchen.oss.foerdermittel.backend.report;
 
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichService;
+import de.muenchen.oss.foerdermittel.backend.hhplan.HhplanService;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1DTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportProjektuebersichtDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportHaushalt1FormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportProjektuebersichtFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkService;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.ListennameStadtbezirkslisteService;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.StichwortbereichService;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
@@ -17,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 @Slf4j
@@ -27,9 +35,13 @@ public class ReportService {
     public static final String SORT_PARAMETER = "P_SORT";
 
     private final StichwortbereichService stichwortbereichService;
+    private final FoerderbereichService foerderbereichService;
+    private final ListennameStadtbezirkslisteService listennameStadtbezirkslisteService;
+    private final StadtbezirkService stadtbezirkService;
     private final JasperReportService jasperReportService;
     private final ReportMapper reportMapper;
     private final ProjektService projektService;
+    private final HhplanService hhplanService;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -64,6 +76,40 @@ public class ReportService {
         return new ReportProjektuebersichtFormContext(projektService.getReportProjektuebersichtFormContextDTOs());
     }
 
+    /// Haushalt1
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public GeneratedReport generateReportHaushalt1(
+            final ReportHaushalt1DTO parameters) {
+        if (StringUtils.hasText(parameters.fb())) {
+            foerderbereichService.checkExistsByFoerderbereich(new BigDecimal(parameters.fb()));
+        }
+        if (StringUtils.hasText(parameters.sbl())) {
+            listennameStadtbezirkslisteService.checkExistsByListenname(parameters.sbl());
+        }
+        if (StringUtils.hasText(parameters.bez())) {
+            stadtbezirkService.checkExistsByStadtbezirk(new BigDecimal(parameters.bez()));
+        }
+
+        final String orderBy = parameters.sort().getOrderBy();
+
+        return generateReport(reportMapper.toJasperParameters(parameters), ReportType.FMW_HAUSHALT1, parameters.type(),
+                orderBy);
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public ReportHaushalt1FormContext getReportHaushalt1() {
+        log.info("Get ReportHaushalt1 form context");
+        return new ReportHaushalt1FormContext(
+                foerderbereichService.getFoerderbereichFormContextDTOs(),
+                listennameStadtbezirkslisteService.getlistennameStadtbezirkslisteFormContextDTOs(),
+                stadtbezirkService.getStadtbezirkFormContextDTOs(),
+                hhplanService.getHhplanFormContextDTOs());
+
+    }
+
     /// Utility function to create a [GeneratedReport].
     ///
     /// @param jasperParameters parameters to fill the report with
@@ -72,7 +118,7 @@ public class ReportService {
     /// @param sort sort parameter (SQL statement) to use for the Jasper report (passed seperate due to
     ///            SQL injection prevention)
     /// @return the generated report with file metadata
-    private GeneratedReport generateReport(
+    public GeneratedReport generateReport(
             final Map<String, Object> jasperParameters,
             final ReportType reportType,
             final ReportFormat reportFormat,

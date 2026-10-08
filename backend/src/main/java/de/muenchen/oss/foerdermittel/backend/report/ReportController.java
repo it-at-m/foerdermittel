@@ -1,10 +1,13 @@
 package de.muenchen.oss.foerdermittel.backend.report;
 
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1DTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportProjektuebersichtDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportHaushalt1FormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportProjektuebersichtFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,7 +21,6 @@ import java.sql.SQLException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JRException;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 @RequiredArgsConstructor
 @RequestMapping("/report")
 @SecurityRequirement(name = OpenAPIDocumentationConfiguration.SECURITY_SCHEME_NAME)
@@ -55,7 +58,7 @@ public class ReportController {
             final HttpServletResponse response)
             throws IOException, SQLException, JRException {
         final GeneratedReport generatedReport = reportService.generateReportStichworte(parameters);
-        setMetadata(response, generatedReport);
+        ReportControllerUtil.setMetadata(response, generatedReport);
         generatedReport.writer().write(response.getOutputStream());
     }
 
@@ -63,6 +66,40 @@ public class ReportController {
     @ResponseStatus(HttpStatus.OK)
     public ReportStichworteFormContext getReportStichworteFormContext() {
         return reportService.getReportStichworte();
+    }
+
+    @GetMapping("/haushalt1")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            responses = @ApiResponse(
+                    responseCode = "200",
+                    description = "OK",
+                    content = {
+                            @Content(
+                                    mediaType = MediaType.APPLICATION_PDF_VALUE,
+                                    schema = @Schema(type = "string", format = "binary")
+                            ),
+
+                            @Content(
+                                    mediaType = CustomReportContentTypes.EXCEL_CONTENT_TYPE,
+                                    schema = @Schema(type = "string", format = "binary")
+                            )
+                    }
+            )
+    )
+    public void getReportHaushalt1(
+            @Valid @ModelAttribute final ReportHaushalt1DTO parameters,
+            final HttpServletResponse response)
+            throws IOException, SQLException, JRException {
+        final GeneratedReport generatedReport = reportService.generateReportHaushalt1(parameters);
+        ReportControllerUtil.setMetadata(response, generatedReport);
+        generatedReport.writer().write(response.getOutputStream());
+    }
+
+    @GetMapping(value = "/haushalt1/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ReportHaushalt1FormContext getReportHaushalt1FormContext() {
+        return reportService.getReportHaushalt1();
     }
 
     @GetMapping("/projektuebersicht")
@@ -84,7 +121,7 @@ public class ReportController {
             final HttpServletResponse response)
             throws IOException, SQLException, JRException {
         final GeneratedReport generatedReport = reportService.generateReportProjektuebersicht(parameters);
-        setMetadata(response, generatedReport);
+        ReportControllerUtil.setMetadata(response, generatedReport);
         generatedReport.writer().write(response.getOutputStream());
     }
 
@@ -92,13 +129,6 @@ public class ReportController {
     @ResponseStatus(HttpStatus.OK)
     public ReportProjektuebersichtFormContext getReportProjektuebersichtFormContext() {
         return reportService.getReportProjektuebersicht();
-    }
-
-    private static void setMetadata(final HttpServletResponse response, final GeneratedReport generatedReport) {
-        response.setContentType(generatedReport.contentType().toString());
-        response.setHeader(
-                HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + generatedReport.fileName() + "\"");
     }
 
 }
