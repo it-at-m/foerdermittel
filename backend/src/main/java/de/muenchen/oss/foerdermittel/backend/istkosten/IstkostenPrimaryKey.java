@@ -55,7 +55,7 @@ public class IstkostenPrimaryKey implements Serializable {
                 new BigDecimal(matcher.group("monat")));
     }
 
-    private static void throwInvalidId(String id) {
+    private static void throwInvalidId(final String id) {
         throw new IllegalArgumentException("Ungültige ID: " + id);
     }
 
