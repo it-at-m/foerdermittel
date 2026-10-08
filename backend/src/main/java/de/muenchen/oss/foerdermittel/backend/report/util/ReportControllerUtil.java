@@ -6,6 +6,10 @@ import org.springframework.http.HttpHeaders;
 
 public final class ReportControllerUtil {
 
+    private ReportControllerUtil() {
+        // Utility class
+    }
+
     public static void setMetadata(final HttpServletResponse response, final GeneratedReport generatedReport) {
         response.setContentType(generatedReport.contentType().toString());
         response.setHeader(
