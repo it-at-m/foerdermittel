@@ -72,7 +72,7 @@ public class ReportService {
     /// @param sort sort parameter (SQL statement) to use for the Jasper report (passed seperate due to
     ///            SQL injection prevention)
     /// @return the generated report with file metadata
-    private GeneratedReport generateReport(
+    public GeneratedReport generateReport(
             final Map<String, Object> jasperParameters,
             final ReportType reportType,
             final ReportFormat reportFormat,
