@@ -1,18 +1,12 @@
 package de.muenchen.oss.foerdermittel.backend.report.fortsetzungsantrag;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportFortsetzungsantragDTO;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1DTO;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1Sort;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportProjektuebersichtDTO;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
 import de.muenchen.oss.foerdermittel.backend.report.fortsetzungsantrag.dto.FortsetzungsantragReportMapper;
-import org.junit.jupiter.api.Test;
-
 import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class FortsetzungsantragReportMapperTest {
 
@@ -61,6 +55,5 @@ class FortsetzungsantragReportMapperTest {
                 .containsEntry("P_OFFEN", "")
                 .containsEntry("P_FAG", "1");
     }
-
 
 }

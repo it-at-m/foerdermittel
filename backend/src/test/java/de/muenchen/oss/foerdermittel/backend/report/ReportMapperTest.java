@@ -2,7 +2,6 @@ package de.muenchen.oss.foerdermittel.backend.report;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportFortsetzungsantragDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1DTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1Sort;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;

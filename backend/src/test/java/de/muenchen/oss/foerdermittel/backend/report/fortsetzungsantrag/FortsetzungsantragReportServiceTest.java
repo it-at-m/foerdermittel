@@ -53,9 +53,8 @@ class FortsetzungsantragReportServiceTest {
         void givenAllParameters_thenShouldGenerateCorrectGeneratedReport() {
             // Given
             final String sbl = "1";
-            final ReportFortsetzungsantragDTO parameters =
-                    new ReportFortsetzungsantragDTO(
-                            sbl, "1", "1", "1", ReportFormat.PDF);
+            final ReportFortsetzungsantragDTO parameters = new ReportFortsetzungsantragDTO(
+                    sbl, "1", "1", "1", ReportFormat.PDF);
 
             final Map<String, Object> jasperParameters = new HashMap<>();
             jasperParameters.put(
@@ -75,9 +74,8 @@ class FortsetzungsantragReportServiceTest {
                     .thenReturn(expectedReport);
 
             // When
-            final GeneratedReport generatedReport =
-                    fortsetzungsantragReportService
-                            .generateReportFortsetzungsantrag(parameters);
+            final GeneratedReport generatedReport = fortsetzungsantragReportService
+                    .generateReportFortsetzungsantrag(parameters);
 
             // Then
             verify(listennameStadtbezirkslisteService, times(1))
@@ -109,19 +107,17 @@ class FortsetzungsantragReportServiceTest {
         @Test
         void givenEntitiesExists_thenReturnCorrectFormContext() {
             // Given
-            final List<StadtbezirkFormContextDTO> allStadtbezirke =
-                    List.of(
-                            new StadtbezirkFormContextDTO("1", "Test"),
-                            new StadtbezirkFormContextDTO("2", "Test 2"),
-                            new StadtbezirkFormContextDTO("3", "Test 3"));
+            final List<StadtbezirkFormContextDTO> allStadtbezirke = List.of(
+                    new StadtbezirkFormContextDTO("1", "Test"),
+                    new StadtbezirkFormContextDTO("2", "Test 2"),
+                    new StadtbezirkFormContextDTO("3", "Test 3"));
 
             when(stadtbezirkService.getStadtbezirkFormContextDTOs())
                     .thenReturn(allStadtbezirke);
 
             // When
-            final ReportFortsetzungsantragFormContext formContext =
-                    fortsetzungsantragReportService
-                            .getReportFortsetzungsantrag();
+            final ReportFortsetzungsantragFormContext formContext = fortsetzungsantragReportService
+                    .getReportFortsetzungsantrag();
 
             // Then
             verify(stadtbezirkService, times(1))
