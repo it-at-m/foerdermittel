@@ -16,15 +16,6 @@ public class ReportMapper {
         return parameters;
     }
 
-    public Map<String, Object> toJasperParameters(final ReportFortsetzungsantragDTO dto) {
-        final Map<String, Object> parameters = new HashMap<>();
-        parameters.put("P_BEZ", nullIfBlank(dto.bez()));
-        parameters.put("P_SBL", nullIfBlank(dto.sbl()));
-        parameters.put("P_OFFEN", dto.ofPro());
-        parameters.put("P_FAG", dto.fag());
-        return parameters;
-    }
-
     public Map<String, Object> toJasperParameters(final ReportHaushalt1DTO dto) {
         final Map<String, Object> parameters = new HashMap<>();
 
@@ -51,10 +42,6 @@ public class ReportMapper {
         }
         parameters.put("P_HH", dto.hh());
         return parameters;
-    }
-
-    private String nullIfBlank(final String value) {
-        return StringUtils.hasText(value) ? value : null;
     }
 
     public Map<String, Object> toJasperParameters(final ReportProjektuebersichtDTO dto) {

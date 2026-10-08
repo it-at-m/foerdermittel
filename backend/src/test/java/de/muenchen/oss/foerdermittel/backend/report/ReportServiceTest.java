@@ -18,13 +18,11 @@ import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportFortsetzungsantragDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1DTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1Sort;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportProjektuebersichtDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
-import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportFortsetzungsantragFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportHaushalt1FormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportProjektuebersichtFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
@@ -599,65 +597,4 @@ class ReportServiceTest {
 
     }
 
-    @Nested
-    class GenerateReportFortsetzungsantrag {
-
-        @Test
-        void givenAllParameters_thenShouldGenerateCorrectGeneratedReport() {
-            // Given
-            final ReportFortsetzungsantragDTO parameters = new ReportFortsetzungsantragDTO(
-                    "1",
-                    "1",
-                    "1",
-                    "1",
-                    ReportFormat.PDF);
-
-            final Map<String, Object> jasperParameters = new HashMap<>();
-            when(reportMapper.toJasperParameters(parameters))
-                    .thenReturn(jasperParameters);
-
-            // When
-            final GeneratedReport generatedReport = reportService.generateReportFortsetzungsantrag(parameters);
-
-            // Then
-            verify(listennameStadtbezirkslisteService, times(1))
-                    .checkExistsByListenname("1");
-            verify(stadtbezirkService, times(1))
-                    .checkExistsByStadtbezirk(new BigDecimal("1"));
-            verify(reportMapper, times(1))
-                    .toJasperParameters(parameters);
-            verifyNoInteractions(jasperReportService);
-
-            assertThat(generatedReport).isNotNull();
-            assertThat(generatedReport.contentType())
-                    .isEqualTo(ReportFormat.PDF.getContentType());
-            assertThat(generatedReport.fileName())
-                    .startsWith(ReportType.FMW_BEWILL4.getFileName())
-                    .endsWith(ReportFormat.PDF.getFileExtension());
-            assertThat(jasperParameters)
-                    .containsEntry(
-                            SORT_PARAMETER,
-                            "order by v_fob_fb asc, v_projnr asc, v_bdatum asc");
-        }
-    }
-
-    @Nested
-    class GetReportFortsetzungsantragFormContext {
-
-        @Test
-        void givenEntitiesExists_thenReturnCorrectFormContext() {
-            // Given
-            final List<StadtbezirkFormContextDTO> allStadtbezirke = List.of(new StadtbezirkFormContextDTO("1", "Test"),
-                    new StadtbezirkFormContextDTO("2", "Test 2"), new StadtbezirkFormContextDTO("3", "Test 3"));
-            when(stadtbezirkService.getStadtbezirkFormContextDTOs()).thenReturn(allStadtbezirke);
-
-            // When
-            final ReportFortsetzungsantragFormContext formContext = reportService.getReportFortsetzungsantrag();
-
-            // Then
-            verify(stadtbezirkService, times(1)).getStadtbezirkFormContextDTOs();
-            assertThat(formContext.bezs()).isEqualTo(allStadtbezirke);
-        }
-
-    }
 }

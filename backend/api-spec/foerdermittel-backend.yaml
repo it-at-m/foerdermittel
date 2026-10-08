@@ -1923,7 +1923,7 @@ paths:
   /report/fortsetzungsantrag:
     get:
       tags:
-      - report-controller
+      - fortsetzungsantrag-report-controller
       operationId: getReportFortsetzungsantrag
       parameters:
       - name: parameters
@@ -1948,7 +1948,7 @@ paths:
   /report/fortsetzungsantrag/form-context:
     get:
       tags:
-      - report-controller
+      - fortsetzungsantrag-report-controller
       operationId: getReportFortsetzungsantragFormContext
       responses:
         "200":

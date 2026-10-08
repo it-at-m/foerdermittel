@@ -4,12 +4,10 @@ import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichServic
 import de.muenchen.oss.foerdermittel.backend.hhplan.HhplanService;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportFortsetzungsantragDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1DTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportProjektuebersichtDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
-import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportFortsetzungsantragFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportHaushalt1FormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportProjektuebersichtFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
@@ -30,7 +28,6 @@ import org.springframework.util.StringUtils;
 
 @Service
 @Slf4j
-@SuppressWarnings("PMD.CouplingBetweenObjects")
 @RequiredArgsConstructor
 @Transactional
 public class ReportService {
@@ -113,31 +110,6 @@ public class ReportService {
 
     }
 
-    /// Fortsezungsantrag
-
-    @PreAuthorize(Authorities.HAS_ANY_ROLE)
-    @Transactional(readOnly = true)
-    public GeneratedReport generateReportFortsetzungsantrag(
-            final ReportFortsetzungsantragDTO parameters) {
-        if (StringUtils.hasText(parameters.sbl())) {
-            listennameStadtbezirkslisteService.checkExistsByListenname(parameters.sbl());
-        }
-        if (StringUtils.hasText(parameters.bez())) {
-            stadtbezirkService.checkExistsByStadtbezirk(new BigDecimal(parameters.bez()));
-        }
-        return generateReport(reportMapper.toJasperParameters(parameters), ReportType.FMW_BEWILL4, parameters.type(),
-                "order by v_fob_fb asc, v_projnr asc, v_bdatum asc");
-    }
-
-    @PreAuthorize(Authorities.HAS_ANY_ROLE)
-    @Transactional(readOnly = true)
-    public ReportFortsetzungsantragFormContext getReportFortsetzungsantrag() {
-        log.info("Get ReportFortsetzungsantrag form context");
-        return new ReportFortsetzungsantragFormContext(
-                listennameStadtbezirkslisteService.getlistennameStadtbezirkslisteFormContextDTOs(),
-                stadtbezirkService.getStadtbezirkFormContextDTOs());
-    }
-
     /// Utility function to create a [GeneratedReport].
     ///
     /// @param jasperParameters parameters to fill the report with
@@ -146,7 +118,7 @@ public class ReportService {
     /// @param sort sort parameter (SQL statement) to use for the Jasper report (passed seperate due to
     ///            SQL injection prevention)
     /// @return the generated report with file metadata
-    private GeneratedReport generateReport(
+    public GeneratedReport generateReport(
             final Map<String, Object> jasperParameters,
             final ReportType reportType,
             final ReportFormat reportFormat,

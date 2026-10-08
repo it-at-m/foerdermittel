@@ -10,7 +10,10 @@ import type {
 } from "@/api/generated/foerdermittel-backend";
 import type { ReportApiComposables } from "@/util/composable-helper";
 
-import { ReportControllerApi } from "@/api/generated/foerdermittel-backend";
+import {
+  FortsetzungsantragReportControllerApi,
+  ReportControllerApi,
+} from "@/api/generated/foerdermittel-backend";
 import {
   createReportAPIComposables,
   requireComposables,
@@ -96,10 +99,10 @@ export const {
   useContext: useGetReportFortsetzungsantragFormContext,
 } = requireComposables(
   createReportAPIComposables<
-    ReportControllerApi,
+    FortsetzungsantragReportControllerApi,
     GetReportFortsetzungsantragRequest,
     ReportFortsetzungsantragFormContext
-  >(ReportControllerApi, {
+  >(FortsetzungsantragReportControllerApi, {
     getOpts: (api, req) => api.getReportFortsetzungsantragRequestOpts(req),
     context: (api) => api.getReportFortsetzungsantragFormContext(),
   })
