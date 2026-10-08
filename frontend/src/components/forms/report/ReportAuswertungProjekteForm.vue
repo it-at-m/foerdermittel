@@ -25,6 +25,7 @@
           "
           validation-attribute-key="bez"
           :label="t('model.stadtbezirk.modelName')"
+          @update:model-value="delete modelValue.parameters!.bez"
         />
 
         <!-- Stadtbezirksliste -->
@@ -38,6 +39,7 @@
           "
           validation-attribute-key="sbl"
           :label="t('model.stadtbezirksliste.modelName')"
+          @update:model-value="delete modelValue.parameters!.sbl"
         />
 
         <!-- Förderbereich -->
@@ -51,6 +53,7 @@
           "
           validation-attribute-key="fb"
           :label="t('model.foerderbereich.modelName')"
+          @update:model-value="delete modelValue.parameters!.fb"
         />
 
         <!-- Unterabschnitt -->
@@ -64,6 +67,7 @@
           "
           validation-attribute-key="ua"
           :label="t('model.unterabschnitt.modelName')"
+          @update:model-value="delete modelValue.parameters!.ua"
         />
 
         <!-- Kurzbezeichnung -->
@@ -77,6 +81,7 @@
           "
           validation-attribute-key="kurz"
           :label="t('model.kurzbezeichnung.modelName')"
+          @update:model-value="delete modelValue.parameters!.kurz"
         />
 
         <!-- Projektname -->
@@ -139,6 +144,7 @@
           "
           validation-attribute-key="krisofp"
           :label="t('model.projekt.krisofp')"
+          @update:model-value="delete modelValue.parameters!.krisofp"
         />
 
         <!-- Siedlungsgebiet -->
@@ -152,6 +158,7 @@
           "
           validation-attribute-key="sgt"
           :label="t('model.siedlungsgebiet.modelName')"
+          @update:model-value="delete modelValue.parameters!.sgt"
         />
 
         <!-- Bauprogramm -->
@@ -165,6 +172,8 @@
           "
           validation-attribute-key="bpg"
           :label="t('model.bauprogramm.modelName')"
+          @update:model-value="delete modelValue.parameters!.bpg"
+
         />
 
         <!-- Sortierung -->
