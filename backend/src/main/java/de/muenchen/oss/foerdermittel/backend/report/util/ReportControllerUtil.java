@@ -4,7 +4,7 @@ import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 
-public abstract class ReportControllerUtil {
+public final class ReportControllerUtil {
 
     public static void setMetadata(final HttpServletResponse response, final GeneratedReport generatedReport) {
         response.setContentType(generatedReport.contentType().toString());
