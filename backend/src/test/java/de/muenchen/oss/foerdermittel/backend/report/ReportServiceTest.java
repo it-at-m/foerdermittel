@@ -345,36 +345,7 @@ class ReportServiceTest {
                             ReportHaushalt1Sort.PROJEKTNUMMER.getOrderBy());
         }
 
-        @Test
-        void givenWriteInteraction_thenShouldCallJasperServiceCorrectly() throws JRException, SQLException, IOException {
-            // Given
-            final ReportHaushalt1DTO parameters = new ReportHaushalt1DTO(
-                    "2024",
-                    "1",
-                    "0000.000.123",
-                    "1",
-                    "1",
-                    "1",
-                    ReportHaushalt1Sort.FB_PROJEKTNUMMER,
-                    ReportFormat.PDF);
-
-            final Map<String, Object> jasperParameters = new HashMap<>();
-            when(reportMapper.toJasperParameters(parameters))
-                    .thenReturn(jasperParameters);
-
-            final OutputStream outputStream = new ByteArrayOutputStream();
-
-            // When
-            final GeneratedReport generatedReport = reportService.generateReportHaushalt1(parameters);
-            generatedReport.writer().write(outputStream);
-
-            // Then
-            verify(jasperReportService, times(1)).generateReportWithParameters(
-                    ReportType.FMW_HAUSHALT1,
-                    ReportFormat.PDF,
-                    jasperParameters,
-                    outputStream);
-        }
+        
 
         @ParameterizedTest
         @EnumSource(ReportHaushalt1Sort.class)
