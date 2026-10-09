@@ -1,8 +1,12 @@
 package de.muenchen.oss.foerdermittel.backend.stadtbezirk;
 
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkMapper;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.math.BigDecimal;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,12 +22,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class StadtbezirkService {
 
     private final StadtbezirkRepository stadtbezirkRepository;
+    private final StadtbezirkMapper stadtbezirkMapper;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public Page<Stadtbezirk> getStadtbezirke(final Pageable pageable) {
         log.info("Get Stadtbezirke with Pageable {}", pageable);
         return stadtbezirkRepository.findAll(pageable);
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<StadtbezirkFormContextDTO> getStadtbezirkFormContextDTOs() {
+        return stadtbezirkMapper.toFormContext(stadtbezirkRepository.findAll());
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
@@ -54,5 +65,11 @@ public class StadtbezirkService {
         log.debug("Delete Stadtbezirk with ID {}", stadtbezirkId);
         ServiceUtils.getEntityOrThrowNotFoundException(stadtbezirkId, stadtbezirkRepository, Stadtbezirk.class);
         stadtbezirkRepository.deleteById(stadtbezirkId);
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public void checkExistsByStadtbezirk(final BigDecimal bez) {
+        ServiceUtils.checkExistsOrThrowNotFoundException(bez, stadtbezirkRepository, Stadtbezirk.class);
     }
 }
