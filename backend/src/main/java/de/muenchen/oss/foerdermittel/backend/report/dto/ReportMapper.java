@@ -16,7 +16,7 @@ public class ReportMapper {
         return parameters;
     }
 
-    public Map<String, Object> toJasperParameters(final ReportHaushalt1DTO dto) {
+    public Map<String, Object> toJasperParameters(final ReportHaushaltsplanungDTO dto) {
         final Map<String, Object> parameters = new HashMap<>();
 
         parameters.put("P_JAHR", dto.haushaltsjahr());

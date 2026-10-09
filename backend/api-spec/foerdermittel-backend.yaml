@@ -1885,13 +1885,13 @@ paths:
     get:
       tags:
       - report-controller
-      operationId: getReportHaushalt1
+      operationId: getReportHaushaltsplanung
       parameters:
       - name: parameters
         in: query
         required: true
         schema:
-          $ref: "#/components/schemas/ReportHaushalt1DTO"
+          $ref: "#/components/schemas/ReportHaushaltsplanungDTO"
       responses:
         "200":
           description: OK
@@ -1910,14 +1910,14 @@ paths:
     get:
       tags:
       - report-controller
-      operationId: getReportHaushalt1FormContext
+      operationId: getReportHaushaltsplanungFormContext
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ReportHaushalt1FormContext"
+                $ref: "#/components/schemas/ReportHaushaltsplanungFormContext"
       security:
       - bearerAuth: []
   /referate/form-context:
@@ -3331,7 +3331,7 @@ components:
       - PDF
       - PDF_FLAT
       - EXCEL
-    ReportHaushalt1DTO:
+    ReportHaushaltsplanungDTO:
       required:
       - haushaltsjahr
       - sort
@@ -3399,7 +3399,7 @@ components:
         bezeichnung:
           type: string
           description: ""
-    ReportHaushalt1FormContext:
+    ReportHaushaltsplanungFormContext:
       required:
       - bezs
       - fbs

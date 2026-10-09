@@ -18,12 +18,12 @@ import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1DTO;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1Sort;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushaltsplanungDTO;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushaltsplanungSort;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportProjektuebersichtDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
-import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportHaushalt1FormContext;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportHaushaltsplanungFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportProjektuebersichtFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
@@ -263,19 +263,19 @@ class ReportServiceTest {
     }
 
     @Nested
-    class GenerateReportHaushalt1 {
+    class GenerateReportHaushaltsplanung {
 
         @Test
         void givenAllParameters_thenShouldGenerateCorrectGeneratedReport() {
             // Given
-            final ReportHaushalt1DTO parameters = new ReportHaushalt1DTO(
+            final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
                     "2024",
                     "1",
                     "0000.000.123",
                     "1",
                     "1",
                     "1",
-                    ReportHaushalt1Sort.FB_PROJEKTNUMMER,
+                    ReportHaushaltsplanungSort.FB_PROJEKTNUMMER,
                     ReportFormat.PDF);
 
             final Map<String, Object> jasperParameters = new HashMap<>();
@@ -283,7 +283,7 @@ class ReportServiceTest {
                     .thenReturn(jasperParameters);
 
             // When
-            final GeneratedReport generatedReport = reportService.generateReportHaushalt1(parameters);
+            final GeneratedReport generatedReport = reportService.generateReportHaushaltsplanung(parameters);
 
             // Then
             verify(foerderbereichService, times(1))
@@ -305,20 +305,20 @@ class ReportServiceTest {
             assertThat(jasperParameters)
                     .containsEntry(
                             SORT_PARAMETER,
-                            ReportHaushalt1Sort.FB_PROJEKTNUMMER.getOrderBy());
+                            ReportHaushaltsplanungSort.FB_PROJEKTNUMMER.getOrderBy());
         }
 
         @Test
         void givenBlankOptionalParameters_thenShouldNotCheckOptionalParameters() {
             // Given
-            final ReportHaushalt1DTO parameters = new ReportHaushalt1DTO(
+            final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
                     "2024",
                     "",
                     "0000.000.123",
                     " ",
                     "   ",
                     "1",
-                    ReportHaushalt1Sort.PROJEKTNUMMER,
+                    ReportHaushaltsplanungSort.PROJEKTNUMMER,
                     ReportFormat.PDF);
 
             final Map<String, Object> jasperParameters = new HashMap<>();
@@ -326,7 +326,7 @@ class ReportServiceTest {
                     .thenReturn(jasperParameters);
 
             // When
-            final GeneratedReport generatedReport = reportService.generateReportHaushalt1(parameters);
+            final GeneratedReport generatedReport = reportService.generateReportHaushaltsplanung(parameters);
 
             // Then
             verifyNoInteractions(
@@ -342,16 +342,14 @@ class ReportServiceTest {
             assertThat(jasperParameters)
                     .containsEntry(
                             SORT_PARAMETER,
-                            ReportHaushalt1Sort.PROJEKTNUMMER.getOrderBy());
+                            ReportHaushaltsplanungSort.PROJEKTNUMMER.getOrderBy());
         }
 
-        
-
         @ParameterizedTest
-        @EnumSource(ReportHaushalt1Sort.class)
-        void givenSort_thenShouldUseCorrectOrderBy(final ReportHaushalt1Sort sort) {
+        @EnumSource(ReportHaushaltsplanungSort.class)
+        void givenSort_thenShouldUseCorrectOrderBy(final ReportHaushaltsplanungSort sort) {
             // Given
-            final ReportHaushalt1DTO parameters = new ReportHaushalt1DTO(
+            final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
                     "2024",
                     "",
                     "0000.000.123",
@@ -366,7 +364,7 @@ class ReportServiceTest {
                     .thenReturn(jasperParameters);
 
             // When
-            reportService.generateReportHaushalt1(parameters);
+            reportService.generateReportHaushaltsplanung(parameters);
 
             // Then
             assertThat(jasperParameters)
@@ -379,14 +377,14 @@ class ReportServiceTest {
                 final ReportFormat reportFormat) throws JRException, SQLException, IOException {
 
             // Given
-            final ReportHaushalt1DTO parameters = new ReportHaushalt1DTO(
+            final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
                     "2024",
                     "",
                     "0000.000.123",
                     "",
                     "",
                     "1",
-                    ReportHaushalt1Sort.PROJEKTNUMMER,
+                    ReportHaushaltsplanungSort.PROJEKTNUMMER,
                     reportFormat);
 
             final Map<String, Object> jasperParameters = new HashMap<>();
@@ -396,7 +394,7 @@ class ReportServiceTest {
             final OutputStream outputStream = new ByteArrayOutputStream();
 
             // When
-            final GeneratedReport generatedReport = reportService.generateReportHaushalt1(parameters);
+            final GeneratedReport generatedReport = reportService.generateReportHaushaltsplanung(parameters);
 
             generatedReport.writer().write(outputStream);
 
@@ -421,14 +419,14 @@ class ReportServiceTest {
         void givenFoerderbereichNotFound_thenShouldThrowNotFoundException() {
             // Given
             final String fb = "1";
-            final ReportHaushalt1DTO parameters = new ReportHaushalt1DTO(
+            final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
                     "2024",
                     fb,
                     "0000.000.123",
                     "1",
                     "1",
                     "1",
-                    ReportHaushalt1Sort.FB_PROJEKTNUMMER,
+                    ReportHaushaltsplanungSort.FB_PROJEKTNUMMER,
                     ReportFormat.PDF);
 
             doThrow(new NotFoundException(Foerderbereich.class, fb))
@@ -438,7 +436,7 @@ class ReportServiceTest {
             // When
             final Exception exception = Assertions.assertThrows(
                     NotFoundException.class,
-                    () -> reportService.generateReportHaushalt1(parameters));
+                    () -> reportService.generateReportHaushaltsplanung(parameters));
 
             // Then
             verify(foerderbereichService, times(1))
@@ -460,14 +458,14 @@ class ReportServiceTest {
         void givenListennameStadtbezirkslisteNotFound_thenShouldThrowNotFoundException() {
             // Given
             final String sbl = "1";
-            final ReportHaushalt1DTO parameters = new ReportHaushalt1DTO(
+            final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
                     "2024",
                     "1",
                     "0000.000.123",
                     sbl,
                     "1",
                     "1",
-                    ReportHaushalt1Sort.FB_PROJEKTNUMMER,
+                    ReportHaushaltsplanungSort.FB_PROJEKTNUMMER,
                     ReportFormat.PDF);
 
             doThrow(new NotFoundException(
@@ -479,7 +477,7 @@ class ReportServiceTest {
             // When
             final Exception exception = Assertions.assertThrows(
                     NotFoundException.class,
-                    () -> reportService.generateReportHaushalt1(parameters));
+                    () -> reportService.generateReportHaushaltsplanung(parameters));
 
             // Then
             verify(listennameStadtbezirkslisteService, times(1))
@@ -500,14 +498,14 @@ class ReportServiceTest {
         void givenStadtbezirkNotFound_thenShouldThrowNotFoundException() {
             // Given
             final String bez = "1";
-            final ReportHaushalt1DTO parameters = new ReportHaushalt1DTO(
+            final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
                     "2024",
                     "1",
                     "0000.000.123",
                     "1",
                     bez,
                     "1",
-                    ReportHaushalt1Sort.FB_PROJEKTNUMMER,
+                    ReportHaushaltsplanungSort.FB_PROJEKTNUMMER,
                     ReportFormat.PDF);
 
             doThrow(new NotFoundException(Stadtbezirk.class, bez))
@@ -517,7 +515,7 @@ class ReportServiceTest {
             // When
             final Exception exception = Assertions.assertThrows(
                     NotFoundException.class,
-                    () -> reportService.generateReportHaushalt1(parameters));
+                    () -> reportService.generateReportHaushaltsplanung(parameters));
 
             // Then
             verify(stadtbezirkService, times(1))
@@ -535,7 +533,7 @@ class ReportServiceTest {
     }
 
     @Nested
-    class GetReportHaushalt1FormContext {
+    class GetReportHaushaltsplanungFormContext {
 
         @Test
         void givenEntitiesExists_thenReturnCorrectFormContext() {
@@ -556,7 +554,7 @@ class ReportServiceTest {
                     new HhplanFormContextDTO(new BigDecimal(2025), "0000.0000.000.111"), new HhplanFormContextDTO(new BigDecimal(2023), "0000.0000.000.222"));
             when(hhplanService.getHhplanFormContextDTOs()).thenReturn(allHhplan);
             // When
-            final ReportHaushalt1FormContext formContext = reportService.getReportHaushalt1();
+            final ReportHaushaltsplanungFormContext formContext = reportService.getReportHaushaltsplanung();
 
             // Then
             verify(stadtbezirkService, times(1)).getStadtbezirkFormContextDTOs();

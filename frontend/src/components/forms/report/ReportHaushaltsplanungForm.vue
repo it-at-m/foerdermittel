@@ -1,7 +1,7 @@
 <template>
   <v-form
     ref="form"
-    :disabled="!reportHaushalt1FormContext"
+    :disabled="!reportHaushaltsplanungFormContext"
     @update:model-value="onValidityChanged"
   >
     <v-row>
@@ -15,7 +15,7 @@
           :item-title="getHaushaltsjahrTitle"
           item-value="haushaltsjahr"
           :validation-attribute-map="
-            ReportHaushalt1DTOPropertyValidationAttributesMap
+            ReportHaushaltsplanungDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="haushaltsjahr"
           :label="t('model.haushaltsjahr.modelName')"
@@ -28,11 +28,11 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.fb"
-          :items="reportHaushalt1FormContext?.fbs"
+          :items="reportHaushaltsplanungFormContext?.fbs"
           :item-title="getFoerderbereichTitle"
           item-value="fb"
           :validation-attribute-map="
-            ReportHaushalt1DTOPropertyValidationAttributesMap
+            ReportHaushaltsplanungDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="foerderbereich"
           :label="t('model.foerderbereich.modelName')"
@@ -46,11 +46,11 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.sbl"
-          :items="reportHaushalt1FormContext?.sbls"
+          :items="reportHaushaltsplanungFormContext?.sbls"
           :item-title="getStadtbezirkslisteTitle"
           item-value="kurzbez"
           :validation-attribute-map="
-            ReportHaushalt1DTOPropertyValidationAttributesMap
+            ReportHaushaltsplanungDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="kurzbez"
           :label="t('model.stadtbezirksliste.modelName')"
@@ -63,11 +63,11 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.bez"
-          :items="reportHaushalt1FormContext?.bezs"
+          :items="reportHaushaltsplanungFormContext?.bezs"
           :item-title="getStadtbezirkTitle"
           item-value="stadtbezirk"
           :validation-attribute-map="
-            ReportHaushalt1DTOPropertyValidationAttributesMap
+            ReportHaushaltsplanungDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="kurzbez"
           :label="t('model.stadtbezirk.modelName')"
@@ -86,7 +86,7 @@
           :item-title="getFipoTitle"
           item-value="fipo"
           :validation-attribute-map="
-            ReportHaushalt1DTOPropertyValidationAttributesMap
+            ReportHaushaltsplanungDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="fipo"
           :label="t('model.fipo.modelName')"
@@ -99,7 +99,7 @@
         <v-checkbox
           v-model="modelValue.parameters!.hh"
           item-value="hh"
-          :label="t('domain.report.haushalt1.hh')"
+          :label="t('domain.report.haushaltsplanung.hh')"
           true-value="1"
           false-value="0"
         />
@@ -133,10 +133,10 @@
 <script setup lang="ts">
 import type {
   FoerderbereichFormContextDTO,
-  GetReportHaushalt1Request,
+  GetReportHaushaltsplanungRequest,
   HhplanFormContextDTO,
   ListennameStadtbezirkslisteFormContextDTO,
-  ReportHaushalt1FormContext,
+  ReportHaushaltsplanungFormContext,
   StadtbezirkFormContextDTO,
 } from "@/api/generated/foerdermittel-backend";
 import type { DeepReadonly } from "vue";
@@ -145,17 +145,17 @@ import type { VForm } from "vuetify/components";
 import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
-import { ReportHaushalt1DTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
+import { ReportHaushaltsplanungDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 
 const { t } = useI18n();
 
-const modelValue = defineModel<Partial<GetReportHaushalt1Request>>({
+const modelValue = defineModel<Partial<GetReportHaushaltsplanungRequest>>({
   required: true,
 });
 
-const { reportHaushalt1FormContext } = defineProps<{
-  reportHaushalt1FormContext?: DeepReadonly<ReportHaushalt1FormContext>;
+const { reportHaushaltsplanungFormContext } = defineProps<{
+  reportHaushaltsplanungFormContext?: DeepReadonly<ReportHaushaltsplanungFormContext>;
 }>();
 
 const emit = defineEmits<{
@@ -193,7 +193,7 @@ function getFipoTitle(item: HhplanFormContextDTO) {
   return item ? `${item.fipo}` : "";
 }
 const gefilterteFipos = computed(() => {
-  const fipos = reportHaushalt1FormContext?.fipos ?? [];
+  const fipos = reportHaushaltsplanungFormContext?.fipos ?? [];
   const haushaltsjahr = modelValue.value.parameters?.haushaltsjahr;
 
   const gefiltert = !haushaltsjahr
@@ -208,7 +208,7 @@ function getHaushaltsjahrTitle(item: HhplanFormContextDTO) {
 }
 
 const haushaltsjahre = computed(() => {
-  const fipos = reportHaushalt1FormContext?.fipos ?? [];
+  const fipos = reportHaushaltsplanungFormContext?.fipos ?? [];
 
   return Array.from(
     new Map(fipos.map((item) => [item.hhjJahr, item])).values()
@@ -217,42 +217,42 @@ const haushaltsjahre = computed(() => {
 
 const sortOptions = [
   {
-    title: t("domain.report.haushalt1.sortEnum.projektnummer"),
+    title: t("domain.report.haushaltsplanung.sortEnum.projektnummer"),
     value: "PROJEKTNUMMER",
   },
   {
-    title: t("domain.report.haushalt1.sortEnum.strasse"),
+    title: t("domain.report.haushaltsplanung.sortEnum.strasse"),
     value: "STRASSE",
   },
   {
-    title: t("domain.report.haushalt1.sortEnum.fipo"),
+    title: t("domain.report.haushaltsplanung.sortEnum.fipo"),
     value: "FIPO",
   },
   {
-    title: t("domain.report.haushalt1.sortEnum.fbProjektnummer"),
+    title: t("domain.report.haushaltsplanung.sortEnum.fbProjektnummer"),
     value: "FB_PROJEKTNUMMER",
   },
   {
-    title: t("domain.report.haushalt1.sortEnum.fbStrasseProjektnummer"),
+    title: t("domain.report.haushaltsplanung.sortEnum.fbStrasseProjektnummer"),
     value: "FB_STRASSE_PROJEKTNUMMER",
   },
   {
-    title: t("domain.report.haushalt1.sortEnum.fbFipo"),
+    title: t("domain.report.haushaltsplanung.sortEnum.fbFipo"),
     value: "FB_FIPO",
   },
 ];
 
 const formatOptions = [
   {
-    title: t("domain.report.haushalt1.type.pdf"),
+    title: t("domain.report.haushaltsplanung.type.pdf"),
     value: "PDF",
   },
   {
-    title: t("domain.report.haushalt1.type.pdfFlat"),
+    title: t("domain.report.haushaltsplanung.type.pdfFlat"),
     value: "PDF_FLAT",
   },
   {
-    title: t("domain.report.haushalt1.type.excel"),
+    title: t("domain.report.haushaltsplanung.type.excel"),
     value: "EXCEL",
   },
 ];
