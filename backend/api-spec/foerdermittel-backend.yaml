@@ -1881,6 +1881,41 @@ paths:
                 $ref: "#/components/schemas/ReportProjektuebersichtFormContext"
       security:
       - bearerAuth: []
+  /report/euinformationen:
+    get:
+      tags:
+      - report-euinformation-controller
+      operationId: getReportEuinformationen
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportEuinformationDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/euinformationen/form-context:
+    get:
+      tags:
+      - report-euinformation-controller
+      operationId: getReportEuinformationenFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportEuinformationFormContext"
+      security:
+      - bearerAuth: []
   /referate/form-context:
     get:
       tags:
@@ -3230,6 +3265,45 @@ components:
           type: string
         pstrasse:
           type: string
+    ReportEuinformationDTO:
+      type: object
+      properties:
+        jahrVon:
+          type: string
+        jahrBis:
+          type: string
+        inhalt:
+          type: string
+        publikation:
+          type: string
+        referatId:
+          type: string
+        referatBez:
+          type: string
+    PublikationFormContextDTO:
+      required:
+      - bezeichnung
+      - kurzform
+      type: object
+      properties:
+        kurzform:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+      description: |-
+        DTO for [de.muenchen.oss.foerdermittel.backend.publikation.Publikation] to be used in
+        other FormContexts other than its own.
+    ReportEuinformationFormContext:
+      required:
+      - publikationen
+      type: object
+      properties:
+        publikationen:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublikationFormContextDTO"
     PagedModelReferatResponseDTO:
       type: object
       properties:

@@ -1,6 +1,6 @@
 package de.muenchen.oss.foerdermittel.backend.report.euinformation.dto;
 
-public record EuinformationReportDTO (
+public record ReportEuinformationDTO(
         String jahrVon,
         String jahrBis,
         String inhalt,

@@ -304,6 +304,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.euinformation.modelName", 2),
+        props: {
+          to: "/report/euinformationen",
+        },
       },
       {
         title: t("model.geplantemassnahme.modelName", 2),

@@ -2,8 +2,8 @@ package de.muenchen.oss.foerdermittel.backend.report.euinformation;
 
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
 import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
-import de.muenchen.oss.foerdermittel.backend.report.euinformation.dto.EuinformationReportDTO;
-import de.muenchen.oss.foerdermittel.backend.report.euinformation.formcontext.EuinformationReportFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.euinformation.dto.ReportEuinformationDTO;
+import de.muenchen.oss.foerdermittel.backend.report.euinformation.formcontext.ReportEuinformationFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -31,9 +31,9 @@ import java.sql.SQLException;
 @RequiredArgsConstructor
 @RequestMapping("/report/euinformationen")
 @SecurityRequirement(name = OpenAPIDocumentationConfiguration.SECURITY_SCHEME_NAME)
-public class EuinformationReportController {
+public class ReportEuinformationController {
 
-    private final EuinformationReportService euinformationReportService;
+    private final ReportEuinformationService euinformationReportService;
 
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
@@ -51,7 +51,7 @@ public class EuinformationReportController {
     )
 
     public void getReportEuinformationen(
-            @Valid @ModelAttribute final EuinformationReportDTO parameters,
+            @Valid @ModelAttribute final ReportEuinformationDTO parameters,
             final HttpServletResponse response)
             throws IOException, SQLException, JRException {
         final GeneratedReport generatedReport = euinformationReportService.generateReportEuinformationen(parameters);
@@ -61,7 +61,7 @@ public class EuinformationReportController {
 
     @GetMapping(value = "/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public EuinformationReportFormContext getReportEuinformationenFormContext() {
+    public ReportEuinformationFormContext getReportEuinformationenFormContext() {
         return euinformationReportService.getReportEuinformationen();
     }
 }
