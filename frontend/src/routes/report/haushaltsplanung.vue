@@ -11,7 +11,9 @@
           <report-haushaltsplanung-form
             ref="reportHaushaltsplanungForm"
             :model-value="item"
-            :report-haushaltsplanung-form-context="reportHaushaltsplanungFormContext"
+            :report-haushaltsplanung-form-context="
+              reportHaushaltsplanungFormContext
+            "
             @is-valid="updateValidity"
           />
         </template>
@@ -66,8 +68,9 @@ const reportHaushaltsplanungFormContext = computed(
   () => reportHaushaltsplanungApi.context.data.value
 );
 
-type ReportHaushaltsplanungFormRef = InstanceType<typeof ReportHaushaltsplanungForm>;
-const reportHaushaltsplanungFormRef = useTemplateRef<ReportHaushaltsplanungFormRef>(
-  "reportHaushaltsplanungForm"
-);
+type ReportHaushaltsplanungFormRef = InstanceType<
+  typeof ReportHaushaltsplanungForm
+>;
+const reportHaushaltsplanungFormRef =
+  useTemplateRef<ReportHaushaltsplanungFormRef>("reportHaushaltsplanungForm");
 </script>
