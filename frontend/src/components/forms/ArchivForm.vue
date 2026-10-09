@@ -72,7 +72,7 @@
 
     <v-row>
       <v-col cols="12">
-        <fm-text-field
+        <fm-text-area
           v-model="modelValue.notizen"
           :display-mode="displayMode"
           :label="t('model.archiv.notizen')"
@@ -97,7 +97,7 @@ import { ArchivCreateDTOPropertyValidationAttributesMap } from "@/api/generated/
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
 import FmDateInput from "@/components/common/FmDateInput.vue";
-import FmTextField from "@/components/common/FmTextField.vue";
+import FmTextArea from "@/components/common/FmTextArea.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
 const { t } = useI18n();

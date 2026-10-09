@@ -10,5 +10,5 @@ public record TerminUpdateDTO(
         Boolean ueberwachung,
         @Size(min = 1, max = 30) String zustaendig,
         @Size(min = 1, max = 30) String telefon,
-        String notizen) {
+        @Size(min = 1, max = 40) String notizen) {
 }
