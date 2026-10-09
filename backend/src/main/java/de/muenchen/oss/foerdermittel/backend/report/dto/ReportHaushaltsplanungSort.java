@@ -14,7 +14,7 @@ public enum ReportHaushaltsplanungSort {
 
     private final String orderBy;
 
-    ReportHaushaltsplanungSort(String orderBy) {
+    ReportHaushaltsplanungSort(final String orderBy) {
         this.orderBy = orderBy;
     }
 }
