@@ -1,6 +1,10 @@
 import type {
+  GetReportFortsetzungsantragRequest,
+  GetReportHaushaltsplanungRequest,
   GetReportProjektuebersichtRequest,
   GetReportStichworteRequest,
+  ReportFortsetzungsantragFormContext,
+  ReportHaushaltsplanungFormContext,
   ReportProjektuebersichtFormContext,
   ReportStichworteFormContext,
 } from "@/api/generated/foerdermittel-backend";
@@ -88,7 +92,6 @@ export function useReportProjektuebersichtApi(): ReportApiComposables<
     context: useGetReportProjektuebersichtFormContext(),
   };
 }
-
 
 //Fortsetzungsantrag
 export const {

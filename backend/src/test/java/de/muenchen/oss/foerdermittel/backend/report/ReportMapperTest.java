@@ -2,8 +2,8 @@ package de.muenchen.oss.foerdermittel.backend.report;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1DTO;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushalt1Sort;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushaltsplanungDTO;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushaltsplanungSort;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportProjektuebersichtDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
@@ -31,14 +31,14 @@ class ReportMapperTest {
     @Test
     void givenReportHaushaltDTO_thenReturnsCorrectParameters() {
         // given
-        final ReportHaushalt1DTO dto = new ReportHaushalt1DTO(
+        final ReportHaushaltsplanungDTO dto = new ReportHaushaltsplanungDTO(
                 "2026",
                 "FB",
                 "FIPO",
                 "SBL",
                 "BEZ",
                 "1",
-                ReportHaushalt1Sort.FB_PROJEKTNUMMER,
+                ReportHaushaltsplanungSort.FB_PROJEKTNUMMER,
                 ReportFormat.PDF);
 
         // when
@@ -59,14 +59,14 @@ class ReportMapperTest {
     @Test
     void givenReportHaushaltDTOWithBlankValues_thenReturnsNullParameters() {
         // given
-        final ReportHaushalt1DTO dto = new ReportHaushalt1DTO(
+        final ReportHaushaltsplanungDTO dto = new ReportHaushaltsplanungDTO(
                 "2026",
                 "",
                 "",
                 null,
                 "",
                 "0",
-                ReportHaushalt1Sort.FB_PROJEKTNUMMER,
+                ReportHaushaltsplanungSort.FB_PROJEKTNUMMER,
                 ReportFormat.PDF);
 
         // when
