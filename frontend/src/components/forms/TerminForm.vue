@@ -9,7 +9,7 @@
         <fm-autocomplete
           v-model="modelValue.projnr"
           :items="projektItems"
-          item-title="anzeige"
+          item-title="displayName"
           item-value="projnr"
           :display-mode="displayMode"
           :label="t('model.termin.projnr')"
@@ -112,7 +112,7 @@ const modelValue = defineModel<Partial<TerminResponseDTO>>({
 const projektItems = computed(() =>
   projekte.map((projekt) => ({
     ...projekt,
-    anzeige: `${projekt.projnr} (${projekt.pname})`,
+    displayName: `${projekt.projnr} (${projekt.pname})`,
   }))
 );
 

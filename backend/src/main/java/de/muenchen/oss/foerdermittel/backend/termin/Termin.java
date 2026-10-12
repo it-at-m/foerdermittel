@@ -63,6 +63,6 @@ public class Termin implements Serializable {
     @Size(min = 1, max = 30) private String telefon;
 
     @Column(name = "notizen")
-    @Size(min = 1, max = 40)private String notizen;
+    @Size(min = 1, max = 40) private String notizen;
 
 }
