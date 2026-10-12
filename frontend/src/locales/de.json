@@ -137,7 +137,6 @@
       "kindergarten": "Kindergarten",
       "nichtRelevant": "Nicht relevant"
     },
-
     "krankenhaus": {
       "modelName": "Krankenhaus | Krankenhäuser",
       "krhname": "Kurzform",
@@ -237,7 +236,7 @@
           "excel": "Excel"
         }
       },
-      "haushalt1": {
+      "haushaltsplanung": {
         "modelName": "Haushaltsplanung",
         "hh": "Ausgabe nur mit Haushaltszahlen",
         "sortEnum": {

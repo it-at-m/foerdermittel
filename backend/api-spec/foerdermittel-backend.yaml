@@ -1885,13 +1885,13 @@ paths:
     get:
       tags:
       - report-controller
-      operationId: getReportHaushalt1
+      operationId: getReportHaushaltsplanung
       parameters:
       - name: parameters
         in: query
         required: true
         schema:
-          $ref: "#/components/schemas/ReportHaushalt1DTO"
+          $ref: "#/components/schemas/ReportHaushaltsplanungDTO"
       responses:
         "200":
           description: OK
@@ -1910,53 +1910,14 @@ paths:
     get:
       tags:
       - report-controller
-      operationId: getReportHaushalt1FormContext
+      operationId: getReportHaushaltsplanungFormContext
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ReportHaushalt1FormContext"
-      security:
-      - bearerAuth: []
-  /report/fortsetzungsantrag:
-    get:
-      tags:
-      - fortsetzungsantrag-report-controller
-      operationId: getReportFortsetzungsantrag
-      parameters:
-      - name: parameters
-        in: query
-        required: true
-        schema:
-          $ref: "#/components/schemas/ReportFortsetzungsantragDTO"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/pdf:
-              schema:
-                type: string
-                format: binary
-            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
-              schema:
-                type: string
-                format: binary
-      security:
-      - bearerAuth: []
-  /report/fortsetzungsantrag/form-context:
-    get:
-      tags:
-      - fortsetzungsantrag-report-controller
-      operationId: getReportFortsetzungsantragFormContext
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ReportFortsetzungsantragFormContext"
+                $ref: "#/components/schemas/ReportHaushaltsplanungFormContext"
       security:
       - bearerAuth: []
   /referate/form-context:
@@ -3370,7 +3331,7 @@ components:
       - PDF
       - PDF_FLAT
       - EXCEL
-    ReportHaushalt1DTO:
+    ReportHaushaltsplanungDTO:
       required:
       - haushaltsjahr
       - sort
@@ -3382,14 +3343,12 @@ components:
           pattern: "\\d{4}"
           type: string
         fb:
-          pattern: \d*
           type: string
         fipo:
           type: string
         sbl:
           type: string
         bez:
-          pattern: \d*
           type: string
         hh:
           type: string
@@ -3440,7 +3399,7 @@ components:
         bezeichnung:
           type: string
           description: ""
-    ReportHaushalt1FormContext:
+    ReportHaushaltsplanungFormContext:
       required:
       - bezs
       - fbs
@@ -3476,36 +3435,6 @@ components:
         bezeichnung:
           type: string
           description: ""
-    ReportFortsetzungsantragDTO:
-      required:
-      - type
-      type: object
-      properties:
-        sbl:
-          type: string
-        bez:
-          pattern: \d*
-          type: string
-        fag:
-          type: string
-        ofPro:
-          type: string
-        type:
-          $ref: "#/components/schemas/ReportFormat"
-    ReportFortsetzungsantragFormContext:
-      required:
-      - bezs
-      - sbls
-      type: object
-      properties:
-        sbls:
-          type: array
-          items:
-            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
-        bezs:
-          type: array
-          items:
-            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
     PagedModelReferatResponseDTO:
       type: object
       properties:

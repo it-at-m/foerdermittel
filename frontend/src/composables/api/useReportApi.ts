@@ -1,10 +1,6 @@
 import type {
-  GetReportFortsetzungsantragRequest,
-  GetReportHaushalt1Request,
   GetReportProjektuebersichtRequest,
   GetReportStichworteRequest,
-  ReportFortsetzungsantragFormContext,
-  ReportHaushalt1FormContext,
   ReportProjektuebersichtFormContext,
   ReportStichworteFormContext,
 } from "@/api/generated/foerdermittel-backend";
@@ -43,6 +39,32 @@ export function useReportStichworteApi(): ReportApiComposables<
   };
 }
 
+//Haushaltsplanung Haushaltsplanung
+
+export const {
+  useGetOpts: useGetReportHaushaltsplanungOpts,
+  useContext: useGetReportHaushaltsplanungFormContext,
+} = requireComposables(
+  createReportAPIComposables<
+    ReportControllerApi,
+    GetReportHaushaltsplanungRequest,
+    ReportHaushaltsplanungFormContext
+  >(ReportControllerApi, {
+    getOpts: (api, req) => api.getReportHaushaltsplanungRequestOpts(req),
+    context: (api) => api.getReportHaushaltsplanungFormContext(),
+  })
+);
+
+export function useReportHaushaltsplanungApi(): ReportApiComposables<
+  GetReportHaushaltsplanungRequest,
+  ReportHaushaltsplanungFormContext
+> {
+  return {
+    getOpts: useGetReportHaushaltsplanungOpts(),
+    context: useGetReportHaushaltsplanungFormContext(),
+  };
+}
+
 export const {
   useGetOpts: useGetReportProjektuebersichtOpts,
   useContext: useGetReportProjektuebersichtFormContext,
@@ -67,31 +89,6 @@ export function useReportProjektuebersichtApi(): ReportApiComposables<
   };
 }
 
-//Haushalt1 Haushaltsplanung
-
-export const {
-  useGetOpts: useGetReportHaushalt1Opts,
-  useContext: useGetReportHaushalt1FormContext,
-} = requireComposables(
-  createReportAPIComposables<
-    ReportControllerApi,
-    GetReportHaushalt1Request,
-    ReportHaushalt1FormContext
-  >(ReportControllerApi, {
-    getOpts: (api, req) => api.getReportHaushalt1RequestOpts(req),
-    context: (api) => api.getReportHaushalt1FormContext(),
-  })
-);
-
-export function useReportHaushalt1Api(): ReportApiComposables<
-  GetReportHaushalt1Request,
-  ReportHaushalt1FormContext
-> {
-  return {
-    getOpts: useGetReportHaushalt1Opts(),
-    context: useGetReportHaushalt1FormContext(),
-  };
-}
 
 //Fortsetzungsantrag
 export const {

@@ -31,7 +31,7 @@ public class HhplanService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<HhplanFormContextDTO> getHhplanFormContextDTOs() {
-        return hhplanMapper.toFormContext(hhplanRepository.findAll());
+        return hhplanMapper.toFormContextFromBasic(hhplanRepository.findReportHhplan());
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
