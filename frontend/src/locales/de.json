@@ -137,7 +137,6 @@
       "kindergarten": "Kindergarten",
       "nichtRelevant": "Nicht relevant"
     },
-
     "krankenhaus": {
       "modelName": "Krankenhaus | Krankenhäuser",
       "krhname": "Kurzform",
@@ -228,6 +227,18 @@
       "ausstGenehmigungVorzBeginn": "Ausst. Genehmigung vorz. Beginn",
       "bewilligungAuszahlungProjekt": "@:model.bewilligung.modelName und @:domain.auszahlung eines @:model.projekt.modelName{'s'}",
       "bewilligungAuzahlungVergleich": "@:model.bewilligung.modelName und @:domain.auszahlung (Vergleich)",
+      "fortsetzungsAntrag": "Fortsetzungsantrag | Fortsetzungsanträge",
+      "euinformation": {
+        "modelName": "Euinformation | Euinformationen",
+        "publikation": "Publikation",
+        "sortEnum": {
+          "publikation": "Publikation, Inhalt",
+          "jahr": "Erscheinungsjahr, Publikation, Inhalt",
+          "referat": "Referat, Publikation, Inhalt",
+          "referatJahr": "Referat, Erscheinungsjahr, Publikation, Inhalt"
+
+        }
+        },
       "fortsetzungsAntrag": "Fortsetzungsantrag | Fortsetzungsanträge",
       "haushaltsplanung": {
         "modelName": "Haushaltsplanung",

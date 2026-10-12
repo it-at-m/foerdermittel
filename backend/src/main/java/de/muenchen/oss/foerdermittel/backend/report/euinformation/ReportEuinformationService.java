@@ -31,7 +31,7 @@ public class ReportEuinformationService {
             final ReportEuinformationDTO parameters) {
 
         return reportService.generateReport(euinformationReportMapper.toJasperParameters(parameters), ReportType.FMW_EUINFORMATIONEN, ReportFormat.PDF,
-                "order by v_refbez, v_pub_kurzform asc, v_inhalt asc");
+                null);
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)

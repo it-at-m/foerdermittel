@@ -44,14 +44,15 @@ definePage({
   },
 });
 
-const domainKey = "model.ablageindex.modelName";
+const domainKey = "model.euinformation.modelName";
 
 const { t } = useI18n();
 const title = t("common.generics.reportTitle", [t(domainKey, 2)]);
 
 const EMPTY_FORM_TEMPLATE: Partial<GetReportEuinformationenRequest> = {
   parameters: {
-    publikationen: "",
+    publikation: "",
+    sort: "PUBLIKATION",
   },
 };
 

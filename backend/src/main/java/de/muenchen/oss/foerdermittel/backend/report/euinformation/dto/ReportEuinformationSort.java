@@ -4,8 +4,8 @@ public enum ReportEuinformationSort {
 
     PUBLIKATION("order by v_pub_kurzform asc, v_inhalt asc"),
     JAHR("order by v_Jahr asc, v_pub_kurzform asc, v_inhalt asc"),
-    BEZIRK("order by V_REFBEZ asc, v_pub_kurzform asc, v_inhalt asc"),
-    BEZIRK_JAHR("order by V_REFBEZ asc, v_Jahr asc, v_pub_kurzform asc, v_inhalt asc");
+    REFERAT("order by V_REFBEZ asc, v_pub_kurzform asc, v_inhalt asc"),
+    REFERAT_JAHR("order by V_REFBEZ asc, v_Jahr asc, v_pub_kurzform asc, v_inhalt asc");
 
     private final String orderBy;
 
