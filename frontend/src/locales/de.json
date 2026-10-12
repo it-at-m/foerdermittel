@@ -55,9 +55,10 @@
     "projekt": {
       "modelName": "Projekt | Projekte",
       "projnr": "Projektnummer",
+      "pname": "Name",
+      "pstrasse": "Straße",
+      "ausgabeNotiz": "Ausgabe Notiz",
       "jahr": "Projektjahr",
-      "pname": "Projektname",
-      "pstrasse": "Projektstraße",
       "krisofp": "Förderprogramm"
     },
     "antrag": {
@@ -70,7 +71,17 @@
       "modelName": "Abruf | Abrufe"
     },
     "termin": {
-      "modelName": "Termin | Termine"
+      "modelName": "Termin | Termine",
+      "termin": "Termin",
+      "ueberwachung": "TÜ",
+      "telefon": "Kontakt / Telefon",
+      "zustaendig": "Zuständig",
+      "notizen": "Notizen",
+      "projnr": "PROJNR",
+      "pname": "Name",
+      "pstrasse": "Straße",
+      "fobFb": "FB",
+      "bezStadtbezirk": "Bez."
     },
     "istkosten": {
       "modelName": "Ist-Kosten"
@@ -116,6 +127,9 @@
       "bauleitung": "Bauleitung",
       "bezeichnung": "Bezeichnung"
     },
+    "fipo": {
+      "modelName": "FIPO"
+    },
     "foerderbereich": {
       "modelName": "Förderbereich | Förderbereiche",
       "fb": "Förderbereich",
@@ -125,6 +139,7 @@
       "kindergarten": "Kindergarten",
       "nichtRelevant": "Nicht relevant"
     },
+
     "krankenhaus": {
       "modelName": "Krankenhaus | Krankenhäuser",
       "krhname": "Kurzform",
@@ -231,6 +246,24 @@
         },
         "type": {
           "pdf": "PDF",
+          "excel": "Excel"
+        }
+      }
+      "fortsetzungsAntrag": "Fortsetzungsantrag | Fortsetzungsanträge",
+      "haushaltsplanung": {
+        "modelName": "Haushaltsplanung",
+        "hh": "Ausgabe nur mit Haushaltszahlen",
+        "sortEnum": {
+          "projektnummer": "Projektnummer",
+          "strasse": "Straße, Projektnummer",
+          "fipo": "FIPO",
+          "fbProjektnummer": "Förderbereich, Projektnummer",
+          "fbStrasseProjektnummer": "Förderbereich, Straße, Projektnummer",
+          "fbFipo": "Förderbereich, FIPO"
+        },
+        "type": {
+          "pdf": "PDF: Gruppierung Förderbereich",
+          "pdfFlat": "PDF: keine Gruppierung",
           "excel": "Excel"
         }
       }

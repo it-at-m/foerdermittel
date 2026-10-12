@@ -6,9 +6,17 @@ import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungServ
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuswertungProjekteDTO;
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichService;
+import de.muenchen.oss.foerdermittel.backend.hhplan.HhplanService;
+import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
+import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushaltsplanungDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportProjektuebersichtDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportAuswertungProjektFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportHaushaltsplanungFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportProjektuebersichtFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietService;
@@ -47,6 +55,7 @@ public class ReportService {
     private final JasperReportService jasperReportService;
     private final ReportMapper reportMapper;
     private final ProjektService projektService;
+    private final HhplanService hhplanService;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -62,6 +71,55 @@ public class ReportService {
     public ReportStichworteFormContext getReportStichworte() {
         log.info("Get ReportStichworte form context");
         return new ReportStichworteFormContext(stichwortbereichService.getStichwortbereichFormContextDTOs());
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public GeneratedReport generateReportHaushaltsplanung(
+            final ReportHaushaltsplanungDTO parameters) {
+        if (StringUtils.hasText(parameters.fb())) {
+            foerderbereichService.checkExistsByFoerderbereich(new BigDecimal(parameters.fb()));
+        }
+        if (StringUtils.hasText(parameters.sbl())) {
+            listennameStadtbezirkslisteService.checkExistsByListenname(parameters.sbl());
+        }
+        if (StringUtils.hasText(parameters.bez())) {
+            stadtbezirkService.checkExistsByStadtbezirk(new BigDecimal(parameters.bez()));
+        }
+
+        final String orderBy = parameters.sort().getOrderBy();
+
+        return generateReport(reportMapper.toJasperParameters(parameters), ReportType.FMW_HAUSHALT1, parameters.type(),
+                orderBy);
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public ReportHaushaltsplanungFormContext getReportHaushaltsplanung() {
+        log.info("Get ReportHaushaltsplanung form context");
+        return new ReportHaushaltsplanungFormContext(
+                foerderbereichService.getFoerderbereichFormContextDTOs(),
+                listennameStadtbezirkslisteService.getlistennameStadtbezirkslisteFormContextDTOs(),
+                stadtbezirkService.getStadtbezirkFormContextDTOs(),
+                hhplanService.getHhplanFormContextDTOs());
+
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public GeneratedReport generateReportProjektuebersicht(final ReportProjektuebersichtDTO parameters) {
+        final Projekt projekt = projektService.getProjekt(parameters.projnr());
+        final Map<String, Object> jasperParameters = reportMapper.toJasperParameters(parameters);
+        jasperParameters.put("P_PNAME", projekt.getPname());
+        jasperParameters.put("P_PSTRASSE", projekt.getPstrasse());
+        return generateReport(jasperParameters, ReportType.FMW_PROJEKTE3, ReportFormat.PDF, null);
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public ReportProjektuebersichtFormContext getReportProjektuebersicht() {
+        log.info("Get ReportProjektuebersicht form context");
+        return new ReportProjektuebersichtFormContext(projektService.getReportProjektuebersichtFormContextDTOs());
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)

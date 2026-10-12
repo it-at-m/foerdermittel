@@ -31,6 +31,12 @@ public class FoerderbereichService {
         return foerderbereichRepository.findAll(pageable);
     }
 
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<FoerderbereichFormContextDTO> getFoerderbereichFormContextDTOs() {
+        return foerderbereichMapper.toFormContext(foerderbereichRepository.findAll());
+    }
+
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     @Transactional(readOnly = true)
     public FoerderbereichFormContext getFoerderbereichFormContext() {
@@ -62,12 +68,6 @@ public class FoerderbereichService {
         log.debug("Delete Foerderbereich with ID {}", foerderbereichId);
         ServiceUtils.getEntityOrThrowNotFoundException(foerderbereichId, foerderbereichRepository, Foerderbereich.class);
         foerderbereichRepository.deleteById(foerderbereichId);
-    }
-
-    @PreAuthorize(Authorities.HAS_ANY_ROLE)
-    @Transactional(readOnly = true)
-    public List<FoerderbereichFormContextDTO> getFoerderbereichFormContextDTOs() {
-        return foerderbereichMapper.toFormContext(foerderbereichRepository.findAll());
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)

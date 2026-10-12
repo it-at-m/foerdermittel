@@ -31,6 +31,12 @@ public class StadtbezirkService {
         return stadtbezirkRepository.findAll(pageable);
     }
 
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<StadtbezirkFormContextDTO> getStadtbezirkFormContextDTOs() {
+        return stadtbezirkMapper.toFormContext(stadtbezirkRepository.findAll());
+    }
+
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     @Transactional(readOnly = true)
     public StadtbezirkFormContext getStadtbezirkFormContext() {
@@ -59,12 +65,6 @@ public class StadtbezirkService {
         log.debug("Delete Stadtbezirk with ID {}", stadtbezirkId);
         ServiceUtils.getEntityOrThrowNotFoundException(stadtbezirkId, stadtbezirkRepository, Stadtbezirk.class);
         stadtbezirkRepository.deleteById(stadtbezirkId);
-    }
-
-    @PreAuthorize(Authorities.HAS_ANY_ROLE)
-    @Transactional(readOnly = true)
-    public List<StadtbezirkFormContextDTO> getStadtbezirkFormContextDTOs() {
-        return stadtbezirkMapper.toFormContext(stadtbezirkRepository.findAll());
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)

@@ -1,7 +1,11 @@
 import type {
   GetReportAuswertungProjektRequest,
+  GetReportHaushaltsplanungRequest,
+  GetReportProjektuebersichtRequest,
   GetReportStichworteRequest,
   ReportAuswertungProjektFormContext,
+  ReportHaushaltsplanungFormContext,
+  ReportProjektuebersichtFormContext,
   ReportStichworteFormContext,
 } from "@/api/generated/foerdermittel-backend";
 import type { ReportApiComposables } from "@/util/composable-helper";
@@ -58,5 +62,55 @@ export function useReportAuswertungProjekteApi(): ReportApiComposables<
   return {
     getOpts: useGetReportAuswertungProjekteOpts(),
     context: useGetReportAuswertungProjekteFormContext(),
+  };
+}
+
+//Haushaltsplanung Haushaltsplanung
+
+export const {
+  useGetOpts: useGetReportHaushaltsplanungOpts,
+  useContext: useGetReportHaushaltsplanungFormContext,
+} = requireComposables(
+  createReportAPIComposables<
+    ReportControllerApi,
+    GetReportHaushaltsplanungRequest,
+    ReportHaushaltsplanungFormContext
+  >(ReportControllerApi, {
+    getOpts: (api, req) => api.getReportHaushaltsplanungRequestOpts(req),
+    context: (api) => api.getReportHaushaltsplanungFormContext(),
+  })
+);
+
+export function useReportHaushaltsplanungApi(): ReportApiComposables<
+  GetReportHaushaltsplanungRequest,
+  ReportHaushaltsplanungFormContext
+> {
+  return {
+    getOpts: useGetReportHaushaltsplanungOpts(),
+    context: useGetReportHaushaltsplanungFormContext(),
+  };
+}
+
+export const {
+  useGetOpts: useGetReportProjektuebersichtOpts,
+  useContext: useGetReportProjektuebersichtFormContext,
+} = requireComposables(
+  createReportAPIComposables<
+    ReportControllerApi,
+    GetReportProjektuebersichtRequest,
+    ReportProjektuebersichtFormContext
+  >(ReportControllerApi, {
+    getOpts: (api, req) => api.getReportProjektuebersichtRequestOpts(req),
+    context: (api) => api.getReportProjektuebersichtFormContext(),
+  })
+);
+
+export function useReportProjektuebersichtApi(): ReportApiComposables<
+  GetReportProjektuebersichtRequest,
+  ReportProjektuebersichtFormContext
+> {
+  return {
+    getOpts: useGetReportProjektuebersichtOpts(),
+    context: useGetReportProjektuebersichtFormContext(),
   };
 }
