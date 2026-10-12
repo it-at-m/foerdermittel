@@ -39,7 +39,7 @@ class ProjektServiceTest {
         final List<ReportProjektuebersichtFormContextDTO> expected = List.of(
                 new ReportProjektuebersichtFormContextDTO("P-123", "Projektname", "Projektstraße 1"));
         when(projektRepository.findAllAsBasic()).thenReturn(projekte);
-        when(projektMapper.toReportFormContext(projekte)).thenReturn(expected);
+        when(projektMapper.toReportProjektuebersichtFormContext(projekte)).thenReturn(expected);
 
         // When
         final List<ReportProjektuebersichtFormContextDTO> result = projektService.getReportProjektuebersichtFormContextDTOs();
@@ -47,7 +47,7 @@ class ProjektServiceTest {
         // Then
         assertThat(result).isEqualTo(expected);
         verify(projektRepository, times(1)).findAllAsBasic();
-        verify(projektMapper, times(1)).toReportFormContext(projekte);
+        verify(projektMapper, times(1)).toReportProjektuebersichtFormContext(projekte);
     }
 
     @Test

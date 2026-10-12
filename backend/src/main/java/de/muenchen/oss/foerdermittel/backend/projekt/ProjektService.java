@@ -38,13 +38,13 @@ public class ProjektService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<ReportProjektuebersichtFormContextDTO> getReportProjektuebersichtFormContextDTOs() {
-        return projektMapper.toReportFormContext(projektRepository.findAllAsBasic());
+        return projektMapper.toReportProjektuebersichtFormContext(projektRepository.findAllAsBasic());
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<ReportAuswertungProjektFormContextDTO> getReportAuswertungProjektFormContextDTOs() {
-        return projektMapper.toReportFormContext(projektRepository.findAll());
+        return projektMapper.toReportAuswertungProjektFormContext(projektRepository.findAll());
     }
 
 }

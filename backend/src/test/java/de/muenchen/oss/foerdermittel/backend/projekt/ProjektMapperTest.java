@@ -20,7 +20,7 @@ class ProjektMapperTest {
                 new BasicProjektDAO("P-123", "Projektname", "Projektstraße 1"));
 
         // When
-        final List<ReportProjektuebersichtFormContextDTO> result = projektMapper.toReportFormContext(projekte);
+        final List<ReportProjektuebersichtFormContextDTO> result = projektMapper.toReportProjektuebersichtFormContext(projekte);
 
         // Then
         assertThat(result).containsExactly(

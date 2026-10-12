@@ -19,8 +19,9 @@ public interface ProjektMapper {
 
     List<ProjektFormContextDTO> toFormContext(List<Projekt> projektList);
 
-    List<ReportProjektuebersichtFormContextDTO> toReportFormContext(List<BasicProjektDAO> projekte);
+    List<ReportProjektuebersichtFormContextDTO> toReportProjektuebersichtFormContext(
+            List<BasicProjektDAO> projekte);
 
-    List<ReportAuswertungProjektFormContextDTO> toReportFormContext(List<Projekt> AuswertungProjekteListe);
-
+    List<ReportAuswertungProjektFormContextDTO> toReportAuswertungProjektFormContext(
+            List<Projekt> projekte);
 }

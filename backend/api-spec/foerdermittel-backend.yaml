@@ -95,6 +95,47 @@ paths:
           description: OK
       security:
       - bearerAuth: []
+  /termine/{id}:
+    put:
+      tags:
+      - termin-controller
+      operationId: updateTermin
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TerminUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TerminResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - termin-controller
+      operationId: deleteTermin
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /stichwortbereiche/{id}:
     put:
       tags:
@@ -794,6 +835,68 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TraegerResponseDTO"
+      security:
+      - bearerAuth: []
+  /termine:
+    get:
+      tags:
+      - termin-controller
+      operationId: getTermin
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "projekt.projnr,ASC"
+          - "termin,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelTerminResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - termin-controller
+      operationId: createTermin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TerminCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TerminResponseDTO"
       security:
       - bearerAuth: []
   /stichwortbereiche:
@@ -1638,6 +1741,20 @@ paths:
                 $ref: "#/components/schemas/TraegerFormContext"
       security:
       - bearerAuth: []
+  /termine/form-context:
+    get:
+      tags:
+      - termin-controller
+      operationId: getTerminFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TerminFormContext"
+      security:
+      - bearerAuth: []
   /stichwortbereiche/form-context:
     get:
       tags:
@@ -1729,45 +1846,6 @@ paths:
                 $ref: "#/components/schemas/ReportStichworteFormContext"
       security:
       - bearerAuth: []
-  /report/auswertungprojekte:
-    get:
-      tags:
-      - report-controller
-      operationId: getReportAuswertungProjekt
-      parameters:
-      - name: parameters
-        in: query
-        required: true
-        schema:
-          $ref: "#/components/schemas/ReportAuswertungProjekteDTO"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/pdf:
-              schema:
-                type: string
-                format: binary
-            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
-              schema:
-                type: string
-                format: binary
-      security:
-      - bearerAuth: []
-  /report/auswertungprojekte/form-context:
-    get:
-      tags:
-      - report-controller
-      operationId: getReportAuswertungProjektFormContext
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ReportAuswertungProjektFormContext"
-      security:
-      - bearerAuth: []
   /report/projektuebersicht:
     get:
       tags:
@@ -1840,6 +1918,45 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ReportHaushaltsplanungFormContext"
+      security:
+      - bearerAuth: []
+  /report/auswertungprojekte:
+    get:
+      tags:
+      - report-controller
+      operationId: getReportAuswertungProjekt
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportAuswertungProjekteDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/auswertungprojekte/form-context:
+    get:
+      tags:
+      - report-controller
+      operationId: getReportAuswertungProjektFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportAuswertungProjektFormContext"
       security:
       - bearerAuth: []
   /referate/form-context:
@@ -3417,12 +3534,6 @@ components:
           - FOERDERBEREICH_PROJEKTNUMMER
         type:
           $ref: "#/components/schemas/ReportFormat"
-    ReportFormat:
-      type: string
-      enum:
-      - PDF
-      - PDF_FLAT
-      - EXCEL
     BauprogrammFormContextDTO:
       required:
       - bauprogramm
@@ -3435,31 +3546,7 @@ components:
         bezeichnung:
           type: string
           description: ""
-    FoerderbereichFormContextDTO:
-      required:
-      - bezeichnung
-      - fb
-      type: object
-      properties:
-        fb:
-          type: string
-          description: ""
-        bezeichnung:
-          type: string
-          description: ""
     KurzbezeichnungFormContextDTO:
-      required:
-      - bezeichnung
-      - kurzbez
-      type: object
-      properties:
-        kurzbez:
-          type: string
-          description: ""
-        bezeichnung:
-          type: string
-          description: ""
-    ListennameStadtbezirkslisteFormContextDTO:
       required:
       - bezeichnung
       - kurzbez
@@ -3561,18 +3648,6 @@ components:
           type: integer
           description: ""
           format: int32
-        bezeichnung:
-          type: string
-          description: ""
-    StadtbezirkFormContextDTO:
-      required:
-      - bezeichnung
-      - stadtbezirk
-      type: object
-      properties:
-        stadtbezirk:
-          type: string
-          description: ""
         bezeichnung:
           type: string
           description: ""
@@ -3792,19 +3867,6 @@ components:
       description: |-
         DTO for [de.muenchen.oss.foerdermittel.backend.archiv.Archiv] to be used in other FormContexts
         other than its own.
-    ProjektFormContextDTO:
-      required:
-      - projnr
-      type: object
-      properties:
-        projnr:
-          type: string
-        pstrasse:
-          type: string
-        pname:
-          type: string
-        foerderbereich:
-          type: string
     Link:
       type: object
       properties:
