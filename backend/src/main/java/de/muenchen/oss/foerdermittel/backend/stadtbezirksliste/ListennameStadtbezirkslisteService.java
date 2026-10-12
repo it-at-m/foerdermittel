@@ -3,7 +3,10 @@ package de.muenchen.oss.foerdermittel.backend.stadtbezirksliste;
 import de.muenchen.oss.foerdermittel.backend.common.DeleteNotAllowedException;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameStadtbezirkslisteFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameStadtbezirkslisteMapper;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,12 +23,19 @@ public class ListennameStadtbezirkslisteService {
 
     private final ListennameRepository listennameRepository;
     private final StadtbezirkslisteRepository stadtbezirkslisteRepository;
+    private final ListennameStadtbezirkslisteMapper listennameStadtbezirkslisteMapper;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public Page<Listenname> getListennamen(final Pageable pageable) {
         log.info("Get all Listennamen with Pageable {}", pageable);
         return listennameRepository.findAll(pageable);
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<ListennameStadtbezirkslisteFormContextDTO> getlistennameStadtbezirkslisteFormContextDTOs() {
+        return listennameStadtbezirkslisteMapper.toFormContext(listennameRepository.findAll());
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
@@ -77,6 +87,12 @@ public class ListennameStadtbezirkslisteService {
                 listennameRepository, Listenname.class);
 
         listennameRepository.delete(listenname);
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public void checkExistsByListenname(final String listenname) {
+        ServiceUtils.checkExistsOrThrowNotFoundException(listenname, listennameRepository, Listenname.class);
     }
 
 }
