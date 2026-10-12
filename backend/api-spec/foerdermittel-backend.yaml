@@ -1881,17 +1881,17 @@ paths:
                 $ref: "#/components/schemas/ReportProjektuebersichtFormContext"
       security:
       - bearerAuth: []
-  /report/euinformationen:
+  /report/haushalt1:
     get:
       tags:
-      - report-euinformation-controller
-      operationId: getReportEuinformationen
+      - report-controller
+      operationId: getReportHaushaltsplanung
       parameters:
       - name: parameters
         in: query
         required: true
         schema:
-          $ref: "#/components/schemas/ReportEuinformationDTO"
+          $ref: "#/components/schemas/ReportHaushaltsplanungDTO"
       responses:
         "200":
           description: OK
@@ -1900,20 +1900,24 @@ paths:
               schema:
                 type: string
                 format: binary
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
       security:
       - bearerAuth: []
-  /report/euinformationen/form-context:
+  /report/haushalt1/form-context:
     get:
       tags:
-      - report-euinformation-controller
-      operationId: getReportEuinformationenFormContext
+      - report-controller
+      operationId: getReportHaushaltsplanungFormContext
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ReportEuinformationFormContext"
+                $ref: "#/components/schemas/ReportHaushaltsplanungFormContext"
       security:
       - bearerAuth: []
   /referate/form-context:
@@ -1970,6 +1974,62 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/KrankenhausFormContext"
+      security:
+      - bearerAuth: []
+  /hhplan:
+    get:
+      tags:
+      - hhplan-controller
+      operationId: getHhplan
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "id.hhjJahr,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelHhplanResponseDTO"
+      security:
+      - bearerAuth: []
+  /hhplan/form-context:
+    get:
+      tags:
+      - hhplan-controller
+      operationId: getHhplanFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HhplanFormContext"
       security:
       - bearerAuth: []
   /hauptabschnitte/form-context:
@@ -3265,45 +3325,116 @@ components:
           type: string
         pstrasse:
           type: string
-    ReportEuinformationDTO:
+    ReportFormat:
+      type: string
+      enum:
+      - PDF
+      - PDF_FLAT
+      - EXCEL
+    ReportHaushaltsplanungDTO:
+      required:
+      - haushaltsjahr
+      - sort
+      - type
       type: object
       properties:
-        jahrVon:
+        haushaltsjahr:
+          minLength: 1
+          pattern: "\\d{4}"
           type: string
-        jahrBis:
+        fb:
           type: string
-        inhalt:
+        fipo:
           type: string
-        publikation:
+        sbl:
           type: string
-        referatId:
+        bez:
           type: string
-        referatBez:
+        hh:
           type: string
-    PublikationFormContextDTO:
+        sort:
+          type: string
+          enum:
+          - PROJEKTNUMMER
+          - STRASSE
+          - FIPO
+          - FB_PROJEKTNUMMER
+          - FB_STRASSE_PROJEKTNUMMER
+          - FB_FIPO
+        type:
+          $ref: "#/components/schemas/ReportFormat"
+    FoerderbereichFormContextDTO:
       required:
       - bezeichnung
-      - kurzform
+      - fb
       type: object
       properties:
-        kurzform:
+        fb:
           type: string
           description: ""
         bezeichnung:
           type: string
           description: ""
-      description: |-
-        DTO for [de.muenchen.oss.foerdermittel.backend.publikation.Publikation] to be used in
-        other FormContexts other than its own.
-    ReportEuinformationFormContext:
+    HhplanFormContextDTO:
       required:
-      - publikationen
+      - fipo
+      - hhjJahr
       type: object
       properties:
-        publikationen:
+        hhjJahr:
+          type: number
+          description: ""
+        fipo:
+          type: string
+          description: ""
+    ListennameStadtbezirkslisteFormContextDTO:
+      required:
+      - bezeichnung
+      - kurzbez
+      type: object
+      properties:
+        kurzbez:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+    ReportHaushaltsplanungFormContext:
+      required:
+      - bezs
+      - fbs
+      - fipos
+      - sbls
+      type: object
+      properties:
+        fbs:
           type: array
           items:
-            $ref: "#/components/schemas/PublikationFormContextDTO"
+            $ref: "#/components/schemas/FoerderbereichFormContextDTO"
+        sbls:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
+        bezs:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
+        fipos:
+          type: array
+          items:
+            $ref: "#/components/schemas/HhplanFormContextDTO"
+    StadtbezirkFormContextDTO:
+      required:
+      - bezeichnung
+      - stadtbezirk
+      type: object
+      properties:
+        stadtbezirk:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
     PagedModelReferatResponseDTO:
       type: object
       properties:
@@ -3376,6 +3507,37 @@ components:
           type: array
           items:
             type: string
+    HhplanResponseDTO:
+      required:
+      - fipo
+      - hhjJahr
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        hhjJahr:
+          type: number
+        fipo:
+          type: string
+    PagedModelHhplanResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/HhplanResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    HhplanFormContext:
+      required:
+      - hhp
+      type: object
+      properties:
+        hhp:
+          type: array
+          items:
+            type: number
     PagedModelHauptabschnittResponseDTO:
       type: object
       properties:
