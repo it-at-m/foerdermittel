@@ -1,5 +1,8 @@
 package de.muenchen.oss.foerdermittel.backend.report.euinformation.dto;
 
+import lombok.Getter;
+
+@Getter
 public enum ReportEuinformationSort {
 
     PUBLIKATION("order by v_pub_kurzform asc, v_inhalt asc"),

@@ -30,8 +30,10 @@ public class ReportEuinformationService {
     public GeneratedReport generateReportEuinformationen(
             final ReportEuinformationDTO parameters) {
 
+        final String orderBy = parameters.sort().getOrderBy();
+
         return reportService.generateReport(euinformationReportMapper.toJasperParameters(parameters), ReportType.FMW_EUINFORMATIONEN, ReportFormat.PDF,
-                null);
+                orderBy);
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)

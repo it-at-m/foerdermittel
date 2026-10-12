@@ -9,13 +9,24 @@
         <fm-autocomplete
           v-model="modelValue.parameters!.publikation"
           :items="reportEuinformationenFormContext?.publikationen"
-          :item-title="getBereichTitle"
-          item-value="bereich"
+          :item-title="getPublikationTitle"
+          item-value="publikation"
           :validation-attribute-map="
             ReportEuinformationenDTOPropertyValidationAttributesMap
           "
-          validation-attribute-key="bereich"
+          validation-attribute-key="publikation"
           :label="t('domain.report.euinformation.publikation')"
+        />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <v-select
+          v-model="modelValue.parameters!.referatBez"
+          :items="referatOptions"
+          item-value="referat"
+          :label="t('domain.report.euinformation.referat')"
+          variant="outlined"
         />
       </v-col>
     </v-row>
@@ -77,9 +88,83 @@ defineExpose({
   validate,
 });
 
-function getBereichTitle(item: ReportEuinformationFormContextDTO) {
+function getPublikationTitle(item: ReportEuinformationFormContextDTO) {
   return item ? `${item.kurzform} (${item.bezeichnung})` : "";
 }
+const referatOptions = [
+  {
+    title: t("domain.report.euinformation.referatEnum.alleReferate"),
+    value: "Alle Referate",
+  },
+  {
+    title: t("domain.report.euinformation.referatEnum.raw"),
+    value: "RAW",
+  },
+  {
+    title: t("domain.report.euinformation.referatEnum.rbs"),
+    value: "RBS",
+  },
+  {
+    title: t("domain.report.euinformation.referatEnum.sozrefR5"),
+    value: "Sozref R 5",
+  },
+  {
+    title: t("domain.report.euinformation.referatEnum.rgu11"),
+    value: "RGU 11",
+  },
+  {
+    title: t("domain.report.euinformation.referatEnum.rguCs"),
+    value: "RGU Cs",
+  },
+  {
+    title: t("domain.report.euinformation.referatEnum.krh"),
+    value: "Krh",
+  },
+  {
+    title: t("domain.report.euinformation.referatEnum.awb"),
+    value: "AWB",
+  },
+  {
+    title: t("domain.report.euinformation.referatEnum.swm"),
+    value: "SWM",
+  },
+  {
+    title: t("domain.report.euinformation.referatEnum.kulturref"),
+    value: "Kulturref",
+  },
+  {
+    title: t("domain.report.euinformation.referatEnum.bauref"),
+    value: "Bauref",
+  },
+  {
+    title: t("domain.report.euinformation.referatEnum.planref"),
+    value: "Planref",
+  },
+  {
+    title: t("domain.report.euinformation.referatEnum.direktorium"),
+    value: "Direktorium",
+  },
+  {
+    title: t("domain.report.euinformation.referatEnum.por"),
+    value: "POR",
+  },
+  {
+    title: t("domain.report.euinformation.referatEnum.kvr"),
+    value: "KVR",
+  },
+  {
+    title: t("domain.report.euinformation.referatEnum.komref"),
+    value: "Kommref",
+  },
+  {
+    title: t("domain.report.euinformation.referatEnum.mse"),
+    value: "MSE",
+  },
+  {
+    title: t("domain.report.euinformation.referatEnum.stk"),
+    value: "Stk",
+  },
+];
 
 const sortOptions = [
   {

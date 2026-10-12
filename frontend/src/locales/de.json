@@ -231,15 +231,34 @@
       "euinformation": {
         "modelName": "Euinformation | Euinformationen",
         "publikation": "Publikation",
+        "referat": "Referat",
         "sortEnum": {
           "publikation": "Publikation, Inhalt",
           "jahr": "Erscheinungsjahr, Publikation, Inhalt",
           "referat": "Referat, Publikation, Inhalt",
           "referatJahr": "Referat, Erscheinungsjahr, Publikation, Inhalt"
-
+        },
+        "referatEnum": {
+          "alleReferate": "Alle Referate",
+          "raw": "RAW",
+          "rbs": "RBS",
+          "sozrefR5": "Sozref R 5",
+          "rgu11": "RGU 11",
+          "rguCs": "RGU Cs",
+          "krh": "Krh",
+          "awb": "AWB",
+          "swm": "SWM",
+          "kulturref": "Kulturref",
+          "bauref": "Bauref",
+          "planref": "Planref",
+          "direktorium": "Direktorium",
+          "por": "POR",
+          "kvr": "KVR",
+          "komref": "Kommref",
+          "mse": "MSE",
+          "stk": "Stk"
         }
         },
-      "fortsetzungsAntrag": "Fortsetzungsantrag | Fortsetzungsanträge",
       "haushaltsplanung": {
         "modelName": "Haushaltsplanung",
         "hh": "Ausgabe nur mit Haushaltszahlen",
