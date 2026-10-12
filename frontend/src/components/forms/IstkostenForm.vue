@@ -28,8 +28,6 @@
           v-model="modelValue.jahr"
           :display-mode="displayMode"
           :label="t('model.istkosten.jahr')"
-          min="1970"
-          max="2100"
           :validation-attribute-map="
             IstkostenCreateDTOPropertyValidationAttributesMap
           "
@@ -59,7 +57,6 @@
           prefix="€"
           grouping
           class="currency-input"
-          min="0"
           :additional-rules="[rules.max!(999999999999)]"
           :validation-attribute-map="
             IstkostenCreateDTOPropertyValidationAttributesMap
