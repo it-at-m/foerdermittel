@@ -173,7 +173,6 @@
           validation-attribute-key="bpg"
           :label="t('model.bauprogramm.modelName')"
           @update:model-value="delete modelValue.parameters!.bpg"
-
         />
 
         <!-- Sortierung -->

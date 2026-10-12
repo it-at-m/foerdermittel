@@ -15,16 +15,16 @@ import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichService;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungService;
-import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.dto.KurzbezeichnungFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
-import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungProjektFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuswertungProjekteDTO;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuwertungProjektSort;
 import de.muenchen.oss.foerdermittel.backend.hhplan.HhplanService;
 import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungService;
+import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.dto.KurzbezeichnungFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
+import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuswertungProjekteDTO;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuwertungProjektSort;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushaltsplanungDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushaltsplanungSort;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
@@ -368,391 +368,393 @@ class ReportServiceTest {
                             new BigDecimal("12"));
         }
 
-    @Nested
-    class GenerateReportProjektuebersicht {
+        @Nested
+        class GenerateReportProjektuebersicht {
 
-        @Test
-        void givenExistingProjekt_thenAddsDatabaseValuesToJasperParameters() {
-            // Given
-            final ReportProjektuebersichtDTO parameters = new ReportProjektuebersichtDTO("P-123", true);
-            final Map<String, Object> jasperParameters = new HashMap<>();
-            final Projekt projekt = mock(Projekt.class);
-            when(reportMapper.toJasperParameters(parameters)).thenReturn(jasperParameters);
-            when(projektService.getProjekt(parameters.projnr())).thenReturn(projekt);
-            when(projekt.getPname()).thenReturn("Projektname");
-            when(projekt.getPstrasse()).thenReturn("Projektstraße 1");
+            @Test
+            void givenExistingProjekt_thenAddsDatabaseValuesToJasperParameters() {
+                // Given
+                final ReportProjektuebersichtDTO parameters = new ReportProjektuebersichtDTO("P-123", true);
+                final Map<String, Object> jasperParameters = new HashMap<>();
+                final Projekt projekt = mock(Projekt.class);
+                when(reportMapper.toJasperParameters(parameters)).thenReturn(jasperParameters);
+                when(projektService.getProjekt(parameters.projnr())).thenReturn(projekt);
+                when(projekt.getPname()).thenReturn("Projektname");
+                when(projekt.getPstrasse()).thenReturn("Projektstraße 1");
 
-            // When
-            final GeneratedReport generatedReport = reportService.generateReportProjektuebersicht(parameters);
+                // When
+                final GeneratedReport generatedReport = reportService.generateReportProjektuebersicht(parameters);
 
-            // Then
-            assertThat(generatedReport.fileName()).startsWith(ReportType.FMW_PROJEKTE3.getFileName());
-            assertThat(jasperParameters)
-                    .containsEntry("P_PNAME", "Projektname")
-                    .containsEntry("P_PSTRASSE", "Projektstraße 1")
-                    .doesNotContainKey(SORT_PARAMETER);
-            verify(projektService, times(1)).getProjekt(parameters.projnr());
-            verifyNoInteractions(jasperReportService);
+                // Then
+                assertThat(generatedReport.fileName()).startsWith(ReportType.FMW_PROJEKTE3.getFileName());
+                assertThat(jasperParameters)
+                        .containsEntry("P_PNAME", "Projektname")
+                        .containsEntry("P_PSTRASSE", "Projektstraße 1")
+                        .doesNotContainKey(SORT_PARAMETER);
+                verify(projektService, times(1)).getProjekt(parameters.projnr());
+                verifyNoInteractions(jasperReportService);
+            }
+
+            @Test
+            void givenGeneratedReportIsWritten_thenUsesProjektuebersichtReport() throws JRException, SQLException, IOException {
+                // Given
+                final ReportProjektuebersichtDTO parameters = new ReportProjektuebersichtDTO("P-123", false);
+                final Map<String, Object> jasperParameters = new HashMap<>();
+                final Projekt projekt = mock(Projekt.class);
+                final OutputStream outputStream = new ByteArrayOutputStream();
+                when(reportMapper.toJasperParameters(parameters)).thenReturn(jasperParameters);
+                when(projektService.getProjekt(parameters.projnr())).thenReturn(projekt);
+
+                // When
+                reportService.generateReportProjektuebersicht(parameters).writer().write(outputStream);
+
+                // Then
+                verify(jasperReportService, times(1)).generateReportWithParameters(
+                        ReportType.FMW_PROJEKTE3,
+                        ReportFormat.PDF,
+                        jasperParameters,
+                        outputStream);
+            }
+
+            @Test
+            void givenMissingProjekt_thenDoesNotGenerateReport() {
+                // Given
+                final ReportProjektuebersichtDTO parameters = new ReportProjektuebersichtDTO("MISSING", false);
+                when(projektService.getProjekt(parameters.projnr()))
+                        .thenThrow(new NotFoundException(Projekt.class, parameters.projnr()));
+
+                // When / Then
+                Assertions.assertThrows(
+                        NotFoundException.class,
+                        () -> reportService.generateReportProjektuebersicht(parameters));
+                verifyNoInteractions(jasperReportService, reportMapper);
+            }
         }
 
-        @Test
-        void givenGeneratedReportIsWritten_thenUsesProjektuebersichtReport() throws JRException, SQLException, IOException {
-            // Given
-            final ReportProjektuebersichtDTO parameters = new ReportProjektuebersichtDTO("P-123", false);
-            final Map<String, Object> jasperParameters = new HashMap<>();
-            final Projekt projekt = mock(Projekt.class);
-            final OutputStream outputStream = new ByteArrayOutputStream();
-            when(reportMapper.toJasperParameters(parameters)).thenReturn(jasperParameters);
-            when(projektService.getProjekt(parameters.projnr())).thenReturn(projekt);
+        @Nested
+        class GetReportProjektuebersichtFormContext {
 
-            // When
-            reportService.generateReportProjektuebersicht(parameters).writer().write(outputStream);
+            @Test
+            void givenProjectsExist_thenReturnsTheirFormContext() {
+                // Given
+                final List<ReportProjektuebersichtFormContextDTO> projekte = List.of(
+                        new ReportProjektuebersichtFormContextDTO("P-123", "Projektname", "Projektstraße 1"));
+                when(projektService.getReportProjektuebersichtFormContextDTOs()).thenReturn(projekte);
 
-            // Then
-            verify(jasperReportService, times(1)).generateReportWithParameters(
-                    ReportType.FMW_PROJEKTE3,
-                    ReportFormat.PDF,
-                    jasperParameters,
-                    outputStream);
+                // When
+                final ReportProjektuebersichtFormContext formContext = reportService.getReportProjektuebersicht();
+
+                // Then
+                assertThat(formContext.projekte()).isEqualTo(projekte);
+                verify(projektService, times(1)).getReportProjektuebersichtFormContextDTOs();
+            }
         }
 
-        @Test
-        void givenMissingProjekt_thenDoesNotGenerateReport() {
-            // Given
-            final ReportProjektuebersichtDTO parameters = new ReportProjektuebersichtDTO("MISSING", false);
-            when(projektService.getProjekt(parameters.projnr()))
-                    .thenThrow(new NotFoundException(Projekt.class, parameters.projnr()));
+        @Nested
+        class GenerateReportHaushaltsplanung {
 
-            // When / Then
-            Assertions.assertThrows(
-                    NotFoundException.class,
-                    () -> reportService.generateReportProjektuebersicht(parameters));
-            verifyNoInteractions(jasperReportService, reportMapper);
-        }
-    }
+            @Test
+            void givenAllParameters_thenShouldGenerateCorrectGeneratedReport() {
+                // Given
+                final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
+                        "2024",
+                        "1",
+                        "0000.000.123",
+                        "1",
+                        "1",
+                        "1",
+                        ReportHaushaltsplanungSort.FB_PROJEKTNUMMER,
+                        ReportFormat.PDF);
 
-    @Nested
-    class GetReportProjektuebersichtFormContext {
+                final Map<String, Object> jasperParameters = new HashMap<>();
+                when(reportMapper.toJasperParameters(parameters))
+                        .thenReturn(jasperParameters);
 
-        @Test
-        void givenProjectsExist_thenReturnsTheirFormContext() {
-            // Given
-            final List<ReportProjektuebersichtFormContextDTO> projekte = List.of(
-                    new ReportProjektuebersichtFormContextDTO("P-123", "Projektname", "Projektstraße 1"));
-            when(projektService.getReportProjektuebersichtFormContextDTOs()).thenReturn(projekte);
+                // When
+                final GeneratedReport generatedReport = reportService.generateReportHaushaltsplanung(parameters);
 
-            // When
-            final ReportProjektuebersichtFormContext formContext = reportService.getReportProjektuebersicht();
+                // Then
+                verify(foerderbereichService, times(1))
+                        .checkExistsByFoerderbereich(new BigDecimal("1"));
+                verify(listennameStadtbezirkslisteService, times(1))
+                        .checkExistsByListenname("1");
+                verify(stadtbezirkService, times(1))
+                        .checkExistsByStadtbezirk(new BigDecimal("1"));
+                verify(reportMapper, times(1))
+                        .toJasperParameters(parameters);
+                verifyNoInteractions(jasperReportService);
 
-            // Then
-            assertThat(formContext.projekte()).isEqualTo(projekte);
-            verify(projektService, times(1)).getReportProjektuebersichtFormContextDTOs();
-        }
-    }
+                assertThat(generatedReport).isNotNull();
+                assertThat(generatedReport.contentType())
+                        .isEqualTo(ReportFormat.PDF.getContentType());
+                assertThat(generatedReport.fileName())
+                        .startsWith(ReportType.FMW_HAUSHALT1.getFileName())
+                        .endsWith(ReportFormat.PDF.getFileExtension());
+                assertThat(jasperParameters)
+                        .containsEntry(
+                                SORT_PARAMETER,
+                                ReportHaushaltsplanungSort.FB_PROJEKTNUMMER.getOrderBy());
+            }
 
-    @Nested
-    class GenerateReportHaushaltsplanung {
+            @Test
+            void givenBlankOptionalParameters_thenShouldNotCheckOptionalParameters() {
+                // Given
+                final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
+                        "2024",
+                        "",
+                        "0000.000.123",
+                        " ",
+                        "   ",
+                        "1",
+                        ReportHaushaltsplanungSort.PROJEKTNUMMER,
+                        ReportFormat.PDF);
 
-        @Test
-        void givenAllParameters_thenShouldGenerateCorrectGeneratedReport() {
-            // Given
-            final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
-                    "2024",
-                    "1",
-                    "0000.000.123",
-                    "1",
-                    "1",
-                    "1",
-                    ReportHaushaltsplanungSort.FB_PROJEKTNUMMER,
-                    ReportFormat.PDF);
+                final Map<String, Object> jasperParameters = new HashMap<>();
+                when(reportMapper.toJasperParameters(parameters))
+                        .thenReturn(jasperParameters);
 
-            final Map<String, Object> jasperParameters = new HashMap<>();
-            when(reportMapper.toJasperParameters(parameters))
-                    .thenReturn(jasperParameters);
+                // When
+                final GeneratedReport generatedReport = reportService.generateReportHaushaltsplanung(parameters);
 
-            // When
-            final GeneratedReport generatedReport = reportService.generateReportHaushaltsplanung(parameters);
+                // Then
+                verifyNoInteractions(
+                        foerderbereichService,
+                        listennameStadtbezirkslisteService,
+                        stadtbezirkService,
+                        jasperReportService);
 
-            // Then
-            verify(foerderbereichService, times(1))
-                    .checkExistsByFoerderbereich(new BigDecimal("1"));
-            verify(listennameStadtbezirkslisteService, times(1))
-                    .checkExistsByListenname("1");
-            verify(stadtbezirkService, times(1))
-                    .checkExistsByStadtbezirk(new BigDecimal("1"));
-            verify(reportMapper, times(1))
-                    .toJasperParameters(parameters);
-            verifyNoInteractions(jasperReportService);
+                verify(reportMapper, times(1))
+                        .toJasperParameters(parameters);
 
-            assertThat(generatedReport).isNotNull();
-            assertThat(generatedReport.contentType())
-                    .isEqualTo(ReportFormat.PDF.getContentType());
-            assertThat(generatedReport.fileName())
-                    .startsWith(ReportType.FMW_HAUSHALT1.getFileName())
-                    .endsWith(ReportFormat.PDF.getFileExtension());
-            assertThat(jasperParameters)
-                    .containsEntry(
-                            SORT_PARAMETER,
-                            ReportHaushaltsplanungSort.FB_PROJEKTNUMMER.getOrderBy());
-        }
+                assertThat(generatedReport).isNotNull();
+                assertThat(jasperParameters)
+                        .containsEntry(
+                                SORT_PARAMETER,
+                                ReportHaushaltsplanungSort.PROJEKTNUMMER.getOrderBy());
+            }
 
-        @Test
-        void givenBlankOptionalParameters_thenShouldNotCheckOptionalParameters() {
-            // Given
-            final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
-                    "2024",
-                    "",
-                    "0000.000.123",
-                    " ",
-                    "   ",
-                    "1",
-                    ReportHaushaltsplanungSort.PROJEKTNUMMER,
-                    ReportFormat.PDF);
+            @ParameterizedTest
+            @EnumSource(ReportHaushaltsplanungSort.class)
+            void givenSort_thenShouldUseCorrectOrderBy(final ReportHaushaltsplanungSort sort) {
+                // Given
+                final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
+                        "2024",
+                        "",
+                        "0000.000.123",
+                        "",
+                        "",
+                        "1",
+                        sort,
+                        ReportFormat.PDF);
 
-            final Map<String, Object> jasperParameters = new HashMap<>();
-            when(reportMapper.toJasperParameters(parameters))
-                    .thenReturn(jasperParameters);
+                final Map<String, Object> jasperParameters = new HashMap<>();
+                when(reportMapper.toJasperParameters(parameters))
+                        .thenReturn(jasperParameters);
 
-            // When
-            final GeneratedReport generatedReport = reportService.generateReportHaushaltsplanung(parameters);
+                // When
+                reportService.generateReportHaushaltsplanung(parameters);
 
-            // Then
-            verifyNoInteractions(
-                    foerderbereichService,
-                    listennameStadtbezirkslisteService,
-                    stadtbezirkService,
-                    jasperReportService);
+                // Then
+                assertThat(jasperParameters)
+                        .containsEntry(SORT_PARAMETER, sort.getOrderBy());
+            }
 
-            verify(reportMapper, times(1))
-                    .toJasperParameters(parameters);
+            @ParameterizedTest
+            @EnumSource(ReportFormat.class)
+            void givenReportFormat_thenShouldUseCorrectReportFormat(
+                    final ReportFormat reportFormat) throws JRException, SQLException, IOException {
 
-            assertThat(generatedReport).isNotNull();
-            assertThat(jasperParameters)
-                    .containsEntry(
-                            SORT_PARAMETER,
-                            ReportHaushaltsplanungSort.PROJEKTNUMMER.getOrderBy());
-        }
+                // Given
+                final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
+                        "2024",
+                        "",
+                        "0000.000.123",
+                        "",
+                        "",
+                        "1",
+                        ReportHaushaltsplanungSort.PROJEKTNUMMER,
+                        reportFormat);
 
-        @ParameterizedTest
-        @EnumSource(ReportHaushaltsplanungSort.class)
-        void givenSort_thenShouldUseCorrectOrderBy(final ReportHaushaltsplanungSort sort) {
-            // Given
-            final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
-                    "2024",
-                    "",
-                    "0000.000.123",
-                    "",
-                    "",
-                    "1",
-                    sort,
-                    ReportFormat.PDF);
+                final Map<String, Object> jasperParameters = new HashMap<>();
+                when(reportMapper.toJasperParameters(parameters))
+                        .thenReturn(jasperParameters);
 
-            final Map<String, Object> jasperParameters = new HashMap<>();
-            when(reportMapper.toJasperParameters(parameters))
-                    .thenReturn(jasperParameters);
+                final OutputStream outputStream = new ByteArrayOutputStream();
 
-            // When
-            reportService.generateReportHaushaltsplanung(parameters);
+                // When
+                final GeneratedReport generatedReport = reportService.generateReportHaushaltsplanung(parameters);
 
-            // Then
-            assertThat(jasperParameters)
-                    .containsEntry(SORT_PARAMETER, sort.getOrderBy());
-        }
+                generatedReport.writer().write(outputStream);
 
-        @ParameterizedTest
-        @EnumSource(ReportFormat.class)
-        void givenReportFormat_thenShouldUseCorrectReportFormat(
-                final ReportFormat reportFormat) throws JRException, SQLException, IOException {
+                // Then
+                verify(jasperReportService, times(1)).generateReportWithParameters(
+                        ReportType.FMW_HAUSHALT1,
+                        reportFormat,
+                        jasperParameters,
+                        outputStream);
 
-            // Given
-            final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
-                    "2024",
-                    "",
-                    "0000.000.123",
-                    "",
-                    "",
-                    "1",
-                    ReportHaushaltsplanungSort.PROJEKTNUMMER,
-                    reportFormat);
+                assertThat(generatedReport.contentType())
+                        .isEqualTo(reportFormat.getContentType());
 
-            final Map<String, Object> jasperParameters = new HashMap<>();
-            when(reportMapper.toJasperParameters(parameters))
-                    .thenReturn(jasperParameters);
+                assertThat(generatedReport.fileName())
+                        .startsWith(
+                                ReportType.FMW_HAUSHALT1.getFileName()
+                                        + reportFormat.getFileSuffix())
+                        .endsWith(reportFormat.getFileExtension());
+            }
 
-            final OutputStream outputStream = new ByteArrayOutputStream();
+            @Test
+            void givenFoerderbereichNotFound_thenShouldThrowNotFoundException() {
+                // Given
+                final String fb = "1";
+                final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
+                        "2024",
+                        fb,
+                        "0000.000.123",
+                        "1",
+                        "1",
+                        "1",
+                        ReportHaushaltsplanungSort.FB_PROJEKTNUMMER,
+                        ReportFormat.PDF);
 
-            // When
-            final GeneratedReport generatedReport = reportService.generateReportHaushaltsplanung(parameters);
+                doThrow(new NotFoundException(Foerderbereich.class, fb))
+                        .when(foerderbereichService)
+                        .checkExistsByFoerderbereich(new BigDecimal(fb));
 
-            generatedReport.writer().write(outputStream);
+                // When
+                final Exception exception = Assertions.assertThrows(
+                        NotFoundException.class,
+                        () -> reportService.generateReportHaushaltsplanung(parameters));
 
-            // Then
-            verify(jasperReportService, times(1)).generateReportWithParameters(
-                    ReportType.FMW_HAUSHALT1,
-                    reportFormat,
-                    jasperParameters,
-                    outputStream);
+                // Then
+                verify(foerderbereichService, times(1))
+                        .checkExistsByFoerderbereich(new BigDecimal(fb));
+                verifyNoInteractions(
+                        listennameStadtbezirkslisteService,
+                        stadtbezirkService,
+                        reportMapper,
+                        jasperReportService);
 
-            assertThat(generatedReport.contentType())
-                    .isEqualTo(reportFormat.getContentType());
+                assertThat(exception.getMessage())
+                        .isEqualTo(String.format(
+                                "The %s with ID %s was not found.",
+                                Foerderbereich.class.getSimpleName(),
+                                fb));
+            }
 
-            assertThat(generatedReport.fileName())
-                    .startsWith(
-                            ReportType.FMW_HAUSHALT1.getFileName()
-                                    + reportFormat.getFileSuffix())
-                    .endsWith(reportFormat.getFileExtension());
-        }
+            @Test
+            void givenListennameStadtbezirkslisteNotFound_thenShouldThrowNotFoundException() {
+                // Given
+                final String sbl = "1";
+                final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
+                        "2024",
+                        "1",
+                        "0000.000.123",
+                        sbl,
+                        "1",
+                        "1",
+                        ReportHaushaltsplanungSort.FB_PROJEKTNUMMER,
+                        ReportFormat.PDF);
 
-        @Test
-        void givenFoerderbereichNotFound_thenShouldThrowNotFoundException() {
-            // Given
-            final String fb = "1";
-            final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
-                    "2024",
-                    fb,
-                    "0000.000.123",
-                    "1",
-                    "1",
-                    "1",
-                    ReportHaushaltsplanungSort.FB_PROJEKTNUMMER,
-                    ReportFormat.PDF);
+                doThrow(new NotFoundException(
+                        StadtbezirkslisteFormContext.class,
+                        sbl))
+                        .when(listennameStadtbezirkslisteService)
+                        .checkExistsByListenname(sbl);
 
-            doThrow(new NotFoundException(Foerderbereich.class, fb))
-                    .when(foerderbereichService)
-                    .checkExistsByFoerderbereich(new BigDecimal(fb));
+                // When
+                final Exception exception = Assertions.assertThrows(
+                        NotFoundException.class,
+                        () -> reportService.generateReportHaushaltsplanung(parameters));
 
-            // When
-            final Exception exception = Assertions.assertThrows(
-                    NotFoundException.class,
-                    () -> reportService.generateReportHaushaltsplanung(parameters));
+                // Then
+                verify(listennameStadtbezirkslisteService, times(1))
+                        .checkExistsByListenname(sbl);
+                verifyNoInteractions(
+                        stadtbezirkService,
+                        reportMapper,
+                        jasperReportService);
 
-            // Then
-            verify(foerderbereichService, times(1))
-                    .checkExistsByFoerderbereich(new BigDecimal(fb));
-            verifyNoInteractions(
-                    listennameStadtbezirkslisteService,
-                    stadtbezirkService,
-                    reportMapper,
-                    jasperReportService);
+                assertThat(exception.getMessage())
+                        .isEqualTo(String.format(
+                                "The %s with ID %s was not found.",
+                                StadtbezirkslisteFormContext.class.getSimpleName(),
+                                sbl));
+            }
 
-            assertThat(exception.getMessage())
-                    .isEqualTo(String.format(
-                            "The %s with ID %s was not found.",
-                            Foerderbereich.class.getSimpleName(),
-                            fb));
-        }
+            @Test
+            void givenStadtbezirkNotFound_thenShouldThrowNotFoundException() {
+                // Given
+                final String bez = "1";
+                final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
+                        "2024",
+                        "1",
+                        "0000.000.123",
+                        "1",
+                        bez,
+                        "1",
+                        ReportHaushaltsplanungSort.FB_PROJEKTNUMMER,
+                        ReportFormat.PDF);
 
-        @Test
-        void givenListennameStadtbezirkslisteNotFound_thenShouldThrowNotFoundException() {
-            // Given
-            final String sbl = "1";
-            final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
-                    "2024",
-                    "1",
-                    "0000.000.123",
-                    sbl,
-                    "1",
-                    "1",
-                    ReportHaushaltsplanungSort.FB_PROJEKTNUMMER,
-                    ReportFormat.PDF);
+                doThrow(new NotFoundException(Stadtbezirk.class, bez))
+                        .when(stadtbezirkService)
+                        .checkExistsByStadtbezirk(new BigDecimal(bez));
 
-            doThrow(new NotFoundException(
-                    StadtbezirkslisteFormContext.class,
-                    sbl))
-                    .when(listennameStadtbezirkslisteService)
-                    .checkExistsByListenname(sbl);
+                // When
+                final Exception exception = Assertions.assertThrows(
+                        NotFoundException.class,
+                        () -> reportService.generateReportHaushaltsplanung(parameters));
 
-            // When
-            final Exception exception = Assertions.assertThrows(
-                    NotFoundException.class,
-                    () -> reportService.generateReportHaushaltsplanung(parameters));
+                // Then
+                verify(stadtbezirkService, times(1))
+                        .checkExistsByStadtbezirk(new BigDecimal(bez));
+                verifyNoInteractions(
+                        reportMapper,
+                        jasperReportService);
 
-            // Then
-            verify(listennameStadtbezirkslisteService, times(1))
-                    .checkExistsByListenname(sbl);
-            verifyNoInteractions(
-                    stadtbezirkService,
-                    reportMapper,
-                    jasperReportService);
-
-            assertThat(exception.getMessage())
-                    .isEqualTo(String.format(
-                            "The %s with ID %s was not found.",
-                            StadtbezirkslisteFormContext.class.getSimpleName(),
-                            sbl));
-        }
-
-        @Test
-        void givenStadtbezirkNotFound_thenShouldThrowNotFoundException() {
-            // Given
-            final String bez = "1";
-            final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
-                    "2024",
-                    "1",
-                    "0000.000.123",
-                    "1",
-                    bez,
-                    "1",
-                    ReportHaushaltsplanungSort.FB_PROJEKTNUMMER,
-                    ReportFormat.PDF);
-
-            doThrow(new NotFoundException(Stadtbezirk.class, bez))
-                    .when(stadtbezirkService)
-                    .checkExistsByStadtbezirk(new BigDecimal(bez));
-
-            // When
-            final Exception exception = Assertions.assertThrows(
-                    NotFoundException.class,
-                    () -> reportService.generateReportHaushaltsplanung(parameters));
-
-            // Then
-            verify(stadtbezirkService, times(1))
-                    .checkExistsByStadtbezirk(new BigDecimal(bez));
-            verifyNoInteractions(
-                    reportMapper,
-                    jasperReportService);
-
-            assertThat(exception.getMessage())
-                    .isEqualTo(String.format(
-                            "The %s with ID %s was not found.",
-                            Stadtbezirk.class.getSimpleName(),
-                            bez));
-        }
-    }
-
-    @Nested
-    class GetReportHaushaltsplanungFormContext {
-
-        @Test
-        void givenEntitiesExists_thenReturnCorrectFormContext() {
-            // Given
-            final List<StadtbezirkFormContextDTO> allStadtbezirke = List.of(new StadtbezirkFormContextDTO("K", "Test"),
-                    new StadtbezirkFormContextDTO("L", "Test 2"), new StadtbezirkFormContextDTO("M", "Test 3"));
-            when(stadtbezirkService.getStadtbezirkFormContextDTOs()).thenReturn(allStadtbezirke);
-
-            final List<FoerderbereichFormContextDTO> allFoerderbereiche = List.of(new FoerderbereichFormContextDTO("K", "Test"),
-                    new FoerderbereichFormContextDTO("L", "Test 2"), new FoerderbereichFormContextDTO("M", "Test 3"));
-            when(foerderbereichService.getFoerderbereichFormContextDTOs()).thenReturn(allFoerderbereiche);
-
-            final List<ListennameStadtbezirkslisteFormContextDTO> allStadtbezirkslisten = List.of(new ListennameStadtbezirkslisteFormContextDTO("K", "Test"),
-                    new ListennameStadtbezirkslisteFormContextDTO("L", "Test 2"), new ListennameStadtbezirkslisteFormContextDTO("M", "Test 3"));
-            when(listennameStadtbezirkslisteService.getlistennameStadtbezirkslisteFormContextDTOs()).thenReturn(allStadtbezirkslisten);
-
-            final List<HhplanFormContextDTO> allHhplan = List.of(new HhplanFormContextDTO(new BigDecimal(2024), "0000.0000.000.123"),
-                    new HhplanFormContextDTO(new BigDecimal(2025), "0000.0000.000.111"), new HhplanFormContextDTO(new BigDecimal(2023), "0000.0000.000.222"));
-            when(hhplanService.getHhplanFormContextDTOs()).thenReturn(allHhplan);
-            // When
-            final ReportHaushaltsplanungFormContext formContext = reportService.getReportHaushaltsplanung();
-
-            // Then
-            verify(stadtbezirkService, times(1)).getStadtbezirkFormContextDTOs();
-            assertThat(formContext.bezs()).isEqualTo(allStadtbezirke);
-            assertThat(formContext.sbls()).isEqualTo(allStadtbezirkslisten);
-            assertThat(formContext.fipos()).isEqualTo(allHhplan);
-            assertThat(formContext.fbs()).isEqualTo(allFoerderbereiche);
+                assertThat(exception.getMessage())
+                        .isEqualTo(String.format(
+                                "The %s with ID %s was not found.",
+                                Stadtbezirk.class.getSimpleName(),
+                                bez));
+            }
         }
 
-    }
+        @Nested
+        class GetReportHaushaltsplanungFormContext {
+
+            @Test
+            void givenEntitiesExists_thenReturnCorrectFormContext() {
+                // Given
+                final List<StadtbezirkFormContextDTO> allStadtbezirke = List.of(new StadtbezirkFormContextDTO("K", "Test"),
+                        new StadtbezirkFormContextDTO("L", "Test 2"), new StadtbezirkFormContextDTO("M", "Test 3"));
+                when(stadtbezirkService.getStadtbezirkFormContextDTOs()).thenReturn(allStadtbezirke);
+
+                final List<FoerderbereichFormContextDTO> allFoerderbereiche = List.of(new FoerderbereichFormContextDTO("K", "Test"),
+                        new FoerderbereichFormContextDTO("L", "Test 2"), new FoerderbereichFormContextDTO("M", "Test 3"));
+                when(foerderbereichService.getFoerderbereichFormContextDTOs()).thenReturn(allFoerderbereiche);
+
+                final List<ListennameStadtbezirkslisteFormContextDTO> allStadtbezirkslisten = List.of(
+                        new ListennameStadtbezirkslisteFormContextDTO("K", "Test"),
+                        new ListennameStadtbezirkslisteFormContextDTO("L", "Test 2"), new ListennameStadtbezirkslisteFormContextDTO("M", "Test 3"));
+                when(listennameStadtbezirkslisteService.getlistennameStadtbezirkslisteFormContextDTOs()).thenReturn(allStadtbezirkslisten);
+
+                final List<HhplanFormContextDTO> allHhplan = List.of(new HhplanFormContextDTO(new BigDecimal(2024), "0000.0000.000.123"),
+                        new HhplanFormContextDTO(new BigDecimal(2025), "0000.0000.000.111"),
+                        new HhplanFormContextDTO(new BigDecimal(2023), "0000.0000.000.222"));
+                when(hhplanService.getHhplanFormContextDTOs()).thenReturn(allHhplan);
+                // When
+                final ReportHaushaltsplanungFormContext formContext = reportService.getReportHaushaltsplanung();
+
+                // Then
+                verify(stadtbezirkService, times(1)).getStadtbezirkFormContextDTOs();
+                assertThat(formContext.bezs()).isEqualTo(allStadtbezirke);
+                assertThat(formContext.sbls()).isEqualTo(allStadtbezirkslisten);
+                assertThat(formContext.fipos()).isEqualTo(allHhplan);
+                assertThat(formContext.fbs()).isEqualTo(allFoerderbereiche);
+            }
+
+        }
 
         @Test
         void givenUnterabschnitt_thenShouldCheckUnterabschnitt() {
