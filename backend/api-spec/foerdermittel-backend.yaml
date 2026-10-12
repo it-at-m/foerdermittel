@@ -2315,6 +2315,8 @@ components:
           minLength: 1
           type: string
         notizen:
+          maxLength: 40
+          minLength: 1
           type: string
     TerminResponseDTO:
       required:
@@ -2812,6 +2814,8 @@ components:
           minLength: 1
           type: string
         notizen:
+          maxLength: 40
+          minLength: 1
           type: string
         projnr:
           minLength: 1
