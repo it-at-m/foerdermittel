@@ -2313,6 +2313,7 @@ components:
         telefon:
           maxLength: 30
           minLength: 1
+          pattern: \d*
           type: string
         notizen:
           maxLength: 40
@@ -2812,6 +2813,7 @@ components:
         telefon:
           maxLength: 30
           minLength: 1
+          pattern: \d*
           type: string
         notizen:
           maxLength: 40
