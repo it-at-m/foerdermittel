@@ -92,13 +92,13 @@ const headers: DataTableHeader<Partial<TerminResponseDTO>>[] = [
     title: t("model.termin.projnr"),
     value: "projnr",
     align: "center",
-    width: 100,
+    width: 90,
   },
   {
     title: t("model.termin.termin"),
     value: "termin",
     align: "center",
-    width: 100,
+    width: 110,
   },
   {
     title: t("model.termin.zustaendig"),

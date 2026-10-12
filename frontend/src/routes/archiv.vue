@@ -107,7 +107,7 @@ const headers: DataTableHeader<Partial<ArchivResponseDTO>>[] = [
     title: t("model.archiv.projnr"),
     value: "projnr",
     align: "center",
-    width: 100,
+    width: 90,
   },
   {
     title: t("model.archiv.speicherDatum"),
