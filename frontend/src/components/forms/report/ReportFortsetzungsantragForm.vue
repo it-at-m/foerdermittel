@@ -17,7 +17,7 @@
           :validation-attribute-map="
             ReportFortsetzungsantragDTOPropertyValidationAttributesMap
           "
-          validation-attribute-key="kurzbez"
+          validation-attribute-key="sbl"
           :label="t('model.stadtbezirksliste.modelName')"
           @update:model-value="delete modelValue.parameters!.bez"
         />
@@ -34,7 +34,7 @@
           :validation-attribute-map="
             ReportFortsetzungsantragDTOPropertyValidationAttributesMap
           "
-          validation-attribute-key="kurzbez"
+          validation-attribute-key="bez"
           :label="t('model.stadtbezirk.modelName')"
           @update:model-value="delete modelValue.parameters!.sbl"
         />
@@ -47,7 +47,7 @@
       >
         <v-checkbox
           v-model="modelValue.parameters!.fag"
-          item-value="hh"
+          item-value="fag"
           :label="t('domain.report.fortsetzungsAntrag.fag')"
           true-value="1"
           false-value="0"
@@ -59,7 +59,7 @@
       >
         <v-checkbox
           v-model="modelValue.parameters!.ofPro"
-          item-value="hh"
+          item-value="ofPro"
           :label="t('domain.report.fortsetzungsAntrag.ofPro')"
           true-value="1"
           false-value="0"

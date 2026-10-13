@@ -3480,9 +3480,10 @@ components:
       type: object
       properties:
         sbl:
+          pattern: "^[A-Z0-9]+$"
           type: string
         bez:
-          pattern: \d*
+          pattern: "([0-9]|[1-9][0-9])"
           type: string
         fag:
           type: string
