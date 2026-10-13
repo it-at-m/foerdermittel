@@ -107,7 +107,7 @@ const modelValue = defineModel<Partial<IstkostenResponseDTO>>({
 const projektItems = computed(() =>
   projekte.map((projekt) => ({
     ...projekt,
-    anzeige: `${projekt.projnr} (${projekt.pname}, ${projekt.pstrasse}, FB: ${projekt.foerderbereich} )`,
+    anzeige: `${projekt.projnr} (${projekt.pname}, ${projekt.pstrasse})`,
   }))
 );
 
