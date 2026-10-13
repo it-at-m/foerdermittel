@@ -75,7 +75,7 @@
       "telefon": "Kontakt / Telefon",
       "zustaendig": "Zuständig",
       "notizen": "Notizen",
-      "projnr": "PROJNR",
+      "projnr": "Projnr",
       "pname": "Name",
       "pstrasse": "Straße",
       "fobFb": "FB",
@@ -125,9 +125,6 @@
       "bauleitung": "Bauleitung",
       "bezeichnung": "Bezeichnung"
     },
-    "fipo": {
-      "modelName": "FIPO"
-    },
     "foerderbereich": {
       "modelName": "Förderbereich | Förderbereiche",
       "fb": "Förderbereich",
@@ -137,7 +134,6 @@
       "kindergarten": "Kindergarten",
       "nichtRelevant": "Nicht relevant"
     },
-
     "krankenhaus": {
       "modelName": "Krankenhaus | Krankenhäuser",
       "krhname": "Kurzform",
@@ -228,24 +224,7 @@
       "ausstGenehmigungVorzBeginn": "Ausst. Genehmigung vorz. Beginn",
       "bewilligungAuszahlungProjekt": "@:model.bewilligung.modelName und @:domain.auszahlung eines @:model.projekt.modelName{'s'}",
       "bewilligungAuzahlungVergleich": "@:model.bewilligung.modelName und @:domain.auszahlung (Vergleich)",
-      "fortsetzungsAntrag": "Fortsetzungsantrag | Fortsetzungsanträge",
-      "haushaltsplanung": {
-        "modelName": "Haushaltsplanung",
-        "hh": "Ausgabe nur mit Haushaltszahlen",
-        "sortEnum": {
-          "projektnummer": "Projektnummer",
-          "strasse": "Straße, Projektnummer",
-          "fipo": "FIPO",
-          "fbProjektnummer": "Förderbereich, Projektnummer",
-          "fbStrasseProjektnummer": "Förderbereich, Straße, Projektnummer",
-          "fbFipo": "Förderbereich, FIPO"
-        },
-        "type": {
-          "pdf": "PDF: Gruppierung Förderbereich",
-          "pdfFlat": "PDF: keine Gruppierung",
-          "excel": "Excel"
-        }
-      }
+      "fortsetzungsAntrag": "Fortsetzungsantrag | Fortsetzungsanträge"
     }
   },
   "view": {
