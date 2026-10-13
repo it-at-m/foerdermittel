@@ -92,13 +92,13 @@ const headers: DataTableHeader<Partial<TerminResponseDTO>>[] = [
     title: t("model.termin.projnr"),
     value: "projnr",
     align: "center",
-    width: 100,
+    width: 90,
   },
   {
     title: t("model.termin.termin"),
     value: "termin",
     align: "center",
-    width: 100,
+    width: 110,
   },
   {
     title: t("model.termin.zustaendig"),
@@ -186,5 +186,11 @@ const handleDelete = async (id: string) => {
 };
 
 const formatDate = (value?: Date | null) =>
-  value ? value.toLocaleDateString("de-DE") : "";
+  value
+    ? value.toLocaleDateString("de-DE", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })
+    : "";
 </script>
