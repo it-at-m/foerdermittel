@@ -64,6 +64,6 @@ public class Termin implements Serializable {
     @Size(min = 1, max = 30) @Pattern(regexp = "\\d*") private String telefon;
 
     @Column(name = "notizen")
-    @Size(min = 1, max = 40) private String notizen;
+    private String notizen;
 
 }

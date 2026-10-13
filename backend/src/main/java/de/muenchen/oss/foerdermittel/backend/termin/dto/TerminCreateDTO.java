@@ -12,6 +12,6 @@ public record TerminCreateDTO(
         Boolean ueberwachung,
         @Size(min = 1, max = 30) String zustaendig,
         @Size(min = 1, max = 30) @Pattern(regexp = "\\d*") String telefon,
-        @Size(min = 1, max = 40) String notizen,
+        String notizen,
         @NotBlank String projnr) {
 }
