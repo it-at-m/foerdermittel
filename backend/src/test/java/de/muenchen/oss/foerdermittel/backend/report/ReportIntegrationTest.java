@@ -267,7 +267,7 @@ public class ReportIntegrationTest {
                     .uri(uriBuilder -> uriBuilder
                             .path("/report/fortsetzungsantrag")
                             .queryParam("type", "PDF")
-                            .queryParam("bez", "999999")
+                            .queryParam("bez", "99")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
                     .exchange()
