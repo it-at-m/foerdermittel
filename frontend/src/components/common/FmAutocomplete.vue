@@ -69,7 +69,14 @@ const { required, allRules, canNotEdit } = useInputValidation(
   validationAttributeKey
 );
 
-const model = defineModel<T>();
+const model = defineModel<T>({
+  get(value) {
+    return value;
+  },
+  set(value) {
+    return value ?? "";
+  },
+});
 
 const { t } = useI18n();
 </script>
