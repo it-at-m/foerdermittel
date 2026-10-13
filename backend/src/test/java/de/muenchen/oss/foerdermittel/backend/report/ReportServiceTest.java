@@ -23,19 +23,18 @@ import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuswertungProjekteDTO;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuwertungProjektSort;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushaltsplanungDTO;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushaltsplanungSort;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
+import de.muenchen.oss.foerdermittel.backend.report.dto.*;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportAuswertungProjektFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportHaushaltsplanungFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportProjektuebersichtFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietService;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkService;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.ListennameStadtbezirkslisteService;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.StadtbezirkslisteFormContext;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameStadtbezirkslisteFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.StichwortbereichService;
@@ -221,154 +220,7 @@ class ReportServiceTest {
                     .isEqualTo(allBereiche);
         }
     }
-
     @Nested
-    class GenerateReportAuswertungProjekte {
-
-        private ReportAuswertungProjekteDTO createProjektParameters() {
-            final ReportAuswertungProjekteDTO parameters = mock(ReportAuswertungProjekteDTO.class);
-
-            when(parameters.fb()).thenReturn(null);
-            when(parameters.sbl()).thenReturn(null);
-            when(parameters.bez()).thenReturn(null);
-            when(parameters.ua()).thenReturn(null);
-            when(parameters.sgt()).thenReturn(null);
-            when(parameters.kurz()).thenReturn(null);
-            when(parameters.bpg()).thenReturn(null);
-
-            when(parameters.sort())
-                    .thenReturn(ReportAuwertungProjektSort.values()[0]);
-
-            return parameters;
-        }
-
-        @Test
-        void givenNoFilters_thenShouldGenerateCorrectGeneratedReport() {
-            // Given
-            final ReportAuswertungProjekteDTO parameters = createProjektParameters();
-
-            final Map<String, Object> jasperParameters = new HashMap<>();
-
-            when(reportMapper.toJasperParameters(parameters))
-                    .thenReturn(jasperParameters);
-
-            // When
-            final GeneratedReport generatedReport = reportService.generateReportAuswertungProjekt(parameters);
-
-            // Then
-            verify(reportMapper, times(1))
-                    .toJasperParameters(parameters);
-
-            verifyNoInteractions(
-                    foerderbereichService,
-                    listennameStadtbezirkslisteService,
-                    stadtbezirkService,
-                    unterabschnittService,
-                    siedlungsgebietService,
-                    kurzbezeichnungService,
-                    bauprogrammService,
-                    jasperReportService);
-
-            assertThat(generatedReport).isNotNull();
-
-            assertThat(generatedReport.contentType())
-                    .isEqualTo(ReportFormat.PDF.getContentType());
-
-            assertThat(generatedReport.fileName())
-                    .startsWith(ReportType.FMW_PROJEKTE.getFileName())
-                    .endsWith(ReportFormat.PDF.getFileExtension());
-
-            assertThat(jasperParameters)
-                    .containsEntry(
-                            SORT_PARAMETER,
-                            ReportAuwertungProjektSort.values()[0].getOrderBy());
-        }
-
-        @Test
-        void givenWriteInteraction_thenShouldCallJasperServiceCorrectly()
-                throws JRException, SQLException, IOException {
-
-            // Given
-            final ReportAuswertungProjekteDTO parameters = createProjektParameters();
-
-            final Map<String, Object> jasperParameters = new HashMap<>();
-
-            when(reportMapper.toJasperParameters(parameters))
-                    .thenReturn(jasperParameters);
-
-            final OutputStream outputStream = new ByteArrayOutputStream();
-
-            // When
-            final GeneratedReport generatedReport = reportService.generateReportAuswertungProjekt(parameters);
-
-            generatedReport.writer().write(outputStream);
-
-            // Then
-            verify(jasperReportService, times(1))
-                    .generateReportWithParameters(
-                            ReportType.FMW_PROJEKTE,
-                            ReportFormat.PDF,
-                            jasperParameters,
-                            outputStream);
-        }
-
-        @Test
-        void givenFoerderbereich_thenShouldCheckFoerderbereich() {
-            // Given
-            final ReportAuswertungProjekteDTO parameters = createProjektParameters();
-
-            when(parameters.fb()).thenReturn("123");
-
-            when(reportMapper.toJasperParameters(parameters))
-                    .thenReturn(new HashMap<>());
-
-            // When
-            reportService.generateReportAuswertungProjekt(parameters);
-
-            // Then
-            verify(foerderbereichService)
-                    .checkExistsByFoerderbereich(
-                            new BigDecimal("123"));
-        }
-
-        @Test
-        void givenListennameStadtbezirksliste_thenShouldCheckListenname() {
-            // Given
-            final ReportAuswertungProjekteDTO parameters = createProjektParameters();
-
-            when(parameters.sbl()).thenReturn("LISTE");
-
-            when(reportMapper.toJasperParameters(parameters))
-                    .thenReturn(new HashMap<>());
-
-            // When
-            reportService.generateReportAuswertungProjekt(parameters);
-
-            // Then
-            verify(listennameStadtbezirkslisteService)
-                    .checkExistsByListenname("LISTE");
-        }
-
-        @Test
-        void givenStadtbezirk_thenShouldCheckStadtbezirk() {
-            // Given
-            final ReportAuswertungProjekteDTO parameters = createProjektParameters();
-
-            when(parameters.bez()).thenReturn("12");
-
-            when(reportMapper.toJasperParameters(parameters))
-                    .thenReturn(new HashMap<>());
-
-            // When
-            reportService.generateReportAuswertungProjekt(parameters);
-
-            // Then
-            verify(stadtbezirkService)
-                    .checkExistsByStadtbezirk(
-                            new BigDecimal("12"));
-        }
-
-        @Nested
         class GenerateReportProjektuebersicht {
 
             @Test
@@ -754,6 +606,154 @@ class ReportServiceTest {
                 assertThat(formContext.fbs()).isEqualTo(allFoerderbereiche);
             }
 
+        }
+    @Nested
+    class GenerateReportAuswertungProjekte {
+
+        private ReportAuswertungProjekteDTO createProjektParameters() {
+            final ReportAuswertungProjekteDTO parameters =
+                    mock(ReportAuswertungProjekteDTO.class);
+
+            when(parameters.type()).thenReturn(ReportFormat.PDF);
+
+            when(parameters.fb()).thenReturn(null);
+            when(parameters.sbl()).thenReturn(null);
+            when(parameters.bez()).thenReturn(null);
+            when(parameters.ua()).thenReturn(null);
+            when(parameters.sgt()).thenReturn(null);
+            when(parameters.kurz()).thenReturn(null);
+            when(parameters.bpg()).thenReturn(null);
+
+            when(parameters.sort())
+                    .thenReturn(ReportAuwertungProjektSort.values()[0]);
+
+            return parameters;
+        }
+
+        @Test
+        void givenNoFilters_thenShouldGenerateCorrectGeneratedReport() {
+            // Given
+            final ReportAuswertungProjekteDTO parameters = createProjektParameters();
+
+            final Map<String, Object> jasperParameters = new HashMap<>();
+
+            when(reportMapper.toJasperParameters(parameters))
+                    .thenReturn(jasperParameters);
+
+            // When
+            final GeneratedReport generatedReport = reportService.generateReportAuswertungProjekt(parameters);
+
+            // Then
+            verify(reportMapper, times(1))
+                    .toJasperParameters(parameters);
+
+            verifyNoInteractions(
+                    foerderbereichService,
+                    listennameStadtbezirkslisteService,
+                    stadtbezirkService,
+                    unterabschnittService,
+                    siedlungsgebietService,
+                    kurzbezeichnungService,
+                    bauprogrammService,
+                    jasperReportService);
+
+            assertThat(generatedReport).isNotNull();
+
+            assertThat(generatedReport.contentType())
+                    .isEqualTo(ReportFormat.PDF.getContentType());
+
+            assertThat(generatedReport.fileName())
+                    .startsWith(ReportType.FMW_PROJEKTE.getFileName())
+                    .endsWith(ReportFormat.PDF.getFileExtension());
+
+            assertThat(jasperParameters)
+                    .containsEntry(
+                            SORT_PARAMETER,
+                            ReportAuwertungProjektSort.values()[0].getOrderBy());
+        }
+
+        @Test
+        void givenWriteInteraction_thenShouldCallJasperServiceCorrectly()
+                throws JRException, SQLException, IOException {
+
+            // Given
+            final ReportAuswertungProjekteDTO parameters = createProjektParameters();
+
+            final Map<String, Object> jasperParameters = new HashMap<>();
+
+            when(reportMapper.toJasperParameters(parameters))
+                    .thenReturn(jasperParameters);
+
+            final OutputStream outputStream = new ByteArrayOutputStream();
+
+            // When
+            final GeneratedReport generatedReport = reportService.generateReportAuswertungProjekt(parameters);
+
+            generatedReport.writer().write(outputStream);
+
+            // Then
+            verify(jasperReportService, times(1))
+                    .generateReportWithParameters(
+                            ReportType.FMW_PROJEKTE,
+                            ReportFormat.PDF,
+                            jasperParameters,
+                            outputStream);
+        }
+
+        @Test
+        void givenFoerderbereich_thenShouldCheckFoerderbereich() {
+            // Given
+            final ReportAuswertungProjekteDTO parameters = createProjektParameters();
+
+            when(parameters.fb()).thenReturn("123");
+
+            when(reportMapper.toJasperParameters(parameters))
+                    .thenReturn(new HashMap<>());
+
+            // When
+            reportService.generateReportAuswertungProjekt(parameters);
+
+            // Then
+            verify(foerderbereichService)
+                    .checkExistsByFoerderbereich(
+                            new BigDecimal("123"));
+        }
+
+        @Test
+        void givenListennameStadtbezirksliste_thenShouldCheckListenname() {
+            // Given
+            final ReportAuswertungProjekteDTO parameters = createProjektParameters();
+
+            when(parameters.sbl()).thenReturn("LISTE");
+
+            when(reportMapper.toJasperParameters(parameters))
+                    .thenReturn(new HashMap<>());
+
+            // When
+            reportService.generateReportAuswertungProjekt(parameters);
+
+            // Then
+            verify(listennameStadtbezirkslisteService)
+                    .checkExistsByListenname("LISTE");
+        }
+
+        @Test
+        void givenStadtbezirk_thenShouldCheckStadtbezirk() {
+            // Given
+            final ReportAuswertungProjekteDTO parameters = createProjektParameters();
+
+            when(parameters.bez()).thenReturn("12");
+
+            when(reportMapper.toJasperParameters(parameters))
+                    .thenReturn(new HashMap<>());
+
+            // When
+            reportService.generateReportAuswertungProjekt(parameters);
+
+            // Then
+            verify(stadtbezirkService)
+                    .checkExistsByStadtbezirk(
+                            new BigDecimal("12"));
         }
 
         @Test

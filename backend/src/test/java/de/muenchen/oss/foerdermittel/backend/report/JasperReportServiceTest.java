@@ -2,6 +2,7 @@ package de.muenchen.oss.foerdermittel.backend.report;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -36,6 +37,18 @@ class JasperReportServiceTest {
     private static final String PNAME_PARAMETER = "P_PNAME";
     private static final String PSTRASSE_PARAMETER = "P_PSTRASSE";
     private static final String PROJNR_PARAMETER = "P_PROJNR";
+    private static final String PJAHR_PARAMETER = "P_JAHR";
+    private static final String PFB_PARAMETER = "P_FB";
+    private static final String PUA_PARAMETER = "P_UA";
+    private static final String PKURZ_PARAMETER = "P_KURZ";
+    private static final String PSGT_PARAMETER = "P_SGT";
+    private static final String PBPG_PARAMETER = "P_BPG";
+    private static final String PSBL_PARAMETER = "P_SBL";
+    private static final String PBEZ_PARAMETER = "P_BEZ";
+    private static final String PKAUF_PARAMETER = "P_KAUF";
+    private static final String POFFEN_PARAMETER = "P_OFFEN";
+    private static final String PRELEVANT_PARAMETER = "P_RELEVANT";
+    private static final String PKRISOFP_PARAMETER = "P_KRISOFP";
     private static final String SORT_PARAMETER = "P_SORT";
 
     @Mock
@@ -92,6 +105,36 @@ class JasperReportServiceTest {
                             || parameter.getName().equals(PNAME_PARAMETER)
                             || parameter.getName().equals(PSTRASSE_PARAMETER))
                     .hasSize(4)
+                    .allSatisfy(parameter -> assertThat(parameter.getValueClassName())
+                            .isEqualTo(String.class.getName()));
+        }
+
+        @Test
+        void givenCompiledAuswertungProjekteReport_thenContainsExpectedStringParameters() throws Exception {
+            // Given
+            final JasperReport jasperReport = (JasperReport) JRLoader.loadObject(
+                    new ClassPathResource("reports/FMW_PROJEKTE_R.jasper")
+                            .getURL());
+
+            // Then
+            assertThat(jasperReport.getParameters())
+                    .filteredOn(parameter -> parameter.getName().equals(PJAHR_PARAMETER)
+                            || parameter.getName().equals(PSTRASSE_PARAMETER)
+                            || parameter.getName().equals(PNAME_PARAMETER)
+                            || parameter.getName().equals(PBEZ_PARAMETER)
+                            || parameter.getName().equals(PBPG_PARAMETER)
+                            || parameter.getName().equals(PFB_PARAMETER)
+                            || parameter.getName().equals(PUA_PARAMETER)
+                            || parameter.getName().equals(PKURZ_PARAMETER)
+                            || parameter.getName().equals(PSBL_PARAMETER)
+                            || parameter.getName().equals(PKURZ_PARAMETER)
+                            || parameter.getName().equals(PSGT_PARAMETER)
+                            || parameter.getName().equals(PKRISOFP_PARAMETER)
+                            | parameter.getName().equals(PKAUF_PARAMETER)
+                            | parameter.getName().equals(POFFEN_PARAMETER)
+                            | parameter.getName().equals(PRELEVANT_PARAMETER)
+                            || parameter.getName().equals(PSTRASSE_PARAMETER))
+                    .hasSize(14)
                     .allSatisfy(parameter -> assertThat(parameter.getValueClassName())
                             .isEqualTo(String.class.getName()));
         }
