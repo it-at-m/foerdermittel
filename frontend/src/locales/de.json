@@ -248,8 +248,7 @@
           "pdf": "PDF",
           "excel": "Excel"
         }
-      }
-      "fortsetzungsAntrag": "Fortsetzungsantrag | Fortsetzungsanträge",
+      },
       "haushaltsplanung": {
         "modelName": "Haushaltsplanung",
         "hh": "Ausgabe nur mit Haushaltszahlen",

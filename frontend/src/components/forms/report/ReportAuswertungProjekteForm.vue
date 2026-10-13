@@ -4,7 +4,10 @@
     @update:model-value="onValidityChanged"
   >
     <v-row>
-      <v-col cols="12">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <!-- Projektjahr -->
         <fm-autocomplete
           v-model="modelValue.parameters!.jahr"
@@ -13,7 +16,11 @@
           item-value="value"
           :label="t('model.projekt.jahr')"
         />
-
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+      >
         <!-- Stadtbezirk -->
         <fm-autocomplete
           v-model="modelValue.parameters!.bez"
@@ -27,7 +34,13 @@
           :label="t('model.stadtbezirk.modelName')"
           @update:model-value="delete modelValue.parameters!.bez"
         />
-
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col
+        cols="12"
+        md="6"
+      >
         <!-- Stadtbezirksliste -->
         <fm-autocomplete
           v-model="modelValue.parameters!.sbl"
@@ -41,7 +54,11 @@
           :label="t('model.stadtbezirksliste.modelName')"
           @update:model-value="delete modelValue.parameters!.sbl"
         />
-
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+      >
         <!-- Förderbereich -->
         <fm-autocomplete
           v-model="modelValue.parameters!.fb"
@@ -55,7 +72,13 @@
           :label="t('model.foerderbereich.modelName')"
           @update:model-value="delete modelValue.parameters!.fb"
         />
-
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col
+        cols="12"
+        md="6"
+      >
         <!-- Unterabschnitt -->
         <fm-autocomplete
           v-model="modelValue.parameters!.ua"
@@ -69,7 +92,11 @@
           :label="t('model.unterabschnitt.modelName')"
           @update:model-value="delete modelValue.parameters!.ua"
         />
-
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+      >
         <!-- Kurzbezeichnung -->
         <fm-autocomplete
           v-model="modelValue.parameters!.kurz"
@@ -83,7 +110,13 @@
           :label="t('model.kurzbezeichnung.modelName')"
           @update:model-value="delete modelValue.parameters!.kurz"
         />
-
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col
+        cols="12"
+        md="6"
+      >
         <!-- Projektname -->
         <fm-text-field
           v-model="modelValue.parameters!.pname"
@@ -94,7 +127,11 @@
           validation-attribute-key="pname"
           :label="t('model.projekt.pname')"
         />
-
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+      >
         <!-- Straße -->
         <fm-text-field
           v-model="modelValue.parameters!.pstrasse"
@@ -105,34 +142,47 @@
           validation-attribute-key="pstrasse"
           :label="t('model.projekt.pstrasse')"
         />
-
-        <!-- Zusätzliche Filter -->
-        <v-row class="mt-2">
-          <v-col cols="12">
-            <v-row>
-              <fm-checkbox
-                v-model="modelValue.parameters!.offen"
-                :label="t('domain.report.auswertungProjekt.offen')"
-                true-value="1"
-                false-value="0"
-              />
-
-              <fm-checkbox
-                v-model="modelValue.parameters!.kauf"
-                :label="t('domain.report.auswertungProjekt.kauf')"
-                true-value="1"
-                false-value="0"
-              />
-
-              <fm-checkbox
-                v-model="modelValue.parameters!.relevant"
-                :label="t('domain.report.auswertungProjekt.relevant')"
-                true-value="1"
-                false-value="0"
-              />
-            </v-row>
-          </v-col>
-        </v-row>
+      </v-col>
+    </v-row>
+    <!-- Zusätzliche Filter -->
+    <v-row class="mt-2">
+      <v-col
+        cols="12"
+        md="2"
+      >
+        <fm-checkbox
+          v-model="modelValue.parameters!.offen"
+          :label="t('domain.report.auswertungProjekt.offen')"
+          true-value="1"
+          false-value="0"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        md="2"
+      >
+        <fm-checkbox
+          v-model="modelValue.parameters!.kauf"
+          :label="t('domain.report.auswertungProjekt.kauf')"
+          true-value="1"
+          false-value="0"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        md="2"
+      >
+        <fm-checkbox
+          v-model="modelValue.parameters!.relevant"
+          :label="t('domain.report.auswertungProjekt.relevant')"
+          true-value="1"
+          false-value="0"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+      >
         <fm-autocomplete
           v-model="modelValue.parameters!.krisofp"
           :items="props.reportAuswertungProjektFormContext?.krisofps ?? []"
@@ -146,7 +196,13 @@
           :label="t('model.projekt.krisofp')"
           @update:model-value="delete modelValue.parameters!.krisofp"
         />
-
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col
+        cols="12"
+        md="6"
+      >
         <!-- Siedlungsgebiet -->
         <fm-autocomplete
           v-model="modelValue.parameters!.sgt"
@@ -160,7 +216,11 @@
           :label="t('model.siedlungsgebiet.modelName')"
           @update:model-value="delete modelValue.parameters!.sgt"
         />
-
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+      >
         <!-- Bauprogramm -->
         <fm-autocomplete
           v-model="modelValue.parameters!.bpg"
@@ -174,7 +234,10 @@
           :label="t('model.bauprogramm.modelName')"
           @update:model-value="delete modelValue.parameters!.bpg"
         />
-
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
         <!-- Sortierung -->
         <fm-autocomplete
           v-model="modelValue.parameters!.sort"
