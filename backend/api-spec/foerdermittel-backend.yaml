@@ -2352,6 +2352,7 @@ components:
         telefon:
           maxLength: 30
           minLength: 1
+          pattern: \d*
           type: string
         notizen:
           type: string
@@ -2849,6 +2850,7 @@ components:
         telefon:
           maxLength: 30
           minLength: 1
+          pattern: \d*
           type: string
         notizen:
           type: string

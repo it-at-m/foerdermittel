@@ -75,7 +75,7 @@
       "telefon": "Kontakt / Telefon",
       "zustaendig": "Zuständig",
       "notizen": "Notizen",
-      "projnr": "PROJNR",
+      "projnr": "Projnr",
       "pname": "Name",
       "pstrasse": "Straße",
       "fobFb": "FB",
@@ -124,9 +124,6 @@
       "modelName": "Bauleitung | Bauleitungen",
       "bauleitung": "Bauleitung",
       "bezeichnung": "Bezeichnung"
-    },
-    "fipo": {
-      "modelName": "FIPO"
     },
     "foerderbereich": {
       "modelName": "Förderbereich | Förderbereiche",
