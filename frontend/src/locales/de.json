@@ -243,6 +243,9 @@
         "modelName": "Euinformation | Euinformationen",
         "publikation": "Publikation",
         "referat": "Referat",
+        "inhalt": "Inhalt",
+        "jahrVon": "Jahr von",
+        "jahrBis": "Jahr bis",
         "sortEnum": {
           "publikation": "Publikation, Inhalt",
           "jahr": "Erscheinungsjahr, Publikation, Inhalt",

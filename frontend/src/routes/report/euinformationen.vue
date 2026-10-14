@@ -51,8 +51,7 @@ const title = t("common.generics.reportTitle", [t(domainKey, 2)]);
 
 const EMPTY_FORM_TEMPLATE: Partial<GetReportEuinformationenRequest> = {
   parameters: {
-    publikation: "",
-    referatBez:"Alle Referate",
+    referatId:"20",
     sort: "PUBLIKATION",
   },
 };
