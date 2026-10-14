@@ -17,11 +17,10 @@ import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietRepository;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
-import java.math.BigDecimal;
-import java.util.List;
-
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittRepository;
+import java.math.BigDecimal;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
@@ -92,7 +91,8 @@ class ProjektRepositoryIntegrationTest {
         final Bauprogramm bauprogramm = new Bauprogramm(new BigDecimal(1), "Test");
         bauprogrammRepository.save(bauprogramm);
 
-        projektRepository.save(new Projekt("P-123", "Projektname", "Projektstraße 1","2024", foerderbereich, stadtbezirk, unterabschnitt, kurzbezeichnung, siedlungsgebiet, bauprogramm, Krisofp.K));
+        projektRepository.save(new Projekt("P-123", "Projektname", "Projektstraße 1", "2024", foerderbereich, stadtbezirk, unterabschnitt, kurzbezeichnung,
+                siedlungsgebiet, bauprogramm, Krisofp.K));
 
         // When
         final List<BasicProjektDAO> result = projektRepository.findAllAsBasic();

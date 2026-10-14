@@ -17,16 +17,14 @@ import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektRepository;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportAuswertungProjektFormContext;
-
-import java.math.BigDecimal;
-import java.util.stream.Stream;
-
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietRepository;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittRepository;
+import java.math.BigDecimal;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -106,24 +104,19 @@ public class ReportAuswertungProjekteIntegrationTest {
                     BigDecimal.valueOf(99), "Test");
             stadtbezirkRepository.save(stadtbezirk);
 
-            final Hauptabschnitt hauptabschnitt =
-                    new Hauptabschnitt("ha", "bz2");
+            final Hauptabschnitt hauptabschnitt = new Hauptabschnitt("ha", "bz2");
             hauptabschnittRepository.save(hauptabschnitt);
 
-            final Unterabschnitt unterabschnitt =
-                    new Unterabschnitt("L", "Test", hauptabschnitt);
+            final Unterabschnitt unterabschnitt = new Unterabschnitt("L", "Test", hauptabschnitt);
             unterabschnittRepository.save(unterabschnitt);
 
-            final Kurzbezeichnung kurzbezeichnung =
-                    new Kurzbezeichnung("KB1", "Test");
+            final Kurzbezeichnung kurzbezeichnung = new Kurzbezeichnung("KB1", "Test");
             kurzbezeichnungRepository.save(kurzbezeichnung);
 
-            final Siedlungsgebiet siedlungsgebiet =
-                    new Siedlungsgebiet(BigDecimal.ONE, "Test");
+            final Siedlungsgebiet siedlungsgebiet = new Siedlungsgebiet(BigDecimal.ONE, "Test");
             siedlungsgebietRepository.save(siedlungsgebiet);
 
-            final Bauprogramm bauprogramm =
-                    new Bauprogramm(BigDecimal.ONE, "Test");
+            final Bauprogramm bauprogramm = new Bauprogramm(BigDecimal.ONE, "Test");
             bauprogrammRepository.save(bauprogramm);
 
             projektRepository.save(new Projekt(

@@ -87,8 +87,7 @@ class ReportAuswertungProjekteServiceTest {
     class GenerateReportAuswertungProjekte {
 
         private ReportAuswertungProjekteDTO createProjektParameters() {
-            final ReportAuswertungProjekteDTO parameters =
-                    mock(ReportAuswertungProjekteDTO.class);
+            final ReportAuswertungProjekteDTO parameters = mock(ReportAuswertungProjekteDTO.class);
 
             when(parameters.type()).thenReturn(ReportFormat.PDF);
 

@@ -2,7 +2,6 @@ package de.muenchen.oss.foerdermittel.backend.report;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -130,9 +129,9 @@ class JasperReportServiceTest {
                             || parameter.getName().equals(PKURZ_PARAMETER)
                             || parameter.getName().equals(PSGT_PARAMETER)
                             || parameter.getName().equals(PKRISOFP_PARAMETER)
-                            | parameter.getName().equals(PKAUF_PARAMETER)
-                            | parameter.getName().equals(POFFEN_PARAMETER)
-                            | parameter.getName().equals(PRELEVANT_PARAMETER)
+                                    | parameter.getName().equals(PKAUF_PARAMETER)
+                                    | parameter.getName().equals(POFFEN_PARAMETER)
+                                    | parameter.getName().equals(PRELEVANT_PARAMETER)
                             || parameter.getName().equals(PSTRASSE_PARAMETER))
                     .hasSize(14)
                     .allSatisfy(parameter -> assertThat(parameter.getValueClassName())
