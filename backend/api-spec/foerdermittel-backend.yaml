@@ -3695,6 +3695,37 @@ components:
         bezeichnung:
           type: string
           description: ""
+    ReportFortsetzungsantragDTO:
+      required:
+      - type
+      type: object
+      properties:
+        sbl:
+          pattern: "^[A-Z0-9]+$"
+          type: string
+        bez:
+          pattern: "([0-9]|[1-9][0-9])"
+          type: string
+        fag:
+          type: string
+        ofPro:
+          type: string
+        type:
+          $ref: "#/components/schemas/ReportFormat"
+    ReportFortsetzungsantragFormContext:
+      required:
+      - bezs
+      - sbls
+      type: object
+      properties:
+        sbls:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
+        bezs:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
     ReportAuswertungProjekteDTO:
       required:
       - jahr
@@ -3884,37 +3915,6 @@ components:
         bezeichnung:
           type: string
           description: ""
-    ReportFortsetzungsantragDTO:
-      required:
-      - type
-      type: object
-      properties:
-        sbl:
-          pattern: "^[A-Z0-9]+$"
-          type: string
-        bez:
-          pattern: "([0-9]|[1-9][0-9])"
-          type: string
-        fag:
-          type: string
-        ofPro:
-          type: string
-        type:
-          $ref: "#/components/schemas/ReportFormat"
-    ReportFortsetzungsantragFormContext:
-      required:
-      - bezs
-      - sbls
-      type: object
-      properties:
-        sbls:
-          type: array
-          items:
-            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
-        bezs:
-          type: array
-          items:
-            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
     PagedModelReferatResponseDTO:
       type: object
       properties:
