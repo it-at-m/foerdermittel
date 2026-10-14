@@ -59,8 +59,7 @@
       "pstrasse": "Straße",
       "ausgabeNotiz": "Ausgabe Notiz",
       "jahr": "Projektjahr",
-      "krisofp": "Förderprogramm",
-      "ausgabeNotiz": "Ausgabe Notiz"
+      "krisofp": "Förderprogramm"
     },
     "antrag": {
       "modelName": "Antrag | Anträge"
