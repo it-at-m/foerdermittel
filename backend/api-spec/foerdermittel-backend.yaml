@@ -464,6 +464,49 @@ paths:
           description: OK
       security:
       - bearerAuth: []
+  /istkosten/{id}:
+    put:
+      tags:
+      - istkosten-controller
+      operationId: updateIstkosten
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          pattern: "^(?<id>.+?)-(?<jahr>19[7-9]\\d|20\\d{2}|2100)-(?<monat>[1-9]|1[0-2])$"
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IstkostenUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IstkostenResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - istkosten-controller
+      operationId: deleteIstkosten
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          pattern: "^(?<id>.+?)-(?<jahr>19[7-9]\\d|20\\d{2}|2100)-(?<monat>[1-9]|1[0-2])$"
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /hauptabschnitte/{id}:
     put:
       tags:
@@ -1387,6 +1430,69 @@ paths:
                 $ref: "#/components/schemas/KrankenhausResponseDTO"
       security:
       - bearerAuth: []
+  /istkosten:
+    get:
+      tags:
+      - istkosten-controller
+      operationId: getIstkostenEintraege
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "id.jahr,DESC"
+          - "id.monat,DESC"
+          - "id.projnr,DESC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelIstkostenResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - istkosten-controller
+      operationId: createIstkosten
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IstkostenCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IstkostenResponseDTO"
+      security:
+      - bearerAuth: []
   /hauptabschnitte:
     get:
       tags:
@@ -1881,7 +1987,7 @@ paths:
                 $ref: "#/components/schemas/ReportProjektuebersichtFormContext"
       security:
       - bearerAuth: []
-  /report/haushalt1:
+  /report/haushaltsplanung:
     get:
       tags:
       - report-controller
@@ -1906,7 +2012,7 @@ paths:
                 format: binary
       security:
       - bearerAuth: []
-  /report/haushalt1/form-context:
+  /report/haushaltsplanung/form-context:
     get:
       tags:
       - report-controller
@@ -1918,6 +2024,45 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ReportHaushaltsplanungFormContext"
+      security:
+      - bearerAuth: []
+  /report/fortsetzungsantrag:
+    get:
+      tags:
+      - fortsetzungsantrag-report-controller
+      operationId: getReportFortsetzungsantrag
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportFortsetzungsantragDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/fortsetzungsantrag/form-context:
+    get:
+      tags:
+      - fortsetzungsantrag-report-controller
+      operationId: getReportFortsetzungsantragFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportFortsetzungsantragFormContext"
       security:
       - bearerAuth: []
   /report/auswertungprojekte:
@@ -2013,6 +2158,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/KrankenhausFormContext"
+      security:
+      - bearerAuth: []
+  /istkosten/form-context:
+    get:
+      tags:
+      - istkosten-controller
+      operationId: getIstkostenFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IstkostenFormContext"
       security:
       - bearerAuth: []
   /hhplan:
@@ -2352,6 +2511,7 @@ components:
         telefon:
           maxLength: 30
           minLength: 1
+          pattern: \d*
           type: string
         notizen:
           type: string
@@ -2589,6 +2749,44 @@ components:
           type: string
         bezeichnung:
           type: string
+    IstkostenUpdateDTO:
+      required:
+      - istkosten
+      type: object
+      properties:
+        istkosten:
+          minimum: 0
+          type: number
+    IstkostenResponseDTO:
+      required:
+      - fob_fb
+      - id
+      - istkosten
+      - jahr
+      - monat
+      - pname
+      - projnr
+      - pstrasse
+      type: object
+      properties:
+        id:
+          minLength: 1
+          type: string
+        projnr:
+          minLength: 1
+          type: string
+        jahr:
+          type: number
+        monat:
+          type: number
+        istkosten:
+          type: number
+        pname:
+          type: string
+        pstrasse:
+          type: string
+        fob_fb:
+          type: number
     HauptabschnittUpdateDTO:
       required:
       - bezeichnung
@@ -2849,6 +3047,7 @@ components:
         telefon:
           maxLength: 30
           minLength: 1
+          pattern: \d*
           type: string
         notizen:
           type: string
@@ -2980,6 +3179,28 @@ components:
           maxLength: 200
           minLength: 1
           type: string
+    IstkostenCreateDTO:
+      required:
+      - istkosten
+      - jahr
+      - monat
+      - projnr
+      type: object
+      properties:
+        projnr:
+          minLength: 1
+          type: string
+        jahr:
+          maximum: 2100
+          minimum: 1970
+          type: number
+        monat:
+          maximum: 12
+          minimum: 1
+          type: number
+        istkosten:
+          minimum: 0
+          type: number
     HauptabschnittCreateDTO:
       required:
       - bezeichnung
@@ -3663,6 +3884,37 @@ components:
         bezeichnung:
           type: string
           description: ""
+    ReportFortsetzungsantragDTO:
+      required:
+      - type
+      type: object
+      properties:
+        sbl:
+          pattern: "^[A-Z0-9]+$"
+          type: string
+        bez:
+          pattern: "([0-9]|[1-9][0-9])"
+          type: string
+        fag:
+          type: string
+        ofPro:
+          type: string
+        type:
+          $ref: "#/components/schemas/ReportFormat"
+    ReportFortsetzungsantragFormContext:
+      required:
+      - bezs
+      - sbls
+      type: object
+      properties:
+        sbls:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
+        bezs:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
     PagedModelReferatResponseDTO:
       type: object
       properties:
@@ -3735,6 +3987,29 @@ components:
           type: array
           items:
             type: string
+    PagedModelIstkostenResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/IstkostenResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    IstkostenFormContext:
+      required:
+      - istkosten
+      - projekte
+      type: object
+      properties:
+        istkosten:
+          type: array
+          items:
+            type: string
+        projekte:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProjektFormContextDTO"
     HhplanResponseDTO:
       required:
       - fipo

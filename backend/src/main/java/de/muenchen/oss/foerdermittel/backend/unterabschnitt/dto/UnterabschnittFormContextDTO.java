@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotNull;
 
 /// @param ua
 /// @param bezeichnung
-public record UnterabschnittFormContextDTO(@NotNull String ua,
+
+public record UnterabschnittFormContextDTO(
+        @NotNull String ua,
         @NotNull String bezeichnung) {
 }

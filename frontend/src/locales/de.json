@@ -231,24 +231,6 @@
       "bewilligungAuszahlungProjekt": "@:model.bewilligung.modelName und @:domain.auszahlung eines @:model.projekt.modelName{'s'}",
       "bewilligungAuzahlungVergleich": "@:model.bewilligung.modelName und @:domain.auszahlung (Vergleich)",
       "fortsetzungsAntrag": "Fortsetzungsantrag | Fortsetzungsanträge",
-      "auswertungProjekt": {
-        "modelName": "Projekt",
-        "offen": "Nur offene Projekte",
-        "kauf": "Nur Projekte mit Ankauf",
-        "relevant": "Nur relevante Projekte",
-        "sortierung": "Sortierung",
-        "sortEnum": {
-          "stadtbezirkStrasse": "Stadtbezirk, Straße",
-          "projektnummer": "Projektnummer",
-          "strasseProjektnummer": "Straße, Projektnummer",
-          "foerderbereichProjektnummer": "Förderbereich, Projektnummer",
-          "foerderbereichStrasse": "Förderbereich, Straße"
-        },
-        "type": {
-          "pdf": "PDF",
-          "excel": "Excel"
-        }
-      },
       "haushaltsplanung": {
         "modelName": "Haushaltsplanung",
         "hh": "Ausgabe nur mit Haushaltszahlen",
