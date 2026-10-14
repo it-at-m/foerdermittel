@@ -40,7 +40,7 @@ public class KrankenhausService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Krankenhaus updateKrankenhaus(final Krankenhaus krankenhaus, final String krhName) {
-        final Krankenhaus foundKrankenhaus = ServiceUtils.getEntityOrThrowNotFoundException(krhName, krankenhausRepository);
+        final Krankenhaus foundKrankenhaus = ServiceUtils.getEntityOrThrowNotFoundException(krhName, krankenhausRepository, Krankenhaus.class);
         foundKrankenhaus.setBezeichnung(krankenhaus.getBezeichnung());
         log.debug("Update Krankenhaus {}", foundKrankenhaus);
         return krankenhausRepository.update(foundKrankenhaus);
@@ -49,7 +49,7 @@ public class KrankenhausService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteKrankenhaus(final String krhName) {
         log.debug("Delete Krankenhaus with ID {}", krhName);
-        ServiceUtils.getEntityOrThrowNotFoundException(krhName, krankenhausRepository);
+        ServiceUtils.getEntityOrThrowNotFoundException(krhName, krankenhausRepository, Krankenhaus.class);
         krankenhausRepository.deleteById(krhName);
     }
 }

@@ -1,5 +1,6 @@
 {
   "common": {
+    "appAbbrev": "FM",
     "appName": "Fördermittel",
     "word": {
       "management": "Verwaltung",
@@ -16,6 +17,7 @@
       "close": "Schließen",
       "create": "Erstellen",
       "delete": "Löschen",
+      "download": "Herunterladen",
       "discardChanges": "Änderungen verwerfen",
       "save": "Speichern",
       "search": "Suchen",
@@ -27,7 +29,8 @@
       "manage": "{0} verwalten",
       "create": "{0} @.lower:common.action.create",
       "update": "{0} @.lower:common.action.update",
-      "delete": "{0} @.lower:common.action.delete"
+      "delete": "{0} @.lower:common.action.delete",
+      "reportTitle": "@:common.word.report \"{0}\""
     },
     "message": {
       "confirmDelete": "Möchten Sie den \"{0}\"-Eintrag endgültig löschen?",
@@ -56,10 +59,11 @@
       "kurKurzbez": "Kurzbezeichnung",
       "lfdnr1" : "Nr1",
       "lfdnr2" : "Nr2",
-      "projnr": "Projekt",
-      "pstrasse": "Straße",
-      "pname": "Name",
-      "uasUa": "UA"
+      "projnr": "Projektnummer",
+      "strasse": "Straße",
+      "name": "Name",
+      "uasUa": "UA",
+      "ausgabeNotiz": "Ausgabe Notiz"
     },
     "antrag": {
       "modelName": "Antrag | Anträge"
@@ -71,13 +75,39 @@
       "modelName": "Abruf | Abrufe"
     },
     "termin": {
-      "modelName": "Termin | Termine"
+      "modelName": "Termin | Termine",
+      "termin": "Termin",
+      "ueberwachung": "TÜ",
+      "telefon": "Kontakt / Telefon",
+      "zustaendig": "Zuständig",
+      "notizen": "Notizen",
+      "projnr": "Projnr",
+      "pname": "Name",
+      "pstrasse": "Straße",
+      "fobFb": "FB",
+      "bezStadtbezirk": "Bez."
     },
     "istkosten": {
-      "modelName": "Ist-Kosten"
+      "modelName": "Ist-Kosten",
+      "jahr": "Jahr",
+      "monat": "Monat",
+      "projnr": "Projnr",
+      "pname": "Name",
+      "pstrasse": "Straße",
+      "fobFb": "FB"
     },
     "archiv": {
-      "modelName": "Archiv"
+      "modelName": "Archiv",
+      "speicherDatum": "Ablage in Speicher am",
+      "speicherAkt": "Akt im Speicher",
+      "speicherRechnungen": "Rechnung im Speicher",
+      "mikroDatPlan": "Mikrofiches bestellt",
+      "mikroDat": "Mikrofiches erhalten",
+      "notizen": "Notizen",
+      "projnr": "Projnr",
+      "pname": "Name",
+      "pstrasse": "Straße",
+      "fobFb": "FB"
     },
     "haushaltsjahr": {
       "modelName": "Haushaltsjahr | Haushaltsjahre"
@@ -206,7 +236,32 @@
       "ausstGenehmigungVorzBeginn": "Ausst. Genehmigung vorz. Beginn",
       "bewilligungAuszahlungProjekt": "@:model.bewilligung.modelName und @:domain.auszahlung eines @:model.projekt.modelName{'s'}",
       "bewilligungAuzahlungVergleich": "@:model.bewilligung.modelName und @:domain.auszahlung (Vergleich)",
-      "fortsetzungsAntrag": "Fortsetzungsantrag | Fortsetzungsanträge"
+      "fortsetzungsAntrag": {
+        "modelName": "Fortsetzungsantrag | Fortsetzungsanträge",
+        "fag": "Nur FAG",
+        "ofPro": "Nur offene Projekte",
+        "type": {
+          "pdf": "PDF",
+          "excel": "Excel"
+        }
+      },
+      "haushaltsplanung": {
+        "modelName": "Haushaltsplanung",
+        "hh": "Ausgabe nur mit Haushaltszahlen",
+        "sortEnum": {
+          "projektnummer": "Projektnummer",
+          "strasse": "Straße, Projektnummer",
+          "fipo": "FIPO",
+          "fbProjektnummer": "Förderbereich, Projektnummer",
+          "fbStrasseProjektnummer": "Förderbereich, Straße, Projektnummer",
+          "fbFipo": "Förderbereich, FIPO"
+        },
+        "type": {
+          "pdf": "PDF: Gruppierung Förderbereich",
+          "pdfFlat": "PDF: keine Gruppierung",
+          "excel": "Excel"
+        }
+      }
     }
   },
   "view": {
@@ -217,7 +272,9 @@
   },
   "component": {
     "theNavigationDrawer": {
-      "loggedIn": "Angemeldet als:"
+      "pin": "Navigationsleiste anheften",
+      "unpin": "Navigationsleiste lösen",
+      "search": "Navigation durchsuchen"
     },
     "unsavedChangesDialog": {
       "title": "Ungespeicherte Änderungen",

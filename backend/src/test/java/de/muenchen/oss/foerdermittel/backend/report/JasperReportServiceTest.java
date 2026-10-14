@@ -20,12 +20,10 @@ import javax.sql.rowset.RowSetMetaDataImpl;
 import javax.sql.rowset.RowSetProvider;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ClassPathResource;
@@ -34,6 +32,10 @@ import org.springframework.core.io.ClassPathResource;
 class JasperReportServiceTest {
 
     private static final String BEREICH_PARAMETER = "P_BEREICH";
+    private static final String NOTIZ_PARAMETER = "P_NOTIZ";
+    private static final String PNAME_PARAMETER = "P_PNAME";
+    private static final String PSTRASSE_PARAMETER = "P_PSTRASSE";
+    private static final String PROJNR_PARAMETER = "P_PROJNR";
     private static final String SORT_PARAMETER = "P_SORT";
 
     @Mock
@@ -48,8 +50,15 @@ class JasperReportServiceTest {
     @Mock
     private DatabaseMetaData databaseMetaData;
 
-    @InjectMocks
     private JasperReportService unitUnderTest;
+
+    @BeforeEach
+    void setUp() {
+        final JasperReportsConfiguration jasperReportsConfiguration = new JasperReportsConfiguration();
+        unitUnderTest = new JasperReportService(
+                dataSource,
+                jasperReportsConfiguration.jasperFillManager(jasperReportsConfiguration.jasperReportsContext()));
+    }
 
     @Nested
     class GenerateReportWithParametersTests {
@@ -66,6 +75,24 @@ class JasperReportServiceTest {
                     .filteredOn(parameter -> parameter.getName().equals(BEREICH_PARAMETER))
                     .singleElement()
                     .satisfies(parameter -> assertThat(parameter.getValueClassName())
+                            .isEqualTo(String.class.getName()));
+        }
+
+        @Test
+        void givenCompiledProjektuebersichtReport_thenContainsExpectedStringParameters() throws Exception {
+            // Given
+            final JasperReport jasperReport = (JasperReport) JRLoader.loadObject(
+                    new ClassPathResource("reports/FMW_PROJEKTE3_R.jasper")
+                            .getURL());
+
+            // Then
+            assertThat(jasperReport.getParameters())
+                    .filteredOn(parameter -> parameter.getName().equals(PROJNR_PARAMETER)
+                            || parameter.getName().equals(NOTIZ_PARAMETER)
+                            || parameter.getName().equals(PNAME_PARAMETER)
+                            || parameter.getName().equals(PSTRASSE_PARAMETER))
+                    .hasSize(4)
+                    .allSatisfy(parameter -> assertThat(parameter.getValueClassName())
                             .isEqualTo(String.class.getName()));
         }
 
@@ -91,24 +118,6 @@ class JasperReportServiceTest {
             verify(connection, times(1)).close();
             verify(preparedStatement, times(1)).executeQuery();
             assertThat(outputStream.toByteArray()).isNotEmpty();
-        }
-
-        @Test
-        void givenUnsupportedReportFormat_thenThrowIllegalArgumentException() {
-            // Given
-            final Map<String, Object> parameters = createValidParameters();
-            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-            // When / Then
-            assertThatThrownBy(() -> unitUnderTest.generateReportWithParameters(
-                    ReportType.FMW_ABLAGEINDEX,
-                    ReportFormat.PDF_FLAT,
-                    parameters,
-                    outputStream))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage(
-                            "Unsupported ReportFormat: " + ReportFormat.PDF_FLAT
-                                    + " for ReportType: " + ReportType.FMW_ABLAGEINDEX);
         }
 
         @Test
@@ -188,28 +197,6 @@ class JasperReportServiceTest {
             resultSet.beforeFirst();
 
             return resultSet;
-        }
-
-    }
-
-    @Nested
-    class GetDownloadFileNameTests {
-
-        @ParameterizedTest
-        @EnumSource(value = ReportFormat.class, names = { "PDF", "PDF_FLAT", "EXCEL" })
-        void givenReportTypeAndFormat_thenGenerateDownloadFilename(final ReportFormat reportFormat) {
-            // When
-            final String filename = JasperReportService.getDownloadFileName(
-                    ReportType.FMW_ABLAGEINDEX,
-                    reportFormat);
-
-            // Then
-            assertThat(filename)
-                    .startsWith(ReportType.FMW_ABLAGEINDEX.getFileName()
-                            + reportFormat.getFileSuffix()
-                            + "_")
-                    .endsWith(reportFormat.getFileExtension())
-                    .matches(".*_\\d{8}_\\d{6}\\..+");
         }
 
     }

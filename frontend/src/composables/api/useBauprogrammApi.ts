@@ -7,6 +7,7 @@ import type {
   PagedModelBauprogrammResponseDTO,
   UpdateBauprogrammRequest,
 } from "@/api/generated/foerdermittel-backend";
+import type { ApiComposables } from "@/util/composable-helper";
 
 import { BauprogrammControllerApi } from "@/api/generated/foerdermittel-backend";
 import {
@@ -39,3 +40,21 @@ export const {
     context: (api) => api.getBauprogrammFormContext(),
   })
 );
+
+export function useBauprogrammApi(): ApiComposables<
+  BauprogrammResponseDTO,
+  BauprogrammFormContext,
+  CreateBauprogrammRequest,
+  BauprogrammResponseDTO,
+  UpdateBauprogrammRequest,
+  BauprogrammResponseDTO,
+  DeleteBauprogrammRequest
+> {
+  return {
+    getAll: useGetBauprogramme(),
+    context: useGetBauprogrammFormContext(),
+    create: useCreateBauprogramm(),
+    update: useUpdateBauprogramm(),
+    delete: useDeleteBauprogramm(),
+  };
+}

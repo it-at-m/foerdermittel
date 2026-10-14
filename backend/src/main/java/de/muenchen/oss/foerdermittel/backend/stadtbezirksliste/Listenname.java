@@ -20,9 +20,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * This class represents a Listenname.
- */
+/// This class represents a Listenname.
+///
+/// The entity's attributes are mapped to the corresponding database columns.
+///
 @Entity
 @Getter
 @Setter

@@ -112,7 +112,7 @@ class SiedlungsgebietServiceTest {
             // Then
             verify(siedlungsgebietRepository, times(1)).findById(id);
             verify(siedlungsgebietRepository, never()).update(entityToUpdate);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Siedlungsgebiet.class.getSimpleName(), id));
         }
     }
 
@@ -145,7 +145,7 @@ class SiedlungsgebietServiceTest {
             // Then
             verify(siedlungsgebietRepository, times(1)).findById(id);
             verify(siedlungsgebietRepository, never()).deleteById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Siedlungsgebiet.class.getSimpleName(), id));
         }
     }
 

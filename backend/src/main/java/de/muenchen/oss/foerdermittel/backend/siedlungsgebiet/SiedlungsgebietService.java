@@ -42,7 +42,7 @@ public class SiedlungsgebietService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Siedlungsgebiet updateSiedlungsgebiet(final Siedlungsgebiet siedlungsgebiet, final BigDecimal siedlungsgebietId) {
         final Siedlungsgebiet foundSiedlungsgebiet = ServiceUtils.getEntityOrThrowNotFoundException(
-                siedlungsgebietId, siedlungsgebietRepository);
+                siedlungsgebietId, siedlungsgebietRepository, Siedlungsgebiet.class);
 
         foundSiedlungsgebiet.setBezeichnung(siedlungsgebiet.getBezeichnung());
         log.debug("Update Siedlungsgebiet {}", foundSiedlungsgebiet);
@@ -52,7 +52,7 @@ public class SiedlungsgebietService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteSiedlungsgebiet(final BigDecimal siedlungsgebietId) {
         log.debug("Delete Siedlungsgebiet with ID {}", siedlungsgebietId);
-        ServiceUtils.getEntityOrThrowNotFoundException(siedlungsgebietId, siedlungsgebietRepository);
+        ServiceUtils.getEntityOrThrowNotFoundException(siedlungsgebietId, siedlungsgebietRepository, Siedlungsgebiet.class);
         siedlungsgebietRepository.deleteById(siedlungsgebietId);
     }
 }

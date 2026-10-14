@@ -56,8 +56,8 @@
 
 <script setup lang="ts">
 import type {
+  HauptabschnittFormContextDTO,
   UnterabschnittFormContext,
-  UnterabschnittFormContextHauptabschnitt,
   UnterabschnittResponseDTO,
 } from "@/api/generated/foerdermittel-backend";
 import type { DeepReadonly } from "vue";
@@ -65,7 +65,7 @@ import type { VForm } from "vuetify/components";
 
 import { ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRules } from "vuetify/labs/rules";
+import { useRules } from "vuetify";
 
 import { UnterabschnittCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
@@ -96,7 +96,7 @@ function onValidityChanged(newIsValid: boolean | null) {
 
 const rules = useRules();
 
-function getHaTitle(item: UnterabschnittFormContextHauptabschnitt) {
+function getHaTitle(item: HauptabschnittFormContextDTO) {
   return item ? `${item.ha} (${item.bezeichnung})` : "";
 }
 

@@ -21,19 +21,12 @@
       </v-col>
       <v-col cols="auto">
         <slot name="actions" />
-        <v-tooltip
-          :text="benutzerhinweisOpenText"
-          location="left"
-        >
-          <template #activator="{ props }">
-            <v-icon-btn
-              :icon="mdiHelpCircle"
-              v-bind="props"
-              :aria-label="benutzerhinweisOpenText"
-              @click="showBenutzerhinweisDialog = true"
-            />
-          </template>
-        </v-tooltip>
+        <v-icon-btn
+          v-tooltip:start="benutzerhinweisOpenText"
+          :icon="mdiHelpCircle"
+          :aria-label="benutzerhinweisOpenText"
+          @click="showBenutzerhinweisDialog = true"
+        />
       </v-col>
     </v-row>
     <v-divider class="my-4" />
@@ -76,7 +69,7 @@ const { t } = useI18n();
 
 const route = useRoute();
 // always contains a valid route name, implemented fallback only to make vue-tsc happy without building to generate route-map.d.ts
-const routeName = computed(() => (route.name as string).replace("/", ""));
+const routeName = computed(() => (route.name as string).replaceAll("/", ""));
 
 const emptyItemTemplate = computed<Partial<BenutzerhinweisResponseDTO>>(() => {
   return {

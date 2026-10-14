@@ -7,6 +7,7 @@ import type {
   PagedModelFoerderbereichResponseDTO,
   UpdateFoerderbereichRequest,
 } from "@/api/generated/foerdermittel-backend";
+import type { ApiComposables } from "@/util/composable-helper";
 
 import { FoerderbereichControllerApi } from "@/api/generated/foerdermittel-backend";
 import {
@@ -39,3 +40,21 @@ export const {
     context: (api) => api.getFoerderbereichFormContext(),
   })
 );
+
+export function useFoerderbereichApi(): ApiComposables<
+  FoerderbereichResponseDTO,
+  FoerderbereichFormContext,
+  CreateFoerderbereichRequest,
+  FoerderbereichResponseDTO,
+  UpdateFoerderbereichRequest,
+  FoerderbereichResponseDTO,
+  DeleteFoerderbereichRequest
+> {
+  return {
+    getAll: useGetFoerderbereiche(),
+    context: useGetFoerderbereichFormContext(),
+    create: useCreateFoerderbereich(),
+    update: useUpdateFoerderbereich(),
+    delete: useDeleteFoerderbereich(),
+  };
+}

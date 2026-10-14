@@ -7,6 +7,7 @@ import type {
   PublikationResponseDTO,
   UpdatePublikationRequest,
 } from "@/api/generated/foerdermittel-backend";
+import type { ApiComposables } from "@/util/composable-helper";
 
 import { PublikationControllerApi } from "@/api/generated/foerdermittel-backend";
 import {
@@ -39,3 +40,21 @@ export const {
     context: (api) => api.getPublikationFormContext(),
   })
 );
+
+export function usePublikationApi(): ApiComposables<
+  PublikationResponseDTO,
+  PublikationFormContext,
+  CreatePublikationRequest,
+  PublikationResponseDTO,
+  UpdatePublikationRequest,
+  PublikationResponseDTO,
+  DeletePublikationRequest
+> {
+  return {
+    getAll: useGetPublikationen(),
+    context: useGetPublikationFormContext(),
+    create: useCreatePublikation(),
+    update: useUpdatePublikation(),
+    delete: useDeletePublikation(),
+  };
+}

@@ -7,6 +7,7 @@ import type {
   PagedModelHauptabschnittResponseDTO,
   UpdateHauptabschnittRequest,
 } from "@/api/generated/foerdermittel-backend";
+import type { ApiComposables } from "@/util/composable-helper";
 
 import { HauptabschnittControllerApi } from "@/api/generated/foerdermittel-backend";
 import {
@@ -39,3 +40,21 @@ export const {
     context: (api) => api.getHauptabschnittFormContext(),
   })
 );
+
+export function useHauptabschnittApi(): ApiComposables<
+  HauptabschnittResponseDTO,
+  HauptabschnittFormContext,
+  CreateHauptabschnittRequest,
+  HauptabschnittResponseDTO,
+  UpdateHauptabschnittRequest,
+  HauptabschnittResponseDTO,
+  DeleteHauptabschnittRequest
+> {
+  return {
+    getAll: useGetHauptabschnitte(),
+    context: useGetHauptabschnittFormContext(),
+    create: useCreateHauptabschnitt(),
+    update: useUpdateHauptabschnitt(),
+    delete: useDeleteHauptabschnitt(),
+  };
+}

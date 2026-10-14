@@ -17,4 +17,15 @@ public final class ControllerUtils {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID: " + value, ex);
         }
     }
+
+    public static Long convertStringToLong(final String value) {
+        try {
+            return Long.parseLong(value);
+        } catch (NumberFormatException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Invalid ID: " + value,
+                    ex);
+        }
+    }
 }

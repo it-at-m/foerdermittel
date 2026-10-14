@@ -20,7 +20,7 @@ public class BenutzerhinweisService {
     @Transactional(readOnly = true)
     public Benutzerhinweis getBenutzerhinweis(final String viewId) {
         log.info("Get Benutzerhinweis with ID {}", viewId);
-        return ServiceUtils.getEntityOrThrowNotFoundException(viewId, benutzerhinweisRepository);
+        return ServiceUtils.getEntityOrThrowNotFoundException(viewId, benutzerhinweisRepository, Benutzerhinweis.class);
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
@@ -31,7 +31,7 @@ public class BenutzerhinweisService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Benutzerhinweis updateBenutzerhinweis(final Benutzerhinweis benutzerhinweis, final String viewId) {
-        final Benutzerhinweis foundBenutzerhinweis = ServiceUtils.getEntityOrThrowNotFoundException(viewId, benutzerhinweisRepository);
+        final Benutzerhinweis foundBenutzerhinweis = ServiceUtils.getEntityOrThrowNotFoundException(viewId, benutzerhinweisRepository, Benutzerhinweis.class);
         foundBenutzerhinweis.setFunktionsbeschreibung(benutzerhinweis.getFunktionsbeschreibung());
         foundBenutzerhinweis.setBedienung(benutzerhinweis.getBedienung());
         foundBenutzerhinweis.setPruefungVorgaben(benutzerhinweis.getPruefungVorgaben());

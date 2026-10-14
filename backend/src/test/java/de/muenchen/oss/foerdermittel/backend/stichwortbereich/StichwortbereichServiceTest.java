@@ -1,12 +1,15 @@
 package de.muenchen.oss.foerdermittel.backend.stichwortbereich;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
+import de.muenchen.oss.foerdermittel.backend.stichwortbereich.dto.StichwortbereichFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.stichwortbereich.dto.StichwortbereichMapper;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +32,9 @@ public class StichwortbereichServiceTest {
 
     @Mock
     private StichwortbereichRepository stichwortbereichRepository;
+
+    @Mock
+    private StichwortbereichMapper stichwortbereichMapper;
 
     @InjectMocks
     private StichwortbereichService unitUnderTest;
@@ -111,7 +117,7 @@ public class StichwortbereichServiceTest {
             // Then
             verify(stichwortbereichRepository, times(1)).findById(id);
             verify(stichwortbereichRepository, never()).update(entityToUpdate);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Stichwortbereich.class.getSimpleName(), id));
         }
     }
 
@@ -144,7 +150,7 @@ public class StichwortbereichServiceTest {
             // Then
             verify(stichwortbereichRepository, times(1)).findById(id);
             verify(stichwortbereichRepository, never()).deleteById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Stichwortbereich.class.getSimpleName(), id));
         }
     }
 
@@ -163,6 +169,37 @@ public class StichwortbereichServiceTest {
             // Then
             verify(stichwortbereichRepository, times(1)).findAllStichwortbereiche();
             assertThat(formContext.bereiche()).isEqualTo(allBereiche);
+        }
+
+    }
+
+    @Nested
+    class GetStichwortbereichFormContextDTOs {
+
+        @Test
+        void givenEntitiesExists_thenReturnCorrectList() {
+            // Given
+            final List<Stichwortbereich> allBereiche = List.of(new Stichwortbereich("L", "Test"), new Stichwortbereich("K", "Test 2"),
+                    new Stichwortbereich("M", "Test 3"));
+            final List<StichwortbereichFormContextDTO> mappedBereiche = List.of(new StichwortbereichFormContextDTO("L", "Test"),
+                    new StichwortbereichFormContextDTO("K", "Test 2"), new StichwortbereichFormContextDTO("M", "Test 3"));
+            when(stichwortbereichRepository.findAll()).thenReturn(allBereiche);
+            when(stichwortbereichMapper.toFormContext(allBereiche)).thenReturn(mappedBereiche);
+
+            // When
+            final List<StichwortbereichFormContextDTO> result = unitUnderTest.getStichwortbereichFormContextDTOs();
+
+            // Then
+            verify(stichwortbereichRepository, times(1)).findAll();
+            assertThat(result)
+                    .hasSize(3)
+                    .extracting(
+                            StichwortbereichFormContextDTO::bereich,
+                            StichwortbereichFormContextDTO::bezeichnung)
+                    .containsExactly(
+                            tuple("L", "Test"),
+                            tuple("K", "Test 2"),
+                            tuple("M", "Test 3"));
         }
 
     }

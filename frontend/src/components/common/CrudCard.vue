@@ -73,15 +73,20 @@
           v-model:page="page"
           v-model:sort-by="sortBy"
           v-model:search="search"
+          v-model:expanded="expanded"
           fixed-header
           :headers="tableHeadersWithActions"
-          :items="items"
-          :items-length="totalItems"
+          :items="getAllData?.content ?? []"
+          :items-length="getAllData?.page?.totalElements ?? 0"
           :loading="loading"
           :show-expand="expandable"
           expand-strategy="single"
           height="10"
           class="flex-grow-1 w-100"
+          :row-props="{
+            class: expandable ? 'cursor-pointer hover-row' : 'cursor-auto',
+          }"
+          @click:row="onRowClick"
         >
           <template #loading>
             <p>{{ t("common.message.loading", [domainPlural]) }}</p>
@@ -94,11 +99,11 @@
             <v-icon-btn
               :icon="mdiPencil"
               class="mr-1"
-              @click="openEdit(item)"
+              @click.stop="openEdit(item)"
             />
             <v-icon-btn
               :icon="mdiDelete"
-              @click="openDelete(item)"
+              @click.stop="openDelete(item)"
             />
           </template>
           <!-- Slot for rendering the expansion panel -->
@@ -106,7 +111,7 @@
             v-if="expandable"
             #expanded="{ item }"
           >
-            <div class="pa-10 bg-grey-lighten-5">
+            <div class="pa-10">
               <slot
                 name="form"
                 :item="item"
@@ -132,17 +137,33 @@
   </v-card>
 </template>
 
-<script setup lang="ts" generic="T extends { id?: string }">
-import type { DataTableOptions } from "@/types/DataTableOptions";
+<script
+  setup
+  lang="ts"
+  generic="
+    TGetResponse extends { id?: string },
+    TContextResponse extends {},
+    TCreateRequest extends {},
+    TCreateResponse extends {},
+    TUpdateRequest extends {},
+    TUpdateResponse extends {},
+    TDeleteRequest extends {}
+  "
+>
+import type { ApiComposables } from "@/util/composable-helper";
+import type { Awaitable } from "@vueuse/core";
 import type { DataTableHeader } from "vuetify/framework";
 
 import { mdiDelete, mdiPencil, mdiPlus, mdiTrashCan } from "@mdi/js";
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 import ConfirmCard from "@/components/common/ConfirmCard.vue";
 import UnsavedChangesDialog from "@/components/common/UnsavedChangesDialog.vue";
 import { useDirtyFlag } from "@/composables/useDirtyFlag";
+import usePagination from "@/composables/usePagination";
+import { STATUS_INDICATORS } from "@/constants";
+import { useSnackbarStore } from "@/stores/snackbar";
 import { DialogWidth } from "@/types/DialogWidth";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
@@ -153,27 +174,63 @@ const dialogMode = ref<DialogMode>(null);
 const showDialog = computed(() => dialogMode.value !== null);
 
 const {
-  domainKey,
-  tableHeaders,
   emptyItemTemplate,
-  loading = false,
-  items = [],
+  domainKey,
+  loading: loadingProp = false,
+  tableHeaders,
+  api,
   enableActions = true,
   expandable = false,
   dialogWidth = DialogWidth.MEDIUM,
+  shouldLoadFormContext,
+  handleCreate,
+  handleUpdate,
+  handleDelete,
+  formRef,
 } = defineProps<{
-  emptyItemTemplate: T;
+  emptyItemTemplate: TGetResponse;
   domainKey: string;
   loading?: boolean;
-  tableHeaders: Readonly<DataTableHeader<T>>[];
-  items?: readonly T[];
-  totalItems: number;
+  tableHeaders: Readonly<DataTableHeader<TGetResponse>>[];
+  api: ApiComposables<
+    TGetResponse,
+    TContextResponse,
+    TCreateRequest,
+    TCreateResponse,
+    TUpdateRequest,
+    TUpdateResponse,
+    TDeleteRequest
+  >;
   enableActions?: boolean;
   expandable?: boolean;
   dialogWidth?: DialogWidth;
+  shouldLoadFormContext: boolean;
+  handleCreate: (item: TGetResponse) => Awaitable<boolean | void>;
+  handleUpdate: (item: TGetResponse) => Awaitable<boolean | void>;
+  handleDelete: (id: string) => Awaitable<boolean | void>;
+  formRef?: { validate: () => unknown } | null | undefined;
 }>();
 
-const dataTableOptions = defineModel<DataTableOptions>({ required: true });
+const loading = computed(
+  () =>
+    loadingProp ||
+    api.getAll.loading.value ||
+    api.context.loading.value ||
+    api.create.loading.value ||
+    api.update.loading.value ||
+    api.delete.loading.value
+);
+
+const getAllData = computed(() => {
+  return api.getAll.data.value;
+});
+
+const { dataTableOptions, refetchEntities } = usePagination(
+  computed(() => api.getAll.data.value?.page?.totalPages),
+  api.getAll.call
+);
+
+const snackbarStore = useSnackbarStore();
 
 const page = computed({
   get: () => dataTableOptions.value.page,
@@ -233,7 +290,7 @@ const tableHeadersWithActions = computed(() => [
         width: "100",
         align: "center",
         cellProps: { class: "text-no-wrap" },
-      } satisfies DataTableHeader<T>)
+      } satisfies DataTableHeader<TGetResponse>)
     : {},
 ]);
 
@@ -247,7 +304,7 @@ const {
   continueEditing,
   continuePendingNavigation,
   discardChanges,
-} = useDirtyFlag<T>(
+} = useDirtyFlag<TGetResponse>(
   emptyItemTemplate,
   computed(() => dialogMode.value === "write")
 );
@@ -255,13 +312,46 @@ const isEditing = computed<boolean>(() => !!activeItem.value.id);
 
 const isFormSlotValid = ref(false);
 
-const emit = defineEmits<{
-  create: [item: T];
-  update: [item: T];
-  delete: [id: string];
-}>();
+const expanded = ref<string[]>([]);
+
+// --- Lifecycle Handlers ---
+
+onMounted(async () => {
+  await loadFormContext();
+});
 
 // --- Functions ---
+
+const onRowClick = (event: MouseEvent, { item }: { item: TGetResponse }) => {
+  if (expandable) {
+    const target = event.target as HTMLElement;
+
+    // Ignore clicks on action buttons and other interactive elements.
+    if (target.closest("button, a, input, textarea, select, [role='button']")) {
+      return;
+    }
+
+    // Ignore the built-in Vuetify expand button.
+    if (target.closest(".v-data-table__expand-icon")) {
+      return;
+    }
+
+    if (!item.id) return;
+
+    if (expanded.value.includes(item.id)) {
+      expanded.value = [];
+    } else {
+      expanded.value = [item.id];
+    }
+  }
+};
+
+const loadFormContext = async () => {
+  if (shouldLoadFormContext) {
+    await api.context.call();
+  }
+};
+
 const updateFormValidity = (valid: boolean | null) => {
   isFormSlotValid.value = !!valid;
 };
@@ -272,29 +362,62 @@ const openCreate = () => {
   dialogMode.value = "write";
 };
 
-const openEdit = (item: T) => {
+const openEdit = (item: TGetResponse) => {
   track(item);
   isFormSlotValid.value = false;
   dialogMode.value = "write";
 };
 
-const openDelete = (item: T) => {
+const openDelete = (item: TGetResponse) => {
   reset(item);
   isFormSlotValid.value = false;
   dialogMode.value = "delete";
 };
 
-const saveItem = () => {
+const onSuccess = async (msg: string) => {
+  snackbarStore.push({
+    text: msg,
+    color: STATUS_INDICATORS.SUCCESS,
+  });
+  closeDialog();
+  await refetchEntities();
+  await loadFormContext();
+};
+
+const onFailure = async (msg: string) => {
+  await loadFormContext();
+  await formRef?.validate();
+  snackbarStore.push({
+    text: msg,
+    color: STATUS_INDICATORS.ERROR,
+  });
+};
+
+const saveItem = async () => {
   if (isEditing.value && activeItem.value.id) {
-    emit("update", activeItem.value);
+    const updateResult = await handleUpdate(activeItem.value);
+    if (updateResult ?? !api.update.error.value) {
+      await onSuccess(t("common.message.updated", [t(domainKey)]));
+    } else {
+      await onFailure(t("common.message.updatedError", [t(domainKey)]));
+    }
   } else {
-    emit("create", activeItem.value);
+    const createResult = await handleCreate(activeItem.value);
+    if (createResult ?? !api.create.error.value) {
+      await onSuccess(t("common.message.created", [t(domainKey)]));
+    } else {
+      await onFailure(t("common.message.createdError", [t(domainKey)]));
+    }
   }
 };
 
-const deleteItem = () => {
-  if (activeItem.value.id) {
-    emit("delete", activeItem.value.id);
+const deleteItem = async () => {
+  if (!activeItem.value.id) return;
+  const deleteResult = await handleDelete(activeItem.value.id);
+  if (deleteResult ?? !api.delete.error.value) {
+    await onSuccess(t("common.message.deleted", [t(domainKey)]));
+  } else {
+    await onFailure(t("common.message.deletedError", [t(domainKey)]));
   }
 };
 
@@ -312,14 +435,13 @@ const discardDialogChanges = () => {
   dialogMode.value = null;
   discardChanges();
 };
-
-defineExpose({
-  closeDialog,
-});
 </script>
 
 <style scoped>
 :deep(table) {
   table-layout: fixed;
+}
+:deep(.hover-row:hover) {
+  background: rgba(var(--v-theme-on-surface), var(--v-hover-opacity));
 }
 </style>

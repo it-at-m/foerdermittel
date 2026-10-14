@@ -111,7 +111,7 @@ class TraegerServiceTest {
             // Then
             verify(traegerRepository, times(1)).findById(id);
             verify(traegerRepository, never()).update(entityToUpdate);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Traeger.class.getSimpleName(), id));
         }
     }
 
@@ -145,7 +145,7 @@ class TraegerServiceTest {
             // Then
             verify(traegerRepository, times(1)).findById(id);
             verify(traegerRepository, never()).deleteById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("404 NOT_FOUND \"Could not find entity with ID %s\"", id));
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Traeger.class.getSimpleName(), id));
         }
     }
 

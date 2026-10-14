@@ -40,7 +40,7 @@ public class BauleitungService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Bauleitung updateBauleitung(final Bauleitung bauleitung, final String bauleitungId) {
-        final Bauleitung foundBauleitung = ServiceUtils.getEntityOrThrowNotFoundException(bauleitungId, bauleitungRepository);
+        final Bauleitung foundBauleitung = ServiceUtils.getEntityOrThrowNotFoundException(bauleitungId, bauleitungRepository, Bauleitung.class);
         foundBauleitung.setBezeichnung(bauleitung.getBezeichnung());
         log.debug("Update Bauleitung {}", foundBauleitung);
         return bauleitungRepository.update(foundBauleitung);
@@ -49,7 +49,7 @@ public class BauleitungService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteBauleitung(final String bauleitungId) {
         log.debug("Delete Bauleitung with ID {}", bauleitungId);
-        ServiceUtils.getEntityOrThrowNotFoundException(bauleitungId, bauleitungRepository);
+        ServiceUtils.getEntityOrThrowNotFoundException(bauleitungId, bauleitungRepository, Bauleitung.class);
         bauleitungRepository.deleteById(bauleitungId);
     }
 }

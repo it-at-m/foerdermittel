@@ -6,6 +6,8 @@ import de.muenchen.oss.foerdermittel.backend.krankenhaus.Krankenhaus;
 import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausUpdateDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
+import de.muenchen.oss.foerdermittel.backend.projekt.dao.BasicProjektDAO;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -18,4 +20,13 @@ public interface ProjektMapper {
 
     @Mapping(target = "projnr", ignore = true)
     Projekt toEntity(ProjektUpdateDTO projektUpdateDTO);
+
+    @Mapping(source = "foerderbereich.fb", target = "foerderbereich")
+    @Mapping(source = "stadtbezirk.stadtbezirk", target = "stadtbezirk")
+    ProjektFormContextDTO toFormContext(Projekt projekt);
+
+
+    List<ProjektFormContextDTO> toFormContext(List<Projekt> projektList);
+
+    List<ReportProjektuebersichtFormContextDTO> toReportFormContext(List<BasicProjektDAO> projekte);
 }

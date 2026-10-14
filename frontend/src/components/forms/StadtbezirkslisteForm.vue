@@ -164,7 +164,6 @@
             density="compact"
             :menu-props="{
               location: 'bottom',
-              contained: true,
             }"
           />
         </v-col>
@@ -220,7 +219,7 @@ import type { VForm } from "vuetify/components";
 import { mdiDelete, mdiMapMarkerRemoveOutline } from "@mdi/js";
 import { computed, ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRules } from "vuetify/labs/rules";
+import { useRules } from "vuetify";
 
 import {
   ListennameCreateDTOPropertyValidationAttributesMap,

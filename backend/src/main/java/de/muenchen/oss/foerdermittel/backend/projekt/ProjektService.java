@@ -3,8 +3,12 @@ package de.muenchen.oss.foerdermittel.backend.projekt;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
 import de.muenchen.oss.foerdermittel.backend.krankenhaus.Krankenhaus;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungFormContext;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektMapper;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,6 +24,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProjektService {
 
     private final ProjektRepository projektRepository;
+    private final ProjektMapper projektMapper;
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public Projekt getProjekt(final String projekt) {
+        log.info("Get Projekt {}", projekt);
+        return ServiceUtils.getEntityOrThrowNotFoundException(projekt, projektRepository, Projekt.class);
+    }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -40,12 +52,23 @@ public class ProjektService {
         return new ProjektFormContext(projektRepository.findAllProjekte());
     }
 
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<ProjektFormContextDTO> getProjektFormContextDTOs() {
+        return projektMapper.toFormContext(projektRepository.findAll());
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<ReportProjektuebersichtFormContextDTO> getReportProjektuebersichtFormContextDTOs() {
+        return projektMapper.toReportFormContext(projektRepository.findAllAsBasic());
+    }
+
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Projekt createProjekt(final Projekt projekt) {
         log.debug("Create Projekt {}", projekt);
         return projektRepository.insert(projekt);
-    }
-
+}
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Projekt updateProjekt(final Projekt projekt, final String ha) {
         final Projekt foundProjekt = ServiceUtils.getEntityOrThrowNotFoundException(ha, projektRepository);
@@ -53,7 +76,6 @@ public class ProjektService {
         log.debug("Update Projekt {}", foundProjekt);
         return projektRepository.update(foundProjekt);
     }
-
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteProjekt(final String ha) {
         log.debug("Delete Projekt with ID {}", ha);

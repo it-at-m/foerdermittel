@@ -7,6 +7,7 @@ import type {
   StadtbezirkResponseDTO,
   UpdateStadtbezirkRequest,
 } from "@/api/generated/foerdermittel-backend";
+import type { ApiComposables } from "@/util/composable-helper";
 
 import { StadtbezirkControllerApi } from "@/api/generated/foerdermittel-backend";
 import {
@@ -39,3 +40,21 @@ export const {
     context: (api) => api.getStadtbezirkFormContext(),
   })
 );
+
+export function useStadtbezirkApi(): ApiComposables<
+  StadtbezirkResponseDTO,
+  StadtbezirkFormContext,
+  CreateStadtbezirkRequest,
+  StadtbezirkResponseDTO,
+  UpdateStadtbezirkRequest,
+  StadtbezirkResponseDTO,
+  DeleteStadtbezirkRequest
+> {
+  return {
+    getAll: useGetStadtbezirke(),
+    context: useGetStadtbezirkFormContext(),
+    create: useCreateStadtbezirk(),
+    update: useUpdateStadtbezirk(),
+    delete: useDeleteStadtbezirk(),
+  };
+}
