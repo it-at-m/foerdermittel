@@ -294,7 +294,6 @@ import type {
   BauprogrammFormContextDTO,
   FoerderbereichFormContextDTO,
   GetReportAuswertungProjektRequest,
-  Krisofp,
   KurzbezeichnungFormContextDTO,
   ListennameStadtbezirkslisteFormContextDTO,
   ReportAuswertungProjektFormContext,
