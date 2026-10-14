@@ -6,7 +6,7 @@
     <v-row align="center">
       <v-col
           cols="12"
-          md="1"
+          md="2"
       >
         <!-- Projektjahr -->
         <fm-autocomplete
@@ -23,7 +23,7 @@
 
       <v-col
           cols="12"
-          md="2"
+          md="3"
       >
         <fm-checkbox
             v-model="modelValue.parameters!.offen"
@@ -36,7 +36,7 @@
 
       <v-col
           cols="12"
-          md="2"
+          md="3"
       >
         <fm-checkbox
             v-model="modelValue.parameters!.kauf"
@@ -49,7 +49,7 @@
 
       <v-col
           cols="12"
-          md="2"
+          md="3"
       >
         <fm-checkbox
             v-model="modelValue.parameters!.relevant"
