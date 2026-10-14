@@ -93,7 +93,6 @@ public class ReportAuswertungProjekteIntegrationTest {
     class GetReportAuswertungProjekte {
 
         private static final String EXISTING_JAHR = "2026";
-        private static final String NONEXISTING_JAHR = "2029";
         private static final String VALID_SORT = "STADTBEZIRK_STRASSE";
         private static final String VALID_TYPE = "PDF";
 
