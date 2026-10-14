@@ -1,9 +1,8 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
-import org.springframework.data.jpa.domain.Specification;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.data.jpa.domain.Specification;
 
 public final class ProjektSpecifications {
 
@@ -34,12 +33,9 @@ public final class ProjektSpecifications {
         }
 
         specifications.add(
-                (root, query, cb) ->
-                        cb.like(
-                                cb.lower(root.get(field)),
-                                "%" + value.toLowerCase() + "%"
-                        )
-        );
+                (root, query, cb) -> cb.like(
+                        cb.lower(root.get(field)),
+                        "%" + value.toLowerCase() + "%"));
     }
 
     private static <T> void addEquals(
@@ -52,8 +48,6 @@ public final class ProjektSpecifications {
         }
 
         specifications.add(
-                (root, query, cb) ->
-                        cb.equal(root.get(field), value)
-        );
+                (root, query, cb) -> cb.equal(root.get(field), value));
     }
 }

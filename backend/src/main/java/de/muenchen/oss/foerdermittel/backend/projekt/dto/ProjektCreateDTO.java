@@ -6,8 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-import java.math.BigInteger;
-
 public record ProjektCreateDTO(
         @NotNull @Size(min = 7, max = 7) @Pattern(regexp = "^[A-Z0-9]{7}$") String projnr,
         @NotNull @Min(0) @Max(99) Integer fobFb,
@@ -16,6 +14,6 @@ public record ProjektCreateDTO(
         @NotNull @Min(0) @Max(99) Integer jahr,
         @NotNull @Min(0) @Max(9) Integer lfdnr1,
         @NotNull @Min(0) @Max(99) Integer lfdnr2,
-        @Size(max = 100)  String pname,
-        @Size(max = 100)  String pstrasse) {
+        @Size(max = 100) String pname,
+        @Size(max = 100) String pstrasse) {
 }

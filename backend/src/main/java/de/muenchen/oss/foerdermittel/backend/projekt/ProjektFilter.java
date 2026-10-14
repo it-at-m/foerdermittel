@@ -8,6 +8,5 @@ public record ProjektFilter(
         String kurKurzbez,
         String uasUa,
         String pname,
-        String pstrasse
-) {
+        String pstrasse) {
 }

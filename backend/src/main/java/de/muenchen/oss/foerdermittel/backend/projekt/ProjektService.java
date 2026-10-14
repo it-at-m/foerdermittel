@@ -1,8 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
-import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
-import de.muenchen.oss.foerdermittel.backend.krankenhaus.Krankenhaus;
-import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungFormContext;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektMapper;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
@@ -41,8 +38,7 @@ public class ProjektService {
 
         return projektRepository.findAll(
                 ProjektSpecifications.filter(filter),
-                pageable
-        );
+                pageable);
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
@@ -68,7 +64,8 @@ public class ProjektService {
     public Projekt createProjekt(final Projekt projekt) {
         log.debug("Create Projekt {}", projekt);
         return projektRepository.insert(projekt);
-}
+    }
+
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Projekt updateProjekt(final Projekt projekt, final String ha) {
         final Projekt foundProjekt = ServiceUtils.getEntityOrThrowNotFoundException(ha, projektRepository);
@@ -76,6 +73,7 @@ public class ProjektService {
         log.debug("Update Projekt {}", foundProjekt);
         return projektRepository.update(foundProjekt);
     }
+
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteProjekt(final String ha) {
         log.debug("Delete Projekt with ID {}", ha);

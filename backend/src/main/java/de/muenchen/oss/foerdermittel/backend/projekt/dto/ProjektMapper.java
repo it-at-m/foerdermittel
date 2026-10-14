@@ -1,10 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.projekt.dto;
 
-import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
-import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittUpdateDTO;
-import de.muenchen.oss.foerdermittel.backend.krankenhaus.Krankenhaus;
-import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausCreateDTO;
-import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausUpdateDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.dao.BasicProjektDAO;
 import java.util.List;
@@ -24,7 +19,6 @@ public interface ProjektMapper {
     @Mapping(source = "foerderbereich.fb", target = "foerderbereich")
     @Mapping(source = "stadtbezirk.stadtbezirk", target = "stadtbezirk")
     ProjektFormContextDTO toFormContext(Projekt projekt);
-
 
     List<ProjektFormContextDTO> toFormContext(List<Projekt> projektList);
 

@@ -1,12 +1,13 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
-import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektResponseDTO;
-import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektUpdateDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektMapper;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektResponseDTO;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektUpdateDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,8 +40,7 @@ public class ProjektController {
     @ResponseStatus(HttpStatus.OK)
     public Page<ProjektResponseDTO> getProjekte(
             @ParameterObject final ProjektFilter projektFilter,
-            @ParameterObject @PageableDefault(sort = "projnr")
-            final Pageable pageable) {
+            @ParameterObject @PageableDefault(sort = "projnr") final Pageable pageable) {
 
         return projektService
                 .getProjekte(projektFilter, pageable)
@@ -63,7 +62,7 @@ public class ProjektController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ProjektResponseDTO updateProjekt(@Valid @RequestBody final ProjektUpdateDTO projektUpdateDTO,
-                                                          @PathVariable("id") final String projektId) {
+            @PathVariable("id") final String projektId) {
         return projektMapper
                 .toDTO(projektService.updateProjekt(projektMapper.toEntity(projektUpdateDTO), projektId));
     }

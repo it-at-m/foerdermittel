@@ -17,8 +17,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
 @Entity
 @Data
 @AllArgsConstructor
@@ -28,7 +26,6 @@ public class Projekt implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
 
     @Id
     @Column(name = "projnr", nullable = false)
