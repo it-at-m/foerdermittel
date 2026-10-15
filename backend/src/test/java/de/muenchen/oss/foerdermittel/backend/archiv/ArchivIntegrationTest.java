@@ -105,6 +105,7 @@ class ArchivIntegrationTest {
         projekt.setPstrasse("Teststraße");
         projekt.setFoerderbereich(foerderbereich);
         projekt.setStadtbezirk(stadtbezirk);
+        projekt.setKurKurzbez("123");
 
         projektRepository.save(projekt);
     }

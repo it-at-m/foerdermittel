@@ -19,8 +19,8 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "projekte")
 public class Projekt implements Serializable {
 

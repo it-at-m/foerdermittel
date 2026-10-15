@@ -52,12 +52,19 @@ class ProjektRepositoryIntegrationTest {
                 BigDecimal.valueOf(99), "Test");
         stadtbezirkRepository.save(stadtbezirk);
 
-        projektRepository.save(new Projekt("P-123", "Projektname", "Projektstraße 1", foerderbereich, stadtbezirk));
+        Projekt projekt = new Projekt();
+        projekt.setProjnr("1234567");
+        projekt.setPname("Projektname");
+        projekt.setPstrasse("Projektstraße 1");
+        projekt.setFoerderbereich(foerderbereich);
+        projekt.setStadtbezirk(stadtbezirk);
+        projekt.setKurKurzbez("KB1");
+        projektRepository.save(projekt);
 
         // When
         final List<BasicProjektDAO> result = projektRepository.findAllAsBasic();
 
         // Then
-        assertThat(result).contains(new BasicProjektDAO("P-123", "Projektname", "Projektstraße 1"));
+        assertThat(result).contains(new BasicProjektDAO("1234567", "Projektname", "Projektstraße 1"));
     }
 }

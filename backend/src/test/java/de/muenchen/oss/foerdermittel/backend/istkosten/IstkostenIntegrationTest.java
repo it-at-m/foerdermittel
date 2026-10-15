@@ -104,6 +104,7 @@ class IstkostenIntegrationTest {
         projekt.setPstrasse("Teststraße");
         projekt.setFoerderbereich(foerderbereich);
         projekt.setStadtbezirk(stadtbezirk);
+        projekt.setKurKurzbez("KB1");
 
         projektRepository.save(projekt);
     }

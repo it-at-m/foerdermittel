@@ -68,7 +68,7 @@ public class ProjektService {
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Projekt updateProjekt(final Projekt projekt, final String ha) {
-        final Projekt foundProjekt = ServiceUtils.getEntityOrThrowNotFoundException(ha, projektRepository);
+        final Projekt foundProjekt = ServiceUtils.getEntityOrThrowNotFoundException(ha, projektRepository, Projekt.class);
         foundProjekt.setPname(projekt.getPname());
         log.debug("Update Projekt {}", foundProjekt);
         return projektRepository.update(foundProjekt);
@@ -77,7 +77,7 @@ public class ProjektService {
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public void deleteProjekt(final String ha) {
         log.debug("Delete Projekt with ID {}", ha);
-        ServiceUtils.getEntityOrThrowNotFoundException(ha, projektRepository);
+        ServiceUtils.getEntityOrThrowNotFoundException(ha, projektRepository, Projekt.class);
         projektRepository.deleteById(ha);
     }
 }
