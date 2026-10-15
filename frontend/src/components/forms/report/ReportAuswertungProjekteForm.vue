@@ -290,16 +290,16 @@
 </template>
 
 <script setup lang="ts">
-import type {
-  BauprogrammFormContextDTO,
-  FoerderbereichFormContextDTO,
-  GetReportAuswertungProjektRequest,
-  KurzbezeichnungFormContextDTO,
-  ListennameStadtbezirkslisteFormContextDTO,
-  ReportAuswertungProjektFormContext,
-  SiedlungsgebietFormContextDTO,
-  StadtbezirkFormContextDTO,
-  UnterabschnittFormContextDTO,
+import {
+  type BauprogrammFormContextDTO,
+  type FoerderbereichFormContextDTO,
+  type GetReportAuswertungProjektRequest,
+  type KurzbezeichnungFormContextDTO,
+  type ListennameStadtbezirkslisteFormContextDTO,
+  type ReportAuswertungProjektFormContext, ReportAuswertungProjektFormContextDTOKrisofpEnum,
+  type SiedlungsgebietFormContextDTO,
+  type StadtbezirkFormContextDTO,
+  type UnterabschnittFormContextDTO,
 } from "@/api/generated/foerdermittel-backend";
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
@@ -370,11 +370,11 @@ const krisofpBezeichnungen = new Map<string, string>([
   ["S", "Startchancen-Programm (SCP)"],
 ]);
 
-function getKrisofpTitle(item: Krisofp) {
+function getKrisofpTitle(item: ReportAuswertungProjektFormContextDTOKrisofpEnum) {
   return `${item} (${krisofpBezeichnungen.get(item) ?? item})`;
 }
 
-function getKrisofpValue(item: Krisofp) {
+function getKrisofpValue(item: ReportAuswertungProjektFormContextDTOKrisofpEnum) {
   return item;
 }
 
