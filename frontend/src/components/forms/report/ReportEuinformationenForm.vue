@@ -42,7 +42,7 @@
           v-model="modelValue.parameters!.publikation"
           :items="reportEuinformationenFormContext?.publikationen"
           :item-title="getPublikationTitle"
-          item-value="publikation"
+          item-value="kurzform"
           :validation-attribute-map="
             PublikationFormContextDTOPropertyValidationAttributesMap
           "
