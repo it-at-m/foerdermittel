@@ -44,7 +44,7 @@
           :item-title="getPublikationTitle"
           item-value="kurzform"
           :validation-attribute-map="
-            PublikationFormContextDTOPropertyValidationAttributesMap
+            ReportEuinformationDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="publikation"
           :label="t('domain.report.euinformation.publikation')"
@@ -82,7 +82,7 @@
           v-model="modelValue.parameters!.sort"
           :items="sortOptions"
           item-value="value"
-          label="Sortierung"
+          :label="t('common.word.sort')"
           variant="outlined"
         />
       </v-col>
@@ -102,12 +102,7 @@ import type { VForm } from "vuetify/components";
 import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
-import {
-  PublikationFormContextDTOPropertyValidationAttributesMap,
-  ReportEuinformationDTOPropertyValidationAttributesMap,
-} from "@/api/generated/foerdermittel-backend";
-//import { ReportEuinformationenDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
-
+import { ReportEuinformationDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";

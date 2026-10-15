@@ -9,7 +9,8 @@
       "masterdata": "Stammdaten",
       "action": "Aktion | Aktionen",
       "readOnly": "(schreibgeschützt)",
-      "required": "*"
+      "required": "*",
+      "sort": "Sortierung"
     },
     "action": {
       "cancel": "Abbrechen",

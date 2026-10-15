@@ -54,9 +54,6 @@ class ReportEuinformationServiceTest {
                     jahrVon, jahrBis, "Test", "1", "1", ReportEuinformationSort.REFERAT);
 
             final Map<String, Object> jasperParameters = new HashMap<>();
-            jasperParameters.put(
-                    SORT_PARAMETER,
-                    ReportEuinformationSort.REFERAT);
 
             final GeneratedReport expectedReport = mock(GeneratedReport.class);
 
@@ -83,10 +80,6 @@ class ReportEuinformationServiceTest {
                     ReportEuinformationSort.REFERAT.getOrderBy());
 
             assertThat(generatedReport).isSameAs(expectedReport);
-            assertThat(jasperParameters)
-                    .containsEntry(
-                            SORT_PARAMETER,
-                            ReportEuinformationSort.REFERAT);
         }
     }
 

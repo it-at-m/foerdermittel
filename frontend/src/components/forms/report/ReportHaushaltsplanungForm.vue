@@ -111,7 +111,7 @@
           v-model="modelValue.parameters!.sort"
           :items="sortOptions"
           item-value="value"
-          label="Sortierung"
+          :label="t('common.word.sort')"
           variant="outlined"
         />
       </v-col>
