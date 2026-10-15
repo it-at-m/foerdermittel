@@ -2068,7 +2068,7 @@ paths:
   /report/auswertungprojekte:
     get:
       tags:
-      - report-controller
+      - auswertung-projekte-report-controller
       operationId: getReportAuswertungProjekt
       parameters:
       - name: parameters
@@ -2093,7 +2093,7 @@ paths:
   /report/auswertungprojekte/form-context:
     get:
       tags:
-      - report-controller
+      - auswertung-projekte-report-controller
       operationId: getReportAuswertungProjektFormContext
       responses:
         "200":
