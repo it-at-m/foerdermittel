@@ -44,7 +44,7 @@ definePage({
   },
 });
 
-const domainKey = "domain.report.euinformation.modelName";
+const domainKey = "model.euinformation.modelName";
 
 const { t } = useI18n();
 const title = t("common.generics.reportTitle", [t(domainKey, 2)]);
