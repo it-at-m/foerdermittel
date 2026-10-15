@@ -9,22 +9,24 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
-import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammService;
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichService;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.hhplan.HhplanService;
 import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungService;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.report.dto.*;
+
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportHaushaltsplanungFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportProjektuebersichtFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
-import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietService;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushaltsplanungDTO;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportProjektuebersichtDTO;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushaltsplanungSort;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkService;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkFormContextDTO;
@@ -34,7 +36,6 @@ import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameSta
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.StichwortbereichService;
 import de.muenchen.oss.foerdermittel.backend.stichwortbereich.dto.StichwortbereichFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittService;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -80,18 +81,6 @@ class ReportServiceTest {
 
     @Mock
     private ReportMapper reportMapper;
-
-    @Mock
-    private KurzbezeichnungService kurzbezeichnungService;
-
-    @Mock
-    private BauprogrammService bauprogrammService;
-
-    @Mock
-    private UnterabschnittService unterabschnittService;
-
-    @Mock
-    private SiedlungsgebietService siedlungsgebietService;
 
     @InjectMocks
     private ReportService reportService;
