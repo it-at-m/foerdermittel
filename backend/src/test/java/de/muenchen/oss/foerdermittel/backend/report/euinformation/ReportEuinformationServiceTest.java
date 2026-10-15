@@ -1,6 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.report.euinformation;
 
-import static de.muenchen.oss.foerdermittel.backend.report.ReportService.SORT_PARAMETER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
