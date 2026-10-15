@@ -65,8 +65,8 @@ public class KurzbezeichnungService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public void checkExistsByKurzbezeichnung(final String KurzId) {
-        ServiceUtils.checkExistsOrThrowNotFoundException(KurzId, kurzbezeichnungRepository, Kurzbezeichnung.class);
+    public void checkExistsByKurzbezeichnung(final String kurzId) {
+        ServiceUtils.checkExistsOrThrowNotFoundException(kurzId, kurzbezeichnungRepository, Kurzbezeichnung.class);
     }
 
 }

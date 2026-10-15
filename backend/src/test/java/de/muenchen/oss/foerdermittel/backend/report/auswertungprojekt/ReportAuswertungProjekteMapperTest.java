@@ -1,6 +1,6 @@
 package de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt;
 
-import static de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuwertungProjektSort.PROJEKTNUMMER;
+import static de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuswertungProjekteSort.PROJEKTNUMMER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;

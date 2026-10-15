@@ -172,7 +172,7 @@ public class ReportService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public ReportAuswertungProjektFormContext getReportAuswertungProjekt() {
-        log.info("Get ReportProjektuebersicht form context");
+        log.info("Get ReportAuswertungProjekte form context");
 
         return new ReportAuswertungProjektFormContext(
                 projektService.getReportAuswertungProjektFormContextDTOs(),

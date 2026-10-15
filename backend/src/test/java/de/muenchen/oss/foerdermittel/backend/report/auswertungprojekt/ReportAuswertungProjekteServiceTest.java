@@ -25,7 +25,7 @@ import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
 import de.muenchen.oss.foerdermittel.backend.report.ReportService;
 import de.muenchen.oss.foerdermittel.backend.report.ReportType;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuswertungProjekteDTO;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuwertungProjektSort;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuswertungProjekteSort;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportAuswertungProjektFormContext;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietService;
@@ -106,7 +106,7 @@ class ReportAuswertungProjekteServiceTest {
             when(parameters.bpg()).thenReturn(null);
 
             when(parameters.sort())
-                    .thenReturn(ReportAuwertungProjektSort.values()[0]);
+                    .thenReturn(ReportAuswertungProjekteSort.values()[0]);
 
             return parameters;
         }
@@ -150,7 +150,7 @@ class ReportAuswertungProjekteServiceTest {
             assertThat(jasperParameters)
                     .containsEntry(
                             SORT_PARAMETER,
-                            ReportAuwertungProjektSort.values()[0].getOrderBy());
+                            ReportAuswertungProjekteSort.values()[0].getOrderBy());
         }
 
         @Test

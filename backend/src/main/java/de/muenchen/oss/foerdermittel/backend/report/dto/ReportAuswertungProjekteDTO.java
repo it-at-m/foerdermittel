@@ -28,7 +28,7 @@ public record ReportAuswertungProjekteDTO(
         String offen,
         String relevant,
 
-        @NotNull ReportAuwertungProjektSort sort,
+        @NotNull ReportAuswertungProjekteSort sort,
 
         @NotNull ReportFormat type) {
 }
