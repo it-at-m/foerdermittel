@@ -57,7 +57,7 @@ class ReportEuinformationMapperTest {
                 .containsEntry("P_JAHR_VON", null)
                 .containsEntry("P_JAHR_BIS", null)
                 .containsEntry("P_INHALT", null)
-                .containsEntry("P_PUB", "")
+                .containsEntry("P_PUB", null)
                 .containsEntry("P_REFID", "")
                 .containsEntry("P_REFBEZ", null);
     }
