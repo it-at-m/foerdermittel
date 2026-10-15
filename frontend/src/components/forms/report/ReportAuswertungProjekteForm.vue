@@ -290,16 +290,16 @@
 </template>
 
 <script setup lang="ts">
-import {
-  type BauprogrammFormContextDTO,
-  type FoerderbereichFormContextDTO,
-  type GetReportAuswertungProjektRequest,
-  type KurzbezeichnungFormContextDTO,
-  type ListennameStadtbezirkslisteFormContextDTO,
-  type ReportAuswertungProjektFormContext, ReportAuswertungProjektFormContextDTOKrisofpEnum,
-  type SiedlungsgebietFormContextDTO,
-  type StadtbezirkFormContextDTO,
-  type UnterabschnittFormContextDTO,
+import type {
+  BauprogrammFormContextDTO,
+  FoerderbereichFormContextDTO,
+  GetReportAuswertungProjektRequest,
+  KurzbezeichnungFormContextDTO,
+  ListennameStadtbezirkslisteFormContextDTO,
+  ReportAuswertungProjektFormContext,
+  SiedlungsgebietFormContextDTO,
+  StadtbezirkFormContextDTO,
+  UnterabschnittFormContextDTO,
 } from "@/api/generated/foerdermittel-backend";
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
@@ -307,7 +307,10 @@ import type { VForm } from "vuetify/components";
 import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
-import { ReportAuswertungProjekteDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
+import {
+  ReportAuswertungProjekteDTOPropertyValidationAttributesMap,
+  ReportAuswertungProjektFormContextDTOKrisofpEnum,
+} from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
@@ -370,11 +373,15 @@ const krisofpBezeichnungen = new Map<string, string>([
   ["S", "Startchancen-Programm (SCP)"],
 ]);
 
-function getKrisofpTitle(item: ReportAuswertungProjektFormContextDTOKrisofpEnum) {
+function getKrisofpTitle(
+  item: ReportAuswertungProjektFormContextDTOKrisofpEnum
+) {
   return `${item} (${krisofpBezeichnungen.get(item) ?? item})`;
 }
 
-function getKrisofpValue(item: ReportAuswertungProjektFormContextDTOKrisofpEnum) {
+function getKrisofpValue(
+  item: ReportAuswertungProjektFormContextDTOKrisofpEnum
+) {
   return item;
 }
 
