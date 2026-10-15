@@ -19,7 +19,7 @@ public interface SiedlungsgebietMapper {
     @Mapping(target = "siedlungsgebiet", ignore = true)
     Siedlungsgebiet toEntity(SiedlungsgebietUpdateDTO siedlungsgebietUpdateDTO);
 
-    SiedlungsgebietFormContextDTO toFormContext(Siedlungsgebiet Siedlungsgebiet);
+    SiedlungsgebietFormContextDTO toFormContext(Siedlungsgebiet siedlungsgebiet);
 
     List<SiedlungsgebietFormContextDTO> toFormContext(List<Siedlungsgebiet> siedlungsgebietList);
 

@@ -13,6 +13,7 @@ import type {
 import type { ReportApiComposables } from "@/util/composable-helper";
 
 import {
+  AuswertungProjekteReportControllerApi,
   FortsetzungsantragReportControllerApi,
   ReportControllerApi,
 } from "@/api/generated/foerdermittel-backend";
@@ -50,10 +51,10 @@ export const {
   useContext: useGetReportAuswertungProjekteFormContext,
 } = requireComposables(
   createReportAPIComposables<
-    ReportControllerApi,
+    AuswertungProjekteReportControllerApi,
     GetReportAuswertungProjektRequest,
     ReportAuswertungProjektFormContext
-  >(ReportControllerApi, {
+  >(AuswertungProjekteReportControllerApi, {
     getOpts: (api, req) => api.getReportAuswertungProjektRequestOpts(req),
 
     context: (api) => api.getReportAuswertungProjektFormContext(),

@@ -1,11 +1,9 @@
 package de.muenchen.oss.foerdermittel.backend.report;
 
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuswertungProjekteDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportHaushaltsplanungDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportProjektuebersichtDTO;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
-import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportAuswertungProjektFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportHaushaltsplanungFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportProjektuebersichtFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
@@ -131,39 +129,6 @@ public class ReportController {
     @ResponseStatus(HttpStatus.OK)
     public ReportProjektuebersichtFormContext getReportProjektuebersichtFormContext() {
         return reportService.getReportProjektuebersicht();
-    }
-
-    @GetMapping("/auswertungprojekte")
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(
-            responses = @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = {
-                            @Content(
-                                    mediaType = MediaType.APPLICATION_PDF_VALUE,
-                                    schema = @Schema(type = "string", format = "binary")
-                            ),
-                            @Content(
-                                    mediaType = CustomReportContentTypes.EXCEL_CONTENT_TYPE,
-                                    schema = @Schema(type = "string", format = "binary")
-                            )
-                    }
-            )
-    )
-    public void getReportAuswertungProjekt(
-            @Valid @ModelAttribute final ReportAuswertungProjekteDTO parameters,
-            final HttpServletResponse response)
-            throws IOException, SQLException, JRException {
-        final GeneratedReport generatedReport = reportService.generateReportAuswertungProjekt(parameters);
-        ReportControllerUtil.setMetadata(response, generatedReport);
-        generatedReport.writer().write(response.getOutputStream());
-    }
-
-    @GetMapping(value = "/auswertungprojekte/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public ReportAuswertungProjektFormContext getReportAuswertungProjektFormContext() {
-        return reportService.getReportAuswertungProjekt();
     }
 
 }

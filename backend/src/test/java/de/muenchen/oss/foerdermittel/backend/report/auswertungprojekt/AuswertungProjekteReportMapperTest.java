@@ -5,13 +5,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto.AuswertungProjekteReportMapper;
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuswertungProjekteDTO;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
-public class ReportAuswertungProjekteMapperTest {
-    private final ReportMapper reportMapper = new ReportMapper();
+public class AuswertungProjekteReportMapperTest {
+    private final AuswertungProjekteReportMapper auswertungProjekteReportMapper = new AuswertungProjekteReportMapper();
 
     @Test
     void givenReportAuswertungProjekteDTO_thenReturnsCorrectParameters() {
@@ -20,7 +20,7 @@ public class ReportAuswertungProjekteMapperTest {
                 "1", Krisofp.K, "0", "0", "0", PROJEKTNUMMER, ReportFormat.PDF);
 
         // When
-        final Map<String, Object> parameters = reportMapper.toJasperParameters(dto);
+        final Map<String, Object> parameters = auswertungProjekteReportMapper.toJasperParameters(dto);
 
         // Then
         assertThat(parameters)
