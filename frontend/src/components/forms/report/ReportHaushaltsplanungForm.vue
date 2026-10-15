@@ -89,7 +89,7 @@
             ReportHaushaltsplanungDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="fipo"
-          :label="t('model.fipo.modelName')"
+          :label="t('domain.report.haushaltsplanung.fipo')"
         />
       </v-col>
       <v-col
