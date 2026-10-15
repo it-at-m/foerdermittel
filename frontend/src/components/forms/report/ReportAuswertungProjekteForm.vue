@@ -8,7 +8,6 @@
         cols="12"
         md="2"
       >
-        <!-- Projektjahr -->
         <fm-autocomplete
           v-model="modelValue.parameters!.jahr"
           :items="jahrOptions"
@@ -66,7 +65,6 @@
         cols="12"
         md="3"
       >
-        <!-- Stadtbezirk -->
         <fm-autocomplete
           v-model="modelValue.parameters!.bez"
           :items="props.reportAuswertungProjektFormContext?.bezs ?? []"
@@ -86,7 +84,6 @@
         cols="12"
         md="3"
       >
-        <!-- Stadtbezirksliste -->
         <fm-autocomplete
           v-model="modelValue.parameters!.sbl"
           :items="props.reportAuswertungProjektFormContext?.sbls ?? []"
@@ -106,7 +103,6 @@
         cols="12"
         md="3"
       >
-        <!-- Förderbereich -->
         <fm-autocomplete
           v-model="modelValue.parameters!.fb"
           :items="props.reportAuswertungProjektFormContext?.fbs ?? []"
@@ -125,7 +121,6 @@
         cols="12"
         md="3"
       >
-        <!-- Unterabschnitt -->
         <fm-autocomplete
           v-model="modelValue.parameters!.ua"
           :items="props.reportAuswertungProjektFormContext?.uas ?? []"
@@ -146,7 +141,6 @@
         cols="12"
         md="3"
       >
-        <!-- Kurzbezeichnung -->
         <fm-autocomplete
           v-model="modelValue.parameters!.kurz"
           :items="props.reportAuswertungProjektFormContext?.kurzs ?? []"
@@ -165,7 +159,6 @@
         cols="12"
         md="3"
       >
-        <!-- Siedlungsgebiet -->
         <fm-autocomplete
           v-model="modelValue.parameters!.sgt"
           :items="props.reportAuswertungProjektFormContext?.sgts ?? []"
@@ -184,7 +177,6 @@
         cols="12"
         md="3"
       >
-        <!-- Bauprogramm -->
         <fm-autocomplete
           v-model="modelValue.parameters!.bpg"
           :items="props.reportAuswertungProjektFormContext?.bpgs ?? []"
@@ -203,7 +195,6 @@
         cols="12"
         md="3"
       >
-        <!-- Krisofp -->
         <fm-autocomplete
           v-model="modelValue.parameters!.krisofp"
           :items="props.reportAuswertungProjektFormContext?.krisofps ?? []"
@@ -225,7 +216,6 @@
         cols="12"
         md="6"
       >
-        <!-- Projektname -->
         <fm-text-field
           v-model="modelValue.parameters!.pname"
           :display-mode="InputDisplayMode.EDIT"
@@ -242,7 +232,6 @@
         cols="12"
         md="6"
       >
-        <!-- Straße -->
         <fm-text-field
           v-model="modelValue.parameters!.pstrasse"
           :display-mode="InputDisplayMode.EDIT"
@@ -261,7 +250,6 @@
         cols="12"
         md="3"
       >
-        <!-- Sortierung -->
         <fm-autocomplete
           v-model="modelValue.parameters!.sort"
           :items="sortOptions"
@@ -375,19 +363,16 @@ const krisofpBezeichnungen = new Map<string, string>([
 
 function getKrisofpTitle(
   item: ReportAuswertungProjektFormContextDTOKrisofpEnum
-) {
+): string {
   return `${item} (${krisofpBezeichnungen.get(item) ?? item})`;
 }
 
 function getKrisofpValue(
   item: ReportAuswertungProjektFormContextDTOKrisofpEnum
-) {
+): string {
   return item;
 }
 
-/**
- * Förderbereich.
- */
 function getFoerderbereichTitle(item: FoerderbereichFormContextDTO) {
   return item ? `${item.fb} (${item.bezeichnung})` : "";
 }
@@ -401,44 +386,26 @@ function getStadtbezirkslisteTitle(
   return item ? `${item.kurzbez} (${item.bezeichnung})` : "";
 }
 
-/**
- * Stadtbezirk.
- */
 function getStadtbezirkTitle(item: StadtbezirkFormContextDTO) {
   return item ? `${item.stadtbezirk} (${item.bezeichnung})` : "";
 }
 
-/**
- * Unterabschnitt.
- */
 function getUnterabschnittTitle(item: UnterabschnittFormContextDTO) {
   return item ? `${item.ua} (${item.bezeichnung})` : "";
 }
 
-/**
- * Kurzbezeichnung.
- */
 function getKurzbezeichnungTitle(item: KurzbezeichnungFormContextDTO) {
   return item ? `${item.kurzbez ?? ""} (${item.bezeichnung})` : "";
 }
 
-/**
- * Siedlungsgebiet.
- */
 function getSiedlungsgebietTitle(item: SiedlungsgebietFormContextDTO) {
   return item ? `${item.siedlungsgebiet ?? ""} (${item.bezeichnung})` : "";
 }
 
-/**
- * Bauprogramm.
- */
 function getBauprogrammTitle(item: BauprogrammFormContextDTO) {
   return item ? `${item.bauprogramm} (${item.bezeichnung})` : "";
 }
 
-/**
- * Sortierung.
- */
 const sortOptions = computed(() => [
   {
     title: t("domain.report.auswertungProjekt.sortEnum.stadtbezirkStrasse"),

@@ -1,6 +1,6 @@
 package de.muenchen.oss.foerdermittel.backend.report.dto;
 
-public enum ReportAuwertungProjektSort {
+public enum ReportAuswertungProjekteSort {
 
     STADTBEZIRK_STRASSE("order by v_bez_stadtbezirk asc, v_pstrasse asc"),
     PROJEKTNUMMER("order by v_projnr asc"),
@@ -10,7 +10,7 @@ public enum ReportAuwertungProjektSort {
 
     private final String orderBy;
 
-    ReportAuwertungProjektSort(final String orderBy) {
+    ReportAuswertungProjekteSort(final String orderBy) {
         this.orderBy = orderBy;
     }
 

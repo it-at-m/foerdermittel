@@ -1,5 +1,10 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public enum Krisofp {
 
     X("1.+2. SIP - KriSoFö 2008-2014"),
@@ -13,15 +18,7 @@ public enum Krisofp {
 
     private final String bezeichnung;
 
-    Krisofp(String bezeichnung) {
-        this.bezeichnung = bezeichnung;
-    }
-
     public String getKurzform() {
         return name();
-    }
-
-    public String getBezeichnung() {
-        return bezeichnung;
     }
 }

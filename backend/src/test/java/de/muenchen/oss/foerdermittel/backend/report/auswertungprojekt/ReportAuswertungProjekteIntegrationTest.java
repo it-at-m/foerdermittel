@@ -36,7 +36,6 @@ import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTe
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -96,12 +95,10 @@ public class ReportAuswertungProjekteIntegrationTest {
 
         @BeforeEach
         void setUp() {
-            final Foerderbereich foerderbereich = new Foerderbereich(
-                    BigDecimal.valueOf(99), "Test", false, false, false, false);
+            final Foerderbereich foerderbereich = new Foerderbereich(BigDecimal.valueOf(99), "Test", false, false, false, false);
             foerderbereichRepository.save(foerderbereich);
 
-            final Stadtbezirk stadtbezirk = new Stadtbezirk(
-                    BigDecimal.valueOf(99), "Test");
+            final Stadtbezirk stadtbezirk = new Stadtbezirk(BigDecimal.valueOf(99), "Test");
             stadtbezirkRepository.save(stadtbezirk);
 
             final Hauptabschnitt hauptabschnitt = new Hauptabschnitt("ha", "bz2");
@@ -119,18 +116,19 @@ public class ReportAuswertungProjekteIntegrationTest {
             final Bauprogramm bauprogramm = new Bauprogramm(BigDecimal.ONE, "Test");
             bauprogrammRepository.save(bauprogramm);
 
-            projektRepository.save(new Projekt(
-                    "P-123",
-                    "Projektname",
-                    "Projektstraße 1",
-                    EXISTING_JAHR,
-                    foerderbereich,
-                    stadtbezirk,
-                    unterabschnitt,
-                    kurzbezeichnung,
-                    siedlungsgebiet,
-                    bauprogramm,
-                    Krisofp.K));
+            projektRepository.save(
+                    new Projekt(
+                            "P-123",
+                            "Projektname",
+                            "Projektstraße 1",
+                            EXISTING_JAHR,
+                            foerderbereich,
+                            stadtbezirk,
+                            unterabschnitt,
+                            kurzbezeichnung,
+                            siedlungsgebiet,
+                            bauprogramm,
+                            Krisofp.K));
         }
 
         @Test
@@ -295,31 +293,5 @@ public class ReportAuswertungProjekteIntegrationTest {
                     .expectStatus().isEqualTo(httpStatus);
         }
 
-    }
-
-    /// Utility expectation that checks for non JSON, plain or Octet content type, validates a body
-    /// exists and checks the correct headers.
-    ///
-    /// @param response Response retrieved using a [WebTestClient]
-    private static void expectFileResponse(RestTestClient.ResponseSpec response) {
-        response
-                .expectHeader()
-                .value(
-                        HttpHeaders.CONTENT_DISPOSITION,
-                        value -> assertThat(ContentDisposition.parse(value).getType())
-                                .isEqualTo("attachment"))
-                .expectHeader()
-                .value(HttpHeaders.CONTENT_TYPE, value -> {
-                    final MediaType contentType = MediaType.parseMediaType(value);
-
-                    assertThat(contentType)
-                            .isNotEqualTo(MediaType.APPLICATION_JSON)
-                            .isNotEqualTo(MediaType.APPLICATION_OCTET_STREAM)
-                            .isNotEqualTo(MediaType.TEXT_PLAIN);
-                })
-                .expectBody()
-                .consumeWith(result -> assertThat(result.getResponseBody())
-                        .isNotNull()
-                        .isNotEmpty());
     }
 }
