@@ -19,8 +19,14 @@ import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungServ
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.dto.KurzbezeichnungFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungProjektFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.report.*;
-import de.muenchen.oss.foerdermittel.backend.report.dto.*;
+import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
+import de.muenchen.oss.foerdermittel.backend.report.JasperReportService;
+import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
+import de.muenchen.oss.foerdermittel.backend.report.ReportService;
+import de.muenchen.oss.foerdermittel.backend.report.ReportType;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuswertungProjekteDTO;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuwertungProjektSort;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
 import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportAuswertungProjektFormContext;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietService;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietFormContextDTO;
