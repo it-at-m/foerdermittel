@@ -272,7 +272,7 @@
           "mse": "MSE",
           "stk": "Stk"
         }
-        },
+      },
       "haushaltsplanung": {
         "modelName": "Haushaltsplanung",
         "hh": "Ausgabe nur mit Haushaltszahlen",

@@ -41,8 +41,7 @@ public class ReportEuinformationService {
     public ReportEuinformationFormContext getReportEuinformationen() {
         log.info("Get ReportEuinformation form context");
         return new ReportEuinformationFormContext(
-                publikationService.getPublikationFormContextDTOs()
-        );
+                publikationService.getPublikationFormContextDTOs());
 
     }
 

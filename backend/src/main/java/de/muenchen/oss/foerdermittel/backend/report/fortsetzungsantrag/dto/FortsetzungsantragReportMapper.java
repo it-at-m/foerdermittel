@@ -1,12 +1,10 @@
 package de.muenchen.oss.foerdermittel.backend.report.fortsetzungsantrag.dto;
 
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportFortsetzungsantragDTO;
+import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
 import java.util.HashMap;
 import java.util.Map;
-
-import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 @Component
 public class FortsetzungsantragReportMapper {

@@ -1,16 +1,12 @@
 package de.muenchen.oss.foerdermittel.backend.report.euinformation;
 
-import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportFortsetzungsantragDTO;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import de.muenchen.oss.foerdermittel.backend.report.euinformation.dto.ReportEuinformationDTO;
 import de.muenchen.oss.foerdermittel.backend.report.euinformation.dto.ReportEuinformationMapper;
 import de.muenchen.oss.foerdermittel.backend.report.euinformation.dto.ReportEuinformationSort;
-import de.muenchen.oss.foerdermittel.backend.report.fortsetzungsantrag.dto.FortsetzungsantragReportMapper;
-import org.junit.jupiter.api.Test;
-
 import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class ReportEuinformationMapperTest {
 
@@ -34,7 +30,7 @@ class ReportEuinformationMapperTest {
         assertThat(parameters)
                 .hasSize(6)
                 .containsEntry("P_JAHR_VON", "1999")
-                .containsEntry("P_JAHR_BIS","2010")
+                .containsEntry("P_JAHR_BIS", "2010")
                 .containsEntry("P_INHALT", "%Test%")
                 .containsEntry("P_PUB", "1")
                 .containsEntry("P_REFID", "1")

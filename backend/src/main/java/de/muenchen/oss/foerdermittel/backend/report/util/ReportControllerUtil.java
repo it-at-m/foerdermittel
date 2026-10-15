@@ -19,11 +19,12 @@ public final class ReportControllerUtil {
     }
 
     /**
-     *Converts the given value into a LIKE parameter by trimming leading and trailing whitespace
-     *and wrapping the value with '%' wildcards.
-     *Returns {@code null} if the value is blank or equals "null" (case-insensitive).
-     *@param value the value to convert
-     *@return the formatted LIKE parameter, or {@code null} if the value is blank or equals "null"
+     * Converts the given value into a LIKE parameter by trimming leading and trailing whitespace
+     * and wrapping the value with '%' wildcards.
+     * Returns {@code null} if the value is blank or equals "null" (case-insensitive).
+     *
+     * @param value the value to convert
+     * @return the formatted LIKE parameter, or {@code null} if the value is blank or equals "null"
      */
 
     public static String toLikeParameter(final String value) {

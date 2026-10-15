@@ -1,12 +1,9 @@
 package de.muenchen.oss.foerdermittel.backend.publikation.dto;
 
 import de.muenchen.oss.foerdermittel.backend.publikation.Publikation;
-import de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich;
-import de.muenchen.oss.foerdermittel.backend.stichwortbereich.dto.StichwortbereichFormContextDTO;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.List;
 
 @Mapper
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")

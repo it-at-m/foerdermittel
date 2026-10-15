@@ -34,7 +34,10 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <fm-autocomplete
           v-model="modelValue.parameters!.publikation"
           :items="reportEuinformationenFormContext?.publikationen"
@@ -59,7 +62,10 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <fm-text-field
           v-model="modelValue.parameters!.inhalt"
           :display-mode="InputDisplayMode.EDIT"
@@ -71,9 +77,7 @@
         />
       </v-col>
 
-      <v-col
-        md="6"
-      >
+      <v-col md="6">
         <v-select
           v-model="modelValue.parameters!.sort"
           :items="sortOptions"

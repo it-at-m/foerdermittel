@@ -10,5 +10,5 @@ public record ReportEuinformationDTO(
         @Size(max = 40) String inhalt,
         String publikation,
         @Pattern(regexp = "^(?:[1-9]|[1-9][0-9])$") String referatId,
-        @NotNull ReportEuinformationSort sort){
+        @NotNull ReportEuinformationSort sort) {
 }
