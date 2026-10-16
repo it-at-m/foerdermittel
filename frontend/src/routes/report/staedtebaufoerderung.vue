@@ -2,19 +2,19 @@
   <base-view :title="title">
     <template #default="{ baseViewLoading }">
       <report-card
-          :empty-form-template="EMPTY_FORM_TEMPLATE"
-          :loading="baseViewLoading"
-          :api="reportStaedtebaufoerderungApi"
-          :form-ref="reportStaedtebaufoerderungFormRef"
+        :empty-form-template="EMPTY_FORM_TEMPLATE"
+        :loading="baseViewLoading"
+        :api="reportStaedtebaufoerderungApi"
+        :form-ref="reportStaedtebaufoerderungFormRef"
       >
         <template #form="{ item, updateValidity }">
           <report-staedtebaufoerderung-form
-              ref="reportStaedtebaufoerderungForm"
-              :model-value="item"
-              :report-staedtebaufoerderung-form-context="
+            ref="reportStaedtebaufoerderungForm"
+            :model-value="item"
+            :report-staedtebaufoerderung-form-context="
               reportStaedtebaufoerderungFormContext
             "
-              @is-valid="updateValidity"
+            @is-valid="updateValidity"
           />
         </template>
       </report-card>
@@ -31,7 +31,7 @@ import { useI18n } from "vue-i18n";
 import BaseView from "@/components/common/BaseView.vue";
 import ReportCard from "@/components/common/ReportCard.vue";
 import ReportStaedtebaufoerderungForm from "@/components/forms/report/ReportStaedtebaufoerderungForm.vue";
-import { useReportStaedtebaufoerderungApi } from "@/composables/api/useReportApi";
+import { useReportStaedtebaufoerderungApi } from "@/composables/api/useReportStaedtebaufoerderungApi";
 import { Role } from "@/types/Role";
 
 definePage({
@@ -51,6 +51,7 @@ const title = t("common.generics.reportTitle", [
 
 const EMPTY_FORM_TEMPLATE: Partial<GetReportStaedtebaufoerderungRequest> = {
   parameters: {
+    traeger: "",
     type: "PDF",
   },
 };
@@ -58,12 +59,14 @@ const EMPTY_FORM_TEMPLATE: Partial<GetReportStaedtebaufoerderungRequest> = {
 const reportStaedtebaufoerderungApi = useReportStaedtebaufoerderungApi();
 
 const reportStaedtebaufoerderungFormContext = computed(
-    () => reportStaedtebaufoerderungApi.context.data.value
+  () => reportStaedtebaufoerderungApi.context.data.value
 );
 
 type ReportStaedtebaufoerderungFormRef = InstanceType<
-    typeof ReportStaedtebaufoerderungForm
+  typeof ReportStaedtebaufoerderungForm
 >;
 const reportStaedtebaufoerderungFormRef =
-    useTemplateRef<ReportStaedtebaufoerderungFormRef>("reportStaedtebaufoerderungForm");
+  useTemplateRef<ReportStaedtebaufoerderungFormRef>(
+    "reportStaedtebaufoerderungForm"
+  );
 </script>

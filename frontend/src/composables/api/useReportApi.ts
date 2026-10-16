@@ -3,18 +3,15 @@ import type {
   GetReportHaushaltsplanungRequest,
   GetReportProjektuebersichtRequest,
   GetReportStichworteRequest,
-  GetReportStaedtebaufoerderungRequest,
   ReportFortsetzungsantragFormContext,
   ReportHaushaltsplanungFormContext,
   ReportProjektuebersichtFormContext,
   ReportStichworteFormContext,
-  ReportStaedtebaufoerderungFormContext
 } from "@/api/generated/foerdermittel-backend";
 import type { ReportApiComposables } from "@/util/composable-helper";
 
 import {
   FortsetzungsantragReportControllerApi,
-  StaedtebaufoerderungReportControllerApi,
   ReportControllerApi,
 } from "@/api/generated/foerdermittel-backend";
 import {
@@ -118,30 +115,5 @@ export function useReportFortsetzungsantragApi(): ReportApiComposables<
   return {
     getOpts: useGetReportFortsetzungsantragOpts(),
     context: useGetReportFortsetzungsantragFormContext(),
-  };
-}
-
-//Staedtebaufoerderung
-export const {
-  useGetOpts: useGetReportStaedtebaufoerderungOpts,
-  useContext: useGetReportStaedtebaufoerderungFormContext,
-} = requireComposables(
-    createReportAPIComposables<
-        StaedtebaufoerderungReportControllerApi,
-        GetReportStaedtebaufoerderungRequest,
-        ReportStaedtebaufoerderungFormContext
-    >(StaedtebaufoerderungReportControllerApi, {
-      getOpts: (api, req) => api.getReportStaedtebaufoerderungRequestOpts(req),
-      context: (api) => api.getReportStaedtebaufoerderungFormContext(),
-    })
-);
-
-export function useReportStaedtebaufoerderungApi(): ReportApiComposables<
-    GetReportStaedtebaufoerderungRequest,
-    ReportStaedtebaufoerderungFormContext
-> {
-  return {
-    getOpts: useGetReportStaedtebaufoerderungOpts(),
-    context: useGetReportStaedtebaufoerderungFormContext(),
   };
 }

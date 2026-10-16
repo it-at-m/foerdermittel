@@ -9,6 +9,5 @@ import jakarta.validation.constraints.*;
 /// @param bezeichnung
 public record TraegerFormContextDTO(
         @NotNull String kurzform,
-        @NotNull String bezeichnung
-) {
+        @NotNull String bezeichnung) {
 }

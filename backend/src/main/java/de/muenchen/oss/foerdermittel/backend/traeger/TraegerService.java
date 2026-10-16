@@ -1,7 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.traeger;
 
-import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
-import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerMapper;

@@ -9,14 +9,13 @@ import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStaedtebau
 import de.muenchen.oss.foerdermittel.backend.report.staetebaufoerderung.dto.StaedtebaufoerderungReportMapper;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.traeger.TraegerService;
+import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-
-import java.math.BigDecimal;
 
 @Service
 @Slf4j

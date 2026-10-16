@@ -2,10 +2,9 @@ package de.muenchen.oss.foerdermittel.backend.report.staetebaufoerderung.dto;
 
 import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStaedtebaufoerderungDTO;
 import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
-import org.springframework.stereotype.Component;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.stereotype.Component;
 
 @Component
 public class StaedtebaufoerderungReportMapper {
