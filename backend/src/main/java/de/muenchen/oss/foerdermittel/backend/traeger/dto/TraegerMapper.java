@@ -5,6 +5,8 @@ import de.muenchen.oss.foerdermittel.backend.traeger.Traeger;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(uses = NumberMapper.class)
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public interface TraegerMapper {
@@ -17,5 +19,9 @@ public interface TraegerMapper {
 
     @Mapping(target = "kurzform", ignore = true)
     Traeger toEntity(TraegerUpdateDTO traegerUpdateDTO);
+
+    TraegerFormContextDTO toFormContext(Traeger traeger);
+
+    List<TraegerFormContextDTO> toFormContext(List<Traeger> traegerList);
 
 }

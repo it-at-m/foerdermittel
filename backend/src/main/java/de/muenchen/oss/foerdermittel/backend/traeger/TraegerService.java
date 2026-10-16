@@ -1,8 +1,14 @@
 package de.muenchen.oss.foerdermittel.backend.traeger;
 
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerMapper;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.math.BigDecimal;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TraegerService {
 
     private final TraegerRepository traegerRepository;
+    private final TraegerMapper traegerMapper;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -55,4 +62,17 @@ public class TraegerService {
         ServiceUtils.getEntityOrThrowNotFoundException(traegerId, traegerRepository, Traeger.class);
         traegerRepository.deleteById(traegerId);
     }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<TraegerFormContextDTO> getTraegerFormContextDTOs() {
+        return traegerMapper.toFormContext(traegerRepository.findAll());
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public void checkExistsByTraeger(final BigDecimal traeger) {
+        ServiceUtils.checkExistsOrThrowNotFoundException(traeger, traegerRepository, Traeger.class);
+    }
+
 }
