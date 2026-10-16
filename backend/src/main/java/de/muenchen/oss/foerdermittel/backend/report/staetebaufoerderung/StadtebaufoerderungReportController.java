@@ -1,0 +1,64 @@
+package de.muenchen.oss.foerdermittel.backend.report.staetebaufoerderung;
+
+import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
+import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
+import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStaedtebaufoerderungDTO;
+import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStaedtebaufoerderungFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.sf.jasperreports.engine.JRException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.sql.SQLException;
+
+@RestController
+@Slf4j
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
+@RequiredArgsConstructor
+@RequestMapping("/report")
+@SecurityRequirement(name = OpenAPIDocumentationConfiguration.SECURITY_SCHEME_NAME)
+public class StadtebaufoerderungReportController {
+
+    private final StaedtebaufoerderungReportService staedtebaufoerderungReportService;
+
+    @GetMapping("/staedtebaufoerderung")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            responses = @ApiResponse(
+                    responseCode = "200",
+                    description = "OK",
+                    content = {
+                            @Content(
+                                    mediaType = MediaType.APPLICATION_PDF_VALUE,
+                                    schema = @Schema(type = "string", format = "binary")
+                            )
+                    }
+            )
+    )
+    public void getReportStichworte(
+            @Valid @ModelAttribute final ReportStaedtebaufoerderungDTO parameters,
+            final HttpServletResponse response)
+            throws IOException, SQLException, JRException {
+        final GeneratedReport generatedReport = staedtebaufoerderungReportService.generateReportStaedtebaufoerderung(parameters);
+        ReportControllerUtil.setMetadata(response, generatedReport);
+        generatedReport.writer().write(response.getOutputStream());
+    }
+
+    @GetMapping(value = "/staedtebaufoerderung/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ReportStaedtebaufoerderungFormContext getReportStaedtebaufoerderungFormContext() {
+        return staedtebaufoerderungReportService.getReportStaedtebaufoerderung();
+    }
+
+}
