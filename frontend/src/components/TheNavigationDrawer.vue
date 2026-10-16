@@ -137,9 +137,15 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.termin.modelName", 2),
+        props: {
+          to: "/termine",
+        },
       },
       {
         title: t("model.istkosten.modelName"),
+        props: {
+          to: "/istkosten",
+        },
       },
       {
         title: t("model.archiv.modelName"),
@@ -288,13 +294,19 @@ const navigationItems: NavigationItem[] = [
         title: t("domain.report.bewilligungAuzahlungVergleich"),
       },
       {
-        title: t("domain.report.fortsetzungsAntrag", 2),
+        title: t("domain.report.fortsetzungsAntrag.modelName", 2),
+        props: {
+          to: "/report/fortsetzungsantrag",
+        },
       },
       {
         title: t("domain.kinderbetreuungsEinrichtung", 2),
       },
       {
         title: t("model.haushaltsplanung.modelName", 2),
+        props: {
+          to: "/report/haushaltsplanung",
+        },
       },
       {
         title: t("model.staedtebaufoerderung.modelName", 2),

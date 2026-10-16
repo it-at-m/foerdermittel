@@ -12,6 +12,7 @@ import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
 import jakarta.persistence.EntityNotFoundException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -87,13 +88,15 @@ class ArchivServiceTest {
                     PROJNR,
                     "Test Projekt",
                     "Test Strasse",
-                    "11");
+                    "11",
+                    BigDecimal.valueOf(99));
 
             final ProjektFormContextDTO projektDTO2 = new ProjektFormContextDTO(
                     OTHER_PROJNR,
                     "Test Projekt 2",
                     "Test Strasse 2",
-                    "12");
+                    "12",
+                    BigDecimal.valueOf(99));
 
             final List<ProjektFormContextDTO> projekte = List.of(projektDTO1, projektDTO2);
 

@@ -1,12 +1,19 @@
 import type {
+  GetReportFortsetzungsantragRequest,
+  GetReportHaushaltsplanungRequest,
   GetReportProjektuebersichtRequest,
   GetReportStichworteRequest,
+  ReportFortsetzungsantragFormContext,
+  ReportHaushaltsplanungFormContext,
   ReportProjektuebersichtFormContext,
   ReportStichworteFormContext,
 } from "@/api/generated/foerdermittel-backend";
 import type { ReportApiComposables } from "@/util/composable-helper";
 
-import { ReportControllerApi } from "@/api/generated/foerdermittel-backend";
+import {
+  FortsetzungsantragReportControllerApi,
+  ReportControllerApi,
+} from "@/api/generated/foerdermittel-backend";
 import {
   createReportAPIComposables,
   requireComposables,
@@ -36,6 +43,32 @@ export function useReportStichworteApi(): ReportApiComposables<
   };
 }
 
+//Haushaltsplanung Haushaltsplanung
+
+export const {
+  useGetOpts: useGetReportHaushaltsplanungOpts,
+  useContext: useGetReportHaushaltsplanungFormContext,
+} = requireComposables(
+  createReportAPIComposables<
+    ReportControllerApi,
+    GetReportHaushaltsplanungRequest,
+    ReportHaushaltsplanungFormContext
+  >(ReportControllerApi, {
+    getOpts: (api, req) => api.getReportHaushaltsplanungRequestOpts(req),
+    context: (api) => api.getReportHaushaltsplanungFormContext(),
+  })
+);
+
+export function useReportHaushaltsplanungApi(): ReportApiComposables<
+  GetReportHaushaltsplanungRequest,
+  ReportHaushaltsplanungFormContext
+> {
+  return {
+    getOpts: useGetReportHaushaltsplanungOpts(),
+    context: useGetReportHaushaltsplanungFormContext(),
+  };
+}
+
 export const {
   useGetOpts: useGetReportProjektuebersichtOpts,
   useContext: useGetReportProjektuebersichtFormContext,
@@ -57,5 +90,30 @@ export function useReportProjektuebersichtApi(): ReportApiComposables<
   return {
     getOpts: useGetReportProjektuebersichtOpts(),
     context: useGetReportProjektuebersichtFormContext(),
+  };
+}
+
+//Fortsetzungsantrag
+export const {
+  useGetOpts: useGetReportFortsetzungsantragOpts,
+  useContext: useGetReportFortsetzungsantragFormContext,
+} = requireComposables(
+  createReportAPIComposables<
+    FortsetzungsantragReportControllerApi,
+    GetReportFortsetzungsantragRequest,
+    ReportFortsetzungsantragFormContext
+  >(FortsetzungsantragReportControllerApi, {
+    getOpts: (api, req) => api.getReportFortsetzungsantragRequestOpts(req),
+    context: (api) => api.getReportFortsetzungsantragFormContext(),
+  })
+);
+
+export function useReportFortsetzungsantragApi(): ReportApiComposables<
+  GetReportFortsetzungsantragRequest,
+  ReportFortsetzungsantragFormContext
+> {
+  return {
+    getOpts: useGetReportFortsetzungsantragOpts(),
+    context: useGetReportFortsetzungsantragFormContext(),
   };
 }
