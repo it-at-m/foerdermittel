@@ -11,6 +11,8 @@ import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungFormContext;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungRepository;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungService;
+import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.dto.KurzbezeichnungFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.dto.KurzbezeichnungMapper;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +35,9 @@ public class KurzbezeichnungServiceTest {
 
     @Mock
     private KurzbezeichnungRepository kurzbezeichnungRepository;
+
+    @Mock
+    private KurzbezeichnungMapper kurzbezeichnungMapper;
 
     @InjectMocks
     private KurzbezeichnungService unitUnderTest;
@@ -168,5 +173,68 @@ public class KurzbezeichnungServiceTest {
             assertThat(formContext.kurzbezeichnungen()).isEqualTo(allKurzBez);
         }
 
+    }
+
+    @Nested
+    class GetKurzbezeichnungFormContextDTOs {
+
+        @Test
+        void givenEntitiesExist_thenReturnFormContextDTOs() {
+            // Given
+            final Kurzbezeichnung entity1 = new Kurzbezeichnung("K", "Test 1");
+            final Kurzbezeichnung entity2 = new Kurzbezeichnung("L", "Test 2");
+            final List<Kurzbezeichnung> entities = List.of(entity1, entity2);
+
+            final List<KurzbezeichnungFormContextDTO> expectedDTOs = List.of(
+                    Mockito.mock(KurzbezeichnungFormContextDTO.class),
+                    Mockito.mock(KurzbezeichnungFormContextDTO.class));
+
+            when(kurzbezeichnungRepository.findAll()).thenReturn(entities);
+            when(kurzbezeichnungMapper.toFormContext(entities)).thenReturn(expectedDTOs);
+
+            // When
+            final List<KurzbezeichnungFormContextDTO> result = unitUnderTest.getKurzbezeichnungFormContextDTOs();
+
+            // Then
+            verify(kurzbezeichnungRepository, times(1)).findAll();
+            verify(kurzbezeichnungMapper, times(1)).toFormContext(entities);
+            assertThat(result).isEqualTo(expectedDTOs);
+        }
+    }
+
+    @Nested
+    class CheckExistsByKurzbezeichnung {
+
+        @Test
+        void givenIdExists_thenDoesNotThrowException() {
+            // Given
+            final String id = "K";
+            when(kurzbezeichnungRepository.existsById(id)).thenReturn(true);
+
+            // When / Then
+            Assertions.assertDoesNotThrow(
+                    () -> unitUnderTest.checkExistsByKurzbezeichnung(id));
+
+            verify(kurzbezeichnungRepository, times(1)).existsById(id);
+        }
+
+        @Test
+        void givenIdNotExists_thenThrowNotFoundException() {
+            // Given
+            final String id = "K";
+            when(kurzbezeichnungRepository.existsById(id)).thenReturn(false);
+
+            // When / Then
+            final Exception exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> unitUnderTest.checkExistsByKurzbezeichnung(id));
+
+            verify(kurzbezeichnungRepository, times(1)).existsById(id);
+            assertThat(exception.getMessage()).isEqualTo(
+                    String.format(
+                            "The %s with ID %s was not found.",
+                            Kurzbezeichnung.class.getSimpleName(),
+                            id));
+        }
     }
 }
