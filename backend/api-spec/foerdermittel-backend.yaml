@@ -382,6 +382,47 @@ paths:
           description: OK
       security:
       - bearerAuth: []
+  /projekte/{id}:
+    put:
+      tags:
+      - projekt-controller
+      operationId: updateProjekt
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjektUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjektResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - projekt-controller
+      operationId: deleteProjekt
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /kurzbezeichnungen/{id}:
     put:
       tags:
@@ -1308,6 +1349,97 @@ paths:
                 $ref: "#/components/schemas/PublikationResponseDTO"
       security:
       - bearerAuth: []
+  /projekte:
+    get:
+      tags:
+      - projekt-controller
+      operationId: getProjekte
+      parameters:
+      - name: projnr
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: foerderbereich
+        in: query
+        required: false
+        schema:
+          type: number
+      - name: kurKurzbez
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: uasUa
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: pname
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: pstrasse
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "projnr,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelProjektResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - projekt-controller
+      operationId: createProjekt
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjektCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjektResponseDTO"
+      security:
+      - bearerAuth: []
   /kurzbezeichnungen:
     get:
       tags:
@@ -2093,6 +2225,20 @@ paths:
                 $ref: "#/components/schemas/PublikationFormContext"
       security:
       - bearerAuth: []
+  /projekte/form-context:
+    get:
+      tags:
+      - projekt-controller
+      operationId: getProjektFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjektFormContext"
+      security:
+      - bearerAuth: []
   /kurzbezeichnungen/form-context:
     get:
       tags:
@@ -2666,6 +2812,46 @@ components:
           type: string
         bezeichnung:
           type: string
+    ProjektUpdateDTO:
+      type: object
+      properties:
+        pname:
+          maxLength: 100
+          minLength: 1
+          type: string
+        pstrasse:
+          maxLength: 100
+          minLength: 1
+          type: string
+    ProjektResponseDTO:
+      required:
+      - foerderbereich
+      - jahr
+      - kurKurzbez
+      - lfdnr1
+      - lfdnr2
+      - projnr
+      - uasUa
+      type: object
+      properties:
+        projnr:
+          type: string
+        foerderbereich:
+          type: number
+        kurKurzbez:
+          type: string
+        uasUa:
+          type: string
+        jahr:
+          type: string
+        lfdnr1:
+          type: string
+        lfdnr2:
+          type: string
+        pname:
+          type: string
+        pstrasse:
+          type: string
     KurzbezeichnungUpdateDTO:
       required:
       - bezeichnung
@@ -3109,6 +3295,60 @@ components:
         bezeichnung:
           maxLength: 200
           minLength: 1
+          type: string
+    ProjektCreateDTO:
+      required:
+      - fobFb
+      - jahr
+      - kurKurzbez
+      - lfdnr1
+      - lfdnr2
+      - projnr
+      - uasUa
+      type: object
+      properties:
+        projnr:
+          maxLength: 7
+          minLength: 7
+          pattern: "^[A-Z0-9]{7}$"
+          type: string
+        fobFb:
+          maximum: 99
+          minimum: 0
+          type: integer
+          format: int32
+        kurKurzbez:
+          maxLength: 3
+          minLength: 1
+          pattern: "^[A-Z0-9]+$"
+          type: string
+        uasUa:
+          maxLength: 2
+          minLength: 1
+          pattern: "^[A-Z0-9]+$"
+          type: string
+        jahr:
+          maximum: 99
+          minimum: 0
+          type: integer
+          format: int32
+        lfdnr1:
+          maximum: 9
+          minimum: 0
+          type: integer
+          format: int32
+        lfdnr2:
+          maximum: 99
+          minimum: 0
+          type: integer
+          format: int32
+        pname:
+          maxLength: 100
+          minLength: 0
+          type: string
+        pstrasse:
+          maxLength: 100
+          minLength: 0
           type: string
     KurzbezeichnungCreateDTO:
       required:
@@ -3720,6 +3960,24 @@ components:
       type: object
       properties:
         kurzformen:
+          type: array
+          items:
+            type: string
+    PagedModelProjektResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProjektResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    ProjektFormContext:
+      required:
+      - projekte
+      type: object
+      properties:
+        projekte:
           type: array
           items:
             type: string

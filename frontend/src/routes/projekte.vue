@@ -1,25 +1,26 @@
 <template>
   <base-view :domain-key="domainKey">
     <template #default="{ baseViewLoading }">
-      <!-- @vue-generic {Partial<ProjektResponseDTO>} -->
       <crud-card
-        ref="crudRef"
-        v-model="dataTableOptions"
         :empty-item-template="EMPTY_ITEM_TEMPLATE"
-        :loading="loading || baseViewLoading"
+        :loading="baseViewLoading"
         :table-headers="headers"
+        :filter-keys="['projnr']"
+        :api="projektApi"
         :domain-key="domainKey"
-        :enable-actions="isAdmin"
-        :items="projekte?.content ?? []"
-        :total-items="projekte?.page?.totalElements ?? 0"
-
-        @create="handleCreate"
-
+        :handle-create="handleCreate"
+        :handle-update="handleUpdate"
+        :handle-delete="handleDelete"
+        :form-ref="projektFormRef"
+        should-load-form-context
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <projekt-form
+            v-if="projektFormContext"
+            ref="projektForm"
             :model-value="item"
             :display-mode="inputDisplayMode"
+            :projekt-form-context="projektFormContext"
             @is-valid="updateValidity"
           />
         </template>
@@ -29,9 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import type {
-  ProjektResponseDTO
-} from "@/api/generated/foerdermittel-backend";
+import type { ProjektResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
 import { computed, useTemplateRef } from "vue";
@@ -40,14 +39,7 @@ import { useI18n } from "vue-i18n";
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
 import ProjektForm from "@/components/forms/ProjektForm.vue";
-import {
-  useCreateProjekt,
-  useGetProjekte,
-  useGetProjektFormContext,
-} from "@/composables/api/useProjektApi";
-import useHasAnyRole from "@/composables/useHasAnyRole";
-import usePagination from "@/composables/usePagination";
-import { Role } from "@/types/Role";
+import { useProjektApi } from "@/composables/api/useProjektApi";
 
 const domainKey = "model.projekt.modelName";
 
@@ -61,7 +53,7 @@ const headers: DataTableHeader<Partial<ProjektResponseDTO>>[] = [
   },
   {
     title: t("model.projekt.fobFb"),
-    value: "fobFb",
+    value: "foerderbereich",
     sortable: true,
   },
   {
@@ -75,12 +67,12 @@ const headers: DataTableHeader<Partial<ProjektResponseDTO>>[] = [
     sortable: true,
   },
   {
-    title: t("model.projekt.pname"),
+    title: t("model.projekt.name"),
     value: "pname",
     sortable: true,
   },
   {
-    title: t("model.projekt.pstrasse"),
+    title: t("model.projekt.strasse"),
     value: "pstrasse",
     sortable: true,
   },
@@ -88,56 +80,39 @@ const headers: DataTableHeader<Partial<ProjektResponseDTO>>[] = [
 
 const EMPTY_ITEM_TEMPLATE: Partial<ProjektResponseDTO> = {
   projnr: "",
-  fobFb: undefined,
+  foerderbereich: undefined,
   kurKurzbez: undefined,
   uasUa: undefined,
   pname: "",
   pstrasse: "",
 };
 
-const isAdmin = useHasAnyRole(Role.ADMIN);
+const projektApi = useProjektApi();
 
-const {
-  data: projekte,
-  call: getProjekte,
-  loading: getProjekteLoading,
-} = useGetProjekte();
-
-const {
-  data: projektFormContext,
-  call: getProjektFormContext,
-  loading: getProjektFormContextLoading,
-} = useGetProjektFormContext();
+const projektFormContext = computed(() => projektApi.context.data.value);
 
 type ProjektFormType = InstanceType<typeof ProjektForm>;
 const projektFormRef = useTemplateRef<ProjektFormType>("projektForm");
 
-const { dataTableOptions, onSuccess, onFailure } = usePagination(
-  computed(() => projekte.value?.page?.totalPages),
-  getProjekte,
-  isAdmin,
-  getProjektFormContext,
-  () => projektFormRef.value?.validate()
-);
-
-const {
-  call: createProjekt,
-  loading: createProjektLoading,
-  error: createProjekteError,
-} = useCreateProjekt();
-
 const handleCreate = async (projektCreateDTO: Partial<ProjektResponseDTO>) => {
   // TODO: some type checking improvements
   const model = projektCreateDTO as ProjektResponseDTO;
-  await createProjekt({
+  await projektApi.create.call({
     projektCreateDTO: model,
   });
-  if (!createProjekteError.value) {
-    await onSuccess(t("common.message.created", [t(domainKey)]));
-  } else {
-    await onFailure(t("common.message.createdError", [t(domainKey)]));
-  }
 };
 
-const loading = computed(() => getProjekteLoading.value);
+const handleUpdate = async (projektUpdateDTO: Partial<ProjektResponseDTO>) => {
+  // TODO: some type checking improvements
+  const model = projektUpdateDTO as ProjektResponseDTO;
+  await projektApi.update.call({
+    id: model.projnr,
+    projektUpdateDTO: model,
+  });
+};
+const handleDelete = async (id: string) => {
+  await projektApi.delete.call({
+    id,
+  });
+};
 </script>
