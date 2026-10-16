@@ -143,6 +143,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.istkosten.modelName"),
+        props: {
+          to: "/istkosten",
+        },
       },
       {
         title: t("model.archiv.modelName"),
@@ -291,7 +294,10 @@ const navigationItems: NavigationItem[] = [
         title: t("domain.report.bewilligungAuzahlungVergleich"),
       },
       {
-        title: t("domain.report.fortsetzungsAntrag", 2),
+        title: t("domain.report.fortsetzungsAntrag.modelName", 2),
+        props: {
+          to: "/report/fortsetzungsantrag",
+        },
       },
       {
         title: t("domain.kinderbetreuungsEinrichtung", 2),
