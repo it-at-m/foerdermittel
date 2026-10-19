@@ -255,8 +255,18 @@
           "pdfFlat": "PDF: keine Gruppierung",
           "excel": "Excel"
         }
+      },
+      "staedtebaufoerderung": {
+        "staedtebaufoerderung": "Städtebauförderung",
+        "notizen": "Ausgabe Notizen",
+        "pname": "Projektname",
+        "jahrVon": "Jahr von",
+        "jahrBis": "Jahr bis",
+        "traeger": "Träger",
+        "type": {
+          "pdf": "PDF"
+        }
       }
-    }
   },
   "view": {
     "index": {
@@ -280,4 +290,5 @@
       "dark": "Dunkel"
     }
   }
+}
 }

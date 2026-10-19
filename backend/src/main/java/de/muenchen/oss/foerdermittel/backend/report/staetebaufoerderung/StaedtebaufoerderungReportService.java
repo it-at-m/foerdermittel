@@ -4,8 +4,7 @@ import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
 import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
 import de.muenchen.oss.foerdermittel.backend.report.ReportService;
 import de.muenchen.oss.foerdermittel.backend.report.ReportType;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStaedtebaufoerderungDTO;
-import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStaedtebaufoerderungFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.staetebaufoerderung.dto.ReportStaedtebaufoerderungDTO;
 import de.muenchen.oss.foerdermittel.backend.report.staetebaufoerderung.dto.StaedtebaufoerderungReportMapper;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.traeger.TraegerService;
@@ -23,8 +22,6 @@ import org.springframework.util.StringUtils;
 @Transactional
 public class StaedtebaufoerderungReportService {
 
-    public static final String SORT_PARAMETER = "P_SORT";
-
     private final TraegerService traegerService;
     private final ReportService reportService;
     private final StaedtebaufoerderungReportMapper reportStaedtebaufoerderungReportMapper;
@@ -37,7 +34,7 @@ public class StaedtebaufoerderungReportService {
             traegerService.checkExistsByTraeger(new BigDecimal(parameters.traeger()));
         }
         return reportService.generateReport(reportStaedtebaufoerderungReportMapper.toJasperParameters(parameters), ReportType.FMW_STAEDTEBAU, ReportFormat.PDF,
-                "ORDER BY bdat ASC, nr ASC");
+                "ORDER BY v_bdatum ASC");
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)

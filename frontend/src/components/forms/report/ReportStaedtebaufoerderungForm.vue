@@ -7,7 +7,7 @@
     <v-row>
       <v-col
         cols="12"
-        md="6"
+        md="3"
       >
         <fm-text-field
           v-model="modelValue.parameters!.jahrVon"
@@ -20,7 +20,7 @@
           :error-messages="jahrVonError"
         />
       </v-col>
-      <v-col md="6">
+      <v-col md="3">
         <fm-text-field
           v-model="modelValue.parameters!.jahrBis"
           :display-mode="InputDisplayMode.EDIT"
@@ -32,8 +32,6 @@
           :error-messages="jahrBisError"
         />
       </v-col>
-    </v-row>
-    <v-row>
       <v-col
         cols="12"
         md="6"
@@ -50,7 +48,9 @@
           :label="t('domain.report.staedtebaufoerderung.traeger')"
         />
       </v-col>
-      <v-col cols="12">
+    </v-row>
+    <v-row>
+      <v-col cols="12" md="6">
         <fm-text-field
           v-model="modelValue.parameters!.pname"
           :display-mode="InputDisplayMode.EDIT"
@@ -58,19 +58,17 @@
             ReportStaedtebaufoerderungDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="pname"
-          :label="t('model.projekt.pname')"
-          density="comfortable"
+          :label="t('domain.report.staedtebaufoerderung.pname')"
+          density="comfort"
         />
       </v-col>
-    </v-row>
-    <v-row>
       <v-col
         cols="12"
         md="6"
       >
         <fm-checkbox
-          v-model="modelValue.parameters!.notiz"
-          :label="t('model.report.staedtebaufoerderung.notizen')"
+          v-model="modelValue.parameters!.notizen"
+          :label="t('domain.report.staedtebaufoerderung.notizen')"
         />
       </v-col>
     </v-row>

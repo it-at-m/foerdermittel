@@ -1,6 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.report.staetebaufoerderung.dto;
 
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStaedtebaufoerderungDTO;
 import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
 import java.util.HashMap;
 import java.util.Map;

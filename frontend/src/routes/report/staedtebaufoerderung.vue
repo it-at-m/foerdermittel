@@ -46,7 +46,7 @@ definePage({
 
 const { t } = useI18n();
 const title = t("common.generics.reportTitle", [
-  t("domain.staedtebaufoerderung.modelName", 1),
+  t("domain.report.staedtebaufoerderung.staedtebaufoerderung", 1),
 ]);
 
 const EMPTY_FORM_TEMPLATE: Partial<GetReportStaedtebaufoerderungRequest> = {

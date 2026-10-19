@@ -19,7 +19,7 @@ export const {
     GetReportStaedtebaufoerderungRequest,
     ReportStaedtebaufoerderungFormContext
   >(StaedtebaufoerderungReportControllerApi, {
-    getOpts: (api, req) => api.useGetReportStaedtebaufoerderungOpts(req),
+    getOpts: (api, req) => api.getReportStaedtebaufoerderungRequestOpts(req),
     context: (api) => api.getReportStaedtebaufoerderungFormContext(),
   })
 );

@@ -1,6 +1,6 @@
 package de.muenchen.oss.foerdermittel.backend.traeger.dto;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotNull;
 
 /// DTO for [de.muenchen.oss.foerdermittel.backend.publikation.Publikation] to be used in
 /// other FormContexts other than its own.

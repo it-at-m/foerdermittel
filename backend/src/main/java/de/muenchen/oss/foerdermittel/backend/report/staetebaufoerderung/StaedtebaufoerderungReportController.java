@@ -2,8 +2,7 @@ package de.muenchen.oss.foerdermittel.backend.report.staetebaufoerderung;
 
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
 import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStaedtebaufoerderungDTO;
-import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStaedtebaufoerderungFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.staetebaufoerderung.dto.ReportStaedtebaufoerderungDTO;
 import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,7 +18,11 @@ import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JRException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
@@ -27,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/report")
 @SecurityRequirement(name = OpenAPIDocumentationConfiguration.SECURITY_SCHEME_NAME)
-public class StadtebaufoerderungReportController {
+public class StaedtebaufoerderungReportController {
 
     private final StaedtebaufoerderungReportService staedtebaufoerderungReportService;
 
@@ -45,7 +48,7 @@ public class StadtebaufoerderungReportController {
                     }
             )
     )
-    public void getReportStichworte(
+    public void getReportStaedtebaufoerderung(
             @Valid @ModelAttribute final ReportStaedtebaufoerderungDTO parameters,
             final HttpServletResponse response)
             throws IOException, SQLException, JRException {
