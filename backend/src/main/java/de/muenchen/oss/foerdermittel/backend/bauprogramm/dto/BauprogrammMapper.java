@@ -5,6 +5,8 @@ import de.muenchen.oss.foerdermittel.backend.common.NumberMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(uses = NumberMapper.class)
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public interface BauprogrammMapper {
@@ -17,5 +19,9 @@ public interface BauprogrammMapper {
 
     @Mapping(target = "bauprogramm", ignore = true)
     Bauprogramm toEntity(BauprogrammUpdateDTO bauprogrammUpdateDTO);
+
+    BauprogrammFormContextDTO toFormContext(Bauprogramm bauprogramm);
+
+    List<BauprogrammFormContextDTO> toFormContext(List<Bauprogramm> bauprogrammList);
 
 }

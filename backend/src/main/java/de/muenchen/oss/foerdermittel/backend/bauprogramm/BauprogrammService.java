@@ -1,8 +1,12 @@
 package de.muenchen.oss.foerdermittel.backend.bauprogramm;
 
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammMapper;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.math.BigDecimal;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BauprogrammService {
 
     private final BauprogrammRepository bauprogrammRepository;
+    private final BauprogrammMapper bauprogrammMapper;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -52,6 +57,18 @@ public class BauprogrammService {
         log.debug("Delete Bauprogramm with ID {}", bauprogrammId);
         ServiceUtils.getEntityOrThrowNotFoundException(bauprogrammId, bauprogrammRepository, Bauprogramm.class);
         bauprogrammRepository.deleteById(bauprogrammId);
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<BauprogrammFormContextDTO> getBauprogrammFormContextDTOs() {
+        return bauprogrammMapper.toFormContext(bauprogrammRepository.findAll());
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public void checkExistsByBauprogramm(final BigDecimal bauprogrammId) {
+        ServiceUtils.checkExistsOrThrowNotFoundException(bauprogrammId, bauprogrammRepository, Bauprogramm.class);
     }
 
 }

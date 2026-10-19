@@ -3,6 +3,7 @@ package de.muenchen.oss.foerdermittel.backend.report.util;
 import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
+import org.springframework.util.StringUtils;
 
 public final class ReportControllerUtil {
 
@@ -15,5 +16,23 @@ public final class ReportControllerUtil {
         response.setHeader(
                 HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + generatedReport.fileName() + "\"");
+    }
+
+    public static String nullIfBlank(final String value) {
+        if (!StringUtils.hasText(value)
+                || "null".equalsIgnoreCase(value)) {
+            return null;
+        }
+
+        return value.trim();
+    }
+
+    public static String toLikeParameter(final String value) {
+        if (!StringUtils.hasText(value)
+                || "null".equalsIgnoreCase(value)) {
+            return null;
+        }
+
+        return "%" + value.trim() + "%";
     }
 }
