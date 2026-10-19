@@ -3738,9 +3738,10 @@ components:
           minLength: 0
           type: string
         publikation:
+          pattern: "^[A-Z0-9]+$"
           type: string
         referatId:
-          pattern: "^(?:[1-9]|[1-9][0-9])$"
+          pattern: "^(?:[1-9]|1[0-7]|20)$"
           type: string
         sort:
           type: string
