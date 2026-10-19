@@ -14,7 +14,7 @@ public class StaedtebaufoerderungReportMapper {
         parameters.put("P_JAHR_VON", ReportControllerUtil.nullIfBlank(dto.jahrVon()));
         parameters.put("P_PNAME", ReportControllerUtil.toLikeParameter(dto.pname()));
         parameters.put("P_TRAEGER", ReportControllerUtil.nullIfBlank(dto.traeger()));
-        parameters.put("P_NOTIZEN", dto.notizen());
+        parameters.put("P_NOTIZ", dto.notizen());
         return parameters;
     }
 }

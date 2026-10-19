@@ -34,7 +34,7 @@ public class StaedtebaufoerderungReportService {
             traegerService.checkExistsByTraeger(new BigDecimal(parameters.traeger()));
         }
         return reportService.generateReport(reportStaedtebaufoerderungReportMapper.toJasperParameters(parameters), ReportType.FMW_STAEDTEBAU, ReportFormat.PDF,
-                "ORDER BY v_bdatum ASC");
+                "ORDER BY bdat ASC");
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
