@@ -5,7 +5,7 @@ import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
 import de.muenchen.oss.foerdermittel.backend.report.ReportService;
 import de.muenchen.oss.foerdermittel.backend.report.ReportType;
 import de.muenchen.oss.foerdermittel.backend.report.staetebaufoerderung.dto.ReportStaedtebaufoerderungDTO;
-import de.muenchen.oss.foerdermittel.backend.report.staetebaufoerderung.dto.StaedtebaufoerderungReportMapper;
+import de.muenchen.oss.foerdermittel.backend.report.staetebaufoerderung.dto.ReportStaedtebaufoerderungMapper;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.traeger.TraegerService;
 import java.math.BigDecimal;
@@ -24,7 +24,7 @@ public class StaedtebaufoerderungReportService {
 
     private final TraegerService traegerService;
     private final ReportService reportService;
-    private final StaedtebaufoerderungReportMapper reportStaedtebaufoerderungReportMapper;
+    private final ReportStaedtebaufoerderungMapper reportReportStaedtebaufoerderungMapper;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -33,7 +33,7 @@ public class StaedtebaufoerderungReportService {
         if (StringUtils.hasText(parameters.traeger())) {
             traegerService.checkExistsByTraeger(new BigDecimal(parameters.traeger()));
         }
-        return reportService.generateReport(reportStaedtebaufoerderungReportMapper.toJasperParameters(parameters), ReportType.FMW_STAEDTEBAU, ReportFormat.PDF,
+        return reportService.generateReport(reportReportStaedtebaufoerderungMapper.toJasperParameters(parameters), ReportType.FMW_STAEDTEBAU, ReportFormat.PDF,
                 "ORDER BY bdat ASC");
     }
 

@@ -34,7 +34,7 @@ public class StaedtebaufoerderungReportController {
 
     private final StaedtebaufoerderungReportService staedtebaufoerderungReportService;
 
-    @GetMapping("/staedtebaufoerderung")
+    @GetMapping("/staedtebaufoerderungen")
     @ResponseStatus(HttpStatus.OK)
     @Operation(
             responses = @ApiResponse(
@@ -57,7 +57,7 @@ public class StaedtebaufoerderungReportController {
         generatedReport.writer().write(response.getOutputStream());
     }
 
-    @GetMapping(value = "/staedtebaufoerderung/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/staedtebaufoerderungen/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ReportStaedtebaufoerderungFormContext getReportStaedtebaufoerderungFormContext() {
         return staedtebaufoerderungReportService.getReportStaedtebaufoerderung();

@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 @Component
-public class StaedtebaufoerderungReportMapper {
+public class ReportStaedtebaufoerderungMapper {
 
     public Map<String, Object> toJasperParameters(final ReportStaedtebaufoerderungDTO dto) {
         final Map<String, Object> parameters = new HashMap<>();
