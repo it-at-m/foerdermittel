@@ -2837,7 +2837,7 @@ components:
         projnr:
           type: string
         foerderbereich:
-          type: number
+          type: string
         kurKurzbez:
           type: string
         uasUa:

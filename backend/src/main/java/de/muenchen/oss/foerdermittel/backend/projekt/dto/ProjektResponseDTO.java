@@ -7,7 +7,7 @@ import lombok.Builder;
 @Builder
 public record ProjektResponseDTO(
         @NotNull String projnr,
-        @NotNull BigDecimal foerderbereich,
+        @NotNull String foerderbereich,
         @NotNull String kurKurzbez,
         @NotNull String uasUa,
         @NotNull String jahr,

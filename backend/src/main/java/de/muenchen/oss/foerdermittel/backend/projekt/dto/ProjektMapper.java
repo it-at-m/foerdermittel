@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ProjektMapper {
 
+    @Mapping(source = "foerderbereich.fb", target = "foerderbereich")
     ProjektResponseDTO toDTO(Projekt projekt);
 
     Projekt toEntity(ProjektCreateDTO projektCreateDTO);
