@@ -207,6 +207,17 @@
       "funktionsbeschreibung": "Funktionsbeschreibung dieser Ansicht",
       "bedienung": "Hinweise zur Bedienung",
       "pruefungVorgaben": "Prüfungen und Vorgaben"
+    },
+    "krisofp": {
+      "modelName": "Krisofp | Krisofps",
+      "x": "1.+2. SIP - KriSoFö 2008-2014",
+      "y": "3. SIP - Kinderbetreuung 2015-2019",
+      "z": "4. SIP - Kinderbetreuung 2017-2020/2021",
+      "w": "5. SIP - Schulkindbetreuung Land (Hortförd. GS)",
+      "v": "Schulkindbetreuung - Bund (GaFöG)",
+      "k": "KJP II",
+      "f": "FAGplus15",
+      "s": "Startchancen-Programm (SCP)"
     }
   },
   "domain": {
