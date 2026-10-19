@@ -186,7 +186,7 @@ class PublikationServiceTest {
     }
 
     @Nested
-    class PublikationFormContextDTOTests {
+    class GetPublikationFormContextDTO {
 
         private static final String KURZFORM = "K";
 
