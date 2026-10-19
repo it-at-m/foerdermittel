@@ -49,14 +49,12 @@ class PublikationServiceTest {
             final Publikation entity1 = new Publikation("K", "Test 1");
             final Publikation entity2 = new Publikation("L", "Test 2");
             final List<Publikation> entities = Arrays.asList(entity1, entity2);
-            final Page<Publikation> expectedPage =
-                    new PageImpl<>(entities, pageable, entities.size());
+            final Page<Publikation> expectedPage = new PageImpl<>(entities, pageable, entities.size());
 
             when(publikationRepository.findAll(pageable)).thenReturn(expectedPage);
 
             // When
-            final Page<Publikation> result =
-                    unitUnderTest.getPublikationen(pageable);
+            final Page<Publikation> result = unitUnderTest.getPublikationen(pageable);
 
             // Then
             verify(publikationRepository, times(1)).findAll(pageable);
@@ -179,8 +177,7 @@ class PublikationServiceTest {
             when(publikationRepository.findAllKurzformen()).thenReturn(allKurzformen);
 
             // When
-            final PublikationFormContext formContext =
-                    unitUnderTest.getPublikationFormContext();
+            final PublikationFormContext formContext = unitUnderTest.getPublikationFormContext();
 
             // Then
             verify(publikationRepository, times(1)).findAllKurzformen();
@@ -200,8 +197,7 @@ class PublikationServiceTest {
             final String bezeichnung = BEZEICHNUNG;
 
             // When
-            final PublikationFormContextDTO result =
-                    new PublikationFormContextDTO(kurzform, bezeichnung);
+            final PublikationFormContextDTO result = new PublikationFormContextDTO(kurzform, bezeichnung);
 
             // Then
             assertThat(result.kurzform()).isEqualTo(kurzform);
@@ -211,8 +207,7 @@ class PublikationServiceTest {
         @Test
         void givenNullKurzform_thenCreateDTOWithNullKurzform() {
             // When
-            final PublikationFormContextDTO result =
-                    new PublikationFormContextDTO(null, BEZEICHNUNG);
+            final PublikationFormContextDTO result = new PublikationFormContextDTO(null, BEZEICHNUNG);
 
             // Then
             assertThat(result.kurzform()).isNull();
@@ -222,8 +217,7 @@ class PublikationServiceTest {
         @Test
         void givenNullBezeichnung_thenCreateDTOWithNullBezeichnung() {
             // When
-            final PublikationFormContextDTO result =
-                    new PublikationFormContextDTO(KURZFORM, null);
+            final PublikationFormContextDTO result = new PublikationFormContextDTO(KURZFORM, null);
 
             // Then
             assertThat(result.kurzform()).isEqualTo(KURZFORM);
@@ -233,8 +227,7 @@ class PublikationServiceTest {
         @Test
         void givenBothValuesNull_thenCreateDTOWithNullValues() {
             // When
-            final PublikationFormContextDTO result =
-                    new PublikationFormContextDTO(null, null);
+            final PublikationFormContextDTO result = new PublikationFormContextDTO(null, null);
 
             // Then
             assertThat(result.kurzform()).isNull();
@@ -244,10 +237,8 @@ class PublikationServiceTest {
         @Test
         void givenEqualDTOs_thenTheyAreEqual() {
             // Given
-            final PublikationFormContextDTO dto1 =
-                    new PublikationFormContextDTO(KURZFORM, BEZEICHNUNG);
-            final PublikationFormContextDTO dto2 =
-                    new PublikationFormContextDTO(KURZFORM, BEZEICHNUNG);
+            final PublikationFormContextDTO dto1 = new PublikationFormContextDTO(KURZFORM, BEZEICHNUNG);
+            final PublikationFormContextDTO dto2 = new PublikationFormContextDTO(KURZFORM, BEZEICHNUNG);
 
             // Then
             assertThat(dto1)
@@ -258,10 +249,8 @@ class PublikationServiceTest {
         @Test
         void givenDifferentDTOs_thenTheyAreNotEqual() {
             // Given
-            final PublikationFormContextDTO dto1 =
-                    new PublikationFormContextDTO(KURZFORM, BEZEICHNUNG);
-            final PublikationFormContextDTO dto2 =
-                    new PublikationFormContextDTO("L", BEZEICHNUNG);
+            final PublikationFormContextDTO dto1 = new PublikationFormContextDTO(KURZFORM, BEZEICHNUNG);
+            final PublikationFormContextDTO dto2 = new PublikationFormContextDTO("L", BEZEICHNUNG);
 
             // Then
             assertThat(dto1).isNotEqualTo(dto2);

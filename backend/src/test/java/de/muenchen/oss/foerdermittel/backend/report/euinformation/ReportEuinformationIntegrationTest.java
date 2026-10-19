@@ -6,7 +6,6 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
 import de.muenchen.oss.foerdermittel.backend.TestUtils;
-import de.muenchen.oss.foerdermittel.backend.report.euinformation.dto.ReportEuinformationSort;
 import de.muenchen.oss.foerdermittel.backend.report.euinformation.formcontext.ReportEuinformationFormContext;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Nested;
@@ -15,9 +14,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -42,10 +41,9 @@ class ReportEuinformationenIntegrationTest {
     @Container
     @ServiceConnection
     @SuppressWarnings("unused")
-    private static final PostgreSQLContainer POSTGRE_SQL_CONTAINER =
-            new PostgreSQLContainer(
-                    DockerImageName.parse(
-                            TestUtils.getImageFromDockerCompose("postgres")));
+    private static final PostgreSQLContainer POSTGRE_SQL_CONTAINER = new PostgreSQLContainer(
+            DockerImageName.parse(
+                    TestUtils.getImageFromDockerCompose("postgres")));
 
     @Nested
     class GetReportEuinformationen {
@@ -75,20 +73,19 @@ class ReportEuinformationenIntegrationTest {
 
         @Test
         void givenRequest_thenReturnFormContext() {
-            final ReportEuinformationFormContext result =
-                    restTestClient.get()
-                            .uri("/report/euinformationen/form-context")
-                            .header(
-                                    HttpHeaders.AUTHORIZATION,
-                                    "Bearer admin")
-                            .exchange()
-                            .expectStatus().isOk()
-                            .expectHeader()
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .expectBody(
-                                    ReportEuinformationFormContext.class)
-                            .returnResult()
-                            .getResponseBody();
+            final ReportEuinformationFormContext result = restTestClient.get()
+                    .uri("/report/euinformationen/form-context")
+                    .header(
+                            HttpHeaders.AUTHORIZATION,
+                            "Bearer admin")
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectHeader()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .expectBody(
+                            ReportEuinformationFormContext.class)
+                    .returnResult()
+                    .getResponseBody();
 
             assertThat(result).isNotNull();
         }
