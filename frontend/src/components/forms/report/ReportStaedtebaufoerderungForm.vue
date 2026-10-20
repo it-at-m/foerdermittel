@@ -20,7 +20,11 @@
           :error-messages="jahrVonError"
         />
       </v-col>
-      <v-col md="3">
+
+      <v-col
+        cols="12"
+        md="3"
+      >
         <fm-text-field
           v-model="modelValue.parameters!.jahrBis"
           :display-mode="InputDisplayMode.EDIT"
@@ -32,6 +36,7 @@
           :error-messages="jahrBisError"
         />
       </v-col>
+
       <v-col
         cols="12"
         md="6"
@@ -46,6 +51,7 @@
         />
       </v-col>
     </v-row>
+
     <v-row>
       <v-col
         cols="12"
@@ -62,6 +68,7 @@
           density="comfort"
         />
       </v-col>
+
       <v-col
         cols="12"
         md="6"
@@ -112,11 +119,13 @@ function onValidityChanged(newIsValid: boolean | null) {
 }
 
 const formRef = useTemplateRef<VForm>("form");
+
 async function validate() {
   if (formRef.value) {
     await formRef.value.validate();
   }
 }
+
 defineExpose({
   validate,
 });
@@ -124,6 +133,7 @@ defineExpose({
 function getTraegerTitle(item: TraegerFormContextDTO) {
   return item ? `${item.kurzform} (${item.bezeichnung})` : "";
 }
+
 const jahrVonError = computed(() => {
   const von = modelValue.value.parameters?.jahrVon;
   const bis = modelValue.value.parameters?.jahrBis;

@@ -311,7 +311,7 @@ const navigationItems: NavigationItem[] = [
       {
         title: t("model.staedtebaufoerderung.modelName", 2),
         props: {
-          to: "/report/staedtebaufoerderung",
+          to: "/report/staedtebaufoerderungen",
         },
       },
       {

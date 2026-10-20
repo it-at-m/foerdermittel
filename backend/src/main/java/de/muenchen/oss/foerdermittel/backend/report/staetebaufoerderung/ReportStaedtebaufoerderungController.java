@@ -28,13 +28,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 @RequiredArgsConstructor
-@RequestMapping("/report")
+@RequestMapping("/report/staedtebaufoerderungen")
 @SecurityRequirement(name = OpenAPIDocumentationConfiguration.SECURITY_SCHEME_NAME)
 public class ReportStaedtebaufoerderungController {
 
     private final ReportStaedtebaufoerderungService reportStaedtebaufoerderungService;
 
-    @GetMapping("/staedtebaufoerderungen")
+    @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     @Operation(
             responses = @ApiResponse(
@@ -57,7 +57,7 @@ public class ReportStaedtebaufoerderungController {
         generatedReport.writer().write(response.getOutputStream());
     }
 
-    @GetMapping(value = "/staedtebaufoerderungen/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ReportStaedtebaufoerderungFormContext getReportStaedtebaufoerderungFormContext() {
         return reportStaedtebaufoerderungService.getReportStaedtebaufoerderung();

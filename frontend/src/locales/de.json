@@ -292,16 +292,13 @@
         }
       },
       "staedtebaufoerderung": {
-        "staedtebaufoerderung": "Städtebauförderung",
         "notizen": "Ausgabe Notizen",
         "pname": "Projektname",
         "jahrVon": "Jahr von",
         "jahrBis": "Jahr bis",
-        "traeger": "Träger",
-        "type": {
-          "pdf": "PDF"
-        }
+        "traeger": "Träger"
       }
+    }
   },
   "view": {
     "index": {
@@ -325,5 +322,4 @@
       "dark": "Dunkel"
     }
   }
-}
 }

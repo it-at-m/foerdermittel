@@ -4,7 +4,7 @@ import type {
 } from "@/api/generated/foerdermittel-backend";
 import type { ReportApiComposables } from "@/util/composable-helper";
 
-import { StaedtebaufoerderungReportControllerApi } from "@/api/generated/foerdermittel-backend";
+import { ReportStaedtebaufoerderungControllerApi } from "@/api/generated/foerdermittel-backend";
 import {
   createReportAPIComposables,
   requireComposables,
@@ -15,10 +15,10 @@ export const {
   useContext: useGetReportStaedtebaufoerderungFormContext,
 } = requireComposables(
   createReportAPIComposables<
-    StaedtebaufoerderungReportControllerApi,
+      ReportStaedtebaufoerderungControllerApi,
     GetReportStaedtebaufoerderungRequest,
     ReportStaedtebaufoerderungFormContext
-  >(StaedtebaufoerderungReportControllerApi, {
+  >(ReportStaedtebaufoerderungControllerApi, {
     getOpts: (api, req) => api.getReportStaedtebaufoerderungRequestOpts(req),
     context: (api) => api.getReportStaedtebaufoerderungFormContext(),
   })
