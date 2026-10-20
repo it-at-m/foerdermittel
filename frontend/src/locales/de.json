@@ -231,6 +231,14 @@
       "generateJahresStatistik": "Generierung @:domain.statistic.jahresStatistik"
     },
     "report": {
+      "common": {
+        "reportType": {
+          "modelName": "Reporttyp",
+          "pdf": "PDF",
+          "excel": "Excel"
+        },
+        "reportSort": "Sortierung"
+      },
       "projektUebersicht": "@:model.projekt.modelName{'übersicht'}",
       "projektUebersichtManagement": "@:domain.report.projektUebersicht (Management Summary)",
       "annahmeAnordnungSAP": "Annahmeanordnung SAP",
@@ -265,6 +273,24 @@
           "pdf": "PDF: Gruppierung Förderbereich",
           "pdfFlat": "PDF: keine Gruppierung",
           "excel": "Excel"
+        }
+      },
+      "projektUebersichtMs": {
+        "modelName": "Projektübersicht (Management Summary)",
+        "sbl": "für Stadtbezirksliste",
+        "bez": "oder ein Stadtbezirk",
+        "fb": "Förderbereich",
+        "ua": "Unterabteilung",
+        "kurz": "Kurzbezeichnung",
+        "offen": "Nur offene Projekte",
+        "vn": "Nur Projekte mit Vn",
+        "krisofp": "Sonderförderprogramme",
+        "sgt": "Siedlungsgebiet",
+        "bpg": "Bauprogramm",
+        "sortEnum": {
+          "projektnummer": "Projektnummer",
+          "strasseProjektnummer": "Straße, Projektnummer",
+          "fbProjektnummer": "Förderbereich, Projektnummer"
         }
       }
     }

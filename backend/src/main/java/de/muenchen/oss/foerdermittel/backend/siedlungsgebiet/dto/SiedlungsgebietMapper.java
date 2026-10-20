@@ -2,10 +2,9 @@ package de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto;
 
 import de.muenchen.oss.foerdermittel.backend.common.NumberMapper;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.List;
 
 @Mapper(uses = NumberMapper.class)
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")

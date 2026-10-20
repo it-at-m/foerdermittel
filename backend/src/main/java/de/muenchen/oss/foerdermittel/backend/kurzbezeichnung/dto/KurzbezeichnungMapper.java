@@ -1,10 +1,9 @@
 package de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.dto;
 
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.List;
 
 @Mapper
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")

@@ -1,5 +1,5 @@
 <template>
-  <base-view :title="t('domain.report.projektUebersichtMs')">
+  <base-view :title="title">
     <template #default="{ baseViewLoading }">
       <report-card
         :empty-form-template="EMPTY_FORM_TEMPLATE"
@@ -45,6 +45,9 @@ definePage({
 });
 
 const { t } = useI18n();
+const title = t("common.generics.reportTitle", [
+  t("domain.report.projektUebersichtMs.modelName", 1),
+]);
 
 const EMPTY_FORM_TEMPLATE: Partial<GetReportProjektuebersichtMsRequest> = {
   parameters: {

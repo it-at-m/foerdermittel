@@ -18,7 +18,7 @@
             ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="sbl"
-          :label="t('domain.report.projektuebersichtMs.sbl')"
+          :label="t('domain.report.projektUebersichtMs.sbl')"
         />
       </v-col>
     </v-row>
@@ -36,7 +36,7 @@
             ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="bez"
-          :label="t('domain.report.projektuebersichtMs.bez')"
+          :label="t('domain.report.projektUebersichtMs.bez')"
         />
       </v-col>
     </v-row>
@@ -54,7 +54,7 @@
             ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="fb"
-          :label="t('domain.report.projektuebersichtMs.fb')"
+          :label="t('domain.report.projektUebersichtMs.fb')"
         />
       </v-col>
     </v-row>
@@ -72,7 +72,7 @@
             ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="ua"
-          :label="t('domain.report.projektuebersichtMs.ua')"
+          :label="t('domain.report.projektUebersichtMs.ua')"
         />
       </v-col>
     </v-row>
@@ -90,24 +90,24 @@
             ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="kurz"
-          :label="t('domain.report.projektuebersichtMs.kurz')"
+          :label="t('domain.report.projektUebersichtMs.kurz')"
         />
       </v-col>
     </v-row>
     <v-row>
       <v-col
         cols="12"
-        md="6"
+        md="3"
       >
         <fm-checkbox
           v-model="modelValue.parameters!.offen"
-          :label="t('domain.report.projektuebersichtMs.offen')"
+          :label="t('domain.report.projektUebersichtMs.offen')"
         />
       </v-col>
-      <v-col md="6">
+      <v-col md="3">
         <fm-checkbox
           v-model="modelValue.parameters!.vn"
-          :label="t('domain.report.projektuebersichtMs.vn')"
+          :label="t('domain.report.projektUebersichtMs.vn')"
         />
       </v-col>
     </v-row>
@@ -120,33 +120,70 @@
           v-model="modelValue.parameters!.krisofp"
           :items="reportProjektuebersichtMsFormContext?.krisofps"
           :item-title="getKrisofpTitle"
-          item-value="krisofp"
+          :item-value="getKrisofpValue"
           :validation-attribute-map="
             ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="krisofp"
-          :label="t('domain.report.projektuebersichtMs.krisofp')"
+          :label="t('domain.report.projektUebersichtMs.krisofp')"
         />
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12">
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <fm-autocomplete
+          v-model="modelValue.parameters!.sgt"
+          :items="reportProjektuebersichtMsFormContext?.siedlungsgebiete"
+          :item-title="getSiedlungsgebietTitle"
+          item-value="sgt"
+          :validation-attribute-map="
+            ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="sgt"
+          :label="t('domain.report.projektUebersichtMs.sgt')"
+        />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <fm-autocomplete
+          v-model="modelValue.parameters!.bpg"
+          :items="reportProjektuebersichtMsFormContext?.bauprogramme"
+          :item-title="getBauprogrammTitle"
+          item-value="bpg"
+          :validation-attribute-map="
+            ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bpg"
+          :label="t('domain.report.projektUebersichtMs.bpg')"
+        />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-select
           v-model="modelValue.parameters!.sort"
           :items="sortOptions"
           item-value="value"
-          label="t('domain.report.projektuebersichtMs.sortierung')"
+          :label="t('domain.report.common.reportSort')"
           variant="outlined"
         />
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="12">
+      <v-col md="6">
         <v-select
           v-model="modelValue.parameters!.type"
           :items="formatOptions"
           item-value="value"
-          label="t('domain.report.projektuebersichtMs.format')"
+          :label="t('domain.report.common.reportType.modelName')"
           variant="outlined"
         />
       </v-col>
@@ -156,11 +193,14 @@
 
 <script setup lang="ts">
 import type {
+  BauprogrammFormContextDTO,
   FoerderbereichFormContextDTO,
   GetReportProjektuebersichtMsRequest,
   KurzbezeichnungFormContextDTO,
   ListennameStadtbezirkslisteFormContextDTO,
   ReportProjektuebersichtMsFormContext,
+  ReportProjektuebersichtMsFormContextKrisofpsEnum,
+  SiedlungsgebietFormContextDTO,
   StadtbezirkFormContextDTO,
   UnterabschnittFormContextDTO,
 } from "@/api/generated/foerdermittel-backend";
@@ -170,9 +210,7 @@ import type { VForm } from "vuetify/components";
 import { useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
-import {
-  ReportProjektuebersichtMsDTOPropertyValidationAttributesMap,
-} from "@/api/generated/foerdermittel-backend";
+import { ReportProjektuebersichtMsDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
 import { getKrisofpTitle } from "@/util/krisofpUtils";
@@ -217,6 +255,20 @@ function getKurzbezeichnungTitle(item: KurzbezeichnungFormContextDTO) {
   return item ? `${item.kurzbez} (${item.bezeichnung})` : "";
 }
 
+function getKrisofpValue(
+  item: ReportProjektuebersichtMsFormContextKrisofpsEnum
+): string {
+  return item;
+}
+
+function getSiedlungsgebietTitle(item: SiedlungsgebietFormContextDTO) {
+  return item ? `${item.siedlungsgebiet} (${item.bezeichnung})` : "";
+}
+
+function getBauprogrammTitle(item: BauprogrammFormContextDTO) {
+  return item ? `${item.bauprogramm} (${item.bezeichnung})` : "";
+}
+
 const formRef = useTemplateRef<VForm>("form");
 async function validate() {
   if (formRef.value) {
@@ -229,26 +281,26 @@ defineExpose({
 
 const sortOptions = [
   {
-    title: t("domain.report.projektuebersichtMs.sortEnum.projektnummer"),
+    title: t("domain.report.projektUebersichtMs.sortEnum.projektnummer"),
     value: "PROJEKTNUMMER",
   },
   {
-    title: t("domain.report.projektuebersichtMs.sortEnum.strasseProjektnummer"),
+    title: t("domain.report.projektUebersichtMs.sortEnum.strasseProjektnummer"),
     value: "STRASSEPROJNR",
   },
   {
-    title: t("domain.report.projektuebersichtMs.sortEnum.fbProjektnummer"),
+    title: t("domain.report.projektUebersichtMs.sortEnum.fbProjektnummer"),
     value: "FBPROJNR",
   },
 ];
 
 const formatOptions = [
   {
-    title: t("domain.report.projektuebersichtMs.type.pdf"),
+    title: t("domain.report.common.reportType.pdf"),
     value: "PDF",
   },
   {
-    title: t("domain.report.projektuebersichtMs.type.excel"),
+    title: t("domain.report.common.reportType.excel"),
     value: "EXCEL",
   },
 ];
