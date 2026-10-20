@@ -14,6 +14,9 @@
         :handle-delete="handleDelete"
         :form-ref="bauleitungFormRef"
       >
+        <template #filter-form>
+          <p>Das ist ein Test</p>
+        </template>
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <bauleitung-form
             v-if="bauleitungFormContext"

@@ -60,13 +60,13 @@
           />
         </v-col>
       </v-row>
-      <v-row class="mt-2">
-        <v-col>
-          <v-divider />
-        </v-col>
-      </v-row>
     </v-card-title>
     <v-card-text class="pa-0">
+      <filter-panel v-if="$slots['filter-form']">
+        <template #filter-form>
+          <slot name="filter-form" />
+        </template>
+      </filter-panel>
       <div class="d-flex flex-column h-100 overflow-x-hidden">
         <v-data-table-server
           v-model:items-per-page="itemsPerPage"
@@ -154,7 +154,13 @@ import type { ApiComposables } from "@/util/composable-helper";
 import type { Awaitable } from "@vueuse/core";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { mdiDelete, mdiPencil, mdiPlus, mdiTrashCan } from "@mdi/js";
+import {
+  mdiDelete,
+  mdiFilterCog,
+  mdiPencil,
+  mdiPlus,
+  mdiTrashCan,
+} from "@mdi/js";
 import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -166,6 +172,7 @@ import { STATUS_INDICATORS } from "@/constants";
 import { useSnackbarStore } from "@/stores/snackbar";
 import { DialogWidth } from "@/types/DialogWidth";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
+import FilterPanel from "@/components/common/FilterPanel.vue";
 
 const { t } = useI18n();
 
