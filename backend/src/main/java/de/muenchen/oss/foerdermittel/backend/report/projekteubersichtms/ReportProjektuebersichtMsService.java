@@ -50,6 +50,21 @@ public class ReportProjektuebersichtMsService {
         if (StringUtils.hasText(parameters.bez())) {
             stadtbezirkService.checkExistsByStadtbezirk(new BigDecimal(parameters.bez()));
         }
+        if (StringUtils.hasText(parameters.fb())) {
+            foerderbereichService.checkExistsByFoerderbereich(new BigDecimal(parameters.fb()));
+        }
+        if (StringUtils.hasText(parameters.ua())) {
+            unterabschnittService.checkExistsByUnterabschnitt(parameters.ua());
+        }
+        if (StringUtils.hasText(parameters.kurz())) {
+            kurzbezeichnungService.checkExistsByKurzbezeichnung(parameters.kurz());
+        }
+        if (StringUtils.hasText(parameters.sgt())) {
+            siedlungsgebietService.checkExistsBySiedlungsgebiet(new BigDecimal(parameters.sgt()));
+        }
+        if (StringUtils.hasText(parameters.bpg())) {
+            bauprogrammService.checkExistsByBauprogramm(new BigDecimal(parameters.bpg()));
+        }
 
         final String orderBy = parameters.sort().getOrderBy();
 
