@@ -1,9 +1,8 @@
 package de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto;
 
+import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
 import java.util.HashMap;
 import java.util.Map;
-
-import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
 import org.springframework.stereotype.Component;
 
 /// Component responsible for conversion between report DTOs and Jasper parameter maps.

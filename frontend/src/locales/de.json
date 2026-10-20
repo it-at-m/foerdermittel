@@ -134,9 +134,6 @@
       "bauleitung": "Bauleitung",
       "bezeichnung": "Bezeichnung"
     },
-    "fipo": {
-      "modelName": "FIPO"
-    },
     "foerderbereich": {
       "modelName": "Förderbereich | Förderbereiche",
       "fb": "Förderbereich",
