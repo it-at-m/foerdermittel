@@ -1,24 +1,17 @@
 package de.muenchen.oss.foerdermittel.backend.traeger;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
-import de.muenchen.oss.foerdermittel.backend.traeger.dto.*;
-
+import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerCreateDTO;
+import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerMapper;
+import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerResponseDTO;
+import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerUpdateDTO;
 import java.math.BigDecimal;
 import java.util.List;
-
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-import org.mockito.Mockito;
 
 public class TraegerMapperTest {
 
@@ -101,7 +94,5 @@ public class TraegerMapperTest {
             assertThat(dtos.get(1).bezeichnung()).isEqualTo(entity2.getBezeichnung());
         }
     }
-
-
 
 }

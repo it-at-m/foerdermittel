@@ -41,16 +41,16 @@
           :items="reportStaedtebaufoerderungFormContext?.traeger"
           :item-title="getTraegerTitle"
           item-value="kurzform"
-          :validation-attribute-map="
-            ReportStaedtebaufoerderungDTOPropertyValidationAttributesMap
-          "
-          validation-attribute-key="traeger"
           :label="t('domain.report.staedtebaufoerderung.traeger')"
+          :error-messages="traeger"
         />
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <fm-text-field
           v-model="modelValue.parameters!.pname"
           :display-mode="InputDisplayMode.EDIT"
@@ -148,5 +148,19 @@ const jahrBisError = computed(() => {
   return Number(bis) < Number(von)
     ? ["Jahr bis darf nicht kleiner als Jahr von sein."]
     : [];
+});
+
+const traeger = computed(() => {
+  const traeger = modelValue.value.parameters?.traeger;
+
+  if (traeger == null || traeger === "") {
+    return [];
+  }
+
+  return reportStaedtebaufoerderungFormContext?.traeger?.some(
+    (item) => item.kurzform === traeger
+  )
+    ? []
+    : ["Der ausgewählte Träger wurde nicht gefunden."];
 });
 </script>
