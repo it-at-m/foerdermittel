@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.report.dto;
+package de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto;
 
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;

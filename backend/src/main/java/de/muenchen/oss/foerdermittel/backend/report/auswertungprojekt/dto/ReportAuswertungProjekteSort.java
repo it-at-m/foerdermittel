@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.report.dto;
+package de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto;
 
 public enum ReportAuswertungProjekteSort {
 

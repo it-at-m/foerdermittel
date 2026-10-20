@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.report.formcontext;
+package de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt;
 
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichFormContextDTO;

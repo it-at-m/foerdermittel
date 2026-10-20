@@ -8,9 +8,8 @@ import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
 import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
 import de.muenchen.oss.foerdermittel.backend.report.ReportService;
 import de.muenchen.oss.foerdermittel.backend.report.ReportType;
-import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto.AuswertungProjekteReportMapper;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuswertungProjekteDTO;
-import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportAuswertungProjektFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto.ReportAuswertungProjekteDTO;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto.ReportAuswertungProjekteMapper;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietService;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkService;
@@ -29,7 +28,7 @@ import org.springframework.util.StringUtils;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class AuswertungProjekteReportService {
+public class ReportAuswertungProjekteService {
 
     private final FoerderbereichService foerderbereichService;
     private final ListennameStadtbezirkslisteService listennameStadtbezirkslisteService;
@@ -39,7 +38,7 @@ public class AuswertungProjekteReportService {
     private final UnterabschnittService unterabschnittService;
     private final SiedlungsgebietService siedlungsgebietService;
 
-    private final AuswertungProjekteReportMapper reportMapper;
+    private final ReportAuswertungProjekteMapper reportMapper;
     private final ReportService reportService;
     private final ProjektService projektService;
 

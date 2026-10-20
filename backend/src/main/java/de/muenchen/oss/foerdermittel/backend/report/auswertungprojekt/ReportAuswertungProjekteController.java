@@ -3,8 +3,7 @@ package de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt;
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
 import de.muenchen.oss.foerdermittel.backend.report.CustomReportContentTypes;
 import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuswertungProjekteDTO;
-import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportAuswertungProjektFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto.ReportAuswertungProjekteDTO;
 import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -31,9 +30,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/report")
 @SecurityRequirement(name = OpenAPIDocumentationConfiguration.SECURITY_SCHEME_NAME)
-public class AuswertungProjekteReportController {
+public class ReportAuswertungProjekteController {
 
-    private final AuswertungProjekteReportService auswertungProjekteReportService;
+    private final ReportAuswertungProjekteService reportAuswertungProjekteService;
 
     @GetMapping("/auswertungprojekte")
     @ResponseStatus(HttpStatus.OK)
@@ -57,7 +56,7 @@ public class AuswertungProjekteReportController {
             @Valid @ModelAttribute final ReportAuswertungProjekteDTO parameters,
             final HttpServletResponse response)
             throws IOException, SQLException, JRException {
-        final GeneratedReport generatedReport = auswertungProjekteReportService.generateReportAuswertungProjekt(parameters);
+        final GeneratedReport generatedReport = reportAuswertungProjekteService.generateReportAuswertungProjekt(parameters);
         ReportControllerUtil.setMetadata(response, generatedReport);
         generatedReport.writer().write(response.getOutputStream());
     }
@@ -65,7 +64,7 @@ public class AuswertungProjekteReportController {
     @GetMapping(value = "/auswertungprojekte/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ReportAuswertungProjektFormContext getReportAuswertungProjektFormContext() {
-        return auswertungProjekteReportService.getReportAuswertungProjekt();
+        return reportAuswertungProjekteService.getReportAuswertungProjekt();
     }
 
 }

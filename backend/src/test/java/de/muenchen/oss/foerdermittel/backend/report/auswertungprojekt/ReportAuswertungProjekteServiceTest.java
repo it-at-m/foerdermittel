@@ -21,10 +21,9 @@ import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
 import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
 import de.muenchen.oss.foerdermittel.backend.report.ReportService;
 import de.muenchen.oss.foerdermittel.backend.report.ReportType;
-import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto.AuswertungProjekteReportMapper;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuswertungProjekteDTO;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuswertungProjekteSort;
-import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportAuswertungProjektFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto.ReportAuswertungProjekteDTO;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto.ReportAuswertungProjekteMapper;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto.ReportAuswertungProjekteSort;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietService;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkService;
@@ -46,7 +45,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class AuswertungProjekteReportServiceTest {
+class ReportAuswertungProjekteServiceTest {
 
     @Mock
     private StadtbezirkService stadtbezirkService;
@@ -64,7 +63,7 @@ class AuswertungProjekteReportServiceTest {
     private ReportService reportService;
 
     @Mock
-    private AuswertungProjekteReportMapper auswertungProjekteReportMapper;
+    private ReportAuswertungProjekteMapper reportAuswertungProjekteMapper;
 
     @Mock
     private KurzbezeichnungService kurzbezeichnungService;
@@ -79,7 +78,7 @@ class AuswertungProjekteReportServiceTest {
     private SiedlungsgebietService siedlungsgebietService;
 
     @InjectMocks
-    private AuswertungProjekteReportService auswertungProjekteReportService;
+    private ReportAuswertungProjekteService reportAuswertungProjekteService;
 
     @Nested
     class GenerateReportAuswertungProjekte {
@@ -108,7 +107,7 @@ class AuswertungProjekteReportServiceTest {
             final Map<String, Object> jasperParameters = new HashMap<>();
             final GeneratedReport expectedReport = mock(GeneratedReport.class);
 
-            when(auswertungProjekteReportMapper.toJasperParameters(parameters))
+            when(reportAuswertungProjekteMapper.toJasperParameters(parameters))
                     .thenReturn(jasperParameters);
 
             when(reportService.generateReport(
@@ -119,10 +118,10 @@ class AuswertungProjekteReportServiceTest {
                     .thenReturn(expectedReport);
 
             // When
-            final GeneratedReport generatedReport = auswertungProjekteReportService.generateReportAuswertungProjekt(parameters);
+            final GeneratedReport generatedReport = reportAuswertungProjekteService.generateReportAuswertungProjekt(parameters);
 
             // Then
-            verify(auswertungProjekteReportMapper)
+            verify(reportAuswertungProjekteMapper)
                     .toJasperParameters(parameters);
 
             verify(reportService).generateReport(
@@ -150,7 +149,7 @@ class AuswertungProjekteReportServiceTest {
             final Map<String, Object> jasperParameters = new HashMap<>();
             final GeneratedReport expectedReport = mock(GeneratedReport.class);
 
-            when(auswertungProjekteReportMapper.toJasperParameters(parameters))
+            when(reportAuswertungProjekteMapper.toJasperParameters(parameters))
                     .thenReturn(jasperParameters);
 
             when(reportService.generateReport(
@@ -161,7 +160,7 @@ class AuswertungProjekteReportServiceTest {
                     .thenReturn(expectedReport);
 
             // When
-            final GeneratedReport actualReport = auswertungProjekteReportService.generateReportAuswertungProjekt(parameters);
+            final GeneratedReport actualReport = reportAuswertungProjekteService.generateReportAuswertungProjekt(parameters);
 
             // Then
             assertThat(actualReport).isSameAs(expectedReport);
@@ -179,11 +178,11 @@ class AuswertungProjekteReportServiceTest {
             final ReportAuswertungProjekteDTO parameters = createProjektParameters();
             when(parameters.fb()).thenReturn("123");
 
-            when(auswertungProjekteReportMapper.toJasperParameters(parameters))
+            when(reportAuswertungProjekteMapper.toJasperParameters(parameters))
                     .thenReturn(new HashMap<>());
 
             // When
-            auswertungProjekteReportService.generateReportAuswertungProjekt(parameters);
+            reportAuswertungProjekteService.generateReportAuswertungProjekt(parameters);
 
             // Then
             verify(foerderbereichService)
@@ -196,11 +195,11 @@ class AuswertungProjekteReportServiceTest {
             final ReportAuswertungProjekteDTO parameters = createProjektParameters();
             when(parameters.sbl()).thenReturn("LISTE");
 
-            when(auswertungProjekteReportMapper.toJasperParameters(parameters))
+            when(reportAuswertungProjekteMapper.toJasperParameters(parameters))
                     .thenReturn(new HashMap<>());
 
             // When
-            auswertungProjekteReportService.generateReportAuswertungProjekt(parameters);
+            reportAuswertungProjekteService.generateReportAuswertungProjekt(parameters);
 
             // Then
             verify(listennameStadtbezirkslisteService)
@@ -213,11 +212,11 @@ class AuswertungProjekteReportServiceTest {
             final ReportAuswertungProjekteDTO parameters = createProjektParameters();
             when(parameters.bez()).thenReturn("12");
 
-            when(auswertungProjekteReportMapper.toJasperParameters(parameters))
+            when(reportAuswertungProjekteMapper.toJasperParameters(parameters))
                     .thenReturn(new HashMap<>());
 
             // When
-            auswertungProjekteReportService.generateReportAuswertungProjekt(parameters);
+            reportAuswertungProjekteService.generateReportAuswertungProjekt(parameters);
 
             // Then
             verify(stadtbezirkService)
@@ -230,11 +229,11 @@ class AuswertungProjekteReportServiceTest {
             final ReportAuswertungProjekteDTO parameters = createProjektParameters();
             when(parameters.ua()).thenReturn("UA01");
 
-            when(auswertungProjekteReportMapper.toJasperParameters(parameters))
+            when(reportAuswertungProjekteMapper.toJasperParameters(parameters))
                     .thenReturn(new HashMap<>());
 
             // When
-            auswertungProjekteReportService.generateReportAuswertungProjekt(parameters);
+            reportAuswertungProjekteService.generateReportAuswertungProjekt(parameters);
 
             // Then
             verify(unterabschnittService)
@@ -247,11 +246,11 @@ class AuswertungProjekteReportServiceTest {
             final ReportAuswertungProjekteDTO parameters = createProjektParameters();
             when(parameters.sgt()).thenReturn("15");
 
-            when(auswertungProjekteReportMapper.toJasperParameters(parameters))
+            when(reportAuswertungProjekteMapper.toJasperParameters(parameters))
                     .thenReturn(new HashMap<>());
 
             // When
-            auswertungProjekteReportService.generateReportAuswertungProjekt(parameters);
+            reportAuswertungProjekteService.generateReportAuswertungProjekt(parameters);
 
             // Then
             verify(siedlungsgebietService)
@@ -264,11 +263,11 @@ class AuswertungProjekteReportServiceTest {
             final ReportAuswertungProjekteDTO parameters = createProjektParameters();
             when(parameters.kurz()).thenReturn("KURZ");
 
-            when(auswertungProjekteReportMapper.toJasperParameters(parameters))
+            when(reportAuswertungProjekteMapper.toJasperParameters(parameters))
                     .thenReturn(new HashMap<>());
 
             // When
-            auswertungProjekteReportService.generateReportAuswertungProjekt(parameters);
+            reportAuswertungProjekteService.generateReportAuswertungProjekt(parameters);
 
             // Then
             verify(kurzbezeichnungService)
@@ -281,11 +280,11 @@ class AuswertungProjekteReportServiceTest {
             final ReportAuswertungProjekteDTO parameters = createProjektParameters();
             when(parameters.bpg()).thenReturn("25");
 
-            when(auswertungProjekteReportMapper.toJasperParameters(parameters))
+            when(reportAuswertungProjekteMapper.toJasperParameters(parameters))
                     .thenReturn(new HashMap<>());
 
             // When
-            auswertungProjekteReportService.generateReportAuswertungProjekt(parameters);
+            reportAuswertungProjekteService.generateReportAuswertungProjekt(parameters);
 
             // Then
             verify(bauprogrammService)
@@ -305,11 +304,11 @@ class AuswertungProjekteReportServiceTest {
             when(parameters.kurz()).thenReturn("");
             when(parameters.bpg()).thenReturn("");
 
-            when(auswertungProjekteReportMapper.toJasperParameters(parameters))
+            when(reportAuswertungProjekteMapper.toJasperParameters(parameters))
                     .thenReturn(new HashMap<>());
 
             // When
-            auswertungProjekteReportService.generateReportAuswertungProjekt(parameters);
+            reportAuswertungProjekteService.generateReportAuswertungProjekt(parameters);
 
             // Then
             verifyNoInteractions(
@@ -338,7 +337,7 @@ class AuswertungProjekteReportServiceTest {
             // When
             final Exception thrown = Assertions.assertThrows(
                     NotFoundException.class,
-                    () -> auswertungProjekteReportService
+                    () -> reportAuswertungProjekteService
                             .generateReportAuswertungProjekt(parameters));
 
             // Then
@@ -347,7 +346,7 @@ class AuswertungProjekteReportServiceTest {
             verify(foerderbereichService)
                     .checkExistsByFoerderbereich(new BigDecimal("123"));
 
-            verifyNoInteractions(auswertungProjekteReportMapper);
+            verifyNoInteractions(reportAuswertungProjekteMapper);
         }
     }
 
@@ -399,7 +398,7 @@ class AuswertungProjekteReportServiceTest {
                     .thenReturn(siedlungsgebietContext);
 
             // When
-            final ReportAuswertungProjektFormContext formContext = auswertungProjekteReportService.getReportAuswertungProjekt();
+            final ReportAuswertungProjektFormContext formContext = reportAuswertungProjekteService.getReportAuswertungProjekt();
 
             // Then
             verify(projektService).getReportAuswertungProjektFormContextDTOs();

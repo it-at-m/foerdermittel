@@ -1,17 +1,17 @@
 package de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt;
 
-import static de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuswertungProjekteSort.PROJEKTNUMMER;
+import static de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto.ReportAuswertungProjekteSort.PROJEKTNUMMER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
-import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto.AuswertungProjekteReportMapper;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportAuswertungProjekteDTO;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto.ReportAuswertungProjekteDTO;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto.ReportAuswertungProjekteMapper;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
-public class AuswertungProjekteReportMapperTest {
-    private final AuswertungProjekteReportMapper auswertungProjekteReportMapper = new AuswertungProjekteReportMapper();
+public class ReportAuswertungProjekteMapperTest {
+    private final ReportAuswertungProjekteMapper reportAuswertungProjekteMapper = new ReportAuswertungProjekteMapper();
 
     @Test
     void givenReportAuswertungProjekteDTO_thenReturnsCorrectParameters() {
@@ -20,7 +20,7 @@ public class AuswertungProjekteReportMapperTest {
                 "1", Krisofp.K, "0", "0", "0", PROJEKTNUMMER, ReportFormat.PDF);
 
         // When
-        final Map<String, Object> parameters = auswertungProjekteReportMapper.toJasperParameters(dto);
+        final Map<String, Object> parameters = reportAuswertungProjekteMapper.toJasperParameters(dto);
 
         // Then
         assertThat(parameters)
