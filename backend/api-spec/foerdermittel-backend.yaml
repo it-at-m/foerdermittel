@@ -2065,45 +2065,6 @@ paths:
                 $ref: "#/components/schemas/ReportFortsetzungsantragFormContext"
       security:
       - bearerAuth: []
-  /report/auswertungprojekte:
-    get:
-      tags:
-      - auswertung-projekte-report-controller
-      operationId: getReportAuswertungProjekt
-      parameters:
-      - name: parameters
-        in: query
-        required: true
-        schema:
-          $ref: "#/components/schemas/ReportAuswertungProjekteDTO"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/pdf:
-              schema:
-                type: string
-                format: binary
-            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
-              schema:
-                type: string
-                format: binary
-      security:
-      - bearerAuth: []
-  /report/auswertungprojekte/form-context:
-    get:
-      tags:
-      - auswertung-projekte-report-controller
-      operationId: getReportAuswertungProjektFormContext
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ReportAuswertungProjektFormContext"
-      security:
-      - bearerAuth: []
   /report/euinformationen:
     get:
       tags:
@@ -2137,6 +2098,45 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ReportEuinformationFormContext"
+      security:
+      - bearerAuth: []
+  /report/auswertungprojekte:
+    get:
+      tags:
+      - report-auswertung-projekte-controller
+      operationId: getReportAuswertungProjekt
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportAuswertungProjekteDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/auswertungprojekte/form-context:
+    get:
+      tags:
+      - report-auswertung-projekte-controller
+      operationId: getReportAuswertungProjektFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportAuswertungProjektFormContext"
       security:
       - bearerAuth: []
   /referate/form-context:
@@ -3761,6 +3761,58 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/StadtbezirkFormContextDTO"
+    ReportEuinformationDTO:
+      required:
+      - sort
+      type: object
+      properties:
+        jahrVon:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        jahrBis:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        inhalt:
+          maxLength: 40
+          minLength: 0
+          type: string
+        publikation:
+          pattern: "^[A-Z0-9]+$"
+          type: string
+        referatId:
+          pattern: "^(?:[1-9]|1[0-7]|20)$"
+          type: string
+        sort:
+          type: string
+          enum:
+          - PUBLIKATION
+          - JAHR
+          - REFERAT
+          - REFERAT_JAHR
+    PublikationFormContextDTO:
+      required:
+      - bezeichnung
+      - kurzform
+      type: object
+      properties:
+        kurzform:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+      description: |-
+        DTO for [de.muenchen.oss.foerdermittel.backend.publikation.Publikation] to be used in
+        other FormContexts other than its own.
+    ReportEuinformationFormContext:
+      required:
+      - publikationen
+      type: object
+      properties:
+        publikationen:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublikationFormContextDTO"
     ReportAuswertungProjekteDTO:
       required:
       - jahr
@@ -3950,58 +4002,6 @@ components:
         bezeichnung:
           type: string
           description: ""
-    ReportEuinformationDTO:
-      required:
-      - sort
-      type: object
-      properties:
-        jahrVon:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
-        jahrBis:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
-        inhalt:
-          maxLength: 40
-          minLength: 0
-          type: string
-        publikation:
-          pattern: "^[A-Z0-9]+$"
-          type: string
-        referatId:
-          pattern: "^(?:[1-9]|1[0-7]|20)$"
-          type: string
-        sort:
-          type: string
-          enum:
-          - PUBLIKATION
-          - JAHR
-          - REFERAT
-          - REFERAT_JAHR
-    PublikationFormContextDTO:
-      required:
-      - bezeichnung
-      - kurzform
-      type: object
-      properties:
-        kurzform:
-          type: string
-          description: ""
-        bezeichnung:
-          type: string
-          description: ""
-      description: |-
-        DTO for [de.muenchen.oss.foerdermittel.backend.publikation.Publikation] to be used in
-        other FormContexts other than its own.
-    ReportEuinformationFormContext:
-      required:
-      - publikationen
-      type: object
-      properties:
-        publikationen:
-          type: array
-          items:
-            $ref: "#/components/schemas/PublikationFormContextDTO"
     PagedModelReferatResponseDTO:
       type: object
       properties:
