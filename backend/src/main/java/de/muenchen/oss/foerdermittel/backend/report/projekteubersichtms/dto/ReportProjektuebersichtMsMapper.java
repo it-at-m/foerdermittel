@@ -12,7 +12,7 @@ public class ReportProjektuebersichtMsMapper {
 
         final Map<String, Object> parameters = new HashMap<>();
 
-        parameters.put("P_JAHR", dto.jahr());
+        parameters.put("P_JAHR", ReportControllerUtil.nullIfBlank(dto.jahr()));
         parameters.put("P_BEZ", ReportControllerUtil.nullIfBlank(dto.bez()));
         parameters.put("P_SBL", ReportControllerUtil.nullIfBlank(dto.sbl()));
         parameters.put("P_FB", ReportControllerUtil.nullIfBlank(dto.fb()));
@@ -27,6 +27,7 @@ public class ReportProjektuebersichtMsMapper {
                         : null);
         parameters.put("P_SGT", ReportControllerUtil.nullIfBlank(dto.sgt()));
         parameters.put("P_BPG", ReportControllerUtil.nullIfBlank(dto.bpg()));
+
 
         return parameters;
     }

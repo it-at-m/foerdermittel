@@ -233,6 +233,7 @@
     },
     "report": {
       "common": {
+        "jahr": "Jahr",
         "reportType": {
           "modelName": "Reporttyp",
           "pdf": "PDF",
@@ -319,7 +320,7 @@
         "kurz": "Kurzbezeichnung",
         "offen": "Nur offene Projekte",
         "vn": "Nur Projekte mit Vn",
-        "krisofp": "Sonderförderprogramme",
+        "krisofp": "Sonderförderprogramm",
         "sgt": "Siedlungsgebiet",
         "bpg": "Bauprogramm",
         "sortEnum": {

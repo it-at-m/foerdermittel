@@ -53,7 +53,7 @@ public class ReportProjektuebersichtMsService {
 
         final String orderBy = parameters.sort().getOrderBy();
 
-        return reportService.generateReport(reportProjektuebersichtMsMapper.toJasperParameters(parameters), ReportType.FMW_BEWILL4, parameters.type(),
+        return reportService.generateReport(reportProjektuebersichtMsMapper.toJasperParameters(parameters), ReportType.FMW_PROJEKTE4, parameters.type(),
                 orderBy);
     }
 

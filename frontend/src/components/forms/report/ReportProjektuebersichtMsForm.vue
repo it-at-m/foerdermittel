@@ -7,13 +7,27 @@
     <v-row>
       <v-col
         cols="12"
-        md="6"
+        md="2"
+      >
+        <fm-text-field
+          v-model="modelValue.parameters!.jahr"
+          :display-mode="InputDisplayMode.EDIT"
+          :validation-attribute-map="
+            ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="jahr"
+          :label="t('domain.report.common.jahr')"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        md="5"
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.sbl"
           :items="reportProjektuebersichtMsFormContext?.stadtbezirkslisten"
           :item-title="getStadtbezirkslisteTitle"
-          item-value="sbl"
+          item-value="kurzbez"
           :validation-attribute-map="
             ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
           "
@@ -21,17 +35,15 @@
           :label="t('domain.report.projektUebersichtMs.sbl')"
         />
       </v-col>
-    </v-row>
-    <v-row>
       <v-col
         cols="12"
-        md="6"
+        md="5"
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.bez"
           :items="reportProjektuebersichtMsFormContext?.stadtbezirke"
           :item-title="getStadtbezirkTitle"
-          item-value="bez"
+          item-value="stadtbezirk"
           :validation-attribute-map="
             ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
           "
@@ -57,8 +69,6 @@
           :label="t('domain.report.projektUebersichtMs.fb')"
         />
       </v-col>
-    </v-row>
-    <v-row>
       <v-col
         cols="12"
         md="6"
@@ -85,7 +95,7 @@
           v-model="modelValue.parameters!.kurz"
           :items="reportProjektuebersichtMsFormContext?.kurzbezeichnungen"
           :item-title="getKurzbezeichnungTitle"
-          item-value="kurz"
+          item-value="kurzbez"
           :validation-attribute-map="
             ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
           "
@@ -93,8 +103,6 @@
           :label="t('domain.report.projektUebersichtMs.kurz')"
         />
       </v-col>
-    </v-row>
-    <v-row>
       <v-col
         cols="12"
         md="3"
@@ -102,12 +110,16 @@
         <fm-checkbox
           v-model="modelValue.parameters!.offen"
           :label="t('domain.report.projektUebersichtMs.offen')"
+          true-value="1"
+          false-value="0"
         />
       </v-col>
       <v-col md="3">
         <fm-checkbox
           v-model="modelValue.parameters!.vn"
           :label="t('domain.report.projektUebersichtMs.vn')"
+          true-value="1"
+          false-value="0"
         />
       </v-col>
     </v-row>
@@ -128,8 +140,6 @@
           :label="t('domain.report.projektUebersichtMs.krisofp')"
         />
       </v-col>
-    </v-row>
-    <v-row>
       <v-col
         cols="12"
         md="6"
@@ -138,7 +148,7 @@
           v-model="modelValue.parameters!.sgt"
           :items="reportProjektuebersichtMsFormContext?.siedlungsgebiete"
           :item-title="getSiedlungsgebietTitle"
-          item-value="sgt"
+          item-value="siedlungsgebiet"
           :validation-attribute-map="
             ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
           "
@@ -156,7 +166,7 @@
           v-model="modelValue.parameters!.bpg"
           :items="reportProjektuebersichtMsFormContext?.bauprogramme"
           :item-title="getBauprogrammTitle"
-          item-value="bpg"
+          item-value="bauprogramm"
           :validation-attribute-map="
             ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
           "
@@ -210,9 +220,14 @@ import type { VForm } from "vuetify/components";
 import { useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
-import { ReportProjektuebersichtMsDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
+import {
+  ReportEuinformationDTOPropertyValidationAttributesMap,
+  ReportProjektuebersichtMsDTOPropertyValidationAttributesMap,
+} from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
+import FmTextField from "@/components/common/FmTextField.vue";
+import { InputDisplayMode } from "@/types/InputDisplayMode";
 import { getKrisofpTitle } from "@/util/krisofpUtils";
 
 const { t } = useI18n();
