@@ -30,9 +30,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/report")
 @SecurityRequirement(name = OpenAPIDocumentationConfiguration.SECURITY_SCHEME_NAME)
-public class StaedtebaufoerderungReportController {
+public class ReportStaedtebaufoerderungController {
 
-    private final StaedtebaufoerderungReportService staedtebaufoerderungReportService;
+    private final ReportStaedtebaufoerderungService reportStaedtebaufoerderungService;
 
     @GetMapping("/staedtebaufoerderungen")
     @ResponseStatus(HttpStatus.OK)
@@ -52,7 +52,7 @@ public class StaedtebaufoerderungReportController {
             @Valid @ModelAttribute final ReportStaedtebaufoerderungDTO parameters,
             final HttpServletResponse response)
             throws IOException, SQLException, JRException {
-        final GeneratedReport generatedReport = staedtebaufoerderungReportService.generateReportStaedtebaufoerderung(parameters);
+        final GeneratedReport generatedReport = reportStaedtebaufoerderungService.generateReportStaedtebaufoerderung(parameters);
         ReportControllerUtil.setMetadata(response, generatedReport);
         generatedReport.writer().write(response.getOutputStream());
     }
@@ -60,7 +60,7 @@ public class StaedtebaufoerderungReportController {
     @GetMapping(value = "/staedtebaufoerderungen/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ReportStaedtebaufoerderungFormContext getReportStaedtebaufoerderungFormContext() {
-        return staedtebaufoerderungReportService.getReportStaedtebaufoerderung();
+        return reportStaedtebaufoerderungService.getReportStaedtebaufoerderung();
     }
 
 }

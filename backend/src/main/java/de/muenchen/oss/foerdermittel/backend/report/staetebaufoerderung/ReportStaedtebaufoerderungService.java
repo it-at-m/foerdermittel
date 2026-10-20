@@ -20,7 +20,7 @@ import org.springframework.util.StringUtils;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class StaedtebaufoerderungReportService {
+public class ReportStaedtebaufoerderungService {
 
     private final TraegerService traegerService;
     private final ReportService reportService;
