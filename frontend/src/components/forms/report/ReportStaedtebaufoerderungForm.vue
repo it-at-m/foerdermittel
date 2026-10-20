@@ -36,7 +36,6 @@
           :error-messages="jahrBisError"
         />
       </v-col>
-
       <v-col
         cols="12"
         md="6"
@@ -47,11 +46,10 @@
           :item-title="getTraegerTitle"
           item-value="kurzform"
           :label="t('domain.report.staedtebaufoerderung.traeger')"
-          :error-messages="traeger"
+          :error-messages="traegerError"
         />
       </v-col>
     </v-row>
-
     <v-row>
       <v-col
         cols="12"
@@ -159,17 +157,15 @@ const jahrBisError = computed(() => {
     ? ["Jahr bis darf nicht kleiner als Jahr von sein."]
     : [];
 });
+const traegerError = computed(() => {
+  const selectedTraeger = modelValue.value.parameters?.traeger;
+  const traegerOptions = reportStaedtebaufoerderungFormContext?.traeger;
 
-const traeger = computed(() => {
-  const traeger = modelValue.value.parameters?.traeger;
-
-  if (traeger == null || traeger === "") {
+  if (!selectedTraeger || !traegerOptions) {
     return [];
   }
 
-  return reportStaedtebaufoerderungFormContext?.traeger?.some(
-    (item) => item.kurzform === traeger
-  )
+  return traegerOptions.some((item) => item.kurzform === selectedTraeger)
     ? []
     : ["Der ausgewählte Träger wurde nicht gefunden."];
 });

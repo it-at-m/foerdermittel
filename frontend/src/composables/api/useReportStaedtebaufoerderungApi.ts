@@ -15,7 +15,7 @@ export const {
   useContext: useGetReportStaedtebaufoerderungFormContext,
 } = requireComposables(
   createReportAPIComposables<
-      ReportStaedtebaufoerderungControllerApi,
+    ReportStaedtebaufoerderungControllerApi,
     GetReportStaedtebaufoerderungRequest,
     ReportStaedtebaufoerderungFormContext
   >(ReportStaedtebaufoerderungControllerApi, {
