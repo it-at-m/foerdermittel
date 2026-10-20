@@ -18,14 +18,14 @@ public final class ReportControllerUtil {
                 "attachment; filename=\"" + generatedReport.fileName() + "\"");
     }
 
-    public static String nullIfBlank(final String value) {
-        if (!StringUtils.hasText(value)
-                || "null".equalsIgnoreCase(value)) {
-            return null;
-        }
-
-        return value.trim();
-    }
+    /**
+     * Converts the given value into a LIKE parameter by trimming leading and trailing whitespace
+     * and wrapping the value with '%' wildcards.
+     * Returns {@code null} if the value is blank or equals "null" (case-insensitive).
+     *
+     * @param value the value to convert
+     * @return the formatted LIKE parameter, or {@code null} if the value is blank or equals "null"
+     */
 
     public static String toLikeParameter(final String value) {
         if (!StringUtils.hasText(value)
@@ -34,5 +34,14 @@ public final class ReportControllerUtil {
         }
 
         return "%" + value.trim() + "%";
+    }
+
+    public static String nullIfBlank(final String value) {
+        if (!StringUtils.hasText(value)
+                || "null".equalsIgnoreCase(value)) {
+            return null;
+        }
+
+        return value.trim();
     }
 }
