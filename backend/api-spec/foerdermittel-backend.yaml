@@ -1952,10 +1952,10 @@ paths:
                 $ref: "#/components/schemas/ReportStichworteFormContext"
       security:
       - bearerAuth: []
-  /report/staedtebaufoerderung:
+  /report/staedtebaufoerderungen:
     get:
       tags:
-      - staedtebaufoerderung-report-controller
+      - report-staedtebaufoerderung-controller
       operationId: getReportStaedtebaufoerderung
       parameters:
       - name: parameters
@@ -1973,10 +1973,10 @@ paths:
                 format: binary
       security:
       - bearerAuth: []
-  /report/staedtebaufoerderung/form-context:
+  /report/staedtebaufoerderungen/form-context:
     get:
       tags:
-      - staedtebaufoerderung-report-controller
+      - report-staedtebaufoerderung-controller
       operationId: getReportStaedtebaufoerderungFormContext
       responses:
         "200":
