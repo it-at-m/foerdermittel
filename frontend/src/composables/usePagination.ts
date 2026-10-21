@@ -1,14 +1,13 @@
-import type { DataTableOptions } from "@/types/DataTableOptions";
 import type { Pageable } from "@/types/Pageable";
 import type { Ref } from "vue";
 import type { DataTableSortItem } from "vuetify";
 
 import { useRouteQuery } from "@vueuse/router";
-import { computed, onMounted, watch } from "vue";
+import { computed, watch } from "vue";
 
 export const ITEMS_PER_PAGE_OPTIONS = [10, 25, 50, 100];
 
-export const PAGINATION_DEFAULTS: DataTableOptions = {
+export const PAGINATION_DEFAULTS = {
   page: 1,
   itemsPerPage: ITEMS_PER_PAGE_OPTIONS[0] as number,
   sortBy: [],
@@ -53,10 +52,7 @@ function urlDecodeSortOptions(sortOptionString: string) {
     .filter((item): item is DataTableSortItem => item !== undefined);
 }
 
-export default function usePagination(
-  totalPages: Ref<number | undefined>,
-  getEntitiesFunction: (pageable: Pageable) => Promise<void>
-) {
+export default function usePagination(totalPages: Ref<number | undefined>) {
   const page = useRouteQuery<string>("page", String(PAGINATION_DEFAULTS.page));
   const itemsPerPage = useRouteQuery<string>(
     "itemsPerPage",
@@ -103,41 +99,41 @@ export default function usePagination(
     { immediate: true }
   );
 
-  const dataTableOptions = computed<DataTableOptions>({
-    get() {
-      return {
-        page: normalizePage(page.value),
-        itemsPerPage: normalizeItemsPerPage(itemsPerPage.value),
-        sortBy: sortBy.value ? urlDecodeSortOptions(sortBy.value) : [],
-      };
+  const pageModel = computed({
+    get: () => normalizePage(page.value),
+    set: (value) => {
+      page.value = String(value);
     },
-    set(newDataTableOptions) {
-      page.value = String(newDataTableOptions.page);
-      itemsPerPage.value = String(newDataTableOptions.itemsPerPage);
-      sortBy.value = urlEncodeSortOptions(newDataTableOptions.sortBy);
+  });
+
+  const itemsPerPageModel = computed({
+    get: () => normalizeItemsPerPage(itemsPerPage.value),
+    set: (value) => {
+      itemsPerPage.value = String(value);
+    },
+  });
+
+  const sortByModel = computed({
+    get: () => (sortBy.value ? urlDecodeSortOptions(sortBy.value) : []),
+    set: (value) => {
+      sortBy.value = urlEncodeSortOptions(value);
     },
   });
 
   const pageable = computed<Pageable>(() => {
     return {
-      page: dataTableOptions.value.page - 1,
-      size: dataTableOptions.value.itemsPerPage,
-      sort: dataTableOptions.value.sortBy.map((sortOption) =>
+      page: pageModel.value - 1,
+      size: itemsPerPageModel.value,
+      sort: sortByModel.value.map((sortOption) =>
         Object.values(sortOption).join(",")
       ),
     };
   });
 
-  onMounted(async () => {
-    await refetchEntities();
-  });
-
-  async function refetchEntities() {
-    await getEntitiesFunction(pageable.value);
-  }
-
   return {
-    dataTableOptions,
-    refetchEntities,
+    page: pageModel,
+    itemsPerPage: itemsPerPageModel,
+    sortBy: sortByModel,
+    pageable,
   };
 }
