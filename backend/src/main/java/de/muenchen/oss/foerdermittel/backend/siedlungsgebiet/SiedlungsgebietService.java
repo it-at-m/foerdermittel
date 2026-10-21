@@ -72,4 +72,5 @@ public class SiedlungsgebietService {
     public void checkExistsBySiedlungsgebiet(final BigDecimal sgtId) {
         ServiceUtils.checkExistsOrThrowNotFoundException(sgtId, siedlungsgebietRepository, Siedlungsgebiet.class);
     }
+
 }

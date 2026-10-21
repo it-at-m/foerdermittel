@@ -73,13 +73,13 @@ class ReportServiceTest {
     private HhplanService hhplanService;
 
     @Mock
+    private ProjektService projektService;
+
+    @Mock
     private JasperReportService jasperReportService;
 
     @Mock
     private ReportMapper reportMapper;
-
-    @Mock
-    private ProjektService projektService;
 
     @InjectMocks
     private ReportService reportService;
@@ -90,9 +90,12 @@ class ReportServiceTest {
         @Test
         void givenNoWriteInteraction_thenShouldGenerateCorrectGeneratedReport() {
             // Given
-            final ReportStichworteDTO parameters = mock(ReportStichworteDTO.class);
+            final String bereich = "TEST";
+
+            final ReportStichworteDTO parameters = new ReportStichworteDTO(bereich);
 
             final Map<String, Object> jasperParameters = new HashMap<>();
+
             when(reportMapper.toJasperParameters(parameters))
                     .thenReturn(jasperParameters);
 
@@ -100,7 +103,12 @@ class ReportServiceTest {
             final GeneratedReport generatedReport = reportService.generateReportStichworte(parameters);
 
             // Then
-            verify(reportMapper, times(1)).toJasperParameters(parameters);
+            verify(stichwortbereichService, times(1))
+                    .checkExistsByBereich(bereich);
+
+            verify(reportMapper, times(1))
+                    .toJasperParameters(parameters);
+
             verifyNoInteractions(jasperReportService);
 
             assertThat(generatedReport).isNotNull();
@@ -116,9 +124,13 @@ class ReportServiceTest {
         }
 
         @Test
-        void givenWriteInteraction_thenShouldCallJasperServiceCorrectly() throws JRException, SQLException, IOException {
+        void givenWriteInteraction_thenShouldCallJasperServiceCorrectly()
+                throws JRException, SQLException, IOException {
+
             // Given
-            final ReportStichworteDTO parameters = mock(ReportStichworteDTO.class);
+            final String bereich = "TEST";
+
+            final ReportStichworteDTO parameters = new ReportStichworteDTO(bereich);
 
             final Map<String, Object> jasperParameters = new HashMap<>();
             when(reportMapper.toJasperParameters(parameters))
@@ -131,20 +143,24 @@ class ReportServiceTest {
             generatedReport.writer().write(outputStream);
 
             // Then
-            verify(jasperReportService, times(1)).generateReportWithParameters(
-                    ReportType.FMW_ABLAGEINDEX,
-                    ReportFormat.PDF,
-                    jasperParameters,
-                    outputStream);
+            verify(jasperReportService, times(1))
+                    .generateReportWithParameters(
+                            ReportType.FMW_ABLAGEINDEX,
+                            ReportFormat.PDF,
+                            jasperParameters,
+                            outputStream);
         }
 
         @Test
         void givenNotFound_thenShouldThrowNotFoundException() {
             // Given
             final String bereich = "test";
+
             final ReportStichworteDTO parameters = new ReportStichworteDTO(bereich);
 
-            doThrow(new NotFoundException(Stichwortbereich.class, bereich))
+            doThrow(new NotFoundException(
+                    Stichwortbereich.class,
+                    bereich))
                     .when(stichwortbereichService)
                     .checkExistsByBereich(bereich);
 
@@ -166,18 +182,25 @@ class ReportServiceTest {
         @Test
         void givenEntitiesExists_thenReturnCorrectFormContext() {
             // Given
-            final List<StichwortbereichFormContextDTO> allBereiche = List.of(new StichwortbereichFormContextDTO("K", "Test"),
-                    new StichwortbereichFormContextDTO("L", "Test 2"), new StichwortbereichFormContextDTO("M", "Test 3"));
-            when(stichwortbereichService.getStichwortbereichFormContextDTOs()).thenReturn(allBereiche);
+            final List<StichwortbereichFormContextDTO> allBereiche = List.of(
+                    new StichwortbereichFormContextDTO("K", "Test"),
+                    new StichwortbereichFormContextDTO("L", "Test 2"),
+                    new StichwortbereichFormContextDTO("M", "Test 3"));
+
+            when(stichwortbereichService
+                    .getStichwortbereichFormContextDTOs())
+                    .thenReturn(allBereiche);
 
             // When
             final ReportStichworteFormContext formContext = reportService.getReportStichworte();
 
             // Then
-            verify(stichwortbereichService, times(1)).getStichwortbereichFormContextDTOs();
-            assertThat(formContext.bereiche()).isEqualTo(allBereiche);
-        }
+            verify(stichwortbereichService, times(1))
+                    .getStichwortbereichFormContextDTOs();
 
+            assertThat(formContext.bereiche())
+                    .isEqualTo(allBereiche);
+        }
     }
 
     @Nested
@@ -546,12 +569,14 @@ class ReportServiceTest {
                     new FoerderbereichFormContextDTO("L", "Test 2"), new FoerderbereichFormContextDTO("M", "Test 3"));
             when(foerderbereichService.getFoerderbereichFormContextDTOs()).thenReturn(allFoerderbereiche);
 
-            final List<ListennameStadtbezirkslisteFormContextDTO> allStadtbezirkslisten = List.of(new ListennameStadtbezirkslisteFormContextDTO("K", "Test"),
+            final List<ListennameStadtbezirkslisteFormContextDTO> allStadtbezirkslisten = List.of(
+                    new ListennameStadtbezirkslisteFormContextDTO("K", "Test"),
                     new ListennameStadtbezirkslisteFormContextDTO("L", "Test 2"), new ListennameStadtbezirkslisteFormContextDTO("M", "Test 3"));
             when(listennameStadtbezirkslisteService.getlistennameStadtbezirkslisteFormContextDTOs()).thenReturn(allStadtbezirkslisten);
 
             final List<HhplanFormContextDTO> allHhplan = List.of(new HhplanFormContextDTO(new BigDecimal(2024), "0000.0000.000.123"),
-                    new HhplanFormContextDTO(new BigDecimal(2025), "0000.0000.000.111"), new HhplanFormContextDTO(new BigDecimal(2023), "0000.0000.000.222"));
+                    new HhplanFormContextDTO(new BigDecimal(2025), "0000.0000.000.111"),
+                    new HhplanFormContextDTO(new BigDecimal(2023), "0000.0000.000.222"));
             when(hhplanService.getHhplanFormContextDTOs()).thenReturn(allHhplan);
             // When
             final ReportHaushaltsplanungFormContext formContext = reportService.getReportHaushaltsplanung();
@@ -565,5 +590,4 @@ class ReportServiceTest {
         }
 
     }
-
 }

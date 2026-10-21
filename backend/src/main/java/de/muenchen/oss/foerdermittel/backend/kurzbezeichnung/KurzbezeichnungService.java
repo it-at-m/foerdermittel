@@ -68,4 +68,5 @@ public class KurzbezeichnungService {
     public void checkExistsByKurzbezeichnung(final String kurzId) {
         ServiceUtils.checkExistsOrThrowNotFoundException(kurzId, kurzbezeichnungRepository, Kurzbezeichnung.class);
     }
+
 }

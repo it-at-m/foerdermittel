@@ -56,9 +56,11 @@
     "projekt": {
       "modelName": "Projekt | Projekte",
       "projnr": "Projektnummer",
-      "name": "Name",
-      "strasse": "Straße",
-      "ausgabeNotiz": "Ausgabe Notiz"
+      "pname": "Name",
+      "pstrasse": "Straße",
+      "ausgabeNotiz": "Ausgabe Notiz",
+      "jahr": "Projektjahr",
+      "krisofp": "Förderprogramm"
     },
     "antrag": {
       "modelName": "Antrag | Anträge"
@@ -141,6 +143,7 @@
       "kindergarten": "Kindergarten",
       "nichtRelevant": "Nicht relevant"
     },
+
     "krankenhaus": {
       "modelName": "Krankenhaus | Krankenhäuser",
       "krhname": "Kurzform",
@@ -251,6 +254,24 @@
       "ausstGenehmigungVorzBeginn": "Ausst. Genehmigung vorz. Beginn",
       "bewilligungAuszahlungProjekt": "@:model.bewilligung.modelName und @:domain.auszahlung eines @:model.projekt.modelName{'s'}",
       "bewilligungAuzahlungVergleich": "@:model.bewilligung.modelName und @:domain.auszahlung (Vergleich)",
+      "auswertungProjekt": {
+        "modelName": "Projekt",
+        "offen": "Nur offene Projekte",
+        "kauf": "Nur Projekte mit Ankauf",
+        "relevant": "Nur relevante Projekte",
+        "sortierung": "Sortierung",
+        "sortEnum": {
+          "stadtbezirkStrasse": "Stadtbezirk, Straße",
+          "projektnummer": "Projektnummer",
+          "strasseProjektnummer": "Straße, Projektnummer",
+          "foerderbereichProjektnummer": "Förderbereich, Projektnummer",
+          "foerderbereichStrasse": "Förderbereich, Straße"
+        },
+        "type": {
+          "pdf": "PDF",
+          "excel": "Excel"
+        }
+      },
       "fortsetzungsAntrag": {
         "modelName": "Fortsetzungsantrag | Fortsetzungsanträge",
         "fag": "Nur FAG",

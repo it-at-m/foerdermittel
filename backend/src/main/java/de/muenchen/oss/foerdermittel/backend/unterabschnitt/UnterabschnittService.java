@@ -78,4 +78,5 @@ public class UnterabschnittService {
     public void checkExistsByUnterabschnitt(final String kurzform) {
         ServiceUtils.checkExistsOrThrowNotFoundException(kurzform, unterabschnittRepository, Unterabschnitt.class);
     }
+
 }
