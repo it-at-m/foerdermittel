@@ -66,6 +66,8 @@
         v-if="$slots['filter-form']"
         :loading="loading"
         :filter-active="isFilterActive"
+        @filter="filterEntities"
+        @reset="resetEntityFilter"
       >
         <template #form>
           <slot
@@ -76,10 +78,7 @@
       </filter-panel>
       <div class="d-flex flex-column h-100 overflow-x-hidden">
         <v-data-table-server
-          v-model:items-per-page="itemsPerPage"
-          v-model:page="page"
-          v-model:sort-by="sortBy"
-          v-model:search="search"
+          v-model:options="dataTableOptions"
           v-model:expanded="expanded"
           fixed-header
           :headers="tableHeadersWithActions"
@@ -159,6 +158,7 @@
     TFilter
   "
 >
+import type { DataTableOptions } from "@/types/DataTableOptions";
 import type { ApiComposables } from "@/util/composable-helper";
 import type { Awaitable } from "@vueuse/core";
 import type { DataTableHeader } from "vuetify/framework";
@@ -172,7 +172,9 @@ import FilterPanel from "@/components/common/FilterPanel.vue";
 import UnsavedChangesDialog from "@/components/common/UnsavedChangesDialog.vue";
 import { useDirtyFlag } from "@/composables/useDirtyFlag";
 import { useFilter } from "@/composables/useFilter";
-import usePagination from "@/composables/usePagination";
+import usePagination, {
+  PAGINATION_DEFAULTS,
+} from "@/composables/usePagination";
 import { STATUS_INDICATORS } from "@/constants";
 import { useSnackbarStore } from "@/stores/snackbar";
 import { DialogWidth } from "@/types/DialogWidth";
@@ -224,8 +226,6 @@ const {
   formRef?: { validate: () => unknown } | null | undefined;
 }>();
 
-const { filterFormValue, isFilterActive } = useFilter(filterDefault);
-
 const loading = computed(
   () =>
     loadingProp ||
@@ -240,52 +240,36 @@ const getAllData = computed(() => {
   return api.getAll.data.value;
 });
 
-const { dataTableOptions, refetchEntities } = usePagination(
-  computed(() => api.getAll.data.value?.page?.totalPages),
-  api.getAll.call
+const { page, itemsPerPage, sortBy, pageable } = usePagination(
+  computed(() => api.getAll.data.value?.page?.totalPages)
 );
 
+const {
+  filterFormValue,
+  appliedFilter,
+  search,
+  isFilterActive,
+  applyFilter,
+  resetFilter,
+} = useFilter(filterDefault);
+
+const dataTableOptions = computed<DataTableOptions>({
+  get() {
+    return {
+      page: page.value,
+      itemsPerPage: itemsPerPage.value,
+      sortBy: sortBy.value,
+      search: search.value,
+    };
+  },
+  set(newDataTableOptions) {
+    page.value = newDataTableOptions.page;
+    itemsPerPage.value = newDataTableOptions.itemsPerPage;
+    sortBy.value = newDataTableOptions.sortBy;
+  },
+});
+
 const snackbarStore = useSnackbarStore();
-
-const page = computed({
-  get: () => dataTableOptions.value.page,
-  set: (value) => {
-    dataTableOptions.value = {
-      ...dataTableOptions.value,
-      page: value,
-    };
-  },
-});
-
-const itemsPerPage = computed({
-  get: () => dataTableOptions.value.itemsPerPage,
-  set: (value) => {
-    dataTableOptions.value = {
-      ...dataTableOptions.value,
-      itemsPerPage: value,
-    };
-  },
-});
-
-const sortBy = computed({
-  get: () => dataTableOptions.value.sortBy,
-  set: (value) => {
-    dataTableOptions.value = {
-      ...dataTableOptions.value,
-      sortBy: value,
-    };
-  },
-});
-
-const search = computed({
-  get: () => dataTableOptions.value.search,
-  set: (value) => {
-    dataTableOptions.value = {
-      ...dataTableOptions.value,
-      search: value,
-    };
-  },
-});
 
 const domainSingular = computed(() => t(domainKey));
 const domainPlural = computed(() => t(domainKey, 2));
@@ -332,6 +316,7 @@ const expanded = ref<string[]>([]);
 // --- Lifecycle Handlers ---
 
 onMounted(async () => {
+  await refetchEntities();
   await loadFormContext();
 });
 
@@ -365,6 +350,23 @@ const loadFormContext = async () => {
   if (shouldLoadFormContext) {
     await api.context.call();
   }
+};
+
+const refetchEntities = async () => {
+  await api.getAll.call({
+    ...pageable.value,
+    ...appliedFilter.value,
+  });
+};
+
+const filterEntities = async () => {
+  page.value = PAGINATION_DEFAULTS.page;
+  await applyFilter();
+};
+
+const resetEntityFilter = async () => {
+  page.value = PAGINATION_DEFAULTS.page;
+  await resetFilter();
 };
 
 const updateFormValidity = (valid: boolean | null) => {
