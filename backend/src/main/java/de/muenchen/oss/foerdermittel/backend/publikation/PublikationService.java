@@ -1,7 +1,10 @@
 package de.muenchen.oss.foerdermittel.backend.publikation;
 
+import de.muenchen.oss.foerdermittel.backend.publikation.dto.PublikationFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.publikation.dto.PublikationMapper;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -17,6 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class PublikationService {
 
     private final PublikationRepository publikationRepository;
+    private final PublikationMapper publikationMapper;
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<PublikationFormContextDTO> getPublikationFormContextDTOs() {
+        return publikationMapper.toFormContext(publikationRepository.findAll());
+    }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)

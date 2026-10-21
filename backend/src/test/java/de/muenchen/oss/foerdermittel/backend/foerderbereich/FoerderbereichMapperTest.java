@@ -3,10 +3,12 @@ package de.muenchen.oss.foerdermittel.backend.foerderbereich;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichCreateDTO;
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichMapper;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichUpdateDTO;
 import java.math.BigDecimal;
+import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -78,6 +80,64 @@ public class FoerderbereichMapperTest {
             assertThat(entity.getNichtRelevant()).isEqualTo(dto.nichtRelevant());
         }
 
+    }
+
+    @Nested
+    class ToFormContext {
+
+        @Test
+        void givenEntity_thenReturnsCorrectFormContextDTO() {
+            // given
+            Foerderbereich entity = new Foerderbereich(
+                    BigDecimal.valueOf(1),
+                    "Test",
+                    false,
+                    true,
+                    false,
+                    true);
+
+            // when
+            FoerderbereichFormContextDTO dto = foerderbereichMapper.toFormContext(entity);
+
+            // then
+            assertThat(dto).isNotNull();
+            assertThat(dto.fb()).isEqualTo(entity.getFb().toString());
+            assertThat(dto.bezeichnung()).isEqualTo(entity.getBezeichnung());
+        }
+
+        @Test
+        void givenEntityList_thenReturnsCorrectFormContextDTOList() {
+            // given
+            Foerderbereich entity1 = new Foerderbereich(
+                    BigDecimal.valueOf(1),
+                    "Test 1",
+                    false,
+                    true,
+                    false,
+                    true);
+
+            Foerderbereich entity2 = new Foerderbereich(
+                    BigDecimal.valueOf(2),
+                    "Test 2",
+                    true,
+                    false,
+                    true,
+                    false);
+
+            List<Foerderbereich> entities = List.of(entity1, entity2);
+
+            // when
+            List<FoerderbereichFormContextDTO> dtos = foerderbereichMapper.toFormContext(entities);
+
+            // then
+            assertThat(dtos).hasSize(2);
+
+            assertThat(dtos.get(0).fb()).isEqualTo(entity1.getFb().toString());
+            assertThat(dtos.get(0).bezeichnung()).isEqualTo(entity1.getBezeichnung());
+
+            assertThat(dtos.get(1).fb()).isEqualTo(entity2.getFb().toString());
+            assertThat(dtos.get(1).bezeichnung()).isEqualTo(entity2.getBezeichnung());
+        }
     }
 
 }

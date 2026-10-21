@@ -1,6 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.unterabschnitt.dto;
 
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -19,5 +20,9 @@ public interface UnterabschnittMapper {
     @Mapping(target = "hasHa", ignore = true)
     @Mapping(target = "ua", ignore = true)
     Unterabschnitt toEntity(UnterabschnittUpdateDTO unterabschnittUpdateDTO);
+
+    UnterabschnittFormContextDTO toFormContext(Unterabschnitt unterabschnitt);
+
+    List<UnterabschnittFormContextDTO> toFormContext(List<Unterabschnitt> unterabschnittList);
 
 }
