@@ -72,4 +72,5 @@ public class StadtbezirkService {
     public void checkExistsByStadtbezirk(final BigDecimal bez) {
         ServiceUtils.checkExistsOrThrowNotFoundException(bez, stadtbezirkRepository, Stadtbezirk.class);
     }
+
 }
