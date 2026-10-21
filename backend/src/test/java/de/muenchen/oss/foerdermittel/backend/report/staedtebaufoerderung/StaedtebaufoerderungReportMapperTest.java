@@ -1,6 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.report.staedtebaufoerderung;
 
-import static de.muenchen.oss.foerdermittel.backend.report.ReportFormat.PDF;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.muenchen.oss.foerdermittel.backend.report.staetebaufoerderung.dto.ReportStaedtebaufoerderungDTO;
