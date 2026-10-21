@@ -78,16 +78,18 @@
       </filter-panel>
       <div class="d-flex flex-column h-100 overflow-x-hidden">
         <v-data-table-server
-          v-model:options="dataTableOptions"
+          v-model:items-per-page="itemsPerPage"
+          v-model:page="page"
+          v-model:sort-by="sortBy"
           v-model:expanded="expanded"
           fixed-header
+          :search="search"
           :headers="tableHeadersWithActions"
           :items="getAllData?.content ?? []"
           :items-length="getAllData?.page?.totalElements ?? 0"
           :loading="loading"
           :show-expand="expandable"
           expand-strategy="single"
-          height="10"
           class="flex-grow-1 w-100"
           :row-props="{
             class: expandable ? 'cursor-pointer hover-row' : 'cursor-auto',
@@ -158,13 +160,12 @@
     TFilter
   "
 >
-import type { DataTableOptions } from "@/types/DataTableOptions";
 import type { ApiComposables } from "@/util/composable-helper";
 import type { Awaitable } from "@vueuse/core";
 import type { DataTableHeader } from "vuetify/framework";
 
 import { mdiDelete, mdiPencil, mdiPlus, mdiTrashCan } from "@mdi/js";
-import { computed, onMounted, ref } from "vue";
+import { computed, nextTick, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 import ConfirmCard from "@/components/common/ConfirmCard.vue";
@@ -252,22 +253,6 @@ const {
   applyFilter,
   resetFilter,
 } = useFilter(filterDefault);
-
-const dataTableOptions = computed<DataTableOptions>({
-  get() {
-    return {
-      page: page.value,
-      itemsPerPage: itemsPerPage.value,
-      sortBy: sortBy.value,
-      search: search.value,
-    };
-  },
-  set(newDataTableOptions) {
-    page.value = newDataTableOptions.page;
-    itemsPerPage.value = newDataTableOptions.itemsPerPage;
-    sortBy.value = newDataTableOptions.sortBy;
-  },
-});
 
 const snackbarStore = useSnackbarStore();
 
@@ -360,13 +345,19 @@ const refetchEntities = async () => {
 };
 
 const filterEntities = async () => {
-  page.value = PAGINATION_DEFAULTS.page;
   await applyFilter();
+  // TODO GET RID OF NEXTTICK
+  await nextTick(() => {
+    page.value = PAGINATION_DEFAULTS.page;
+  });
 };
 
 const resetEntityFilter = async () => {
-  page.value = PAGINATION_DEFAULTS.page;
   await resetFilter();
+  // TODO GET RID OF NEXTTICK
+  await nextTick(() => {
+    page.value = PAGINATION_DEFAULTS.page;
+  });
 };
 
 const updateFormValidity = (valid: boolean | null) => {
