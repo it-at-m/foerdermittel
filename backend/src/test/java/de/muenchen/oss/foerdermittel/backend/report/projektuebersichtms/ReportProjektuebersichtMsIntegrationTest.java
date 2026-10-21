@@ -66,6 +66,21 @@ class ReportProjektuebersichtMsIntegrationTest {
                     arguments("sachbearbeitunghaushalt", HttpStatus.OK),
                     arguments("no-role", HttpStatus.FORBIDDEN));
         }
+
+        @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
+        @MethodSource("authorizationMappings")
+        void givenRole_thenReturnStatus(
+                final String role,
+                final HttpStatus httpStatus) {
+
+            restTestClient.get()
+                    .uri("/report/projektuebersichtms/form-context")
+                    .header(
+                            HttpHeaders.AUTHORIZATION,
+                            String.format("Bearer %s", role))
+                    .exchange()
+                    .expectStatus().isEqualTo(httpStatus);
+        }
     }
 
     @Nested
