@@ -4,9 +4,7 @@ import type {
 } from "@/api/generated/foerdermittel-backend";
 import type { ReportApiComposables } from "@/util/composable-helper";
 
-import {
-  ReportProjektuebersichtMsControllerApi,
-} from "@/api/generated/foerdermittel-backend";
+import { ReportProjektuebersichtMsControllerApi } from "@/api/generated/foerdermittel-backend";
 import {
   createReportAPIComposables,
   requireComposables,

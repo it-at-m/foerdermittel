@@ -190,9 +190,7 @@ import type { VForm } from "vuetify/components";
 import { useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
-import {
-  ReportProjektuebersichtMsDTOPropertyValidationAttributesMap,
-} from "@/api/generated/foerdermittel-backend";
+import { ReportProjektuebersichtMsDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
