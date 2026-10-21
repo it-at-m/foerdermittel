@@ -1,16 +1,14 @@
 package de.muenchen.oss.foerdermittel.backend.report.projektuebersichtms;
 
+import static de.muenchen.oss.foerdermittel.backend.projekt.Krisofp.X;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
 import de.muenchen.oss.foerdermittel.backend.report.projekteubersichtms.dto.ReportProjektuebersichtMsDTO;
 import de.muenchen.oss.foerdermittel.backend.report.projekteubersichtms.dto.ReportProjektuebersichtMsMapper;
 import de.muenchen.oss.foerdermittel.backend.report.projekteubersichtms.dto.ReportProjektuebersichtMsSort;
-import de.muenchen.oss.foerdermittel.backend.report.projektuebersichtms.dto.ReportProjektuebersichtMsDTO;
-import de.muenchen.oss.foerdermittel.backend.report.projektuebersichtms.dto.ReportProjektuebersichtMsMapper;
-import de.muenchen.oss.foerdermittel.backend.report.projektuebersichtms.dto.ReportProjektuebersichtMsSort;
-import org.junit.jupiter.api.Test;
-
 import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class ReportProjektuebersichtMsMapperTest {
 
@@ -21,24 +19,37 @@ class ReportProjektuebersichtMsMapperTest {
         // given
         final ReportProjektuebersichtMsDTO dto = new ReportProjektuebersichtMsDTO(
                 "1999",
-                "2010",
-                "Test",
                 "1",
                 "1",
-                ReportProjektuebersichtMsSort.REFERAT);
+                "1",
+                "1",
+                "KB1",
+                "0",
+                "0",
+                X,
+                "1",
+                "1",
+                ReportFormat.PDF,
+                ReportProjektuebersichtMsSort.PROJEKTNUMMER);
 
         // when
         final Map<String, Object> parameters = reportMapper.toJasperParameters(dto);
 
         // then
         assertThat(parameters)
-                .hasSize(6)
-                .containsEntry("P_JAHR_VON", "1999")
-                .containsEntry("P_JAHR_BIS", "2010")
-                .containsEntry("P_INHALT", "%Test%")
-                .containsEntry("P_PUB", "1")
-                .containsEntry("P_REFID", "1")
-                .containsEntry("P_REFBEZ", "RAW");
+                .hasSize(11)
+                .containsEntry("P_JAHR", "1999")
+                .containsEntry("P_SBL", "1")
+                .containsEntry("P_BEZ", "1")
+                .containsEntry("P_FB", "1")
+                .containsEntry("P_UA", "1")
+                .containsEntry("P_KURZ", "KB1")
+                .containsEntry("P_OFFEN", "0")
+                .containsEntry("P_VN", "0")
+                .containsEntry("P_KRISOFP", "X")
+                .containsEntry("P_SGT", "1")
+                .containsEntry("P_BPG", "1");
+
     }
 
     @Test
@@ -50,6 +61,13 @@ class ReportProjektuebersichtMsMapperTest {
                 "",
                 "",
                 "",
+                "",
+                "",
+                "",
+                null,
+                "",
+                "",
+                null,
                 null);
 
         // when
@@ -57,13 +75,18 @@ class ReportProjektuebersichtMsMapperTest {
 
         // then
         assertThat(parameters)
-                .hasSize(6)
-                .containsEntry("P_JAHR_VON", null)
-                .containsEntry("P_JAHR_BIS", null)
-                .containsEntry("P_INHALT", null)
-                .containsEntry("P_PUB", null)
-                .containsEntry("P_REFID", "")
-                .containsEntry("P_REFBEZ", null);
+                .hasSize(11)
+                .containsEntry("P_JAHR", null)
+                .containsEntry("P_SBL", null)
+                .containsEntry("P_BEZ", null)
+                .containsEntry("P_FB", null)
+                .containsEntry("P_UA", null)
+                .containsEntry("P_KURZ", null)
+                .containsEntry("P_OFFEN", null)
+                .containsEntry("P_VN", null)
+                .containsEntry("P_KRISOFP", null)
+                .containsEntry("P_SGT", null)
+                .containsEntry("P_BPG", null);
     }
 
 }

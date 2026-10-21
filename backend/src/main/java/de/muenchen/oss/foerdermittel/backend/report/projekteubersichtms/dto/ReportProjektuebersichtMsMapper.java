@@ -28,7 +28,6 @@ public class ReportProjektuebersichtMsMapper {
         parameters.put("P_SGT", ReportControllerUtil.nullIfBlank(dto.sgt()));
         parameters.put("P_BPG", ReportControllerUtil.nullIfBlank(dto.bpg()));
 
-
         return parameters;
     }
 }

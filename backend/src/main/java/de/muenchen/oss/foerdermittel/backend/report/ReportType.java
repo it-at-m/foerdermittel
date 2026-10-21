@@ -13,6 +13,7 @@ public enum ReportType {
     FMW_HAUSHALT1(Set.of(ReportFormat.PDF, ReportFormat.PDF_FLAT, ReportFormat.EXCEL)),
     FMW_PROJEKTE3(Set.of(ReportFormat.PDF)),
     FMW_PROJEKTE4(Set.of(ReportFormat.PDF, ReportFormat.EXCEL));
+
     private final Set<ReportFormat> supportedFormats;
 
     public String getFileName() {

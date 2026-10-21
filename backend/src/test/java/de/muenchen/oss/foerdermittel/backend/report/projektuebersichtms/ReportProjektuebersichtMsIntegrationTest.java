@@ -1,8 +1,13 @@
 package de.muenchen.oss.foerdermittel.backend.report.projektuebersichtms;
 
+import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_TEST_PROFILE;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
+
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
 import de.muenchen.oss.foerdermittel.backend.TestUtils;
-import de.muenchen.oss.foerdermittel.backend.report.euinformation.formcontext.ReportEuinformationFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.projekteubersichtms.formcontext.ReportProjektuebersichtMsFormContext;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,12 +28,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
-import java.util.stream.Stream;
-
-import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_TEST_PROFILE;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
-
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureRestTestClient
@@ -47,12 +46,12 @@ class ReportProjektuebersichtMsIntegrationTest {
                     TestUtils.getImageFromDockerCompose("postgres")));
 
     @Nested
-    class GetReportEuinformationen {
+    class GetReportProjektuebersichtms {
 
         @Test
         void givenMissingParameters_thenReturnBadRequest() {
             restTestClient.get()
-                    .uri("/report/euinformationen")
+                    .uri("/report/projektuebersichtms")
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             "Bearer sachbearbeitung")
@@ -70,12 +69,12 @@ class ReportProjektuebersichtMsIntegrationTest {
     }
 
     @Nested
-    class GetReportEuinformationenFormContext {
+    class GetReportProjektuebersichtmsFormContext {
 
         @Test
         void givenRequest_thenReturnFormContext() {
-            final ReportEuinformationFormContext result = restTestClient.get()
-                    .uri("/report/euinformationen/form-context")
+            final ReportProjektuebersichtMsFormContext result = restTestClient.get()
+                    .uri("/report/projektuebersichtms/form-context")
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             "Bearer admin")
@@ -84,7 +83,7 @@ class ReportProjektuebersichtMsIntegrationTest {
                     .expectHeader()
                     .contentType(MediaType.APPLICATION_JSON)
                     .expectBody(
-                            ReportEuinformationFormContext.class)
+                            ReportProjektuebersichtMsFormContext.class)
                     .returnResult()
                     .getResponseBody();
 
@@ -106,7 +105,7 @@ class ReportProjektuebersichtMsIntegrationTest {
                 final HttpStatus httpStatus) {
 
             restTestClient.get()
-                    .uri("/report/euinformationen/form-context")
+                    .uri("/report/projektuebersichtms/form-context")
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             String.format("Bearer %s", role))
