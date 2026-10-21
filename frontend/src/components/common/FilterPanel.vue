@@ -16,8 +16,8 @@
           <v-btn
             v-if="filterActive"
             size="small"
-            color="accent"
             variant="outlined"
+            :prepend-icon="mdiClose"
             :text="t('component.filterPanel.reset')"
             @click.stop="emit('reset')"
           />
@@ -47,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import { mdiMagnify } from "@mdi/js";
+import { mdiClose, mdiMagnify } from "@mdi/js";
 import { useI18n } from "vue-i18n";
 
 const { loading = false, filterActive = false } = defineProps<{
