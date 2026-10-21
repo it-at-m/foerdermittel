@@ -53,7 +53,7 @@ const headers: DataTableHeader<Partial<ProjektResponseDTO>>[] = [
   },
   {
     title: t("model.projekt.fobFb"),
-    value: "foerderbereich",
+    value: "fobFb",
     sortable: true,
   },
   {
@@ -67,12 +67,12 @@ const headers: DataTableHeader<Partial<ProjektResponseDTO>>[] = [
     sortable: true,
   },
   {
-    title: t("model.projekt.name"),
+    title: t("model.projekt.pname"),
     value: "pname",
     sortable: true,
   },
   {
-    title: t("model.projekt.strasse"),
+    title: t("model.projekt.pstrasse"),
     value: "pstrasse",
     sortable: true,
   },
@@ -80,7 +80,7 @@ const headers: DataTableHeader<Partial<ProjektResponseDTO>>[] = [
 
 const EMPTY_ITEM_TEMPLATE: Partial<ProjektResponseDTO> = {
   projnr: "",
-  foerderbereich: undefined,
+  fobFB: "",
   kurKurzbez: undefined,
   uasUa: undefined,
   pname: "",

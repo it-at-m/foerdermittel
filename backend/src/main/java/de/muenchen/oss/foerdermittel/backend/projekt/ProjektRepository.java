@@ -23,4 +23,7 @@ public interface ProjektRepository extends
     @Query("SELECT p.projnr, p.pname, p.pstrasse FROM Projekt p")
     List<BasicProjektDAO> findAllAsBasic();
 
+    @Query("SELECT p.projnr FROM Projekt p")
+    List<String> findAllProjekte();
+
 }

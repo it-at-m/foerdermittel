@@ -60,7 +60,12 @@
       "pstrasse": "Straße",
       "ausgabeNotiz": "Ausgabe Notiz",
       "jahr": "Projektjahr",
-      "krisofp": "Förderprogramm"
+      "krisofp": "Förderprogramm",
+      "fobFb": "FB",
+      "kurKurzbez": "Kurzbezeichnung",
+      "uasUa": "Unterabschnitt",
+      "lfdnr1": "Laufende Nummer 1",
+      "lfdnr2": "Laufende Nummer 2"
     },
     "antrag": {
       "modelName": "Antrag | Anträge"

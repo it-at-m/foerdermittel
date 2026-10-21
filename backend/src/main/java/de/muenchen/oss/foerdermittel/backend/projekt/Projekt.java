@@ -50,15 +50,6 @@ public class Projekt implements Serializable {
     )
     private Foerderbereich foerderbereich;
 
-    @Column(name = "kur_kurzbez", nullable = false, length = 3)
-    private String kurKurzbez;
-
-    @Column(name = "uas_ua", length = 2)
-    private String uasUa;
-
-    @Column(name = "jahr", length = 2)
-    private String jahr;
-
     @Column(name = "lfdnr1", length = 1)
     private String lfdnr1;
 

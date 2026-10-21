@@ -11,6 +11,7 @@ import org.mapstruct.Mapping;
 public interface ProjektMapper {
 
     @Mapping(source = "foerderbereich.fb", target = "foerderbereich")
+    @Mapping(source = "stadtbezirk.stadtbezirk", target = "stadtbezirk")
     ProjektResponseDTO toDTO(Projekt projekt);
 
     Projekt toEntity(ProjektCreateDTO projektCreateDTO);
