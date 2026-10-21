@@ -4060,30 +4060,6 @@ components:
           - FOERDERBEREICH_PROJEKTNUMMER
         type:
           $ref: "#/components/schemas/ReportFormat"
-    BauprogrammFormContextDTO:
-      required:
-      - bauprogramm
-      - bezeichnung
-      type: object
-      properties:
-        bauprogramm:
-          type: string
-          description: ""
-        bezeichnung:
-          type: string
-          description: ""
-    KurzbezeichnungFormContextDTO:
-      required:
-      - bezeichnung
-      - kurzbez
-      type: object
-      properties:
-        kurzbez:
-          type: string
-          description: ""
-        bezeichnung:
-          type: string
-          description: ""
     ReportAuswertungProjektFormContext:
       required:
       - bezs
@@ -4164,31 +4140,6 @@ components:
           - K
           - F
           - S
-    SiedlungsgebietFormContextDTO:
-      required:
-      - bezeichnung
-      - siedlungsgebiet
-      type: object
-      properties:
-        siedlungsgebiet:
-          type: integer
-          description: ""
-          format: int32
-        bezeichnung:
-          type: string
-          description: ""
-    UnterabschnittFormContextDTO:
-      required:
-      - bezeichnung
-      - ua
-      type: object
-      properties:
-        ua:
-          type: string
-          description: ""
-        bezeichnung:
-          type: string
-          description: ""
     PagedModelReferatResponseDTO:
       type: object
       properties:
