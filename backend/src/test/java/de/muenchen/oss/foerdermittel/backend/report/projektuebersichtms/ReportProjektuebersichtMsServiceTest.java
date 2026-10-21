@@ -233,7 +233,7 @@ class ReportProjektuebersichtMsServiceTest {
             verify(siedlungsgebietService, times(1))
                     .getSiedlungsgebietFormContextDTOs();
 
-            assertThat(formContext.bauprogramme()).isEqualTo(allBauprogramme);
+            assertThat(formContext.siedlungsgebiete()).isEqualTo(allSiedlungsgebiete);
 
             //Bauprogramme
             verify(bauprogrammService, times(1))
