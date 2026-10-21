@@ -52,7 +52,6 @@ const title = t("common.generics.reportTitle", [
 const EMPTY_FORM_TEMPLATE: Partial<GetReportStaedtebaufoerderungRequest> = {
   parameters: {
     traeger: "",
-    type: "PDF",
   },
 };
 

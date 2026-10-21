@@ -45,6 +45,10 @@
           :items="reportStaedtebaufoerderungFormContext?.traeger"
           :item-title="getTraegerTitle"
           item-value="kurzform"
+          :validation-attribute-map="
+            ReportStaedtebaufoerderungDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="traeger"
           :label="t('domain.report.staedtebaufoerderung.traeger')"
           :error-messages="traegerError"
         />
