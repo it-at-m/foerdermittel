@@ -2901,17 +2901,38 @@ components:
       required:
       - foerderbereich
       - jahr
+      - krisofp
       - kurKurzbez
       - lfdnr1
       - lfdnr2
+      - pname
       - projnr
+      - pstrasse
+      - stadtbezirk
       - uasUa
       type: object
       properties:
         projnr:
           type: string
+        pname:
+          type: string
+        pstrasse:
+          type: string
         foerderbereich:
           type: string
+        stadtbezirk:
+          type: string
+        krisofp:
+          type: string
+          enum:
+          - X
+          - "Y"
+          - Z
+          - W
+          - V
+          - K
+          - F
+          - S
         kurKurzbez:
           type: string
         uasUa:
@@ -2921,10 +2942,6 @@ components:
         lfdnr1:
           type: string
         lfdnr2:
-          type: string
-        pname:
-          type: string
-        pstrasse:
           type: string
     KurzbezeichnungUpdateDTO:
       required:
