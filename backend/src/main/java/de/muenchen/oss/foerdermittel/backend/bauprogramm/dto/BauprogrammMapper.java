@@ -2,6 +2,7 @@ package de.muenchen.oss.foerdermittel.backend.bauprogramm.dto;
 
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.Bauprogramm;
 import de.muenchen.oss.foerdermittel.backend.common.NumberMapper;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -17,5 +18,9 @@ public interface BauprogrammMapper {
 
     @Mapping(target = "bauprogramm", ignore = true)
     Bauprogramm toEntity(BauprogrammUpdateDTO bauprogrammUpdateDTO);
+
+    BauprogrammFormContextDTO toFormContext(Bauprogramm bauprogramm);
+
+    List<BauprogrammFormContextDTO> toFormContext(List<Bauprogramm> bauprogrammList);
 
 }

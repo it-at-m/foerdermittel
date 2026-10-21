@@ -2,6 +2,7 @@ package de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto;
 
 import de.muenchen.oss.foerdermittel.backend.common.NumberMapper;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -17,5 +18,9 @@ public interface SiedlungsgebietMapper {
 
     @Mapping(target = "siedlungsgebiet", ignore = true)
     Siedlungsgebiet toEntity(SiedlungsgebietUpdateDTO siedlungsgebietUpdateDTO);
+
+    SiedlungsgebietFormContextDTO toFormContext(Siedlungsgebiet siedlungsgebiet);
+
+    List<SiedlungsgebietFormContextDTO> toFormContext(List<Siedlungsgebiet> siedlungsgebietList);
 
 }
