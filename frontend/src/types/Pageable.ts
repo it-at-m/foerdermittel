@@ -1,5 +1,5 @@
 export interface Pageable {
   size?: number;
   page?: number;
-  sortBy?: string[];
+  sort?: string[];
 }
