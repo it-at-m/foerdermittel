@@ -61,11 +61,12 @@
         </v-col>
       </v-row>
     </v-card-title>
-    <v-card-text class="pa-0">
+    <v-card-text class="d-flex flex-column flex-grow-1 pa-0 overflow-hidden">
       <filter-panel
         v-if="$slots['filter-form']"
         :loading="loading"
         :filter-active="isFilterActive"
+        class="flex-grow-0"
         @filter="filterEntities"
         @reset="resetEntityFilter"
       >
@@ -76,7 +77,7 @@
           />
         </template>
       </filter-panel>
-      <div class="d-flex flex-column h-100 overflow-x-hidden">
+      <div class="d-flex flex-column flex-grow-1 overflow-x-hidden">
         <v-data-table-server
           v-model:items-per-page="itemsPerPage"
           v-model:page="page"
