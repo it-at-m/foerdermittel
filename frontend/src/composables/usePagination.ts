@@ -4,7 +4,7 @@ import type { Ref } from "vue";
 import type { DataTableSortItem } from "vuetify";
 
 import { useRouteQuery } from "@vueuse/router";
-import { computed, watch } from "vue";
+import { computed, onMounted, watch } from "vue";
 
 export const ITEMS_PER_PAGE_OPTIONS = [10, 25, 50, 100];
 
@@ -128,13 +128,9 @@ export default function usePagination(
     };
   });
 
-  watch(
-    pageable,
-    async (newPageable) => {
-      await getEntitiesFunction(newPageable);
-    },
-    { immediate: true }
-  );
+  onMounted(async () => {
+    await refetchEntities();
+  });
 
   async function refetchEntities() {
     await getEntitiesFunction(pageable.value);

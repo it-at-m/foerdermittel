@@ -94,6 +94,7 @@
             class: expandable ? 'cursor-pointer hover-row' : 'cursor-auto',
           }"
           @click:row="onRowClick"
+          @update:options="refetchEntities"
         >
           <template #loading>
             <p>{{ t("common.message.loading", [domainPlural]) }}</p>
