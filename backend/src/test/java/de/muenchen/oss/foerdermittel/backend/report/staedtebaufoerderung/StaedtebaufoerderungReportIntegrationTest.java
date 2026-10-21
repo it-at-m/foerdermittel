@@ -49,16 +49,14 @@ public class StaedtebaufoerderungReportIntegrationTest {
     class GetReportStaedtebaufoerderung {
 
         @Test
-        void givenMissingParameters_thenReturnBadRequest() {
+        void givenMissingParameters_thenReturnOk() {
             restTestClient.get()
                     .uri("/report/staedtebaufoerderungen")
-                    .header(
-                            HttpHeaders.AUTHORIZATION,
-                            "Bearer sachbearbeitung")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
                     .exchange()
-                    .expectStatus().isBadRequest();
+                    .expectStatus().isOk()
+                    .expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_PDF);
         }
-
     }
 
     @Nested

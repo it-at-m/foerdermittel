@@ -20,8 +20,7 @@ public class StaedtebaufoerderungReportMapperTest {
                 "2010",
                 "Test",
                 "1",
-                "1",
-                PDF);
+                "1");
 
         // when
         final Map<String, Object> parameters = reportMapper.toJasperParameters(dto);
@@ -44,8 +43,7 @@ public class StaedtebaufoerderungReportMapperTest {
                 "",
                 "",
                 "",
-                "",
-                PDF);
+                "");
 
         // when
         final Map<String, Object> parameters = reportMapper.toJasperParameters(dto);
