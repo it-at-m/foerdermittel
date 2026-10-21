@@ -3623,15 +3623,7 @@ components:
       description: |-
         DTO for [de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich] to be used in
         other FormContexts other than its own.
-    ReportFormat:
-      type: string
-      enum:
-      - PDF
-      - PDF_FLAT
-      - EXCEL
     ReportStaedtebaufoerderungDTO:
-      required:
-      - type
       type: object
       properties:
         jahrVon:
@@ -3645,11 +3637,10 @@ components:
           minLength: 0
           type: string
         traeger:
+          pattern: "^[0-9]$"
           type: string
         notizen:
           type: string
-        type:
-          $ref: "#/components/schemas/ReportFormat"
     ReportStaedtebaufoerderungFormContext:
       required:
       - traeger
@@ -3706,6 +3697,12 @@ components:
           type: string
         pstrasse:
           type: string
+    ReportFormat:
+      type: string
+      enum:
+      - PDF
+      - PDF_FLAT
+      - EXCEL
     ReportHaushaltsplanungDTO:
       required:
       - haushaltsjahr
