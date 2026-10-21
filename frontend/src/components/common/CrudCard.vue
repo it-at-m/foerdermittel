@@ -62,9 +62,16 @@
       </v-row>
     </v-card-title>
     <v-card-text class="pa-0">
-      <filter-panel v-if="$slots['filter-form']">
-        <template #filter-form>
-          <slot name="filter-form" />
+      <filter-panel
+        v-if="$slots['filter-form']"
+        :loading="loading"
+        :filter-active="isFilterActive"
+      >
+        <template #form>
+          <slot
+            name="filter-form"
+            :filter="filterFormValue"
+          />
         </template>
       </filter-panel>
       <div class="d-flex flex-column h-100 overflow-x-hidden">
@@ -147,32 +154,28 @@
     TCreateResponse extends {},
     TUpdateRequest extends {},
     TUpdateResponse extends {},
-    TDeleteRequest extends {}
+    TDeleteRequest extends {},
+    TFilter
   "
 >
 import type { ApiComposables } from "@/util/composable-helper";
 import type { Awaitable } from "@vueuse/core";
 import type { DataTableHeader } from "vuetify/framework";
 
-import {
-  mdiDelete,
-  mdiFilterCog,
-  mdiPencil,
-  mdiPlus,
-  mdiTrashCan,
-} from "@mdi/js";
+import { mdiDelete, mdiPencil, mdiPlus, mdiTrashCan } from "@mdi/js";
 import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 import ConfirmCard from "@/components/common/ConfirmCard.vue";
+import FilterPanel from "@/components/common/FilterPanel.vue";
 import UnsavedChangesDialog from "@/components/common/UnsavedChangesDialog.vue";
 import { useDirtyFlag } from "@/composables/useDirtyFlag";
+import { useFilter } from "@/composables/useFilter";
 import usePagination from "@/composables/usePagination";
 import { STATUS_INDICATORS } from "@/constants";
 import { useSnackbarStore } from "@/stores/snackbar";
 import { DialogWidth } from "@/types/DialogWidth";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
-import FilterPanel from "@/components/common/FilterPanel.vue";
 
 const { t } = useI18n();
 
@@ -182,6 +185,7 @@ const showDialog = computed(() => dialogMode.value !== null);
 
 const {
   emptyItemTemplate,
+  filterDefault,
   domainKey,
   loading: loadingProp = false,
   tableHeaders,
@@ -196,6 +200,7 @@ const {
   formRef,
 } = defineProps<{
   emptyItemTemplate: TGetResponse;
+  filterDefault?: TFilter;
   domainKey: string;
   loading?: boolean;
   tableHeaders: Readonly<DataTableHeader<TGetResponse>>[];
@@ -217,6 +222,8 @@ const {
   handleDelete: (id: string) => Awaitable<boolean | void>;
   formRef?: { validate: () => unknown } | null | undefined;
 }>();
+
+const { filterFormValue, isFilterActive } = useFilter(filterDefault);
 
 const loading = computed(
   () =>
