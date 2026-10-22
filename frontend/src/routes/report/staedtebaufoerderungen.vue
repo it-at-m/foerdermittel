@@ -31,7 +31,7 @@ import { useI18n } from "vue-i18n";
 import BaseView from "@/components/common/BaseView.vue";
 import ReportCard from "@/components/common/ReportCard.vue";
 import ReportStaedtebaufoerderungForm from "@/components/forms/report/ReportStaedtebaufoerderungForm.vue";
-import { useReportStaedtebaufoerderungApi } from "@/composables/api/useReportStaedtebaufoerderungApi";
+import { useReportStaedtebaufoerderungApi } from "@/composables/api/report/useReportStaedtebaufoerderungApi";
 import { Role } from "@/types/Role";
 
 definePage({

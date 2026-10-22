@@ -7,7 +7,7 @@ import de.muenchen.oss.foerdermittel.backend.report.staetebaufoerderung.dto.Repo
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
-public class StaedtebaufoerderungReportMapperTest {
+public class StaedtebaufoerderungReportProjektuebersichtMapperTest {
 
     private final ReportStaedtebaufoerderungMapper reportMapper = new ReportStaedtebaufoerderungMapper();
 
