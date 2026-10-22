@@ -158,9 +158,10 @@
     TUpdateRequest extends {},
     TUpdateResponse extends {},
     TDeleteRequest extends {},
-    TFilter
+    TFilter extends FilterRecord
   "
 >
+import type { FilterRecord } from "@/composables/useFilter";
 import type { ApiComposables } from "@/util/composable-helper";
 import type { Awaitable } from "@vueuse/core";
 import type { DataTableHeader } from "vuetify/framework";
@@ -253,7 +254,7 @@ const {
   isFilterActive,
   applyFilter,
   resetFilter,
-} = useFilter(filterDefault);
+} = useFilter<TFilter>(filterDefault);
 
 const snackbarStore = useSnackbarStore();
 
