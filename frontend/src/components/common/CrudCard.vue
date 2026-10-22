@@ -68,7 +68,6 @@
         :loading="loading"
         :filter-default="filterDefault"
         class="flex-grow-0"
-        @refetch="resetPage"
       >
         <template #form="{ filter }">
           <slot
@@ -165,16 +164,14 @@ import type { Awaitable } from "@vueuse/core";
 import type { DataTableHeader } from "vuetify/framework";
 
 import { mdiDelete, mdiPencil, mdiPlus, mdiTrashCan } from "@mdi/js";
-import { computed, nextTick, onMounted, ref, useTemplateRef } from "vue";
+import { computed, onMounted, ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import ConfirmCard from "@/components/common/ConfirmCard.vue";
 import FilterPanel from "@/components/common/FilterPanel.vue";
 import UnsavedChangesDialog from "@/components/common/UnsavedChangesDialog.vue";
 import { useDirtyFlag } from "@/composables/useDirtyFlag";
-import usePagination, {
-  PAGINATION_DEFAULTS,
-} from "@/composables/usePagination";
+import usePagination from "@/composables/usePagination";
 import { STATUS_INDICATORS } from "@/constants";
 import { useSnackbarStore } from "@/stores/snackbar";
 import { DialogWidth } from "@/types/DialogWidth";
@@ -340,12 +337,6 @@ const refetchEntities = async () => {
   await api.getAll.call({
     ...pageable.value,
     ...appliedFilter.value,
-  });
-};
-
-const resetPage = async () => {
-  await nextTick(() => {
-    page.value = PAGINATION_DEFAULTS.page;
   });
 };
 

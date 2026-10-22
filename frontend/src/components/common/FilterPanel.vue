@@ -61,10 +61,6 @@ const { filterDefault, loading = false } = defineProps<{
   loading?: boolean;
 }>();
 
-const emit = defineEmits<{
-  refetch: [];
-}>();
-
 const { t } = useI18n();
 
 const {
@@ -85,12 +81,10 @@ function checkOpened(panelValue: unknown) {
 
 async function apply() {
   await applyFilter();
-  emit("refetch");
 }
 
 async function reset() {
   await resetFilter();
-  emit("refetch");
 }
 
 defineExpose({
