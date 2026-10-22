@@ -15,31 +15,34 @@
           <span class="pr-5">{{ t("component.filterPanel.title") }}</span>
 
           <v-btn
-            v-if="filterActive"
+            v-if="isFilterActive"
             size="small"
             variant="tonal"
             :prepend-icon="mdiClose"
             :text="t('component.filterPanel.reset')"
-            @click.stop="emit('reset')"
+            @click.stop="reset"
           />
         </div>
       </template>
       <v-expansion-panel-text>
-        <slot name="form" />
+        <slot
+          name="form"
+          :filter="filterFormValue"
+        />
 
         <div class="d-flex justify-end mt-4">
           <v-btn
             :text="t('component.filterPanel.reset')"
             class="mr-3"
-            :disabled="loading || !filterActive"
-            @click="emit('reset')"
+            :disabled="loading || !isFilterActive"
+            @click="reset"
           />
           <v-btn
             :text="t('component.filterPanel.showResults')"
             variant="flat"
             color="accent"
             :loading="loading"
-            @click="emit('filter')"
+            @click="apply"
           />
         </div>
       </v-expansion-panel-text>
@@ -47,27 +50,51 @@
   </v-expansion-panels>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="TFilter extends Record<string, unknown>">
 import { mdiClose, mdiMagnify } from "@mdi/js";
 import { useI18n } from "vue-i18n";
 
-const { loading = false, filterActive = false } = defineProps<{
+import { useFilter } from "@/composables/useFilter";
+
+const { filterDefault, loading = false } = defineProps<{
+  filterDefault?: TFilter;
   loading?: boolean;
-  filterActive?: boolean;
 }>();
 
-function checkOpened(panelValue: unknown) {
-  // Check if panel opened
-  if (panelValue === 0) {
-    emit("open");
-  }
-}
-
 const emit = defineEmits<{
-  reset: [];
-  filter: [];
-  open: [];
+  refetch: [];
 }>();
 
 const { t } = useI18n();
+
+const {
+  filterFormValue,
+  appliedFilter,
+  search,
+  isFilterActive,
+  applyFilter,
+  resetFilter,
+  syncForm,
+} = useFilter<TFilter>(filterDefault);
+
+function checkOpened(panelValue: unknown) {
+  if (panelValue === 0) {
+    syncForm();
+  }
+}
+
+async function apply() {
+  await applyFilter();
+  emit("refetch");
+}
+
+async function reset() {
+  await resetFilter();
+  emit("refetch");
+}
+
+defineExpose({
+  appliedFilter,
+  search,
+});
 </script>

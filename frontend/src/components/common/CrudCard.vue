@@ -64,17 +64,16 @@
     <v-card-text class="d-flex flex-column flex-grow-1 pa-0 overflow-hidden">
       <filter-panel
         v-if="$slots['filter-form']"
+        ref="filterPanelRef"
         :loading="loading"
-        :filter-active="isFilterActive"
+        :filter-default="filterDefault"
         class="flex-grow-0"
-        @filter="filterEntities"
-        @reset="resetEntityFilter"
-        @open="syncForm"
+        @refetch="resetPage"
       >
-        <template #form>
+        <template #form="{ filter }">
           <slot
             name="filter-form"
-            :filter="filterFormValue"
+            :filter="filter"
           />
         </template>
       </filter-panel>
@@ -167,14 +166,13 @@ import type { Awaitable } from "@vueuse/core";
 import type { DataTableHeader } from "vuetify/framework";
 
 import { mdiDelete, mdiPencil, mdiPlus, mdiTrashCan } from "@mdi/js";
-import { computed, nextTick, onMounted, ref } from "vue";
+import { computed, nextTick, onMounted, ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import ConfirmCard from "@/components/common/ConfirmCard.vue";
 import FilterPanel from "@/components/common/FilterPanel.vue";
 import UnsavedChangesDialog from "@/components/common/UnsavedChangesDialog.vue";
 import { useDirtyFlag } from "@/composables/useDirtyFlag";
-import { useFilter } from "@/composables/useFilter";
 import usePagination, {
   PAGINATION_DEFAULTS,
 } from "@/composables/usePagination";
@@ -247,15 +245,14 @@ const { page, itemsPerPage, sortBy, pageable } = usePagination(
   computed(() => api.getAll.data.value?.page?.totalPages)
 );
 
-const {
-  filterFormValue,
-  appliedFilter,
-  search,
-  isFilterActive,
-  applyFilter,
-  resetFilter,
-  syncForm,
-} = useFilter<TFilter>(filterDefault);
+type FilterPanelType = InstanceType<typeof FilterPanel>;
+const filterPanelFormRef = useTemplateRef<FilterPanelType>("filterPanelRef");
+
+const appliedFilter = computed(
+  () => filterPanelFormRef.value?.appliedFilter ?? filterDefault
+);
+
+const search = computed(() => filterPanelFormRef.value?.search ?? "");
 
 const snackbarStore = useSnackbarStore();
 
@@ -347,17 +344,7 @@ const refetchEntities = async () => {
   });
 };
 
-const filterEntities = async () => {
-  await applyFilter();
-  // TODO GET RID OF NEXTTICK
-  await nextTick(() => {
-    page.value = PAGINATION_DEFAULTS.page;
-  });
-};
-
-const resetEntityFilter = async () => {
-  await resetFilter();
-  // TODO GET RID OF NEXTTICK
+const resetPage = async () => {
   await nextTick(() => {
     page.value = PAGINATION_DEFAULTS.page;
   });
