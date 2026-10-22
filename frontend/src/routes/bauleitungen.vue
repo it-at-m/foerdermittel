@@ -3,7 +3,6 @@
     <template #default="{ baseViewLoading }">
       <crud-card
         :empty-item-template="EMPTY_ITEM_TEMPLATE"
-        :filter-default="FILTER_DEFAULT"
         :loading="baseViewLoading"
         :table-headers="headers"
         :api="bauleitungApi"
@@ -15,9 +14,6 @@
         :handle-delete="handleDelete"
         :form-ref="bauleitungFormRef"
       >
-        <template #filter-form="{ filter }">
-          <test-filter-form :model-value="filter" />
-        </template>
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <bauleitung-form
             v-if="bauleitungFormContext"
@@ -35,7 +31,6 @@
 
 <script setup lang="ts">
 import type { BauleitungResponseDTO } from "@/api/generated/foerdermittel-backend";
-import type { DummyFilterType } from "@/types/DummyFilterType";
 import type { DataTableHeader } from "vuetify/framework";
 
 import { computed, useTemplateRef } from "vue";
@@ -44,7 +39,6 @@ import { useI18n } from "vue-i18n";
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
 import BauleitungForm from "@/components/forms/BauleitungForm.vue";
-import TestFilterForm from "@/components/forms/filter/TestFilterForm.vue";
 import { useBauleitungApi } from "@/composables/api/useBauleitungApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
 import { Role } from "@/types/Role";
@@ -78,10 +72,6 @@ const headers: DataTableHeader<Partial<BauleitungResponseDTO>>[] = [
 const EMPTY_ITEM_TEMPLATE: Partial<BauleitungResponseDTO> = {
   bauleitung: undefined,
   bezeichnung: "",
-};
-
-const FILTER_DEFAULT: DummyFilterType = {
-  test: "",
 };
 
 const bauleitungApi = useBauleitungApi();
