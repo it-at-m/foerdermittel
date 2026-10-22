@@ -159,10 +159,9 @@
     TUpdateRequest extends {},
     TUpdateResponse extends {},
     TDeleteRequest extends {},
-    TFilter extends FilterRecord
+    TFilter
   "
 >
-import type { FilterRecord } from "@/composables/useFilter";
 import type { ApiComposables } from "@/util/composable-helper";
 import type { Awaitable } from "@vueuse/core";
 import type { DataTableHeader } from "vuetify/framework";

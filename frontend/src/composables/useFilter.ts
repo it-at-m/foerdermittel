@@ -53,7 +53,7 @@ const isEmptyQueryParameter = (value: unknown): boolean =>
  * Filter values are initialized from the current route, using the supplied
  * defaults to determine the expected types of query parameters.
  */
-export function useFilter<T extends FilterRecord>(defaultValue: T | undefined) {
+export function useFilter<T>(defaultValue: T | undefined) {
   const route = useRoute();
   const router = useRouter();
 
