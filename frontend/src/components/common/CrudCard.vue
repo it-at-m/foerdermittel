@@ -157,8 +157,7 @@
     TCreateResponse extends {},
     TUpdateRequest extends {},
     TUpdateResponse extends {},
-    TDeleteRequest extends {},
-    TFilter
+    TDeleteRequest extends {}
   "
 >
 import type { ApiComposables } from "@/util/composable-helper";
@@ -204,7 +203,7 @@ const {
   formRef,
 } = defineProps<{
   emptyItemTemplate: TGetResponse;
-  filterDefault?: TFilter;
+  filterDefault?: Record<string, unknown>;
   domainKey: string;
   loading?: boolean;
   tableHeaders: Readonly<DataTableHeader<TGetResponse>>[];

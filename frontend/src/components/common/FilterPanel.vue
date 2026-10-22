@@ -50,14 +50,14 @@
   </v-expansion-panels>
 </template>
 
-<script setup lang="ts" generic="TFilter extends Record<string, unknown>">
+<script setup lang="ts">
 import { mdiClose, mdiMagnify } from "@mdi/js";
 import { useI18n } from "vue-i18n";
 
 import { useFilter } from "@/composables/useFilter";
 
 const { filterDefault, loading = false } = defineProps<{
-  filterDefault?: TFilter;
+  filterDefault?: Record<string, unknown>;
   loading?: boolean;
 }>();
 
@@ -75,7 +75,7 @@ const {
   applyFilter,
   resetFilter,
   syncForm,
-} = useFilter<TFilter>(filterDefault);
+} = useFilter(filterDefault);
 
 function checkOpened(panelValue: unknown) {
   if (panelValue === 0) {
