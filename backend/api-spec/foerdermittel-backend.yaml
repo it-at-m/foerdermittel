@@ -1920,7 +1920,7 @@ paths:
   /report/stichworte:
     get:
       tags:
-      - report-controller
+      - report-stichworte-controller
       operationId: getReportStichworte
       parameters:
       - name: parameters
@@ -1941,7 +1941,7 @@ paths:
   /report/stichworte/form-context:
     get:
       tags:
-      - report-controller
+      - report-stichworte-controller
       operationId: getReportStichworteFormContext
       responses:
         "200":
@@ -1990,7 +1990,7 @@ paths:
   /report/projektuebersicht:
     get:
       tags:
-      - report-controller
+      - report-projektuebersicht-controller
       operationId: getReportProjektuebersicht
       parameters:
       - name: parameters
@@ -2011,7 +2011,7 @@ paths:
   /report/projektuebersicht/form-context:
     get:
       tags:
-      - report-controller
+      - report-projektuebersicht-controller
       operationId: getReportProjektuebersichtFormContext
       responses:
         "200":
@@ -2025,7 +2025,7 @@ paths:
   /report/haushaltsplanung:
     get:
       tags:
-      - report-controller
+      - report-haushaltsplanung-controller
       operationId: getReportHaushaltsplanung
       parameters:
       - name: parameters
@@ -2050,7 +2050,7 @@ paths:
   /report/haushaltsplanung/form-context:
     get:
       tags:
-      - report-controller
+      - report-haushaltsplanung-controller
       operationId: getReportHaushaltsplanungFormContext
       responses:
         "200":
@@ -2064,7 +2064,7 @@ paths:
   /report/fortsetzungsantrag:
     get:
       tags:
-      - fortsetzungsantrag-report-controller
+      - report-fortsetzungsantrag-controller
       operationId: getReportFortsetzungsantrag
       parameters:
       - name: parameters
@@ -2089,7 +2089,7 @@ paths:
   /report/fortsetzungsantrag/form-context:
     get:
       tags:
-      - fortsetzungsantrag-report-controller
+      - report-fortsetzungsantrag-controller
       operationId: getReportFortsetzungsantragFormContext
       responses:
         "200":
@@ -3637,7 +3637,7 @@ components:
           minLength: 0
           type: string
         traeger:
-          pattern: "^[0-9]$"
+          pattern: "^[0-9]?$"
           type: string
         notizen:
           type: string
