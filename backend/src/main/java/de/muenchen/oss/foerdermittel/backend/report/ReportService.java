@@ -33,11 +33,11 @@ import org.springframework.util.StringUtils;
 public class ReportService {
 
     public static final String SORT_PARAMETER = "P_SORT";
-
-    private final StichwortbereichService stichwortbereichService;
     private final FoerderbereichService foerderbereichService;
     private final ListennameStadtbezirkslisteService listennameStadtbezirkslisteService;
     private final StadtbezirkService stadtbezirkService;
+
+    private final StichwortbereichService stichwortbereichService;
     private final JasperReportService jasperReportService;
     private final ReportMapper reportMapper;
     private final ProjektService projektService;
@@ -63,6 +63,7 @@ public class ReportService {
     @Transactional(readOnly = true)
     public GeneratedReport generateReportHaushaltsplanung(
             final ReportHaushaltsplanungDTO parameters) {
+
         if (StringUtils.hasText(parameters.fb())) {
             foerderbereichService.checkExistsByFoerderbereich(new BigDecimal(parameters.fb()));
         }

@@ -9,7 +9,8 @@
       "masterdata": "Stammdaten",
       "action": "Aktion | Aktionen",
       "readOnly": "(schreibgeschützt)",
-      "required": "*"
+      "required": "*",
+      "sort": "Sortierung"
     },
     "action": {
       "cancel": "Abbrechen",
@@ -55,9 +56,11 @@
     "projekt": {
       "modelName": "Projekt | Projekte",
       "projnr": "Projektnummer",
-      "name": "Name",
-      "strasse": "Straße",
-      "ausgabeNotiz": "Ausgabe Notiz"
+      "pname": "Name",
+      "pstrasse": "Straße",
+      "ausgabeNotiz": "Ausgabe Notiz",
+      "jahr": "Projektjahr",
+      "krisofp": "Förderprogramm"
     },
     "antrag": {
       "modelName": "Antrag | Anträge"
@@ -140,6 +143,7 @@
       "kindergarten": "Kindergarten",
       "nichtRelevant": "Nicht relevant"
     },
+
     "krankenhaus": {
       "modelName": "Krankenhaus | Krankenhäuser",
       "krhname": "Kurzform",
@@ -230,6 +234,24 @@
       "ausstGenehmigungVorzBeginn": "Ausst. Genehmigung vorz. Beginn",
       "bewilligungAuszahlungProjekt": "@:model.bewilligung.modelName und @:domain.auszahlung eines @:model.projekt.modelName{'s'}",
       "bewilligungAuzahlungVergleich": "@:model.bewilligung.modelName und @:domain.auszahlung (Vergleich)",
+      "auswertungProjekt": {
+        "modelName": "Projekt",
+        "offen": "Nur offene Projekte",
+        "kauf": "Nur Projekte mit Ankauf",
+        "relevant": "Nur relevante Projekte",
+        "sortierung": "Sortierung",
+        "sortEnum": {
+          "stadtbezirkStrasse": "Stadtbezirk, Straße",
+          "projektnummer": "Projektnummer",
+          "strasseProjektnummer": "Straße, Projektnummer",
+          "foerderbereichProjektnummer": "Förderbereich, Projektnummer",
+          "foerderbereichStrasse": "Förderbereich, Straße"
+        },
+        "type": {
+          "pdf": "PDF",
+          "excel": "Excel"
+        }
+      },
       "fortsetzungsAntrag": {
         "modelName": "Fortsetzungsantrag | Fortsetzungsanträge",
         "fag": "Nur FAG",
@@ -239,9 +261,43 @@
           "excel": "Excel"
         }
       },
+      "euinformation": {
+        "publikation": "Publikation",
+        "referat": "Referat",
+        "inhalt": "Inhalt",
+        "jahrVon": "Jahr von",
+        "jahrBis": "Jahr bis",
+        "sortEnum": {
+          "publikation": "Publikation, Inhalt",
+          "jahr": "Erscheinungsjahr, Publikation, Inhalt",
+          "referat": "Referat, Publikation, Inhalt",
+          "referatJahr": "Referat, Erscheinungsjahr, Publikation, Inhalt"
+        },
+        "referatEnum": {
+          "alleReferate": "Alle Referate",
+          "raw": "RAW",
+          "rbs": "RBS",
+          "sozrefR5": "Sozref R 5",
+          "rgu11": "RGU 11",
+          "rguCs": "RGU Cs",
+          "krh": "Krh",
+          "awb": "AWB",
+          "swm": "SWM",
+          "kulturref": "Kulturref",
+          "bauref": "Bauref",
+          "planref": "Planref",
+          "direktorium": "Direktorium",
+          "por": "POR",
+          "kvr": "KVR",
+          "komref": "Kommref",
+          "mse": "MSE",
+          "stk": "Stk"
+        }
+      },
       "haushaltsplanung": {
         "modelName": "Haushaltsplanung",
         "hh": "Ausgabe nur mit Haushaltszahlen",
+        "fipo": "FIPO",
         "sortEnum": {
           "projektnummer": "Projektnummer",
           "strasse": "Straße, Projektnummer",

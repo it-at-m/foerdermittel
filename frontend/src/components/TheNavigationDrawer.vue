@@ -249,7 +249,10 @@ const navigationItems: NavigationItem[] = [
         title: t("domain.report.annahmeAnordnungSAP"),
       },
       {
-        title: t("model.projekt.modelName", 2),
+        title: t("domain.report.auswertungProjekt.modelName"),
+        props: {
+          to: "/report/auswertungprojekte",
+        },
       },
       {
         title: t("domain.report.checklisten"),
@@ -313,6 +316,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.euinformation.modelName", 2),
+        props: {
+          to: "/report/euinformationen",
+        },
       },
       {
         title: t("model.geplantemassnahme.modelName", 2),
