@@ -1920,7 +1920,7 @@ paths:
   /report/stichworte:
     get:
       tags:
-      - report-controller
+      - report-stichworte-controller
       operationId: getReportStichworte
       parameters:
       - name: parameters
@@ -1941,7 +1941,7 @@ paths:
   /report/stichworte/form-context:
     get:
       tags:
-      - report-controller
+      - report-stichworte-controller
       operationId: getReportStichworteFormContext
       responses:
         "200":
@@ -1952,10 +1952,45 @@ paths:
                 $ref: "#/components/schemas/ReportStichworteFormContext"
       security:
       - bearerAuth: []
+  /report/staedtebaufoerderungen:
+    get:
+      tags:
+      - report-staedtebaufoerderung-controller
+      operationId: getReportStaedtebaufoerderung
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportStaedtebaufoerderungDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/staedtebaufoerderungen/form-context:
+    get:
+      tags:
+      - report-staedtebaufoerderung-controller
+      operationId: getReportStaedtebaufoerderungFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportStaedtebaufoerderungFormContext"
+      security:
+      - bearerAuth: []
   /report/projektuebersicht:
     get:
       tags:
-      - report-controller
+      - report-projektuebersicht-controller
       operationId: getReportProjektuebersicht
       parameters:
       - name: parameters
@@ -1976,7 +2011,7 @@ paths:
   /report/projektuebersicht/form-context:
     get:
       tags:
-      - report-controller
+      - report-projektuebersicht-controller
       operationId: getReportProjektuebersichtFormContext
       responses:
         "200":
@@ -1990,7 +2025,7 @@ paths:
   /report/haushaltsplanung:
     get:
       tags:
-      - report-controller
+      - report-haushaltsplanung-controller
       operationId: getReportHaushaltsplanung
       parameters:
       - name: parameters
@@ -2015,7 +2050,7 @@ paths:
   /report/haushaltsplanung/form-context:
     get:
       tags:
-      - report-controller
+      - report-haushaltsplanung-controller
       operationId: getReportHaushaltsplanungFormContext
       responses:
         "200":
@@ -2029,7 +2064,7 @@ paths:
   /report/fortsetzungsantrag:
     get:
       tags:
-      - fortsetzungsantrag-report-controller
+      - report-fortsetzungsantrag-controller
       operationId: getReportFortsetzungsantrag
       parameters:
       - name: parameters
@@ -2054,7 +2089,7 @@ paths:
   /report/fortsetzungsantrag/form-context:
     get:
       tags:
-      - fortsetzungsantrag-report-controller
+      - report-fortsetzungsantrag-controller
       operationId: getReportFortsetzungsantragFormContext
       responses:
         "200":
@@ -3587,6 +3622,48 @@ components:
           description: ""
       description: |-
         DTO for [de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich] to be used in
+        other FormContexts other than its own.
+    ReportStaedtebaufoerderungDTO:
+      type: object
+      properties:
+        jahrVon:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        jahrBis:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        pname:
+          maxLength: 40
+          minLength: 0
+          type: string
+        traeger:
+          pattern: "^[0-9]?$"
+          type: string
+        notizen:
+          type: string
+    ReportStaedtebaufoerderungFormContext:
+      required:
+      - traeger
+      type: object
+      properties:
+        traeger:
+          type: array
+          items:
+            $ref: "#/components/schemas/TraegerFormContextDTO"
+    TraegerFormContextDTO:
+      required:
+      - bezeichnung
+      - kurzform
+      type: object
+      properties:
+        kurzform:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+      description: |-
+        DTO for [de.muenchen.oss.foerdermittel.backend.publikation.Publikation] to be used in
         other FormContexts other than its own.
     ReportProjektuebersichtDTO:
       required:
