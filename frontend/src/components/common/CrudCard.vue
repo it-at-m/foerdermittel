@@ -297,7 +297,6 @@ const expanded = ref<string[]>([]);
 // --- Lifecycle Handlers ---
 
 onMounted(async () => {
-  await refetchEntities();
   await loadFormContext();
 });
 

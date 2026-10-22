@@ -16,7 +16,7 @@ function clone<T>(value: T): T {
  * Parses a route query value into the expected type and returns undefined if parsing failed.
  */
 function parseQueryValue<T>(value: unknown, defaultValue: T): T | undefined {
-  if (value == null) return undefined;
+  if (value === null || value === undefined) return undefined;
 
   const values = Array.isArray(value)
     ? value.filter((item): item is string => item != null)
@@ -45,7 +45,10 @@ function parseQueryValue<T>(value: unknown, defaultValue: T): T | undefined {
  * Checks if a value is considered as an empty query parameter and thus should be omitted from the route query.
  */
 const isEmptyQueryParameter = (value: unknown): boolean =>
-  value == null || value === "" || (Array.isArray(value) && value.length === 0);
+  value === null ||
+  value === undefined ||
+  value === "" ||
+  (Array.isArray(value) && value.length === 0);
 
 /**
  * Manages filter state and synchronizes applied filters with the route query.
@@ -58,7 +61,9 @@ export function useFilter<T>(defaultValue: T | undefined) {
   const router = useRouter();
 
   const defaults = computed<FilterRecord>(() =>
-    defaultValue == null ? {} : clone(defaultValue)
+    defaultValue === null || defaultValue === undefined
+      ? {}
+      : clone(defaultValue)
   );
 
   const keys = ref(new Set(Object.keys(defaults.value)));
