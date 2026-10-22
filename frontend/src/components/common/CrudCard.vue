@@ -248,7 +248,7 @@ type FilterPanelType = InstanceType<typeof FilterPanel>;
 const filterPanelFormRef = useTemplateRef<FilterPanelType>("filterPanelRef");
 
 const appliedFilter = computed(
-  () => filterPanelFormRef.value?.appliedFilter ?? filterDefault
+  () => filterPanelFormRef.value?.appliedFilter ?? {}
 );
 
 const search = computed(() => filterPanelFormRef.value?.search ?? "");
