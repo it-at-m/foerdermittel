@@ -88,7 +88,7 @@ class ReportProjektuebersichtServiceTest {
                     .containsEntry("P_PSTRASSE", "Projektstraße 1");
 
             verify(projektService, times(1)).getProjekt(parameters.projnr());
-            verify(reportProjektuebersichtMapper, times(2))
+            verify(reportProjektuebersichtMapper, times(1))
                     .toJasperParameters(parameters);
             verify(reportService, times(1)).generateReport(
                     jasperParameters,

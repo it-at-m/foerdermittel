@@ -34,7 +34,7 @@ public class ReportProjektuebersichtService {
         final Map<String, Object> jasperParameters = reportProjektuebersichtMapper.toJasperParameters(parameters);
         jasperParameters.put("P_PNAME", projekt.getPname());
         jasperParameters.put("P_PSTRASSE", projekt.getPstrasse());
-        return reportService.generateReport(reportProjektuebersichtMapper.toJasperParameters(parameters), ReportType.FMW_PROJEKTE3, ReportFormat.PDF, null);
+        return reportService.generateReport(jasperParameters, ReportType.FMW_PROJEKTE3, ReportFormat.PDF, null);
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
