@@ -1,6 +1,6 @@
+
 package de.muenchen.oss.foerdermittel.backend.report.stichworte;
 
-import static de.muenchen.oss.foerdermittel.backend.report.ReportService.SORT_PARAMETER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
@@ -36,7 +36,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class ReportStichworteServiceTest {
+class ReportStichworteServiceTest {
+
+    private static final String BEREICH = "TEST";
+    private static final String SORT = "ORDER BY stb_bereich ASC, nr ASC, wort ASC";
 
     @Mock
     private StichwortbereichService stichwortbereichService;
@@ -48,125 +51,133 @@ public class ReportStichworteServiceTest {
     private ReportStichworteMapper reportStichworteMapper;
 
     @InjectMocks
-    private ReportStichworteService reportStichworteServiceService;
+    private ReportStichworteService reportStichworteService;
 
     @Nested
     class GenerateReportStichworte {
 
         @Test
-        void givenNoWriteInteraction_thenShouldGenerateCorrectGeneratedReport() {
+        void givenValidParameters_thenShouldReturnGeneratedReport() {
             // Given
-            final String bereich = "TEST";
-
-            final ReportStichworteDTO parameters = new ReportStichworteDTO(bereich);
-
+            final ReportStichworteDTO parameters = new ReportStichworteDTO(BEREICH);
             final Map<String, Object> jasperParameters = new HashMap<>();
+            final GeneratedReport expectedReport = new GeneratedReport(
+                    "test.pdf",
+                    ReportFormat.PDF.getContentType(),
+                    outputStream -> {
+                    });
 
             when(reportStichworteMapper.toJasperParameters(parameters))
                     .thenReturn(jasperParameters);
+            when(reportService.generateReport(
+                    jasperParameters,
+                    ReportType.FMW_ABLAGEINDEX,
+                    ReportFormat.PDF,
+                    SORT))
+                    .thenReturn(expectedReport);
 
             // When
-            final GeneratedReport generatedReport = reportStichworteServiceService.generateReportStichworte(parameters);
+            final GeneratedReport actualReport = reportStichworteService.generateReportStichworte(parameters);
 
             // Then
-            verify(stichwortbereichService, times(1))
-                    .checkExistsByBereich(bereich);
+            verify(stichwortbereichService, times(1)).checkExistsByBereich(BEREICH);
+            verify(reportStichworteMapper, times(1)).toJasperParameters(parameters);
+            verify(reportService, times(1)).generateReport(
+                    jasperParameters,
+                    ReportType.FMW_ABLAGEINDEX,
+                    ReportFormat.PDF,
+                    SORT);
 
-            verify(reportStichworteMapper, times(1))
-                    .toJasperParameters(parameters);
-
-            verifyNoInteractions(reportService);
-
-            assertThat(generatedReport).isNotNull();
-            assertThat(generatedReport.contentType())
-                    .isEqualTo(ReportFormat.PDF.getContentType());
-            assertThat(generatedReport.fileName())
-                    .startsWith(ReportType.FMW_ABLAGEINDEX.getFileName())
-                    .endsWith(ReportFormat.PDF.getFileExtension());
-            assertThat(jasperParameters)
-                    .containsEntry(
-                            SORT_PARAMETER,
-                            "ORDER BY stb_bereich ASC, nr ASC, wort ASC");
+            assertThat(actualReport).isSameAs(expectedReport);
+            assertThat(actualReport.contentType()).isEqualTo(ReportFormat.PDF.getContentType());
+            assertThat(actualReport.fileName()).isEqualTo("test.pdf");
         }
 
         @Test
-        void givenWriteInteraction_thenShouldCallJasperServiceCorrectly()
+        void givenValidParameters_thenShouldCallReportWriter()
                 throws JRException, SQLException, IOException {
-
             // Given
-            final String bereich = "TEST";
-
-            final ReportStichworteDTO parameters = new ReportStichworteDTO(bereich);
-
+            final ReportStichworteDTO parameters = new ReportStichworteDTO(BEREICH);
             final Map<String, Object> jasperParameters = new HashMap<>();
+            final OutputStream outputStream = new ByteArrayOutputStream();
+            final GeneratedReport expectedReport = new GeneratedReport(
+                    "test.pdf",
+                    ReportFormat.PDF.getContentType(),
+                    ignored -> {
+                    });
+
             when(reportStichworteMapper.toJasperParameters(parameters))
                     .thenReturn(jasperParameters);
-
-            final OutputStream outputStream = new ByteArrayOutputStream();
+            when(reportService.generateReport(
+                    jasperParameters,
+                    ReportType.FMW_ABLAGEINDEX,
+                    ReportFormat.PDF,
+                    SORT))
+                    .thenReturn(expectedReport);
 
             // When
-            final GeneratedReport generatedReport = reportStichworteServiceService.generateReportStichworte(parameters);
+            final GeneratedReport generatedReport = reportStichworteService.generateReportStichworte(parameters);
             generatedReport.writer().write(outputStream);
 
             // Then
-            verify(reportService, times(1))
-                    .generateReport(
-                            jasperParameters,
-                            ReportType.FMW_ABLAGEINDEX,
-                            ReportFormat.PDF,
-                            "ORDER BY stb_bereich ASC, nr ASC, wort ASC");
+            verify(stichwortbereichService, times(1)).checkExistsByBereich(BEREICH);
+            verify(reportStichworteMapper, times(1)).toJasperParameters(parameters);
+            verify(reportService, times(1)).generateReport(
+                    jasperParameters,
+                    ReportType.FMW_ABLAGEINDEX,
+                    ReportFormat.PDF,
+                    SORT);
         }
 
         @Test
         void givenNotFound_thenShouldThrowNotFoundException() {
             // Given
             final String bereich = "test";
-
             final ReportStichworteDTO parameters = new ReportStichworteDTO(bereich);
 
-            doThrow(new NotFoundException(
-                    Stichwortbereich.class,
-                    bereich))
+            doThrow(new NotFoundException(Stichwortbereich.class, bereich))
                     .when(stichwortbereichService)
                     .checkExistsByBereich(bereich);
 
             // When
             final Exception exception = Assertions.assertThrows(
                     NotFoundException.class,
-                    () -> reportStichworteServiceService.generateReportStichworte(parameters));
+                    () -> reportStichworteService.generateReportStichworte(parameters));
 
             // Then
             verify(stichwortbereichService, times(1)).checkExistsByBereich(bereich);
-            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Stichwortbereich.class.getSimpleName(), bereich));
-        }
+            verifyNoInteractions(reportStichworteMapper, reportService);
 
+            assertThat(exception.getMessage()).isEqualTo(
+                    String.format(
+                            "The %s with ID %s was not found.",
+                            Stichwortbereich.class.getSimpleName(),
+                            bereich));
+        }
     }
 
     @Nested
     class GetReportStichworteFormContext {
 
         @Test
-        void givenEntitiesExists_thenReturnCorrectFormContext() {
+        void givenEntitiesExist_thenReturnCorrectFormContext() {
             // Given
             final List<StichwortbereichFormContextDTO> allBereiche = List.of(
                     new StichwortbereichFormContextDTO("K", "Test"),
                     new StichwortbereichFormContextDTO("L", "Test 2"),
                     new StichwortbereichFormContextDTO("M", "Test 3"));
 
-            when(stichwortbereichService
-                    .getStichwortbereichFormContextDTOs())
+            when(stichwortbereichService.getStichwortbereichFormContextDTOs())
                     .thenReturn(allBereiche);
 
             // When
-            final ReportStichworteFormContext formContext = reportStichworteServiceService.getReportStichworte();
+            final ReportStichworteFormContext formContext = reportStichworteService.getReportStichworte();
 
             // Then
             verify(stichwortbereichService, times(1))
                     .getStichwortbereichFormContextDTOs();
 
-            assertThat(formContext.bereiche())
-                    .isEqualTo(allBereiche);
+            assertThat(formContext.bereiche()).isEqualTo(allBereiche);
         }
     }
-
 }

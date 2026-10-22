@@ -1,6 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.report.haushaltsplanung;
 
-import static de.muenchen.oss.foerdermittel.backend.report.ReportService.SORT_PARAMETER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
@@ -28,15 +27,10 @@ import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkFormCont
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.ListennameStadtbezirkslisteService;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.StadtbezirkslisteFormContext;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameStadtbezirkslisteFormContextDTO;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.sf.jasperreports.engine.JRException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -91,30 +85,43 @@ class ReportHaushaltsplanungServiceTest {
             when(reportHaushaltsplanungMapper.toJasperParameters(parameters))
                     .thenReturn(jasperParameters);
 
+            final GeneratedReport expectedReport = new GeneratedReport(
+                    ReportType.FMW_HAUSHALT1.getFileName() + ReportFormat.PDF.getFileExtension(),
+                    ReportFormat.PDF.getContentType(),
+                    outputStream -> {
+                    });
+
+            when(reportService.generateReport(
+                    jasperParameters,
+                    ReportType.FMW_HAUSHALT1,
+                    ReportFormat.PDF,
+                    ReportHaushaltsplanungSort.FB_PROJEKTNUMMER.getOrderBy()))
+                    .thenReturn(expectedReport);
+
             // When
             final GeneratedReport generatedReport = reportHaushaltsplanungService.generateReportHaushaltsplanung(parameters);
 
             // Then
-            verify(foerderbereichService, times(1))
+            verify(foerderbereichService)
                     .checkExistsByFoerderbereich(new BigDecimal("1"));
-            verify(listennameStadtbezirkslisteService, times(1))
+            verify(listennameStadtbezirkslisteService)
                     .checkExistsByListenname("1");
-            verify(stadtbezirkService, times(1))
+            verify(stadtbezirkService)
                     .checkExistsByStadtbezirk(new BigDecimal("1"));
-            verify(reportHaushaltsplanungMapper, times(1))
+            verify(reportHaushaltsplanungMapper)
                     .toJasperParameters(parameters);
-            verifyNoInteractions(reportService);
+            verify(reportService).generateReport(
+                    jasperParameters,
+                    ReportType.FMW_HAUSHALT1,
+                    ReportFormat.PDF,
+                    ReportHaushaltsplanungSort.FB_PROJEKTNUMMER.getOrderBy());
 
-            assertThat(generatedReport).isNotNull();
+            assertThat(generatedReport).isSameAs(expectedReport);
             assertThat(generatedReport.contentType())
                     .isEqualTo(ReportFormat.PDF.getContentType());
             assertThat(generatedReport.fileName())
                     .startsWith(ReportType.FMW_HAUSHALT1.getFileName())
                     .endsWith(ReportFormat.PDF.getFileExtension());
-            assertThat(jasperParameters)
-                    .containsEntry(
-                            SORT_PARAMETER,
-                            ReportHaushaltsplanungSort.FB_PROJEKTNUMMER.getOrderBy());
         }
 
         @Test
@@ -134,6 +141,19 @@ class ReportHaushaltsplanungServiceTest {
             when(reportHaushaltsplanungMapper.toJasperParameters(parameters))
                     .thenReturn(jasperParameters);
 
+            final GeneratedReport expectedReport = new GeneratedReport(
+                    ReportType.FMW_HAUSHALT1.getFileName() + ReportFormat.PDF.getFileExtension(),
+                    ReportFormat.PDF.getContentType(),
+                    outputStream -> {
+                    });
+
+            when(reportService.generateReport(
+                    jasperParameters,
+                    ReportType.FMW_HAUSHALT1,
+                    ReportFormat.PDF,
+                    ReportHaushaltsplanungSort.PROJEKTNUMMER.getOrderBy()))
+                    .thenReturn(expectedReport);
+
             // When
             final GeneratedReport generatedReport = reportHaushaltsplanungService.generateReportHaushaltsplanung(parameters);
 
@@ -141,22 +161,23 @@ class ReportHaushaltsplanungServiceTest {
             verifyNoInteractions(
                     foerderbereichService,
                     listennameStadtbezirkslisteService,
-                    stadtbezirkService,
-                    reportService);
+                    stadtbezirkService);
 
-            verify(reportHaushaltsplanungMapper, times(1))
-                    .toJasperParameters(parameters);
+            verify(reportHaushaltsplanungMapper).toJasperParameters(parameters);
+            verify(reportService).generateReport(
+                    jasperParameters,
+                    ReportType.FMW_HAUSHALT1,
+                    ReportFormat.PDF,
+                    ReportHaushaltsplanungSort.PROJEKTNUMMER.getOrderBy());
 
-            assertThat(generatedReport).isNotNull();
-            assertThat(jasperParameters)
-                    .containsEntry(
-                            SORT_PARAMETER,
-                            ReportHaushaltsplanungSort.PROJEKTNUMMER.getOrderBy());
+            assertThat(generatedReport).isSameAs(expectedReport);
         }
 
         @ParameterizedTest
         @EnumSource(ReportHaushaltsplanungSort.class)
-        void givenSort_thenShouldUseCorrectOrderBy(final ReportHaushaltsplanungSort sort) {
+        void givenSort_thenShouldUseCorrectOrderBy(
+                final ReportHaushaltsplanungSort sort) {
+
             // Given
             final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
                     "2024",
@@ -172,56 +193,28 @@ class ReportHaushaltsplanungServiceTest {
             when(reportHaushaltsplanungMapper.toJasperParameters(parameters))
                     .thenReturn(jasperParameters);
 
+            final GeneratedReport expectedReport = new GeneratedReport(
+                    ReportType.FMW_HAUSHALT1.getFileName() + ReportFormat.PDF.getFileExtension(),
+                    ReportFormat.PDF.getContentType(),
+                    outputStream -> {
+                    });
+
+            when(reportService.generateReport(
+                    jasperParameters,
+                    ReportType.FMW_HAUSHALT1,
+                    ReportFormat.PDF,
+                    sort.getOrderBy()))
+                    .thenReturn(expectedReport);
+
             // When
             reportHaushaltsplanungService.generateReportHaushaltsplanung(parameters);
 
             // Then
-            assertThat(jasperParameters)
-                    .containsEntry(SORT_PARAMETER, sort.getOrderBy());
-        }
-
-        @ParameterizedTest
-        @EnumSource(ReportFormat.class)
-        void givenReportFormat_thenShouldUseCorrectReportFormat(
-                final ReportFormat reportFormat) throws JRException, SQLException, IOException {
-
-            // Given
-            final ReportHaushaltsplanungDTO parameters = new ReportHaushaltsplanungDTO(
-                    "2024",
-                    "",
-                    "0000.000.123",
-                    "",
-                    "",
-                    "1",
-                    ReportHaushaltsplanungSort.PROJEKTNUMMER,
-                    reportFormat);
-
-            final Map<String, Object> jasperParameters = new HashMap<>();
-            when(reportHaushaltsplanungMapper.toJasperParameters(parameters))
-                    .thenReturn(jasperParameters);
-
-            final OutputStream outputStream = new ByteArrayOutputStream();
-
-            // When
-            final GeneratedReport generatedReport = reportHaushaltsplanungService.generateReportHaushaltsplanung(parameters);
-
-            generatedReport.writer().write(outputStream);
-
-            // Then
-            verify(reportService, times(1)).generateReport(
+            verify(reportService).generateReport(
                     jasperParameters,
                     ReportType.FMW_HAUSHALT1,
-                    reportFormat,
-                    ReportHaushaltsplanungSort.PROJEKTNUMMER.getOrderBy());
-
-            assertThat(generatedReport.contentType())
-                    .isEqualTo(reportFormat.getContentType());
-
-            assertThat(generatedReport.fileName())
-                    .startsWith(
-                            ReportType.FMW_HAUSHALT1.getFileName()
-                                    + reportFormat.getFileSuffix())
-                    .endsWith(reportFormat.getFileExtension());
+                    ReportFormat.PDF,
+                    sort.getOrderBy());
         }
 
         @Test
