@@ -2,6 +2,7 @@ package de.muenchen.oss.foerdermittel.backend.projekt;
 
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektMapper;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
@@ -37,6 +38,13 @@ public class ProjektService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<ReportProjektuebersichtFormContextDTO> getReportProjektuebersichtFormContextDTOs() {
-        return projektMapper.toReportFormContext(projektRepository.findAllAsBasic());
+        return projektMapper.toReportProjektuebersichtFormContext(projektRepository.findAllAsBasic());
     }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<ReportAuswertungProjektFormContextDTO> getReportAuswertungProjektFormContextDTOs() {
+        return projektMapper.toReportAuswertungProjektFormContext(projektRepository.findAllAuswertungProjekte());
+    }
+
 }

@@ -32,12 +32,6 @@ public class ListennameStadtbezirkslisteService {
         return listennameRepository.findAll(pageable);
     }
 
-    @PreAuthorize(Authorities.HAS_ANY_ROLE)
-    @Transactional(readOnly = true)
-    public List<ListennameStadtbezirkslisteFormContextDTO> getlistennameStadtbezirkslisteFormContextDTOs() {
-        return listennameStadtbezirkslisteMapper.toFormContext(listennameRepository.findAll());
-    }
-
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     @Transactional(readOnly = true)
     public StadtbezirkslisteFormContext getStadtbezirksListeFormContext() {
@@ -87,6 +81,12 @@ public class ListennameStadtbezirkslisteService {
                 listennameRepository, Listenname.class);
 
         listennameRepository.delete(listenname);
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<ListennameStadtbezirkslisteFormContextDTO> getlistennameStadtbezirkslisteFormContextDTOs() {
+        return listennameStadtbezirkslisteMapper.toFormContext(listennameRepository.findAll());
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
