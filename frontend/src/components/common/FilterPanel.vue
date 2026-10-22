@@ -11,12 +11,12 @@
     >
       <template #title>
         <div class="d-flex align-center justify-start w-100 mr-2">
-          <span class="pr-3">{{ t("component.filterPanel.title") }}</span>
+          <span class="pr-5">{{ t("component.filterPanel.title") }}</span>
 
           <v-btn
             v-if="filterActive"
             size="small"
-            variant="outlined"
+            variant="tonal"
             :prepend-icon="mdiClose"
             :text="t('component.filterPanel.reset')"
             @click.stop="emit('reset')"
