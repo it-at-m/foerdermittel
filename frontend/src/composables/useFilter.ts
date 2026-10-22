@@ -145,6 +145,13 @@ export function useFilter<T extends FilterRecord>(defaultValue: T | undefined) {
   }
 
   /**
+   * Syncs form state with active filter.
+   */
+  async function syncForm(): Promise<void> {
+    filterFormValue.value = clone(appliedFilter.value);
+  }
+
+  /**
    * Resets the form and applied filter to their default values.
    */
   async function resetFilter(): Promise<void> {
@@ -160,5 +167,6 @@ export function useFilter<T extends FilterRecord>(defaultValue: T | undefined) {
     isFilterActive,
     applyFilter,
     resetFilter,
+    syncForm,
   };
 }

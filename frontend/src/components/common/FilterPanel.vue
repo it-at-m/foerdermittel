@@ -3,6 +3,7 @@
     v-if="$slots['form']"
     elevation="0"
     static
+    @update:model-value="checkOpened"
   >
     <v-expansion-panel
       :expand-icon="mdiMagnify"
@@ -55,9 +56,17 @@ const { loading = false, filterActive = false } = defineProps<{
   filterActive?: boolean;
 }>();
 
+function checkOpened(panelValue: unknown) {
+  // Check if panel opened
+  if (panelValue === 0) {
+    emit("open");
+  }
+}
+
 const emit = defineEmits<{
   reset: [];
   filter: [];
+  open: [];
 }>();
 
 const { t } = useI18n();

@@ -69,6 +69,7 @@
         class="flex-grow-0"
         @filter="filterEntities"
         @reset="resetEntityFilter"
+        @open="syncForm"
       >
         <template #form>
           <slot
@@ -254,6 +255,7 @@ const {
   isFilterActive,
   applyFilter,
   resetFilter,
+  syncForm,
 } = useFilter<TFilter>(filterDefault);
 
 const snackbarStore = useSnackbarStore();
