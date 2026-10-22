@@ -3,7 +3,7 @@ import { useRoute, useRouter } from "vue-router";
 
 import { deepEqualTrimmed } from "@/util/validation";
 
-export type FilterRecord = Record<string, unknown>;
+type FilterRecord = Record<string, unknown>;
 
 /**
  * Creates a deep clone of a value, removing Vue's reactive proxy if present.
