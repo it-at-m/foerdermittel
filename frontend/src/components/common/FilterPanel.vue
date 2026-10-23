@@ -54,6 +54,7 @@
 
 <script setup lang="ts">
 import { mdiClose, mdiMagnify } from "@mdi/js";
+import { nextTick } from "vue";
 import { useI18n } from "vue-i18n";
 
 import { useFilter } from "@/composables/useFilter";
@@ -77,9 +78,10 @@ const {
   syncForm,
 } = useFilter(filterDefault);
 
-function checkOpened(panelValue: unknown) {
+async function checkOpened(panelValue: unknown) {
   if (panelValue === 0) {
-    syncForm();
+    await nextTick(); // wait until expansion panel is opened before syncing the state
+    await syncForm();
   }
 }
 
