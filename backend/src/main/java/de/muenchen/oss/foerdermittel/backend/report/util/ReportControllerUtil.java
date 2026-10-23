@@ -37,6 +37,11 @@ public final class ReportControllerUtil {
     }
 
     public static String nullIfBlank(final String value) {
-        return StringUtils.hasText(value) ? value : null;
+        if (!StringUtils.hasText(value)
+                || "null".equalsIgnoreCase(value)) {
+            return null;
+        }
+
+        return value.trim();
     }
 }
