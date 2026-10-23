@@ -2897,31 +2897,54 @@ components:
           maxLength: 100
           minLength: 1
           type: string
-    ProjektResponseDTO:
-      required:
-      - foerderbereich
-      - jahr
-      - krisofp
-      - kurKurzbez
-      - lfdnr1
-      - lfdnr2
-      - pname
-      - projnr
-      - pstrasse
-      - stadtbezirk
-      - uasUa
-      type: object
-      properties:
-        projnr:
-          type: string
-        pname:
-          type: string
-        pstrasse:
-          type: string
-        foerderbereich:
-          type: string
+        fobFb:
+          maximum: 99
+          minimum: 0
+          type: integer
+          format: int32
         stadtbezirk:
+          maximum: 99
+          minimum: 0
+          type: integer
+          format: int32
+        krhname:
+          maxLength: 1
+          minLength: 1
+          pattern: "^[A-Z]+$"
           type: string
+        kurzbez:
+          maxLength: 3
+          minLength: 1
+          pattern: "^[A-Z0-9]+$"
+          type: string
+        siedlungsgebiet:
+          maximum: 99
+          minimum: 1
+          type: integer
+          format: int32
+        projart:
+          maxLength: 50
+          minLength: 1
+          type: string
+        refinanzierbar:
+          type: boolean
+        kauf:
+          type: boolean
+        kripplatz:
+          type: number
+        kigaplatz:
+          type: number
+        hortplatz:
+          type: number
+        notizen:
+          maxLength: 100
+          minLength: 1
+          type: string
+        bauprogramm:
+          maximum: 99
+          minimum: 1
+          type: integer
+          format: int32
         krisofp:
           type: string
           enum:
@@ -2933,15 +2956,89 @@ components:
           - K
           - F
           - S
-        kurKurzbez:
+        krhzweck:
+          type: string
+          enum:
+          - J
+          - S
+          - R
+    ProjektResponseDTO:
+      required:
+      - fobFb
+      - id
+      - jahr
+      - kurzbez
+      - lfdnr1
+      - lfdnr2
+      - projnr
+      - uasUa
+      type: object
+      properties:
+        id:
+          type: string
+        projnr:
           type: string
         uasUa:
           type: string
         jahr:
-          type: string
+          type: integer
+          format: int32
         lfdnr1:
-          type: string
+          type: integer
+          format: int32
         lfdnr2:
+          type: integer
+          format: int32
+        fobFb:
+          type: integer
+          format: int32
+        kurzbez:
+          type: string
+        stadtbezirk:
+          type: integer
+          format: int32
+        krhname:
+          type: string
+        krhzweck:
+          type: string
+          enum:
+          - J
+          - S
+          - R
+        krisofp:
+          type: string
+          enum:
+          - X
+          - "Y"
+          - Z
+          - W
+          - V
+          - K
+          - F
+          - S
+        siedlungsgebiet:
+          type: integer
+          format: int32
+        bauprogramm:
+          type: integer
+          format: int32
+        pname:
+          type: string
+        pstrasse:
+          type: string
+        projart:
+          type: string
+        refinanzierbar:
+          type: boolean
+        kauf:
+          type: boolean
+        kripplatz:
+          type: number
+        kigaplatz:
+          type: number
+        hortplatz:
+          type: number
+        notizen:
           type: string
     KurzbezeichnungUpdateDTO:
       required:
@@ -3391,11 +3488,10 @@ components:
       required:
       - fobFb
       - jahr
-      - kurKurzbez
+      - kurzbez
       - lfdnr1
       - lfdnr2
       - projnr
-      - uasUa
       type: object
       properties:
         projnr:
@@ -3408,7 +3504,17 @@ components:
           minimum: 0
           type: integer
           format: int32
-        kurKurzbez:
+        stadtbezirk:
+          maximum: 99
+          minimum: 0
+          type: integer
+          format: int32
+        krhname:
+          maxLength: 1
+          minLength: 1
+          pattern: "^[A-Z]+$"
+          type: string
+        kurzbez:
           maxLength: 3
           minLength: 1
           pattern: "^[A-Z0-9]+$"
@@ -3418,6 +3524,11 @@ components:
           minLength: 1
           pattern: "^[A-Z0-9]+$"
           type: string
+        siedlungsgebiet:
+          maximum: 99
+          minimum: 1
+          type: integer
+          format: int32
         jahr:
           maximum: 99
           minimum: 0
@@ -3441,6 +3552,46 @@ components:
           maxLength: 100
           minLength: 0
           type: string
+        projart:
+          maxLength: 50
+          minLength: 1
+          type: string
+        refinanzierbar:
+          type: boolean
+        kauf:
+          type: boolean
+        kripplatz:
+          type: number
+        kigaplatz:
+          type: number
+        hortplatz:
+          type: number
+        notizen:
+          maxLength: 100
+          minLength: 1
+          type: string
+        bauprogramm:
+          maximum: 99
+          minimum: 1
+          type: integer
+          format: int32
+        krisofp:
+          type: string
+          enum:
+          - X
+          - "Y"
+          - Z
+          - W
+          - V
+          - K
+          - F
+          - S
+        krhzweck:
+          type: string
+          enum:
+          - J
+          - S
+          - R
     KurzbezeichnungCreateDTO:
       required:
       - bezeichnung
