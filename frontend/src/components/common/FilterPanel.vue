@@ -28,6 +28,7 @@
         <slot
           name="form"
           :filter="filterFormValue"
+          :update-validity="updateFormValidity"
         />
 
         <div class="d-flex justify-end mt-4">
@@ -42,6 +43,7 @@
             variant="flat"
             color="accent"
             :loading="loading"
+            :disabled="!formValid"
             @click="apply"
           />
         </div>
@@ -52,6 +54,7 @@
 
 <script setup lang="ts">
 import { mdiClose, mdiMagnify } from "@mdi/js";
+import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 import { useFilter } from "@/composables/useFilter";
@@ -62,6 +65,12 @@ const { filterDefault, loading = false } = defineProps<{
 }>();
 
 const { t } = useI18n();
+
+const formValid = ref(false);
+
+const updateFormValidity = (valid: boolean | null) => {
+  formValid.value = !!valid;
+};
 
 const {
   filterFormValue,

@@ -69,10 +69,11 @@
         :filter-default="filterDefault"
         class="flex-grow-0"
       >
-        <template #form="{ filter }">
+        <template #form="{ filter, updateValidity }">
           <slot
             name="filter-form"
             :filter="filter"
+            :update-validity="updateValidity"
           />
         </template>
       </filter-panel>
