@@ -129,21 +129,6 @@ export function useFilter<T>(defaultValue: T | undefined) {
         continue;
       }
 
-      // Validate scalar values against their expected type.
-      if (typeof defaultValue === "number") {
-        const rawValue = String(value);
-
-        if (rawValue.trim() === "" || !Number.isFinite(Number(rawValue))) {
-          continue;
-        }
-      }
-
-      if (typeof defaultValue === "boolean") {
-        if (value !== true && value !== false) {
-          continue;
-        }
-      }
-
       query[key] = Array.isArray(value) ? value.map(String) : String(value);
     }
 
