@@ -79,6 +79,7 @@
       </filter-panel>
       <div class="d-flex flex-column flex-grow-1 overflow-x-hidden">
         <v-data-table-server
+          v-if="!$slots['filter-form'] || filterPanelFormRef"
           v-model:items-per-page="itemsPerPage"
           v-model:page="page"
           v-model:sort-by="sortBy"
