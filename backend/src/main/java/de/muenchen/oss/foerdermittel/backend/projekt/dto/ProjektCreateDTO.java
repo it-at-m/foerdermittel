@@ -16,7 +16,7 @@ public record ProjektCreateDTO(
         @Min(0) @Max(99) Integer stadtbezirk,
         @Size(min = 1, max = 1) @Pattern(regexp = "^[A-Z]+$") String krhname,
         @NotNull @Size(min = 1, max = 3) @Pattern(regexp = "^[A-Z0-9]+$") String kurzbez,
-        @Size(min = 1, max = 2) @Pattern(regexp = "^[A-Z0-9]+$") String uasUa,
+        @NotNull @Size(min = 1, max = 2) @Pattern(regexp = "^[A-Z0-9]+$") String uasUa,
         @Min(1) @Max(99) Integer siedlungsgebiet,
         @NotNull @Min(0) @Max(99) Integer jahr,
         @NotNull @Min(0) @Max(9) Integer lfdnr1,

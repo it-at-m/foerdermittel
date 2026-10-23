@@ -1,9 +1,6 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
-import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektMapper;
-import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungProjektFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.*;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.util.List;
@@ -62,8 +59,10 @@ public class ProjektService {
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    public Projekt createProjekt(final Projekt projekt) {
-        log.debug("Create Projekt {}", projekt);
+    public Projekt createProjekt(final ProjektCreateDTO projektCreateDTO) {
+        log.debug("Create Projekt {}", projektCreateDTO);
+
+        final Projekt projekt = projektMapper.toEntity(projektCreateDTO);
         return projektRepository.insert(projekt);
     }
 

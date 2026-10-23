@@ -19,7 +19,6 @@ public interface ProjektMapper {
     @Mapping(source = "bauprogramm.bauprogramm", target = "bauprogramm")
     ProjektResponseDTO toDTO(Projekt projekt);
 
-    @Mapping(target = "projnr", ignore = true)
     @Mapping(target = "foerderbereich", ignore = true)
     @Mapping(target = "unterabschnitt", ignore = true)
     @Mapping(target = "kurzbezeichnung", ignore = true)

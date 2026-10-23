@@ -57,8 +57,8 @@ const headers: DataTableHeader<Partial<ProjektResponseDTO>>[] = [
     sortable: true,
   },
   {
-    title: t("model.projekt.kurKurzbez"),
-    value: "kurKurzbez",
+    title: t("model.projekt.kurzbez"),
+    value: "kurzbez",
     sortable: true,
   },
   {

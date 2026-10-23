@@ -1,123 +1,163 @@
 <template>
   <v-form
-      ref="form"
-      :readonly="displayMode === InputDisplayMode.READ"
-      @update:model-value="onValidityChanged"
+    ref="form"
+    :readonly="displayMode === InputDisplayMode.READ"
+    @update:model-value="onValidityChanged"
   >
     <v-row>
-      <v-col cols="12" md="3">
+      <v-col
+        cols="12"
+        md="3"
+      >
         <fm-text-field
-            :model-value="projnr"
-            :label="t('model.projekt.projnr')"
-            :display-mode="displayMode"
-            readonly
+          :model-value="projnr"
+          :label="t('model.projekt.projnr')"
+          :display-mode="displayMode"
+          readonly
         />
       </v-col>
     </v-row>
 
     <v-row>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <fm-autocomplete
-            v-model="modelValue.uasUa"
-            :items="unterabschnitt?.content ?? []"
-            item-value="ua"
-            :item-title="formatUnterabschnitt"
-            :label="t('model.projekt.uasUa')"
-            :loading="unterabschnitteLoading"
-            :readonly="displayMode !== InputDisplayMode.CREATE"
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="uasUa"
-            clearable
+          v-model="modelValue.uasUa"
+          :items="unterabschnitt?.content ?? []"
+          item-value="ua"
+          :item-title="formatUnterabschnitt"
+          :label="t('model.projekt.uasUa')"
+          :loading="unterabschnitteLoading"
+          :readonly="displayMode !== InputDisplayMode.CREATE"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="uasUa"
+          clearable
         />
       </v-col>
 
-      <v-col cols="12" md="2">
+      <v-col
+        cols="12"
+        md="2"
+      >
         <fm-text-field
-            :model-value="modelValue.jahr?.toString()"
-            @update:model-value="updateNumberField('jahr', $event)"
-            :display-mode="displayMode"
-            :label="t('model.projekt.jahr')"
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="jahr"
-            :readonly="displayMode !== InputDisplayMode.CREATE"
-            @blur="formatJahr"
+          :model-value="modelValue.jahr?.toString()"
+          :display-mode="displayMode"
+          :label="t('model.projekt.jahr')"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="jahr"
+          :readonly="displayMode !== InputDisplayMode.CREATE"
+          @update:model-value="updateNumberField('jahr', $event)"
+          @blur="formatJahr"
         />
       </v-col>
 
-      <v-col cols="12" md="2">
+      <v-col
+        cols="12"
+        md="2"
+      >
         <fm-text-field
-            :model-value="modelValue.lfdnr1?.toString()"
-            @update:model-value="updateNumberField('lfdnr1', $event)"
-            :display-mode="displayMode"
-            :label="t('model.projekt.lfdnr1')"
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="lfdnr1"
-            :readonly="displayMode !== InputDisplayMode.CREATE"
+          :model-value="modelValue.lfdnr1?.toString()"
+          :display-mode="displayMode"
+          :label="t('model.projekt.lfdnr1')"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="lfdnr1"
+          :readonly="displayMode !== InputDisplayMode.CREATE"
+          @update:model-value="updateNumberField('lfdnr1', $event)"
         />
       </v-col>
 
-      <v-col cols="12" md="2">
+      <v-col
+        cols="12"
+        md="2"
+      >
         <fm-text-field
-            :model-value="modelValue.lfdnr2?.toString()"
-            @update:model-value="updateNumberField('lfdnr2', $event)"
-            :display-mode="displayMode"
-            :label="t('model.projekt.lfdnr2')"
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="lfdnr2"
-            :readonly="displayMode !== InputDisplayMode.CREATE"
-            @blur="formatLfdnr2"
+          :model-value="modelValue.lfdnr2?.toString()"
+          :display-mode="displayMode"
+          :label="t('model.projekt.lfdnr2')"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="lfdnr2"
+          :readonly="displayMode !== InputDisplayMode.CREATE"
+          @update:model-value="updateNumberField('lfdnr2', $event)"
+          @blur="formatLfdnr2"
         />
       </v-col>
     </v-row>
 
     <v-row>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <fm-autocomplete
-            v-model="modelValue.fobFb"
-            :items="foerderbereiche?.content ?? []"
-            item-value="fb"
-            :item-title="formatFoerderbereich"
-            :label="t('model.projekt.fobFb')"
-            :loading="foerderbereicheLoading"
-            :readonly="displayMode === InputDisplayMode.READ"
-            clearable
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="fobFb"
+          v-model="modelValue.fobFb"
+          :items="foerderbereiche?.content ?? []"
+          item-value="fb"
+          :item-title="formatFoerderbereich"
+          :label="t('model.projekt.fobFb')"
+          :loading="foerderbereicheLoading"
+          :readonly="displayMode === InputDisplayMode.READ"
+          clearable
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="fobFb"
         />
       </v-col>
 
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <fm-autocomplete
-            v-model="modelValue.kurzbez"
-            :items="kurzbezeichnung?.content ?? []"
-            item-value="kurzbez"
-            :item-title="formatKurzbezeichnung"
-            :label="t('model.projekt.kurzbez')"
-            :loading="kurzbezeichnungenLoading"
-            :readonly="displayMode === InputDisplayMode.READ"
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="kurzbez"
-            clearable
+          v-model="modelValue.kurzbez"
+          :items="kurzbezeichnung?.content ?? []"
+          item-value="kurzbez"
+          :item-title="formatKurzbezeichnung"
+          :label="t('model.projekt.kurzbez')"
+          :loading="kurzbezeichnungenLoading"
+          :readonly="displayMode === InputDisplayMode.READ"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="kurzbez"
+          clearable
         />
       </v-col>
 
       <v-col cols="12">
         <fm-text-field
-            v-model="modelValue.pstrasse"
-            :display-mode="displayMode"
-            :label="t('model.projekt.pstrasse')"
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="pstrasse"
+          v-model="modelValue.pstrasse"
+          :display-mode="displayMode"
+          :label="t('model.projekt.pstrasse')"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="pstrasse"
         />
       </v-col>
 
-      <v-col cols="12" md="12">
+      <v-col
+        cols="12"
+        md="12"
+      >
         <fm-text-field
-            v-model="modelValue.pname"
-            :display-mode="displayMode"
-            :label="t('model.projekt.pname')"
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="pname"
+          v-model="modelValue.pname"
+          :display-mode="displayMode"
+          :label="t('model.projekt.pname')"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="pname"
         />
       </v-col>
     </v-row>
@@ -136,9 +176,7 @@ import type { VForm } from "vuetify/components";
 import { computed, onMounted, useTemplateRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
-import {
-  ProjektCreateDTOPropertyValidationAttributesMap,
-} from "@/api/generated/foerdermittel-backend";
+import { ProjektCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { useGetFoerderbereiche } from "@/composables/api/useFoerderbereichApi";
@@ -183,10 +221,10 @@ const projnr = computed(() => {
   const lfdnr2 = modelValue.value.lfdnr2;
 
   if (
-      !ua ||
-      jahr === undefined ||
-      lfdnr1 === undefined ||
-      lfdnr2 === undefined
+    !ua ||
+    jahr === undefined ||
+    lfdnr1 === undefined ||
+    lfdnr2 === undefined
   ) {
     return "";
   }
@@ -200,23 +238,23 @@ const projnr = computed(() => {
 });
 
 watch(
-    projnr,
-    (newProjnr) => {
-      if (displayMode === InputDisplayMode.CREATE) {
-        modelValue.value.projnr = newProjnr;
-      }
-    },
-    { immediate: true },
+  projnr,
+  (newProjnr) => {
+    if (displayMode === InputDisplayMode.CREATE) {
+      modelValue.value.projnr = newProjnr;
+    }
+  },
+  { immediate: true }
 );
 
 function updateNumberField(
-    field: "jahr" | "lfdnr1" | "lfdnr2",
-    value: string | number | null | undefined,
+  field: "jahr" | "lfdnr1" | "lfdnr2",
+  value: string | number | null | undefined
 ) {
   const normalizedValue = String(value ?? "").trim();
 
   modelValue.value[field] =
-      normalizedValue === "" ? undefined : Number(normalizedValue);
+    normalizedValue === "" ? undefined : Number(normalizedValue);
 }
 
 function formatJahr() {
@@ -248,10 +286,8 @@ onMounted(async () => {
   });
 });
 
-
-
 const formatFoerderbereich = (foerderbereich: FoerderbereichResponseDTO) =>
-    `${foerderbereich.fb} – ${foerderbereich.bezeichnung}`;
+  `${foerderbereich.fb} – ${foerderbereich.bezeichnung}`;
 
 const {
   data: kurzbezeichnung,
@@ -266,9 +302,8 @@ onMounted(async () => {
   });
 });
 
-const formatKurzbezeichnung = (
-    kurzbezeichnung: KurzbezeichnungResponseDTO,
-) => `${kurzbezeichnung.kurzbez} – ${kurzbezeichnung.bezeichnung}`;
+const formatKurzbezeichnung = (kurzbezeichnung: KurzbezeichnungResponseDTO) =>
+  `${kurzbezeichnung.kurzbez} – ${kurzbezeichnung.bezeichnung}`;
 
 const {
   data: unterabschnitt,
@@ -284,5 +319,5 @@ onMounted(async () => {
 });
 
 const formatUnterabschnitt = (unterabschnitt: UnterabschnittResponseDTO) =>
-    `${unterabschnitt.ua} – ${unterabschnitt.bezeichnung}`;
+  `${unterabschnitt.ua} – ${unterabschnitt.bezeichnung}`;
 </script>

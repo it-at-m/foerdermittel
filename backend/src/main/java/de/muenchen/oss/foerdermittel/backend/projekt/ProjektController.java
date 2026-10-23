@@ -55,8 +55,9 @@ public class ProjektController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProjektResponseDTO createProjekt(@Valid @RequestBody final ProjektCreateDTO projektCreateDTO) {
-        return projektMapper.toDTO(projektService.createProjekt(projektMapper.toEntity(projektCreateDTO)));
+    public ProjektResponseDTO createProjekt(
+            @Valid @RequestBody final ProjektCreateDTO projektCreateDTO) {
+        return projektMapper.toDTO(projektService.createProjekt(projektCreateDTO));
     }
 
     @PutMapping("/{id}")
