@@ -80,8 +80,8 @@ const headers: DataTableHeader<Partial<ProjektResponseDTO>>[] = [
 
 const EMPTY_ITEM_TEMPLATE: Partial<ProjektResponseDTO> = {
   projnr: "",
-  fobFB: "",
-  kurKurzbez: undefined,
+  fobFb: undefined,
+  kurzbez: undefined,
   uasUa: undefined,
   pname: "",
   pstrasse: "",
