@@ -68,6 +68,12 @@ export function useFilter<T>(defaultValue: T | undefined) {
   const route = useRoute();
   const router = useRouter();
 
+  const formValid = ref(false);
+
+  const updateFormValidity = (valid: boolean | null) => {
+    formValid.value = !!valid;
+  };
+
   const defaults = computed<FilterRecord>(() =>
     defaultValue === null || defaultValue === undefined
       ? {}
@@ -177,6 +183,8 @@ export function useFilter<T>(defaultValue: T | undefined) {
   }
 
   return {
+    formValid,
+    updateFormValidity,
     filterFormValue,
     appliedFilter,
     search,
