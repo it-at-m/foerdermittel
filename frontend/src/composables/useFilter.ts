@@ -30,11 +30,19 @@ function parseQueryValue<T>(value: unknown, defaultValue: T): T | undefined {
   if (primitiveValue === undefined) return undefined;
 
   if (typeof defaultValue === "number") {
+    if (primitiveValue.trim() === "") return undefined;
+
     const parsed = Number(primitiveValue);
-    return (Number.isFinite(parsed) ? parsed : defaultValue) as T;
+    if (!Number.isFinite(parsed)) return undefined;
+
+    return parsed as T;
   }
 
   if (typeof defaultValue === "boolean") {
+    if (primitiveValue !== "true" && primitiveValue !== "false") {
+      return undefined;
+    }
+
     return (primitiveValue === "true") as T;
   }
 
@@ -112,11 +120,29 @@ export function useFilter<T>(defaultValue: T | undefined) {
 
     // Add relevant query parameters from FilterRecord
     for (const [key, value] of Object.entries(filter)) {
+      const defaultValue = defaults.value[key];
+
       if (
         isEmptyQueryParameter(value) ||
-        deepEqualTrimmed(value, defaults.value[key])
-      )
+        deepEqualTrimmed(value, defaultValue)
+      ) {
         continue;
+      }
+
+      // Validate scalar values against their expected type.
+      if (typeof defaultValue === "number") {
+        const rawValue = String(value);
+
+        if (rawValue.trim() === "" || !Number.isFinite(Number(rawValue))) {
+          continue;
+        }
+      }
+
+      if (typeof defaultValue === "boolean") {
+        if (value !== true && value !== false) {
+          continue;
+        }
+      }
 
       query[key] = Array.isArray(value) ? value.map(String) : String(value);
     }
