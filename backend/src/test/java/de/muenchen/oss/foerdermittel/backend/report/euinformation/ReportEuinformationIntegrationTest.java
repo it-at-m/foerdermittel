@@ -33,7 +33,7 @@ import org.testcontainers.utility.DockerImageName;
 @AutoConfigureRestTestClient
 @ActiveProfiles(profiles = { SPRING_TEST_PROFILE })
 @Import(TestSecurityConfiguration.class)
-class ReportEuinformationenIntegrationTest {
+public class ReportEuinformationIntegrationTest {
 
     @Autowired
     private RestTestClient restTestClient;
