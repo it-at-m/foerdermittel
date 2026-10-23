@@ -39,7 +39,7 @@
     "@mdi/js": "7.4.47",
     "@muenchen/prettier-codeformat": "1.0.2",
     "@openapitools/openapi-generator-cli": "2.41.0",
-    "@pinia/testing": "2.0.1",
+    "@pinia/testing": "2.0.2",
     "@tsconfig/node-lts": "24.0.1",
     "@types/node": "24.11.2",
     "@vitejs/plugin-vue": "6.0.10",
