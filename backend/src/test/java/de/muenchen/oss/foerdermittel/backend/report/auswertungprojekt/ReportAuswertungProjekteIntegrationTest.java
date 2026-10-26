@@ -199,7 +199,6 @@ public class ReportAuswertungProjekteIntegrationTest {
         @MethodSource("invalidInputRequests")
         void givenInvalidInput_thenReturnBadRequest(
                 final String description,
-                final String jahr,
                 final String sort,
                 final String type) {
 
