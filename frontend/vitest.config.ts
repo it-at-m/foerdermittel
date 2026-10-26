@@ -16,9 +16,7 @@ export default defineConfig((configEnv) =>
             inline: ["vuetify"],
           },
         },
-        experimental: {
-          fsModuleCache: true,
-        },
+        fsModuleCache: true,
       },
     })
   )
