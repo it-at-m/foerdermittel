@@ -1,9 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type { maxRule, minRule } from "@/plugins/rules";
 import type { ValidationRule } from "vuetify";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import useOpenApiRules from "@/composables/useOpenApiRules";
 import { toTrimmedString } from "@/util/formatter";
 
 /**
@@ -40,31 +36,11 @@ export interface VuetifyRuleAliases {
 }
 
 /**
- * Wraps a validation rule to trim string values before validating them when requested.
- *
- * @param rule validation rule to wrap
- * @param enabled whether string values should be trimmed before validation
- */
-function applyStringTrimming(
-  rule: ValidationRule,
-  enabled: boolean
-): ValidationRule {
-  if (!enabled || typeof rule !== "function") {
-    return rule;
-  }
-
-  return ((value: unknown) =>
-    rule(
-      typeof value === "string" ? toTrimmedString(value) : value
-    )) as ValidationRule;
-}
-
-/**
  * Maps OpenAPIGenerator typescript-fetch created constraints defined in *ValidationAttributesMap to Vuetify {@link ValidationRule}s.
  *
  * The mapped Vuetify rules can be used with the `rules` property on Vuetify input components.
  *
- * **Note:** Prefer using the {@link useOpenApiRules} Vue composable instead of calling this function directly.
+ * **Note:** Prefer using the {@link import("@/composables/useOpenApiRules").default useOpenApiRules} Vue composable instead of calling this function directly.
  *
  * Supported rules currently are:
  * - {@link VuetifyRuleAliases.required}
@@ -73,27 +49,21 @@ function applyStringTrimming(
  * - {@link VuetifyRuleAliases.maxLength}
  * - {@link VuetifyRuleAliases.pattern}
  * - {@link VuetifyRuleAliases.number}
- * - Custom {@link minRule} implementation
- * - Custom {@link maxRule} implementation
+ * - Custom {@link import("@/util/custom-rules").minRule minRule} implementation
+ * - Custom {@link import("@/util/custom-rules").maxRule maxRule} implementation
  *
  * @param rules all available {@link VuetifyRuleAliases} typically retrieved via `useRules` composable from Vuetify
  * @param validationAttributes a generated *ValidationAttributesMap object
  * @param property property of the model object to calculate the {@link ValidationRule}s for.
- * @param trimStringValues trims strings before validation. Use this for inputs whose model is trimmed before it is sent to the API.
  */
 export function mapOpenAPIToVuetifyValidationRules<
   T extends Record<string, ValidationAttributes>,
   K extends keyof T,
 >(
   rules: VuetifyRuleAliases,
-  validationAttributes?: T,
-  property?: K,
-  trimStringValues = false
+  validationAttributes: T,
+  property: K
 ): ValidationRule[] {
-  if (!validationAttributes || !property) {
-    return [];
-  }
-
   const attributes = validationAttributes[property];
   const result: ValidationRule[] = [];
 
@@ -103,31 +73,23 @@ export function mapOpenAPIToVuetifyValidationRules<
 
   // Required
   if (attributes.required !== undefined && attributes.required) {
-    result.push(applyStringTrimming(rules.required(), trimStringValues));
+    result.push(rules.required());
   }
 
   // Strings
   const { minLength = 0, maxLength = 0 } = attributes;
   if (minLength > 0 && minLength === maxLength) {
-    result.push(
-      applyStringTrimming(rules.strictLength(minLength), trimStringValues)
-    );
+    result.push(rules.strictLength(minLength));
   } else {
-    if (minLength > 0)
-      result.push(
-        applyStringTrimming(rules.minLength(minLength), trimStringValues)
-      );
-    if (maxLength > 0)
-      result.push(
-        applyStringTrimming(rules.maxLength(maxLength), trimStringValues)
-      );
+    if (minLength > 0) result.push(rules.minLength(minLength));
+    if (maxLength > 0) result.push(rules.maxLength(maxLength));
   }
 
   if (attributes.pattern !== undefined) {
     // typescript-fetch generator creates validation attribute with regex delimiters.
     // Thus remove leading and trailing slash before constructing the RegExp object
     const regex = new RegExp(attributes.pattern.replace(/^\/|\/$/g, ""));
-    result.push(applyStringTrimming(rules.pattern(regex), trimStringValues));
+    result.push(rules.pattern(regex));
   }
 
   // Numbers
