@@ -65,7 +65,19 @@
       "kurzbez": "Kurzbezeichnung",
       "uasUa": "Unterabschnitt",
       "lfdnr1": "Laufende Nummer 1",
-      "lfdnr2": "Laufende Nummer 2"
+      "lfdnr2": "Laufende Nummer 2",
+      "stadtbezirk": "Stadtbezirk",
+      "krhname": "Krankenhaus",
+      "siedlungsgebiet": "Siedlungsgebiet",
+      "projart": "Projektart",
+      "refinanzierbar": "Refinanzierbar",
+      "kauf": "Kauf",
+      "kripplatz": "Krippenplätze",
+      "kigaplatz": "Kindergartenplätze",
+      "hortplatz": "Hortplätze",
+      "notizen": "Notizen",
+      "bauprogramm": "Bauprogramm",
+      "krhzweck": "Krankenhauszweck"
     },
     "antrag": {
       "modelName": "Antrag | Anträge"

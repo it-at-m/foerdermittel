@@ -1,6 +1,8 @@
+
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.Bauprogramm;
+import de.muenchen.oss.foerdermittel.backend.common.AuditableEntity;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.krankenhaus.Krankenhaus;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
@@ -18,10 +20,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.io.Serial;
-import java.io.Serializable;
 import java.math.BigDecimal;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,20 +32,21 @@ import org.hibernate.type.SqlTypes;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "projekte")
-public class Projekt implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class Projekt extends AuditableEntity {
 
     @Id
     @Column(name = "projnr", nullable = false)
-    @NotNull @Size(min = 7, max = 7) private String projnr; // angepasst von projektnr auf projnr, da im Mapper so verwendet
+    @NotNull
+    @Size(min = 7, max = 7)
+    private String projnr;
 
     @Column(name = "jahr", nullable = false)
-    @NotNull private String jahr;
+    @NotNull
+    private String jahr;
 
     @Column(name = "projart", nullable = false)
-    @Size(min = 1, max = 50) private String projart;
+    @Size(min = 1, max = 50)
+    private String projart;
 
     @Column(name = "refinanzierbar", nullable = false)
     private Boolean refinanzierbar;
@@ -64,7 +64,8 @@ public class Projekt implements Serializable {
     private BigDecimal hortplatz;
 
     @Column(name = "notizen", nullable = false)
-    @Size(min = 1, max = 100) private String notizen;
+    @Size(min = 1, max = 100)
+    private String notizen;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
@@ -81,10 +82,14 @@ public class Projekt implements Serializable {
     private String lfdnr2;
 
     @Column(name = "pname", nullable = false)
-    @NotNull @Size(min = 1, max = 100) private String pname;
+    @NotNull
+    @Size(min = 1, max = 100)
+    private String pname;
 
     @Column(name = "pstrasse", nullable = false)
-    @NotNull @Size(min = 1, max = 100) private String pstrasse;
+    @NotNull
+    @Size(min = 1, max = 100)
+    private String pstrasse;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
@@ -143,5 +148,4 @@ public class Projekt implements Serializable {
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(name = "krhzweck", columnDefinition = "projekte_krhzweck")
     private Krhzweck krhzweck;
-
 }
