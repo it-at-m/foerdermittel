@@ -1,5 +1,5 @@
-import { computed, ref, toRaw } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouteQuery } from "@vueuse/router";
+import { computed, ref, toRaw, watch } from "vue";
 
 import { deepEqualTrimmed } from "@/util/validation";
 
@@ -13,61 +13,11 @@ function clone<T>(value: T): T {
 }
 
 /**
- * Parses a route query value into the expected type and returns undefined if parsing failed.
- */
-function parseQueryValue<T>(value: unknown, defaultValue: T): T | undefined {
-  if (value === null || value === undefined) return undefined;
-
-  const values = Array.isArray(value)
-    ? value.filter((item): item is string => item != null)
-    : [String(value)];
-
-  if (Array.isArray(defaultValue)) {
-    return values as T;
-  }
-
-  const primitiveValue = values[0];
-  if (primitiveValue === undefined) return undefined;
-
-  if (typeof defaultValue === "number") {
-    if (primitiveValue.trim() === "") return undefined;
-
-    const parsed = Number(primitiveValue);
-    if (!Number.isFinite(parsed)) return undefined;
-
-    return parsed as T;
-  }
-
-  if (typeof defaultValue === "boolean") {
-    if (primitiveValue !== "true" && primitiveValue !== "false") {
-      return undefined;
-    }
-
-    return (primitiveValue === "true") as T;
-  }
-
-  return primitiveValue as T;
-}
-
-/**
- * Checks if a value is considered as an empty query parameter and thus should be omitted from the route query.
- */
-const isEmptyQueryParameter = (value: unknown): boolean =>
-  value === null ||
-  value === undefined ||
-  value === "" ||
-  (Array.isArray(value) && value.length === 0);
-
-/**
  * Manages filter state and synchronizes applied filters with the route query.
  *
- * Filter values are initialized from the current route, using the supplied
- * defaults to determine the expected types of query parameters.
+ * Filter values are stored as URL-encoded JSON in the filter query parameter.
  */
-export function useFilter<T>(defaultValue: T | undefined) {
-  const route = useRoute();
-  const router = useRouter();
-
+export function useFilter(defaultValue?: FilterRecord) {
   const formValid = ref(false);
 
   const updateFormValidity = (valid: boolean | null) => {
@@ -80,25 +30,25 @@ export function useFilter<T>(defaultValue: T | undefined) {
       : clone(defaultValue)
   );
 
-  const keys = ref(new Set(Object.keys(defaults.value)));
+  const filterQuery = useRouteQuery<string>(
+    "filter",
+    encodeURIComponent(JSON.stringify(defaults.value))
+  );
 
   /**
    * Builds a filter object from the current route query.
-   *
-   * Query values are parsed according to the corresponding default values.
    */
   function filterFromRoute(): FilterRecord {
-    const filter = clone(defaults.value);
-
-    for (const key of Object.keys(filter)) {
-      const value = route.query[key];
-
-      if (value != null) {
-        filter[key] = parseQueryValue(value, defaults.value[key]);
+    try {
+      const filter: unknown = JSON.parse(decodeURIComponent(filterQuery.value));
+      if (filter && typeof filter === "object" && !Array.isArray(filter)) {
+        return { ...clone(defaults.value), ...filter };
       }
+    } catch {
+      // Invalid query values should not prevent the filter form from loading.
     }
 
-    return filter;
+    return clone(defaults.value);
   }
 
   const initial = filterFromRoute();
@@ -110,53 +60,23 @@ export function useFilter<T>(defaultValue: T | undefined) {
     () => !deepEqualTrimmed(appliedFilter.value, defaults.value)
   );
 
-  /**
-   * Synchronizes the supplied filter with the route query.
-   *
-   * Empty and default values are omitted. Query parameters not managed by
-   * this composable are preserved.
-   */
-  async function syncFilterToRoute(filter: FilterRecord): Promise<boolean> {
-    Object.keys(filter).forEach((key) => keys.value.add(key));
+  watch(
+    appliedFilter,
+    (filter) => {
+      const encoded = encodeURIComponent(JSON.stringify(filter));
+      if (filterQuery.value === encoded) return;
 
-    // Create query preserving query parameters not part of the FilterRecord (e.g. sort, page, ..)
-    const query = Object.fromEntries(
-      Object.entries(route.query).filter(([key]) => !keys.value.has(key))
-    );
-
-    // Add relevant query parameters from FilterRecord
-    for (const [key, value] of Object.entries(filter)) {
-      const defaultValue = defaults.value[key];
-
-      if (
-        isEmptyQueryParameter(value) ||
-        deepEqualTrimmed(value, defaultValue)
-      ) {
-        continue;
-      }
-
-      query[key] = Array.isArray(value) ? value.map(String) : String(value);
-    }
-
-    if (deepEqualTrimmed(route.query, query)) return false;
-
-    await router.replace({ query });
-    return true;
-  }
+      filterQuery.value = encoded;
+      search.value = String(Date.now());
+    },
+    { deep: true }
+  );
 
   /**
    * Applies a filter and synchronizes it with the route.
-   *
-   * If the route query does change, refreshes the search trigger so
-   * dependent consumers can rerun their search.
    */
   async function setFilter(filter: FilterRecord): Promise<void> {
-    const value = clone(filter);
-    appliedFilter.value = value;
-
-    const changed = await syncFilterToRoute(value);
-
-    if (changed) search.value = String(Date.now());
+    appliedFilter.value = clone(filter);
   }
 
   /**
