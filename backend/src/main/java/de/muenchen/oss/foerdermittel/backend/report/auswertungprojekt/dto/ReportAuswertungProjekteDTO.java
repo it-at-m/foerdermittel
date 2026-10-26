@@ -2,7 +2,6 @@ package de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto;
 
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;

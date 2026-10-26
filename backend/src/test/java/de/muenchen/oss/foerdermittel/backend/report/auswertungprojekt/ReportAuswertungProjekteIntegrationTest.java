@@ -155,20 +155,6 @@ public class ReportAuswertungProjekteIntegrationTest {
                     .isBadRequest();
         }
 
-        @Test
-        void givenMissingYear_thenReturnBadRequest() {
-            restTestClient.get()
-                    .uri(uriBuilder -> uriBuilder
-                            .path("/report/auswertungprojekte")
-                            .queryParam("sort", VALID_SORT)
-                            .queryParam("type", VALID_TYPE)
-                            .build())
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
-                    .exchange()
-                    .expectStatus()
-                    .isBadRequest();
-        }
-
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
         @MethodSource("authorizationMappings")
         void givenRole_thenReturnStatus(
