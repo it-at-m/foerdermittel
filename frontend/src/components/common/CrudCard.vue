@@ -336,8 +336,8 @@ const loadFormContext = async () => {
 
 const refetchEntities = async () => {
   await api.getAll.call({
-    ...pageable.value,
     ...appliedFilter.value,
+    ...pageable.value,
   });
 };
 
