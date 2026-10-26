@@ -10,6 +10,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ProjektMapper {
 
+    @Mapping(source = "projnr", target = "id")
     @Mapping(source = "foerderbereich.fb", target = "fobFb")
     @Mapping(source = "unterabschnitt.ua", target = "uasUa")
     @Mapping(source = "kurzbezeichnung.kurzbez", target = "kurzbez")
@@ -19,6 +20,7 @@ public interface ProjektMapper {
     @Mapping(source = "bauprogramm.bauprogramm", target = "bauprogramm")
     ProjektResponseDTO toDTO(Projekt projekt);
 
+    @Mapping(target = "projnr", ignore = true)
     @Mapping(target = "foerderbereich", ignore = true)
     @Mapping(target = "unterabschnitt", ignore = true)
     @Mapping(target = "kurzbezeichnung", ignore = true)
@@ -28,7 +30,6 @@ public interface ProjektMapper {
     @Mapping(target = "bauprogramm", ignore = true)
     Projekt toEntity(ProjektCreateDTO projektCreateDTO);
 
-    @Mapping(target = "projnr", ignore = true)
     @Mapping(target = "jahr", ignore = true)
     @Mapping(target = "lfdnr1", ignore = true)
     @Mapping(target = "lfdnr2", ignore = true)

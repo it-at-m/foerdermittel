@@ -1,8 +1,16 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichRepository;
+import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
+import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungRepository;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.*;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittRepository;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
+
+import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +27,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProjektService {
 
     private final ProjektRepository projektRepository;
+    private final FoerderbereichRepository foerderbereichRepository;
+    private final KurzbezeichnungRepository kurzbezeichnungRepository;
+    private final UnterabschnittRepository unterabschnittRepository;
     private final ProjektMapper projektMapper;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
@@ -63,6 +74,26 @@ public class ProjektService {
         log.debug("Create Projekt {}", projektCreateDTO);
 
         final Projekt projekt = projektMapper.toEntity(projektCreateDTO);
+
+        projekt.setProjnr(projektCreateDTO.projnr());
+        projekt.setFoerderbereich(ServiceUtils.getEntityOrThrowNotFoundException(
+                BigDecimal.valueOf(projektCreateDTO.fobFb()), foerderbereichRepository, Foerderbereich.class));
+        projekt.setKurzbezeichnung(ServiceUtils.getEntityOrThrowNotFoundException(
+                projektCreateDTO.kurzbez(), kurzbezeichnungRepository, Kurzbezeichnung.class));
+        projekt.setUnterabschnitt(ServiceUtils.getEntityOrThrowNotFoundException(
+                projektCreateDTO.uasUa(), unterabschnittRepository, Unterabschnitt.class));
+
+        // Defaultwerte für NOT-NULL-Felder
+        if (projekt.getKauf() == null) {
+            projekt.setKauf(false);
+        }
+        if (projekt.getRefinanzierbar() == null) {
+            projekt.setRefinanzierbar(true);
+        }
+
+        // Anlagebenutzer setzen (Testwert)
+        projekt.setAnlagevon("test");
+
         return projektRepository.insert(projekt);
     }
 

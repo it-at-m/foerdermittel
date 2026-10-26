@@ -144,4 +144,6 @@ public class Projekt implements Serializable {
     @Column(name = "krhzweck", columnDefinition = "projekte_krhzweck")
     private Krhzweck krhzweck;
 
+    @Column(name = "anlagevon", nullable = false, length = 30)
+    private String anlagevon;
 }
