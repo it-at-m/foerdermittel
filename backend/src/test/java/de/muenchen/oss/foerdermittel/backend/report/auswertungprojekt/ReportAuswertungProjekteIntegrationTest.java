@@ -184,16 +184,6 @@ public class ReportAuswertungProjekteIntegrationTest {
         private static Stream<Arguments> invalidInputRequests() {
             return Stream.of(
                     Arguments.of(
-                            "jahr invalid format",
-                            "NOTFOUND",
-                            VALID_SORT,
-                            VALID_TYPE),
-                    Arguments.of(
-                            "jahr missing",
-                            null,
-                            VALID_SORT,
-                            VALID_TYPE),
-                    Arguments.of(
                             "sort missing",
                             EXISTING_JAHR,
                             null,
@@ -217,9 +207,6 @@ public class ReportAuswertungProjekteIntegrationTest {
                     .uri(uriBuilder -> {
                         uriBuilder.path("/report/auswertungprojekte");
 
-                        if (jahr != null) {
-                            uriBuilder.queryParam("jahr", jahr);
-                        }
                         if (sort != null) {
                             uriBuilder.queryParam("sort", sort);
                         }
