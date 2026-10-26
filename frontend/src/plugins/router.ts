@@ -19,23 +19,6 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  scrollBehavior(to, from, savedPosition) {
-    // If the user used browser back/forward
-    if (savedPosition) {
-      return savedPosition;
-    }
-
-    // Scroll to top if the path changed
-    if (to.path !== from.path) {
-      return {
-        top: 0,
-        left: 0,
-      };
-    }
-
-    // Otherwise (query change etc.), keep current scroll
-    return false;
-  },
 });
 
 router.beforeEach(async (to, from) => {
