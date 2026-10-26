@@ -14,7 +14,7 @@ public class ReportAuswertungProjekteMapper {
 
         final Map<String, Object> parameters = new HashMap<>();
 
-        parameters.put("P_JAHR", dto.jahr());
+        parameters.put("P_JAHR", ReportControllerUtil.nullIfBlank(dto.jahr()));
 
         parameters.put("P_FB", ReportControllerUtil.nullIfBlank(dto.fb()));
         parameters.put("P_UA", ReportControllerUtil.nullIfBlank(dto.ua()));
