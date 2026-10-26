@@ -1,15 +1,15 @@
-import { beforeEach, describe, expect, test, vi } from "vitest";
-
 import type {
   ValidationAttributes,
   VuetifyRuleAliases,
-} from "../../../src/util/validation";
+} from "@/util/validation";
+
+import { beforeEach, describe, expect, test, vi } from "vitest";
 
 import {
   deepEqualTrimmed,
   getOpenAPIValidationConstraint,
   mapOpenAPIToVuetifyValidationRules,
-} from "../../../src/util/validation";
+} from "@/util/validation";
 
 describe("deepEqualTrimmed", () => {
   describe("strings", () => {
@@ -338,6 +338,13 @@ describe("deepEqualTrimmed", () => {
 describe("mapOpenAPIToVuetifyValidationRules", () => {
   let rules: VuetifyRuleAliases;
 
+  interface RuleTestCase {
+    description: string;
+    attributes?: Record<string, ValidationAttributes>;
+    property?: string;
+    expected: unknown[];
+  }
+
   beforeEach(() => {
     rules = {
       required: vi.fn(() => "required-rule"),
@@ -351,7 +358,7 @@ describe("mapOpenAPIToVuetifyValidationRules", () => {
     };
   });
 
-  test.concurrent.for([
+  test.concurrent.for<RuleTestCase>([
     {
       description: "returns no rules when the property does not exist",
       attributes: {
@@ -539,7 +546,12 @@ describe("mapOpenAPIToVuetifyValidationRules", () => {
 
     expect(rules.pattern).toHaveBeenCalledOnce();
 
-    const regex = vi.mocked(rules.pattern).mock.calls[0][0];
+    const [firstCall] = vi.mocked(rules.pattern).mock.calls;
+    if (!firstCall) {
+      throw new Error("Expected pattern rule to be called");
+    }
+
+    const [regex] = firstCall;
 
     expect(regex).toBeInstanceOf(RegExp);
     expect(regex.source).toBe("^[A-Z]+$");
