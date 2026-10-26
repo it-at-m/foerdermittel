@@ -4,11 +4,8 @@
     :disabled="!reportProjektuebersichtMsFormContext"
     @update:model-value="onValidityChanged"
   >
-    <v-row>
-      <v-col
-        cols="12"
-        md="2"
-      >
+    <v-row align="center">
+      <v-col cols="12" md="2">
         <fm-text-field
           v-model="modelValue.parameters!.jahr"
           :display-mode="InputDisplayMode.EDIT"
@@ -17,154 +14,198 @@
           "
           validation-attribute-key="jahr"
           :label="t('domain.report.common.jahr')"
+          density="comfortable"
         />
       </v-col>
-      <v-col
-        cols="12"
-        md="5"
-      >
-        <fm-autocomplete
-          v-model="modelValue.parameters!.sbl"
-          :items="reportProjektuebersichtMsFormContext?.stadtbezirkslisten"
-          :item-title="getStadtbezirkslisteTitle"
-          item-value="kurzbez"
-          :label="t('domain.report.projektUebersichtMs.sbl')"
-          @update:model-value="delete modelValue.parameters!.bez"
-        />
-      </v-col>
-      <v-col
-        cols="12"
-        md="5"
-      >
-        <fm-autocomplete
-          v-model="modelValue.parameters!.bez"
-          :items="reportProjektuebersichtMsFormContext?.stadtbezirke"
-          :item-title="getStadtbezirkTitle"
-          item-value="stadtbezirk"
-          :label="t('domain.report.projektUebersichtMs.bez')"
-          @update:model-value="delete modelValue.parameters!.sbl"
-        />
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col
-        cols="12"
-        md="6"
-      >
-        <fm-autocomplete
-          v-model="modelValue.parameters!.fb"
-          :items="reportProjektuebersichtMsFormContext?.foerderbereiche"
-          :item-title="getFoerderbereichTitle"
-          item-value="fb"
-          :label="t('domain.report.projektUebersichtMs.fb')"
-        />
-      </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
-        <fm-autocomplete
-          v-model="modelValue.parameters!.ua"
-          :items="reportProjektuebersichtMsFormContext?.unterabschnitte"
-          :item-title="getUnterabschnittTitle"
-          item-value="ua"
-          :label="t('domain.report.projektUebersichtMs.ua')"
-        />
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col
-        cols="12"
-        md="6"
-      >
-        <fm-autocomplete
-          v-model="modelValue.parameters!.kurz"
-          :items="reportProjektuebersichtMsFormContext?.kurzbezeichnungen"
-          :item-title="getKurzbezeichnungTitle"
-          item-value="kurzbez"
-          :label="t('domain.report.projektUebersichtMs.kurz')"
-        />
-      </v-col>
-      <v-col
-        cols="12"
-        md="3"
-      >
+
+      <v-spacer />
+
+      <v-col cols="12" md="3">
         <fm-checkbox
           v-model="modelValue.parameters!.offen"
           :label="t('domain.report.projektUebersichtMs.offen')"
           true-value="1"
           false-value="0"
+          density="compact"
         />
       </v-col>
-      <v-col md="3">
+
+      <v-col cols="12" md="3">
         <fm-checkbox
           v-model="modelValue.parameters!.vn"
           :label="t('domain.report.projektUebersichtMs.vn')"
           true-value="1"
           false-value="0"
+          density="compact"
         />
       </v-col>
     </v-row>
+
     <v-row>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="3">
+        <fm-autocomplete
+          v-model="modelValue.parameters!.bez"
+          :items="
+            reportProjektuebersichtMsFormContext?.stadtbezirke ?? []
+          "
+          :item-title="getStadtbezirkTitle"
+          item-value="stadtbezirk"
+          :validation-attribute-map="
+            ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bez"
+          :label="t('domain.report.projektUebersichtMs.bez')"
+          density="comfortable"
+          @update:model-value="delete modelValue.parameters!.sbl"
+        />
+      </v-col>
+
+      <v-col cols="12" md="3">
+        <fm-autocomplete
+          v-model="modelValue.parameters!.sbl"
+          :items="
+            reportProjektuebersichtMsFormContext?.stadtbezirkslisten ?? []
+          "
+          :item-title="getStadtbezirkslisteTitle"
+          item-value="kurzbez"
+          :validation-attribute-map="
+            ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="sbl"
+          :label="t('domain.report.projektUebersichtMs.sbl')"
+          density="comfortable"
+          @update:model-value="delete modelValue.parameters!.bez"
+        />
+      </v-col>
+
+      <v-col cols="12" md="3">
+        <fm-autocomplete
+          v-model="modelValue.parameters!.fb"
+          :items="
+            reportProjektuebersichtMsFormContext?.foerderbereiche ?? []
+          "
+          :item-title="getFoerderbereichTitle"
+          item-value="fb"
+          :validation-attribute-map="
+            ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="fb"
+          :label="t('domain.report.projektUebersichtMs.fb')"
+          density="comfortable"
+        />
+      </v-col>
+
+      <v-col cols="12" md="3">
+        <fm-autocomplete
+          v-model="modelValue.parameters!.ua"
+          :items="
+            reportProjektuebersichtMsFormContext?.unterabschnitte ?? []
+          "
+          :item-title="getUnterabschnittTitle"
+          item-value="ua"
+          :validation-attribute-map="
+            ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="ua"
+          :label="t('domain.report.projektUebersichtMs.ua')"
+          density="comfortable"
+        />
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col cols="12" md="3">
+        <fm-autocomplete
+          v-model="modelValue.parameters!.kurz"
+          :items="
+            reportProjektuebersichtMsFormContext?.kurzbezeichnungen ?? []
+          "
+          :item-title="getKurzbezeichnungTitle"
+          item-value="kurzbez"
+          :validation-attribute-map="
+            ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="kurz"
+          :label="t('domain.report.projektUebersichtMs.kurz')"
+          density="comfortable"
+        />
+      </v-col>
+
+      <v-col cols="12" md="3">
         <fm-autocomplete
           v-model="modelValue.parameters!.krisofp"
-          :items="reportProjektuebersichtMsFormContext?.krisofps"
+          :items="
+            reportProjektuebersichtMsFormContext?.krisofps ?? []
+          "
           :item-title="getKrisofpTitle"
           :item-value="getKrisofpValue"
+          :validation-attribute-map="
+            ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="krisofp"
           :label="t('domain.report.projektUebersichtMs.krisofp')"
+          density="comfortable"
+          clearable
         />
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
+
+      <v-col cols="12" md="3">
         <fm-autocomplete
           v-model="modelValue.parameters!.sgt"
-          :items="reportProjektuebersichtMsFormContext?.siedlungsgebiete"
+          :items="
+            reportProjektuebersichtMsFormContext?.siedlungsgebiete ?? []
+          "
           :item-title="getSiedlungsgebietTitle"
           item-value="siedlungsgebiet"
+          :validation-attribute-map="
+            ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="sgt"
           :label="t('domain.report.projektUebersichtMs.sgt')"
+          density="comfortable"
         />
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col
-        cols="12"
-        md="6"
-      >
+
+      <v-col cols="12" md="3">
         <fm-autocomplete
           v-model="modelValue.parameters!.bpg"
-          :items="reportProjektuebersichtMsFormContext?.bauprogramme"
+          :items="
+            reportProjektuebersichtMsFormContext?.bauprogramme ?? []
+          "
           :item-title="getBauprogrammTitle"
           item-value="bauprogramm"
+          :validation-attribute-map="
+            ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bpg"
           :label="t('domain.report.projektUebersichtMs.bpg')"
+          density="comfortable"
         />
       </v-col>
     </v-row>
+
     <v-row>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="3">
         <v-select
           v-model="modelValue.parameters!.sort"
           :items="sortOptions"
+          item-title="title"
           item-value="value"
           :label="t('domain.report.common.reportSort')"
           variant="outlined"
+          density="comfortable"
         />
       </v-col>
-      <v-col md="6">
+
+      <v-col cols="12" md="3">
         <v-select
           v-model="modelValue.parameters!.type"
           :items="formatOptions"
+          item-title="title"
           item-value="value"
           :label="t('domain.report.common.reportType.modelName')"
           variant="outlined"
+          density="comfortable"
         />
       </v-col>
     </v-row>
