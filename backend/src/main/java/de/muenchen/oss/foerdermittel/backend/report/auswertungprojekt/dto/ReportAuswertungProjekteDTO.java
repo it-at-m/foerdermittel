@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record ReportAuswertungProjekteDTO(
-        @NotBlank @Pattern(regexp = "\\d{4}") String jahr,
+        @Pattern(regexp = "(\\d{4})?") String jahr,
 
         String bez,
         String fb,
