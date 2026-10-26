@@ -36,6 +36,26 @@ export interface VuetifyRuleAliases {
 }
 
 /**
+ * Wraps a validation rule to trim string values before validating them when requested.
+ *
+ * @param rule validation rule to wrap
+ * @param enabled whether string values should be trimmed before validation
+ */
+function applyStringTrimming(
+  rule: ValidationRule,
+  enabled: boolean
+): ValidationRule {
+  if (!enabled || typeof rule !== "function") {
+    return rule;
+  }
+
+  return ((value: unknown) =>
+    rule(
+      typeof value === "string" ? toTrimmedString(value) : value
+    )) as ValidationRule;
+}
+
+/**
  * Maps OpenAPIGenerator typescript-fetch created constraints defined in *ValidationAttributesMap to Vuetify {@link ValidationRule}s.
  *
  * The mapped Vuetify rules can be used with the `rules` property on Vuetify input components.
@@ -55,15 +75,21 @@ export interface VuetifyRuleAliases {
  * @param rules all available {@link VuetifyRuleAliases} typically retrieved via `useRules` composable from Vuetify
  * @param validationAttributes a generated *ValidationAttributesMap object
  * @param property property of the model object to calculate the {@link ValidationRule}s for.
+ * @param trimStringValues trims strings before validation. Use this for inputs whose model is trimmed before it is sent to the API.
  */
 export function mapOpenAPIToVuetifyValidationRules<
   T extends Record<string, ValidationAttributes>,
   K extends keyof T,
 >(
   rules: VuetifyRuleAliases,
-  validationAttributes: T,
-  property: K
+  validationAttributes?: T,
+  property?: K,
+  trimStringValues = false
 ): ValidationRule[] {
+  if (!validationAttributes || !property) {
+    return [];
+  }
+
   const attributes = validationAttributes[property];
   const result: ValidationRule[] = [];
 
@@ -73,23 +99,31 @@ export function mapOpenAPIToVuetifyValidationRules<
 
   // Required
   if (attributes.required !== undefined && attributes.required) {
-    result.push(rules.required());
+    result.push(applyStringTrimming(rules.required(), trimStringValues));
   }
 
   // Strings
   const { minLength = 0, maxLength = 0 } = attributes;
   if (minLength > 0 && minLength === maxLength) {
-    result.push(rules.strictLength(minLength));
+    result.push(
+      applyStringTrimming(rules.strictLength(minLength), trimStringValues)
+    );
   } else {
-    if (minLength > 0) result.push(rules.minLength(minLength));
-    if (maxLength > 0) result.push(rules.maxLength(maxLength));
+    if (minLength > 0)
+      result.push(
+        applyStringTrimming(rules.minLength(minLength), trimStringValues)
+      );
+    if (maxLength > 0)
+      result.push(
+        applyStringTrimming(rules.maxLength(maxLength), trimStringValues)
+      );
   }
 
   if (attributes.pattern !== undefined) {
     // typescript-fetch generator creates validation attribute with regex delimiters.
     // Thus remove leading and trailing slash before constructing the RegExp object
     const regex = new RegExp(attributes.pattern.replace(/^\/|\/$/g, ""));
-    result.push(rules.pattern(regex));
+    result.push(applyStringTrimming(rules.pattern(regex), trimStringValues));
   }
 
   // Numbers

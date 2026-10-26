@@ -340,8 +340,8 @@ describe("mapOpenAPIToVuetifyValidationRules", () => {
 
   interface RuleTestCase {
     description: string;
-    attributes: Record<string, ValidationAttributes>;
-    property: string;
+    attributes?: Record<string, ValidationAttributes>;
+    property?: string;
     expected: unknown[];
   }
 
@@ -486,8 +486,8 @@ describe("mapOpenAPIToVuetifyValidationRules", () => {
     },
     {
       description: "returns empty rules when undefined",
-      attributes: {},
-      property: "",
+      attributes: undefined,
+      property: undefined,
       expected: [],
     },
   ])("$description", ({ attributes, property, expected }) => {
