@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.report.staetebaufoerderung.dto;
+package de.muenchen.oss.foerdermittel.backend.report.staedtebaufoerderung.dto;
 
 import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
 import java.util.HashMap;

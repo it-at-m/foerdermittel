@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.report.staetebaufoerderung;
+package de.muenchen.oss.foerdermittel.backend.report.staedtebaufoerderung;
 
 import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerFormContextDTO;
 import jakarta.validation.constraints.NotNull;

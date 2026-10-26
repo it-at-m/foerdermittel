@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.report.staetebaufoerderung.dto;
+package de.muenchen.oss.foerdermittel.backend.report.staedtebaufoerderung.dto;
 
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;

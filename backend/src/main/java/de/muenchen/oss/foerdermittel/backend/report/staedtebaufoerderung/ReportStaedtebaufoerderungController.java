@@ -1,8 +1,8 @@
-package de.muenchen.oss.foerdermittel.backend.report.staetebaufoerderung;
+package de.muenchen.oss.foerdermittel.backend.report.staedtebaufoerderung;
 
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
 import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
-import de.muenchen.oss.foerdermittel.backend.report.staetebaufoerderung.dto.ReportStaedtebaufoerderungDTO;
+import de.muenchen.oss.foerdermittel.backend.report.staedtebaufoerderung.dto.ReportStaedtebaufoerderungDTO;
 import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

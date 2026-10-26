@@ -2,8 +2,8 @@ package de.muenchen.oss.foerdermittel.backend.report.staedtebaufoerderung;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.muenchen.oss.foerdermittel.backend.report.staetebaufoerderung.dto.ReportStaedtebaufoerderungDTO;
-import de.muenchen.oss.foerdermittel.backend.report.staetebaufoerderung.dto.ReportStaedtebaufoerderungMapper;
+import de.muenchen.oss.foerdermittel.backend.report.staedtebaufoerderung.dto.ReportStaedtebaufoerderungDTO;
+import de.muenchen.oss.foerdermittel.backend.report.staedtebaufoerderung.dto.ReportStaedtebaufoerderungMapper;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
