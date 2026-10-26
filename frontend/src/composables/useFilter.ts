@@ -1,6 +1,7 @@
 import { useRouteQuery } from "@vueuse/router";
 import { computed, ref, toRaw, watch } from "vue";
 
+import { writeToUrlParam, writeUrlParamToObject } from "@/util/url-helper";
 import { deepEqualTrimmed } from "@/util/validation";
 
 type FilterRecord = Record<string, unknown>;
@@ -15,7 +16,7 @@ function clone<T>(value: T): T {
 /**
  * Manages filter state and synchronizes applied filters with the route query.
  *
- * Filter values are stored as URL-encoded JSON in the filter query parameter.
+ * Filter values are stored as Base64url-encoded UTF-8 JSON in the filter query parameter.
  */
 export function useFilter(defaultValue?: FilterRecord) {
   const formValid = ref(false);
@@ -30,24 +31,26 @@ export function useFilter(defaultValue?: FilterRecord) {
       : clone(defaultValue)
   );
 
-  const filterQuery = useRouteQuery<string>(
-    "filter",
-    encodeURIComponent(JSON.stringify(defaults.value))
-  );
+  const filterQuery = useRouteQuery<string | undefined>("filter", undefined);
 
   /**
    * Builds a filter object from the current route query.
    */
   function filterFromRoute(): FilterRecord {
+    const encoded = filterQuery.value;
+    if (encoded === undefined) return clone(defaults.value);
+
     try {
-      const filter: unknown = JSON.parse(decodeURIComponent(filterQuery.value));
-      if (filter && typeof filter === "object" && !Array.isArray(filter)) {
-        return { ...clone(defaults.value), ...filter };
+      const filter = writeUrlParamToObject<unknown>(encoded);
+      if (!filter || typeof filter !== "object" || Array.isArray(filter)) {
+        throw new Error("Invalid filter object");
       }
+      return { ...clone(defaults.value), ...filter };
     } catch {
       // Invalid query values should not prevent the filter form from loading.
     }
 
+    filterQuery.value = undefined;
     return clone(defaults.value);
   }
 
@@ -63,7 +66,10 @@ export function useFilter(defaultValue?: FilterRecord) {
   watch(
     appliedFilter,
     (filter) => {
-      const encoded = encodeURIComponent(JSON.stringify(filter));
+      const encoded =
+        JSON.stringify(filter) === JSON.stringify(defaults.value)
+          ? undefined
+          : writeToUrlParam(filter);
       if (filterQuery.value === encoded) return;
 
       filterQuery.value = encoded;
@@ -75,31 +81,31 @@ export function useFilter(defaultValue?: FilterRecord) {
   /**
    * Applies a filter and synchronizes it with the route.
    */
-  async function setFilter(filter: FilterRecord): Promise<void> {
+  function setFilter(filter: FilterRecord): void {
     appliedFilter.value = clone(filter);
   }
 
   /**
    * Applies the current form values as the active filter.
    */
-  async function applyFilter(): Promise<void> {
-    await setFilter(filterFormValue.value);
+  function applyFilter(): void {
+    setFilter(filterFormValue.value);
   }
 
   /**
    * Syncs form state with active filter.
    */
-  async function syncForm(): Promise<void> {
+  function syncForm(): void {
     filterFormValue.value = clone(appliedFilter.value);
   }
 
   /**
    * Resets the form and applied filter to their default values.
    */
-  async function resetFilter(): Promise<void> {
+  function resetFilter(): void {
     const filter = clone(defaults.value);
     filterFormValue.value = filter;
-    await setFilter(filter);
+    setFilter(filter);
   }
 
   return {

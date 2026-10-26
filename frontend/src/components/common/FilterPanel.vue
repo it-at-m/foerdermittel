@@ -20,7 +20,7 @@
             variant="tonal"
             :prepend-icon="mdiClose"
             :text="t('component.filterPanel.reset')"
-            @click.stop="reset"
+            @click.stop="resetFilter"
           />
         </div>
       </template>
@@ -36,7 +36,7 @@
             :text="t('component.filterPanel.reset')"
             class="mr-3"
             :disabled="loading || !isFilterActive"
-            @click="reset"
+            @click="resetFilter"
           />
           <v-btn
             :text="t('component.filterPanel.showResults')"
@@ -44,7 +44,7 @@
             color="accent"
             :loading="loading"
             :disabled="!formValid"
-            @click="apply"
+            @click="applyFilter"
           />
         </div>
       </v-expansion-panel-text>
@@ -81,16 +81,8 @@ const {
 async function checkOpened(panelValue: unknown) {
   if (panelValue === 0) {
     await nextTick(); // wait until expansion panel is opened before syncing the state
-    await syncForm();
+    syncForm();
   }
-}
-
-async function apply() {
-  await applyFilter();
-}
-
-async function reset() {
-  await resetFilter();
 }
 
 defineExpose({
