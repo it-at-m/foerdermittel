@@ -5,7 +5,10 @@
     @update:model-value="onValidityChanged"
   >
     <v-row align="center">
-      <v-col cols="12" md="2">
+      <v-col
+        cols="12"
+        md="2"
+      >
         <fm-text-field
           v-model="modelValue.parameters!.jahr"
           :display-mode="InputDisplayMode.EDIT"
@@ -20,7 +23,10 @@
 
       <v-spacer />
 
-      <v-col cols="12" md="3">
+      <v-col
+        cols="12"
+        md="3"
+      >
         <fm-checkbox
           v-model="modelValue.parameters!.offen"
           :label="t('domain.report.projektUebersichtMs.offen')"
@@ -30,7 +36,10 @@
         />
       </v-col>
 
-      <v-col cols="12" md="3">
+      <v-col
+        cols="12"
+        md="3"
+      >
         <fm-checkbox
           v-model="modelValue.parameters!.vn"
           :label="t('domain.report.projektUebersichtMs.vn')"
@@ -42,25 +51,10 @@
     </v-row>
 
     <v-row>
-      <v-col cols="12" md="3">
-        <fm-autocomplete
-          v-model="modelValue.parameters!.bez"
-          :items="
-            reportProjektuebersichtMsFormContext?.stadtbezirke ?? []
-          "
-          :item-title="getStadtbezirkTitle"
-          item-value="stadtbezirk"
-          :validation-attribute-map="
-            ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
-          "
-          validation-attribute-key="bez"
-          :label="t('domain.report.projektUebersichtMs.bez')"
-          density="comfortable"
-          @update:model-value="delete modelValue.parameters!.sbl"
-        />
-      </v-col>
-
-      <v-col cols="12" md="3">
+      <v-col
+        cols="12"
+        md="3"
+      >
         <fm-autocomplete
           v-model="modelValue.parameters!.sbl"
           :items="
@@ -71,19 +65,39 @@
           :validation-attribute-map="
             ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
           "
-          validation-attribute-key="sbl"
+          validation-attribute-key="kurzbez"
           :label="t('domain.report.projektUebersichtMs.sbl')"
           density="comfortable"
           @update:model-value="delete modelValue.parameters!.bez"
         />
       </v-col>
 
-      <v-col cols="12" md="3">
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <fm-autocomplete
+          v-model="modelValue.parameters!.bez"
+          :items="reportProjektuebersichtMsFormContext?.stadtbezirke ?? []"
+          :item-title="getStadtbezirkTitle"
+          item-value="stadtbezirk"
+          :validation-attribute-map="
+            ReportProjektuebersichtMsDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="stadtbezirk"
+          :label="t('domain.report.projektUebersichtMs.bez')"
+          density="comfortable"
+          @update:model-value="delete modelValue.parameters!.sbl"
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="3"
+      >
         <fm-autocomplete
           v-model="modelValue.parameters!.fb"
-          :items="
-            reportProjektuebersichtMsFormContext?.foerderbereiche ?? []
-          "
+          :items="reportProjektuebersichtMsFormContext?.foerderbereiche ?? []"
           :item-title="getFoerderbereichTitle"
           item-value="fb"
           :validation-attribute-map="
@@ -95,12 +109,13 @@
         />
       </v-col>
 
-      <v-col cols="12" md="3">
+      <v-col
+        cols="12"
+        md="3"
+      >
         <fm-autocomplete
           v-model="modelValue.parameters!.ua"
-          :items="
-            reportProjektuebersichtMsFormContext?.unterabschnitte ?? []
-          "
+          :items="reportProjektuebersichtMsFormContext?.unterabschnitte ?? []"
           :item-title="getUnterabschnittTitle"
           item-value="ua"
           :validation-attribute-map="
@@ -114,12 +129,13 @@
     </v-row>
 
     <v-row>
-      <v-col cols="12" md="3">
+      <v-col
+        cols="12"
+        md="3"
+      >
         <fm-autocomplete
           v-model="modelValue.parameters!.kurz"
-          :items="
-            reportProjektuebersichtMsFormContext?.kurzbezeichnungen ?? []
-          "
+          :items="reportProjektuebersichtMsFormContext?.kurzbezeichnungen ?? []"
           :item-title="getKurzbezeichnungTitle"
           item-value="kurzbez"
           :validation-attribute-map="
@@ -131,12 +147,13 @@
         />
       </v-col>
 
-      <v-col cols="12" md="3">
+      <v-col
+        cols="12"
+        md="3"
+      >
         <fm-autocomplete
           v-model="modelValue.parameters!.krisofp"
-          :items="
-            reportProjektuebersichtMsFormContext?.krisofps ?? []
-          "
+          :items="reportProjektuebersichtMsFormContext?.krisofps ?? []"
           :item-title="getKrisofpTitle"
           :item-value="getKrisofpValue"
           :validation-attribute-map="
@@ -149,12 +166,13 @@
         />
       </v-col>
 
-      <v-col cols="12" md="3">
+      <v-col
+        cols="12"
+        md="3"
+      >
         <fm-autocomplete
           v-model="modelValue.parameters!.sgt"
-          :items="
-            reportProjektuebersichtMsFormContext?.siedlungsgebiete ?? []
-          "
+          :items="reportProjektuebersichtMsFormContext?.siedlungsgebiete ?? []"
           :item-title="getSiedlungsgebietTitle"
           item-value="siedlungsgebiet"
           :validation-attribute-map="
@@ -166,12 +184,13 @@
         />
       </v-col>
 
-      <v-col cols="12" md="3">
+      <v-col
+        cols="12"
+        md="3"
+      >
         <fm-autocomplete
           v-model="modelValue.parameters!.bpg"
-          :items="
-            reportProjektuebersichtMsFormContext?.bauprogramme ?? []
-          "
+          :items="reportProjektuebersichtMsFormContext?.bauprogramme ?? []"
           :item-title="getBauprogrammTitle"
           item-value="bauprogramm"
           :validation-attribute-map="
@@ -185,7 +204,10 @@
     </v-row>
 
     <v-row>
-      <v-col cols="12" md="3">
+      <v-col
+        cols="12"
+        md="3"
+      >
         <v-select
           v-model="modelValue.parameters!.sort"
           :items="sortOptions"
@@ -197,7 +219,10 @@
         />
       </v-col>
 
-      <v-col cols="12" md="3">
+      <v-col
+        cols="12"
+        md="3"
+      >
         <v-select
           v-model="modelValue.parameters!.type"
           :items="formatOptions"
