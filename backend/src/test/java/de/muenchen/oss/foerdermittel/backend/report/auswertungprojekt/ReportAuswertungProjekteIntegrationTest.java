@@ -155,20 +155,6 @@ public class ReportAuswertungProjekteIntegrationTest {
                     .isBadRequest();
         }
 
-        @Test
-        void givenMissingYear_thenReturnBadRequest() {
-            restTestClient.get()
-                    .uri(uriBuilder -> uriBuilder
-                            .path("/report/auswertungprojekte")
-                            .queryParam("sort", VALID_SORT)
-                            .queryParam("type", VALID_TYPE)
-                            .build())
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
-                    .exchange()
-                    .expectStatus()
-                    .isBadRequest();
-        }
-
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
         @MethodSource("authorizationMappings")
         void givenRole_thenReturnStatus(
@@ -198,16 +184,6 @@ public class ReportAuswertungProjekteIntegrationTest {
         private static Stream<Arguments> invalidInputRequests() {
             return Stream.of(
                     Arguments.of(
-                            "jahr invalid format",
-                            "NOTFOUND",
-                            VALID_SORT,
-                            VALID_TYPE),
-                    Arguments.of(
-                            "jahr missing",
-                            null,
-                            VALID_SORT,
-                            VALID_TYPE),
-                    Arguments.of(
                             "sort missing",
                             EXISTING_JAHR,
                             null,
@@ -223,7 +199,6 @@ public class ReportAuswertungProjekteIntegrationTest {
         @MethodSource("invalidInputRequests")
         void givenInvalidInput_thenReturnBadRequest(
                 final String description,
-                final String jahr,
                 final String sort,
                 final String type) {
 
@@ -231,9 +206,6 @@ public class ReportAuswertungProjekteIntegrationTest {
                     .uri(uriBuilder -> {
                         uriBuilder.path("/report/auswertungprojekte");
 
-                        if (jahr != null) {
-                            uriBuilder.queryParam("jahr", jahr);
-                        }
                         if (sort != null) {
                             uriBuilder.queryParam("sort", sort);
                         }
