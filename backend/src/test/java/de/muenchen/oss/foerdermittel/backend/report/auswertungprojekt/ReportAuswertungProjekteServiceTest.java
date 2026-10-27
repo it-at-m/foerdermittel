@@ -399,7 +399,7 @@ class ReportAuswertungProjekteServiceTest {
                     .thenReturn(siedlungsgebietContext);
 
             // When
-            final ReportAuswertungProjektFormContext formContext = reportAuswertungProjekteService.getReportAuswertungProjekt();
+            final ReportAuswertungProjektFormContext formContext = reportAuswertungProjekteService.getReportAuswertungProjektFormContext();
 
             // Then
             verify(projektService).getReportAuswertungProjektFormContextDTOs();

@@ -53,6 +53,9 @@ import org.testcontainers.utility.DockerImageName;
 @Import(TestSecurityConfiguration.class)
 public class ReportAuswertungProjekteIntegrationTest {
 
+    private static final String REPORT_PATH = "/report/auswertungprojekte/";
+    private static final String FORM_CONTEXT_PATH = "/report/auswertungprojekte/form-context";
+
     @Autowired
     private RestTestClient restTestClient;
 
@@ -134,7 +137,7 @@ public class ReportAuswertungProjekteIntegrationTest {
         @Test
         void givenMissingArguments_thenReturnBadRequest() {
             restTestClient.get()
-                    .uri("/report/auswertungprojekte")
+                    .uri(REPORT_PATH)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
                     .exchange()
                     .expectStatus()
@@ -145,7 +148,7 @@ public class ReportAuswertungProjekteIntegrationTest {
         void givenInvalidYear_thenReturnBadRequest() {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/report/auswertungprojekte")
+                            .path(REPORT_PATH)
                             .queryParam("jahr", "NOTFOUND")
                             .queryParam("sort", VALID_SORT)
                             .queryParam("type", VALID_TYPE)
@@ -164,7 +167,7 @@ public class ReportAuswertungProjekteIntegrationTest {
 
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/report/auswertungprojekte/form-context")
+                            .path(FORM_CONTEXT_PATH)
                             .build())
                     .header(
                             HttpHeaders.AUTHORIZATION,
@@ -205,7 +208,7 @@ public class ReportAuswertungProjekteIntegrationTest {
 
             restTestClient.get()
                     .uri(uriBuilder -> {
-                        uriBuilder.path("/report/auswertungprojekte");
+                        uriBuilder.path(REPORT_PATH);
 
                         if (sort != null) {
                             uriBuilder.queryParam("sort", sort);
@@ -231,7 +234,7 @@ public class ReportAuswertungProjekteIntegrationTest {
             // When
             final ReportAuswertungProjektFormContext result = restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/report/auswertungprojekte/form-context")
+                            .path(FORM_CONTEXT_PATH)
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
@@ -258,7 +261,7 @@ public class ReportAuswertungProjekteIntegrationTest {
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/report/auswertungprojekte/form-context")
+                            .path(FORM_CONTEXT_PATH)
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()

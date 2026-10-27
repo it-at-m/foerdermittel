@@ -29,13 +29,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/report")
+@RequestMapping("/report/auswertungprojekte")
 @SecurityRequirement(name = OpenAPIDocumentationConfiguration.SECURITY_SCHEME_NAME)
 public class ReportAuswertungProjekteController {
 
     private final ReportAuswertungProjekteService reportAuswertungProjekteService;
 
-    @GetMapping("/auswertungprojekte")
+    @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
     @Operation(
             responses = @ApiResponse(
@@ -62,10 +62,10 @@ public class ReportAuswertungProjekteController {
         generatedReport.writer().write(response.getOutputStream());
     }
 
-    @GetMapping(value = "/auswertungprojekte/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ReportAuswertungProjektFormContext getReportAuswertungProjektFormContext() {
-        return reportAuswertungProjekteService.getReportAuswertungProjekt();
+        return reportAuswertungProjekteService.getReportAuswertungProjektFormContext();
     }
 
 }

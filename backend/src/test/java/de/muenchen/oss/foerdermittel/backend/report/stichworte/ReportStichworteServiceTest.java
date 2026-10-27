@@ -39,7 +39,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class ReportStichworteServiceTest {
 
     private static final String BEREICH = "TEST";
-    private static final String SORT = "ORDER BY stb_bereich ASC, nr ASC, wort ASC";
 
     @Mock
     private StichwortbereichService stichwortbereichService;
@@ -73,7 +72,7 @@ class ReportStichworteServiceTest {
                     jasperParameters,
                     ReportType.FMW_ABLAGEINDEX,
                     ReportFormat.PDF,
-                    SORT))
+                    ReportStichworteService.SORT))
                     .thenReturn(expectedReport);
 
             // When
@@ -86,7 +85,7 @@ class ReportStichworteServiceTest {
                     jasperParameters,
                     ReportType.FMW_ABLAGEINDEX,
                     ReportFormat.PDF,
-                    SORT);
+                    ReportStichworteService.SORT);
 
             assertThat(actualReport).isSameAs(expectedReport);
             assertThat(actualReport.contentType()).isEqualTo(ReportFormat.PDF.getContentType());
@@ -112,7 +111,7 @@ class ReportStichworteServiceTest {
                     jasperParameters,
                     ReportType.FMW_ABLAGEINDEX,
                     ReportFormat.PDF,
-                    SORT))
+                    ReportStichworteService.SORT))
                     .thenReturn(expectedReport);
 
             // When
@@ -126,7 +125,7 @@ class ReportStichworteServiceTest {
                     jasperParameters,
                     ReportType.FMW_ABLAGEINDEX,
                     ReportFormat.PDF,
-                    SORT);
+                    ReportStichworteService.SORT);
         }
 
         @Test
@@ -171,7 +170,7 @@ class ReportStichworteServiceTest {
                     .thenReturn(allBereiche);
 
             // When
-            final ReportStichworteFormContext formContext = reportStichworteService.getReportStichworte();
+            final ReportStichworteFormContext formContext = reportStichworteService.getReportStichworteFormContext();
 
             // Then
             verify(stichwortbereichService, times(1))

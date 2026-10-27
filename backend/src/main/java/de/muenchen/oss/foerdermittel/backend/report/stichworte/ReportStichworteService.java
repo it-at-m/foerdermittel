@@ -21,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ReportStichworteService {
 
+    static final String SORT = "ORDER BY stb_bereich ASC, nr ASC, wort ASC";
+
     private final StichwortbereichService stichwortbereichService;
     private final ReportService reportService;
     private final ReportStichworteMapper reportStichworteMapper;
@@ -30,13 +32,12 @@ public class ReportStichworteService {
     public GeneratedReport generateReportStichworte(
             final ReportStichworteDTO parameters) {
         stichwortbereichService.checkExistsByBereich(parameters.bereich());
-        return reportService.generateReport(reportStichworteMapper.toJasperParameters(parameters), ReportType.FMW_ABLAGEINDEX, ReportFormat.PDF,
-                "ORDER BY stb_bereich ASC, nr ASC, wort ASC");
+        return reportService.generateReport(reportStichworteMapper.toJasperParameters(parameters), ReportType.FMW_ABLAGEINDEX, ReportFormat.PDF, SORT);
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public ReportStichworteFormContext getReportStichworte() {
+    public ReportStichworteFormContext getReportStichworteFormContext() {
         log.info("Get ReportStichworte form context");
         return new ReportStichworteFormContext(stichwortbereichService.getStichwortbereichFormContextDTOs());
     }

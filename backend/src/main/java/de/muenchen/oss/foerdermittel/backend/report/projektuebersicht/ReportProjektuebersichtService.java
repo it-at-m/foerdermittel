@@ -39,7 +39,7 @@ public class ReportProjektuebersichtService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public ReportProjektuebersichtFormContext getReportProjektuebersicht() {
+    public ReportProjektuebersichtFormContext getReportProjektuebersichtFormContext() {
         log.info("Get ReportProjektuebersicht form context");
         return new ReportProjektuebersichtFormContext(projektService.getReportProjektuebersichtFormContextDTOs());
     }

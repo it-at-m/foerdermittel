@@ -55,7 +55,7 @@ public class ReportHaushaltsplanungService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public ReportHaushaltsplanungFormContext getReportHaushaltsplanung() {
+    public ReportHaushaltsplanungFormContext getReportHaushaltsplanungFormContext() {
         log.info("Get ReportHaushaltsplanung form context");
         return new ReportHaushaltsplanungFormContext(
                 foerderbereichService.getFoerderbereichFormContextDTOs(),

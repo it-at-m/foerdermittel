@@ -358,7 +358,7 @@ class ReportHaushaltsplanungServiceTest {
                     new HhplanFormContextDTO(new BigDecimal(2023), "0000.0000.000.222"));
             when(hhplanService.getHhplanFormContextDTOs()).thenReturn(allHhplan);
             // When
-            final ReportHaushaltsplanungFormContext formContext = reportHaushaltsplanungService.getReportHaushaltsplanung();
+            final ReportHaushaltsplanungFormContext formContext = reportHaushaltsplanungService.getReportHaushaltsplanungFormContext();
 
             // Then
             verify(stadtbezirkService, times(1)).getStadtbezirkFormContextDTOs();

@@ -1,7 +1,7 @@
+
 package de.muenchen.oss.foerdermittel.backend.report.fortsetzungsantrag;
 
 import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_TEST_PROFILE;
-import static org.assertj.core.api.Assertions.assertThat;
 
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
 import de.muenchen.oss.foerdermittel.backend.TestUtils;
@@ -12,9 +12,7 @@ import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTe
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.client.RestTestClient;
 import org.testcontainers.junit.jupiter.Container;
@@ -29,6 +27,9 @@ import org.testcontainers.utility.DockerImageName;
 @Import(TestSecurityConfiguration.class)
 public class ReportFortsetzungsantragIntegrationTest {
 
+    private static final String REPORT_PATH = "/report/fortsetzungsantrag/";
+    private static final String FORM_CONTEXT_PATH = "/report/fortsetzungsantrag/form-context";
+
     @Autowired
     private RestTestClient restTestClient;
 
@@ -38,14 +39,13 @@ public class ReportFortsetzungsantragIntegrationTest {
     private static final PostgreSQLContainer POSTGRE_SQL_CONTAINER = new PostgreSQLContainer(
             DockerImageName.parse(TestUtils.getImageFromDockerCompose("postgres")));
 
-    /// Fortsetzungsantrag
     @Nested
     class GetReportFortsetzungsantrag {
 
         @Test
         void givenMissingType_thenReturnBadRequest() {
             restTestClient.get()
-                    .uri("/report/fortsetzungsantrag")
+                    .uri(REPORT_PATH)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
                     .exchange()
                     .expectStatus().isBadRequest();
@@ -55,7 +55,7 @@ public class ReportFortsetzungsantragIntegrationTest {
         void givenUnknownStadtbezirksliste_thenReturnNotFound() {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/report/fortsetzungsantrag")
+                            .path(REPORT_PATH)
                             .queryParam("type", "PDF")
                             .queryParam("sbl", "NOTFOUND")
                             .build())
@@ -68,7 +68,7 @@ public class ReportFortsetzungsantragIntegrationTest {
         void givenUnknownStadtbezirk_thenReturnNotFound() {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/report/fortsetzungsantrag")
+                            .path(REPORT_PATH)
                             .queryParam("type", "PDF")
                             .queryParam("bez", "99")
                             .build())
@@ -78,28 +78,16 @@ public class ReportFortsetzungsantragIntegrationTest {
         }
     }
 
-    /// Utility expectation that checks for non JSON, plain or Octet content type, validates a body
-    /// exists and checks the correct headers.
-    ///
-    /// @param response Response retrieved using a [WebTestClient]
-    public static void expectFileResponse(RestTestClient.ResponseSpec response) {
-        response
-                .expectHeader()
-                .value(HttpHeaders.CONTENT_DISPOSITION, value -> assertThat(ContentDisposition.parse(value).getType())
-                        .isEqualTo("attachment"))
-                .expectHeader()
-                .value(HttpHeaders.CONTENT_TYPE, value -> {
-                    MediaType contentType = MediaType.parseMediaType(value);
+    @Nested
+    class GetReportFortsetzungsantragFormContext {
 
-                    assertThat(contentType)
-                            .isNotEqualTo(MediaType.APPLICATION_JSON)
-                            .isNotEqualTo(MediaType.APPLICATION_OCTET_STREAM)
-                            .isNotEqualTo(MediaType.TEXT_PLAIN);
-                })
-                .expectBody()
-                .consumeWith(result -> assertThat(result.getResponseBody())
-                        .isNotNull()
-                        .isNotEmpty());
+        @Test
+        void givenValidRequest_thenReturnOk() {
+            restTestClient.get()
+                    .uri(FORM_CONTEXT_PATH)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
+                    .exchange()
+                    .expectStatus().isOk();
+        }
     }
-
 }

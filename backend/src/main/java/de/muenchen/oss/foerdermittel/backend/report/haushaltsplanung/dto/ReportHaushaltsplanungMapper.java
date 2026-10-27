@@ -5,7 +5,6 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-/// Component responsible for conversion between report DTOs and Jasper parameter maps.
 @Component
 public class ReportHaushaltsplanungMapper {
     public Map<String, Object> toJasperParameters(final ReportHaushaltsplanungDTO dto) {

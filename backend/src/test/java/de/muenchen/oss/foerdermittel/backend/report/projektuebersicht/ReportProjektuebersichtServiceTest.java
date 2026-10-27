@@ -37,8 +37,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class ReportProjektuebersichtServiceTest {
 
-    private static final String SORT = "";
-
     @Mock
     private ProjektService projektService;
 
@@ -165,7 +163,7 @@ class ReportProjektuebersichtServiceTest {
                     .thenReturn(projekte);
 
             // When
-            final ReportProjektuebersichtFormContext formContext = reportProjektuebersichtService.getReportProjektuebersicht();
+            final ReportProjektuebersichtFormContext formContext = reportProjektuebersichtService.getReportProjektuebersichtFormContext();
 
             // Then
             assertThat(formContext.projekte()).isEqualTo(projekte);

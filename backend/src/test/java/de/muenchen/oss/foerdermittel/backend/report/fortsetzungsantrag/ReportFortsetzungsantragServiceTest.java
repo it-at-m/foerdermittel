@@ -117,7 +117,7 @@ class ReportFortsetzungsantragServiceTest {
 
             // When
             final ReportFortsetzungsantragFormContext formContext = reportFortsetzungsantragService
-                    .getReportFortsetzungsantrag();
+                    .getReportFortsetzungsantragFormContext();
 
             // Then
             verify(stadtbezirkService, times(1))

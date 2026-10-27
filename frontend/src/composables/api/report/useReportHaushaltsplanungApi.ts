@@ -10,8 +10,6 @@ import {
   requireComposables,
 } from "@/util/composable-helper";
 
-//Haushaltsplanung Haushaltsplanung
-
 export const {
   useGetOpts: useGetReportHaushaltsplanungOpts,
   useContext: useGetReportHaushaltsplanungFormContext,

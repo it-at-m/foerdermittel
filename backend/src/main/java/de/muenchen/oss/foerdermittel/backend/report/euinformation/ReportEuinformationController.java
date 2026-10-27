@@ -34,7 +34,7 @@ public class ReportEuinformationController {
 
     private final ReportEuinformationService euinformationReportService;
 
-    @GetMapping("")
+    @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
     @Operation(
             responses = @ApiResponse(
@@ -61,6 +61,6 @@ public class ReportEuinformationController {
     @GetMapping(value = "/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ReportEuinformationFormContext getReportEuinformationenFormContext() {
-        return euinformationReportService.getReportEuinformationen();
+        return euinformationReportService.getReportEuinformationenFormContext();
     }
 }

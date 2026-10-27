@@ -195,7 +195,7 @@ class ReportProjektuebersichtMsServiceTest {
 
             // When
             final ReportProjektuebersichtMsFormContext formContext = reportProjektUebersichtMsService
-                    .getReportProjektuebersichtMs();
+                    .getReportProjektuebersichtMsFormContext();
 
             // Then
 

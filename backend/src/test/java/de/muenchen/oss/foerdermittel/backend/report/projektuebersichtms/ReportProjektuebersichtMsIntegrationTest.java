@@ -35,6 +35,9 @@ import org.testcontainers.utility.DockerImageName;
 @Import(TestSecurityConfiguration.class)
 class ReportProjektuebersichtMsIntegrationTest {
 
+    private static final String REPORT_PATH = "/report/projektuebersichtms/";
+    private static final String FORM_CONTEXT_PATH = "/report/projektuebersichtms/form-context";
+
     @Autowired
     private RestTestClient restTestClient;
 
@@ -51,7 +54,7 @@ class ReportProjektuebersichtMsIntegrationTest {
         @Test
         void givenMissingParameters_thenReturnBadRequest() {
             restTestClient.get()
-                    .uri("/report/projektuebersichtms")
+                    .uri(REPORT_PATH)
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             "Bearer sachbearbeitung")
@@ -74,7 +77,7 @@ class ReportProjektuebersichtMsIntegrationTest {
                 final HttpStatus httpStatus) {
 
             restTestClient.get()
-                    .uri("/report/projektuebersichtms/form-context")
+                    .uri(FORM_CONTEXT_PATH)
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             String.format("Bearer %s", role))
@@ -89,7 +92,7 @@ class ReportProjektuebersichtMsIntegrationTest {
         @Test
         void givenRequest_thenReturnFormContext() {
             final ReportProjektuebersichtMsFormContext result = restTestClient.get()
-                    .uri("/report/projektuebersichtms/form-context")
+                    .uri(FORM_CONTEXT_PATH)
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             "Bearer admin")
@@ -120,7 +123,7 @@ class ReportProjektuebersichtMsIntegrationTest {
                 final HttpStatus httpStatus) {
 
             restTestClient.get()
-                    .uri("/report/projektuebersichtms/form-context")
+                    .uri(FORM_CONTEXT_PATH)
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             String.format("Bearer %s", role))

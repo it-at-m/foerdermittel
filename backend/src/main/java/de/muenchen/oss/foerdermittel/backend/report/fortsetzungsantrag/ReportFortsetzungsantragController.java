@@ -35,7 +35,7 @@ public class ReportFortsetzungsantragController {
 
     private final ReportFortsetzungsantragService reportFortsetzungsantragService;
 
-    @GetMapping("")
+    @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
     @Operation(
             responses = @ApiResponse(
@@ -67,6 +67,6 @@ public class ReportFortsetzungsantragController {
     @GetMapping(value = "/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ReportFortsetzungsantragFormContext getReportFortsetzungsantragFormContext() {
-        return reportFortsetzungsantragService.getReportFortsetzungsantrag();
+        return reportFortsetzungsantragService.getReportFortsetzungsantragFormContext();
     }
 }

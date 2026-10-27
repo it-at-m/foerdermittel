@@ -10,7 +10,6 @@ import {
   requireComposables,
 } from "@/util/composable-helper";
 
-//Fortsetzungsantrag
 export const {
   useGetOpts: useGetReportFortsetzungsantragOpts,
   useContext: useGetReportFortsetzungsantragFormContext,

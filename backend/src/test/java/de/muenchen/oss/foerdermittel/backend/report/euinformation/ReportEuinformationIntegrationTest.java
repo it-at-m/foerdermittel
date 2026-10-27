@@ -33,7 +33,10 @@ import org.testcontainers.utility.DockerImageName;
 @AutoConfigureRestTestClient
 @ActiveProfiles(profiles = { SPRING_TEST_PROFILE })
 @Import(TestSecurityConfiguration.class)
-class ReportEuinformationenIntegrationTest {
+class ReportEuinformationIntegrationTest {
+
+    private static final String REPORT_PATH = "/report/euinformationen/";
+    private static final String FORM_CONTEXT_PATH = "/report/euinformationen/form-context";
 
     @Autowired
     private RestTestClient restTestClient;
@@ -51,7 +54,7 @@ class ReportEuinformationenIntegrationTest {
         @Test
         void givenMissingParameters_thenReturnBadRequest() {
             restTestClient.get()
-                    .uri("/report/euinformationen")
+                    .uri(REPORT_PATH)
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             "Bearer sachbearbeitung")
@@ -74,7 +77,7 @@ class ReportEuinformationenIntegrationTest {
         @Test
         void givenRequest_thenReturnFormContext() {
             final ReportEuinformationFormContext result = restTestClient.get()
-                    .uri("/report/euinformationen/form-context")
+                    .uri(FORM_CONTEXT_PATH)
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             "Bearer admin")
@@ -105,7 +108,7 @@ class ReportEuinformationenIntegrationTest {
                 final HttpStatus httpStatus) {
 
             restTestClient.get()
-                    .uri("/report/euinformationen/form-context")
+                    .uri(FORM_CONTEXT_PATH)
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             String.format("Bearer %s", role))

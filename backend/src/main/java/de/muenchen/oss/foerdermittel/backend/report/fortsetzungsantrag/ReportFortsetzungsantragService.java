@@ -44,7 +44,7 @@ public class ReportFortsetzungsantragService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public ReportFortsetzungsantragFormContext getReportFortsetzungsantrag() {
+    public ReportFortsetzungsantragFormContext getReportFortsetzungsantragFormContext() {
         log.info("Get ReportFortsetzungsantrag form context");
         return new ReportFortsetzungsantragFormContext(
                 listennameStadtbezirkslisteService.getlistennameStadtbezirkslisteFormContextDTOs(),
