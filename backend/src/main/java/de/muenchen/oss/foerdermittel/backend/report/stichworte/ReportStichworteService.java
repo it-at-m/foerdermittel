@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ReportStichworteService {
 
-    static final String SORT = "ORDER BY stb_bereich ASC, nr ASC, wort ASC";
+    /* default */ static final String SORT = "ORDER BY stb_bereich ASC, nr ASC, wort ASC";
 
     private final StichwortbereichService stichwortbereichService;
     private final ReportService reportService;
