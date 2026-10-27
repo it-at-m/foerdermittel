@@ -1957,18 +1957,12 @@ paths:
       tags:
       - report-staedtebaufoerderung-controller
       operationId: getReportStaedtebaufoerderung
-  /report/projektuebersichtms:
-    get:
-      tags:
-      - report-projektuebersicht-ms-controller
-      operationId: getReportProjektuebersichtMs
       parameters:
       - name: parameters
         in: query
         required: true
         schema:
           $ref: "#/components/schemas/ReportStaedtebaufoerderungDTO"
-          $ref: "#/components/schemas/ReportProjektuebersichtMsDTO"
       responses:
         "200":
           description: OK
@@ -1984,6 +1978,34 @@ paths:
       tags:
       - report-staedtebaufoerderung-controller
       operationId: getReportStaedtebaufoerderungFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportStaedtebaufoerderungFormContext"
+      security:
+      - bearerAuth: []
+  /report/projektuebersichtms:
+    get:
+      tags:
+      - report-projektuebersicht-ms-controller
+      operationId: getReportProjektuebersichtMs
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportProjektuebersichtMsDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
             application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
               schema:
                 type: string
@@ -2001,7 +2023,6 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ReportStaedtebaufoerderungFormContext"
                 $ref: "#/components/schemas/ReportProjektuebersichtMsFormContext"
       security:
       - bearerAuth: []
@@ -3675,7 +3696,14 @@ components:
       type: object
       properties:
         kurzform:
-=======
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+      description: |-
+        DTO for [de.muenchen.oss.foerdermittel.backend.publikation.Publikation] to be used in
+        other FormContexts other than its own.
     ReportFormat:
       type: string
       enum:
@@ -3694,8 +3722,10 @@ components:
         sbl:
           type: string
         bez:
+          pattern: ^\d*$
           type: string
         fb:
+          pattern: ^\d*$
           type: string
         ua:
           type: string
@@ -3717,8 +3747,10 @@ components:
           - F
           - S
         sgt:
+          pattern: ^\d*$
           type: string
         bpg:
+          pattern: ^\d*$
           type: string
         type:
           $ref: "#/components/schemas/ReportFormat"
