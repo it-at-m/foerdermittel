@@ -1952,7 +1952,21 @@ paths:
                 $ref: "#/components/schemas/ReportStichworteFormContext"
       security:
       - bearerAuth: []
-  /report/staedtebaufoerderungen:
+  /report/staedtebaufoerderungen/form-context:
+    get:
+      tags:
+      - report-staedtebaufoerderung-controller
+      operationId: getReportStaedtebaufoerderungFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportStaedtebaufoerderungFormContext"
+      security:
+      - bearerAuth: []
+  /report/staedtebaufoerderungen/:
     get:
       tags:
       - report-staedtebaufoerderung-controller
@@ -1971,20 +1985,6 @@ paths:
               schema:
                 type: string
                 format: binary
-      security:
-      - bearerAuth: []
-  /report/staedtebaufoerderungen/form-context:
-    get:
-      tags:
-      - report-staedtebaufoerderung-controller
-      operationId: getReportStaedtebaufoerderungFormContext
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ReportStaedtebaufoerderungFormContext"
       security:
       - bearerAuth: []
   /report/projektuebersichtms:
@@ -3662,24 +3662,6 @@ components:
       description: |-
         DTO for [de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich] to be used in
         other FormContexts other than its own.
-    ReportStaedtebaufoerderungDTO:
-      type: object
-      properties:
-        jahrVon:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
-        jahrBis:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
-        pname:
-          maxLength: 40
-          minLength: 0
-          type: string
-        traeger:
-          pattern: "^[0-9]?$"
-          type: string
-        notizen:
-          type: string
     ReportStaedtebaufoerderungFormContext:
       required:
       - traeger
@@ -3704,6 +3686,24 @@ components:
       description: |-
         DTO for [de.muenchen.oss.foerdermittel.backend.publikation.Publikation] to be used in
         other FormContexts other than its own.
+    ReportStaedtebaufoerderungDTO:
+      type: object
+      properties:
+        jahrVon:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        jahrBis:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        pname:
+          maxLength: 40
+          minLength: 0
+          type: string
+        traeger:
+          pattern: "^[0-9]?$"
+          type: string
+        notizen:
+          type: string
     ReportFormat:
       type: string
       enum:
