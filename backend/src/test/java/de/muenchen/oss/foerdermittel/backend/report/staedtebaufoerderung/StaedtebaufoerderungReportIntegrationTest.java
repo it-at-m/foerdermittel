@@ -6,9 +6,8 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
 import de.muenchen.oss.foerdermittel.backend.TestUtils;
-import java.util.stream.Stream;
-
 import de.muenchen.oss.foerdermittel.backend.report.staedtebaufoerderung.formcontext.ReportStaedtebaufoerderungFormContext;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -36,6 +35,9 @@ import org.testcontainers.utility.DockerImageName;
 @Import(TestSecurityConfiguration.class)
 public class StaedtebaufoerderungReportIntegrationTest {
 
+    private static final String REPORT_PATH = "/report/staedtebaufoerderungen/";
+    private static final String FORM_CONTEXT_PATH = "/report/staedtebaufoerderungen/form-context";
+
     @Autowired
     private RestTestClient restTestClient;
 
@@ -52,7 +54,7 @@ public class StaedtebaufoerderungReportIntegrationTest {
         @Test
         void givenMissingParameters_thenReturnOk() {
             restTestClient.get()
-                    .uri("/report/staedtebaufoerderungen")
+                    .uri(REPORT_PATH)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
                     .exchange()
                     .expectStatus().isOk()
@@ -66,7 +68,7 @@ public class StaedtebaufoerderungReportIntegrationTest {
         @Test
         void givenRequest_thenReturnFormContext() {
             final ReportStaedtebaufoerderungFormContext result = restTestClient.get()
-                    .uri("/report/staedtebaufoerderungen/form-context")
+                    .uri(FORM_CONTEXT_PATH)
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             "Bearer admin")
@@ -97,7 +99,7 @@ public class StaedtebaufoerderungReportIntegrationTest {
                 final HttpStatus httpStatus) {
 
             restTestClient.get()
-                    .uri("/report/staedtebaufoerderungen/form-context")
+                    .uri(FORM_CONTEXT_PATH)
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             String.format("Bearer %s", role))
