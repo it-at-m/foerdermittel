@@ -3,6 +3,7 @@ package de.muenchen.oss.foerdermittel.backend.report.staedtebaufoerderung;
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
 import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
 import de.muenchen.oss.foerdermittel.backend.report.staedtebaufoerderung.dto.ReportStaedtebaufoerderungDTO;
+import de.muenchen.oss.foerdermittel.backend.report.staedtebaufoerderung.formcontext.ReportStaedtebaufoerderungFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -33,7 +34,7 @@ public class ReportStaedtebaufoerderungController {
 
     private final ReportStaedtebaufoerderungService reportStaedtebaufoerderungService;
 
-    @GetMapping("")
+    @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
     @Operation(
             responses = @ApiResponse(
