@@ -1957,12 +1957,18 @@ paths:
       tags:
       - report-staedtebaufoerderung-controller
       operationId: getReportStaedtebaufoerderung
+  /report/projektuebersichtms:
+    get:
+      tags:
+      - report-projektuebersicht-ms-controller
+      operationId: getReportProjektuebersichtMs
       parameters:
       - name: parameters
         in: query
         required: true
         schema:
           $ref: "#/components/schemas/ReportStaedtebaufoerderungDTO"
+          $ref: "#/components/schemas/ReportProjektuebersichtMsDTO"
       responses:
         "200":
           description: OK
@@ -1978,6 +1984,17 @@ paths:
       tags:
       - report-staedtebaufoerderung-controller
       operationId: getReportStaedtebaufoerderungFormContext
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/projektuebersichtms/form-context:
+    get:
+      tags:
+      - report-projektuebersicht-ms-controller
+      operationId: getReportProjektuebersichtMsFormContext
       responses:
         "200":
           description: OK
@@ -1985,6 +2002,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ReportStaedtebaufoerderungFormContext"
+                $ref: "#/components/schemas/ReportProjektuebersichtMsFormContext"
       security:
       - bearerAuth: []
   /report/projektuebersicht:
@@ -3657,14 +3675,197 @@ components:
       type: object
       properties:
         kurzform:
+=======
+    ReportFormat:
+      type: string
+      enum:
+      - PDF
+      - PDF_FLAT
+      - EXCEL
+    ReportProjektuebersichtMsDTO:
+      required:
+      - sort
+      - type
+      type: object
+      properties:
+        jahr:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        sbl:
+          type: string
+        bez:
+          type: string
+        fb:
+          type: string
+        ua:
+          type: string
+        kurz:
+          type: string
+        offen:
+          type: string
+        vn:
+          type: string
+        krisofp:
+          type: string
+          enum:
+          - X
+          - "Y"
+          - Z
+          - W
+          - V
+          - K
+          - F
+          - S
+        sgt:
+          type: string
+        bpg:
+          type: string
+        type:
+          $ref: "#/components/schemas/ReportFormat"
+        sort:
+          type: string
+          enum:
+          - PROJEKTNUMMER
+          - STRASSEPROJNR
+          - FBPROJNR
+    BauprogrammFormContextDTO:
+      required:
+      - bauprogramm
+      - bezeichnung
+      type: object
+      properties:
+        bauprogramm:
           type: string
           description: ""
         bezeichnung:
           type: string
           description: ""
-      description: |-
-        DTO for [de.muenchen.oss.foerdermittel.backend.publikation.Publikation] to be used in
-        other FormContexts other than its own.
+    FoerderbereichFormContextDTO:
+      required:
+      - bezeichnung
+      - fb
+      type: object
+      properties:
+        fb:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+    KurzbezeichnungFormContextDTO:
+      required:
+      - bezeichnung
+      - kurzbez
+      type: object
+      properties:
+        kurzbez:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+    ListennameStadtbezirkslisteFormContextDTO:
+      required:
+      - bezeichnung
+      - kurzbez
+      type: object
+      properties:
+        kurzbez:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+    ReportProjektuebersichtMsFormContext:
+      required:
+      - bauprogramme
+      - foerderbereiche
+      - krisofps
+      - kurzbezeichnungen
+      - siedlungsgebiete
+      - stadtbezirke
+      - stadtbezirkslisten
+      - unterabschnitte
+      type: object
+      properties:
+        stadtbezirkslisten:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
+        stadtbezirke:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
+        foerderbereiche:
+          type: array
+          items:
+            $ref: "#/components/schemas/FoerderbereichFormContextDTO"
+        unterabschnitte:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnterabschnittFormContextDTO"
+        kurzbezeichnungen:
+          type: array
+          items:
+            $ref: "#/components/schemas/KurzbezeichnungFormContextDTO"
+        krisofps:
+          type: array
+          items:
+            type: string
+            enum:
+            - X
+            - "Y"
+            - Z
+            - W
+            - V
+            - K
+            - F
+            - S
+        siedlungsgebiete:
+          type: array
+          items:
+            $ref: "#/components/schemas/SiedlungsgebietFormContextDTO"
+        bauprogramme:
+          type: array
+          items:
+            $ref: "#/components/schemas/BauprogrammFormContextDTO"
+    SiedlungsgebietFormContextDTO:
+      required:
+      - bezeichnung
+      - siedlungsgebiet
+      type: object
+      properties:
+        siedlungsgebiet:
+          type: integer
+          description: ""
+          format: int32
+        bezeichnung:
+          type: string
+          description: ""
+    StadtbezirkFormContextDTO:
+      required:
+      - bezeichnung
+      - stadtbezirk
+      type: object
+      properties:
+        stadtbezirk:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+    UnterabschnittFormContextDTO:
+      required:
+      - bezeichnung
+      - ua
+      type: object
+      properties:
+        ua:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
     ReportProjektuebersichtDTO:
       required:
       - projnr
@@ -3697,12 +3898,6 @@ components:
           type: string
         pstrasse:
           type: string
-    ReportFormat:
-      type: string
-      enum:
-      - PDF
-      - PDF_FLAT
-      - EXCEL
     ReportHaushaltsplanungDTO:
       required:
       - haushaltsjahr
@@ -3735,18 +3930,6 @@ components:
           - FB_FIPO
         type:
           $ref: "#/components/schemas/ReportFormat"
-    FoerderbereichFormContextDTO:
-      required:
-      - bezeichnung
-      - fb
-      type: object
-      properties:
-        fb:
-          type: string
-          description: ""
-        bezeichnung:
-          type: string
-          description: ""
     HhplanFormContextDTO:
       required:
       - fipo
@@ -3757,18 +3940,6 @@ components:
           type: number
           description: ""
         fipo:
-          type: string
-          description: ""
-    ListennameStadtbezirkslisteFormContextDTO:
-      required:
-      - bezeichnung
-      - kurzbez
-      type: object
-      properties:
-        kurzbez:
-          type: string
-          description: ""
-        bezeichnung:
           type: string
           description: ""
     ReportHaushaltsplanungFormContext:
@@ -3795,18 +3966,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/HhplanFormContextDTO"
-    StadtbezirkFormContextDTO:
-      required:
-      - bezeichnung
-      - stadtbezirk
-      type: object
-      properties:
-        stadtbezirk:
-          type: string
-          description: ""
-        bezeichnung:
-          type: string
-          description: ""
     ReportFortsetzungsantragDTO:
       required:
       - type
@@ -3948,30 +4107,6 @@ components:
           - FOERDERBEREICH_PROJEKTNUMMER
         type:
           $ref: "#/components/schemas/ReportFormat"
-    BauprogrammFormContextDTO:
-      required:
-      - bauprogramm
-      - bezeichnung
-      type: object
-      properties:
-        bauprogramm:
-          type: string
-          description: ""
-        bezeichnung:
-          type: string
-          description: ""
-    KurzbezeichnungFormContextDTO:
-      required:
-      - bezeichnung
-      - kurzbez
-      type: object
-      properties:
-        kurzbez:
-          type: string
-          description: ""
-        bezeichnung:
-          type: string
-          description: ""
     ReportAuswertungProjektFormContext:
       required:
       - bezs
@@ -4052,31 +4187,6 @@ components:
           - K
           - F
           - S
-    SiedlungsgebietFormContextDTO:
-      required:
-      - bezeichnung
-      - siedlungsgebiet
-      type: object
-      properties:
-        siedlungsgebiet:
-          type: integer
-          description: ""
-          format: int32
-        bezeichnung:
-          type: string
-          description: ""
-    UnterabschnittFormContextDTO:
-      required:
-      - bezeichnung
-      - ua
-      type: object
-      properties:
-        ua:
-          type: string
-          description: ""
-        bezeichnung:
-          type: string
-          description: ""
     PagedModelReferatResponseDTO:
       type: object
       properties:

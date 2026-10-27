@@ -244,6 +244,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("domain.report.projektUebersichtManagement"),
+        props: {
+          to: "/report/projektuebersichtms",
+        },
       },
       {
         title: t("domain.report.annahmeAnordnungSAP"),
