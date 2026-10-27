@@ -2,6 +2,7 @@ package de.muenchen.oss.foerdermittel.backend.projekt;
 
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.Bauprogramm;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
+import de.muenchen.oss.foerdermittel.backend.krankenhaus.Krankenhaus;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
@@ -48,16 +49,7 @@ public class Projekt implements Serializable {
             referencedColumnName = "fb",
             nullable = false
     )
-    private Foerderbereich foerderbereich;
-
-    @Column(name = "kur_kurzbez", nullable = false, length = 3)
-    private String kurKurzbez;
-
-    @Column(name = "uas_ua", length = 2)
-    private String uasUa;
-
-    @Column(name = "jahr", length = 2)
-    private String jahr;
+    private Foerderbereich fobFb;
 
     @Column(name = "lfdnr1", length = 1)
     private String lfdnr1;
@@ -85,7 +77,7 @@ public class Projekt implements Serializable {
             referencedColumnName = "ua",
             nullable = false
     )
-    private Unterabschnitt unterabschnitt;
+    private Unterabschnitt uasUa;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
@@ -93,23 +85,7 @@ public class Projekt implements Serializable {
             referencedColumnName = "kurzbez",
             nullable = false
     )
-    private Kurzbezeichnung kurzbezeichnung;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "sgt_siedlungsgebiet",
-            referencedColumnName = "siedlungsgebiet",
-            nullable = false
-    )
-    private Siedlungsgebiet siedlungsgebiet;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "bpg_bauprogramm",
-            referencedColumnName = "bauprogramm",
-            nullable = false
-    )
-    private Bauprogramm bauprogramm;
+    private Kurzbezeichnung kurKurzbez;
 
     @Enumerated(EnumType.STRING)
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)

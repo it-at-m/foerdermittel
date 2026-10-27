@@ -10,15 +10,21 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ProjektMapper {
 
-    @Mapping(source = "foerderbereich.fb", target = "foerderbereich")
+    @Mapping(source = "fobFb.fb", target = "fobFb")
+    @Mapping(source = "kurKurzbez.kurzbez", target = "kurKurzbez")
+    @Mapping(source = "uasUa.ua", target = "uasUa")
+    @Mapping(source = "stadtbezirk.stadtbezirk", target = "stadtbezirk")
     ProjektResponseDTO toDTO(Projekt projekt);
 
+    @Mapping(target = "fobFb", ignore = true)
+    @Mapping(target = "uasUa", ignore = true)
+    @Mapping(target = "kurKurzbez", ignore = true)
     Projekt toEntity(ProjektCreateDTO projektCreateDTO);
 
     @Mapping(target = "projnr", ignore = true)
     Projekt toEntity(ProjektUpdateDTO projektUpdateDTO);
 
-    @Mapping(source = "foerderbereich.fb", target = "foerderbereich")
+    @Mapping(source = "fobFb.fb", target = "fobFb")
     @Mapping(source = "stadtbezirk.stadtbezirk", target = "stadtbezirk")
     ProjektFormContextDTO toFormContext(Projekt projekt);
 

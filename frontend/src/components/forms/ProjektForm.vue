@@ -88,7 +88,7 @@
         md="6"
       >
         <fm-autocomplete
-          v-model="modelValue.fobFb"
+          v-model="modelValue.foerderbereich"
           :items="foerderbereiche?.content ?? []"
           item-value="fb"
           :item-title="formatFoerderbereich"

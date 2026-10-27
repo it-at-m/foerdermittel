@@ -29,7 +29,7 @@ class IstkostenMapperTest {
             projekt.setProjnr("1124101");
             projekt.setPname("Test Projekt");
             projekt.setPstrasse("Teststraße 1");
-            projekt.setFoerderbereich(foerderbereich);
+            projekt.setFobFb(foerderbereich);
 
             final Istkosten entity = new Istkosten(new IstkostenPrimaryKey(projekt.getProjnr(), new BigDecimal(2026), new BigDecimal(1)), projekt,
                     new BigDecimal(5000));
@@ -44,7 +44,7 @@ class IstkostenMapperTest {
             assertThat(entity.getIstkosten()).isEqualByComparingTo(dto.istkosten());
             assertThat(dto.pname()).isEqualTo(entity.getProjekt().getPname());
             assertThat(dto.pstrasse()).isEqualTo(entity.getProjekt().getPstrasse());
-            assertThat(dto.fob_fb()).isEqualTo(entity.getProjekt().getFoerderbereich().getFb());
+            assertThat(dto.fob_fb()).isEqualTo(entity.getProjekt().getFobFb().getFb());
         }
 
         @Test

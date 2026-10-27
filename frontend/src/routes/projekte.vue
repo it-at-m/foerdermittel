@@ -53,7 +53,7 @@ const headers: DataTableHeader<Partial<ProjektResponseDTO>>[] = [
   },
   {
     title: t("model.projekt.fobFb"),
-    value: "foerderbereich",
+    value: "fobFb",
     sortable: true,
   },
   {
@@ -80,7 +80,7 @@ const headers: DataTableHeader<Partial<ProjektResponseDTO>>[] = [
 
 const EMPTY_ITEM_TEMPLATE: Partial<ProjektResponseDTO> = {
   projnr: "",
-  foerderbereich: undefined,
+  fobFb: undefined,
   kurKurzbez: undefined,
   uasUa: undefined,
   pname: "",
@@ -94,22 +94,6 @@ const projektFormContext = computed(() => projektApi.context.data.value);
 type ProjektFormType = InstanceType<typeof ProjektForm>;
 const projektFormRef = useTemplateRef<ProjektFormType>("projektForm");
 
-const handleCreate = async (projektCreateDTO: Partial<ProjektResponseDTO>) => {
-  // TODO: some type checking improvements
-  const model = projektCreateDTO as ProjektResponseDTO;
-  await projektApi.create.call({
-    projektCreateDTO: model,
-  });
-};
-
-const handleUpdate = async (projektUpdateDTO: Partial<ProjektResponseDTO>) => {
-  // TODO: some type checking improvements
-  const model = projektUpdateDTO as ProjektResponseDTO;
-  await projektApi.update.call({
-    id: model.projnr,
-    projektUpdateDTO: model,
-  });
-};
 const handleDelete = async (id: string) => {
   await projektApi.delete.call({
     id,

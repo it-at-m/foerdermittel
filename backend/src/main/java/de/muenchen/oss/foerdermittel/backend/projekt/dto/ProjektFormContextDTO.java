@@ -17,6 +17,6 @@ public record ProjektFormContextDTO(
         @NotNull String projnr,
         @NotNull String pname,
         @NotNull String pstrasse,
-        @NotNull String foerderbereich,
+        @NotNull String fobFb,
         @NotNull BigDecimal stadtbezirk) {
 }
