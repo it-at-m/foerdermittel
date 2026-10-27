@@ -60,33 +60,44 @@
           />
         </v-col>
       </v-row>
-      <v-row class="mt-2">
-        <v-col>
-          <v-divider />
-        </v-col>
-      </v-row>
     </v-card-title>
-    <v-card-text class="pa-0">
-      <div class="d-flex flex-column h-100 overflow-x-hidden">
+    <v-card-text class="d-flex flex-column flex-grow-1 pa-0 overflow-hidden">
+      <filter-panel
+        v-if="$slots['filter-form']"
+        ref="filterPanelRef"
+        :loading="loading"
+        :filter-default="filterDefault"
+        class="flex-grow-0"
+      >
+        <template #form="{ filter, updateValidity }">
+          <slot
+            name="filter-form"
+            :filter="filter"
+            :update-validity="updateValidity"
+          />
+        </template>
+      </filter-panel>
+      <div class="d-flex flex-column flex-grow-1 overflow-x-hidden">
         <v-data-table-server
+          v-if="!$slots['filter-form'] || filterPanelFormRef"
           v-model:items-per-page="itemsPerPage"
           v-model:page="page"
           v-model:sort-by="sortBy"
-          v-model:search="search"
           v-model:expanded="expanded"
           fixed-header
+          :search="search"
           :headers="tableHeadersWithActions"
           :items="getAllData?.content ?? []"
           :items-length="getAllData?.page?.totalElements ?? 0"
           :loading="loading"
           :show-expand="expandable"
           expand-strategy="single"
-          height="10"
           class="flex-grow-1 w-100"
           :row-props="{
             class: expandable ? 'cursor-pointer hover-row' : 'cursor-auto',
           }"
           @click:row="onRowClick"
+          @update:options="refetchEntities"
         >
           <template #loading>
             <p>{{ t("common.message.loading", [domainPlural]) }}</p>
@@ -155,10 +166,11 @@ import type { Awaitable } from "@vueuse/core";
 import type { DataTableHeader } from "vuetify/framework";
 
 import { mdiDelete, mdiPencil, mdiPlus, mdiTrashCan } from "@mdi/js";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import ConfirmCard from "@/components/common/ConfirmCard.vue";
+import FilterPanel from "@/components/common/FilterPanel.vue";
 import UnsavedChangesDialog from "@/components/common/UnsavedChangesDialog.vue";
 import { useDirtyFlag } from "@/composables/useDirtyFlag";
 import usePagination from "@/composables/usePagination";
@@ -175,6 +187,7 @@ const showDialog = computed(() => dialogMode.value !== null);
 
 const {
   emptyItemTemplate,
+  filterDefault,
   domainKey,
   loading: loadingProp = false,
   tableHeaders,
@@ -189,6 +202,7 @@ const {
   formRef,
 } = defineProps<{
   emptyItemTemplate: TGetResponse;
+  filterDefault?: Record<string, unknown>;
   domainKey: string;
   loading?: boolean;
   tableHeaders: Readonly<DataTableHeader<TGetResponse>>[];
@@ -225,52 +239,20 @@ const getAllData = computed(() => {
   return api.getAll.data.value;
 });
 
-const { dataTableOptions, refetchEntities } = usePagination(
-  computed(() => api.getAll.data.value?.page?.totalPages),
-  api.getAll.call
+const { page, itemsPerPage, sortBy, pageable } = usePagination(
+  computed(() => api.getAll.data.value?.page?.totalPages)
 );
 
+type FilterPanelType = InstanceType<typeof FilterPanel>;
+const filterPanelFormRef = useTemplateRef<FilterPanelType>("filterPanelRef");
+
+const appliedFilter = computed(
+  () => filterPanelFormRef.value?.appliedFilter ?? {}
+);
+
+const search = computed(() => filterPanelFormRef.value?.search ?? "");
+
 const snackbarStore = useSnackbarStore();
-
-const page = computed({
-  get: () => dataTableOptions.value.page,
-  set: (value) => {
-    dataTableOptions.value = {
-      ...dataTableOptions.value,
-      page: value,
-    };
-  },
-});
-
-const itemsPerPage = computed({
-  get: () => dataTableOptions.value.itemsPerPage,
-  set: (value) => {
-    dataTableOptions.value = {
-      ...dataTableOptions.value,
-      itemsPerPage: value,
-    };
-  },
-});
-
-const sortBy = computed({
-  get: () => dataTableOptions.value.sortBy,
-  set: (value) => {
-    dataTableOptions.value = {
-      ...dataTableOptions.value,
-      sortBy: value,
-    };
-  },
-});
-
-const search = computed({
-  get: () => dataTableOptions.value.search,
-  set: (value) => {
-    dataTableOptions.value = {
-      ...dataTableOptions.value,
-      search: value,
-    };
-  },
-});
 
 const domainSingular = computed(() => t(domainKey));
 const domainPlural = computed(() => t(domainKey, 2));
@@ -350,6 +332,13 @@ const loadFormContext = async () => {
   if (shouldLoadFormContext) {
     await api.context.call();
   }
+};
+
+const refetchEntities = async () => {
+  await api.getAll.call({
+    ...appliedFilter.value,
+    ...pageable.value,
+  });
 };
 
 const updateFormValidity = (valid: boolean | null) => {
