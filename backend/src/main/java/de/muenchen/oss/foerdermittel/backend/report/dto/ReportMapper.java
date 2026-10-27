@@ -10,9 +10,12 @@ import org.springframework.util.StringUtils;
 @Component
 public class ReportMapper {
 
-    public Map<String, Object> toJasperParameters(final ReportStichworteDTO dto) {
+    public Map<String, Object> toJasperParameters(
+            final ReportStichworteDTO dto) {
+
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put("P_BEREICH", dto.bereich());
+
         return parameters;
     }
 
@@ -50,5 +53,4 @@ public class ReportMapper {
         parameters.put("P_NOTIZ", dto.notiz() ? "1" : "0");
         return parameters;
     }
-
 }

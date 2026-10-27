@@ -1,9 +1,15 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.Bauprogramm;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
+import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
+import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -16,6 +22,8 @@ import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Data
@@ -30,6 +38,9 @@ public class Projekt implements Serializable {
     @Id
     @Column(name = "projnr", nullable = false)
     @NotNull @Size(min = 7, max = 7) private String projnr; // angepasst von projektnr auf projnr, da im Mapper so verwendet
+
+    @Column(name = "jahr", nullable = false)
+    @NotNull private String jahr;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
@@ -67,5 +78,42 @@ public class Projekt implements Serializable {
             nullable = false
     )
     private Stadtbezirk stadtbezirk;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "uas_ua",
+            referencedColumnName = "ua",
+            nullable = false
+    )
+    private Unterabschnitt unterabschnitt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "kur_kurzbez",
+            referencedColumnName = "kurzbez",
+            nullable = false
+    )
+    private Kurzbezeichnung kurzbezeichnung;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "sgt_siedlungsgebiet",
+            referencedColumnName = "siedlungsgebiet",
+            nullable = false
+    )
+    private Siedlungsgebiet siedlungsgebiet;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "bpg_bauprogramm",
+            referencedColumnName = "bauprogramm",
+            nullable = false
+    )
+    private Bauprogramm bauprogramm;
+
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "krisofp", columnDefinition = "projekte_krisofp")
+    private Krisofp krisofp;
 
 }

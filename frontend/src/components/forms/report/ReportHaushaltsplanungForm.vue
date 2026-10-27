@@ -89,7 +89,7 @@
             ReportHaushaltsplanungDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="fipo"
-          :label="t('model.fipo.modelName')"
+          :label="t('domain.report.haushaltsplanung.fipo')"
         />
       </v-col>
       <v-col
@@ -111,7 +111,7 @@
           v-model="modelValue.parameters!.sort"
           :items="sortOptions"
           item-value="value"
-          label="Sortierung"
+          :label="t('common.word.sort')"
           variant="outlined"
         />
       </v-col>

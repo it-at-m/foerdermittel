@@ -6,15 +6,26 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
 import de.muenchen.oss.foerdermittel.backend.TestUtils;
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.Bauprogramm;
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammRepository;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichRepository;
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.HauptabschnittRepository;
 import de.muenchen.oss.foerdermittel.backend.istkosten.dto.IstkostenCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.istkosten.dto.IstkostenResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.istkosten.dto.IstkostenUpdateDTO;
+import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
+import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungRepository;
+import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektRepository;
+import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
+import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietRepository;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittRepository;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -63,6 +74,21 @@ class IstkostenIntegrationTest {
     @Autowired
     private StadtbezirkRepository stadtbezirkRepository;
 
+    @Autowired
+    private UnterabschnittRepository unterabschnittRepository;
+
+    @Autowired
+    private HauptabschnittRepository hauptabschnittRepository;
+
+    @Autowired
+    private KurzbezeichnungRepository kurzbezeichnungRepository;
+
+    @Autowired
+    private SiedlungsgebietRepository siedlungsgebietRepository;
+
+    @Autowired
+    private BauprogrammRepository bauprogrammRepository;
+
     @Container
     @ServiceConnection
     @SuppressWarnings("unused")
@@ -79,34 +105,28 @@ class IstkostenIntegrationTest {
     }
 
     private void createExistingProject() {
-        final Foerderbereich foerderbereich = new Foerderbereich();
-
-        foerderbereich.setFb(BigDecimal.valueOf(99));
-        foerderbereich.setBezeichnung("Test");
-        foerderbereich.setFinanzausgleich(false);
-        foerderbereich.setNichtRelevant(false);
-        foerderbereich.setJahresstatistik(false);
-        foerderbereich.setKindergarten(false);
-
+        final Foerderbereich foerderbereich = new Foerderbereich(BigDecimal.valueOf(99), "Test", false, false, false, false);
         foerderbereichRepository.save(foerderbereich);
 
-        final Stadtbezirk stadtbezirk = new Stadtbezirk();
-
-        stadtbezirk.setStadtbezirk(BigDecimal.valueOf(99));
-        stadtbezirk.setBezeichnung("Test Stadtbezirk 1");
-
+        final Stadtbezirk stadtbezirk = new Stadtbezirk(BigDecimal.valueOf(99), "Test Stadtbezirk 1");
         stadtbezirkRepository.save(stadtbezirk);
 
-        final Projekt projekt = new Projekt();
+        final Hauptabschnitt exampleHa2 = new Hauptabschnitt("ha", "bz2");
+        hauptabschnittRepository.save(exampleHa2);
+        final Unterabschnitt unterabschnitt = new Unterabschnitt("L", "Test", exampleHa2);
+        unterabschnittRepository.save(unterabschnitt);
 
-        projekt.setProjnr(EXISTING_PROJNR);
-        projekt.setPname("Testprojekt");
-        projekt.setPstrasse("Teststraße");
-        projekt.setFoerderbereich(foerderbereich);
-        projekt.setStadtbezirk(stadtbezirk);
-        projekt.setKurKurzbez("KB1");
+        final Kurzbezeichnung kurzbezeichnung = new Kurzbezeichnung("KB1", "Test");
+        kurzbezeichnungRepository.save(kurzbezeichnung);
 
-        projektRepository.save(projekt);
+        final Siedlungsgebiet siedlungsgebiet = new Siedlungsgebiet(new BigDecimal(1), "Test");
+        siedlungsgebietRepository.save(siedlungsgebiet);
+
+        final Bauprogramm bauprogramm = new Bauprogramm(new BigDecimal(1), "Test");
+        bauprogrammRepository.save(bauprogramm);
+
+        projektRepository.save(new Projekt(EXISTING_PROJNR, "Testprojekt", "Teststraße", "2025",
+                foerderbereich, stadtbezirk, unterabschnitt, kurzbezeichnung, siedlungsgebiet, bauprogramm, Krisofp.K));
     }
 
     private IstkostenCreateDTO createIstkostenRequest() {
