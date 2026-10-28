@@ -294,7 +294,7 @@ const navigationItems: NavigationItem[] = [
         title: t("domain.report.ausstGenehmigungVorzBeginn"),
       },
       {
-        title: t("domain.report.bewilligungAuszahlungProjekt"),
+        title: t("domain.report.bewilligungAuszahlungProjekt.modelName"),
         props: {
           to: "/report/bewilligungauszahlungprojekt",
         },

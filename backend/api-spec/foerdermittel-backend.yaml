@@ -4123,6 +4123,7 @@ components:
       properties:
         projnr:
           minLength: 1
+          pattern: \S
           type: string
         erfolgt:
           type: boolean
