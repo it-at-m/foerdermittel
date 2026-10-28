@@ -1952,6 +1952,41 @@ paths:
                 $ref: "#/components/schemas/ReportStichworteFormContext"
       security:
       - bearerAuth: []
+  /report/staedtebaufoerderungen/form-context:
+    get:
+      tags:
+      - report-staedtebaufoerderung-controller
+      operationId: getReportStaedtebaufoerderungFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportStaedtebaufoerderungFormContext"
+      security:
+      - bearerAuth: []
+  /report/staedtebaufoerderungen/:
+    get:
+      tags:
+      - report-staedtebaufoerderung-controller
+      operationId: getReportStaedtebaufoerderung
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportStaedtebaufoerderungDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
   /report/projektuebersichtms:
     get:
       tags:
@@ -3627,6 +3662,48 @@ components:
       description: |-
         DTO for [de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich] to be used in
         other FormContexts other than its own.
+    ReportStaedtebaufoerderungFormContext:
+      required:
+      - traeger
+      type: object
+      properties:
+        traeger:
+          type: array
+          items:
+            $ref: "#/components/schemas/TraegerFormContextDTO"
+    TraegerFormContextDTO:
+      required:
+      - bezeichnung
+      - kurzform
+      type: object
+      properties:
+        kurzform:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+      description: |-
+        DTO for [de.muenchen.oss.foerdermittel.backend.publikation.Publikation] to be used in
+        other FormContexts other than its own.
+    ReportStaedtebaufoerderungDTO:
+      type: object
+      properties:
+        jahrVon:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        jahrBis:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        pname:
+          maxLength: 40
+          minLength: 0
+          type: string
+        traeger:
+          pattern: "^[0-9]?$"
+          type: string
+        notizen:
+          type: string
     ReportFormat:
       type: string
       enum:
@@ -3645,8 +3722,10 @@ components:
         sbl:
           type: string
         bez:
+          pattern: ^\d*$
           type: string
         fb:
+          pattern: ^\d*$
           type: string
         ua:
           type: string
@@ -3668,8 +3747,10 @@ components:
           - F
           - S
         sgt:
+          pattern: ^\d*$
           type: string
         bpg:
+          pattern: ^\d*$
           type: string
         type:
           $ref: "#/components/schemas/ReportFormat"
@@ -3923,10 +4004,10 @@ components:
       type: object
       properties:
         sbl:
-          pattern: "^[A-Z0-9]+$"
+          pattern: "^[A-Z0-9]*$"
           type: string
         bez:
-          pattern: "([0-9]|[1-9][0-9])"
+          pattern: "^([0-9]|[1-9][0-9])?$"
           type: string
         fag:
           type: string
@@ -4002,14 +4083,12 @@ components:
             $ref: "#/components/schemas/PublikationFormContextDTO"
     ReportAuswertungProjekteDTO:
       required:
-      - jahr
       - sort
       - type
       type: object
       properties:
         jahr:
-          minLength: 1
-          pattern: "\\d{4}"
+          pattern: "(\\d{4})?"
           type: string
         bez:
           type: string

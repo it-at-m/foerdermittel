@@ -2,6 +2,7 @@ package de.muenchen.oss.foerdermittel.backend.traeger.dto;
 
 import de.muenchen.oss.foerdermittel.backend.common.NumberMapper;
 import de.muenchen.oss.foerdermittel.backend.traeger.Traeger;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -17,5 +18,9 @@ public interface TraegerMapper {
 
     @Mapping(target = "kurzform", ignore = true)
     Traeger toEntity(TraegerUpdateDTO traegerUpdateDTO);
+
+    TraegerFormContextDTO toFormContext(Traeger traeger);
+
+    List<TraegerFormContextDTO> toFormContext(List<Traeger> traegerList);
 
 }

@@ -321,6 +321,13 @@
           "excel": "Excel"
         }
       },
+      "staedtebaufoerderung": {
+        "notizen": "Ausgabe Notizen",
+        "pname": "Projektname",
+        "jahrVon": "Jahr von",
+        "jahrBis": "Jahr bis",
+        "traeger": "Träger"
+      },
       "projektUebersichtMs": {
         "modelName": "Projektübersicht (Management Summary)",
         "sbl": "für Stadtbezirksliste",
