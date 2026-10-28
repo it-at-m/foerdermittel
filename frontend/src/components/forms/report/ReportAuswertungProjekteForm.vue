@@ -13,6 +13,10 @@
           :items="jahrOptions"
           item-title="title"
           item-value="value"
+          :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="jahr"
           :label="t('model.projekt.jahr')"
           density="comfortable"
         />

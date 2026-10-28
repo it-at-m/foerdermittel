@@ -29,3 +29,29 @@ export function toURL(requestOpts: RequestOpts) {
 export function openURL(url: URL) {
   window.open(url.toString(), "_blank", "noopener,noreferrer");
 }
+
+/** Encodes UTF-8 JSON as unpadded Base64url. */
+export function writeToUrlParam<T>(object: T): string {
+  const bytes = new TextEncoder().encode(JSON.stringify(object));
+  const binary = Array.from(bytes, (byte) => String.fromCharCode(byte)).join(
+    ""
+  );
+
+  return btoa(binary)
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+}
+
+/** Decodes Base64url-encoded UTF-8 JSON. */
+export function writeUrlParamToObject<T>(urlParam: string): T {
+  if (!/^[A-Za-z0-9_-]+$/.test(urlParam)) {
+    throw new Error("Invalid URL parameter encoding");
+  }
+
+  const binary = atob(urlParam.replace(/-/g, "+").replace(/_/g, "/"));
+  const bytes = Uint8Array.from(binary, (character) => character.charCodeAt(0));
+  const json = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+
+  return JSON.parse(json) as T;
+}

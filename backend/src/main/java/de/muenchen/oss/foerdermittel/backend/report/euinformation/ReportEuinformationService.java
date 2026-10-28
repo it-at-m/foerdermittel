@@ -38,7 +38,7 @@ public class ReportEuinformationService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public ReportEuinformationFormContext getReportEuinformationen() {
+    public ReportEuinformationFormContext getReportEuinformationenFormContext() {
         log.info("Get ReportEuinformation form context");
         return new ReportEuinformationFormContext(
                 publikationService.getPublikationFormContextDTOs());

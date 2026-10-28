@@ -31,7 +31,7 @@ import { useI18n } from "vue-i18n";
 import BaseView from "@/components/common/BaseView.vue";
 import ReportCard from "@/components/common/ReportCard.vue";
 import ReportProjektuebersichtForm from "@/components/forms/report/ReportProjektuebersichtForm.vue";
-import { useReportProjektuebersichtApi } from "@/composables/api/useReportApi";
+import { useReportProjektuebersichtApi } from "@/composables/api/report/useReportProjektuebersichtApi";
 import { Role } from "@/types/Role";
 
 definePage({

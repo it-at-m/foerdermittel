@@ -247,6 +247,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("domain.report.projektUebersichtManagement"),
+        props: {
+          to: "/report/projektuebersichtms",
+        },
       },
       {
         title: t("domain.report.annahmeAnordnungSAP"),
@@ -316,6 +319,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.staedtebaufoerderung.modelName", 2),
+        props: {
+          to: "/report/staedtebaufoerderungen",
+        },
       },
       {
         title: t("model.euinformation.modelName", 2),
