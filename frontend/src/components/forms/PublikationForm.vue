@@ -1,3 +1,4 @@
+npm ci
 <template>
   <v-form
     ref="form"

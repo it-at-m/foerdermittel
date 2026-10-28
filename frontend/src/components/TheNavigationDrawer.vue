@@ -295,6 +295,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("domain.report.bewilligungAuszahlungProjekt"),
+        props: {
+          to: "/report/bewilligungauszahlungprojekt",
+        },
       },
       {
         title: t("domain.report.bewilligungAuzahlungVergleich"),
