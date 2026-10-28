@@ -3492,6 +3492,7 @@ components:
       - lfdnr1
       - lfdnr2
       - projnr
+      - uasUa
       type: object
       properties:
         projnr:
@@ -4144,10 +4145,10 @@ components:
       type: object
       properties:
         sbl:
-          pattern: "^[A-Z0-9]+$"
+          pattern: "^[A-Z0-9]*$"
           type: string
         bez:
-          pattern: "([0-9]|[1-9][0-9])"
+          pattern: "^([0-9]|[1-9][0-9])?$"
           type: string
         fag:
           type: string
@@ -4223,14 +4224,12 @@ components:
             $ref: "#/components/schemas/PublikationFormContextDTO"
     ReportAuswertungProjekteDTO:
       required:
-      - jahr
       - sort
       - type
       type: object
       properties:
         jahr:
-          minLength: 1
-          pattern: "\\d{4}"
+          pattern: "(\\d{4})?"
           type: string
         bez:
           type: string
