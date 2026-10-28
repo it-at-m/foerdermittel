@@ -19,7 +19,8 @@ export const {
     GetReportBewilligungAuszahlungProjektRequest,
     ReportBewilligungAuszahlungProjektFormContext
   >(ReportBewilligungAuszahlungProjektControllerApi, {
-    getOpts: (api, req) => api.getReportBewilligungAuszahlungProjektRequestOpts(req),
+    getOpts: (api, req) =>
+      api.getReportBewilligungAuszahlungProjektRequestOpts(req),
     context: (api) => api.getReportBewilligungAuszahlungProjektFormContext(),
   })
 );

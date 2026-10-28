@@ -64,7 +64,9 @@ import { InputDisplayMode } from "@/types/InputDisplayMode";
 
 const { t } = useI18n();
 
-const modelValue = defineModel<Partial<GetReportBewilligungAuszahlungProjektRequest>>({
+const modelValue = defineModel<
+  Partial<GetReportBewilligungAuszahlungProjektRequest>
+>({
   required: true,
 });
 
@@ -96,7 +98,9 @@ defineExpose({
   validate,
 });
 
-function getProjektTitle(item: ReportBewilligungAuszahlungProjektFormContextDTO) {
+function getProjektTitle(
+  item: ReportBewilligungAuszahlungProjektFormContextDTO
+) {
   return item ? `${item.projnr} (${item.pname})` : "";
 }
 </script>

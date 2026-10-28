@@ -46,14 +46,16 @@ definePage({
 
 const { t } = useI18n();
 
-const EMPTY_FORM_TEMPLATE: Partial<GetReportBewilligungAuszahlungProjektRequest> = {
-  parameters: {
-    projnr: "",
-    erfolgt: false,
-  },
-};
+const EMPTY_FORM_TEMPLATE: Partial<GetReportBewilligungAuszahlungProjektRequest> =
+  {
+    parameters: {
+      projnr: "",
+      erfolgt: false,
+    },
+  };
 
-const reportBewilligungAuszahlungProjektApi = useReportBewilligungAuszahlungProjektApi();
+const reportBewilligungAuszahlungProjektApi =
+  useReportBewilligungAuszahlungProjektApi();
 const reportBewilligungAuszahlungProjektFormContext = computed(
   () => reportBewilligungAuszahlungProjektApi.context.data.value
 );
@@ -62,5 +64,7 @@ type ReportBewilligungAuszahlungProjektFormRef = InstanceType<
   typeof ReportBewilligungAuszahlungProjektForm
 >;
 const reportBewilligungAuszahlungProjektFormRef =
-  useTemplateRef<ReportBewilligungAuszahlungProjektFormRef>("reportBewilligungAuszahlungProjektForm");
+  useTemplateRef<ReportBewilligungAuszahlungProjektFormRef>(
+    "reportBewilligungAuszahlungProjektForm"
+  );
 </script>
