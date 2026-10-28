@@ -1,10 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
-import de.muenchen.oss.foerdermittel.backend.bauprogramm.Bauprogramm;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
-import de.muenchen.oss.foerdermittel.backend.krankenhaus.Krankenhaus;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
-import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
 import jakarta.persistence.Column;

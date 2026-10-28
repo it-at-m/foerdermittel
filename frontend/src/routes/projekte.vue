@@ -8,22 +8,10 @@
         :filter-keys="['projnr']"
         :api="projektApi"
         :domain-key="domainKey"
-        :handle-create="handleCreate"
-        :handle-update="handleUpdate"
-        :handle-delete="handleDelete"
         :form-ref="projektFormRef"
         should-load-form-context
       >
-        <template #form="{ item, updateValidity, inputDisplayMode }">
-          <projekt-form
-            v-if="projektFormContext"
-            ref="projektForm"
-            :model-value="item"
-            :display-mode="inputDisplayMode"
-            :projekt-form-context="projektFormContext"
-            @is-valid="updateValidity"
-          />
-        </template>
+        <template #form="{}"> </template>
       </crud-card>
     </template>
   </base-view>
@@ -33,7 +21,7 @@
 import type { ProjektResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { computed, useTemplateRef } from "vue";
+import { useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -89,14 +77,6 @@ const EMPTY_ITEM_TEMPLATE: Partial<ProjektResponseDTO> = {
 
 const projektApi = useProjektApi();
 
-const projektFormContext = computed(() => projektApi.context.data.value);
-
 type ProjektFormType = InstanceType<typeof ProjektForm>;
 const projektFormRef = useTemplateRef<ProjektFormType>("projektForm");
-
-const handleDelete = async (id: string) => {
-  await projektApi.delete.call({
-    id,
-  });
-};
 </script>

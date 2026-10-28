@@ -91,8 +91,17 @@ class ProjektRepositoryIntegrationTest {
         final Bauprogramm bauprogramm = new Bauprogramm(new BigDecimal(1), "Test");
         bauprogrammRepository.save(bauprogramm);
 
-        projektRepository.save(new Projekt("P-123", "Projektname", "Projektstraße 1", "2024", foerderbereich, stadtbezirk, unterabschnitt, kurzbezeichnung,
-                siedlungsgebiet, bauprogramm, Krisofp.K));
+        projektRepository.save(new Projekt("p-123",
+                "2023",
+                new Foerderbereich(),
+                "1",
+                "1",
+                "Test",
+                "Straße 1",
+                stadtbezirk,
+                unterabschnitt,
+                kurzbezeichnung,
+                Krisofp.K));
 
         // When
         final List<BasicProjektDAO> result = projektRepository.findAllAsBasic();

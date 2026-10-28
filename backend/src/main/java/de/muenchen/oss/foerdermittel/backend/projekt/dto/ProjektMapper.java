@@ -16,14 +16,6 @@ public interface ProjektMapper {
     @Mapping(source = "stadtbezirk.stadtbezirk", target = "stadtbezirk")
     ProjektResponseDTO toDTO(Projekt projekt);
 
-    @Mapping(target = "fobFb", ignore = true)
-    @Mapping(target = "uasUa", ignore = true)
-    @Mapping(target = "kurKurzbez", ignore = true)
-    Projekt toEntity(ProjektCreateDTO projektCreateDTO);
-
-    @Mapping(target = "projnr", ignore = true)
-    Projekt toEntity(ProjektUpdateDTO projektUpdateDTO);
-
     @Mapping(source = "fobFb.fb", target = "fobFb")
     @Mapping(source = "stadtbezirk.stadtbezirk", target = "stadtbezirk")
     ProjektFormContextDTO toFormContext(Projekt projekt);

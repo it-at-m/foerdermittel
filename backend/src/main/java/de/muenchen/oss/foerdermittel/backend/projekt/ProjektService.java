@@ -34,11 +34,9 @@ public class ProjektService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public Page<Projekt> getProjekte(
-            ProjektFilter filter,
             Pageable pageable) {
 
         return projektRepository.findAll(
-                ProjektSpecifications.filter(filter),
                 pageable);
     }
 
@@ -65,27 +63,5 @@ public class ProjektService {
     @Transactional(readOnly = true)
     public List<ReportAuswertungProjektFormContextDTO> getReportAuswertungProjektFormContextDTOs() {
         return projektMapper.toReportAuswertungProjektFormContext(projektRepository.findAllAuswertungProjekte());
-    }
-
-
-    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    public Projekt createProjekt(final Projekt projekt) {
-        log.debug("Create Projekt {}", projekt);
-        return projektRepository.insert(projekt);
-    }
-
-    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    public Projekt updateProjekt(final Projekt projekt, final String ha) {
-        final Projekt foundProjekt = ServiceUtils.getEntityOrThrowNotFoundException(ha, projektRepository, Projekt.class);
-        foundProjekt.setPname(projekt.getPname());
-        log.debug("Update Projekt {}", foundProjekt);
-        return projektRepository.update(foundProjekt);
-    }
-
-    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    public void deleteProjekt(final String ha) {
-        log.debug("Delete Projekt with ID {}", ha);
-        ServiceUtils.getEntityOrThrowNotFoundException(ha, projektRepository, Projekt.class);
-        projektRepository.deleteById(ha);
     }
 }

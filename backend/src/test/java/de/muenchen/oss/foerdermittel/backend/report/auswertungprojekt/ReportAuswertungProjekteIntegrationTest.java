@@ -119,14 +119,14 @@ public class ReportAuswertungProjekteIntegrationTest {
                     new Projekt(
                             "P-123",
                             "Projektname",
-                            "Projektstraße 1",
-                            EXISTING_JAHR,
                             foerderbereich,
-                            stadtbezirk,
+                            "1",
+                            "1",
+                            "Testprojekt",
+                            "Straße 1",
+                            new Stadtbezirk(),
                             unterabschnitt,
                             kurzbezeichnung,
-                            siedlungsgebiet,
-                            bauprogramm,
                             Krisofp.K));
         }
 
