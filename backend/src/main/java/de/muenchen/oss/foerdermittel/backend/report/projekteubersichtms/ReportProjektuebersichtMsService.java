@@ -74,7 +74,7 @@ public class ReportProjektuebersichtMsService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public ReportProjektuebersichtMsFormContext getReportProjektuebersichtMs() {
+    public ReportProjektuebersichtMsFormContext getReportProjektuebersichtMsFormContext() {
         log.info("Get ReportProjekteuebersichtMs form context");
         return new ReportProjektuebersichtMsFormContext(
                 listennameStadtbezirkslisteService.getlistennameStadtbezirkslisteFormContextDTOs(),

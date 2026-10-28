@@ -35,7 +35,7 @@ public class ReportProjektuebersichtMsController {
 
     private final ReportProjektuebersichtMsService reportProjektuebersichtMsReportService;
 
-    @GetMapping("")
+    @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
     @Operation(
             responses = @ApiResponse(
@@ -67,6 +67,6 @@ public class ReportProjektuebersichtMsController {
     @GetMapping(value = "/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ReportProjektuebersichtMsFormContext getReportProjektuebersichtMsFormContext() {
-        return reportProjektuebersichtMsReportService.getReportProjektuebersichtMs();
+        return reportProjektuebersichtMsReportService.getReportProjektuebersichtMsFormContext();
     }
 }

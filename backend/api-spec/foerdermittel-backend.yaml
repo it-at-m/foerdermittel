@@ -1917,10 +1917,24 @@ paths:
                 $ref: "#/components/schemas/SiedlungsgebietFormContext"
       security:
       - bearerAuth: []
-  /report/stichworte:
+  /report/stichworte/form-context:
     get:
       tags:
-      - report-controller
+      - report-stichworte-controller
+      operationId: getReportStichworteFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportStichworteFormContext"
+      security:
+      - bearerAuth: []
+  /report/stichworte/:
+    get:
+      tags:
+      - report-stichworte-controller
       operationId: getReportStichworte
       parameters:
       - name: parameters
@@ -1936,20 +1950,6 @@ paths:
               schema:
                 type: string
                 format: binary
-      security:
-      - bearerAuth: []
-  /report/stichworte/form-context:
-    get:
-      tags:
-      - report-controller
-      operationId: getReportStichworteFormContext
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ReportStichworteFormContext"
       security:
       - bearerAuth: []
   /report/staedtebaufoerderungen/form-context:
@@ -1987,7 +1987,21 @@ paths:
                 format: binary
       security:
       - bearerAuth: []
-  /report/projektuebersichtms:
+  /report/projektuebersichtms/form-context:
+    get:
+      tags:
+      - report-projektuebersicht-ms-controller
+      operationId: getReportProjektuebersichtMsFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportProjektuebersichtMsFormContext"
+      security:
+      - bearerAuth: []
+  /report/projektuebersichtms/:
     get:
       tags:
       - report-projektuebersicht-ms-controller
@@ -2012,24 +2026,24 @@ paths:
                 format: binary
       security:
       - bearerAuth: []
-  /report/projektuebersichtms/form-context:
+  /report/projektuebersicht/form-context:
     get:
       tags:
-      - report-projektuebersicht-ms-controller
-      operationId: getReportProjektuebersichtMsFormContext
+      - report-projektuebersicht-controller
+      operationId: getReportProjektuebersichtFormContext
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ReportProjektuebersichtMsFormContext"
+                $ref: "#/components/schemas/ReportProjektuebersichtFormContext"
       security:
       - bearerAuth: []
-  /report/projektuebersicht:
+  /report/projektuebersicht/:
     get:
       tags:
-      - report-controller
+      - report-projektuebersicht-controller
       operationId: getReportProjektuebersicht
       parameters:
       - name: parameters
@@ -2047,24 +2061,24 @@ paths:
                 format: binary
       security:
       - bearerAuth: []
-  /report/projektuebersicht/form-context:
+  /report/haushaltsplanung/form-context:
     get:
       tags:
-      - report-controller
-      operationId: getReportProjektuebersichtFormContext
+      - report-haushaltsplanung-controller
+      operationId: getReportHaushaltsplanungFormContext
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ReportProjektuebersichtFormContext"
+                $ref: "#/components/schemas/ReportHaushaltsplanungFormContext"
       security:
       - bearerAuth: []
-  /report/haushaltsplanung:
+  /report/haushaltsplanung/:
     get:
       tags:
-      - report-controller
+      - report-haushaltsplanung-controller
       operationId: getReportHaushaltsplanung
       parameters:
       - name: parameters
@@ -2086,24 +2100,24 @@ paths:
                 format: binary
       security:
       - bearerAuth: []
-  /report/haushaltsplanung/form-context:
+  /report/fortsetzungsantrag/form-context:
     get:
       tags:
-      - report-controller
-      operationId: getReportHaushaltsplanungFormContext
+      - report-fortsetzungsantrag-controller
+      operationId: getReportFortsetzungsantragFormContext
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ReportHaushaltsplanungFormContext"
+                $ref: "#/components/schemas/ReportFortsetzungsantragFormContext"
       security:
       - bearerAuth: []
-  /report/fortsetzungsantrag:
+  /report/fortsetzungsantrag/:
     get:
       tags:
-      - fortsetzungsantrag-report-controller
+      - report-fortsetzungsantrag-controller
       operationId: getReportFortsetzungsantrag
       parameters:
       - name: parameters
@@ -2125,21 +2139,21 @@ paths:
                 format: binary
       security:
       - bearerAuth: []
-  /report/fortsetzungsantrag/form-context:
+  /report/euinformationen/form-context:
     get:
       tags:
-      - fortsetzungsantrag-report-controller
-      operationId: getReportFortsetzungsantragFormContext
+      - report-euinformation-controller
+      operationId: getReportEuinformationenFormContext
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ReportFortsetzungsantragFormContext"
+                $ref: "#/components/schemas/ReportEuinformationFormContext"
       security:
       - bearerAuth: []
-  /report/euinformationen:
+  /report/euinformationen/:
     get:
       tags:
       - report-euinformation-controller
@@ -2160,56 +2174,21 @@ paths:
                 format: binary
       security:
       - bearerAuth: []
-  /report/euinformationen/form-context:
+  /report/auswertungprojekte/form-context:
     get:
       tags:
-      - report-euinformation-controller
-      operationId: getReportEuinformationenFormContext
+      - report-auswertung-projekte-controller
+      operationId: getReportAuswertungProjektFormContext
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ReportEuinformationFormContext"
+                $ref: "#/components/schemas/ReportAuswertungProjektFormContext"
       security:
       - bearerAuth: []
-  /report/bewilligungAuszahlungProjekt:
-    get:
-      tags:
-      - report-bewilligung-auszahlung-projekt-controller
-      operationId: getReportBewilligungAuszahlungProjekt
-      parameters:
-      - name: parameters
-        in: query
-        required: true
-        schema:
-          $ref: "#/components/schemas/ReportBewilligungAuszahlungProjektDTO"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/pdf:
-              schema:
-                type: string
-                format: binary
-      security:
-      - bearerAuth: []
-  /report/bewilligungAuszahlungProjekt/form-context:
-    get:
-      tags:
-      - report-bewilligung-auszahlung-projekt-controller
-      operationId: getReportBewilligungAuszahlungProjektFormContext
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ReportBewilligungAuszahlungProjektFormContext"
-      security:
-      - bearerAuth: []
-  /report/auswertungprojekte:
+  /report/auswertungprojekte/:
     get:
       tags:
       - report-auswertung-projekte-controller
@@ -2232,20 +2211,6 @@ paths:
               schema:
                 type: string
                 format: binary
-      security:
-      - bearerAuth: []
-  /report/auswertungprojekte/form-context:
-    get:
-      tags:
-      - report-auswertung-projekte-controller
-      operationId: getReportAuswertungProjektFormContext
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ReportAuswertungProjektFormContext"
       security:
       - bearerAuth: []
   /referate/form-context:
@@ -3663,16 +3628,6 @@ components:
           type: array
           items:
             type: number
-    ReportStichworteDTO:
-      required:
-      - bereich
-      type: object
-      properties:
-        bereich:
-          maxLength: 30
-          minLength: 1
-          pattern: "^[A-Z0-9\\-]+$"
-          type: string
     ReportStichworteFormContext:
       required:
       - bereiche
@@ -3697,6 +3652,16 @@ components:
       description: |-
         DTO for [de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich] to be used in
         other FormContexts other than its own.
+    ReportStichworteDTO:
+      required:
+      - bereich
+      type: object
+      properties:
+        bereich:
+          maxLength: 30
+          minLength: 1
+          pattern: "^[A-Z0-9\\-]+$"
+          type: string
     ReportStaedtebaufoerderungFormContext:
       required:
       - traeger
@@ -3739,62 +3704,6 @@ components:
           type: string
         notizen:
           type: string
-    ReportFormat:
-      type: string
-      enum:
-      - PDF
-      - PDF_FLAT
-      - EXCEL
-    ReportProjektuebersichtMsDTO:
-      required:
-      - sort
-      - type
-      type: object
-      properties:
-        jahr:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
-        sbl:
-          type: string
-        bez:
-          pattern: ^\d*$
-          type: string
-        fb:
-          pattern: ^\d*$
-          type: string
-        ua:
-          type: string
-        kurz:
-          type: string
-        offen:
-          type: string
-        vn:
-          type: string
-        krisofp:
-          type: string
-          enum:
-          - X
-          - "Y"
-          - Z
-          - W
-          - V
-          - K
-          - F
-          - S
-        sgt:
-          pattern: ^\d*$
-          type: string
-        bpg:
-          pattern: ^\d*$
-          type: string
-        type:
-          $ref: "#/components/schemas/ReportFormat"
-        sort:
-          type: string
-          enum:
-          - PROJEKTNUMMER
-          - STRASSEPROJNR
-          - FBPROJNR
     BauprogrammFormContextDTO:
       required:
       - bauprogramm
@@ -3933,16 +3842,62 @@ components:
         bezeichnung:
           type: string
           description: ""
-    ReportProjektuebersichtDTO:
+    ReportFormat:
+      type: string
+      enum:
+      - PDF
+      - PDF_FLAT
+      - EXCEL
+    ReportProjektuebersichtMsDTO:
       required:
-      - projnr
+      - sort
+      - type
       type: object
       properties:
-        projnr:
-          minLength: 1
+        jahr:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
           type: string
-        notiz:
-          type: boolean
+        sbl:
+          type: string
+        bez:
+          pattern: ^\d*$
+          type: string
+        fb:
+          pattern: ^\d*$
+          type: string
+        ua:
+          type: string
+        kurz:
+          type: string
+        offen:
+          type: string
+        vn:
+          type: string
+        krisofp:
+          type: string
+          enum:
+          - X
+          - "Y"
+          - Z
+          - W
+          - V
+          - K
+          - F
+          - S
+        sgt:
+          pattern: ^\d*$
+          type: string
+        bpg:
+          pattern: ^\d*$
+          type: string
+        type:
+          $ref: "#/components/schemas/ReportFormat"
+        sort:
+          type: string
+          enum:
+          - PROJEKTNUMMER
+          - STRASSEPROJNR
+          - FBPROJNR
     ReportProjektuebersichtFormContext:
       required:
       - projekte
@@ -3965,38 +3920,16 @@ components:
           type: string
         pstrasse:
           type: string
-    ReportHaushaltsplanungDTO:
+    ReportProjektuebersichtDTO:
       required:
-      - haushaltsjahr
-      - sort
-      - type
+      - projnr
       type: object
       properties:
-        haushaltsjahr:
+        projnr:
           minLength: 1
-          pattern: "\\d{4}"
           type: string
-        fb:
-          type: string
-        fipo:
-          type: string
-        sbl:
-          type: string
-        bez:
-          type: string
-        hh:
-          type: string
-        sort:
-          type: string
-          enum:
-          - PROJEKTNUMMER
-          - STRASSE
-          - FIPO
-          - FB_PROJEKTNUMMER
-          - FB_STRASSE_PROJEKTNUMMER
-          - FB_FIPO
-        type:
-          $ref: "#/components/schemas/ReportFormat"
+        notiz:
+          type: boolean
     HhplanFormContextDTO:
       required:
       - fipo
@@ -4033,6 +3966,52 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/HhplanFormContextDTO"
+    ReportHaushaltsplanungDTO:
+      required:
+      - haushaltsjahr
+      - sort
+      - type
+      type: object
+      properties:
+        haushaltsjahr:
+          minLength: 1
+          pattern: "\\d{4}"
+          type: string
+        fb:
+          type: string
+        fipo:
+          type: string
+        sbl:
+          type: string
+        bez:
+          type: string
+        hh:
+          type: string
+        sort:
+          type: string
+          enum:
+          - PROJEKTNUMMER
+          - STRASSE
+          - FIPO
+          - FB_PROJEKTNUMMER
+          - FB_STRASSE_PROJEKTNUMMER
+          - FB_FIPO
+        type:
+          $ref: "#/components/schemas/ReportFormat"
+    ReportFortsetzungsantragFormContext:
+      required:
+      - bezs
+      - sbls
+      type: object
+      properties:
+        sbls:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
+        bezs:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
     ReportFortsetzungsantragDTO:
       required:
       - type
@@ -4050,48 +4029,6 @@ components:
           type: string
         type:
           $ref: "#/components/schemas/ReportFormat"
-    ReportFortsetzungsantragFormContext:
-      required:
-      - bezs
-      - sbls
-      type: object
-      properties:
-        sbls:
-          type: array
-          items:
-            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
-        bezs:
-          type: array
-          items:
-            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
-    ReportEuinformationDTO:
-      required:
-      - sort
-      type: object
-      properties:
-        jahrVon:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
-        jahrBis:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
-        inhalt:
-          maxLength: 40
-          minLength: 0
-          type: string
-        publikation:
-          pattern: "^[A-Z0-9]+$"
-          type: string
-        referatId:
-          pattern: "^(?:[1-9]|1[0-7]|20)$"
-          type: string
-        sort:
-          type: string
-          enum:
-          - PUBLIKATION
-          - JAHR
-          - REFERAT
-          - REFERAT_JAHR
     PublikationFormContextDTO:
       required:
       - bezeichnung
@@ -4116,96 +4053,34 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/PublikationFormContextDTO"
-    ReportBewilligungAuszahlungProjektDTO:
-      required:
-      - projnr
-      type: object
-      properties:
-        projnr:
-          minLength: 1
-          type: string
-        erfolgt:
-          type: boolean
-    ReportBewilligungAuszahlungProjektFormContext:
-      required:
-      - projekte
-      type: object
-      properties:
-        projekte:
-          type: array
-          items:
-            $ref: "#/components/schemas/ReportBewilligungAuszahlungProjektFormContextDTO"
-    ReportBewilligungAuszahlungProjektFormContextDTO:
-      required:
-      - pname
-      - projnr
-      - pstrasse
-      type: object
-      properties:
-        projnr:
-          type: string
-        pstrasse:
-          type: string
-        pname:
-          type: string
-    ReportAuswertungProjekteDTO:
+    ReportEuinformationDTO:
       required:
       - sort
-      - type
       type: object
       properties:
-        jahr:
-          pattern: "(\\d{4})?"
+        jahrVon:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
           type: string
-        bez:
+        jahrBis:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
           type: string
-        fb:
-          type: string
-        ua:
-          type: string
-        kurz:
-          type: string
-        pstrasse:
-          maxLength: 30
+        inhalt:
+          maxLength: 40
           minLength: 0
           type: string
-        pname:
-          maxLength: 30
-          minLength: 0
+        publikation:
+          pattern: "^[A-Z0-9]*$"
           type: string
-        sgt:
-          type: string
-        sbl:
-          type: string
-        bpg:
-          type: string
-        krisofp:
-          type: string
-          enum:
-          - X
-          - "Y"
-          - Z
-          - W
-          - V
-          - K
-          - F
-          - S
-        kauf:
-          type: string
-        offen:
-          type: string
-        relevant:
+        referatId:
+          pattern: "^(?:[1-9]|1[0-7]|20)$"
           type: string
         sort:
           type: string
           enum:
-          - STADTBEZIRK_STRASSE
-          - PROJEKTNUMMER
-          - STRASSE_PROJEKTNUMMER
-          - FOERDERBEREICH_STRASSE
-          - FOERDERBEREICH_PROJEKTNUMMER
-        type:
-          $ref: "#/components/schemas/ReportFormat"
+          - PUBLIKATION
+          - JAHR
+          - REFERAT
+          - REFERAT_JAHR
     ReportAuswertungProjektFormContext:
       required:
       - bezs
@@ -4286,6 +4161,64 @@ components:
           - K
           - F
           - S
+    ReportAuswertungProjekteDTO:
+      required:
+      - sort
+      - type
+      type: object
+      properties:
+        jahr:
+          pattern: "(\\d{4})?"
+          type: string
+        bez:
+          type: string
+        fb:
+          type: string
+        ua:
+          type: string
+        kurz:
+          type: string
+        pstrasse:
+          maxLength: 30
+          minLength: 0
+          type: string
+        pname:
+          maxLength: 30
+          minLength: 0
+          type: string
+        sgt:
+          type: string
+        sbl:
+          type: string
+        bpg:
+          type: string
+        krisofp:
+          type: string
+          enum:
+          - X
+          - "Y"
+          - Z
+          - W
+          - V
+          - K
+          - F
+          - S
+        kauf:
+          type: string
+        offen:
+          type: string
+        relevant:
+          type: string
+        sort:
+          type: string
+          enum:
+          - STADTBEZIRK_STRASSE
+          - PROJEKTNUMMER
+          - STRASSE_PROJEKTNUMMER
+          - FOERDERBEREICH_STRASSE
+          - FOERDERBEREICH_PROJEKTNUMMER
+        type:
+          $ref: "#/components/schemas/ReportFormat"
     PagedModelReferatResponseDTO:
       type: object
       properties:
