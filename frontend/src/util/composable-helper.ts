@@ -37,9 +37,10 @@ export interface ApiComposables<
   TUpdateRequest,
   TUpdateResponse,
   TDeleteRequest,
+  TGetAllRequest = Pageable,
 > {
   getAll: ApiComposable<
-    Pageable,
+    TGetAllRequest,
     {
       content?: TGetResponse[];
       page?: PageMetadata;

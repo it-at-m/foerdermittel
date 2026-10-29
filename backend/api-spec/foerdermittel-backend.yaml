@@ -2206,62 +2206,6 @@ paths:
                 $ref: "#/components/schemas/PublikationFormContext"
       security:
       - bearerAuth: []
-  /projekte:
-    get:
-      tags:
-      - projekt-controller
-      operationId: getProjekte
-      parameters:
-      - name: page
-        in: query
-        description: Zero-based page index (0..N)
-        required: false
-        schema:
-          minimum: 0
-          type: integer
-          default: 0
-      - name: size
-        in: query
-        description: The size of the page to be returned
-        required: false
-        schema:
-          minimum: 1
-          type: integer
-          default: 10
-      - name: sort
-        in: query
-        description: "Sorting criteria in the format: property,(asc|desc). Default\
-          \ sort order is ascending. Multiple sort criteria are supported."
-        required: false
-        schema:
-          type: array
-          items:
-            type: string
-          default:
-          - "projnr,ASC"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PagedModelProjektResponseDTO"
-      security:
-      - bearerAuth: []
-  /projekte/form-context:
-    get:
-      tags:
-      - projekt-controller
-      operationId: getProjektFormContext
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProjektFormContext"
-      security:
-      - bearerAuth: []
   /kurzbezeichnungen/form-context:
     get:
       tags:
@@ -3534,7 +3478,7 @@ components:
           $ref: "#/components/schemas/PageMetadata"
     ProjektFormContextDTO:
       required:
-      - fobFb
+      - foerderbereich
       - pname
       - projnr
       - pstrasse
@@ -3550,7 +3494,7 @@ components:
         pstrasse:
           type: string
           description: ""
-        fobFb:
+        foerderbereich:
           type: string
           description: ""
         stadtbezirk:
@@ -3701,10 +3645,8 @@ components:
         sbl:
           type: string
         bez:
-          pattern: ^\d*$
           type: string
         fb:
-          pattern: ^\d*$
           type: string
         ua:
           type: string
@@ -3726,10 +3668,8 @@ components:
           - F
           - S
         sgt:
-          pattern: ^\d*$
           type: string
         bpg:
-          pattern: ^\d*$
           type: string
         type:
           $ref: "#/components/schemas/ReportFormat"
@@ -3983,10 +3923,10 @@ components:
       type: object
       properties:
         sbl:
-          pattern: "^[A-Z0-9]*$"
+          pattern: "^[A-Z0-9]+$"
           type: string
         bez:
-          pattern: "^([0-9]|[1-9][0-9])?$"
+          pattern: "([0-9]|[1-9][0-9])"
           type: string
         fag:
           type: string
@@ -4062,12 +4002,14 @@ components:
             $ref: "#/components/schemas/PublikationFormContextDTO"
     ReportAuswertungProjekteDTO:
       required:
+      - jahr
       - sort
       - type
       type: object
       properties:
         jahr:
-          pattern: "(\\d{4})?"
+          minLength: 1
+          pattern: "\\d{4}"
           type: string
         bez:
           type: string
@@ -4231,70 +4173,6 @@ components:
       type: object
       properties:
         kurzformen:
-          type: array
-          items:
-            type: string
-    PagedModelProjektResponseDTO:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: "#/components/schemas/ProjektResponseDTO"
-        page:
-          $ref: "#/components/schemas/PageMetadata"
-    ProjektResponseDTO:
-      required:
-      - fobFb
-      - jahr
-      - krisofp
-      - kurKurzbez
-      - lfdnr1
-      - lfdnr2
-      - pname
-      - projnr
-      - pstrasse
-      - stadtbezirk
-      - uasUa
-      type: object
-      properties:
-        projnr:
-          type: string
-        pname:
-          type: string
-        pstrasse:
-          type: string
-        fobFb:
-          type: string
-        stadtbezirk:
-          type: string
-        kurKurzbez:
-          type: string
-        uasUa:
-          type: string
-        jahr:
-          type: string
-        lfdnr1:
-          type: string
-        lfdnr2:
-          type: string
-        krisofp:
-          type: string
-          enum:
-          - X
-          - "Y"
-          - Z
-          - W
-          - V
-          - K
-          - F
-          - S
-    ProjektFormContext:
-      required:
-      - projekte
-      type: object
-      properties:
-        projekte:
           type: array
           items:
             type: string

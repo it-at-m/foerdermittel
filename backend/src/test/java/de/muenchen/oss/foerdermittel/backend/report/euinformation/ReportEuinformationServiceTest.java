@@ -98,7 +98,7 @@ class ReportEuinformationServiceTest {
 
             // When
             final ReportEuinformationFormContext formContext = reportEuinformationService
-                    .getReportEuinformationen();
+                    .getReportEuinformationenFormContext();
 
             // Then
             verify(publikationService, times(1))

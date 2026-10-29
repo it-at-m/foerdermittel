@@ -7,6 +7,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
+import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerMapper;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +32,9 @@ class TraegerServiceTest {
 
     @Mock
     private TraegerRepository traegerRepository;
+
+    @Mock
+    private TraegerMapper traegerMapper;
 
     @InjectMocks
     private TraegerService unitUnderTest;
@@ -166,5 +171,55 @@ class TraegerServiceTest {
             assertThat(formContext.kurzformen()).isEqualTo(allTraeger);
         }
 
+    }
+
+    @Nested
+    class GetTraegerFormContextDTOs {
+
+        @Test
+        void givenEntitiesExist_thenReturnFormContextDTOs() {
+            // Given
+            final Traeger entity1 = new Traeger(BigDecimal.ONE, "Test 1");
+            final Traeger entity2 = new Traeger(BigDecimal.TWO, "Test 2");
+            final List<Traeger> entities = List.of(entity1, entity2);
+
+            final List<TraegerFormContextDTO> expectedDTOs = List.of(
+                    Mockito.mock(TraegerFormContextDTO.class),
+                    Mockito.mock(TraegerFormContextDTO.class));
+
+            when(traegerRepository.findAll()).thenReturn(entities);
+            when(traegerMapper.toFormContext(entities)).thenReturn(expectedDTOs);
+
+            // When
+            final List<TraegerFormContextDTO> result = unitUnderTest.getTraegerFormContextDTOs();
+
+            // Then
+            verify(traegerRepository).findAll();
+            verify(traegerMapper).toFormContext(entities);
+            assertThat(result).isEqualTo(expectedDTOs);
+        }
+    }
+
+    @Nested
+    class CheckExistsByTraeger {
+        @Test
+        void givenKurzformNotExists_thenThrowNotFoundException() {
+            // Given
+            final BigDecimal kurzform = BigDecimal.ONE;
+
+            when(traegerRepository.existsById(kurzform)).thenReturn(false);
+
+            // When / Then
+            final NotFoundException exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> unitUnderTest.checkExistsByTraeger(kurzform));
+
+            verify(traegerRepository).existsById(kurzform);
+            assertThat(exception.getMessage()).isEqualTo(
+                    String.format(
+                            "The %s with ID %s was not found.",
+                            Traeger.class.getSimpleName(),
+                            kurzform));
+        }
     }
 }

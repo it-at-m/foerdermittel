@@ -328,6 +328,13 @@
           "excel": "Excel"
         }
       },
+      "staedtebaufoerderung": {
+        "notizen": "Ausgabe Notizen",
+        "pname": "Projektname",
+        "jahrVon": "Jahr von",
+        "jahrBis": "Jahr bis",
+        "traeger": "Träger"
+      },
       "projektUebersichtMs": {
         "modelName": "Projektübersicht (Management Summary)",
         "sbl": "für Stadtbezirksliste",
@@ -368,6 +375,11 @@
       "changeText": "Auf die Darstellung '{0}' wechseln",
       "light": "Hell",
       "dark": "Dunkel"
+    },
+    "filterPanel": {
+      "title": "Suchen und Filtern",
+      "reset": "Filter zurücksetzen",
+      "showResults": "Ergebnisse anzeigen"
     }
   }
 }

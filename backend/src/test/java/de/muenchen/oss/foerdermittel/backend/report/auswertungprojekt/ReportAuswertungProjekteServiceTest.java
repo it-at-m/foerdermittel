@@ -24,6 +24,7 @@ import de.muenchen.oss.foerdermittel.backend.report.ReportType;
 import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto.ReportAuswertungProjekteDTO;
 import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto.ReportAuswertungProjekteMapper;
 import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto.ReportAuswertungProjekteSort;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.formcontext.ReportAuswertungProjektFormContext;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietService;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkService;
@@ -398,7 +399,7 @@ class ReportAuswertungProjekteServiceTest {
                     .thenReturn(siedlungsgebietContext);
 
             // When
-            final ReportAuswertungProjektFormContext formContext = reportAuswertungProjekteService.getReportAuswertungProjekt();
+            final ReportAuswertungProjektFormContext formContext = reportAuswertungProjekteService.getReportAuswertungProjektFormContext();
 
             // Then
             verify(projektService).getReportAuswertungProjektFormContextDTOs();
