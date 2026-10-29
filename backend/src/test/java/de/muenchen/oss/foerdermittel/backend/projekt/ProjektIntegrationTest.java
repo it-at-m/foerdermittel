@@ -1,5 +1,8 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
+import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_TEST_PROFILE;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
 import de.muenchen.oss.foerdermittel.backend.TestUtils;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.Bauprogramm;
@@ -17,6 +20,9 @@ import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittRepository;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -39,16 +45,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
-
-import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_TEST_PROFILE;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
-
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureRestTestClient
@@ -70,7 +66,6 @@ class ProjektIntegrationTest {
 
     @Autowired
     private ProjektRepository projektRepository;
-
 
     @Autowired
     private FoerderbereichRepository foerderbereichRepository;
@@ -106,10 +101,10 @@ class ProjektIntegrationTest {
 
         final Hauptabschnitt exampleHa2 = new Hauptabschnitt("ha", "bz2");
         hauptabschnittRepository.save(exampleHa2);
-      final Unterabschnitt unterabschnitt = new Unterabschnitt("L", "Test", exampleHa2);
+        final Unterabschnitt unterabschnitt = new Unterabschnitt("L", "Test", exampleHa2);
         unterabschnittRepository.save(unterabschnitt);
 
-      final Kurzbezeichnung kurzbezeichnung = new Kurzbezeichnung("KB1", "Test");
+        final Kurzbezeichnung kurzbezeichnung = new Kurzbezeichnung("KB1", "Test");
         kurzbezeichnungRepository.save(kurzbezeichnung);
 
         final Siedlungsgebiet siedlungsgebiet = new Siedlungsgebiet(new BigDecimal(1), "Test");
@@ -176,7 +171,6 @@ class ProjektIntegrationTest {
 
     }
 
-
     @Nested
     class GetProjektFormContext {
 
@@ -201,7 +195,6 @@ class ProjektIntegrationTest {
             // Then
             assertThat(result).isNotNull();
             assertThat(result.projekte()).isEmpty();
-
 
         }
 
