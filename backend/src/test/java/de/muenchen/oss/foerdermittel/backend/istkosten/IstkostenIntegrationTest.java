@@ -127,7 +127,7 @@ class IstkostenIntegrationTest {
 
         projektRepository.save(new Projekt(EXISTING_PROJNR,
                 "2023",
-                new Foerderbereich(),
+                foerderbereich,
                 "1",
                 "1",
                 "Test",

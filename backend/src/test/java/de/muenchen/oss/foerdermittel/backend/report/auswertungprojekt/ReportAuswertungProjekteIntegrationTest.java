@@ -121,14 +121,14 @@ public class ReportAuswertungProjekteIntegrationTest {
 
             projektRepository.save(
                     new Projekt(
-                            "P-123",
+                            "1234567",
                             "Projektname",
                             foerderbereich,
                             "1",
                             "1",
                             "Testprojekt",
                             "Straße 1",
-                            new Stadtbezirk(),
+                            stadtbezirk,
                             unterabschnitt,
                             kurzbezeichnung,
                             Krisofp.K));
