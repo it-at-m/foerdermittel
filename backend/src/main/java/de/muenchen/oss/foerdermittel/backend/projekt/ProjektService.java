@@ -34,7 +34,7 @@ public class ProjektService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public Page<Projekt> getProjekte(
-            Pageable pageable) {
+            final Pageable pageable) {
 
         return projektRepository.findAll(
                 pageable);
