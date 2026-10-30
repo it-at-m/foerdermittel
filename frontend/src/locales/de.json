@@ -248,7 +248,10 @@
       "ausstBewilligungProjekt": "Ausst. @:model.bewilligung.modelName nach @:model.projekt.modelName",
       "ausstBewilligungFoerderbereich": "Ausst. @:model.bewilligung.modelName nach @:model.foerderbereich.modelName",
       "ausstGenehmigungVorzBeginn": "Ausst. Genehmigung vorz. Beginn",
-      "bewilligungAuszahlungProjekt": "@:model.bewilligung.modelName und @:domain.auszahlung eines @:model.projekt.modelName{'s'}",
+      "bewilligungAuszahlungProjekt": {
+        "modelName": "@:model.bewilligung.modelName und @:domain.auszahlung eines @:model.projekt.modelName{'s'}",
+        "erfolgt": "Nur erfolgte Bewilligungen und erhaltene Auszahlungen"
+      },
       "bewilligungAuzahlungVergleich": "@:model.bewilligung.modelName und @:domain.auszahlung (Vergleich)",
       "auswertungProjekt": {
         "modelName": "Projekt",
