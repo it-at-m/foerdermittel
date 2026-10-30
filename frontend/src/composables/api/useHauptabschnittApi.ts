@@ -10,10 +10,7 @@ import type {
 import type { ApiComposables } from "@/util/composable-helper";
 
 import { HauptabschnittControllerApi } from "@/api/generated/foerdermittel-backend";
-import {
-  createAPIComposables,
-  requireComposables,
-} from "@/util/composable-helper";
+import { createAPIComposables } from "@/util/composable-helper";
 
 export const {
   useCreate: useCreateHauptabschnitt,
@@ -21,25 +18,23 @@ export const {
   useGetAll: useGetHauptabschnitte,
   useDelete: useDeleteHauptabschnitt,
   useContext: useGetHauptabschnittFormContext,
-} = requireComposables(
-  createAPIComposables<
-    HauptabschnittControllerApi,
-    CreateHauptabschnittRequest,
-    UpdateHauptabschnittRequest,
-    never,
-    DeleteHauptabschnittRequest,
-    GetHauptabschnitteRequest,
-    HauptabschnittResponseDTO,
-    PagedModelHauptabschnittResponseDTO,
-    HauptabschnittFormContext
-  >(HauptabschnittControllerApi, {
-    create: (api, req) => api.createHauptabschnitt(req),
-    update: (api, req) => api.updateHauptabschnitt(req),
-    getAll: (api, req) => api.getHauptabschnitte(req),
-    delete: (api, req) => api.deleteHauptabschnitt(req),
-    context: (api) => api.getHauptabschnittFormContext(),
-  })
-);
+} = createAPIComposables<
+  HauptabschnittControllerApi,
+  CreateHauptabschnittRequest,
+  UpdateHauptabschnittRequest,
+  never,
+  DeleteHauptabschnittRequest,
+  GetHauptabschnitteRequest,
+  HauptabschnittResponseDTO,
+  PagedModelHauptabschnittResponseDTO,
+  HauptabschnittFormContext
+>(HauptabschnittControllerApi, {
+  create: (api, req) => api.createHauptabschnitt(req),
+  update: (api, req) => api.updateHauptabschnitt(req),
+  getAll: (api, req) => api.getHauptabschnitte(req),
+  delete: (api, req) => api.deleteHauptabschnitt(req),
+  context: (api) => api.getHauptabschnittFormContext(),
+});
 
 export function useHauptabschnittApi(): ApiComposables<
   HauptabschnittResponseDTO,
@@ -51,10 +46,10 @@ export function useHauptabschnittApi(): ApiComposables<
   DeleteHauptabschnittRequest
 > {
   return {
-    getAll: useGetHauptabschnitte(),
-    context: useGetHauptabschnittFormContext(),
-    create: useCreateHauptabschnitt(),
-    update: useUpdateHauptabschnitt(),
-    delete: useDeleteHauptabschnitt(),
+    getAll: useGetHauptabschnitte?.(),
+    context: useGetHauptabschnittFormContext?.(),
+    create: useCreateHauptabschnitt?.(),
+    update: useUpdateHauptabschnitt?.(),
+    delete: useDeleteHauptabschnitt?.(),
   };
 }

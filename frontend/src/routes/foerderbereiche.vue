@@ -133,7 +133,7 @@ const EMPTY_ITEM_TEMPLATE: Partial<FoerderbereichResponseDTO> = {
 const foerderbereichApi = useFoerderbereichApi();
 
 const foerderbereichFormContext = computed(
-  () => foerderbereichApi.context.data.value
+  () => foerderbereichApi.context?.data.value
 );
 
 type FoerderbereichFormType = InstanceType<typeof FoerderbereichForm>;
@@ -145,7 +145,7 @@ const handleCreate = async (
 ) => {
   // TODO: some type checking improvements
   const model = foerderbereichCreateDTO as FoerderbereichResponseDTO;
-  await foerderbereichApi.create.call({
+  await foerderbereichApi.create?.call({
     foerderbereichCreateDTO: model,
   });
 };
@@ -155,14 +155,14 @@ const handleUpdate = async (
 ) => {
   // TODO: some type checking improvements
   const model = foerderbereichUpdateDTO as FoerderbereichResponseDTO;
-  await foerderbereichApi.update.call({
+  await foerderbereichApi.update?.call({
     id: model.id,
     foerderbereichUpdateDTO: model,
   });
 };
 
 const handleDelete = async (id: string) => {
-  await foerderbereichApi.delete.call({
+  await foerderbereichApi.delete?.call({
     id,
   });
 };

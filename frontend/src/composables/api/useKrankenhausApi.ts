@@ -10,10 +10,7 @@ import type {
 import type { ApiComposables } from "@/util/composable-helper";
 
 import { KrankenhausControllerApi } from "@/api/generated/foerdermittel-backend";
-import {
-  createAPIComposables,
-  requireComposables,
-} from "@/util/composable-helper";
+import { createAPIComposables } from "@/util/composable-helper";
 
 export const {
   useCreate: useCreateKrankenhaus,
@@ -21,25 +18,23 @@ export const {
   useGetAll: useGetKrankenhaeuser,
   useDelete: useDeleteKrankenhaus,
   useContext: useGetKrankenhausFormContext,
-} = requireComposables(
-  createAPIComposables<
-    KrankenhausControllerApi,
-    CreateKrankenhausRequest,
-    UpdateKrankenhausRequest,
-    never,
-    DeleteKrankenhausRequest,
-    GetKrankenhaeuserRequest,
-    KrankenhausResponseDTO,
-    PagedModelKrankenhausResponseDTO,
-    KrankenhausFormContext
-  >(KrankenhausControllerApi, {
-    create: (api, req) => api.createKrankenhaus(req),
-    update: (api, req) => api.updateKrankenhaus(req),
-    getAll: (api, req) => api.getKrankenhaeuser(req),
-    delete: (api, req) => api.deleteKrankenhaus(req),
-    context: (api) => api.getKrankenhausFormContext(),
-  })
-);
+} = createAPIComposables<
+  KrankenhausControllerApi,
+  CreateKrankenhausRequest,
+  UpdateKrankenhausRequest,
+  never,
+  DeleteKrankenhausRequest,
+  GetKrankenhaeuserRequest,
+  KrankenhausResponseDTO,
+  PagedModelKrankenhausResponseDTO,
+  KrankenhausFormContext
+>(KrankenhausControllerApi, {
+  create: (api, req) => api.createKrankenhaus(req),
+  update: (api, req) => api.updateKrankenhaus(req),
+  getAll: (api, req) => api.getKrankenhaeuser(req),
+  delete: (api, req) => api.deleteKrankenhaus(req),
+  context: (api) => api.getKrankenhausFormContext(),
+});
 
 export function useKrankenhausApi(): ApiComposables<
   KrankenhausResponseDTO,
@@ -51,10 +46,10 @@ export function useKrankenhausApi(): ApiComposables<
   DeleteKrankenhausRequest
 > {
   return {
-    getAll: useGetKrankenhaeuser(),
-    context: useGetKrankenhausFormContext(),
-    create: useCreateKrankenhaus(),
-    update: useUpdateKrankenhaus(),
-    delete: useDeleteKrankenhaus(),
+    getAll: useGetKrankenhaeuser?.(),
+    context: useGetKrankenhausFormContext?.(),
+    create: useCreateKrankenhaus?.(),
+    update: useUpdateKrankenhaus?.(),
+    delete: useDeleteKrankenhaus?.(),
   };
 }
