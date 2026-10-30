@@ -4,6 +4,7 @@ import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import jakarta.validation.constraints.NotNull;
 
 public record ProjektResponseDTO(
+        @NotNull String id,
         @NotNull String projnr,
         @NotNull String pname,
         @NotNull String pstrasse,

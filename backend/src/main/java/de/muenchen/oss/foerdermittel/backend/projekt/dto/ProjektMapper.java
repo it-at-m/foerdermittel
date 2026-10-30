@@ -10,6 +10,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ProjektMapper {
 
+    @Mapping(source = "projnr", target = "id")
+    @Mapping(source = "projnr", target = "projnr")
     @Mapping(source = "fobFb.fb", target = "fobFb")
     @Mapping(source = "kurKurzbez.kurzbez", target = "kurKurzbez")
     @Mapping(source = "uasUa.ua", target = "uasUa")

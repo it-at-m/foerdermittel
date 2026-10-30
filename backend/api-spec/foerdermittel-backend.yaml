@@ -4391,6 +4391,7 @@ components:
     ProjektResponseDTO:
       required:
       - fobFb
+      - id
       - jahr
       - krisofp
       - kurKurzbez
@@ -4403,6 +4404,8 @@ components:
       - uasUa
       type: object
       properties:
+        id:
+          type: string
         projnr:
           type: string
         pname:

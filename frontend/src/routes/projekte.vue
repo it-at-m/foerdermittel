@@ -5,14 +5,13 @@
         :empty-item-template="EMPTY_ITEM_TEMPLATE"
         :loading="baseViewLoading"
         :table-headers="headers"
-        :filter-keys="['projnr']"
         :api="projektApi"
         :domain-key="domainKey"
-        :form-ref="projektFormRef"
-        should-load-form-context
-      >
-        <template #form="{}"> </template>
-      </crud-card>
+        :should-load-form-context="false"
+        :handle-create="() => {}"
+        :handle-update="() => {}"
+        :handle-delete="() => {}"
+      />
     </template>
   </base-view>
 </template>
@@ -21,12 +20,10 @@
 import type { ProjektResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
-import { useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
-import ProjektForm from "@/components/forms/ProjektForm.vue";
 import { useProjektApi } from "@/composables/api/useProjektApi";
 
 const domainKey = "model.projekt.modelName";
@@ -67,6 +64,7 @@ const headers: DataTableHeader<Partial<ProjektResponseDTO>>[] = [
 ];
 
 const EMPTY_ITEM_TEMPLATE: Partial<ProjektResponseDTO> = {
+  id: "",
   projnr: "",
   fobFb: undefined,
   kurKurzbez: undefined,
@@ -76,7 +74,4 @@ const EMPTY_ITEM_TEMPLATE: Partial<ProjektResponseDTO> = {
 };
 
 const projektApi = useProjektApi();
-
-type ProjektFormType = InstanceType<typeof ProjektForm>;
-const projektFormRef = useTemplateRef<ProjektFormType>("projektForm");
 </script>

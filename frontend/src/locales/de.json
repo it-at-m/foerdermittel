@@ -55,11 +55,9 @@
   "model": {
     "projekt": {
       "modelName": "Projekt | Projekte",
-      "fobFb" : "Förderbereich",
-      "jahr" : "Jahr",
+      "fobFb": "Förderbereich",
+      "jahr": "Jahr",
       "kurKurzbez": "Kurzbezeichnung",
-      "lfdnr1" : "Nr1",
-      "lfdnr2" : "Nr2",
       "projnr": "Projektnummer",
       "strasse": "Straße",
       "name": "Name",
