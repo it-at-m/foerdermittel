@@ -77,7 +77,7 @@ const EMPTY_ITEM_TEMPLATE: Partial<SiedlungsgebietResponseDTO> = {
 const siedlungsgebietApi = useSiedlungsgebietApi();
 
 const siedlungsgebietFormContext = computed(
-  () => siedlungsgebietApi.context.data.value
+  () => siedlungsgebietApi.context?.data.value
 );
 
 type SiedlungsgebietFormType = InstanceType<typeof SiedlungsgebietForm>;
@@ -90,7 +90,7 @@ const handleCreate = async (
 ) => {
   // TODO: some type checking improvements
   const model = siedlungsgebietCreateDTO as SiedlungsgebietResponseDTO;
-  await siedlungsgebietApi.create.call({
+  await siedlungsgebietApi.create?.call({
     siedlungsgebietCreateDTO: model,
   });
 };
@@ -100,14 +100,14 @@ const handleUpdate = async (
 ) => {
   // TODO: some type checking improvements
   const model = siedlungsgebietUpdateDTO as SiedlungsgebietResponseDTO;
-  await siedlungsgebietApi.update.call({
+  await siedlungsgebietApi.update?.call({
     id: model.id,
     siedlungsgebietUpdateDTO: model,
   });
 };
 
 const handleDelete = async (id: string) => {
-  await siedlungsgebietApi.delete.call({
+  await siedlungsgebietApi.delete?.call({
     id,
   });
 };

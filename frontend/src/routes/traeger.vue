@@ -76,7 +76,7 @@ const EMPTY_ITEM_TEMPLATE: Partial<TraegerResponseDTO> = {
 
 const traegerApi = useTraegerApi();
 
-const traegerFormContext = computed(() => traegerApi.context.data.value);
+const traegerFormContext = computed(() => traegerApi.context?.data.value);
 
 type TraegerFormType = InstanceType<typeof TraegerForm>;
 const traegerFormRef = useTemplateRef<TraegerFormType>("traegerForm");
@@ -84,7 +84,7 @@ const traegerFormRef = useTemplateRef<TraegerFormType>("traegerForm");
 const handleCreate = async (traegerCreateDTO: Partial<TraegerResponseDTO>) => {
   // TODO: some type checking improvements
   const model = traegerCreateDTO as TraegerResponseDTO;
-  await traegerApi.create.call({
+  await traegerApi.create?.call({
     traegerCreateDTO: model,
   });
 };
@@ -92,14 +92,14 @@ const handleCreate = async (traegerCreateDTO: Partial<TraegerResponseDTO>) => {
 const handleUpdate = async (traegerUpdateDTO: Partial<TraegerResponseDTO>) => {
   // TODO: some type checking improvements
   const model = traegerUpdateDTO as TraegerResponseDTO;
-  await traegerApi.update.call({
+  await traegerApi.update?.call({
     id: model.id,
     traegerUpdateDTO: model,
   });
 };
 
 const handleDelete = async (id: string) => {
-  await traegerApi.delete.call({
+  await traegerApi.delete?.call({
     id,
   });
 };

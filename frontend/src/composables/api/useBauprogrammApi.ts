@@ -10,10 +10,7 @@ import type {
 import type { ApiComposables } from "@/util/composable-helper";
 
 import { BauprogrammControllerApi } from "@/api/generated/foerdermittel-backend";
-import {
-  createAPIComposables,
-  requireComposables,
-} from "@/util/composable-helper";
+import { createAPIComposables } from "@/util/composable-helper";
 
 export const {
   useCreate: useCreateBauprogramm,
@@ -21,25 +18,23 @@ export const {
   useGetAll: useGetBauprogramme,
   useDelete: useDeleteBauprogramm,
   useContext: useGetBauprogrammFormContext,
-} = requireComposables(
-  createAPIComposables<
-    BauprogrammControllerApi,
-    CreateBauprogrammRequest,
-    UpdateBauprogrammRequest,
-    never,
-    DeleteBauprogrammRequest,
-    GetBauprogrammeRequest,
-    BauprogrammResponseDTO,
-    PagedModelBauprogrammResponseDTO,
-    BauprogrammFormContext
-  >(BauprogrammControllerApi, {
-    create: (api, req) => api.createBauprogramm(req),
-    update: (api, req) => api.updateBauprogramm(req),
-    getAll: (api, req) => api.getBauprogramme(req),
-    delete: (api, req) => api.deleteBauprogramm(req),
-    context: (api) => api.getBauprogrammFormContext(),
-  })
-);
+} = createAPIComposables<
+  BauprogrammControllerApi,
+  CreateBauprogrammRequest,
+  UpdateBauprogrammRequest,
+  never,
+  DeleteBauprogrammRequest,
+  GetBauprogrammeRequest,
+  BauprogrammResponseDTO,
+  PagedModelBauprogrammResponseDTO,
+  BauprogrammFormContext
+>(BauprogrammControllerApi, {
+  create: (api, req) => api.createBauprogramm(req),
+  update: (api, req) => api.updateBauprogramm(req),
+  getAll: (api, req) => api.getBauprogramme(req),
+  delete: (api, req) => api.deleteBauprogramm(req),
+  context: (api) => api.getBauprogrammFormContext(),
+});
 
 export function useBauprogrammApi(): ApiComposables<
   BauprogrammResponseDTO,
@@ -51,10 +46,10 @@ export function useBauprogrammApi(): ApiComposables<
   DeleteBauprogrammRequest
 > {
   return {
-    getAll: useGetBauprogramme(),
-    context: useGetBauprogrammFormContext(),
-    create: useCreateBauprogramm(),
-    update: useUpdateBauprogramm(),
-    delete: useDeleteBauprogramm(),
+    getAll: useGetBauprogramme?.(),
+    context: useGetBauprogrammFormContext?.(),
+    create: useCreateBauprogramm?.(),
+    update: useUpdateBauprogramm?.(),
+    delete: useDeleteBauprogramm?.(),
   };
 }

@@ -7,14 +7,18 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ProjektMapper {
 
-    @Mapping(source = "foerderbereich.fb", target = "foerderbereich")
+    @Mapping(source = "projnr", target = "id")
+    @Mapping(source = "projnr", target = "projnr")
+    @Mapping(source = "fobFb.fb", target = "fobFb")
+    @Mapping(source = "kurKurzbez.kurzbez", target = "kurKurzbez")
+    @Mapping(source = "uasUa.ua", target = "uasUa")
     @Mapping(source = "stadtbezirk.stadtbezirk", target = "stadtbezirk")
     ProjektResponseDTO toDTO(Projekt projekt);
 
-    @Mapping(source = "foerderbereich.fb", target = "foerderbereich")
+    @Mapping(source = "fobFb.fb", target = "fobFb")
     @Mapping(source = "stadtbezirk.stadtbezirk", target = "stadtbezirk")
     ProjektFormContextDTO toFormContext(Projekt projekt);
 

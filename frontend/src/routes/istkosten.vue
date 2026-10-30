@@ -131,7 +131,7 @@ const EMPTY_ITEM_TEMPLATE: Partial<IstkostenResponseDTO> = {
 
 const istkostenApi = useIstkostenApi();
 
-const istkostenFormContext = computed(() => istkostenApi.context.data.value);
+const istkostenFormContext = computed(() => istkostenApi.context?.data.value);
 
 const projekte = computed(() => istkostenFormContext.value?.projekte ?? []);
 
@@ -143,7 +143,7 @@ const handleCreate = async (
 ) => {
   const model = istkostenCreateDTO as IstkostenResponseDTO;
 
-  await istkostenApi.create.call({
+  await istkostenApi.create?.call({
     istkostenCreateDTO: model,
   });
 };
@@ -153,14 +153,14 @@ const handleUpdate = async (
 ) => {
   const model = istkostenUpdateDTO as IstkostenResponseDTO;
 
-  await istkostenApi.update.call({
+  await istkostenApi.update?.call({
     id: model.id,
     istkostenUpdateDTO: model,
   });
 };
 
 const handleDelete = async (id: string) => {
-  await istkostenApi.delete.call({
+  await istkostenApi.delete?.call({
     id,
   });
 };

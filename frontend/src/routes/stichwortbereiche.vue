@@ -76,7 +76,7 @@ const EMPTY_ITEM_TEMPLATE: Partial<StichwortbereichResponseDTO> = {
 const stichwortbereichApi = useStichwortbereichApi();
 
 const stichwortbereichFormContext = computed(
-  () => stichwortbereichApi.context.data.value
+  () => stichwortbereichApi.context?.data.value
 );
 
 type StichwortbereichFormType = InstanceType<typeof StichwortbereichForm>;
@@ -89,7 +89,7 @@ const handleCreate = async (
 ) => {
   // TODO: some type checking improvements
   const model = stichwortbereichCreateDTO as StichwortbereichResponseDTO;
-  await stichwortbereichApi.create.call({
+  await stichwortbereichApi.create?.call({
     stichwortbereichCreateDTO: model,
   });
 };
@@ -99,14 +99,14 @@ const handleUpdate = async (
 ) => {
   // TODO: some type checking improvements
   const model = stichwortbereichUpdateDTO as StichwortbereichResponseDTO;
-  await stichwortbereichApi.update.call({
+  await stichwortbereichApi.update?.call({
     id: model.id,
     stichwortbereichUpdateDTO: model,
   });
 };
 
 const handleDelete = async (id: string) => {
-  await stichwortbereichApi.delete.call({
+  await stichwortbereichApi.delete?.call({
     id,
   });
 };

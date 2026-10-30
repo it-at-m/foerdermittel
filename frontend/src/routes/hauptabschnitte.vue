@@ -77,7 +77,7 @@ const EMPTY_ITEM_TEMPLATE: Partial<HauptabschnittResponseDTO> = {
 const hauptabschnittApi = useHauptabschnittApi();
 
 const hauptabschnittFormContext = computed(
-  () => hauptabschnittApi.context.data.value
+  () => hauptabschnittApi.context?.data.value
 );
 
 type HauptabschnittFormType = InstanceType<typeof HauptabschnittForm>;
@@ -89,7 +89,7 @@ const handleCreate = async (
 ) => {
   // TODO: some type checking improvements
   const model = hauptabschnittCreateDTO as HauptabschnittResponseDTO;
-  await hauptabschnittApi.create.call({
+  await hauptabschnittApi.create?.call({
     hauptabschnittCreateDTO: model,
   });
 };
@@ -99,14 +99,14 @@ const handleUpdate = async (
 ) => {
   // TODO: some type checking improvements
   const model = hauptabschnittUpdateDTO as HauptabschnittResponseDTO;
-  await hauptabschnittApi.update.call({
+  await hauptabschnittApi.update?.call({
     id: model.id,
     hauptabschnittUpdateDTO: model,
   });
 };
 
 const handleDelete = async (id: string) => {
-  await hauptabschnittApi.delete.call({
+  await hauptabschnittApi.delete?.call({
     id,
   });
 };

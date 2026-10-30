@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: foerdermittel-backend
   description: Backend component for the application foerdermittel
-  version: 0.3.0-SNAPSHOT
+  version: 0.4.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -2276,6 +2276,62 @@ paths:
                 $ref: "#/components/schemas/PublikationFormContext"
       security:
       - bearerAuth: []
+  /projekte:
+    get:
+      tags:
+      - projekt-controller
+      operationId: getProjekte
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "projnr,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelProjektResponseDTO"
+      security:
+      - bearerAuth: []
+  /projekte/form-context:
+    get:
+      tags:
+      - projekt-controller
+      operationId: getProjektFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjektFormContext"
+      security:
+      - bearerAuth: []
   /kurzbezeichnungen/form-context:
     get:
       tags:
@@ -3548,7 +3604,7 @@ components:
           $ref: "#/components/schemas/PageMetadata"
     ProjektFormContextDTO:
       required:
-      - foerderbereich
+      - fobFb
       - pname
       - projnr
       - pstrasse
@@ -3564,7 +3620,7 @@ components:
         pstrasse:
           type: string
           description: ""
-        foerderbereich:
+        fobFb:
           type: string
           description: ""
         stadtbezirk:
@@ -4320,6 +4376,73 @@ components:
       type: object
       properties:
         kurzformen:
+          type: array
+          items:
+            type: string
+    PagedModelProjektResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProjektResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    ProjektResponseDTO:
+      required:
+      - fobFb
+      - id
+      - jahr
+      - krisofp
+      - kurKurzbez
+      - lfdnr1
+      - lfdnr2
+      - pname
+      - projnr
+      - pstrasse
+      - stadtbezirk
+      - uasUa
+      type: object
+      properties:
+        id:
+          type: string
+        projnr:
+          type: string
+        pname:
+          type: string
+        pstrasse:
+          type: string
+        fobFb:
+          type: string
+        stadtbezirk:
+          type: string
+        kurKurzbez:
+          type: string
+        uasUa:
+          type: string
+        jahr:
+          type: string
+        lfdnr1:
+          type: string
+        lfdnr2:
+          type: string
+        krisofp:
+          type: string
+          enum:
+          - X
+          - "Y"
+          - Z
+          - W
+          - V
+          - K
+          - F
+          - S
+    ProjektFormContext:
+      required:
+      - projekte
+      type: object
+      properties:
+        projekte:
           type: array
           items:
             type: string

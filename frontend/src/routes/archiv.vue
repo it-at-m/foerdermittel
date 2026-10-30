@@ -171,7 +171,7 @@ const EMPTY_ITEM_TEMPLATE: Partial<ArchivResponseDTO> = {
 
 const archivApi = useArchivApi();
 
-const archivFormContext = computed(() => archivApi.context.data.value);
+const archivFormContext = computed(() => archivApi.context?.data.value);
 
 const projekte = computed(() => archivFormContext.value?.projekte ?? []);
 
@@ -181,7 +181,7 @@ const archivFormRef = useTemplateRef<ArchivFormType>("archivForm");
 const handleCreate = async (archivCreateDTO: Partial<ArchivResponseDTO>) => {
   const model = archivCreateDTO as ArchivResponseDTO;
 
-  await archivApi.create.call({
+  await archivApi.create?.call({
     archivCreateDTO: model,
   });
 };
@@ -189,14 +189,14 @@ const handleCreate = async (archivCreateDTO: Partial<ArchivResponseDTO>) => {
 const handleUpdate = async (archivUpdateDTO: Partial<ArchivResponseDTO>) => {
   const model = archivUpdateDTO as ArchivResponseDTO;
 
-  await archivApi.update.call({
+  await archivApi.update?.call({
     id: model.id,
     archivUpdateDTO: model,
   });
 };
 
 const handleDelete = async (id: string) => {
-  await archivApi.delete.call({
+  await archivApi.delete?.call({
     id,
   });
 };

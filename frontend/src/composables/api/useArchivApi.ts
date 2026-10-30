@@ -10,10 +10,7 @@ import type {
 import type { ApiComposables } from "@/util/composable-helper";
 
 import { ArchivControllerApi } from "@/api/generated/foerdermittel-backend";
-import {
-  createAPIComposables,
-  requireComposables,
-} from "@/util/composable-helper";
+import { createAPIComposables } from "@/util/composable-helper";
 
 export const {
   useCreate: useCreateArchiv,
@@ -21,25 +18,23 @@ export const {
   useGetAll: useGetArchiv,
   useDelete: useDeleteArchiv,
   useContext: useGetArchivFormContext,
-} = requireComposables(
-  createAPIComposables<
-    ArchivControllerApi,
-    CreateArchivRequest,
-    UpdateArchivRequest,
-    never,
-    DeleteArchivRequest,
-    GetArchiveintraegeRequest,
-    ArchivResponseDTO,
-    PagedModelArchivResponseDTO,
-    ArchivFormContext
-  >(ArchivControllerApi, {
-    create: (api, req) => api.createArchiv(req),
-    update: (api, req) => api.updateArchiv(req),
-    getAll: (api, req) => api.getArchiveintraege(req),
-    delete: (api, req) => api.deleteArchiv(req),
-    context: (api) => api.getArchivFormContext(),
-  })
-);
+} = createAPIComposables<
+  ArchivControllerApi,
+  CreateArchivRequest,
+  UpdateArchivRequest,
+  never,
+  DeleteArchivRequest,
+  GetArchiveintraegeRequest,
+  ArchivResponseDTO,
+  PagedModelArchivResponseDTO,
+  ArchivFormContext
+>(ArchivControllerApi, {
+  create: (api, req) => api.createArchiv(req),
+  update: (api, req) => api.updateArchiv(req),
+  getAll: (api, req) => api.getArchiveintraege(req),
+  delete: (api, req) => api.deleteArchiv(req),
+  context: (api) => api.getArchivFormContext(),
+});
 
 export function useArchivApi(): ApiComposables<
   ArchivResponseDTO,
@@ -51,10 +46,10 @@ export function useArchivApi(): ApiComposables<
   DeleteArchivRequest
 > {
   return {
-    getAll: useGetArchiv(),
-    context: useGetArchivFormContext(),
-    create: useCreateArchiv(),
-    update: useUpdateArchiv(),
-    delete: useDeleteArchiv(),
+    getAll: useGetArchiv?.(),
+    context: useGetArchivFormContext?.(),
+    create: useCreateArchiv?.(),
+    update: useUpdateArchiv?.(),
+    delete: useDeleteArchiv?.(),
   };
 }
