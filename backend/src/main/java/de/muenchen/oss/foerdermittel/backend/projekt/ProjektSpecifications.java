@@ -14,8 +14,8 @@ public final class ProjektSpecifications {
         List<Specification<Projekt>> specifications = new ArrayList<>();
 
         addContains(specifications, "projnr", filter.projnr());
-        addEquals(specifications, "foerderbereich", filter.foerderbereich());
-        addContains(specifications, "kurKurzbez", filter.kurKurzbez());
+        addEquals(specifications, "fobfb", filter.fobfb());
+        addContains(specifications, "kurzbez", filter.kurzbez());
         addContains(specifications, "uasUa", filter.uasUa());
         addContains(specifications, "pname", filter.pname());
         addContains(specifications, "pstrasse", filter.pstrasse());
