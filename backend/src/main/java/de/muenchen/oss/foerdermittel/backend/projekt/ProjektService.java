@@ -1,15 +1,26 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammService;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichRepository;
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichService;
+import de.muenchen.oss.foerdermittel.backend.krankenhaus.KrankenhausService;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungRepository;
-import de.muenchen.oss.foerdermittel.backend.projekt.dto.*;
+import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungService;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektCreateDTO;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektMapper;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektUpdateDTO;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungProjektFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietService;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkService;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittRepository;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittService;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
-
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +40,16 @@ public class ProjektService {
     private final ProjektRepository projektRepository;
     private final FoerderbereichRepository foerderbereichRepository;
     private final KurzbezeichnungRepository kurzbezeichnungRepository;
+
+    private final FoerderbereichService foerderbereichService;
+    private final StadtbezirkService stadtbezirkService;
+    private final UnterabschnittService unterabschnittService;
+    private final KurzbezeichnungService kurzbezeichnungService;
+    private final BauprogrammService bauprogrammService;
+    private final SiedlungsgebietService siedlungsgebietService;
     private final UnterabschnittRepository unterabschnittRepository;
+    private final KrankenhausService krankenhausService;
+
     private final ProjektMapper projektMapper;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
@@ -54,7 +74,18 @@ public class ProjektService {
     @Transactional(readOnly = true)
     public ProjektFormContext getProjektFormContext() {
         log.info("Get Projekt form context");
-        return new ProjektFormContext(projektRepository.findAllProjekte());
+
+        return new ProjektFormContext(
+                projektMapper.toFormContext(projektRepository.findAll()),
+                foerderbereichService.getFoerderbereichFormContextDTOs(),
+                stadtbezirkService.getStadtbezirkFormContextDTOs(),
+                unterabschnittService.getUnterabschnittFormContextDTOs(),
+                kurzbezeichnungService.getKurzbezeichnungFormContextDTOs(),
+                bauprogrammService.getBauprogrammFormContextDTOs(),
+                siedlungsgebietService.getSiedlungsgebietFormContextDTOs(),
+                krankenhausService.getKrankenhausFormContextDTOs(),
+                List.of(Krisofp.values()),
+                List.of(Krhzweck.values()));
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
@@ -75,7 +106,6 @@ public class ProjektService {
 
         final Projekt projekt = projektMapper.toEntity(projektCreateDTO);
 
-        projekt.setProjnr(projektCreateDTO.projnr());
         projekt.setFoerderbereich(ServiceUtils.getEntityOrThrowNotFoundException(
                 BigDecimal.valueOf(projektCreateDTO.fobFb()), foerderbereichRepository, Foerderbereich.class));
         projekt.setKurzbezeichnung(ServiceUtils.getEntityOrThrowNotFoundException(
@@ -83,7 +113,6 @@ public class ProjektService {
         projekt.setUnterabschnitt(ServiceUtils.getEntityOrThrowNotFoundException(
                 projektCreateDTO.uasUa(), unterabschnittRepository, Unterabschnitt.class));
 
-        // Defaultwerte für NOT-NULL-Felder
         if (projekt.getKauf() == null) {
             projekt.setKauf(false);
         }
@@ -94,11 +123,13 @@ public class ProjektService {
         return projektRepository.insert(projekt);
     }
 
-
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    public Projekt updateProjekt(final Projekt projekt, final String ha) {
-        final Projekt foundProjekt = ServiceUtils.getEntityOrThrowNotFoundException(ha, projektRepository, Projekt.class);
-        foundProjekt.setPname(projekt.getPname());
+    public Projekt updateProjekt(final ProjektUpdateDTO projektUpdateDTO, final String ha) {
+        final Projekt foundProjekt = ServiceUtils.getEntityOrThrowNotFoundException(
+                ha, projektRepository, Projekt.class);
+
+        projektMapper.updateEntity(projektUpdateDTO, foundProjekt);
+
         log.debug("Update Projekt {}", foundProjekt);
         return projektRepository.update(foundProjekt);
     }

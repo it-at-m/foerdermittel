@@ -6,6 +6,7 @@ import de.muenchen.oss.foerdermittel.backend.projekt.dao.BasicProjektDAO;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface ProjektMapper {
@@ -20,7 +21,6 @@ public interface ProjektMapper {
     @Mapping(source = "bauprogramm.bauprogramm", target = "bauprogramm")
     ProjektResponseDTO toDTO(Projekt projekt);
 
-    @Mapping(target = "projnr", ignore = true)
     @Mapping(target = "foerderbereich", ignore = true)
     @Mapping(target = "unterabschnitt", ignore = true)
     @Mapping(target = "kurzbezeichnung", ignore = true)
@@ -30,6 +30,7 @@ public interface ProjektMapper {
     @Mapping(target = "bauprogramm", ignore = true)
     Projekt toEntity(ProjektCreateDTO projektCreateDTO);
 
+    @Mapping(target = "projnr", ignore = true)
     @Mapping(target = "jahr", ignore = true)
     @Mapping(target = "lfdnr1", ignore = true)
     @Mapping(target = "lfdnr2", ignore = true)
@@ -40,10 +41,16 @@ public interface ProjektMapper {
     @Mapping(target = "stadtbezirk", ignore = true)
     @Mapping(target = "siedlungsgebiet", ignore = true)
     @Mapping(target = "bauprogramm", ignore = true)
-    Projekt toEntity(ProjektUpdateDTO projektUpdateDTO);
+    void updateEntity(ProjektUpdateDTO source, @MappingTarget Projekt target);
 
-    @Mapping(source = "foerderbereich.fb", target = "foerderbereich")
-    @Mapping(target = "stadtbezirk", ignore = true)
+    @Mapping(target = "projnr", source = "projnr")
+    @Mapping(target = "foerderbereich", source = "foerderbereich.fb")
+    @Mapping(target = "stadtbezirk", source = "stadtbezirk.stadtbezirk")
+    @Mapping(target = "bauprogramm", source = "bauprogramm.bauprogramm")
+    @Mapping(target = "krhname", source = "krankenhaus.krhname")
+    @Mapping(target = "siedlungsgebiet", source = "siedlungsgebiet.siedlungsgebiet")
+    @Mapping(target = "uasUa", source = "unterabschnitt.ua")
+    @Mapping(target = "kurzbez", source = "kurzbezeichnung.kurzbez")
     ProjektFormContextDTO toFormContext(Projekt projekt);
 
     List<ProjektFormContextDTO> toFormContext(List<Projekt> projektList);

@@ -1,274 +1,377 @@
-
 <template>
   <v-form
-      ref="form"
-      :readonly="displayMode === InputDisplayMode.READ"
-      @update:model-value="onValidityChanged"
+    ref="form"
+    :readonly="displayMode === InputDisplayMode.READ"
+    @update:model-value="onValidityChanged"
   >
     <!-- Projektnummer -->
     <v-row>
-      <v-col cols="12" md="3">
+      <v-col
+        cols="12"
+        md="3"
+      >
         <fm-text-field
-            :model-value="projnr"
-            :label="t('model.projekt.projnr')"
-            :display-mode="displayMode"
-            readonly
+          :model-value="projnr"
+          :label="t('model.projekt.projnr')"
+          :display-mode="displayMode"
+          readonly
         />
       </v-col>
     </v-row>
 
     <!-- Bestandteile der Projektnummer -->
     <v-row>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <fm-autocomplete
-            v-model="modelValue.uasUa"
-            :items="unterabschnitt?.content ?? []"
-            item-value="ua"
-            :item-title="formatUnterabschnitt"
-            :label="t('model.projekt.uasUa')"
-            :loading="unterabschnitteLoading"
-            :readonly="displayMode !== InputDisplayMode.CREATE"
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="uasUa"
-            clearable
+          v-model="modelValue.uasUa"
+          :items="projektFormContext.uas"
+          item-value="ua"
+          :item-title="getUnterabschnittTitle"
+          :label="t('model.projekt.uasUa')"
+          :readonly="displayMode !== InputDisplayMode.CREATE"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="uasUa"
+          clearable
         />
       </v-col>
 
-      <v-col cols="12" md="2">
+      <v-col
+        cols="12"
+        md="2"
+      >
         <fm-text-field
-            :model-value="modelValue.jahr?.toString()"
-            :display-mode="displayMode"
-            :label="t('model.projekt.jahr')"
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="jahr"
-            :readonly="displayMode !== InputDisplayMode.CREATE"
-            @update:model-value="updateNumberField('jahr', $event)"
-            @blur="formatJahr"
+          :model-value="modelValue.jahr?.toString()"
+          :display-mode="displayMode"
+          :label="t('model.projekt.jahr')"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="jahr"
+          :readonly="displayMode !== InputDisplayMode.CREATE"
+          @update:model-value="updateNumberField('jahr', $event)"
+          @blur="formatJahr"
         />
       </v-col>
 
-      <v-col cols="12" md="2">
+      <v-col
+        cols="12"
+        md="2"
+      >
         <fm-text-field
-            :model-value="modelValue.lfdnr1?.toString()"
-            :display-mode="displayMode"
-            :label="t('model.projekt.lfdnr1')"
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="lfdnr1"
-            :readonly="displayMode !== InputDisplayMode.CREATE"
-            @update:model-value="updateNumberField('lfdnr1', $event)"
+          :model-value="modelValue.lfdnr1?.toString()"
+          :display-mode="displayMode"
+          :label="t('model.projekt.lfdnr1')"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="lfdnr1"
+          :readonly="displayMode !== InputDisplayMode.CREATE"
+          @update:model-value="updateNumberField('lfdnr1', $event)"
         />
       </v-col>
 
-      <v-col cols="12" md="2">
+      <v-col
+        cols="12"
+        md="2"
+      >
         <fm-text-field
-            :model-value="modelValue.lfdnr2?.toString()"
-            :display-mode="displayMode"
-            :label="t('model.projekt.lfdnr2')"
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="lfdnr2"
-            :readonly="displayMode !== InputDisplayMode.CREATE"
-            @update:model-value="updateNumberField('lfdnr2', $event)"
-            @blur="formatLfdnr2"
+          :model-value="modelValue.lfdnr2?.toString()"
+          :display-mode="displayMode"
+          :label="t('model.projekt.lfdnr2')"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="lfdnr2"
+          :readonly="displayMode !== InputDisplayMode.CREATE"
+          @update:model-value="updateNumberField('lfdnr2', $event)"
+          @blur="formatLfdnr2"
         />
       </v-col>
     </v-row>
-
-    <!-- Förderbereich und Kurzbezeichnung -->
     <v-row>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <fm-autocomplete
-            v-model="modelValue.fobFb"
-            :items="foerderbereiche?.content ?? []"
-            item-value="fb"
-            :item-title="formatFoerderbereich"
-            :label="t('model.projekt.fobFb')"
-            :loading="foerderbereicheLoading"
-            :readonly="displayMode === InputDisplayMode.READ"
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="fobFb"
-            clearable
+          v-model="modelValue.fobFb"
+          :items="projektFormContext.fbs"
+          item-value="fb"
+          :item-title="getFoerderbereichTitle"
+          :label="t('model.projekt.fobFb')"
+          :readonly="displayMode !== InputDisplayMode.CREATE"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="fobFb"
+          clearable
         />
       </v-col>
 
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <fm-autocomplete
-            v-model="modelValue.kurzbez"
-            :items="kurzbezeichnung?.content ?? []"
-            item-value="kurzbez"
-            :item-title="formatKurzbezeichnung"
-            :label="t('model.projekt.kurzbez')"
-            :loading="kurzbezeichnungenLoading"
-            :readonly="displayMode === InputDisplayMode.READ"
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="kurzbez"
-            clearable
+          v-model="modelValue.kurzbez"
+          :items="projektFormContext.kurzs"
+          item-value="kurzbez"
+          :item-title="getKurzbezeichnungTitle"
+          :label="t('model.projekt.kurzbez')"
+          :readonly="displayMode !== InputDisplayMode.CREATE"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="kurzbez"
+          clearable
         />
       </v-col>
     </v-row>
 
     <!-- Projektinformationen -->
     <v-row>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <fm-text-field
-            v-model="modelValue.pname"
-            :display-mode="displayMode"
-            :label="t('model.projekt.pname')"
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="pname"
+          v-model="modelValue.pname"
+          :display-mode="displayMode"
+          :label="t('model.projekt.pname')"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="pname"
         />
       </v-col>
 
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <fm-text-field
-            v-model="modelValue.pstrasse"
-            :display-mode="displayMode"
-            :label="t('model.projekt.pstrasse')"
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="pstrasse"
+          v-model="modelValue.pstrasse"
+          :display-mode="displayMode"
+          :label="t('model.projekt.pstrasse')"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="pstrasse"
         />
       </v-col>
 
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <fm-text-field
-            v-model="modelValue.projart"
-            :display-mode="displayMode"
-            :label="t('model.projekt.projart')"
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="projart"
+          v-model="modelValue.projart"
+          :display-mode="displayMode"
+          :label="t('model.projekt.projart')"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="projart"
         />
       </v-col>
 
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <fm-text-area
-            v-model="modelValue.notizen"
-            :display-mode="displayMode"
-            :label="t('model.projekt.notizen')"
+          v-model="modelValue.notizen"
+          :display-mode="displayMode"
+          :label="t('model.projekt.notizen')"
         />
       </v-col>
     </v-row>
 
     <!-- Weitere Stammdaten -->
     <v-row>
-      <v-col cols="12" md="4">
-        <fm-text-field
-            :model-value="modelValue.stadtbezirk?.toString()"
-            :display-mode="displayMode"
-            :label="t('model.projekt.stadtbezirk')"
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="stadtbezirk"
-            @update:model-value="updateNumberField('stadtbezirk', $event)"
-        />
-      </v-col>
-
-      <v-col cols="12" md="4">
-        <fm-text-field
-            v-model="modelValue.krhname"
-            :display-mode="displayMode"
-            :label="t('model.projekt.krhname')"
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="krhname"
-        />
-      </v-col>
-
-      <v-col cols="12" md="4">
-        <fm-text-field
-            :model-value="modelValue.siedlungsgebiet?.toString()"
-            :display-mode="displayMode"
-            :label="t('model.projekt.siedlungsgebiet')"
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="siedlungsgebiet"
-            @update:model-value="updateNumberField('siedlungsgebiet', $event)"
-        />
-      </v-col>
-
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="4"
+      >
         <fm-autocomplete
-            v-model="modelValue.krisofp"
-            :items="krisofpOptions"
-            item-title="title"
-            item-value="value"
-            :label="t('model.projekt.krisofp')"
-            :readonly="displayMode === InputDisplayMode.READ"
-            clearable
+          v-model="modelValue.stadtbezirk"
+          :items="projektFormContext.bezs"
+          item-value="stadtbezirk"
+          :item-title="getStadtbezirkTitle"
+          :label="t('model.projekt.stadtbezirk')"
+          :readonly="displayMode !== InputDisplayMode.CREATE"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="stadtbezirk"
+          clearable
         />
       </v-col>
 
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="4"
+      >
         <fm-autocomplete
-            v-model="modelValue.bauprogramm"
-            :items="bauprogrammOptions"
-            item-title="title"
-            item-value="value"
-            :label="t('model.projekt.bauprogramm')"
-            :readonly="displayMode === InputDisplayMode.READ"
-            clearable
+          v-model="modelValue.krhname"
+          :items="projektFormContext.krhs"
+          item-value="krhname"
+          :item-title="getKrankenhausTitle"
+          :label="t('model.projekt.krhname')"
+          :readonly="displayMode !== InputDisplayMode.CREATE"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="krhname"
+          clearable
         />
       </v-col>
 
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="4"
+      >
         <fm-autocomplete
-            v-model="modelValue.krhzweck"
-            :items="krhzweckOptions"
-            item-title="title"
-            item-value="value"
-            :label="t('model.projekt.krhzweck')"
-            :readonly="displayMode === InputDisplayMode.READ"
-            clearable
+          v-model="modelValue.siedlungsgebiet"
+          :items="projektFormContext.sgts"
+          item-value="siedlungsgebiet"
+          :item-title="getSiedlungsgebietTitle"
+          :label="t('model.projekt.siedlungsgebiet')"
+          :readonly="displayMode !== InputDisplayMode.CREATE"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="siedlungsgebiet"
+          clearable
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <fm-autocomplete
+          v-model="modelValue.krisofp"
+          :items="projektFormContext?.krisofps ?? []"
+          :item-title="getKrisofpTitle"
+          :item-value="getKrisofpValue"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="krisofp"
+          :label="t('model.projekt.krisofp')"
+          density="comfortable"
+          clearable
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <fm-autocomplete
+          v-model="modelValue.bauprogramm"
+          :items="projektFormContext.bpgs"
+          item-value="bauprogramm"
+          :item-title="getBauprogrammTitle"
+          :label="t('model.projekt.bauprogramm')"
+          :readonly="displayMode !== InputDisplayMode.CREATE"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bauprogramm"
+          clearable
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <fm-autocomplete
+          v-model="modelValue.krhzweck"
+          :items="projektFormContext?.krhzwecks ?? []"
+          :item-title="getKrhzweckTitle"
+          :item-value="getKrhzweckValue"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="krhzweck"
+          :label="t('model.projekt.krhzweck')"
+          density="comfortable"
+          clearable
         />
       </v-col>
     </v-row>
 
-    <!-- Checkboxen -->
     <v-row>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="3"
+      >
         <fm-checkbox
-            v-model="modelValue.refinanzierbar"
-            :display-mode="displayMode"
-            :label="t('model.projekt.refinanzierbar')"
+          v-model="modelValue.refinanzierbar"
+          :display-mode="displayMode"
+          :label="t('model.projekt.refinanzierbar')"
         />
       </v-col>
 
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="3"
+      >
         <fm-checkbox
-            v-model="modelValue.kauf"
-            :display-mode="displayMode"
-            :label="t('model.projekt.kauf')"
+          v-model="modelValue.kauf"
+          :display-mode="displayMode"
+          :label="t('model.projekt.kauf')"
         />
       </v-col>
-    </v-row>
-
-    <!-- Platzanzahlen -->
-    <v-row>
-      <v-col cols="12" md="4">
-        <fm-text-field
-            :model-value="modelValue.kripplatz?.toString()"
-            :display-mode="displayMode"
-            :label="t('model.projekt.kripplatz')"
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="kripplatz"
-            @update:model-value="updateDecimalField('kripplatz', $event)"
-        />
-      </v-col>
-
-      <v-col cols="12" md="4">
-        <fm-text-field
-            :model-value="modelValue.kigaplatz?.toString()"
-            :display-mode="displayMode"
-            :label="t('model.projekt.kigaplatz')"
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="kigaplatz"
-            @update:model-value="updateDecimalField('kigaplatz', $event)"
+      <v-col
+        cols="12"
+        md="2"
+      >
+        <fm-number-input
+          :v-model="modelValue.kripplatz"
+          :display-mode="displayMode"
+          :label="t('model.projekt.kripplatz')"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="kripplatz"
         />
       </v-col>
 
-      <v-col cols="12" md="4">
-        <fm-text-field
-            :model-value="modelValue.hortplatz?.toString()"
-            :display-mode="displayMode"
-            :label="t('model.projekt.hortplatz')"
-            :validation-attribute-map="ProjektCreateDTOPropertyValidationAttributesMap"
-            validation-attribute-key="hortplatz"
-            @update:model-value="updateDecimalField('hortplatz', $event)"
+      <v-col
+        cols="12"
+        md="2"
+      >
+        <fm-number-input
+          :v-model="modelValue.kigaplatz"
+          :display-mode="displayMode"
+          :label="t('model.projekt.kigaplatz')"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="kigaplatz"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        md="2"
+      >
+        <fm-number-input
+          :v-model="modelValue.hortplatz"
+          :display-mode="displayMode"
+          :label="t('model.projekt.hortplatz')"
+          :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="hortplatz"
         />
       </v-col>
     </v-row>
@@ -277,24 +380,32 @@
 
 <script setup lang="ts">
 import type {
-  FoerderbereichResponseDTO,
-  KurzbezeichnungResponseDTO,
+  BauprogrammFormContextDTO,
+  FoerderbereichFormContextDTO,
+  KrankenhausFormContextDTO,
+  KurzbezeichnungFormContextDTO,
+  ProjektFormContext,
   ProjektResponseDTO,
-  UnterabschnittResponseDTO,
+  SiedlungsgebietFormContextDTO,
+  StadtbezirkFormContextDTO,
+  UnterabschnittFormContextDTO,
 } from "@/api/generated/foerdermittel-backend";
+import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
 
-import { computed, onMounted, useTemplateRef, watch } from "vue";
+import { computed, useTemplateRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
-import { ProjektCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
+import {
+  ProjektCreateDTOKrhzweckEnum,
+  ProjektCreateDTOKrisofpEnum,
+  ProjektCreateDTOPropertyValidationAttributesMap,
+} from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
+import FmNumberInput from "@/components/common/FmNumberInput.vue";
 import FmTextArea from "@/components/common/FmTextArea.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
-import { useGetFoerderbereiche } from "@/composables/api/useFoerderbereichApi";
-import { useGetKurzbezeichnungen } from "@/composables/api/useKurzbezeichnungApi";
-import { useGetUnterabschnitte } from "@/composables/api/useUnterabschnittApi";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
 const { t } = useI18n();
@@ -303,9 +414,11 @@ const modelValue = defineModel<Partial<ProjektResponseDTO>>({
   required: true,
 });
 
-const { displayMode = InputDisplayMode.CREATE } = defineProps<{
-  displayMode?: InputDisplayMode;
-}>();
+const { projektFormContext, displayMode = InputDisplayMode.CREATE } =
+  defineProps<{
+    projektFormContext: DeepReadonly<ProjektFormContext>;
+    displayMode?: InputDisplayMode;
+  }>();
 
 const emit = defineEmits<{
   isValid: [boolean | null];
@@ -332,10 +445,10 @@ const projnr = computed(() => {
   const lfdnr2 = modelValue.value.lfdnr2;
 
   if (
-      !ua ||
-      jahr === undefined ||
-      lfdnr1 === undefined ||
-      lfdnr2 === undefined
+    !ua ||
+    jahr === undefined ||
+    lfdnr1 === undefined ||
+    lfdnr2 === undefined
   ) {
     return "";
   }
@@ -349,36 +462,22 @@ const projnr = computed(() => {
 });
 
 watch(
-    projnr,
-    (newProjnr) => {
-      if (displayMode === InputDisplayMode.CREATE) {
-        modelValue.value.projnr = newProjnr;
-      }
-    },
-    { immediate: true },
+  projnr,
+  (newProjnr) => {
+    if (displayMode === InputDisplayMode.CREATE) {
+      modelValue.value.projnr = newProjnr;
+    }
+  },
+  { immediate: true }
 );
 
 function updateNumberField(
-    field:
-        | "jahr"
-        | "lfdnr1"
-        | "lfdnr2"
-        | "stadtbezirk"
-        | "siedlungsgebiet",
-    value: string | number | null | undefined,
+  field: "jahr" | "lfdnr1" | "lfdnr2" | "stadtbezirk" | "siedlungsgebiet",
+  value: string | number | null | undefined
 ) {
   const normalizedValue = String(value ?? "").trim();
   modelValue.value[field] =
-      normalizedValue === "" ? undefined : Number(normalizedValue);
-}
-
-function updateDecimalField(
-    field: "kripplatz" | "kigaplatz" | "hortplatz",
-    value: string | number | null | undefined,
-) {
-  const normalizedValue = String(value ?? "").trim();
-  modelValue.value[field] =
-      normalizedValue === "" ? undefined : Number(normalizedValue);
+    normalizedValue === "" ? undefined : Number(normalizedValue);
 }
 
 function formatJahr() {
@@ -393,55 +492,64 @@ function formatLfdnr2() {
   modelValue.value.lfdnr2 = Number(value.slice(-2));
 }
 
-const {
-  data: foerderbereiche,
-  call: getFoerderbereiche,
-  loading: foerderbereicheLoading,
-} = useGetFoerderbereiche();
+function getFoerderbereichTitle(item: FoerderbereichFormContextDTO) {
+  return item ? `${item.fb} (${item.bezeichnung})` : "";
+}
 
-const {
-  data: kurzbezeichnung,
-  call: getKurzbezeichnungen,
-  loading: kurzbezeichnungenLoading,
-} = useGetKurzbezeichnungen();
+function getStadtbezirkTitle(item: StadtbezirkFormContextDTO) {
+  return item ? `${item.stadtbezirk} (${item.bezeichnung})` : "";
+}
 
-const {
-  data: unterabschnitt,
-  call: getUnterabschnitte,
-  loading: unterabschnitteLoading,
-} = useGetUnterabschnitte();
+function getUnterabschnittTitle(item: UnterabschnittFormContextDTO) {
+  return item ? `${item.ua} (${item.bezeichnung})` : "";
+}
 
-onMounted(async () => {
-  await Promise.all([
-    getFoerderbereiche({ page: 0, size: 100 }),
-    getKurzbezeichnungen({ page: 0, size: 100 }),
-    getUnterabschnitte({ page: 0, size: 100 }),
-  ]);
-});
+function getKurzbezeichnungTitle(item: KurzbezeichnungFormContextDTO) {
+  return item ? `${item.kurzbez ?? ""} (${item.bezeichnung})` : "";
+}
 
-const formatFoerderbereich = (item: FoerderbereichResponseDTO) =>
-    `${item.fb} – ${item.bezeichnung}`;
+function getSiedlungsgebietTitle(item: SiedlungsgebietFormContextDTO) {
+  return item ? `${item.siedlungsgebiet ?? ""} (${item.bezeichnung})` : "";
+}
 
-const formatKurzbezeichnung = (item: KurzbezeichnungResponseDTO) =>
-    `${item.kurzbez} – ${item.bezeichnung}`;
+function getBauprogrammTitle(item: BauprogrammFormContextDTO) {
+  return item ? `${item.bauprogramm} (${item.bezeichnung})` : "";
+}
 
-const formatUnterabschnitt = (item: UnterabschnittResponseDTO) =>
-    `${item.ua} – ${item.bezeichnung}`;
+function getKrankenhausTitle(item: KrankenhausFormContextDTO) {
+  return item ? `${item.krhname} (${item.bezeichnung})` : "";
+}
 
-const krisofpOptions = [
-  { title: "X", value: "X" },
-  { title: "Y", value: "Y" },
-  { title: "Z", value: "Z" },
-  { title: "W", value: "W" },
-  { title: "V", value: "V" },
-  { title: "K", value: "K" },
-  { title: "F", value: "F" },
-  { title: "S", value: "S" },
-];
+const krisofpBezeichnungen = new Map<string, string>([
+  ["X", "1.+2. SIP - KriSoFö 2008-2014"],
+  ["Y", "3. SIP - Kinderbetreuung 2015-2019"],
+  ["Z", "4. SIP - Kinderbetreuung 2017-2020/2021"],
+  ["W", "5. SIP - Schulkindbetreuung Land (Hortförd. GS)"],
+  ["V", "Schulkindbetreuung - Bund (GaFöG)"],
+  ["K", "KJP II"],
+  ["F", "FAGplus15"],
+  ["S", "Startchancen-Programm (SCP)"],
+]);
 
-// TODO: durch die tatsächlichen Bauprogramm-Stammdaten ersetzen.
-const bauprogrammOptions: { title: string; value: number }[] = [];
+function getKrisofpTitle(item: ProjektCreateDTOKrisofpEnum): string {
+  return `${item} (${krisofpBezeichnungen.get(item) ?? item})`;
+}
 
-// TODO: durch die tatsächlichen Krhzweck-Enumwerte ersetzen.
-const krhzweckOptions: { title: string; value: string }[] = [];
+function getKrisofpValue(item: ProjektCreateDTOKrisofpEnum): string {
+  return item;
+}
+
+const krhzweckBezeichnungen = new Map<string, string>([
+  ["J", "Jahreskrankenhausprogramm"],
+  ["S", "Jahreskrankenhausprogramm"],
+  ["R", "Jahreskrankenhausprogramm"],
+]);
+
+function getKrhzweckTitle(item: ProjektCreateDTOKrhzweckEnum): string {
+  return `${item} (${krhzweckBezeichnungen.get(item) ?? item})`;
+}
+
+function getKrhzweckValue(item: ProjektCreateDTOKrhzweckEnum): string {
+  return item;
+}
 </script>

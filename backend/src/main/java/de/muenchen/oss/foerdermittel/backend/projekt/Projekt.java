@@ -36,17 +36,13 @@ public class Projekt extends AuditableEntity {
 
     @Id
     @Column(name = "projnr", nullable = false)
-    @NotNull
-    @Size(min = 7, max = 7)
-    private String projnr;
+    @NotNull @Size(min = 7, max = 7) private String projnr;
 
     @Column(name = "jahr", nullable = false)
-    @NotNull
-    private String jahr;
+    @NotNull private String jahr;
 
     @Column(name = "projart", nullable = false)
-    @Size(min = 1, max = 50)
-    private String projart;
+    @Size(min = 1, max = 50) private String projart;
 
     @Column(name = "refinanzierbar", nullable = false)
     private Boolean refinanzierbar;
@@ -64,8 +60,7 @@ public class Projekt extends AuditableEntity {
     private BigDecimal hortplatz;
 
     @Column(name = "notizen", nullable = false)
-    @Size(min = 1, max = 100)
-    private String notizen;
+    @Size(min = 1, max = 100) private String notizen;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
@@ -82,14 +77,10 @@ public class Projekt extends AuditableEntity {
     private String lfdnr2;
 
     @Column(name = "pname", nullable = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    private String pname;
+    @NotNull @Size(min = 1, max = 100) private String pname;
 
     @Column(name = "pstrasse", nullable = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    private String pstrasse;
+    @NotNull @Size(min = 1, max = 100) private String pstrasse;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(

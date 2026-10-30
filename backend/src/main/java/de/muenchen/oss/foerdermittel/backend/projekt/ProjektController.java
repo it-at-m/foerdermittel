@@ -62,10 +62,10 @@ public class ProjektController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ProjektResponseDTO updateProjekt(@Valid @RequestBody final ProjektUpdateDTO projektUpdateDTO,
+    public ProjektResponseDTO updateProjekt(
+            @Valid @RequestBody final ProjektUpdateDTO projektUpdateDTO,
             @PathVariable("id") final String projektId) {
-        return projektMapper
-                .toDTO(projektService.updateProjekt(projektMapper.toEntity(projektUpdateDTO), projektId));
+        return projektMapper.toDTO(projektService.updateProjekt(projektUpdateDTO, projektId));
     }
 
     @DeleteMapping("/{id}")

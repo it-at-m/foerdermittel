@@ -1,28 +1,27 @@
-
 <template>
   <base-view :domain-key="domainKey">
     <template #default="{ baseViewLoading }">
       <crud-card
-          :empty-item-template="EMPTY_ITEM_TEMPLATE"
-          :loading="baseViewLoading"
-          :table-headers="headers"
-          :filter-keys="['projnr']"
-          :api="projektApi"
-          :domain-key="domainKey"
-          :handle-create="handleCreate"
-          :handle-update="handleUpdate"
-          :handle-delete="handleDelete"
-          :form-ref="projektFormRef"
-          should-load-form-context
+        :empty-item-template="EMPTY_ITEM_TEMPLATE"
+        :loading="baseViewLoading"
+        :table-headers="headers"
+        :filter-keys="['projnr']"
+        :api="projektApi"
+        :domain-key="domainKey"
+        :handle-create="handleCreate"
+        :handle-update="handleUpdate"
+        :handle-delete="handleDelete"
+        :form-ref="projektFormRef"
+        should-load-form-context
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <projekt-form
-              v-if="projektFormContext"
-              ref="projektForm"
-              :model-value="item"
-              :display-mode="inputDisplayMode"
-              :projekt-form-context="projektFormContext"
-              @is-valid="updateValidity"
+            v-if="projektFormContext"
+            ref="projektForm"
+            :model-value="item"
+            :display-mode="inputDisplayMode"
+            :projekt-form-context="projektFormContext"
+            @is-valid="updateValidity"
           />
         </template>
       </crud-card>
@@ -121,9 +120,7 @@ const projektFormContext = computed(() => projektApi.context.data.value);
 type ProjektFormType = InstanceType<typeof ProjektForm>;
 const projektFormRef = useTemplateRef<ProjektFormType>("projektForm");
 
-const handleCreate = async (
-    projektCreateDTO: Partial<ProjektResponseDTO>,
-) => {
+const handleCreate = async (projektCreateDTO: Partial<ProjektResponseDTO>) => {
   // TODO: some type checking improvements
   const model = projektCreateDTO as ProjektResponseDTO;
   await projektApi.create.call({
@@ -131,9 +128,7 @@ const handleCreate = async (
   });
 };
 
-const handleUpdate = async (
-    projektUpdateDTO: Partial<ProjektResponseDTO>,
-) => {
+const handleUpdate = async (projektUpdateDTO: Partial<ProjektResponseDTO>) => {
   // TODO: some type checking improvements
   const model = projektUpdateDTO as ProjektResponseDTO;
   await projektApi.update.call({
