@@ -34,7 +34,7 @@
           validation-attribute-key="jahr"
           :disable-edit="displayMode === InputDisplayMode.EDIT"
           :error-messages="istkostenCombinationError ? [''] : []"
-        ></fm-number-input>
+        />
       </v-col>
       <v-col cols="2">
         <fm-autocomplete
@@ -63,7 +63,7 @@
           "
           validation-attribute-key="istkosten"
           :label="t('model.istkosten.modelName')"
-        ></fm-number-input>
+        />
       </v-col>
     </v-row>
   </v-form>
