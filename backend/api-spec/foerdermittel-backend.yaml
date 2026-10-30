@@ -2306,6 +2306,41 @@ paths:
                 format: binary
       security:
       - bearerAuth: []
+  /report/bewilligungAuszahlungProjekt:
+    get:
+      tags:
+      - report-bewilligung-auszahlung-projekt-controller
+      operationId: getReportBewilligungAuszahlungProjekt
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportBewilligungAuszahlungProjektDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/bewilligungAuszahlungProjekt/form-context:
+    get:
+      tags:
+      - report-bewilligung-auszahlung-projekt-controller
+      operationId: getReportBewilligungAuszahlungProjektFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportBewilligungAuszahlungProjektFormContext"
+      security:
+      - bearerAuth: []
   /report/auswertungprojekte/form-context:
     get:
       tags:
@@ -4531,6 +4566,39 @@ components:
           - JAHR
           - REFERAT
           - REFERAT_JAHR
+    ReportBewilligungAuszahlungProjektDTO:
+      required:
+      - projnr
+      type: object
+      properties:
+        projnr:
+          minLength: 1
+          pattern: \S
+          type: string
+        erfolgt:
+          type: boolean
+    ReportBewilligungAuszahlungProjektFormContext:
+      required:
+      - projekte
+      type: object
+      properties:
+        projekte:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportBewilligungAuszahlungProjektFormContextDTO"
+    ReportBewilligungAuszahlungProjektFormContextDTO:
+      required:
+      - pname
+      - projnr
+      - pstrasse
+      type: object
+      properties:
+        projnr:
+          type: string
+        pstrasse:
+          type: string
+        pname:
+          type: string
     ReportAuswertungProjektFormContext:
       required:
       - bezs

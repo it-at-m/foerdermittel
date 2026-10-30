@@ -13,6 +13,7 @@ import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektMapper;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektUpdateDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungProjektFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportBewilligungAuszahlungProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietService;
@@ -145,6 +146,12 @@ public class ProjektService {
     @Transactional(readOnly = true)
     public List<ReportAuswertungProjektFormContextDTO> getReportAuswertungProjektFormContextDTOs() {
         return projektMapper.toReportAuswertungProjektFormContext(projektRepository.findAllAuswertungProjekte());
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<ReportBewilligungAuszahlungProjektFormContextDTO> getReportBewilligungAuszahlungProjektFormContextDTOs() {
+        return projektMapper.toReportBewilligungAuszahlungProjektFormContext(projektRepository.findAllAsBasic());
     }
 
 }
