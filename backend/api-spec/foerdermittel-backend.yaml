@@ -1360,12 +1360,12 @@ paths:
         required: false
         schema:
           type: string
-      - name: foerderbereich
+      - name: fobfb
         in: query
         required: false
         schema:
           type: number
-      - name: kurKurzbez
+      - name: kurzbez
         in: query
         required: false
         schema:
