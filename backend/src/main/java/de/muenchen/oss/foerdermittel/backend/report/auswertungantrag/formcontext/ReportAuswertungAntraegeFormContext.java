@@ -14,27 +14,26 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 public record ReportAuswertungAntraegeFormContext(
-        @NotNull List<Antrag> antraege,
-        @NotNull List<BauprogrammFormContextDTO> bpgs,
-        @NotNull List<FoerderbereichFormContextDTO> fbs,
-        @NotNull List<Krisofp> krisofps,
-        @NotNull List<KurzbezeichnungFormContextDTO> kurzs,
         @NotNull List<ListennameStadtbezirkslisteFormContextDTO> sbls,
-        @NotNull List<SiedlungsgebietFormContextDTO> sgts,
         @NotNull List<StadtbezirkFormContextDTO> bezs,
-        @NotNull List<UnterabschnittFormContextDTO> uas)
-         {
+        @NotNull List<FoerderbereichFormContextDTO> fbs,
+        @NotNull List<UnterabschnittFormContextDTO> uas,
+        @NotNull List<KurzbezeichnungFormContextDTO> kurzs,
+        @NotNull List<Krisofp> krisofps,
+        @NotNull List<Antrag> antraege,
+        @NotNull List<SiedlungsgebietFormContextDTO> sgts,
+        @NotNull List<BauprogrammFormContextDTO> bpgs) {
+
     public ReportAuswertungAntraegeFormContext {
-        antraege = List.copyOf(antraege);
-        bpgs = List.copyOf(bpgs);
-        fbs = List.copyOf(fbs);
         sbls = List.copyOf(sbls);
         bezs = List.copyOf(bezs);
+        fbs = List.copyOf(fbs);
         uas = List.copyOf(uas);
-        krisofps = List.copyOf(krisofps);
         kurzs = List.copyOf(kurzs);
+        krisofps = List.copyOf(krisofps);
+        antraege = List.copyOf(antraege);
         sgts = List.copyOf(sgts);
-
+        bpgs = List.copyOf(bpgs);
 
     }
 }

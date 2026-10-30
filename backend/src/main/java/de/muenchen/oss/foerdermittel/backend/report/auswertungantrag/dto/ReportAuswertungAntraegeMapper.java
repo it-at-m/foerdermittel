@@ -1,10 +1,9 @@
 package de.muenchen.oss.foerdermittel.backend.report.auswertungantrag.dto;
 
 import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
-import org.springframework.stereotype.Component;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ReportAuswertungAntraegeMapper {
@@ -33,7 +32,7 @@ public class ReportAuswertungAntraegeMapper {
                         ? dto.krisofp().name()
                         : null);
         parameters.put(
-                "P_ATYP" , dto.atyp() != null
+                "P_ATYP", dto.atyp() != null
                         ? dto.atyp().name()
                         : null);
         parameters.put("P_FAG", ReportControllerUtil.nullIfBlank(dto.kauf()));

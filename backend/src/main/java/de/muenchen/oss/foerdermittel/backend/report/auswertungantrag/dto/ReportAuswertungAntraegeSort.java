@@ -7,7 +7,6 @@ public enum ReportAuswertungAntraegeSort {
     FOERDERBEREICH_PROJEKTNUMMER("order by v_fob_fb asc, v_pro_projnr asc, V_ANTRAGSDATUM asc"),
     FOERDERBEREICH_STRASSE("order by v_fob_fb asc, v_pstrasse asc, v_pro_projnr asc, V_ANTRAGSDATUM asc");
 
-
     private final String orderBy;
 
     ReportAuswertungAntraegeSort(final String orderBy) {

@@ -11,8 +11,7 @@ public enum Antrag {
     V("Schlussantrag (VN)"),
     A("Änderungsantrag"),
     F("Fortsetzungsantrag"),
-    U("Unbedenklichkeitsantrag")
-   ;
+    U("Unbedenklichkeitsantrag");
 
     private final String bezeichnung;
 

@@ -5,7 +5,6 @@ import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichServic
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungService;
 import de.muenchen.oss.foerdermittel.backend.projekt.Antrag;
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
-import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
 import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
 import de.muenchen.oss.foerdermittel.backend.report.ReportService;
 import de.muenchen.oss.foerdermittel.backend.report.ReportType;
@@ -17,6 +16,8 @@ import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietServ
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkService;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.ListennameStadtbezirkslisteService;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittService;
+import java.math.BigDecimal;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,14 +25,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class ReportAuswertungAntrageService {
+public class ReportAuswertungAntraegeService {
 
     private final FoerderbereichService foerderbereichService;
     private final ListennameStadtbezirkslisteService listennameStadtbezirkslisteService;
@@ -46,7 +44,7 @@ public class ReportAuswertungAntrageService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public GeneratedReport generateReportAuswertungProjekt(
+    public GeneratedReport generateReportAuswertungAntrag(
             final ReportAuswertungAntraegeDTO parameters) {
 
         if (StringUtils.hasText(parameters.fb())) {
@@ -88,7 +86,7 @@ public class ReportAuswertungAntrageService {
 
         return reportService.generateReport(
                 reportMapper.toJasperParameters(parameters),
-                ReportType.FMW_ANTRAEGE,
+                ReportType.FMW_ANTRAEGE1,
                 parameters.type(),
                 orderBy);
     }
@@ -99,15 +97,15 @@ public class ReportAuswertungAntrageService {
         log.info("Get ReportAuswertungAntraege form context");
 
         return new ReportAuswertungAntraegeFormContext(
-                List.of(Antrag.values()),
-                bauprogrammService.getBauprogrammFormContextDTOs(),
-                foerderbereichService.getFoerderbereichFormContextDTOs(),
                 listennameStadtbezirkslisteService.getlistennameStadtbezirkslisteFormContextDTOs(),
                 stadtbezirkService.getStadtbezirkFormContextDTOs(),
+                foerderbereichService.getFoerderbereichFormContextDTOs(),
                 unterabschnittService.getUnterabschnittFormContextDTOs(),
-                List.of(Krisofp.values()),
                 kurzbezeichnungService.getKurzbezeichnungFormContextDTOs(),
-                siedlungsgebietService.getSiedlungsgebietFormContextDTOs());
+                List.of(Krisofp.values()),
+                List.of(Antrag.values()),
+                siedlungsgebietService.getSiedlungsgebietFormContextDTOs(),
+                bauprogrammService.getBauprogrammFormContextDTOs());
 
     }
 }

@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: foerdermittel-backend
   description: Backend component for the application foerdermittel
-  version: 0.3.0-SNAPSHOT
+  version: 0.4.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -2213,6 +2213,45 @@ paths:
                 format: binary
       security:
       - bearerAuth: []
+  /report/auswertungantraege/form-context:
+    get:
+      tags:
+      - report-auswertung-antraege-controller
+      operationId: getReportAuswertungAntraegeFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportAuswertungAntraegeFormContext"
+      security:
+      - bearerAuth: []
+  /report/auswertungantraege/:
+    get:
+      tags:
+      - report-auswertung-antraege-controller
+      operationId: getReportAuswertungProjekt_1
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportAuswertungAntraegeDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
   /referate/form-context:
     get:
       tags:
@@ -4203,6 +4242,139 @@ components:
           - K
           - F
           - S
+        kauf:
+          type: string
+        offen:
+          type: string
+        relevant:
+          type: string
+        sort:
+          type: string
+          enum:
+          - STADTBEZIRK_STRASSE
+          - PROJEKTNUMMER
+          - STRASSE_PROJEKTNUMMER
+          - FOERDERBEREICH_STRASSE
+          - FOERDERBEREICH_PROJEKTNUMMER
+        type:
+          $ref: "#/components/schemas/ReportFormat"
+    ReportAuswertungAntraegeFormContext:
+      required:
+      - antraege
+      - bezs
+      - bpgs
+      - fbs
+      - krisofps
+      - kurzs
+      - sbls
+      - sgts
+      - uas
+      type: object
+      properties:
+        sbls:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
+        bezs:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
+        fbs:
+          type: array
+          items:
+            $ref: "#/components/schemas/FoerderbereichFormContextDTO"
+        uas:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnterabschnittFormContextDTO"
+        kurzs:
+          type: array
+          items:
+            $ref: "#/components/schemas/KurzbezeichnungFormContextDTO"
+        krisofps:
+          type: array
+          items:
+            type: string
+            enum:
+            - X
+            - "Y"
+            - Z
+            - W
+            - V
+            - K
+            - F
+            - S
+        antraege:
+          type: array
+          items:
+            type: string
+            enum:
+            - E
+            - V
+            - A
+            - F
+            - U
+        sgts:
+          type: array
+          items:
+            $ref: "#/components/schemas/SiedlungsgebietFormContextDTO"
+        bpgs:
+          type: array
+          items:
+            $ref: "#/components/schemas/BauprogrammFormContextDTO"
+    ReportAuswertungAntraegeDTO:
+      required:
+      - sort
+      - type
+      type: object
+      properties:
+        jahrvon:
+          pattern: "(\\d{4})?"
+          type: string
+        jahrbis:
+          pattern: "(\\d{4})?"
+          type: string
+        bez:
+          type: string
+        fb:
+          type: string
+        ua:
+          type: string
+        kurz:
+          type: string
+        pstrasse:
+          maxLength: 30
+          minLength: 0
+          type: string
+        pname:
+          maxLength: 30
+          minLength: 0
+          type: string
+        sgt:
+          type: string
+        sbl:
+          type: string
+        bpg:
+          type: string
+        krisofp:
+          type: string
+          enum:
+          - X
+          - "Y"
+          - Z
+          - W
+          - V
+          - K
+          - F
+          - S
+        atyp:
+          type: string
+          enum:
+          - E
+          - V
+          - A
+          - F
+          - U
         kauf:
           type: string
         offen:
