@@ -195,7 +195,7 @@ const {
   enableActions = true,
   expandable = false,
   dialogWidth = DialogWidth.MEDIUM,
-  shouldLoadFormContext,
+  shouldLoadFormContext = false,
   handleCreate,
   handleUpdate,
   handleDelete,
@@ -218,29 +218,29 @@ const {
   enableActions?: boolean;
   expandable?: boolean;
   dialogWidth?: DialogWidth;
-  shouldLoadFormContext: boolean;
-  handleCreate: (item: TGetResponse) => Awaitable<boolean | void>;
-  handleUpdate: (item: TGetResponse) => Awaitable<boolean | void>;
-  handleDelete: (id: string) => Awaitable<boolean | void>;
+  shouldLoadFormContext?: boolean;
+  handleCreate?: (item: TGetResponse) => Awaitable<boolean | void>;
+  handleUpdate?: (item: TGetResponse) => Awaitable<boolean | void>;
+  handleDelete?: (id: string) => Awaitable<boolean | void>;
   formRef?: { validate: () => unknown } | null | undefined;
 }>();
 
 const loading = computed(
   () =>
     loadingProp ||
-    api.getAll.loading.value ||
-    api.context.loading.value ||
-    api.create.loading.value ||
-    api.update.loading.value ||
-    api.delete.loading.value
+    api.getAll?.loading.value ||
+    api.context?.loading.value ||
+    api.create?.loading.value ||
+    api.update?.loading.value ||
+    api.delete?.loading.value
 );
 
 const getAllData = computed(() => {
-  return api.getAll.data.value;
+  return api.getAll?.data.value;
 });
 
 const { page, itemsPerPage, sortBy, pageable } = usePagination(
-  computed(() => api.getAll.data.value?.page?.totalPages)
+  computed(() => api.getAll?.data.value?.page?.totalPages)
 );
 
 type FilterPanelType = InstanceType<typeof FilterPanel>;
@@ -330,12 +330,12 @@ const onRowClick = (event: MouseEvent, { item }: { item: TGetResponse }) => {
 
 const loadFormContext = async () => {
   if (shouldLoadFormContext) {
-    await api.context.call();
+    await api.context?.call();
   }
 };
 
 const refetchEntities = async () => {
-  await api.getAll.call({
+  await api.getAll?.call({
     ...appliedFilter.value,
     ...pageable.value,
   });
@@ -384,15 +384,15 @@ const onFailure = async (msg: string) => {
 
 const saveItem = async () => {
   if (isEditing.value && activeItem.value.id) {
-    const updateResult = await handleUpdate(activeItem.value);
-    if (updateResult ?? !api.update.error.value) {
+    const updateResult = await handleUpdate?.(activeItem.value);
+    if (updateResult ?? !api.update?.error.value) {
       await onSuccess(t("common.message.updated", [t(domainKey)]));
     } else {
       await onFailure(t("common.message.updatedError", [t(domainKey)]));
     }
   } else {
-    const createResult = await handleCreate(activeItem.value);
-    if (createResult ?? !api.create.error.value) {
+    const createResult = await handleCreate?.(activeItem.value);
+    if (createResult ?? !api.create?.error.value) {
       await onSuccess(t("common.message.created", [t(domainKey)]));
     } else {
       await onFailure(t("common.message.createdError", [t(domainKey)]));
@@ -402,8 +402,8 @@ const saveItem = async () => {
 
 const deleteItem = async () => {
   if (!activeItem.value.id) return;
-  const deleteResult = await handleDelete(activeItem.value.id);
-  if (deleteResult ?? !api.delete.error.value) {
+  const deleteResult = await handleDelete?.(activeItem.value.id);
+  if (deleteResult ?? !api.delete?.error.value) {
     await onSuccess(t("common.message.deleted", [t(domainKey)]));
   } else {
     await onFailure(t("common.message.deletedError", [t(domainKey)]));
