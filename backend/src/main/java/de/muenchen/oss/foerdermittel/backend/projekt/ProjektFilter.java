@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 
 public record ProjektFilter(
         String projnr,
-        BigDecimal foerderbereich,
-        String kurKurzbez,
+        BigDecimal fobfb,
+        String kurzbez,
         String uasUa,
         String pname,
         String pstrasse) {

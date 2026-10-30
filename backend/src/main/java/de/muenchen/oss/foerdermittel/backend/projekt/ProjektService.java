@@ -148,6 +148,7 @@ public class ProjektService {
 
         return projektRepository.insert(projekt);
     }
+
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Projekt updateProjekt(final ProjektUpdateDTO projektUpdateDTO, final String ha) {
         final Projekt foundProjekt = ServiceUtils.getEntityOrThrowNotFoundException(
@@ -156,7 +157,8 @@ public class ProjektService {
         projektMapper.updateEntity(projektUpdateDTO, foundProjekt);
 
         foundProjekt.setStadtbezirk(ServiceUtils.getEntityOrThrowNotFoundException(
-                BigDecimal.valueOf(projektUpdateDTO.stadtbezirk()), stadtbezirkRepository, Stadtbezirk.class));
+                BigDecimal.valueOf(projektUpdateDTO.stadtbezirk()),
+                stadtbezirkRepository, Stadtbezirk.class));
         foundProjekt.setKrankenhaus(ServiceUtils.getEntityOrThrowNotFoundException(
                 projektUpdateDTO.krhname(), krankenhausRepository, Krankenhaus.class));
         foundProjekt.setSiedlungsgebiet(ServiceUtils.getEntityOrThrowNotFoundException(
