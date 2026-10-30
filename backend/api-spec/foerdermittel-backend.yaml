@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: foerdermittel-backend
   description: Backend component for the application foerdermittel
-  version: 0.3.0-SNAPSHOT
+  version: 0.4.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -2248,6 +2248,41 @@ paths:
                 format: binary
       security:
       - bearerAuth: []
+  /report/annahmeAnordnungSap:
+    get:
+      tags:
+      - report-annahme-anordnung-sap-controller
+      operationId: getReportAnnahmeAnordnungSap
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportAnnahmeAnordnungSapDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/annahmeAnordnungSap/form-context:
+    get:
+      tags:
+      - report-annahme-anordnung-sap-controller
+      operationId: getReportAnnahmeAnordnungSapFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportAnnahmeAnordnungSapFormContext"
+      security:
+      - bearerAuth: []
   /referate/form-context:
     get:
       tags:
@@ -4287,6 +4322,37 @@ components:
           - FOERDERBEREICH_PROJEKTNUMMER
         type:
           $ref: "#/components/schemas/ReportFormat"
+    ReportAnnahmeAnordnungSapDTO:
+      required:
+      - projnr
+      type: object
+      properties:
+        projnr:
+          minLength: 1
+          pattern: \S
+          type: string
+    ReportAnnahmeAnordnungSapFormContext:
+      required:
+      - projekte
+      type: object
+      properties:
+        projekte:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportAnnahmeAnordnungSapFormContextDTO"
+    ReportAnnahmeAnordnungSapFormContextDTO:
+      required:
+      - pname
+      - projnr
+      - pstrasse
+      type: object
+      properties:
+        projnr:
+          type: string
+        pstrasse:
+          type: string
+        pname:
+          type: string
     PagedModelReferatResponseDTO:
       type: object
       properties:
