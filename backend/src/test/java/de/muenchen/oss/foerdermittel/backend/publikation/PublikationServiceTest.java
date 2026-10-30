@@ -1,3 +1,4 @@
+
 package de.muenchen.oss.foerdermittel.backend.publikation;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -7,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
+import de.muenchen.oss.foerdermittel.backend.publikation.dto.PublikationFormContextDTO;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +27,7 @@ import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
 class PublikationServiceTest {
+
     private static final String BEZEICHNUNG = "testBezeichnung";
 
     @Mock
@@ -35,6 +38,7 @@ class PublikationServiceTest {
 
     @Nested
     class GetPublikationen {
+
         @Test
         void givenPageable_thenReturnPageOfEntities() {
             // Given
@@ -60,6 +64,7 @@ class PublikationServiceTest {
 
     @Nested
     class CreatePublikation {
+
         @Test
         void givenPublikation_thenCallInsertEntity() {
             // Given
@@ -78,6 +83,7 @@ class PublikationServiceTest {
 
     @Nested
     class UpdatePublikation {
+
         @Test
         void givenEntityExists_thenReturnEntity() {
             // Given
@@ -85,6 +91,7 @@ class PublikationServiceTest {
             final Publikation entityToUpdate = new Publikation(id, "updated");
             final Publikation foundEntity = new Publikation(id, BEZEICHNUNG);
             final Publikation expectedEntity = new Publikation(id, "updated");
+
             when(publikationRepository.findById(id)).thenReturn(Optional.of(foundEntity));
             when(publikationRepository.update(foundEntity)).thenReturn(expectedEntity);
 
@@ -105,17 +112,24 @@ class PublikationServiceTest {
             when(publikationRepository.findById(id)).thenReturn(Optional.empty());
 
             // When
-            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.updatePublikation(entityToUpdate, id));
+            final Exception exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> unitUnderTest.updatePublikation(entityToUpdate, id));
 
             // Then
             verify(publikationRepository, times(1)).findById(id);
             verify(publikationRepository, never()).update(entityToUpdate);
-            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Publikation.class.getSimpleName(), id));
+            assertThat(exception.getMessage()).isEqualTo(
+                    String.format(
+                            "The %s with ID %s was not found.",
+                            Publikation.class.getSimpleName(),
+                            id));
         }
     }
 
     @Nested
     class DeletePublikation {
+
         @Test
         void givenIdExists_thenReturnVoid() {
             // Given
@@ -138,12 +152,18 @@ class PublikationServiceTest {
             when(publikationRepository.findById(id)).thenReturn(Optional.empty());
 
             // When
-            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.deletePublikation(id));
+            final Exception exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> unitUnderTest.deletePublikation(id));
 
             // Then
             verify(publikationRepository, times(1)).findById(id);
             verify(publikationRepository, never()).deleteById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Publikation.class.getSimpleName(), id));
+            assertThat(exception.getMessage()).isEqualTo(
+                    String.format(
+                            "The %s with ID %s was not found.",
+                            Publikation.class.getSimpleName(),
+                            id));
         }
     }
 
@@ -163,6 +183,77 @@ class PublikationServiceTest {
             verify(publikationRepository, times(1)).findAllKurzformen();
             assertThat(formContext.kurzformen()).isEqualTo(allKurzformen);
         }
+    }
 
+    @Nested
+    class GetPublikationFormContextDTO {
+
+        private static final String KURZFORM = "K";
+
+        @Test
+        void givenValidValues_thenCreateDTO() {
+            // Given
+            final String kurzform = KURZFORM;
+            final String bezeichnung = BEZEICHNUNG;
+
+            // When
+            final PublikationFormContextDTO result = new PublikationFormContextDTO(kurzform, bezeichnung);
+
+            // Then
+            assertThat(result.kurzform()).isEqualTo(kurzform);
+            assertThat(result.bezeichnung()).isEqualTo(bezeichnung);
+        }
+
+        @Test
+        void givenNullKurzform_thenCreateDTOWithNullKurzform() {
+            // When
+            final PublikationFormContextDTO result = new PublikationFormContextDTO(null, BEZEICHNUNG);
+
+            // Then
+            assertThat(result.kurzform()).isNull();
+            assertThat(result.bezeichnung()).isEqualTo(BEZEICHNUNG);
+        }
+
+        @Test
+        void givenNullBezeichnung_thenCreateDTOWithNullBezeichnung() {
+            // When
+            final PublikationFormContextDTO result = new PublikationFormContextDTO(KURZFORM, null);
+
+            // Then
+            assertThat(result.kurzform()).isEqualTo(KURZFORM);
+            assertThat(result.bezeichnung()).isNull();
+        }
+
+        @Test
+        void givenBothValuesNull_thenCreateDTOWithNullValues() {
+            // When
+            final PublikationFormContextDTO result = new PublikationFormContextDTO(null, null);
+
+            // Then
+            assertThat(result.kurzform()).isNull();
+            assertThat(result.bezeichnung()).isNull();
+        }
+
+        @Test
+        void givenEqualDTOs_thenTheyAreEqual() {
+            // Given
+            final PublikationFormContextDTO dto1 = new PublikationFormContextDTO(KURZFORM, BEZEICHNUNG);
+            final PublikationFormContextDTO dto2 = new PublikationFormContextDTO(KURZFORM, BEZEICHNUNG);
+
+            // Then
+            assertThat(dto1)
+                    .isEqualTo(dto2)
+                    .hasSameHashCodeAs(dto2);
+        }
+
+        @Test
+        void givenDifferentDTOs_thenTheyAreNotEqual() {
+            // Given
+            final PublikationFormContextDTO dto1 = new PublikationFormContextDTO(KURZFORM, BEZEICHNUNG);
+            final PublikationFormContextDTO dto2 = new PublikationFormContextDTO("L", BEZEICHNUNG);
+
+            // Then
+            assertThat(dto1).isNotEqualTo(dto2);
+        }
     }
 }

@@ -1,28 +1,29 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": [
-    "env.d.ts",
+    "vite-env.d.ts",
     "declarations.d.ts",
     "router.d.ts",
     "route-map.d.ts",
-    "src/**/*",
+    "src/**/*.ts",
     "src/**/*.vue"
   ],
   "exclude": ["tests/**/*"],
   "compilerOptions": {
+    /* Build */
+    "types": [
+      "vite/client",
+      "unplugin-fonts/client",
+      "@intlify/unplugin-vue-i18n/messages"
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "allowArbitraryExtensions": true,
     "composite": true,
     "tsBuildInfoFile": "./cache/tsconfig.app.tsbuildinfo",
-    "paths": {
-      "@/*": ["./src/*"],
-      "@vue/shared": [
-        // Needs to be removed in future if TS2742: The inferred type of '__VLS_export' error does not occur anymore!
-        "./node_modules/@vue/shared"
-      ]
-    },
-    "allowSyntheticDefaultImports": true,
-    "allowImportingTsExtensions": false,
-    "noUncheckedSideEffectImports": true,
-    "noUncheckedIndexedAccess": true,
-    "types": ["unplugin-fonts/client", "@intlify/unplugin-vue-i18n/messages"]
+
+    /* Lint */
+    "noUncheckedIndexedAccess": true
   }
 }

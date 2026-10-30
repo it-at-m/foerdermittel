@@ -1,0 +1,75 @@
+import { fileURLToPath, URL } from "node:url";
+
+import jsEslintConfig from "@eslint/js";
+import vueI18nEslintConfig from "@intlify/eslint-plugin-vue-i18n";
+import vuePrettierEslintConfigSkipFormatting from "@vue/eslint-config-prettier/skip-formatting";
+import {
+  defineConfigWithVueTs,
+  vueTsConfigs,
+} from "@vue/eslint-config-typescript";
+import { ESLint } from "eslint";
+import vueEslintConfig from "eslint-plugin-vue";
+import { includeIgnoreFile } from "eslint/config";
+
+const prettierIgnorePath = fileURLToPath(
+  new URL(".prettierignore", import.meta.url)
+);
+
+export default defineConfigWithVueTs(
+  ESLint.defaultConfig,
+  jsEslintConfig.configs.recommended,
+  vueEslintConfig.configs["flat/recommended-error"],
+  vueTsConfigs.strict,
+  vueTsConfigs.stylistic,
+  // @ts-expect-error: TS2345 — plugin not providing correct ConfigInput type
+  ...vueI18nEslintConfig.configs.recommended,
+  vuePrettierEslintConfigSkipFormatting,
+  {
+    linterOptions: {
+      reportUnusedDisableDirectives: "error",
+      reportUnusedInlineConfigs: "error",
+    },
+    rules: {
+      "no-console": ["error", { allow: ["debug"] }],
+      "vue/component-name-in-template-casing": [
+        "error",
+        "kebab-case",
+        { registeredComponentsOnly: false },
+      ],
+      "vue/require-default-prop": "off",
+      // Enforce i18n best practices manually as no stylistic ruleset exists yet
+      "@intlify/vue-i18n/key-format-style": ["error"], // enforce camelCase for message keys
+      "@intlify/vue-i18n/no-duplicate-keys-in-locale": ["error"],
+      "@intlify/vue-i18n/no-missing-keys-in-other-locales": ["error"],
+      "@intlify/vue-i18n/no-unknown-locale": ["error"],
+      "@intlify/vue-i18n/no-unused-keys": [
+        "error",
+        {
+          ignores: ["/^common\\.roles\\./"],
+        },
+      ],
+      "@typescript-eslint/no-invalid-void-type": "off",
+    },
+    settings: {
+      "vue-i18n": {
+        localeDir: "./src/locales/*.json",
+        messageSyntaxVersion: "^11.0.0",
+      },
+      "import/core-modules": ["vue-router/auto-routes"],
+    },
+    languageOptions: {
+      globals: {
+        definePage: "readonly",
+      },
+    },
+  },
+  {
+    files: ["src/routes/**/*.vue"],
+    rules: {
+      "vue/multi-word-component-names": "off",
+    },
+  },
+  includeIgnoreFile(prettierIgnorePath, {
+    gitignoreResolution: true,
+  })
+);

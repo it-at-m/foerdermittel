@@ -4,9 +4,21 @@ import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_TEST_PR
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.muenchen.oss.foerdermittel.backend.TestUtils;
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.Bauprogramm;
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammRepository;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichRepository;
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.HauptabschnittRepository;
+import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
+import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungRepository;
 import de.muenchen.oss.foerdermittel.backend.projekt.dao.BasicProjektDAO;
+import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
+import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietRepository;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittRepository;
 import java.math.BigDecimal;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -36,13 +48,51 @@ class ProjektRepositoryIntegrationTest {
     @Autowired
     private FoerderbereichRepository foerderbereichRepository;
 
+    @Autowired
+    private StadtbezirkRepository stadtbezirkRepository;
+
+    @Autowired
+    private UnterabschnittRepository unterabschnittRepository;
+
+    @Autowired
+    private HauptabschnittRepository hauptabschnittRepository;
+
+    @Autowired
+    private KurzbezeichnungRepository kurzbezeichnungRepository;
+
+    @Autowired
+    private SiedlungsgebietRepository siedlungsgebietRepository;
+
+    @Autowired
+    private BauprogrammRepository bauprogrammRepository;
+
     @Test
     void givenProjects_thenReturnsTheirBasicProjection() {
         // Given
         final Foerderbereich foerderbereich = new Foerderbereich(
                 BigDecimal.valueOf(99), "Test", false, false, false, false);
         foerderbereichRepository.save(foerderbereich);
-        projektRepository.save(new Projekt("P-123", "Projektname", "Projektstraße 1", foerderbereich));
+
+        final Stadtbezirk stadtbezirk = new Stadtbezirk(
+                BigDecimal.valueOf(99), "Test");
+        stadtbezirkRepository.save(stadtbezirk);
+
+        final Hauptabschnitt exampleHa2 = new Hauptabschnitt("ha", "bz2");
+        hauptabschnittRepository.save(exampleHa2);
+        final Unterabschnitt unterabschnitt = new Unterabschnitt("L", "Test", exampleHa2);
+        unterabschnittRepository.save(unterabschnitt);
+
+        final Kurzbezeichnung kurzbezeichnung = new Kurzbezeichnung("KB1", "Test");
+        kurzbezeichnungRepository.save(kurzbezeichnung);
+
+        final Siedlungsgebiet siedlungsgebiet = new Siedlungsgebiet(new BigDecimal(1), "Test");
+        siedlungsgebietRepository.save(siedlungsgebiet);
+
+        final Bauprogramm bauprogramm = new Bauprogramm(new BigDecimal(1), "Test");
+        bauprogrammRepository.save(bauprogramm);
+
+        projektRepository.save(new Projekt("P-123", "Projektname", "Projektstraße 1", "2024", foerderbereich, stadtbezirk, unterabschnitt, kurzbezeichnung,
+                siedlungsgebiet, bauprogramm, Krisofp.K));
 
         // When
         final List<BasicProjektDAO> result = projektRepository.findAllAsBasic();
