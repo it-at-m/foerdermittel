@@ -1,6 +1,8 @@
 package de.muenchen.oss.foerdermittel.backend.krankenhaus.dto;
 
 import de.muenchen.oss.foerdermittel.backend.krankenhaus.Krankenhaus;
+import de.muenchen.oss.foerdermittel.backend.krankenhaus.KrankenhausFormContext;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -16,5 +18,9 @@ public interface KrankenhausMapper {
 
     @Mapping(target = "krhname", ignore = true)
     Krankenhaus toEntity(KrankenhausUpdateDTO krankenhausUpdateDTO);
+
+    KrankenhausFormContext toFormContext(Krankenhaus krankenhaus);
+
+    List<KrankenhausFormContextDTO> toFormContext(List<Krankenhaus> krankenhausList);
 
 }
