@@ -250,6 +250,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("domain.report.annahmeAnordnungSAP"),
+        props: {
+          to: "/report/annahmeanordnungsap",
+        },
       },
       {
         title: t("domain.report.auswertungProjekt.modelName"),
