@@ -14,12 +14,12 @@
           :model-value="projnr"
           :label="t('model.projekt.projnr')"
           :display-mode="displayMode"
+          density="comfortable"
           readonly
         />
       </v-col>
     </v-row>
 
-    <!-- Bestandteile der Projektnummer -->
     <v-row>
       <v-col
         cols="12"
@@ -36,6 +36,7 @@
             ProjektCreateDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="uasUa"
+          density="comfortable"
           clearable
         />
       </v-col>
@@ -53,6 +54,7 @@
           "
           validation-attribute-key="jahr"
           :readonly="displayMode !== InputDisplayMode.CREATE"
+          density="comfortable"
           @update:model-value="updateNumberField('jahr', $event)"
           @blur="formatJahr"
         />
@@ -71,6 +73,7 @@
           "
           validation-attribute-key="lfdnr1"
           :readonly="displayMode !== InputDisplayMode.CREATE"
+          density="comfortable"
           @update:model-value="updateNumberField('lfdnr1', $event)"
         />
       </v-col>
@@ -88,6 +91,7 @@
           "
           validation-attribute-key="lfdnr2"
           :readonly="displayMode !== InputDisplayMode.CREATE"
+          density="comfortable"
           @update:model-value="updateNumberField('lfdnr2', $event)"
           @blur="formatLfdnr2"
         />
@@ -110,6 +114,7 @@
           "
           validation-attribute-key="fobFb"
           clearable
+          density="comfortable"
         />
       </v-col>
 
@@ -129,6 +134,7 @@
           "
           validation-attribute-key="kurzbez"
           clearable
+          density="comfortable"
         />
       </v-col>
     </v-row>
@@ -147,6 +153,7 @@
             ProjektCreateDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="pname"
+          density="comfortable"
         />
       </v-col>
 
@@ -162,6 +169,7 @@
             ProjektCreateDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="pstrasse"
+          density="comfortable"
         />
       </v-col>
 
@@ -177,26 +185,35 @@
             ProjektCreateDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="projart"
+          density="comfortable"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <fm-checkbox
+          v-model="modelValue.refinanzierbar"
+          :display-mode="displayMode"
+          :label="t('model.projekt.refinanzierbar')"
         />
       </v-col>
 
       <v-col
         cols="12"
-        md="6"
+        md="3"
       >
-        <fm-text-area
-          v-model="modelValue.notizen"
+        <fm-checkbox
+          v-model="modelValue.kauf"
           :display-mode="displayMode"
-          :label="t('model.projekt.notizen')"
+          :label="t('model.projekt.kauf')"
         />
       </v-col>
     </v-row>
-
-    <!-- Weitere Stammdaten -->
     <v-row>
       <v-col
         cols="12"
-        md="4"
+        md="6"
       >
         <fm-autocomplete
           v-model="modelValue.stadtbezirk"
@@ -209,13 +226,14 @@
             ProjektCreateDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="stadtbezirk"
+          density="comfortable"
           clearable
         />
       </v-col>
 
       <v-col
         cols="12"
-        md="4"
+        md="6"
       >
         <fm-autocomplete
           v-model="modelValue.krhname"
@@ -228,13 +246,16 @@
             ProjektCreateDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="krhname"
+          density="comfortable"
           clearable
         />
       </v-col>
+    </v-row>
 
+    <v-row>
       <v-col
         cols="12"
-        md="4"
+        md="6"
       >
         <fm-autocomplete
           v-model="modelValue.siedlungsgebiet"
@@ -247,6 +268,7 @@
             ProjektCreateDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="siedlungsgebiet"
+          density="comfortable"
           clearable
         />
       </v-col>
@@ -285,10 +307,10 @@
             ProjektCreateDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="bauprogramm"
+          density="comfortable"
           clearable
         />
       </v-col>
-
       <v-col
         cols="12"
         md="6"
@@ -312,28 +334,7 @@
     <v-row>
       <v-col
         cols="12"
-        md="3"
-      >
-        <fm-checkbox
-          v-model="modelValue.refinanzierbar"
-          :display-mode="displayMode"
-          :label="t('model.projekt.refinanzierbar')"
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="3"
-      >
-        <fm-checkbox
-          v-model="modelValue.kauf"
-          :display-mode="displayMode"
-          :label="t('model.projekt.kauf')"
-        />
-      </v-col>
-      <v-col
-        cols="12"
-        md="2"
+        md="4"
       >
         <fm-number-input
           :v-model="modelValue.kripplatz"
@@ -343,12 +344,13 @@
             ProjektCreateDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="kripplatz"
+          density="comfortable"
         />
       </v-col>
 
       <v-col
         cols="12"
-        md="2"
+        md="4"
       >
         <fm-number-input
           :v-model="modelValue.kigaplatz"
@@ -358,11 +360,12 @@
             ProjektCreateDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="kigaplatz"
+          density="comfortable"
         />
       </v-col>
       <v-col
         cols="12"
-        md="2"
+        md="4"
       >
         <fm-number-input
           :v-model="modelValue.hortplatz"
@@ -372,6 +375,16 @@
             ProjektCreateDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="hortplatz"
+          density="comfortable"
+        />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <fm-text-area
+          v-model="modelValue.notizen"
+          :display-mode="displayMode"
+          :label="t('model.projekt.notizen')"
         />
       </v-col>
     </v-row>
