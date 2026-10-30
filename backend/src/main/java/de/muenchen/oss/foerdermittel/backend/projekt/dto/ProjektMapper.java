@@ -21,6 +21,7 @@ public interface ProjektMapper {
     @Mapping(source = "bauprogramm.bauprogramm", target = "bauprogramm")
     ProjektResponseDTO toDTO(Projekt projekt);
 
+    // Create
     @Mapping(target = "foerderbereich", ignore = true)
     @Mapping(target = "unterabschnitt", ignore = true)
     @Mapping(target = "kurzbezeichnung", ignore = true)
@@ -30,6 +31,7 @@ public interface ProjektMapper {
     @Mapping(target = "bauprogramm", ignore = true)
     Projekt toEntity(ProjektCreateDTO projektCreateDTO);
 
+    // Update
     @Mapping(target = "projnr", ignore = true)
     @Mapping(target = "jahr", ignore = true)
     @Mapping(target = "lfdnr1", ignore = true)

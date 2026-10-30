@@ -4,7 +4,6 @@
     :readonly="displayMode === InputDisplayMode.READ"
     @update:model-value="onValidityChanged"
   >
-    <!-- Projektnummer -->
     <v-row>
       <v-col
         cols="12"
@@ -128,7 +127,6 @@
           item-value="kurzbez"
           :item-title="getKurzbezeichnungTitle"
           :label="t('model.projekt.kurzbez')"
-          :readonly="displayMode !== InputDisplayMode.CREATE"
           :validation-attribute-map="
             ProjektCreateDTOPropertyValidationAttributesMap
           "
@@ -221,7 +219,6 @@
           item-value="stadtbezirk"
           :item-title="getStadtbezirkTitle"
           :label="t('model.projekt.stadtbezirk')"
-          :readonly="displayMode !== InputDisplayMode.CREATE"
           :validation-attribute-map="
             ProjektCreateDTOPropertyValidationAttributesMap
           "
@@ -241,7 +238,6 @@
           item-value="krhname"
           :item-title="getKrankenhausTitle"
           :label="t('model.projekt.krhname')"
-          :readonly="displayMode !== InputDisplayMode.CREATE"
           :validation-attribute-map="
             ProjektCreateDTOPropertyValidationAttributesMap
           "
@@ -263,7 +259,6 @@
           item-value="siedlungsgebiet"
           :item-title="getSiedlungsgebietTitle"
           :label="t('model.projekt.siedlungsgebiet')"
-          :readonly="displayMode !== InputDisplayMode.CREATE"
           :validation-attribute-map="
             ProjektCreateDTOPropertyValidationAttributesMap
           "
@@ -302,7 +297,6 @@
           item-value="bauprogramm"
           :item-title="getBauprogrammTitle"
           :label="t('model.projekt.bauprogramm')"
-          :readonly="displayMode !== InputDisplayMode.CREATE"
           :validation-attribute-map="
             ProjektCreateDTOPropertyValidationAttributesMap
           "
@@ -337,7 +331,7 @@
         md="4"
       >
         <fm-number-input
-          :v-model="modelValue.kripplatz"
+          v-model="modelValue.kripplatz"
           :display-mode="displayMode"
           :label="t('model.projekt.kripplatz')"
           :validation-attribute-map="
@@ -353,7 +347,7 @@
         md="4"
       >
         <fm-number-input
-          :v-model="modelValue.kigaplatz"
+          v-model="modelValue.kigaplatz"
           :display-mode="displayMode"
           :label="t('model.projekt.kigaplatz')"
           :validation-attribute-map="
@@ -368,7 +362,7 @@
         md="4"
       >
         <fm-number-input
-          :v-model="modelValue.hortplatz"
+          v-model="modelValue.hortplatz"
           :display-mode="displayMode"
           :label="t('model.projekt.hortplatz')"
           :validation-attribute-map="

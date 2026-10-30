@@ -1,9 +1,13 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.Bauprogramm;
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammRepository;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammService;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichRepository;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichService;
+import de.muenchen.oss.foerdermittel.backend.krankenhaus.Krankenhaus;
+import de.muenchen.oss.foerdermittel.backend.krankenhaus.KrankenhausRepository;
 import de.muenchen.oss.foerdermittel.backend.krankenhaus.KrankenhausService;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungRepository;
@@ -16,7 +20,11 @@ import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungProjekt
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportBewilligungAuszahlungProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
+import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietRepository;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietService;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkService;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittRepository;
@@ -49,6 +57,10 @@ public class ProjektService {
     private final BauprogrammService bauprogrammService;
     private final SiedlungsgebietService siedlungsgebietService;
     private final UnterabschnittRepository unterabschnittRepository;
+    private final StadtbezirkRepository stadtbezirkRepository;
+    private final KrankenhausRepository krankenhausRepository;
+    private final SiedlungsgebietRepository siedlungsgebietRepository;
+    private final BauprogrammRepository bauprogrammRepository;
     private final KrankenhausService krankenhausService;
 
     private final ProjektMapper projektMapper;
@@ -114,6 +126,19 @@ public class ProjektService {
         projekt.setUnterabschnitt(ServiceUtils.getEntityOrThrowNotFoundException(
                 projektCreateDTO.uasUa(), unterabschnittRepository, Unterabschnitt.class));
 
+        projekt.setStadtbezirk(ServiceUtils.getEntityOrThrowNotFoundException(
+                BigDecimal.valueOf(projektCreateDTO.stadtbezirk()),
+                stadtbezirkRepository, Stadtbezirk.class));
+        projekt.setKrankenhaus(ServiceUtils.getEntityOrThrowNotFoundException(
+                projektCreateDTO.krhname(), krankenhausRepository, Krankenhaus.class));
+        projekt.setSiedlungsgebiet(ServiceUtils.getEntityOrThrowNotFoundException(
+                BigDecimal.valueOf(projektCreateDTO.siedlungsgebiet()),
+                siedlungsgebietRepository,
+                Siedlungsgebiet.class));
+        projekt.setBauprogramm(ServiceUtils.getEntityOrThrowNotFoundException(
+                BigDecimal.valueOf(projektCreateDTO.bauprogramm()),
+                bauprogrammRepository, Bauprogramm.class));
+
         if (projekt.getKauf() == null) {
             projekt.setKauf(false);
         }
@@ -123,13 +148,21 @@ public class ProjektService {
 
         return projektRepository.insert(projekt);
     }
-
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Projekt updateProjekt(final ProjektUpdateDTO projektUpdateDTO, final String ha) {
         final Projekt foundProjekt = ServiceUtils.getEntityOrThrowNotFoundException(
                 ha, projektRepository, Projekt.class);
 
         projektMapper.updateEntity(projektUpdateDTO, foundProjekt);
+
+        foundProjekt.setStadtbezirk(ServiceUtils.getEntityOrThrowNotFoundException(
+                BigDecimal.valueOf(projektUpdateDTO.stadtbezirk()), stadtbezirkRepository, Stadtbezirk.class));
+        foundProjekt.setKrankenhaus(ServiceUtils.getEntityOrThrowNotFoundException(
+                projektUpdateDTO.krhname(), krankenhausRepository, Krankenhaus.class));
+        foundProjekt.setSiedlungsgebiet(ServiceUtils.getEntityOrThrowNotFoundException(
+                BigDecimal.valueOf(projektUpdateDTO.siedlungsgebiet()), siedlungsgebietRepository, Siedlungsgebiet.class));
+        foundProjekt.setBauprogramm(ServiceUtils.getEntityOrThrowNotFoundException(
+                BigDecimal.valueOf(projektUpdateDTO.bauprogramm()), bauprogrammRepository, Bauprogramm.class));
 
         log.debug("Update Projekt {}", foundProjekt);
         return projektRepository.update(foundProjekt);

@@ -13,6 +13,7 @@
         :handle-delete="handleDelete"
         :form-ref="projektFormRef"
         should-load-form-context
+        :expandable="true"
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <projekt-form
@@ -23,6 +24,95 @@
             :projekt-form-context="projektFormContext"
             @is-valid="updateValidity"
           />
+        </template>
+        <template #expanded="{ item }">
+          <div class="pa-4">
+            <v-row>
+              <v-col cols="12" md="2">
+                <div class="text-subtitle-2 mb-2">
+                  {{ t("model.projekt.stadtbezirk") }}
+                </div>
+                <div>{{ item.stadtbezirk ?? "—" }}</div>
+              </v-col>
+
+              <v-col cols="12" md="2">
+                <div class="text-subtitle-2 mb-2">
+                  {{ t("model.projekt.krhname") }}
+                </div>
+                <div>{{ item.krhname ?? "—" }}</div>
+              </v-col>
+
+              <v-col cols="12" md="2">
+                <div class="text-subtitle-2 mb-2">
+                  {{ t("model.projekt.siedlungsgebiet") }}
+                </div>
+                <div>{{ item.siedlungsgebiet ?? "—" }}</div>
+              </v-col>
+
+              <v-col cols="12" md="2">
+                <div class="text-subtitle-2 mb-2">
+                  {{ t("model.projekt.bauprogramm") }}
+                </div>
+                <div>{{ item.bauprogramm ?? "—" }}</div>
+              </v-col>
+
+              <v-col cols="12" md="2">
+                <div class="text-subtitle-2 mb-2">
+                  {{ t("model.projekt.krisofp") }}
+                </div>
+                <div>{{ item.krisofp ?? "—" }}</div>
+              </v-col>
+
+              <v-col cols="12" md="2">
+                <div class="text-subtitle-2 mb-2">
+                  {{ t("model.projekt.krhzweck") }}
+                </div>
+                <div>{{ item.krhzweck ?? "—" }}</div>
+              </v-col>
+
+              <v-col cols="12" md="2">
+                <div class="text-subtitle-2 mb-2">
+                  {{ t("model.projekt.refinanzierbar") }}
+                </div>
+                <div>{{ item.refinanzierbar ?? "—" }}</div>
+              </v-col>
+
+              <v-col cols="12" md="2">
+                <div class="text-subtitle-2 mb-2">
+                  {{ t("model.projekt.kauf") }}
+                </div>
+                <div>{{ item.kauf ?? "—" }}</div>
+              </v-col>
+
+              <v-col cols="12" md="2">
+                <div class="text-subtitle-2 mb-2">
+                  {{ t("model.projekt.kripplatz") }}
+                </div>
+                <div>{{ item.kripplatz ?? "—" }}</div>
+              </v-col>
+
+              <v-col cols="12" md="2">
+                <div class="text-subtitle-2 mb-2">
+                  {{ t("model.projekt.kigaplatz") }}
+                </div>
+                <div>{{ item.kigaplatz ?? "—" }}</div>
+              </v-col>
+
+              <v-col cols="12" md="2">
+                <div class="text-subtitle-2 mb-2">
+                  {{ t("model.projekt.hortplatz") }}
+                </div>
+                <div>{{ item.hortplatz ?? "—" }}</div>
+              </v-col>
+
+              <v-col cols="12">
+                <div class="text-subtitle-2 mb-2">
+                  {{ t("model.projekt.notizen") }}
+                </div>
+                <div style="white-space: pre-wrap">{{ item.notizen || "—" }}</div>
+              </v-col>
+            </v-row>
+          </div>
         </template>
       </crud-card>
     </template>
@@ -81,11 +171,6 @@ const headers: DataTableHeader<Partial<ProjektResponseDTO>>[] = [
     value: "projart",
     sortable: true,
   },
-  {
-    title: t("model.projekt.notizen"),
-    value: "notizen",
-    sortable: true,
-  },
 ];
 
 const EMPTY_ITEM_TEMPLATE: Partial<ProjektResponseDTO> = {
@@ -121,7 +206,6 @@ type ProjektFormType = InstanceType<typeof ProjektForm>;
 const projektFormRef = useTemplateRef<ProjektFormType>("projektForm");
 
 const handleCreate = async (projektCreateDTO: Partial<ProjektResponseDTO>) => {
-  // TODO: some type checking improvements
   const model = projektCreateDTO as ProjektResponseDTO;
   await projektApi.create.call({
     projektCreateDTO: model,
@@ -129,7 +213,6 @@ const handleCreate = async (projektCreateDTO: Partial<ProjektResponseDTO>) => {
 };
 
 const handleUpdate = async (projektUpdateDTO: Partial<ProjektResponseDTO>) => {
-  // TODO: some type checking improvements
   const model = projektUpdateDTO as ProjektResponseDTO;
   await projektApi.update.call({
     id: model.projnr,
