@@ -1,18 +1,15 @@
 import { fileURLToPath, URL } from "node:url";
 
-
-
 import jsEslintConfig from "@eslint/js";
 import vueI18nEslintConfig from "@intlify/eslint-plugin-vue-i18n";
-import { defineConfigWithVueTs, vueTsConfigs } from "@vue/eslint-config-typescript";
+import {
+  defineConfigWithVueTs,
+  vueTsConfigs,
+} from "@vue/eslint-config-typescript";
 import { ESLint } from "eslint";
 import skipFormatting from "eslint-config-prettier/flat";
 import vueEslintConfig from "eslint-plugin-vue";
 import { includeIgnoreFile } from "eslint/config";
-
-
-
-
 
 const prettierIgnorePath = fileURLToPath(
   new URL(".prettierignore", import.meta.url)
