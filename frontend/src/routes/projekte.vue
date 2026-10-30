@@ -7,10 +7,6 @@
         :table-headers="headers"
         :api="projektApi"
         :domain-key="domainKey"
-        :should-load-form-context="false"
-        :handle-create="() => {}"
-        :handle-update="() => {}"
-        :handle-delete="() => {}"
       />
     </template>
   </base-view>
