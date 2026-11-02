@@ -36,7 +36,6 @@
           "
           validation-attribute-key="uasUa"
           density="comfortable"
-          clearable
         />
       </v-col>
 
@@ -102,7 +101,7 @@
         md="6"
       >
         <fm-autocomplete
-          v-model="modelValue.fobFb"
+          :model-value="modelValue.fobFb"
           :items="projektFormContext.fbs"
           item-value="fb"
           :item-title="getFoerderbereichTitle"
@@ -112,8 +111,8 @@
             ProjektCreateDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="fobFb"
-          clearable
           density="comfortable"
+          @update:model-value="updateNumberField('fobFb', $event)"
         />
       </v-col>
 
@@ -214,7 +213,7 @@
         md="6"
       >
         <fm-autocomplete
-          v-model="modelValue.stadtbezirk"
+          :model-value="modelValue.stadtbezirk"
           :items="projektFormContext.bezs"
           item-value="stadtbezirk"
           :item-title="getStadtbezirkTitle"
@@ -225,6 +224,7 @@
           validation-attribute-key="stadtbezirk"
           density="comfortable"
           clearable
+          @update:model-value="updateNumberField('stadtbezirk', $event)"
         />
       </v-col>
 
@@ -254,7 +254,7 @@
         md="6"
       >
         <fm-autocomplete
-          v-model="modelValue.siedlungsgebiet"
+          :model-value="modelValue.siedlungsgebiet"
           :items="projektFormContext.sgts"
           item-value="siedlungsgebiet"
           :item-title="getSiedlungsgebietTitle"
@@ -265,6 +265,7 @@
           validation-attribute-key="siedlungsgebiet"
           density="comfortable"
           clearable
+          @update:model-value="updateNumberField('siedlungsgebiet', $event)"
         />
       </v-col>
 
@@ -292,7 +293,7 @@
         md="6"
       >
         <fm-autocomplete
-          v-model="modelValue.bauprogramm"
+          :model-value="modelValue.bauprogramm"
           :items="projektFormContext.bpgs"
           item-value="bauprogramm"
           :item-title="getBauprogrammTitle"
@@ -303,6 +304,7 @@
           validation-attribute-key="bauprogramm"
           density="comfortable"
           clearable
+          @update:model-value="updateNumberField('bauprogramm', $event)"
         />
       </v-col>
       <v-col
@@ -479,10 +481,18 @@ watch(
 );
 
 function updateNumberField(
-  field: "jahr" | "lfdnr1" | "lfdnr2" | "stadtbezirk" | "siedlungsgebiet",
+  field:
+    | "jahr"
+    | "lfdnr1"
+    | "lfdnr2"
+    | "fobFb"
+    | "stadtbezirk"
+    | "siedlungsgebiet"
+    | "bauprogramm",
   value: string | number | null | undefined
 ) {
   const normalizedValue = String(value ?? "").trim();
+
   modelValue.value[field] =
     normalizedValue === "" ? undefined : Number(normalizedValue);
 }
@@ -500,11 +510,11 @@ function formatLfdnr2() {
 }
 
 function getFoerderbereichTitle(item: FoerderbereichFormContextDTO) {
-  return item ? `${item.fb} (${item.bezeichnung})` : "";
+  return item ? `${item.fb ?? ""} (${item.bezeichnung})` : "";
 }
 
 function getStadtbezirkTitle(item: StadtbezirkFormContextDTO) {
-  return item ? `${item.stadtbezirk} (${item.bezeichnung})` : "";
+  return item ? `${item.stadtbezirk ?? ""} (${item.bezeichnung})` : "";
 }
 
 function getUnterabschnittTitle(item: UnterabschnittFormContextDTO) {
@@ -520,7 +530,7 @@ function getSiedlungsgebietTitle(item: SiedlungsgebietFormContextDTO) {
 }
 
 function getBauprogrammTitle(item: BauprogrammFormContextDTO) {
-  return item ? `${item.bauprogramm} (${item.bezeichnung})` : "";
+  return item ? `${item.bauprogramm ?? ""} (${item.bezeichnung})` : "";
 }
 
 function getKrankenhausTitle(item: KrankenhausFormContextDTO) {

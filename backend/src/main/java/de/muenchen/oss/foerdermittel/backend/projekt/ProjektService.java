@@ -125,26 +125,18 @@ public class ProjektService {
                 projektCreateDTO.kurzbez(), kurzbezeichnungRepository, Kurzbezeichnung.class));
         projekt.setUnterabschnitt(ServiceUtils.getEntityOrThrowNotFoundException(
                 projektCreateDTO.uasUa(), unterabschnittRepository, Unterabschnitt.class));
-
         projekt.setStadtbezirk(ServiceUtils.getEntityOrThrowNotFoundException(
-                BigDecimal.valueOf(projektCreateDTO.stadtbezirk()),
-                stadtbezirkRepository, Stadtbezirk.class));
+                BigDecimal.valueOf(projektCreateDTO.stadtbezirk()), stadtbezirkRepository, Stadtbezirk.class));
         projekt.setKrankenhaus(ServiceUtils.getEntityOrThrowNotFoundException(
                 projektCreateDTO.krhname(), krankenhausRepository, Krankenhaus.class));
         projekt.setSiedlungsgebiet(ServiceUtils.getEntityOrThrowNotFoundException(
                 BigDecimal.valueOf(projektCreateDTO.siedlungsgebiet()),
-                siedlungsgebietRepository,
-                Siedlungsgebiet.class));
+                siedlungsgebietRepository, Siedlungsgebiet.class));
         projekt.setBauprogramm(ServiceUtils.getEntityOrThrowNotFoundException(
-                BigDecimal.valueOf(projektCreateDTO.bauprogramm()),
-                bauprogrammRepository, Bauprogramm.class));
+                BigDecimal.valueOf(projektCreateDTO.bauprogramm()), bauprogrammRepository, Bauprogramm.class));
 
-        if (projekt.getKauf() == null) {
-            projekt.setKauf(false);
-        }
-        if (projekt.getRefinanzierbar() == null) {
-            projekt.setRefinanzierbar(true);
-        }
+        projekt.setKauf(projekt.getKauf() != null && projekt.getKauf());
+        projekt.setRefinanzierbar(projekt.getRefinanzierbar() == null || projekt.getRefinanzierbar());
 
         return projektRepository.insert(projekt);
     }
@@ -156,13 +148,15 @@ public class ProjektService {
 
         projektMapper.updateEntity(projektUpdateDTO, foundProjekt);
 
+        foundProjekt.setFoerderbereich(ServiceUtils.getEntityOrThrowNotFoundException(
+                BigDecimal.valueOf(projektUpdateDTO.fobFb()), foerderbereichRepository, Foerderbereich.class));
         foundProjekt.setStadtbezirk(ServiceUtils.getEntityOrThrowNotFoundException(
-                BigDecimal.valueOf(projektUpdateDTO.stadtbezirk()),
-                stadtbezirkRepository, Stadtbezirk.class));
+                BigDecimal.valueOf(projektUpdateDTO.stadtbezirk()), stadtbezirkRepository, Stadtbezirk.class));
         foundProjekt.setKrankenhaus(ServiceUtils.getEntityOrThrowNotFoundException(
                 projektUpdateDTO.krhname(), krankenhausRepository, Krankenhaus.class));
         foundProjekt.setSiedlungsgebiet(ServiceUtils.getEntityOrThrowNotFoundException(
-                BigDecimal.valueOf(projektUpdateDTO.siedlungsgebiet()), siedlungsgebietRepository, Siedlungsgebiet.class));
+                BigDecimal.valueOf(projektUpdateDTO.siedlungsgebiet()),
+                siedlungsgebietRepository, Siedlungsgebiet.class));
         foundProjekt.setBauprogramm(ServiceUtils.getEntityOrThrowNotFoundException(
                 BigDecimal.valueOf(projektUpdateDTO.bauprogramm()), bauprogrammRepository, Bauprogramm.class));
 
