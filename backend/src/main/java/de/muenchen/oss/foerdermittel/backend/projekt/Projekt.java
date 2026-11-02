@@ -38,11 +38,11 @@ public class Projekt extends AuditableEntity {
     @Column(name = "projnr", nullable = false)
     @NotNull @Size(min = 7, max = 7) private String projnr;
 
-    @Column(name = "jahr", nullable = false)
-    @NotNull private String jahr;
+    @Column(name = "jahr")
+    private String jahr;
 
-    @Column(name = "projart", nullable = false)
-    @Size(min = 1, max = 50) private String projart;
+    @Column(name = "projart")
+    @Size(max = 50) private String projart;
 
     @Column(name = "refinanzierbar", nullable = false)
     private Boolean refinanzierbar;
@@ -50,23 +50,22 @@ public class Projekt extends AuditableEntity {
     @Column(name = "kauf", nullable = false)
     private Boolean kauf;
 
-    @Column(name = "kripplatz", nullable = false, precision = 10)
+    @Column(name = "kripplatz", precision = 10)
     private BigDecimal kripplatz;
 
-    @Column(name = "kigaplatz", nullable = false, precision = 10)
+    @Column(name = "kigaplatz", precision = 10)
     private BigDecimal kigaplatz;
 
-    @Column(name = "hortplatz", nullable = false, precision = 10)
+    @Column(name = "hortplatz", precision = 10)
     private BigDecimal hortplatz;
 
-    @Column(name = "notizen", nullable = false)
-    @Size(min = 1, max = 100) private String notizen;
+    @Column(name = "notizen")
+    @Size(max = 100) private String notizen;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "fob_fb",
-            referencedColumnName = "fb",
-            nullable = false
+            referencedColumnName = "fb"
     )
     private Foerderbereich foerderbereich;
 
@@ -76,57 +75,48 @@ public class Projekt extends AuditableEntity {
     @Column(name = "lfdnr2", length = 2)
     private String lfdnr2;
 
-    @Column(name = "pname", nullable = false)
-    @NotNull @Size(min = 1, max = 100) private String pname;
+    @Column(name = "pname")
+    @Size(max = 100) private String pname;
 
-    @Column(name = "pstrasse", nullable = false)
-    @NotNull @Size(min = 1, max = 100) private String pstrasse;
+    @Column(name = "pstrasse")
+    @Size(max = 100) private String pstrasse;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "bez_stadtbezirk",
-            referencedColumnName = "stadtbezirk",
-            nullable = false
-    )
+    @JoinColumn(name = "bez_stadtbezirk", referencedColumnName = "stadtbezirk")
     private Stadtbezirk stadtbezirk;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "uas_ua",
-            referencedColumnName = "ua",
-            nullable = false
+            referencedColumnName = "ua"
     )
     private Unterabschnitt unterabschnitt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "kur_kurzbez",
-            referencedColumnName = "kurzbez",
-            nullable = false
+            referencedColumnName = "kurzbez"
     )
     private Kurzbezeichnung kurzbezeichnung;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "sgt_siedlungsgebiet",
-            referencedColumnName = "siedlungsgebiet",
-            nullable = false
+            referencedColumnName = "siedlungsgebiet"
     )
     private Siedlungsgebiet siedlungsgebiet;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "bpg_bauprogramm",
-            referencedColumnName = "bauprogramm",
-            nullable = false
+            referencedColumnName = "bauprogramm"
     )
     private Bauprogramm bauprogramm;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "krn_krhname",
-            referencedColumnName = "krhname",
-            nullable = false
+            referencedColumnName = "krhname"
     )
     private Krankenhaus krankenhaus;
 
