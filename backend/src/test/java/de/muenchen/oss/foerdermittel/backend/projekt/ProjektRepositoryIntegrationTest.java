@@ -69,35 +69,54 @@ class ProjektRepositoryIntegrationTest {
     @Test
     void givenProjects_thenReturnsTheirBasicProjection() {
         // Given
-        final Foerderbereich foerderbereich = new Foerderbereich(
-                BigDecimal.valueOf(99), "Test", false, false, false, false);
+        final Foerderbereich foerderbereich =
+                new Foerderbereich(BigDecimal.valueOf(99), "Test", false, false, false, false);
         foerderbereichRepository.save(foerderbereich);
 
-        final Stadtbezirk stadtbezirk = new Stadtbezirk(
-                BigDecimal.valueOf(99), "Test");
+        final Stadtbezirk stadtbezirk =
+                new Stadtbezirk(BigDecimal.valueOf(99), "Test");
         stadtbezirkRepository.save(stadtbezirk);
 
         final Hauptabschnitt exampleHa2 = new Hauptabschnitt("ha", "bz2");
         hauptabschnittRepository.save(exampleHa2);
+
         final Unterabschnitt unterabschnitt = new Unterabschnitt("L", "Test", exampleHa2);
         unterabschnittRepository.save(unterabschnitt);
 
         final Kurzbezeichnung kurzbezeichnung = new Kurzbezeichnung("KB1", "Test");
         kurzbezeichnungRepository.save(kurzbezeichnung);
 
-        final Siedlungsgebiet siedlungsgebiet = new Siedlungsgebiet(new BigDecimal(1), "Test");
+        final Siedlungsgebiet siedlungsgebiet = new Siedlungsgebiet(BigDecimal.ONE, "Test");
         siedlungsgebietRepository.save(siedlungsgebiet);
 
-        final Bauprogramm bauprogramm = new Bauprogramm(new BigDecimal(1), "Test");
+        final Bauprogramm bauprogramm = new Bauprogramm(BigDecimal.ONE, "Test");
         bauprogrammRepository.save(bauprogramm);
 
-        projektRepository.save(new Projekt("P-123", "Projektname", "Projektstraße 1", "2024", foerderbereich, stadtbezirk, unterabschnitt, kurzbezeichnung,
-                siedlungsgebiet, bauprogramm, Krisofp.K));
+        final Projekt projekt = new Projekt();
+        projekt.setProjnr("P123456");
+        projekt.setJahr("24");
+        projekt.setLfdnr1("0");
+        projekt.setLfdnr2("01");
+        projekt.setPname("Projektname");
+        projekt.setPstrasse("Projektstraße 1");
+
+        projekt.setFoerderbereich(foerderbereich);
+        projekt.setStadtbezirk(stadtbezirk);
+        projekt.setUnterabschnitt(unterabschnitt);
+        projekt.setKurzbezeichnung(kurzbezeichnung);
+        projekt.setSiedlungsgebiet(siedlungsgebiet);
+        projekt.setBauprogramm(bauprogramm);
+
+        projekt.setKauf(false);
+        projekt.setRefinanzierbar(true);
+
+        projektRepository.save(projekt);
 
         // When
         final List<BasicProjektDAO> result = projektRepository.findAllAsBasic();
 
         // Then
-        assertThat(result).contains(new BasicProjektDAO("P-123", "Projektname", "Projektstraße 1"));
+        assertThat(result).contains(
+                new BasicProjektDAO("P123456", "Projektname", "Projektstraße 1"));
     }
 }

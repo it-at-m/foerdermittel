@@ -11,6 +11,7 @@ import de.muenchen.oss.foerdermittel.backend.archiv.dto.ArchivResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.archiv.dto.ArchivUpdateDTO;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.Bauprogramm;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammRepository;
+import de.muenchen.oss.foerdermittel.backend.common.AuditableEntity;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichRepository;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
@@ -28,6 +29,7 @@ import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -47,6 +49,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.client.RestTestClient;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -106,29 +109,51 @@ class ArchivIntegrationTest {
     }
 
     private void createExistingProject() {
-        final Foerderbereich foerderbereich = new Foerderbereich(BigDecimal.valueOf(99), "Test", false, false, false, false);
+        final Foerderbereich foerderbereich =
+                new Foerderbereich(BigDecimal.valueOf(99), "Test", false, false, false, false);
         foerderbereichRepository.save(foerderbereich);
 
-        final Stadtbezirk stadtbezirk = new Stadtbezirk(BigDecimal.valueOf(99), "Test Stadtbezirk 1");
+        final Stadtbezirk stadtbezirk =
+                new Stadtbezirk(BigDecimal.valueOf(99), "Test Stadtbezirk 1");
         stadtbezirkRepository.save(stadtbezirk);
 
         final Hauptabschnitt exampleHa2 = new Hauptabschnitt("ha", "bz2");
         hauptabschnittRepository.save(exampleHa2);
+
         final Unterabschnitt unterabschnitt = new Unterabschnitt("L", "Test", exampleHa2);
         unterabschnittRepository.save(unterabschnitt);
 
         final Kurzbezeichnung kurzbezeichnung = new Kurzbezeichnung("KB1", "Test");
         kurzbezeichnungRepository.save(kurzbezeichnung);
 
-        final Siedlungsgebiet siedlungsgebiet = new Siedlungsgebiet(new BigDecimal(1), "Test");
+        final Siedlungsgebiet siedlungsgebiet =
+                new Siedlungsgebiet(BigDecimal.ONE, "Test");
         siedlungsgebietRepository.save(siedlungsgebiet);
 
-        final Bauprogramm bauprogramm = new Bauprogramm(new BigDecimal(1), "Test");
+        final Bauprogramm bauprogramm =
+                new Bauprogramm(BigDecimal.ONE, "Test");
         bauprogrammRepository.save(bauprogramm);
 
-        projektRepository.save(new Projekt(EXISTING_PROJNR, "Testprojekt", "Teststraße", "2025",
-                foerderbereich, stadtbezirk, unterabschnitt, kurzbezeichnung, siedlungsgebiet, bauprogramm, Krisofp.K));
+        final Projekt projekt = new Projekt();
+        projekt.setProjnr(EXISTING_PROJNR);
+        projekt.setJahr("25");
+        projekt.setLfdnr1("0");
+        projekt.setLfdnr2("01");
+        projekt.setFoerderbereich(foerderbereich);
+        projekt.setUnterabschnitt(unterabschnitt);
+        projekt.setKurzbezeichnung(kurzbezeichnung);
 
+        projekt.setStadtbezirk(stadtbezirk);
+        projekt.setSiedlungsgebiet(siedlungsgebiet);
+        projekt.setBauprogramm(bauprogramm);
+        projekt.setKauf(false);
+        projekt.setRefinanzierbar(true);
+
+
+        ReflectionTestUtils.setField(projekt, "anlagevon", "test");
+        ReflectionTestUtils.setField(projekt, "anlagedatum", LocalDateTime.now());
+
+        projektRepository.save(projekt);
     }
 
     private ArchivCreateDTO createArchivRequest() {

@@ -187,8 +187,8 @@ class StadtbezirkServiceTest {
             final List<Stadtbezirk> entities = List.of(entity1, entity2);
 
             final List<StadtbezirkFormContextDTO> expected = List.of(
-                    new StadtbezirkFormContextDTO("1", "Stadtbezirk 1"),
-                    new StadtbezirkFormContextDTO("2", "Stadtbezirk 2"));
+                    new StadtbezirkFormContextDTO(1, "Stadtbezirk 1"),
+                    new StadtbezirkFormContextDTO(2, "Stadtbezirk 2"));
 
             when(stadtbezirkRepository.findAll()).thenReturn(entities);
             when(stadtbezirkMapper.toFormContext(entities)).thenReturn(expected);

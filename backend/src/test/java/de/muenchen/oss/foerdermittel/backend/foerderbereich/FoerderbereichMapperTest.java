@@ -87,7 +87,6 @@ public class FoerderbereichMapperTest {
 
         @Test
         void givenEntity_thenReturnsCorrectFormContextDTO() {
-            // given
             Foerderbereich entity = new Foerderbereich(
                     BigDecimal.valueOf(1),
                     "Test",
@@ -96,18 +95,15 @@ public class FoerderbereichMapperTest {
                     false,
                     true);
 
-            // when
             FoerderbereichFormContextDTO dto = foerderbereichMapper.toFormContext(entity);
 
-            // then
             assertThat(dto).isNotNull();
-            assertThat(dto.fb()).isEqualTo(entity.getFb().toString());
+            assertThat(dto.fb()).isEqualTo(entity.getFb().intValueExact());
             assertThat(dto.bezeichnung()).isEqualTo(entity.getBezeichnung());
         }
 
         @Test
         void givenEntityList_thenReturnsCorrectFormContextDTOList() {
-            // given
             Foerderbereich entity1 = new Foerderbereich(
                     BigDecimal.valueOf(1),
                     "Test 1",
@@ -126,16 +122,14 @@ public class FoerderbereichMapperTest {
 
             List<Foerderbereich> entities = List.of(entity1, entity2);
 
-            // when
             List<FoerderbereichFormContextDTO> dtos = foerderbereichMapper.toFormContext(entities);
 
-            // then
             assertThat(dtos).hasSize(2);
 
-            assertThat(dtos.get(0).fb()).isEqualTo(entity1.getFb().toString());
+            assertThat(dtos.get(0).fb()).isEqualTo(entity1.getFb().intValueExact());
             assertThat(dtos.get(0).bezeichnung()).isEqualTo(entity1.getBezeichnung());
 
-            assertThat(dtos.get(1).fb()).isEqualTo(entity2.getFb().toString());
+            assertThat(dtos.get(1).fb()).isEqualTo(entity2.getFb().intValueExact());
             assertThat(dtos.get(1).bezeichnung()).isEqualTo(entity2.getBezeichnung());
         }
     }

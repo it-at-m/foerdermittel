@@ -24,6 +24,7 @@ import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittRepository;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -40,6 +41,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.client.RestTestClient;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -119,19 +121,31 @@ public class ReportAuswertungProjekteIntegrationTest {
             final Bauprogramm bauprogramm = new Bauprogramm(BigDecimal.ONE, "Test");
             bauprogrammRepository.save(bauprogramm);
 
-            projektRepository.save(
-                    new Projekt(
-                            "P-123",
-                            "Projektname",
-                            "Projektstraße 1",
-                            EXISTING_JAHR,
-                            foerderbereich,
-                            stadtbezirk,
-                            unterabschnitt,
-                            kurzbezeichnung,
-                            siedlungsgebiet,
-                            bauprogramm,
-                            Krisofp.K));
+            final Projekt projekt = new Projekt();
+            projekt.setProjnr("P123456");
+            projekt.setJahr(EXISTING_JAHR);
+            projekt.setLfdnr1("0");
+            projekt.setLfdnr2("01");
+
+            projekt.setPname("Projektname");
+            projekt.setPstrasse("Projektstraße 1");
+
+            projekt.setFoerderbereich(foerderbereich);
+            projekt.setStadtbezirk(stadtbezirk);
+            projekt.setUnterabschnitt(unterabschnitt);
+            projekt.setKurzbezeichnung(kurzbezeichnung);
+            projekt.setSiedlungsgebiet(siedlungsgebiet);
+            projekt.setBauprogramm(bauprogramm);
+
+            projekt.setKrisofp(Krisofp.K);
+            projekt.setKauf(false);
+            projekt.setRefinanzierbar(true);
+
+            ReflectionTestUtils.setField(projekt, "anlagevon", "test");
+            ReflectionTestUtils.setField(projekt, "anlagedatum", LocalDateTime.now());
+
+
+            projektRepository.save(projekt);
         }
 
         @Test
