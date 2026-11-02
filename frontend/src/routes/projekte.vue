@@ -7,7 +7,31 @@
         :table-headers="headers"
         :api="projektApi"
         :domain-key="domainKey"
-      />
+        :filter-default="{ projnr: undefined, fobFb: undefined }"
+      >
+        <template #filter-form="{ filter, updateValidity }">
+          <v-form @update:model-value="updateValidity">
+            <v-row>
+              <v-col cols="6">
+                <v-text-field
+                  v-model="filter.projnr"
+                  :label="t('model.projekt.projnr')"
+                  clearable
+                />
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="6">
+                <v-text-field
+                  v-model="filter.fobFb"
+                  :label="t('model.projekt.fobFb')"
+                  clearable
+                />
+              </v-col>
+            </v-row>
+          </v-form>
+        </template>
+      </crud-card>
     </template>
   </base-view>
 </template>

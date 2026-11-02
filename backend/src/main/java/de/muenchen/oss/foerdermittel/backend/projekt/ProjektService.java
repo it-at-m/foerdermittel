@@ -35,10 +35,11 @@ public class ProjektService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public Page<Projekt> getProjekte(
+            final ProjektFilter filter,
             final Pageable pageable) {
 
         return projektRepository.findAll(
-                pageable);
+                ProjektSpecifications.filter(filter), pageable);
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)

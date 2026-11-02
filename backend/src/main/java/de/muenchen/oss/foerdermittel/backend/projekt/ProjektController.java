@@ -31,10 +31,11 @@ public class ProjektController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<ProjektResponseDTO> getProjekte(
+            @ParameterObject final ProjektFilter projektFilter,
             @ParameterObject @PageableDefault(sort = "projnr") final Pageable pageable) {
 
         return projektService
-                .getProjekte(pageable)
+                .getProjekte(projektFilter, pageable)
                 .map(projektMapper::toDTO);
     }
 
