@@ -25,5 +25,4 @@ class ReportAnnahmeAnordnungSapMapperTest {
                 .containsEntry("P_PROJNR", dto.projnr());
     }
 
-
 }

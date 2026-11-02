@@ -19,8 +19,7 @@ export const {
     GetReportAnnahmeAnordnungSapRequest,
     ReportAnnahmeAnordnungSapFormContext
   >(ReportAnnahmeAnordnungSapControllerApi, {
-    getOpts: (api, req) =>
-      api.getReportAnnahmeAnordnungSapRequestOpts(req),
+    getOpts: (api, req) => api.getReportAnnahmeAnordnungSapRequestOpts(req),
     context: (api) => api.getReportAnnahmeAnordnungSapFormContext(),
   })
 );

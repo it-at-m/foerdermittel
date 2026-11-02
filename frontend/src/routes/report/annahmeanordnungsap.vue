@@ -46,15 +46,13 @@ definePage({
 
 const { t } = useI18n();
 
-const EMPTY_FORM_TEMPLATE: Partial<GetReportAnnahmeAnordnungSapRequest> =
-  {
-    parameters: {
-      projnr: "",
-    },
-  };
+const EMPTY_FORM_TEMPLATE: Partial<GetReportAnnahmeAnordnungSapRequest> = {
+  parameters: {
+    projnr: "",
+  },
+};
 
-const reportAnnahmeAnordnungSapApi =
-  useReportAnnahmeAnordnungSapApi();
+const reportAnnahmeAnordnungSapApi = useReportAnnahmeAnordnungSapApi();
 const reportAnnahmeAnordnungSapFormContext = computed(
   () => reportAnnahmeAnordnungSapApi.context.data.value
 );

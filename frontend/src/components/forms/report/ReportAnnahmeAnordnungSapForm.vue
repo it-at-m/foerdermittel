@@ -1,37 +1,37 @@
 <template>
   <v-form
-      ref="form"
-      :disabled="!reportAnnahmeAnordnungSapFormContext"
-      @update:model-value="onValidityChanged"
+    ref="form"
+    :disabled="!reportAnnahmeAnordnungSapFormContext"
+    @update:model-value="onValidityChanged"
   >
     <v-row>
       <v-col cols="12">
         <fm-autocomplete
-            v-model="modelValue.parameters!.projnr"
-            :items="reportAnnahmeAnordnungSapFormContext?.projekte"
-            :item-title="getProjektTitle"
-            item-value="projnr"
-            :validation-attribute-map="
+          v-model="modelValue.parameters!.projnr"
+          :items="reportAnnahmeAnordnungSapFormContext?.projekte"
+          :item-title="getProjektTitle"
+          item-value="projnr"
+          :validation-attribute-map="
             ReportAnnahmeAnordnungSapDTOPropertyValidationAttributesMap
           "
-            validation-attribute-key="projnr"
-            :label="t('model.projekt.projnr')"
+          validation-attribute-key="projnr"
+          :label="t('model.projekt.projnr')"
         />
       </v-col>
       <v-col cols="12">
         <fm-text-field
-            :model-value="selectedProjekt?.pname ?? ''"
-            :display-mode="InputDisplayMode.EDIT"
-            :disable-edit="true"
-            :label="t('model.projekt.pname')"
+          :model-value="selectedProjekt?.pname ?? ''"
+          :display-mode="InputDisplayMode.EDIT"
+          :disable-edit="true"
+          :label="t('model.projekt.pname')"
         />
       </v-col>
       <v-col cols="12">
         <fm-text-field
-            :model-value="selectedProjekt?.pstrasse ?? ''"
-            :display-mode="InputDisplayMode.EDIT"
-            :disable-edit="true"
-            :label="t('model.projekt.pstrasse')"
+          :model-value="selectedProjekt?.pstrasse ?? ''"
+          :display-mode="InputDisplayMode.EDIT"
+          :disable-edit="true"
+          :label="t('model.projekt.pstrasse')"
         />
       </v-col>
     </v-row>
@@ -39,28 +39,25 @@
 </template>
 
 <script setup lang="ts">
-import type { GetReportAnnahmeAnordnungSapRequest, ReportAnnahmeAnordnungSapFormContext, ReportAnnahmeAnordnungSapFormContextDTO } from "@/api/generated/foerdermittel-backend";
+import type {
+  GetReportAnnahmeAnordnungSapRequest,
+  ReportAnnahmeAnordnungSapFormContext,
+  ReportAnnahmeAnordnungSapFormContextDTO,
+} from "@/api/generated/foerdermittel-backend";
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
 
-
-
 import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
-
-
 
 import { ReportAnnahmeAnordnungSapDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
-
 const { t } = useI18n();
 
-const modelValue = defineModel<
-    Partial<GetReportAnnahmeAnordnungSapRequest>
->({
+const modelValue = defineModel<Partial<GetReportAnnahmeAnordnungSapRequest>>({
   required: true,
 });
 
@@ -69,9 +66,9 @@ const { reportAnnahmeAnordnungSapFormContext } = defineProps<{
 }>();
 
 const selectedProjekt = computed(() =>
-    reportAnnahmeAnordnungSapFormContext?.projekte.find(
-        (projekt) => projekt.projnr === modelValue.value.parameters?.projnr
-    )
+  reportAnnahmeAnordnungSapFormContext?.projekte.find(
+    (projekt) => projekt.projnr === modelValue.value.parameters?.projnr
+  )
 );
 
 const emit = defineEmits<{
@@ -92,10 +89,7 @@ defineExpose({
   validate,
 });
 
-function getProjektTitle(
-    item: ReportAnnahmeAnordnungSapFormContextDTO
-) {
+function getProjektTitle(item: ReportAnnahmeAnordnungSapFormContextDTO) {
   return item ? `${item.projnr} (${item.pname})` : "";
 }
 </script>
-

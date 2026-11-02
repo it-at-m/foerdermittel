@@ -1,10 +1,8 @@
 package de.muenchen.oss.foerdermittel.backend.report.annahmeanordnungsap.dto;
 
-
-import org.springframework.stereotype.Component;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ReportAnnahmeAnordnungSapMapper {
