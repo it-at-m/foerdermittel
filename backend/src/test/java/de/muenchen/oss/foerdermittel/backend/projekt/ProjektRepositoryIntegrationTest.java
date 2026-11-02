@@ -20,12 +20,14 @@ import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittRepository;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
@@ -109,6 +111,9 @@ class ProjektRepositoryIntegrationTest {
 
         projekt.setKauf(false);
         projekt.setRefinanzierbar(true);
+
+        ReflectionTestUtils.setField(projekt, "anlagevon", "test");
+        ReflectionTestUtils.setField(projekt, "anlagedatum", LocalDateTime.now());
 
         projektRepository.save(projekt);
 

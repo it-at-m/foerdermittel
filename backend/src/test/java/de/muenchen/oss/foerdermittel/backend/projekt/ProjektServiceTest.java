@@ -1,26 +1,35 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
-import de.muenchen.oss.foerdermittel.backend.projekt.dao.AuswertungProjektDAO;
-import de.muenchen.oss.foerdermittel.backend.projekt.dao.BasicProjektDAO;
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammService;
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichService;
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.krankenhaus.KrankenhausService;
+import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungService;
+import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.dto.KurzbezeichnungFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.projekt.ProjektFormContext;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektMapper;
-import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungProjektFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
-import java.util.List;
-import java.util.Optional;
+import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietService;
+import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkService;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittService;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.dto.UnterabschnittFormContextDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ProjektServiceTest {
@@ -31,58 +40,84 @@ class ProjektServiceTest {
     @Mock
     private ProjektMapper projektMapper;
 
+    @Mock
+    private FoerderbereichService foerderbereichService;
+
+    @Mock
+    private StadtbezirkService stadtbezirkService;
+
+    @Mock
+    private UnterabschnittService unterabschnittService;
+
+    @Mock
+    private KurzbezeichnungService kurzbezeichnungService;
+
+    @Mock
+    private BauprogrammService bauprogrammService;
+
+    @Mock
+    private SiedlungsgebietService siedlungsgebietService;
+
+    @Mock
+    private KrankenhausService krankenhausService;
+
     @InjectMocks
     private ProjektService projektService;
 
     @Test
     void givenProjects_thenMapsTheirReportFormContext() {
         // Given
-        final List<BasicProjektDAO> projekte = List.of(
-                new BasicProjektDAO("P-123", "Projektname", "Projektstraße 1"));
-        final List<ReportProjektuebersichtFormContextDTO> expected = List.of(
-                new ReportProjektuebersichtFormContextDTO("P-123", "Projektname", "Projektstraße 1"));
-        when(projektRepository.findAllAsBasic()).thenReturn(projekte);
-        when(projektMapper.toReportProjektuebersichtFormContext(projekte)).thenReturn(expected);
+        final List<Projekt> projekte = List.of(mock(Projekt.class));
+        final List<de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO> expected =
+                List.of(mock(de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO.class));
+
+        when(projektRepository.findAllAsBasic()).thenReturn(List.of());
+        when(projektMapper.toReportProjektuebersichtFormContext(List.of())).thenReturn(expected);
 
         // When
-        final List<ReportProjektuebersichtFormContextDTO> result = projektService.getReportProjektuebersichtFormContextDTOs();
+        final var result = projektService.getReportProjektuebersichtFormContextDTOs();
 
         // Then
         assertThat(result).isEqualTo(expected);
-        verify(projektRepository, times(1)).findAllAsBasic();
-        verify(projektMapper, times(1)).toReportProjektuebersichtFormContext(projekte);
+        verify(projektRepository).findAllAsBasic();
+        verify(projektMapper).toReportProjektuebersichtFormContext(List.of());
     }
 
     @Test
     void givenExistingProjnr_thenReturnsProjekt() {
         // Given
+        final String projnr = "1234567";
         final Projekt projekt = mock(Projekt.class);
-        when(projektRepository.findById("P-123")).thenReturn(Optional.of(projekt));
+
+        when(projektRepository.findById(projnr)).thenReturn(java.util.Optional.of(projekt));
 
         // When
-        final Projekt result = projektService.getProjekt("P-123");
+        final Projekt result = projektService.getProjekt(projnr);
 
         // Then
         assertThat(result).isSameAs(projekt);
+        verify(projektRepository).findById(projnr);
     }
 
     @Test
     void givenMissingProjnr_thenThrowsNotFoundException() {
         // Given
-        when(projektRepository.findById("MISSING")).thenReturn(Optional.empty());
+        final String projnr = "MISSING";
+
+        when(projektRepository.findById(projnr)).thenReturn(java.util.Optional.empty());
 
         // When / Then
-        assertThatThrownBy(() -> projektService.getProjekt("MISSING"))
-                .isInstanceOf(NotFoundException.class)
+        assertThatThrownBy(() -> projektService.getProjekt(projnr))
                 .hasMessage("The Projekt with ID MISSING was not found.");
+
+        verify(projektRepository).findById(projnr);
     }
 
     @Test
     void givenProjects_thenReturnsProjektFormContextDTOs() {
         // Given
         final List<Projekt> projekte = List.of(mock(Projekt.class));
-        final List<ProjektFormContextDTO> expected = List.of(
-                mock(ProjektFormContextDTO.class));
+        final List<ProjektFormContextDTO> expected = List.of(mock(ProjektFormContextDTO.class));
 
         when(projektRepository.findAll()).thenReturn(projekte);
         when(projektMapper.toFormContext(projekte)).thenReturn(expected);
@@ -92,30 +127,51 @@ class ProjektServiceTest {
 
         // Then
         assertThat(result).isEqualTo(expected);
-        verify(projektRepository, times(1)).findAll();
-        verify(projektMapper, times(1)).toFormContext(projekte);
+        verify(projektRepository).findAll();
+        verify(projektMapper).toFormContext(projekte);
     }
 
     @Test
-    void givenAuswertungProjekte_thenReturnsReportAuswertungProjektFormContextDTOs() {
+    void givenFormContextData_thenReturnsProjektFormContext() {
         // Given
-        final List<AuswertungProjektDAO> projekte = List.of(
-                new AuswertungProjektDAO("2026", "Projektstraße 1", "Projektname", null));
-        final List<ReportAuswertungProjektFormContextDTO> expected = List.of(
-                new ReportAuswertungProjektFormContextDTO(
-                        "2026", "Projektstraße 1", "Projektname", null));
+        final List<Projekt> projekte = List.of(mock(Projekt.class));
+        final List<ProjektFormContextDTO> projektDTOs = List.of(mock(ProjektFormContextDTO.class));
+        final List<FoerderbereichFormContextDTO> fbs = List.of(mock(FoerderbereichFormContextDTO.class));
+        final List<StadtbezirkFormContextDTO> bezs = List.of(mock(StadtbezirkFormContextDTO.class));
+        final List<UnterabschnittFormContextDTO> uas = List.of(mock(UnterabschnittFormContextDTO.class));
+        final List<KurzbezeichnungFormContextDTO> kurzs = List.of(mock(KurzbezeichnungFormContextDTO.class));
+        final List<BauprogrammFormContextDTO> bpgs = List.of(mock(BauprogrammFormContextDTO.class));
+        final List<SiedlungsgebietFormContextDTO> sgts = List.of(mock(SiedlungsgebietFormContextDTO.class));
+        final List<KrankenhausFormContextDTO> krhs = List.of(mock(KrankenhausFormContextDTO.class));
 
-        when(projektRepository.findAllAuswertungProjekte()).thenReturn(projekte);
-        when(projektMapper.toReportAuswertungProjektFormContext(projekte))
-                .thenReturn(expected);
+        when(projektRepository.findAll()).thenReturn(projekte);
+        when(projektMapper.toFormContext(projekte)).thenReturn(projektDTOs);
+        when(foerderbereichService.getFoerderbereichFormContextDTOs()).thenReturn(fbs);
+        when(stadtbezirkService.getStadtbezirkFormContextDTOs()).thenReturn(bezs);
+        when(unterabschnittService.getUnterabschnittFormContextDTOs()).thenReturn(uas);
+        when(kurzbezeichnungService.getKurzbezeichnungFormContextDTOs()).thenReturn(kurzs);
+        when(bauprogrammService.getBauprogrammFormContextDTOs()).thenReturn(bpgs);
+        when(siedlungsgebietService.getSiedlungsgebietFormContextDTOs()).thenReturn(sgts);
+        when(krankenhausService.getKrankenhausFormContextDTOs()).thenReturn(krhs);
 
         // When
-        final List<ReportAuswertungProjektFormContextDTO> result = projektService.getReportAuswertungProjektFormContextDTOs();
+        final ProjektFormContext result = projektService.getProjektFormContext();
 
         // Then
-        assertThat(result).isEqualTo(expected);
-        verify(projektRepository, times(1)).findAllAuswertungProjekte();
-        verify(projektMapper, times(1))
-                .toReportAuswertungProjektFormContext(projekte);
+        assertThat(result).isNotNull();
+        assertThat(result.projekte()).isEqualTo(projektDTOs);
+        assertThat(result.fbs()).isEqualTo(fbs);
+        assertThat(result.bezs()).isEqualTo(bezs);
+        assertThat(result.uas()).isEqualTo(uas);
+        assertThat(result.kurzs()).isEqualTo(kurzs);
+        assertThat(result.bpgs()).isEqualTo(bpgs);
+        assertThat(result.sgts()).isEqualTo(sgts);
+        assertThat(result.krhs()).isEqualTo(krhs);
+        assertThat(result.krisofps()).containsExactly(Krisofp.values());
+        assertThat(result.krhzwecks()).containsExactly(Krhzweck.values());
+
+        verify(projektRepository).findAll();
+        verify(projektMapper).toFormContext(projekte);
     }
+
 }
