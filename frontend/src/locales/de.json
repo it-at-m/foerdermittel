@@ -229,6 +229,7 @@
         "reportType": {
           "modelName": "Reporttyp",
           "pdf": "PDF",
+          "pdfFlat": "PDF ohne Gruppierung",
           "excel": "Excel"
         },
         "reportSort": "Sortierung"
@@ -259,6 +260,24 @@
         "type": {
           "pdf": "PDF",
           "excel": "Excel"
+        }
+      },
+      "auswertungAntraege": {
+        "modelName": "Auswertung Anträge",
+        "offen": "Nur offene Projekte",
+        "sbl": "Stadtbezirksliste",
+        "bez": "Stadtbezirk",
+        "pstrasse": "Projektstraße",
+        "pname": "Projektname",
+
+        "sortEnum": {
+          "fbProjektnummer": "Förderbereich, Projektnummer",
+          "fbProjektstrasse": "Förderbereich, Projektstraße",
+          "strasseProjektnummer": "Straße, Projektnummer",
+          "projektnummer": "Projektnummer"
+        },
+        "reportType": {
+          "pdf": "PDF: Gruppierung Förderbereich"
         }
       },
       "fortsetzungsAntrag": {

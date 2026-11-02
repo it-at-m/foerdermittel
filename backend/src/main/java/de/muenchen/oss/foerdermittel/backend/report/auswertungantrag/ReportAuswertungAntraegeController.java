@@ -53,11 +53,11 @@ public class ReportAuswertungAntraegeController {
                     }
             )
     )
-    public void getReportAuswertungProjekt(
+    public void getReportAuswertungAntraege(
             @Valid @ModelAttribute final ReportAuswertungAntraegeDTO parameters,
             final HttpServletResponse response)
             throws IOException, SQLException, JRException {
-        final GeneratedReport generatedReport = reportAuswertungAntraegeService.generateReportAuswertungAntrag(parameters);
+        final GeneratedReport generatedReport = reportAuswertungAntraegeService.generateReportAuswertungAntraege(parameters);
         ReportControllerUtil.setMetadata(response, generatedReport);
         generatedReport.writer().write(response.getOutputStream());
     }

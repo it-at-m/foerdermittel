@@ -44,7 +44,7 @@ public class ReportAuswertungAntraegeService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public GeneratedReport generateReportAuswertungAntrag(
+    public GeneratedReport generateReportAuswertungAntraege(
             final ReportAuswertungAntraegeDTO parameters) {
 
         if (StringUtils.hasText(parameters.fb())) {

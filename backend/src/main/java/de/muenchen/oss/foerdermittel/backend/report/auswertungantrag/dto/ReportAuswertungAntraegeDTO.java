@@ -3,7 +3,6 @@ package de.muenchen.oss.foerdermittel.backend.report.auswertungantrag.dto;
 import de.muenchen.oss.foerdermittel.backend.projekt.Antrag;
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
-import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto.ReportAuswertungProjekteSort;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -30,7 +29,7 @@ public record ReportAuswertungAntraegeDTO(
         String offen,
         String relevant,
 
-        @NotNull ReportAuswertungProjekteSort sort,
+        @NotNull ReportAuswertungAntraegeSort sort,
 
         @NotNull ReportFormat type) {
 }

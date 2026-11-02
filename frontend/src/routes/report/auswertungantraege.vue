@@ -5,13 +5,13 @@
         :empty-form-template="EMPTY_FORM_TEMPLATE"
         :loading="baseViewLoading"
         :api="reportAuswertungAntraegeApi"
-        :form-ref="reportAuswertungAntraegerFormRef"
+        :form-ref="reportAuswertungAntraegeFormRef"
       >
         <template #form="{ item, updateValidity }">
           <report-auswertung-Antraege-form
             ref="reportAuswertungAntraegeForm"
             :model-value="item"
-            :report-auswertung-Antrag-form-context="
+            :report-auswertung-Antraege-form-context="
               reportAuswertungAntraegeFormContext
             "
             @is-valid="updateValidity"
@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import type { GetReportAuswertungAntragRequest } from "@/api/generated/foerdermittel-backend";
+import type { GetReportAuswertungAntraegeRequest } from "@/api/generated/foerdermittel-backend";
 
 import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
@@ -47,10 +47,10 @@ definePage({
 const { t } = useI18n();
 
 const title = t("common.generics.reportTitle", [
-  t("domain.report.auswertungAntrag.modelName", 1),
+  t("domain.report.auswertungAntraege.modelName", 1),
 ]);
 
-const EMPTY_FORM_TEMPLATE: Partial<GetReportAuswertungAntragRequest> = {
+const EMPTY_FORM_TEMPLATE: Partial<GetReportAuswertungAntraegeRequest> = {
   parameters: {
     jahrvon: "",
 
@@ -66,7 +66,7 @@ const EMPTY_FORM_TEMPLATE: Partial<GetReportAuswertungAntragRequest> = {
     kauf: "0",
     offen: "0",
     relevant: "0",
-    sort: "PROJEKTNUMMER",
+    sort: "FOERDERBEREICH_PROJEKTNUMMER",
     type: "PDF",
   },
 };

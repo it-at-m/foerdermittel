@@ -262,6 +262,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.antrag.modelName", 2),
+        props: {
+          to: "/report/auswertungantraege",
+        },
       },
       {
         title: t("model.bewilligung.modelName", 2),

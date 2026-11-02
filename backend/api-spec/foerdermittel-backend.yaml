@@ -2231,7 +2231,7 @@ paths:
     get:
       tags:
       - report-auswertung-antraege-controller
-      operationId: getReportAuswertungProjekt_1
+      operationId: getReportAuswertungAntraege
       parameters:
       - name: parameters
         in: query
@@ -4384,11 +4384,10 @@ components:
         sort:
           type: string
           enum:
-          - STADTBEZIRK_STRASSE
+          - PROJEKTSTRASSE_PROJEKTNUMMER
           - PROJEKTNUMMER
-          - STRASSE_PROJEKTNUMMER
-          - FOERDERBEREICH_STRASSE
           - FOERDERBEREICH_PROJEKTNUMMER
+          - FOERDERBEREICH_STRASSE
         type:
           $ref: "#/components/schemas/ReportFormat"
     PagedModelReferatResponseDTO:
