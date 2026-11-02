@@ -1,5 +1,11 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammService;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichService;
@@ -8,28 +14,22 @@ import de.muenchen.oss.foerdermittel.backend.krankenhaus.KrankenhausService;
 import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungService;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.dto.KurzbezeichnungFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.projekt.ProjektFormContext;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektMapper;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietService;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkService;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittService;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.dto.UnterabschnittFormContextDTO;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ProjektServiceTest {
@@ -68,8 +68,8 @@ class ProjektServiceTest {
     void givenProjects_thenMapsTheirReportFormContext() {
         // Given
         final List<Projekt> projekte = List.of(mock(Projekt.class));
-        final List<de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO> expected =
-                List.of(mock(de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO.class));
+        final List<ReportProjektuebersichtFormContextDTO> expected = List
+                .of(mock(ReportProjektuebersichtFormContextDTO.class));
 
         when(projektRepository.findAllAsBasic()).thenReturn(List.of());
         when(projektMapper.toReportProjektuebersichtFormContext(List.of())).thenReturn(expected);
@@ -89,7 +89,7 @@ class ProjektServiceTest {
         final String projnr = "1234567";
         final Projekt projekt = mock(Projekt.class);
 
-        when(projektRepository.findById(projnr)).thenReturn(java.util.Optional.of(projekt));
+        when(projektRepository.findById(projnr)).thenReturn(Optional.of(projekt));
 
         // When
         final Projekt result = projektService.getProjekt(projnr);
@@ -104,7 +104,7 @@ class ProjektServiceTest {
         // Given
         final String projnr = "MISSING";
 
-        when(projektRepository.findById(projnr)).thenReturn(java.util.Optional.empty());
+        when(projektRepository.findById(projnr)).thenReturn(Optional.empty());
 
         // When / Then
         assertThatThrownBy(() -> projektService.getProjekt(projnr))

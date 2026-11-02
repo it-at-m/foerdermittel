@@ -111,12 +111,10 @@ public class TerminIntegrationTest {
     }
 
     private void createExistingProject() {
-        final Foerderbereich foerderbereich =
-                new Foerderbereich(BigDecimal.valueOf(99), "Test", false, false, false, false);
+        final Foerderbereich foerderbereich = new Foerderbereich(BigDecimal.valueOf(99), "Test", false, false, false, false);
         foerderbereichRepository.save(foerderbereich);
 
-        final Stadtbezirk stadtbezirk =
-                new Stadtbezirk(BigDecimal.valueOf(99), "Test Stadtbezirk 1");
+        final Stadtbezirk stadtbezirk = new Stadtbezirk(BigDecimal.valueOf(99), "Test Stadtbezirk 1");
         stadtbezirkRepository.save(stadtbezirk);
 
         final Hauptabschnitt hauptabschnitt = new Hauptabschnitt("ha", "bz2");

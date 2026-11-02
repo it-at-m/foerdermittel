@@ -11,14 +11,12 @@ import de.muenchen.oss.foerdermittel.backend.archiv.dto.ArchivResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.archiv.dto.ArchivUpdateDTO;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.Bauprogramm;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammRepository;
-import de.muenchen.oss.foerdermittel.backend.common.AuditableEntity;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichRepository;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.HauptabschnittRepository;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungRepository;
-import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektRepository;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
@@ -109,12 +107,10 @@ class ArchivIntegrationTest {
     }
 
     private void createExistingProject() {
-        final Foerderbereich foerderbereich =
-                new Foerderbereich(BigDecimal.valueOf(99), "Test", false, false, false, false);
+        final Foerderbereich foerderbereich = new Foerderbereich(BigDecimal.valueOf(99), "Test", false, false, false, false);
         foerderbereichRepository.save(foerderbereich);
 
-        final Stadtbezirk stadtbezirk =
-                new Stadtbezirk(BigDecimal.valueOf(99), "Test Stadtbezirk 1");
+        final Stadtbezirk stadtbezirk = new Stadtbezirk(BigDecimal.valueOf(99), "Test Stadtbezirk 1");
         stadtbezirkRepository.save(stadtbezirk);
 
         final Hauptabschnitt exampleHa2 = new Hauptabschnitt("ha", "bz2");
@@ -126,12 +122,10 @@ class ArchivIntegrationTest {
         final Kurzbezeichnung kurzbezeichnung = new Kurzbezeichnung("KB1", "Test");
         kurzbezeichnungRepository.save(kurzbezeichnung);
 
-        final Siedlungsgebiet siedlungsgebiet =
-                new Siedlungsgebiet(BigDecimal.ONE, "Test");
+        final Siedlungsgebiet siedlungsgebiet = new Siedlungsgebiet(BigDecimal.ONE, "Test");
         siedlungsgebietRepository.save(siedlungsgebiet);
 
-        final Bauprogramm bauprogramm =
-                new Bauprogramm(BigDecimal.ONE, "Test");
+        final Bauprogramm bauprogramm = new Bauprogramm(BigDecimal.ONE, "Test");
         bauprogrammRepository.save(bauprogramm);
 
         final Projekt projekt = new Projekt();
@@ -148,7 +142,6 @@ class ArchivIntegrationTest {
         projekt.setBauprogramm(bauprogramm);
         projekt.setKauf(false);
         projekt.setRefinanzierbar(true);
-
 
         ReflectionTestUtils.setField(projekt, "anlagevon", "test");
         ReflectionTestUtils.setField(projekt, "anlagedatum", LocalDateTime.now());

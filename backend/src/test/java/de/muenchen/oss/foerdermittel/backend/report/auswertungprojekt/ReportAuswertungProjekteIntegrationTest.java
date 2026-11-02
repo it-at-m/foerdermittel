@@ -144,7 +144,6 @@ public class ReportAuswertungProjekteIntegrationTest {
             ReflectionTestUtils.setField(projekt, "anlagevon", "test");
             ReflectionTestUtils.setField(projekt, "anlagedatum", LocalDateTime.now());
 
-
             projektRepository.save(projekt);
         }
 

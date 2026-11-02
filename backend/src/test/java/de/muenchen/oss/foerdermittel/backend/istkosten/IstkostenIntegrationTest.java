@@ -17,7 +17,6 @@ import de.muenchen.oss.foerdermittel.backend.istkosten.dto.IstkostenResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.istkosten.dto.IstkostenUpdateDTO;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungRepository;
-import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektRepository;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
@@ -107,12 +106,10 @@ class IstkostenIntegrationTest {
     }
 
     private void createExistingProject() {
-        final Foerderbereich foerderbereich =
-                new Foerderbereich(BigDecimal.valueOf(99), "Test", false, false, false, false);
+        final Foerderbereich foerderbereich = new Foerderbereich(BigDecimal.valueOf(99), "Test", false, false, false, false);
         foerderbereichRepository.save(foerderbereich);
 
-        final Stadtbezirk stadtbezirk =
-                new Stadtbezirk(BigDecimal.valueOf(99), "Test Stadtbezirk 1");
+        final Stadtbezirk stadtbezirk = new Stadtbezirk(BigDecimal.valueOf(99), "Test Stadtbezirk 1");
         stadtbezirkRepository.save(stadtbezirk);
 
         final Hauptabschnitt exampleHa2 = new Hauptabschnitt("ha", "bz2");
@@ -124,12 +121,10 @@ class IstkostenIntegrationTest {
         final Kurzbezeichnung kurzbezeichnung = new Kurzbezeichnung("KB1", "Test");
         kurzbezeichnungRepository.save(kurzbezeichnung);
 
-        final Siedlungsgebiet siedlungsgebiet =
-                new Siedlungsgebiet(BigDecimal.ONE, "Test");
+        final Siedlungsgebiet siedlungsgebiet = new Siedlungsgebiet(BigDecimal.ONE, "Test");
         siedlungsgebietRepository.save(siedlungsgebiet);
 
-        final Bauprogramm bauprogramm =
-                new Bauprogramm(BigDecimal.ONE, "Test");
+        final Bauprogramm bauprogramm = new Bauprogramm(BigDecimal.ONE, "Test");
         bauprogrammRepository.save(bauprogramm);
 
         final Projekt projekt = new Projekt();

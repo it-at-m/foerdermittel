@@ -71,12 +71,10 @@ class ProjektRepositoryIntegrationTest {
     @Test
     void givenProjects_thenReturnsTheirBasicProjection() {
         // Given
-        final Foerderbereich foerderbereich =
-                new Foerderbereich(BigDecimal.valueOf(99), "Test", false, false, false, false);
+        final Foerderbereich foerderbereich = new Foerderbereich(BigDecimal.valueOf(99), "Test", false, false, false, false);
         foerderbereichRepository.save(foerderbereich);
 
-        final Stadtbezirk stadtbezirk =
-                new Stadtbezirk(BigDecimal.valueOf(99), "Test");
+        final Stadtbezirk stadtbezirk = new Stadtbezirk(BigDecimal.valueOf(99), "Test");
         stadtbezirkRepository.save(stadtbezirk);
 
         final Hauptabschnitt exampleHa2 = new Hauptabschnitt("ha", "bz2");
