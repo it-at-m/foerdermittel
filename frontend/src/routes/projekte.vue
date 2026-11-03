@@ -36,11 +36,11 @@
                 md="2"
               >
                 <div class="text-subtitle-2 mb-2">
-                  {{ t(`model.projekt.${field}`) }}</div>
-                <div> {{item[field] ?? "—" }}
+                  {{ t(`model.projekt.${field}`) }}
                 </div>
+                <div>{{ item[field] ?? "—" }}</div>
               </v-col>
-              <v-divider/>
+              <v-divider />
               <v-col cols="12">
                 <div class="text-subtitle-2 mb-2">
                   {{ t("model.projekt.notizen") }}

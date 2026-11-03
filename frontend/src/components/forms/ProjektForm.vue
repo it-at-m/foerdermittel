@@ -234,17 +234,18 @@
         md="6"
       >
         <fm-autocomplete
-          v-model="modelValue.krhname"
-          :items="projektFormContext.krhs"
-          item-value="krhname"
-          :item-title="getKrankenhausTitle"
-          :label="t('model.projekt.krhname')"
+          :model-value="modelValue.bauprogramm"
+          :items="projektFormContext.bpgs"
+          item-value="bauprogramm"
+          :item-title="getBauprogrammTitle"
+          :label="t('model.projekt.bauprogramm')"
           :validation-attribute-map="
             ProjektCreateDTOPropertyValidationAttributesMap
           "
-          validation-attribute-key="krhname"
+          validation-attribute-key="bauprogramm"
           density="comfortable"
           clearable
+          @update:model-value="updateNumberField('bauprogramm', $event)"
         />
       </v-col>
     </v-row>
@@ -294,18 +295,17 @@
         md="6"
       >
         <fm-autocomplete
-          :model-value="modelValue.bauprogramm"
-          :items="projektFormContext.bpgs"
-          item-value="bauprogramm"
-          :item-title="getBauprogrammTitle"
-          :label="t('model.projekt.bauprogramm')"
+          v-model="modelValue.krhname"
+          :items="projektFormContext.krhs"
+          item-value="krhname"
+          :item-title="getKrankenhausTitle"
+          :label="t('model.projekt.krhname')"
           :validation-attribute-map="
             ProjektCreateDTOPropertyValidationAttributesMap
           "
-          validation-attribute-key="bauprogramm"
+          validation-attribute-key="krhname"
           density="comfortable"
           clearable
-          @update:model-value="updateNumberField('bauprogramm', $event)"
         />
       </v-col>
       <v-col
