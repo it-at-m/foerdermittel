@@ -51,10 +51,10 @@ export function useStadtbezirkApi(): ApiComposables<
   DeleteStadtbezirkRequest
 > {
   return {
-    getAll: useGetStadtbezirke?.(),
-    context: useGetStadtbezirkFormContext?.(),
-    create: useCreateStadtbezirk?.(),
-    update: useUpdateStadtbezirk?.(),
-    delete: useDeleteStadtbezirk?.(),
+    getAll: useGetStadtbezirke(),
+    context: useGetStadtbezirkFormContext(),
+    create: useCreateStadtbezirk(),
+    update: useUpdateStadtbezirk(),
+    delete: useDeleteStadtbezirk(),
   };
 }
