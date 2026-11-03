@@ -26,6 +26,14 @@ public class FoerderbereichService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
+    public Foerderbereich getFoerderbereich(final BigDecimal fb) {
+        log.info("Get Foerderbereich with fb {}", fb);
+        return ServiceUtils.getEntityOrThrowNotFoundException(
+                fb, foerderbereichRepository, Foerderbereich.class);
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
     public Page<Foerderbereich> getFoerderbereiche(final Pageable pageable) {
         log.info("Get Foerderbereiche with Pageable {}", pageable);
         return foerderbereichRepository.findAll(pageable);
