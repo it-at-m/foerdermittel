@@ -67,7 +67,7 @@ public class Projekt extends AuditableEntity {
             name = "fob_fb",
             referencedColumnName = "fb"
     )
-    private Foerderbereich foerderbereich;
+    private Foerderbereich fobFb;
 
     @Column(name = "lfdnr1", length = 1)
     private String lfdnr1;
@@ -90,14 +90,14 @@ public class Projekt extends AuditableEntity {
             name = "uas_ua",
             referencedColumnName = "ua"
     )
-    private Unterabschnitt unterabschnitt;
+    private Unterabschnitt uasUa;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "kur_kurzbez",
             referencedColumnName = "kurzbez"
     )
-    private Kurzbezeichnung kurzbezeichnung;
+    private Kurzbezeichnung kurKurzbez;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(

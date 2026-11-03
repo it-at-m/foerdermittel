@@ -14,6 +14,7 @@
           :label="t('model.projekt.projnr')"
           :display-mode="displayMode"
           density="comfortable"
+          disable-edit
           readonly
         />
       </v-col>
@@ -106,12 +107,12 @@
           item-value="fb"
           :item-title="getFoerderbereichTitle"
           :label="t('model.projekt.fobFb')"
-          :readonly="displayMode !== InputDisplayMode.CREATE"
           :validation-attribute-map="
             ProjektCreateDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="fobFb"
           density="comfortable"
+          clearable
           @update:model-value="updateNumberField('fobFb', $event)"
         />
       </v-col>
@@ -121,15 +122,15 @@
         md="6"
       >
         <fm-autocomplete
-          v-model="modelValue.kurzbez"
+          v-model="modelValue.kurKurzbez"
           :items="projektFormContext.kurzs"
           item-value="kurzbez"
           :item-title="getKurzbezeichnungTitle"
-          :label="t('model.projekt.kurzbez')"
+          :label="t('model.projekt.kurKurzbez')"
           :validation-attribute-map="
             ProjektCreateDTOPropertyValidationAttributesMap
           "
-          validation-attribute-key="kurzbez"
+          validation-attribute-key="kurKurzbez"
           clearable
           density="comfortable"
         />

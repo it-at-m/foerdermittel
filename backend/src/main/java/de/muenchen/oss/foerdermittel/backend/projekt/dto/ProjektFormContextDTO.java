@@ -12,10 +12,10 @@ import java.math.BigDecimal;
  * @param projnr
  * @param pname
  * @param pstrasse
- * @param foerderbereich
+ * @param fobFb
  * @param stadtbezirk
  * @param uasUa
- * @param kurzbez
+ * @param kurKurzbez
  * @param krhname
  * @param krhzweck
  * @param krisofp
@@ -33,10 +33,10 @@ public record ProjektFormContextDTO(
         @NotNull String projnr,
         @NotNull String pname,
         @NotNull String pstrasse,
-        @NotNull BigDecimal foerderbereich,
+        @NotNull BigDecimal fobFb,
         @NotNull BigDecimal stadtbezirk,
         String uasUa,
-        String kurzbez,
+        String kurKurzbez,
         String krhname,
         Krhzweck krhzweck,
         Krisofp krisofp,

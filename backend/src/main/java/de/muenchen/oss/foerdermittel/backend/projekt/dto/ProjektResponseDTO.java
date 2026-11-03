@@ -14,7 +14,7 @@ public record ProjektResponseDTO(
         @NotNull Integer lfdnr1,
         @NotNull Integer lfdnr2,
         @NotNull BigDecimal fobFb,
-        @NotNull String kurzbez,
+        @NotNull String kurKurzbez,
         BigDecimal stadtbezirk,
         String krhname,
         Krhzweck krhzweck,

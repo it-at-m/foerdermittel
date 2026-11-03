@@ -119,11 +119,11 @@ public class ProjektService {
 
         final Projekt projekt = projektMapper.toEntity(projektCreateDTO);
 
-        projekt.setFoerderbereich(ServiceUtils.getEntityOrThrowNotFoundException(
+        projekt.setFobFb(ServiceUtils.getEntityOrThrowNotFoundException(
                 BigDecimal.valueOf(projektCreateDTO.fobFb()), foerderbereichRepository, Foerderbereich.class));
-        projekt.setKurzbezeichnung(ServiceUtils.getEntityOrThrowNotFoundException(
-                projektCreateDTO.kurzbez(), kurzbezeichnungRepository, Kurzbezeichnung.class));
-        projekt.setUnterabschnitt(ServiceUtils.getEntityOrThrowNotFoundException(
+        projekt.setKurKurzbez(ServiceUtils.getEntityOrThrowNotFoundException(
+                projektCreateDTO.kurKurzbez(), kurzbezeichnungRepository, Kurzbezeichnung.class));
+        projekt.setUasUa(ServiceUtils.getEntityOrThrowNotFoundException(
                 projektCreateDTO.uasUa(), unterabschnittRepository, Unterabschnitt.class));
 
         projekt.setStadtbezirk(projektCreateDTO.stadtbezirk() == null ? null
@@ -160,7 +160,7 @@ public class ProjektService {
 
         // Förderbereich ist verpflichtend
         if (projektUpdateDTO.fobFb() != null) {
-            foundProjekt.setFoerderbereich(ServiceUtils.getEntityOrThrowNotFoundException(
+            foundProjekt.setFobFb(ServiceUtils.getEntityOrThrowNotFoundException(
                     BigDecimal.valueOf(projektUpdateDTO.fobFb()),
                     foerderbereichRepository, Foerderbereich.class));
         }
@@ -186,9 +186,9 @@ public class ProjektService {
                         BigDecimal.valueOf(projektUpdateDTO.bauprogramm()),
                         bauprogrammRepository, Bauprogramm.class));
 
-        if (projektUpdateDTO.kurzbez() != null) {
-            foundProjekt.setKurzbezeichnung(ServiceUtils.getEntityOrThrowNotFoundException(
-                    projektUpdateDTO.kurzbez(), kurzbezeichnungRepository, Kurzbezeichnung.class));
+        if (projektUpdateDTO.kurKurzbez() != null) {
+            foundProjekt.setKurKurzbez(ServiceUtils.getEntityOrThrowNotFoundException(
+                    projektUpdateDTO.kurKurzbez(), kurzbezeichnungRepository, Kurzbezeichnung.class));
         }
 
         log.debug("Update Projekt {}", foundProjekt);

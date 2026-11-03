@@ -182,8 +182,8 @@ const headers: DataTableHeader<Partial<ProjektResponseDTO>>[] = [
     sortable: true,
   },
   {
-    title: t("model.projekt.kurzbez"),
-    value: "kurzbez",
+    title: t("model.projekt.kurKurzbez"),
+    value: "kurKurzbez",
     sortable: true,
   },
   {
@@ -213,7 +213,7 @@ const EMPTY_ITEM_TEMPLATE: Partial<ProjektResponseDTO> = {
   fobFb: undefined,
   stadtbezirk: undefined,
   krhname: undefined,
-  kurzbez: undefined,
+  kurKurzbez: undefined,
   uasUa: undefined,
   siedlungsgebiet: undefined,
   jahr: undefined,
