@@ -3001,12 +3001,10 @@ components:
         pname:
           maxLength: 100
           minLength: 0
-          pattern: "^[a-zA-Z0-9]*$"
           type: string
         pstrasse:
           maxLength: 100
           minLength: 0
-          pattern: "^[a-zA-Z0-9]*$"
           type: string
         fobFb:
           maximum: 99
@@ -3033,7 +3031,6 @@ components:
         projart:
           maxLength: 50
           minLength: 0
-          pattern: "^[a-zA-Z0-9]*$"
           type: string
         refinanzierbar:
           type: boolean
@@ -3652,17 +3649,14 @@ components:
         pname:
           maxLength: 100
           minLength: 0
-          pattern: "^[a-zA-Z0-9]*$"
           type: string
         pstrasse:
           maxLength: 100
           minLength: 0
-          pattern: "^[a-zA-Z0-9]*$"
           type: string
         projart:
           maxLength: 50
           minLength: 0
-          pattern: "^[a-zA-Z0-9]*$"
           type: string
         refinanzierbar:
           type: boolean
