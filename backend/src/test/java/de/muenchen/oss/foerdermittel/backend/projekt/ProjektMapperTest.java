@@ -2,11 +2,25 @@ package de.muenchen.oss.foerdermittel.backend.projekt;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.Bauprogramm;
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
+import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
+import de.muenchen.oss.foerdermittel.backend.projekt.dao.AuswertungProjektDAO;
+import de.muenchen.oss.foerdermittel.backend.projekt.dao.BasicProjektDAO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektCreateDTO;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektMapper;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektUpdateDTO;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungProjektFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportBewilligungAuszahlungProjektFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
 import java.math.BigDecimal;
+import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -15,29 +29,45 @@ class ProjektMapperTest {
 
     private final ProjektMapper projektMapper = Mappers.getMapper(ProjektMapper.class);
 
+    private Projekt createProjekt() {
+        final Projekt projekt = new Projekt();
+        projekt.setProjnr("1124101");
+        projekt.setJahr("2026");
+        projekt.setLfdnr1("0");
+        projekt.setLfdnr2("01");
+        projekt.setPname("Test Projekt");
+        projekt.setPstrasse("Teststraße 1");
+        projekt.setProjart("Test");
+        projekt.setRefinanzierbar(true);
+        projekt.setKauf(false);
+        projekt.setKripplatz(BigDecimal.valueOf(10));
+        projekt.setKigaplatz(BigDecimal.valueOf(20));
+        projekt.setHortplatz(BigDecimal.valueOf(30));
+        projekt.setNotizen("Testnotiz");
+
+        projekt.setFobFb(new Foerderbereich(
+                BigDecimal.valueOf(12), "Test", false, false, false, false));
+        projekt.setStadtbezirk(new Stadtbezirk(BigDecimal.valueOf(13), "Test"));
+
+        final Hauptabschnitt hauptabschnitt = new Hauptabschnitt("HA", "Test");
+        projekt.setUasUa(new Unterabschnitt("UA", "Test", hauptabschnitt));
+
+        projekt.setKurKurzbez(new Kurzbezeichnung("KB1", "Test"));
+        projekt.setSiedlungsgebiet(new Siedlungsgebiet(BigDecimal.ONE, "Test"));
+        projekt.setBauprogramm(new Bauprogramm(BigDecimal.ONE, "Test"));
+
+        return projekt;
+    }
+
     @Nested
     class ToDTO {
 
         @Test
         void givenEntity_thenReturnsCorrectDTO() {
-            // Given
-            final Projekt projekt = new Projekt();
-            projekt.setProjnr("1124101");
-            projekt.setJahr("2026");
-            projekt.setLfdnr1("0");
-            projekt.setLfdnr2("01");
-            projekt.setPname("Test Projekt");
-            projekt.setPstrasse("Teststraße 1");
-            projekt.setProjart("Test");
-            projekt.setRefinanzierbar(true);
-            projekt.setKauf(false);
-            projekt.setKripplatz(BigDecimal.valueOf(10));
-            projekt.setNotizen("Testnotiz");
+            final Projekt projekt = createProjekt();
 
-            // When
             final ProjektResponseDTO dto = projektMapper.toDTO(projekt);
 
-            // Then
             assertThat(dto).isNotNull();
             assertThat(dto.id()).isEqualTo(projekt.getProjnr());
             assertThat(dto.projnr()).isEqualTo(projekt.getProjnr());
@@ -49,8 +79,26 @@ class ProjektMapperTest {
             assertThat(dto.projart()).isEqualTo(projekt.getProjart());
             assertThat(dto.refinanzierbar()).isEqualTo(projekt.getRefinanzierbar());
             assertThat(dto.kauf()).isEqualTo(projekt.getKauf());
-            assertThat(dto.kripplatz()).isEqualByComparingTo(projekt.getKripplatz());
+
+            assertThat(dto.kripplatz())
+                    .isEqualByComparingTo(projekt.getKripplatz());
+            assertThat(dto.kigaplatz())
+                    .isEqualByComparingTo(projekt.getKigaplatz());
+            assertThat(dto.hortplatz())
+                    .isEqualByComparingTo(projekt.getHortplatz());
+
             assertThat(dto.notizen()).isEqualTo(projekt.getNotizen());
+            assertThat(dto.fobFb())
+                    .isEqualByComparingTo(projekt.getFobFb().getFb());
+            assertThat(dto.stadtbezirk())
+                    .isEqualByComparingTo(projekt.getStadtbezirk().getStadtbezirk());
+            assertThat(dto.uasUa()).isEqualTo(projekt.getUasUa().getUa());
+            assertThat(dto.kurKurzbez())
+                    .isEqualTo(projekt.getKurKurzbez().getKurzbez());
+            assertThat(dto.siedlungsgebiet())
+                    .isEqualByComparingTo(projekt.getSiedlungsgebiet().getSiedlungsgebiet());
+            assertThat(dto.bauprogramm())
+                    .isEqualByComparingTo(projekt.getBauprogramm().getBauprogramm());
         }
     }
 
@@ -59,7 +107,6 @@ class ProjektMapperTest {
 
         @Test
         void givenCreateDTO_thenReturnsCorrectEntity() {
-            // Given
             final ProjektCreateDTO dto = new ProjektCreateDTO(
                     "1124101",
                     12,
@@ -84,10 +131,8 @@ class ProjektMapperTest {
                     null,
                     null);
 
-            // When
             final Projekt entity = projektMapper.toEntity(dto);
 
-            // Then
             assertThat(entity).isNotNull();
             assertThat(entity.getProjnr()).isEqualTo(dto.projnr());
             assertThat(entity.getJahr()).isEqualTo("26");
@@ -98,19 +143,28 @@ class ProjektMapperTest {
             assertThat(entity.getProjart()).isEqualTo(dto.projart());
             assertThat(entity.getRefinanzierbar()).isEqualTo(dto.refinanzierbar());
             assertThat(entity.getKauf()).isEqualTo(dto.kauf());
-            assertThat(entity.getKripplatz()).isEqualByComparingTo(dto.kripplatz());
-            assertThat(entity.getKigaplatz()).isEqualByComparingTo(dto.kigaplatz());
-            assertThat(entity.getHortplatz()).isEqualByComparingTo(dto.hortplatz());
+
+            assertThat(entity.getKripplatz())
+                    .isEqualByComparingTo(dto.kripplatz());
+            assertThat(entity.getKigaplatz())
+                    .isEqualByComparingTo(dto.kigaplatz());
+            assertThat(entity.getHortplatz())
+                    .isEqualByComparingTo(dto.hortplatz());
+
             assertThat(entity.getNotizen()).isEqualTo(dto.notizen());
 
             assertThat(entity.getFobFb()).isNull();
             assertThat(entity.getUasUa()).isNull();
             assertThat(entity.getKurKurzbez()).isNull();
+            assertThat(entity.getStadtbezirk()).isNull();
+            assertThat(entity.getSiedlungsgebiet()).isNull();
+            assertThat(entity.getBauprogramm()).isNull();
+            assertThat(entity.getKrankenhaus()).isNull();
         }
 
         @Test
         void givenUpdateDTO_thenUpdatesEntityFields() {
-            // Given
+
             final ProjektUpdateDTO dto = new ProjektUpdateDTO(
                     "Neuer Projektname",
                     "Neue Straße 1",
@@ -136,24 +190,122 @@ class ProjektMapperTest {
             entity.setLfdnr1("0");
             entity.setLfdnr2("01");
 
-            // When
             projektMapper.updateEntity(dto, entity);
 
-            // Then
             assertThat(entity.getPname()).isEqualTo(dto.pname());
             assertThat(entity.getPstrasse()).isEqualTo(dto.pstrasse());
             assertThat(entity.getProjart()).isEqualTo(dto.projart());
             assertThat(entity.getRefinanzierbar()).isEqualTo(dto.refinanzierbar());
             assertThat(entity.getKauf()).isEqualTo(dto.kauf());
-            assertThat(entity.getKripplatz()).isEqualByComparingTo(dto.kripplatz());
-            assertThat(entity.getKigaplatz()).isEqualByComparingTo(dto.kigaplatz());
-            assertThat(entity.getHortplatz()).isEqualByComparingTo(dto.hortplatz());
+
+            assertThat(entity.getKripplatz())
+                    .isEqualByComparingTo(dto.kripplatz());
+            assertThat(entity.getKigaplatz())
+                    .isEqualByComparingTo(dto.kigaplatz());
+            assertThat(entity.getHortplatz())
+                    .isEqualByComparingTo(dto.hortplatz());
+
             assertThat(entity.getNotizen()).isEqualTo(dto.notizen());
 
             assertThat(entity.getProjnr()).isEqualTo("1124101");
             assertThat(entity.getJahr()).isEqualTo("2026");
             assertThat(entity.getLfdnr1()).isEqualTo("0");
             assertThat(entity.getLfdnr2()).isEqualTo("01");
+        }
+    }
+
+    @Nested
+    class ToFormContext {
+
+        @Test
+        void givenEntity_thenReturnsCorrectFormContextDTO() {
+
+            final Projekt projekt = createProjekt();
+
+            final ProjektFormContextDTO dto = projektMapper.toFormContext(projekt);
+
+            assertThat(dto).isNotNull();
+            assertThat(dto.projnr()).isEqualTo(projekt.getProjnr());
+            assertThat(dto.pname()).isEqualTo(projekt.getPname());
+            assertThat(dto.pstrasse()).isEqualTo(projekt.getPstrasse());
+
+            assertThat(dto.fobFb())
+                    .isEqualByComparingTo(projekt.getFobFb().getFb());
+            assertThat(dto.stadtbezirk())
+                    .isEqualByComparingTo(projekt.getStadtbezirk().getStadtbezirk());
+            assertThat(dto.uasUa()).isEqualTo(projekt.getUasUa().getUa());
+            assertThat(dto.kurKurzbez())
+                    .isEqualTo(projekt.getKurKurzbez().getKurzbez());
+            assertThat(dto.siedlungsgebiet())
+                    .isEqualByComparingTo(projekt.getSiedlungsgebiet().getSiedlungsgebiet());
+            assertThat(dto.bauprogramm())
+                    .isEqualByComparingTo(projekt.getBauprogramm().getBauprogramm());
+
+            assertThat(dto.projart()).isEqualTo(projekt.getProjart());
+            assertThat(dto.refinanzierbar()).isEqualTo(projekt.getRefinanzierbar());
+            assertThat(dto.kauf()).isEqualTo(projekt.getKauf());
+            assertThat(dto.kripplatz())
+                    .isEqualByComparingTo(projekt.getKripplatz());
+            assertThat(dto.kigaplatz())
+                    .isEqualByComparingTo(projekt.getKigaplatz());
+            assertThat(dto.hortplatz())
+                    .isEqualByComparingTo(projekt.getHortplatz());
+            assertThat(dto.notizen()).isEqualTo(projekt.getNotizen());
+
+            assertThat(dto.krhname()).isNull();
+            assertThat(dto.krhzweck()).isNull();
+            assertThat(dto.krisofp()).isNull();
+        }
+
+        @Test
+        void givenEntityList_thenReturnsCorrectFormContextDTOList() {
+
+            final Projekt projekt = createProjekt();
+
+            final List<ProjektFormContextDTO> result = projektMapper.toFormContext(List.of(projekt));
+
+            assertThat(result).containsExactly(projektMapper.toFormContext(projekt));
+        }
+    }
+
+    @Nested
+    class ReportMappings {
+
+        @Test
+        void givenBasicProjektDAOList_thenReturnsProjektuebersichtFormContextList() {
+
+            final BasicProjektDAO projekt = new BasicProjektDAO("P-123", "Projektname", "Projektstraße 1");
+
+            final List<ReportProjektuebersichtFormContextDTO> result = projektMapper.toReportProjektuebersichtFormContext(List.of(projekt));
+
+            assertThat(result).containsExactly(
+                    new ReportProjektuebersichtFormContextDTO(
+                            "P-123", "Projektname", "Projektstraße 1"));
+        }
+
+        @Test
+        void givenAuswertungProjektDAOList_thenReturnsAuswertungProjektFormContextList() {
+
+            final AuswertungProjektDAO projekt = new AuswertungProjektDAO("2026", "Projektstraße 1", "Projektname", null);
+
+            final List<ReportAuswertungProjektFormContextDTO> result = projektMapper.toReportAuswertungProjektFormContext(List.of(projekt));
+
+            assertThat(result).containsExactly(
+                    new ReportAuswertungProjektFormContextDTO(
+                            "2026", "Projektstraße 1", "Projektname", null));
+        }
+
+        @Test
+        void givenBasicProjektDAOList_thenReturnsBewilligungAuszahlungFormContextList() {
+
+            final BasicProjektDAO projekt = new BasicProjektDAO("P-123", "Projektname", "Projektstraße 1");
+
+            final List<ReportBewilligungAuszahlungProjektFormContextDTO> result = projektMapper
+                    .toReportBewilligungAuszahlungProjektFormContext(List.of(projekt));
+
+            assertThat(result).containsExactly(
+                    new ReportBewilligungAuszahlungProjektFormContextDTO(
+                            "P-123", "Projektstraße 1", "Projektname"));
         }
     }
 }
