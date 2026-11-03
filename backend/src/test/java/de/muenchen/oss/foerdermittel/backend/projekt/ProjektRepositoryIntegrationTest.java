@@ -100,10 +100,10 @@ class ProjektRepositoryIntegrationTest {
         projekt.setPname("Projektname");
         projekt.setPstrasse("Projektstraße 1");
 
-        projekt.setFoerderbereich(foerderbereich);
+        projekt.setFobFb(foerderbereich);
         projekt.setStadtbezirk(stadtbezirk);
-        projekt.setUnterabschnitt(unterabschnitt);
-        projekt.setKurzbezeichnung(kurzbezeichnung);
+        projekt.setUasUa(unterabschnitt);
+        projekt.setKurKurzbez(kurzbezeichnung);
         projekt.setSiedlungsgebiet(siedlungsgebiet);
         projekt.setBauprogramm(bauprogramm);
 

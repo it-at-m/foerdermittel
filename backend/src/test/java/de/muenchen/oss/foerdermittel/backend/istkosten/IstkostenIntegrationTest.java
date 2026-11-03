@@ -132,9 +132,9 @@ class IstkostenIntegrationTest {
         projekt.setJahr("25");
         projekt.setLfdnr1("0");
         projekt.setLfdnr2("01");
-        projekt.setFoerderbereich(foerderbereich);
-        projekt.setUnterabschnitt(unterabschnitt);
-        projekt.setKurzbezeichnung(kurzbezeichnung);
+        projekt.setFobFb(foerderbereich);
+        projekt.setUasUa(unterabschnitt);
+        projekt.setKurKurzbez(kurzbezeichnung);
 
         projekt.setStadtbezirk(stadtbezirk);
         projekt.setSiedlungsgebiet(siedlungsgebiet);

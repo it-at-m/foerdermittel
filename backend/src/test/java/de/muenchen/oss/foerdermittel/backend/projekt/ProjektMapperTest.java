@@ -103,9 +103,9 @@ class ProjektMapperTest {
             assertThat(entity.getHortplatz()).isEqualByComparingTo(dto.hortplatz());
             assertThat(entity.getNotizen()).isEqualTo(dto.notizen());
 
-            assertThat(entity.getFoerderbereich()).isNull();
-            assertThat(entity.getUnterabschnitt()).isNull();
-            assertThat(entity.getKurzbezeichnung()).isNull();
+            assertThat(entity.getFobFb()).isNull();
+            assertThat(entity.getUasUa()).isNull();
+            assertThat(entity.getKurKurzbez()).isNull();
         }
 
         @Test
