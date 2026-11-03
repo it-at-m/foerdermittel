@@ -2282,6 +2282,16 @@ paths:
       - projekt-controller
       operationId: getProjekte
       parameters:
+      - name: projnr
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: fobFb
+        in: query
+        required: false
+        schema:
+          type: string
       - name: page
         in: query
         description: Zero-based page index (0..N)

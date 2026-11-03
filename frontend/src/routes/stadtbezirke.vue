@@ -77,7 +77,7 @@ const EMPTY_ITEM_TEMPLATE: Partial<StadtbezirkResponseDTO> = {
 const stadtbezirkApi = useStadtbezirkApi();
 
 const stadtbezirkFormContext = computed(
-  () => stadtbezirkApi.context.data.value
+  () => stadtbezirkApi.context?.data.value
 );
 
 type StadtbezirkFormType = InstanceType<typeof StadtbezirkForm>;
@@ -89,7 +89,7 @@ const handleCreate = async (
 ) => {
   // TODO: some type checking improvements
   const model = stadtbezirkCreateDTO as StadtbezirkResponseDTO;
-  await stadtbezirkApi.create.call({
+  await stadtbezirkApi.create?.call({
     stadtbezirkCreateDTO: model,
   });
 };
@@ -99,14 +99,14 @@ const handleUpdate = async (
 ) => {
   // TODO: some type checking improvements
   const model = stadtbezirkUpdateDTO as StadtbezirkResponseDTO;
-  await stadtbezirkApi.update.call({
+  await stadtbezirkApi.update?.call({
     id: model.id,
     stadtbezirkUpdateDTO: model,
   });
 };
 
 const handleDelete = async (id: string) => {
-  await stadtbezirkApi.delete.call({
+  await stadtbezirkApi.delete?.call({
     id,
   });
 };

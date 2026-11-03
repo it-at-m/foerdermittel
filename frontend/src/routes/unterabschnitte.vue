@@ -88,7 +88,7 @@ const EMPTY_ITEM_TEMPLATE: Partial<UnterabschnittResponseDTO> = {
 const unterabschnittApi = useUnterabschnittApi();
 
 const unterabschnittFormContext = computed(
-  () => unterabschnittApi.context.data.value
+  () => unterabschnittApi.context?.data.value
 );
 
 type UnterabschnittFormType = InstanceType<typeof UnterabschnittForm>;
@@ -102,7 +102,7 @@ const handleCreate = async (
   // TODO: some type checking improvements
   const model = unterabschnittCreateDTO as UnterabschnittResponseDTO;
 
-  await unterabschnittApi.create.call({
+  await unterabschnittApi.create?.call({
     unterabschnittCreateDTO: model,
   });
 };
@@ -113,14 +113,14 @@ const handleUpdate = async (
   // TODO: some type checking improvements
   const model = unterabschnittUpdateDTO as UnterabschnittResponseDTO;
 
-  await unterabschnittApi.update.call({
+  await unterabschnittApi.update?.call({
     id: model.id,
     unterabschnittUpdateDTO: model,
   });
 };
 
 const handleDelete = async (id: string) => {
-  await unterabschnittApi.delete.call({
+  await unterabschnittApi.delete?.call({
     id,
   });
 };
