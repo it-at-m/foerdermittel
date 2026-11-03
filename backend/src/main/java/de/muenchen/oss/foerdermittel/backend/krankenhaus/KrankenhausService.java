@@ -70,10 +70,4 @@ public class KrankenhausService {
     public List<KrankenhausFormContextDTO> getKrankenhausFormContextDTOs() {
         return krankenhausMapper.toFormContext(krankenhausRepository.findAll());
     }
-
-    @PreAuthorize(Authorities.HAS_ANY_ROLE)
-    @Transactional(readOnly = true)
-    public void checkExistsByKrankenhaus(final String krhname) {
-        ServiceUtils.checkExistsOrThrowNotFoundException(krhname, krankenhausRepository, Krankenhaus.class);
-    }
 }

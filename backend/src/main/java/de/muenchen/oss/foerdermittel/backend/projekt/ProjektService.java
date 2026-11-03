@@ -1,12 +1,8 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
-import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammRepository;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammService;
-import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichRepository;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichService;
-import de.muenchen.oss.foerdermittel.backend.krankenhaus.KrankenhausRepository;
 import de.muenchen.oss.foerdermittel.backend.krankenhaus.KrankenhausService;
-import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungRepository;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungService;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
@@ -16,11 +12,8 @@ import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungProjekt
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportBewilligungAuszahlungProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
-import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietRepository;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietService;
-import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkService;
-import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittRepository;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittService;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.math.BigDecimal;
@@ -40,20 +33,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProjektService {
 
     private final ProjektRepository projektRepository;
-    private final FoerderbereichRepository foerderbereichRepository;
-    private final KurzbezeichnungRepository kurzbezeichnungRepository;
-
     private final FoerderbereichService foerderbereichService;
     private final StadtbezirkService stadtbezirkService;
     private final UnterabschnittService unterabschnittService;
     private final KurzbezeichnungService kurzbezeichnungService;
     private final BauprogrammService bauprogrammService;
     private final SiedlungsgebietService siedlungsgebietService;
-    private final UnterabschnittRepository unterabschnittRepository;
-    private final StadtbezirkRepository stadtbezirkRepository;
-    private final KrankenhausRepository krankenhausRepository;
-    private final SiedlungsgebietRepository siedlungsgebietRepository;
-    private final BauprogrammRepository bauprogrammRepository;
     private final KrankenhausService krankenhausService;
 
     private final ProjektMapper projektMapper;
