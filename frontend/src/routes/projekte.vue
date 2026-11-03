@@ -25,119 +25,22 @@
             @is-valid="updateValidity"
           />
         </template>
+
         <template #expanded="{ item }">
           <div class="pa-4">
             <v-row>
               <v-col
+                v-for="field in expandedFields"
+                :key="field"
                 cols="12"
                 md="2"
               >
                 <div class="text-subtitle-2 mb-2">
-                  {{ t("model.projekt.stadtbezirk") }}
+                  {{ t(`model.projekt.${field}`) }}</div>
+                <div> {{item[field] ?? "—" }}
                 </div>
-                <div>{{ item.stadtbezirk ?? "—" }}</div>
               </v-col>
-
-              <v-col
-                cols="12"
-                md="2"
-              >
-                <div class="text-subtitle-2 mb-2">
-                  {{ t("model.projekt.krhname") }}
-                </div>
-                <div>{{ item.krhname ?? "—" }}</div>
-              </v-col>
-
-              <v-col
-                cols="12"
-                md="2"
-              >
-                <div class="text-subtitle-2 mb-2">
-                  {{ t("model.projekt.siedlungsgebiet") }}
-                </div>
-                <div>{{ item.siedlungsgebiet ?? "—" }}</div>
-              </v-col>
-
-              <v-col
-                cols="12"
-                md="2"
-              >
-                <div class="text-subtitle-2 mb-2">
-                  {{ t("model.projekt.bauprogramm") }}
-                </div>
-                <div>{{ item.bauprogramm ?? "—" }}</div>
-              </v-col>
-
-              <v-col
-                cols="12"
-                md="2"
-              >
-                <div class="text-subtitle-2 mb-2">
-                  {{ t("model.projekt.krisofp") }}
-                </div>
-                <div>{{ item.krisofp ?? "—" }}</div>
-              </v-col>
-
-              <v-col
-                cols="12"
-                md="2"
-              >
-                <div class="text-subtitle-2 mb-2">
-                  {{ t("model.projekt.krhzweck") }}
-                </div>
-                <div>{{ item.krhzweck ?? "—" }}</div>
-              </v-col>
-
-              <v-col
-                cols="12"
-                md="2"
-              >
-                <div class="text-subtitle-2 mb-2">
-                  {{ t("model.projekt.refinanzierbar") }}
-                </div>
-                <div>{{ item.refinanzierbar ?? "—" }}</div>
-              </v-col>
-
-              <v-col
-                cols="12"
-                md="2"
-              >
-                <div class="text-subtitle-2 mb-2">
-                  {{ t("model.projekt.kauf") }}
-                </div>
-                <div>{{ item.kauf ?? "—" }}</div>
-              </v-col>
-
-              <v-col
-                cols="12"
-                md="2"
-              >
-                <div class="text-subtitle-2 mb-2">
-                  {{ t("model.projekt.kripplatz") }}
-                </div>
-                <div>{{ item.kripplatz ?? "—" }}</div>
-              </v-col>
-
-              <v-col
-                cols="12"
-                md="2"
-              >
-                <div class="text-subtitle-2 mb-2">
-                  {{ t("model.projekt.kigaplatz") }}
-                </div>
-                <div>{{ item.kigaplatz ?? "—" }}</div>
-              </v-col>
-
-              <v-col
-                cols="12"
-                md="2"
-              >
-                <div class="text-subtitle-2 mb-2">
-                  {{ t("model.projekt.hortplatz") }}
-                </div>
-                <div>{{ item.hortplatz ?? "—" }}</div>
-              </v-col>
-
+              <v-divider/>
               <v-col cols="12">
                 <div class="text-subtitle-2 mb-2">
                   {{ t("model.projekt.notizen") }}
@@ -208,6 +111,20 @@ const headers: DataTableHeader<Partial<ProjektResponseDTO>>[] = [
   },
 ];
 
+const expandedFields = [
+  "stadtbezirk",
+  "krhname",
+  "siedlungsgebiet",
+  "bauprogramm",
+  "krisofp",
+  "krhzweck",
+  "refinanzierbar",
+  "kauf",
+  "kripplatz",
+  "kigaplatz",
+  "hortplatz",
+] as const satisfies readonly (keyof ProjektResponseDTO)[];
+
 const EMPTY_ITEM_TEMPLATE: Partial<ProjektResponseDTO> = {
   projnr: "",
   fobFb: undefined,
@@ -242,6 +159,7 @@ const projektFormRef = useTemplateRef<ProjektFormType>("projektForm");
 
 const handleCreate = async (projektCreateDTO: Partial<ProjektResponseDTO>) => {
   const model = projektCreateDTO as ProjektResponseDTO;
+
   await projektApi.create.call({
     projektCreateDTO: model,
   });
@@ -249,6 +167,7 @@ const handleCreate = async (projektCreateDTO: Partial<ProjektResponseDTO>) => {
 
 const handleUpdate = async (projektUpdateDTO: Partial<ProjektResponseDTO>) => {
   const model = projektUpdateDTO as ProjektResponseDTO;
+
   await projektApi.update.call({
     id: model.projnr,
     projektUpdateDTO: model,
