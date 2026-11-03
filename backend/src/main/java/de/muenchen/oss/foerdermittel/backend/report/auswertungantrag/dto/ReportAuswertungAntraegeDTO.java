@@ -18,6 +18,7 @@ public record ReportAuswertungAntraegeDTO(
         @Size(max = 30) String pstrasse,
 
         @Size(max = 30) String pname,
+        @Size(max = 30) String projnr,
 
         String sgt,
         String sbl,
@@ -25,7 +26,7 @@ public record ReportAuswertungAntraegeDTO(
         Krisofp krisofp,
         Antrag atyp,
 
-        String kauf,
+        String fag,
         String offen,
         String relevant,
 

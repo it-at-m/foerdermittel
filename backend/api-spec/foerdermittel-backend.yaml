@@ -3828,14 +3828,14 @@ components:
           items:
             type: string
             enum:
+            - F
+            - K
+            - S
+            - V
+            - W
             - X
             - "Y"
             - Z
-            - W
-            - V
-            - K
-            - F
-            - S
         siedlungsgebiete:
           type: array
           items:
@@ -3915,14 +3915,14 @@ components:
         krisofp:
           type: string
           enum:
+          - F
+          - K
+          - S
+          - V
+          - W
           - X
           - "Y"
           - Z
-          - W
-          - V
-          - K
-          - F
-          - S
         sgt:
           pattern: ^\d*$
           type: string
@@ -4170,14 +4170,14 @@ components:
           items:
             type: string
             enum:
+            - F
+            - K
+            - S
+            - V
+            - W
             - X
             - "Y"
             - Z
-            - W
-            - V
-            - K
-            - F
-            - S
     ReportAuswertungProjektFormContextDTO:
       required:
       - jahr
@@ -4192,14 +4192,14 @@ components:
         krisofp:
           type: string
           enum:
+          - F
+          - K
+          - S
+          - V
+          - W
           - X
           - "Y"
           - Z
-          - W
-          - V
-          - K
-          - F
-          - S
     ReportAuswertungProjekteDTO:
       required:
       - sort
@@ -4234,14 +4234,14 @@ components:
         krisofp:
           type: string
           enum:
+          - F
+          - K
+          - S
+          - V
+          - W
           - X
           - "Y"
           - Z
-          - W
-          - V
-          - K
-          - F
-          - S
         kauf:
           type: string
         offen:
@@ -4266,6 +4266,7 @@ components:
       - fbs
       - krisofps
       - kurzs
+      - projs
       - sbls
       - sgts
       - uas
@@ -4291,19 +4292,23 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/KurzbezeichnungFormContextDTO"
+        projs:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportAuswertungAntragFormContextDTO"
         krisofps:
           type: array
           items:
             type: string
             enum:
+            - F
+            - K
+            - S
+            - V
+            - W
             - X
             - "Y"
             - Z
-            - W
-            - V
-            - K
-            - F
-            - S
         antraege:
           type: array
           items:
@@ -4322,6 +4327,19 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/BauprogrammFormContextDTO"
+    ReportAuswertungAntragFormContextDTO:
+      required:
+      - pname
+      - projnr
+      - pstrasse
+      type: object
+      properties:
+        projnr:
+          type: string
+        pname:
+          type: string
+        pstrasse:
+          type: string
     ReportAuswertungAntraegeDTO:
       required:
       - sort
@@ -4350,6 +4368,10 @@ components:
           maxLength: 30
           minLength: 0
           type: string
+        projnr:
+          maxLength: 30
+          minLength: 0
+          type: string
         sgt:
           type: string
         sbl:
@@ -4359,14 +4381,14 @@ components:
         krisofp:
           type: string
           enum:
+          - F
+          - K
+          - S
+          - V
+          - W
           - X
           - "Y"
           - Z
-          - W
-          - V
-          - K
-          - F
-          - S
         atyp:
           type: string
           enum:
@@ -4375,7 +4397,7 @@ components:
           - A
           - F
           - U
-        kauf:
+        fag:
           type: string
         offen:
           type: string
@@ -4384,10 +4406,10 @@ components:
         sort:
           type: string
           enum:
-          - PROJEKTSTRASSE_PROJEKTNUMMER
-          - PROJEKTNUMMER
           - FOERDERBEREICH_PROJEKTNUMMER
           - FOERDERBEREICH_STRASSE
+          - PROJEKTSTRASSE_PROJEKTNUMMER
+          - PROJEKTNUMMER
         type:
           $ref: "#/components/schemas/ReportFormat"
     PagedModelReferatResponseDTO:

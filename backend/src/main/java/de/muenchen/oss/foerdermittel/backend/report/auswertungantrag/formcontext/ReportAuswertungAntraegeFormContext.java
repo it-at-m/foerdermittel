@@ -5,6 +5,7 @@ import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichFo
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.dto.KurzbezeichnungFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.Antrag;
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungAntragFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameStadtbezirkslisteFormContextDTO;
@@ -19,6 +20,7 @@ public record ReportAuswertungAntraegeFormContext(
         @NotNull List<FoerderbereichFormContextDTO> fbs,
         @NotNull List<UnterabschnittFormContextDTO> uas,
         @NotNull List<KurzbezeichnungFormContextDTO> kurzs,
+        @NotNull List<ReportAuswertungAntragFormContextDTO> projs,
         @NotNull List<Krisofp> krisofps,
         @NotNull List<Antrag> antraege,
         @NotNull List<SiedlungsgebietFormContextDTO> sgts,
@@ -30,6 +32,7 @@ public record ReportAuswertungAntraegeFormContext(
         fbs = List.copyOf(fbs);
         uas = List.copyOf(uas);
         kurzs = List.copyOf(kurzs);
+        projs = List.copyOf(projs);
         krisofps = List.copyOf(krisofps);
         antraege = List.copyOf(antraege);
         sgts = List.copyOf(sgts);

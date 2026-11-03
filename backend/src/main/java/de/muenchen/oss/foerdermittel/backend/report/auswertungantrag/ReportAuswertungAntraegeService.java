@@ -5,6 +5,7 @@ import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichServic
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungService;
 import de.muenchen.oss.foerdermittel.backend.projekt.Antrag;
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
+import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
 import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
 import de.muenchen.oss.foerdermittel.backend.report.ReportService;
 import de.muenchen.oss.foerdermittel.backend.report.ReportType;
@@ -41,6 +42,7 @@ public class ReportAuswertungAntraegeService {
 
     private final ReportAuswertungAntraegeMapper reportMapper;
     private final ReportService reportService;
+    private final ProjektService projektService;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -102,6 +104,7 @@ public class ReportAuswertungAntraegeService {
                 foerderbereichService.getFoerderbereichFormContextDTOs(),
                 unterabschnittService.getUnterabschnittFormContextDTOs(),
                 kurzbezeichnungService.getKurzbezeichnungFormContextDTOs(),
+                projektService.getReportAuswertungAntragFormContextDTOs(),
                 List.of(Krisofp.values()),
                 List.of(Antrag.values()),
                 siedlungsgebietService.getSiedlungsgebietFormContextDTOs(),

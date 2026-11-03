@@ -229,7 +229,7 @@
         "reportType": {
           "modelName": "Reporttyp",
           "pdf": "PDF",
-          "pdfFlat": "PDF ohne Gruppierung",
+          "pdfFlat": "PDF: ohne Gruppierung",
           "excel": "Excel"
         },
         "reportSort": "Sortierung"
@@ -265,10 +265,17 @@
       "auswertungAntraege": {
         "modelName": "Auswertung Anträge",
         "offen": "Nur offene Projekte",
-        "sbl": "Stadtbezirksliste",
-        "bez": "Stadtbezirk",
+        "sbl": "für Stadtbezirksliste",
+        "bez": "oder einen Stadtbezirk",
+        "ua": "Unterabschnitt",
         "pstrasse": "Projektstraße",
         "pname": "Projektname",
+        "atyp": "Antragstyp",
+        "sgt": "Siedlungsgebiet",
+        "bpg": "Bauprogramm",
+        "offen": "Nur offene Projekte",
+        "fag": "Nur FAG",
+        "relevant": "Nur relevante FB",
 
         "sortEnum": {
           "fbProjektnummer": "Förderbereich, Projektnummer",

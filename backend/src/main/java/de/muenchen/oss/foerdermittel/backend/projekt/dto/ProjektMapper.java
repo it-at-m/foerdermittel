@@ -25,4 +25,7 @@ public interface ProjektMapper {
 
     List<ReportAuswertungProjektFormContextDTO> toReportAuswertungProjektFormContext(
             List<AuswertungProjektDAO> projekte);
+
+    List<ReportAuswertungAntragFormContextDTO> toReportAuswertungAntragFormContext(
+            List<BasicProjektDAO> projekte);
 }

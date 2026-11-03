@@ -51,7 +51,7 @@
             ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="kurzbez"
-          :label="t('domain.report.projektUebersichtMs.sbl')"
+          :label="t('domain.report.auswertungAntraege.sbl')"
           density="comfortable"
           @update:model-value="delete modelValue.parameters!.bez"
         />
@@ -107,7 +107,7 @@
             ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="ua"
-          :label="t('domain.report.projektUebersichtMs.ua')"
+          :label="t('domain.report.auswertungAntraege.ua')"
           density="comfortable"
         />
       </v-col>
@@ -134,7 +134,7 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.projnr"
-          :items="reportAuswertungAntraegeFormContext?.projekte"
+          :items="reportAuswertungAntraegeFormContext?.projs"
           :item-title="getProjektTitle"
           item-value="projnr"
           :validation-attribute-map="
@@ -186,7 +186,7 @@
       >
         <fm-checkbox
           v-model="modelValue.parameters!.offen"
-          :label="t('domain.report.auswertungProjekt.offen')"
+          :label="t('domain.report.auswertungAntraege.offen')"
           true-value="1"
           false-value="0"
           density="compact"
@@ -198,8 +198,8 @@
         md="3"
       >
         <fm-checkbox
-          v-model="modelValue.parameters!.kauf"
-          :label="t('domain.report.auswertungProjekt.kauf')"
+          v-model="modelValue.parameters!.fag"
+          :label="t('domain.report.auswertungAntraege.fag')"
           true-value="1"
           false-value="0"
           density="compact"
@@ -212,7 +212,7 @@
       >
         <fm-checkbox
           v-model="modelValue.parameters!.relevant"
-          :label="t('domain.report.auswertungProjekt.relevant')"
+          :label="t('domain.report.auswertungAntraege.relevant')"
           true-value="1"
           false-value="0"
           density="compact"
@@ -244,37 +244,59 @@
         cols="12"
         md="3"
       >
+        <fm-autocomplete
+          v-model="modelValue.parameters!.atyp"
+          :items="reportAuswertungAntraegeFormContext?.antraege"
+          :item-title="getAntraegeTitle"
+          :item-value="getAntraegeValue"
+          :validation-attribute-map="
+            ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="antraege"
+          :label="t('domain.report.auswertungAntraege.atyp')"
+          density="comfortable"
+          clearable
+        />
       </v-col>
 
       <v-col
         cols="12"
         md="3"
       >
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="3"
-      >
-      </v-col>
-    </v-row>
-
-    <v-row>
-      <v-col
-        cols="12"
-        md="3"
-      >
-        <v-select
-          v-model="modelValue.parameters!.sort"
-          :items="sortOptions"
-          item-title="title"
-          item-value="value"
-          :label="t('domain.report.common.reportSort')"
-          variant="outlined"
+        <fm-autocomplete
+          v-model="modelValue.parameters!.sgt"
+          :items="reportAuswertungAntraegeFormContext?.sgts ?? []"
+          :item-title="getSiedlungsgebietTitle"
+          item-value="siedlungsgebiet"
+          :validation-attribute-map="
+            ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="siedlungsgebiet"
+          :label="t('domain.report.auswertungAntraege.sgt')"
           density="comfortable"
         />
       </v-col>
 
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <fm-autocomplete
+          v-model="modelValue.parameters!.bpg"
+          :items="reportAuswertungAntraegeFormContext?.bpgs ?? []"
+          :item-title="getBauprogrammTitle"
+          item-value="bauprogramm"
+          :validation-attribute-map="
+            ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bauprogramm"
+          :label="t('domain.report.auswertungAntraege.bpg')"
+          density="comfortable"
+        />
+      </v-col>
+    </v-row>
+
+    <v-row>
       <v-col
         cols="12"
         md="3"
@@ -289,6 +311,21 @@
           density="comfortable"
         />
       </v-col>
+
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <v-select
+          v-model="modelValue.parameters!.sort"
+          :items="filteredSortOptions"
+          item-title="title"
+          item-value="value"
+          :label="t('domain.report.common.reportSort')"
+          variant="outlined"
+          density="comfortable"
+        />
+      </v-col>
     </v-row>
   </v-form>
 </template>
@@ -298,11 +335,17 @@ import type {
   BauprogrammFormContextDTO,
   FoerderbereichFormContextDTO,
   GetReportAuswertungAntraegeRequest,
+  GetReportAuswertungProjektRequest,
   KurzbezeichnungFormContextDTO,
   ListennameStadtbezirkslisteFormContextDTO,
+  ProjektFormContextDTO,
+  ReportAuswertungAntraegeDTO,
   ReportAuswertungAntraegeFormContext,
+  ReportAuswertungAntraegeFormContextAntraegeEnum,
   ReportAuswertungAntraegeFormContextKrisofpsEnum,
+  ReportAuswertungAntragFormContextDTO,
   ReportAuswertungProjektFormContext,
+  ReportProjektuebersichtFormContextDTO,
   SiedlungsgebietFormContextDTO,
   StadtbezirkFormContextDTO,
   UnterabschnittFormContextDTO,
@@ -310,7 +353,7 @@ import type {
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
 
-import { useTemplateRef } from "vue";
+import { computed, useTemplateRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
 import {
@@ -323,7 +366,9 @@ import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
+import { getAntraegeTitle } from "@/util/antraegeUtils.ts";
 import { getKrisofpTitle } from "@/util/krisofpUtils";
+import { getJahrBisError, getJahrVonError } from "@/util/yearHelper.ts";
 
 const { t } = useI18n();
 
@@ -371,8 +416,18 @@ function getKrisofpValue(
   return item;
 }
 
+function getAntraegeValue(
+  item: ReportAuswertungAntraegeFormContextAntraegeEnum
+): string {
+  return item;
+}
+
 function getSiedlungsgebietTitle(item: SiedlungsgebietFormContextDTO) {
   return item ? `${item.siedlungsgebiet} (${item.bezeichnung})` : "";
+}
+
+function getProjektTitle(item: ReportAuswertungAntragFormContextDTO) {
+  return item ? `${item.projnr} (${item.pname})` : "";
 }
 
 function getBauprogrammTitle(item: BauprogrammFormContextDTO) {
@@ -388,6 +443,23 @@ async function validate() {
 defineExpose({
   validate,
 });
+
+const filteredSortOptions = computed(() => {
+  if (modelValue.value.parameters?.type === "PDF") {
+    return sortOptions.slice(0, 2);
+  }
+
+  return sortOptions;
+});
+
+watch(
+  () => modelValue.value.parameters?.type,
+  (type) => {
+    if (type === "PDF") {
+      modelValue.value.parameters!.sort = "FOERDERBEREICH_PROJEKTNUMMER";
+    }
+  }
+);
 
 const sortOptions = [
   {
@@ -422,4 +494,18 @@ const formatOptions = [
     value: "EXCEL",
   },
 ];
+
+const jahrVonError = computed(() =>
+  getJahrVonError(
+    modelValue.value.parameters?.jahrvon,
+    modelValue.value.parameters?.jahrbis
+  )
+);
+
+const jahrBisError = computed(() =>
+  getJahrBisError(
+    modelValue.value.parameters?.jahrvon,
+    modelValue.value.parameters?.jahrbis
+  )
+);
 </script>

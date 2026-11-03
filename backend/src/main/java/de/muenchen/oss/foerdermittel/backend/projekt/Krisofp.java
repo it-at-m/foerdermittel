@@ -16,9 +16,6 @@ public enum Krisofp {
     Y("3. SIP - Kinderbetreuung 2015-2019"),
     Z("4. SIP - Kinderbetreuung 2017-2020/2021");
 
-
-
-
     private final String bezeichnung;
 
     public String getKurzform() {

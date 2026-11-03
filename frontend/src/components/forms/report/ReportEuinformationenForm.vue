@@ -106,6 +106,7 @@ import { ReportEuinformationDTOPropertyValidationAttributesMap } from "@/api/gen
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
+import { getJahrBisError, getJahrVonError } from "@/util/yearHelper.ts";
 
 const { t } = useI18n();
 
@@ -232,29 +233,17 @@ const sortOptions = [
   },
 ];
 
-const jahrVonError = computed(() => {
-  const von = modelValue.value.parameters?.jahrVon;
-  const bis = modelValue.value.parameters?.jahrBis;
+const jahrVonError = computed(() =>
+  getJahrVonError(
+    modelValue.value.parameters?.jahrVon,
+    modelValue.value.parameters?.jahrBis
+  )
+);
 
-  if (von == null || von === "" || bis == null || bis === "") {
-    return [];
-  }
-
-  return Number(von) > Number(bis)
-    ? ["Jahr von darf nicht größer als Jahr bis sein."]
-    : [];
-});
-
-const jahrBisError = computed(() => {
-  const von = modelValue.value.parameters?.jahrVon;
-  const bis = modelValue.value.parameters?.jahrBis;
-
-  if (von == null || von === "" || bis == null || bis === "") {
-    return [];
-  }
-
-  return Number(bis) < Number(von)
-    ? ["Jahr bis darf nicht kleiner als Jahr von sein."]
-    : [];
-});
+const jahrBisError = computed(() =>
+  getJahrBisError(
+    modelValue.value.parameters?.jahrVon,
+    modelValue.value.parameters?.jahrBis
+  )
+);
 </script>

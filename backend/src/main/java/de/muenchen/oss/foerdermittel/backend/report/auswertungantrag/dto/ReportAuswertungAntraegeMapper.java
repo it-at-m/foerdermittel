@@ -25,6 +25,7 @@ public class ReportAuswertungAntraegeMapper {
 
         parameters.put("P_PSTRASSE", ReportControllerUtil.toLikeParameter(dto.pstrasse()));
         parameters.put("P_PNAME", ReportControllerUtil.toLikeParameter(dto.pname()));
+        parameters.put("P_PROJNR", ReportControllerUtil.nullIfBlank(dto.projnr()));
 
         parameters.put(
                 "P_KRISOFP",
@@ -35,8 +36,7 @@ public class ReportAuswertungAntraegeMapper {
                 "P_ATYP", dto.atyp() != null
                         ? dto.atyp().name()
                         : null);
-        parameters.put("P_FAG", ReportControllerUtil.nullIfBlank(dto.kauf()));
-        parameters.put("P_KAUF", ReportControllerUtil.nullIfBlank(dto.kauf()));
+        parameters.put("P_FAG", ReportControllerUtil.nullIfBlank(dto.fag()));
         parameters.put("P_OFFEN", ReportControllerUtil.nullIfBlank(dto.offen()));
         parameters.put("P_RELEVANT", ReportControllerUtil.nullIfBlank(dto.relevant()));
 
