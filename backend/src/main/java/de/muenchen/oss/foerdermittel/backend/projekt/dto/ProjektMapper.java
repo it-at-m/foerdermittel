@@ -12,18 +12,18 @@ import org.mapstruct.MappingTarget;
 public interface ProjektMapper {
 
     @Mapping(source = "projnr", target = "id")
-    @Mapping(source = "foerderbereich.fb", target = "fobFb")
-    @Mapping(source = "unterabschnitt.ua", target = "uasUa")
-    @Mapping(source = "kurzbezeichnung.kurzbez", target = "kurzbez")
+    @Mapping(source = "fobFb.fb", target = "fobFb")
+    @Mapping(source = "uasUa.ua", target = "uasUa")
+    @Mapping(source = "kurKurzbez.kurzbez", target = "kurKurzbez")
     @Mapping(source = "stadtbezirk.stadtbezirk", target = "stadtbezirk")
     @Mapping(source = "krankenhaus.krhname", target = "krhname")
     @Mapping(source = "siedlungsgebiet.siedlungsgebiet", target = "siedlungsgebiet")
     @Mapping(source = "bauprogramm.bauprogramm", target = "bauprogramm")
     ProjektResponseDTO toDTO(Projekt projekt);
 
-    @Mapping(target = "foerderbereich", ignore = true)
-    @Mapping(target = "unterabschnitt", ignore = true)
-    @Mapping(target = "kurzbezeichnung", ignore = true)
+    @Mapping(target = "fobFb", ignore = true)
+    @Mapping(target = "uasUa", ignore = true)
+    @Mapping(target = "kurKurzbez", ignore = true)
     @Mapping(target = "krankenhaus", ignore = true)
     @Mapping(target = "stadtbezirk", ignore = true)
     @Mapping(target = "siedlungsgebiet", ignore = true)
@@ -34,9 +34,9 @@ public interface ProjektMapper {
     @Mapping(target = "jahr", ignore = true)
     @Mapping(target = "lfdnr1", ignore = true)
     @Mapping(target = "lfdnr2", ignore = true)
-    @Mapping(target = "unterabschnitt", ignore = true)
-    @Mapping(target = "foerderbereich", ignore = true)
-    @Mapping(target = "kurzbezeichnung", ignore = true)
+    @Mapping(target = "uasUa", ignore = true)
+    @Mapping(target = "fobFb", ignore = true)
+    @Mapping(target = "kurKurzbez", ignore = true)
     @Mapping(target = "krankenhaus", ignore = true)
     @Mapping(target = "stadtbezirk", ignore = true)
     @Mapping(target = "siedlungsgebiet", ignore = true)
@@ -44,13 +44,13 @@ public interface ProjektMapper {
     void updateEntity(ProjektUpdateDTO source, @MappingTarget Projekt target);
 
     @Mapping(target = "projnr", source = "projnr")
-    @Mapping(target = "foerderbereich", source = "foerderbereich.fb")
+    @Mapping(target = "fobFb", source = "fobFb.fb")
     @Mapping(target = "stadtbezirk", source = "stadtbezirk.stadtbezirk")
     @Mapping(target = "bauprogramm", source = "bauprogramm.bauprogramm")
     @Mapping(target = "krhname", source = "krankenhaus.krhname")
     @Mapping(target = "siedlungsgebiet", source = "siedlungsgebiet.siedlungsgebiet")
-    @Mapping(target = "uasUa", source = "unterabschnitt.ua")
-    @Mapping(target = "kurzbez", source = "kurzbezeichnung.kurzbez")
+    @Mapping(target = "uasUa", source = "uasUa.ua")
+    @Mapping(target = "kurKurzbez", source = "kurKurzbez.kurzbez")
     ProjektFormContextDTO toFormContext(Projekt projekt);
 
     List<ProjektFormContextDTO> toFormContext(List<Projekt> projektList);
