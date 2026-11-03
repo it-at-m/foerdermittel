@@ -45,6 +45,17 @@ import { useI18n } from "vue-i18n";
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
 import { useProjektApi } from "@/composables/api/useProjektApi";
+import { Role } from "@/types/Role";
+
+definePage({
+  meta: {
+    hasAnyRole: [
+      Role.SACHBEARBEITUNG,
+      Role.SACHBEARBEITUNG_HAUSHALT,
+      Role.ADMIN,
+    ],
+  },
+});
 
 const domainKey = "model.projekt.modelName";
 
