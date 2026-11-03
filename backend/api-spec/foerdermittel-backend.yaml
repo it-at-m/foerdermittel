@@ -1360,12 +1360,12 @@ paths:
         required: false
         schema:
           type: string
-      - name: fobfb
+      - name: fobFb
         in: query
         required: false
         schema:
           type: number
-      - name: kurzbez
+      - name: kurKurzbez
         in: query
         required: false
         schema:
@@ -3000,58 +3000,60 @@ components:
       properties:
         pname:
           maxLength: 100
-          minLength: 1
+          minLength: 0
+          pattern: "^[a-zA-Z0-9]*$"
           type: string
         pstrasse:
           maxLength: 100
-          minLength: 1
+          minLength: 0
+          pattern: "^[a-zA-Z0-9]*$"
           type: string
         fobFb:
           maximum: 99
-          minimum: 0
           type: integer
           format: int32
         stadtbezirk:
           maximum: 99
-          minimum: 0
           type: integer
           format: int32
         krhname:
           maxLength: 1
-          minLength: 1
-          pattern: "^[A-Z]+$"
+          minLength: 0
+          pattern: "^[A-Z]*$"
           type: string
-        kurzbez:
+        kurKurzbez:
           maxLength: 3
-          minLength: 1
+          minLength: 0
           pattern: "^[A-Z0-9]+$"
           type: string
         siedlungsgebiet:
           maximum: 99
-          minimum: 1
           type: integer
           format: int32
         projart:
           maxLength: 50
-          minLength: 1
+          minLength: 0
+          pattern: "^[a-zA-Z0-9]*$"
           type: string
         refinanzierbar:
           type: boolean
         kauf:
           type: boolean
         kripplatz:
+          minimum: 0
           type: number
         kigaplatz:
+          minimum: 0
           type: number
         hortplatz:
+          minimum: 0
           type: number
         notizen:
           maxLength: 100
-          minLength: 1
+          minLength: 0
           type: string
         bauprogramm:
           maximum: 99
-          minimum: 1
           type: integer
           format: int32
         krisofp:
@@ -3076,7 +3078,7 @@ components:
       - fobFb
       - id
       - jahr
-      - kurzbez
+      - kurKurzbez
       - lfdnr1
       - lfdnr2
       - projnr
@@ -3099,13 +3101,11 @@ components:
           type: integer
           format: int32
         fobFb:
-          type: integer
-          format: int32
-        kurzbez:
+          type: number
+        kurKurzbez:
           type: string
         stadtbezirk:
-          type: integer
-          format: int32
+          type: number
         krhname:
           type: string
         krhzweck:
@@ -3126,11 +3126,9 @@ components:
           - F
           - S
         siedlungsgebiet:
-          type: integer
-          format: int32
+          type: number
         bauprogramm:
-          type: integer
-          format: int32
+          type: number
         pname:
           type: string
         pstrasse:
@@ -3597,7 +3595,7 @@ components:
       required:
       - fobFb
       - jahr
-      - kurzbez
+      - kurKurzbez
       - lfdnr1
       - lfdnr2
       - projnr
@@ -3611,20 +3609,18 @@ components:
           type: string
         fobFb:
           maximum: 99
-          minimum: 0
           type: integer
           format: int32
         stadtbezirk:
           maximum: 99
-          minimum: 0
           type: integer
           format: int32
         krhname:
           maxLength: 1
-          minLength: 1
+          minLength: 0
           pattern: "^[A-Z]+$"
           type: string
-        kurzbez:
+        kurKurzbez:
           maxLength: 3
           minLength: 1
           pattern: "^[A-Z0-9]+$"
@@ -3636,7 +3632,6 @@ components:
           type: string
         siedlungsgebiet:
           maximum: 99
-          minimum: 1
           type: integer
           format: int32
         jahr:
@@ -3657,32 +3652,37 @@ components:
         pname:
           maxLength: 100
           minLength: 0
+          pattern: "^[a-zA-Z0-9]*$"
           type: string
         pstrasse:
           maxLength: 100
           minLength: 0
+          pattern: "^[a-zA-Z0-9]*$"
           type: string
         projart:
           maxLength: 50
-          minLength: 1
+          minLength: 0
+          pattern: "^[a-zA-Z0-9]*$"
           type: string
         refinanzierbar:
           type: boolean
         kauf:
           type: boolean
         kripplatz:
+          minimum: 0
           type: number
         kigaplatz:
+          minimum: 0
           type: number
         hortplatz:
+          minimum: 0
           type: number
         notizen:
           maxLength: 100
-          minLength: 1
+          minLength: 0
           type: string
         bauprogramm:
           maximum: 99
-          minimum: 1
           type: integer
           format: int32
         krisofp:
@@ -3957,7 +3957,7 @@ components:
           $ref: "#/components/schemas/PageMetadata"
     ProjektFormContextDTO:
       required:
-      - foerderbereich
+      - fobFb
       - pname
       - projnr
       - pstrasse
@@ -3973,26 +3973,31 @@ components:
         pstrasse:
           type: string
           description: ""
-        foerderbereich:
-          type: string
+        fobFb:
+          type: number
           description: ""
         stadtbezirk:
           type: number
           description: ""
         uasUa:
           type: string
-        kurzbez:
+          description: ""
+        kurKurzbez:
           type: string
+          description: ""
         krhname:
           type: string
+          description: ""
         krhzweck:
           type: string
+          description: ""
           enum:
           - J
           - S
           - R
         krisofp:
           type: string
+          description: ""
           enum:
           - X
           - "Y"
@@ -4004,22 +4009,31 @@ components:
           - S
         siedlungsgebiet:
           type: number
+          description: ""
         bauprogramm:
           type: number
+          description: ""
         projart:
           type: string
+          description: ""
         refinanzierbar:
           type: boolean
+          description: ""
         kauf:
           type: boolean
+          description: ""
         kripplatz:
           type: number
+          description: ""
         kigaplatz:
           type: number
+          description: ""
         hortplatz:
           type: number
+          description: ""
         notizen:
           type: string
+          description: ""
       description: DTO for Projekt to be used in other FormContexts other than its
         own.
     TerminFormContext:
@@ -4196,8 +4210,9 @@ components:
       type: object
       properties:
         bauprogramm:
-          type: string
+          type: integer
           description: ""
+          format: int32
         bezeichnung:
           type: string
           description: ""
@@ -4208,8 +4223,9 @@ components:
       type: object
       properties:
         fb:
-          type: string
+          type: integer
           description: ""
+          format: int32
         bezeichnung:
           type: string
           description: ""
@@ -4310,8 +4326,9 @@ components:
       type: object
       properties:
         stadtbezirk:
-          type: string
+          type: integer
           description: ""
+          format: int32
         bezeichnung:
           type: string
           description: ""
