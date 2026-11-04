@@ -32,4 +32,7 @@ public interface ProjektMapper {
 
     List<ReportBewilligungAuszahlungProjektFormContextDTO> toReportBewilligungAuszahlungProjektFormContext(
             List<BasicProjektDAO> projekte);
+
+    List<ReportAnnahmeAnordnungSapFormContextDTO> toReportAnnahmeAnordnungSapFormContext(
+            List<BasicProjektDAO> projekte);
 }
