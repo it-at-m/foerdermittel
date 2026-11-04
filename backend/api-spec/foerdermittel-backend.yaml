@@ -1,8 +1,8 @@
 openapi: 3.0.1
 info:
-  title: foerdermittel-backend
-  description: Backend component for the application foerdermittel
-  version: 0.4.0-SNAPSHOT
+  title: '@project.artifactId@'
+  description: '@project.description@'
+  version: '@project.version@'
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -371,6 +371,47 @@ paths:
       tags:
       - publikation-controller
       operationId: deletePublikation
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /projekte/{id}:
+    put:
+      tags:
+      - projekt-controller
+      operationId: updateProjekt
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjektUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjektResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - projekt-controller
+      operationId: deleteProjekt
       parameters:
       - name: id
         in: path
@@ -1306,6 +1347,97 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PublikationResponseDTO"
+      security:
+      - bearerAuth: []
+  /projekte:
+    get:
+      tags:
+      - projekt-controller
+      operationId: getProjekte
+      parameters:
+      - name: projnr
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: fobFb
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: kurKurzbez
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: uasUa
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: pname
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: pstrasse
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "projnr,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelProjektResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - projekt-controller
+      operationId: createProjekt
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjektCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjektResponseDTO"
       security:
       - bearerAuth: []
   /kurzbezeichnungen:
@@ -2311,58 +2443,6 @@ paths:
                 $ref: "#/components/schemas/PublikationFormContext"
       security:
       - bearerAuth: []
-  /projekte:
-    get:
-      tags:
-      - projekt-controller
-      operationId: getProjekte
-      parameters:
-      - name: projnr
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: fobFb
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: page
-        in: query
-        description: Zero-based page index (0..N)
-        required: false
-        schema:
-          minimum: 0
-          type: integer
-          default: 0
-      - name: size
-        in: query
-        description: The size of the page to be returned
-        required: false
-        schema:
-          minimum: 1
-          type: integer
-          default: 10
-      - name: sort
-        in: query
-        description: "Sorting criteria in the format: property,(asc|desc). Default\
-          \ sort order is ascending. Multiple sort criteria are supported."
-        required: false
-        schema:
-          type: array
-          items:
-            type: string
-          default:
-          - "projnr,ASC"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PagedModelProjektResponseDTO"
-      security:
-      - bearerAuth: []
   /projekte/form-context:
     get:
       tags:
@@ -2950,6 +3030,155 @@ components:
           type: string
         bezeichnung:
           type: string
+    ProjektUpdateDTO:
+      type: object
+      properties:
+        pname:
+          maxLength: 100
+          minLength: 0
+          type: string
+        pstrasse:
+          maxLength: 100
+          minLength: 0
+          type: string
+        fobFb:
+          maximum: 99
+          type: integer
+          format: int32
+        stadtbezirk:
+          maximum: 99
+          type: integer
+          format: int32
+        krhname:
+          maxLength: 1
+          minLength: 0
+          pattern: "^[A-Z]*$"
+          type: string
+        kurKurzbez:
+          maxLength: 3
+          minLength: 0
+          pattern: "^[A-Z0-9]+$"
+          type: string
+        siedlungsgebiet:
+          maximum: 99
+          type: integer
+          format: int32
+        projart:
+          maxLength: 50
+          minLength: 0
+          type: string
+        refinanzierbar:
+          type: boolean
+        kauf:
+          type: boolean
+        kripplatz:
+          minimum: 0
+          type: number
+        kigaplatz:
+          minimum: 0
+          type: number
+        hortplatz:
+          minimum: 0
+          type: number
+        notizen:
+          maxLength: 100
+          minLength: 0
+          type: string
+        bauprogramm:
+          maximum: 99
+          type: integer
+          format: int32
+        krisofp:
+          type: string
+          enum:
+          - X
+          - "Y"
+          - Z
+          - W
+          - V
+          - K
+          - F
+          - S
+        krhzweck:
+          type: string
+          enum:
+          - J
+          - S
+          - R
+    ProjektResponseDTO:
+      required:
+      - fobFb
+      - id
+      - jahr
+      - kurKurzbez
+      - lfdnr1
+      - lfdnr2
+      - projnr
+      - uasUa
+      type: object
+      properties:
+        id:
+          type: string
+        projnr:
+          type: string
+        uasUa:
+          type: string
+        jahr:
+          type: integer
+          format: int32
+        lfdnr1:
+          type: integer
+          format: int32
+        lfdnr2:
+          type: integer
+          format: int32
+        fobFb:
+          type: number
+        kurKurzbez:
+          type: string
+        stadtbezirk:
+          type: number
+        krhname:
+          type: string
+        krhzweck:
+          type: string
+          enum:
+          - J
+          - S
+          - R
+        krisofp:
+          type: string
+          enum:
+          - X
+          - "Y"
+          - Z
+          - W
+          - V
+          - K
+          - F
+          - S
+        siedlungsgebiet:
+          type: number
+        bauprogramm:
+          type: number
+        pname:
+          type: string
+        pstrasse:
+          type: string
+        projart:
+          type: string
+        refinanzierbar:
+          type: boolean
+        kauf:
+          type: boolean
+        kripplatz:
+          type: number
+        kigaplatz:
+          type: number
+        hortplatz:
+          type: number
+        notizen:
+          type: string
     KurzbezeichnungUpdateDTO:
       required:
       - bezeichnung
@@ -3394,6 +3623,114 @@ components:
           maxLength: 200
           minLength: 1
           type: string
+    ProjektCreateDTO:
+      required:
+      - fobFb
+      - jahr
+      - kurKurzbez
+      - lfdnr1
+      - lfdnr2
+      - projnr
+      - uasUa
+      type: object
+      properties:
+        projnr:
+          maxLength: 7
+          minLength: 7
+          pattern: "^[A-Z0-9]{7}$"
+          type: string
+        fobFb:
+          maximum: 99
+          type: integer
+          format: int32
+        stadtbezirk:
+          maximum: 99
+          type: integer
+          format: int32
+        krhname:
+          maxLength: 1
+          minLength: 0
+          pattern: "^[A-Z]+$"
+          type: string
+        kurKurzbez:
+          maxLength: 3
+          minLength: 1
+          pattern: "^[A-Z0-9]+$"
+          type: string
+        uasUa:
+          maxLength: 2
+          minLength: 1
+          pattern: "^[A-Z0-9]+$"
+          type: string
+        siedlungsgebiet:
+          maximum: 99
+          type: integer
+          format: int32
+        jahr:
+          maximum: 99
+          minimum: 0
+          type: integer
+          format: int32
+        lfdnr1:
+          maximum: 9
+          minimum: 0
+          type: integer
+          format: int32
+        lfdnr2:
+          maximum: 99
+          minimum: 0
+          type: integer
+          format: int32
+        pname:
+          maxLength: 100
+          minLength: 0
+          type: string
+        pstrasse:
+          maxLength: 100
+          minLength: 0
+          type: string
+        projart:
+          maxLength: 50
+          minLength: 0
+          type: string
+        refinanzierbar:
+          type: boolean
+        kauf:
+          type: boolean
+        kripplatz:
+          minimum: 0
+          type: number
+        kigaplatz:
+          minimum: 0
+          type: number
+        hortplatz:
+          minimum: 0
+          type: number
+        notizen:
+          maxLength: 100
+          minLength: 0
+          type: string
+        bauprogramm:
+          maximum: 99
+          type: integer
+          format: int32
+        krisofp:
+          type: string
+          enum:
+          - X
+          - "Y"
+          - Z
+          - W
+          - V
+          - K
+          - F
+          - S
+        krhzweck:
+          type: string
+          enum:
+          - J
+          - S
+          - R
     KurzbezeichnungCreateDTO:
       required:
       - bezeichnung
@@ -3666,10 +4003,65 @@ components:
           type: string
           description: ""
         fobFb:
-          type: string
+          type: number
           description: ""
         stadtbezirk:
           type: number
+          description: ""
+        uasUa:
+          type: string
+          description: ""
+        kurKurzbez:
+          type: string
+          description: ""
+        krhname:
+          type: string
+          description: ""
+        krhzweck:
+          type: string
+          description: ""
+          enum:
+          - J
+          - S
+          - R
+        krisofp:
+          type: string
+          description: ""
+          enum:
+          - X
+          - "Y"
+          - Z
+          - W
+          - V
+          - K
+          - F
+          - S
+        siedlungsgebiet:
+          type: number
+          description: ""
+        bauprogramm:
+          type: number
+          description: ""
+        projart:
+          type: string
+          description: ""
+        refinanzierbar:
+          type: boolean
+          description: ""
+        kauf:
+          type: boolean
+          description: ""
+        kripplatz:
+          type: number
+          description: ""
+        kigaplatz:
+          type: number
+          description: ""
+        hortplatz:
+          type: number
+          description: ""
+        notizen:
+          type: string
           description: ""
       description: DTO for Projekt to be used in other FormContexts other than its
         own.
@@ -3847,8 +4239,9 @@ components:
       type: object
       properties:
         bauprogramm:
-          type: string
+          type: integer
           description: ""
+          format: int32
         bezeichnung:
           type: string
           description: ""
@@ -3859,8 +4252,9 @@ components:
       type: object
       properties:
         fb:
-          type: string
+          type: integer
           description: ""
+          format: int32
         bezeichnung:
           type: string
           description: ""
@@ -3961,8 +4355,9 @@ components:
       type: object
       properties:
         stadtbezirk:
-          type: string
+          type: integer
           description: ""
+          format: int32
         bezeichnung:
           type: string
           description: ""
@@ -4464,64 +4859,85 @@ components:
             $ref: "#/components/schemas/ProjektResponseDTO"
         page:
           $ref: "#/components/schemas/PageMetadata"
-    ProjektResponseDTO:
+    KrankenhausFormContextDTO:
       required:
-      - fobFb
-      - id
-      - jahr
-      - krisofp
-      - kurKurzbez
-      - lfdnr1
-      - lfdnr2
-      - pname
-      - projnr
-      - pstrasse
-      - stadtbezirk
-      - uasUa
+      - bezeichnung
+      - krhname
       type: object
       properties:
-        id:
+        krhname:
           type: string
-        projnr:
+          description: ""
+        bezeichnung:
           type: string
-        pname:
-          type: string
-        pstrasse:
-          type: string
-        fobFb:
-          type: string
-        stadtbezirk:
-          type: string
-        kurKurzbez:
-          type: string
-        uasUa:
-          type: string
-        jahr:
-          type: string
-        lfdnr1:
-          type: string
-        lfdnr2:
-          type: string
-        krisofp:
-          type: string
-          enum:
-          - X
-          - "Y"
-          - Z
-          - W
-          - V
-          - K
-          - F
-          - S
+          description: ""
     ProjektFormContext:
       required:
+      - bezs
+      - bpgs
+      - fbs
+      - krhs
+      - krhzwecks
+      - krisofps
+      - kurzs
       - projekte
+      - sgts
+      - uas
       type: object
       properties:
         projekte:
           type: array
           items:
+            $ref: "#/components/schemas/ProjektFormContextDTO"
+        fbs:
+          type: array
+          items:
+            $ref: "#/components/schemas/FoerderbereichFormContextDTO"
+        bezs:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
+        uas:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnterabschnittFormContextDTO"
+        kurzs:
+          type: array
+          items:
+            $ref: "#/components/schemas/KurzbezeichnungFormContextDTO"
+        bpgs:
+          type: array
+          items:
+            $ref: "#/components/schemas/BauprogrammFormContextDTO"
+        sgts:
+          type: array
+          items:
+            $ref: "#/components/schemas/SiedlungsgebietFormContextDTO"
+        krhs:
+          type: array
+          items:
+            $ref: "#/components/schemas/KrankenhausFormContextDTO"
+        krisofps:
+          type: array
+          items:
             type: string
+            enum:
+            - X
+            - "Y"
+            - Z
+            - W
+            - V
+            - K
+            - F
+            - S
+        krhzwecks:
+          type: array
+          items:
+            type: string
+            enum:
+            - J
+            - S
+            - R
     PagedModelKurzbezeichnungResponseDTO:
       type: object
       properties:
