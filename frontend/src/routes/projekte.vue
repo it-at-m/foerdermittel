@@ -32,22 +32,71 @@
             <v-row>
               <v-col
                 cols="12"
-                md="6"
+                md="4"
               >
                 <v-text-field
                   v-model="filter.projnr"
                   :label="t('model.projekt.projnr')"
+                  density="compact"
                   clearable
                 />
               </v-col>
 
               <v-col
                 cols="12"
-                md="6"
+                md="4"
               >
                 <v-text-field
                   v-model="filter.fobFb"
                   :label="t('model.projekt.fobFb')"
+                  density="compact"
+                  clearable
+                />
+              </v-col>
+              <v-col
+                cols="12"
+                md="4"
+              >
+                <v-text-field
+                  v-model="filter.kurKurzbez"
+                  :label="t('model.projekt.kurKurzbez')"
+                  density="compact"
+                  clearable
+                />
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col
+                cols="12"
+                md="4"
+              >
+                <v-text-field
+                  v-model="filter.uasUa"
+                  :label="t('model.projekt.uasUa')"
+                  density="compact"
+                  clearable
+                />
+              </v-col>
+              <v-col
+                cols="12"
+                md="4"
+              >
+                <v-text-field
+                  v-model="filter.pname"
+                  :label="t('model.projekt.pname')"
+                  density="compact"
+                  clearable
+                />
+              </v-col>
+
+              <v-col
+                cols="12"
+                md="4"
+              >
+                <v-text-field
+                  v-model="filter.pstrasse"
+                  :label="t('model.projekt.pstrasse')"
+                  density="compact"
                   clearable
                 />
               </v-col>
@@ -70,10 +119,8 @@
                 <div>{{ item[field] ?? "—" }}</div>
               </v-col>
             </v-row>
-
-            <v-divider />
-
             <v-row>
+              <v-divider />
               <v-col cols="12">
                 <div class="text-subtitle-2 mb-2">
                   {{ t("model.projekt.notizen") }}
@@ -148,14 +195,10 @@ const headers: DataTableHeader<Partial<ProjektResponseDTO>>[] = [
     value: "pstrasse",
     sortable: true,
   },
-  {
-    title: t("model.projekt.projart"),
-    value: "projart",
-    sortable: true,
-  },
 ];
 
 const expandedFields = [
+  "projart",
   "stadtbezirk",
   "krhname",
   "siedlungsgebiet",
