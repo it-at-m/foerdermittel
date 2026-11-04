@@ -30,6 +30,7 @@ import org.springframework.util.StringUtils;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
+@SuppressWarnings("CPD")
 public class ReportAuswertungAntraegeService {
 
     private final FoerderbereichService foerderbereichService;
@@ -39,7 +40,6 @@ public class ReportAuswertungAntraegeService {
     private final BauprogrammService bauprogrammService;
     private final UnterabschnittService unterabschnittService;
     private final SiedlungsgebietService siedlungsgebietService;
-
     private final ReportAuswertungAntraegeMapper reportMapper;
     private final ReportService reportService;
     private final ProjektService projektService;
