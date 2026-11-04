@@ -221,45 +221,41 @@ class ProjektServiceTest {
     class CreateProjekt {
 
         @Test
-        void givenProjektCreateDTO_thenInsertProjektWithDefaultValues() {
-            final ProjektCreateDTO dto = new ProjektCreateDTO(
-                    "1234567", 1, null, null, "K", "01", null,
-                    2026, 0, 1, null, null, null,
-                    null, null, null, null, null, null, null, null, null);
+        void givenProjektExists_thenUpdateProjekt() {
+            final String id = "1234567";
+            final ProjektUpdateDTO dto = new ProjektUpdateDTO(
+                    null, null, null, null, null, null, null,
+                    null, null, null, null, null, null, null, null, null, null);
 
             final Projekt projekt = new Projekt();
+            final Projekt mappedProjekt = new Projekt();
 
-            final var foerderbereich = mock(
-                    Foerderbereich.class);
-            final var kurzbezeichnung = mock(
-                    Kurzbezeichnung.class);
-            final var unterabschnitt = mock(
-                    Unterabschnitt.class);
+            final var foerderbereich = mock(Foerderbereich.class);
+            final var kurzbezeichnung = mock(Kurzbezeichnung.class);
 
-            when(projektMapper.toEntity(dto)).thenReturn(projekt);
-            when(foerderbereichService.getFoerderbereich(BigDecimal.valueOf(1)))
-                    .thenReturn(foerderbereich);
-            when(kurzbezeichnungService.getKurzbezeichnung("K")).thenReturn(kurzbezeichnung);
-            when(unterabschnittService.getUnterabschnitt("01")).thenReturn(unterabschnitt);
-            when(projektRepository.insert(projekt)).thenReturn(projekt);
+            projekt.setFobFb(foerderbereich);
+            projekt.setKurKurzbez(kurzbezeichnung);
 
-            final Projekt result = unitUnderTest.createProjekt(dto);
+            when(projektRepository.findById(id)).thenReturn(Optional.of(projekt));
+            when(projektMapper.toEntity(dto)).thenReturn(mappedProjekt);
+            when(projektRepository.update(projekt)).thenReturn(projekt);
 
+            final Projekt result = unitUnderTest.updateProjekt(dto, id);
+
+            verify(projektRepository, times(1)).findById(id);
             verify(projektMapper, times(1)).toEntity(dto);
-            verify(foerderbereichService, times(1))
-                    .getFoerderbereich(BigDecimal.valueOf(1));
-            verify(kurzbezeichnungService, times(1)).getKurzbezeichnung("K");
-            verify(unterabschnittService, times(1)).getUnterabschnitt("01");
-            verify(projektRepository, times(1)).insert(projekt);
+            verify(projektRepository, times(1)).update(projekt);
 
-            verify(stadtbezirkService, never()).getStadtbezirk(Mockito.any());
-            verify(krankenhausService, never()).getKrankenhaus(Mockito.any());
-            verify(siedlungsgebietService, never()).getSiedlungsgebiet(Mockito.any());
-            verify(bauprogrammService, never()).getBauprogramm(Mockito.any());
+            verify(foerderbereichService, never()).getFoerderbereich(Mockito.any());
+            verify(kurzbezeichnungService, never()).getKurzbezeichnung(Mockito.any());
 
             assertThat(result).isSameAs(projekt);
-            assertThat(projekt.getKauf()).isFalse();
-            assertThat(projekt.getRefinanzierbar()).isTrue();
+            assertThat(projekt.getFobFb()).isSameAs(foerderbereich);
+            assertThat(projekt.getKurKurzbez()).isSameAs(kurzbezeichnung);
+            assertThat(projekt.getBezStadtbezirk()).isNull();
+            assertThat(projekt.getKrnKrhname()).isNull();
+            assertThat(projekt.getSgtSiedlungsgebiet()).isNull();
+            assertThat(projekt.getBpgBauprogramm()).isNull();
         }
     }
 
