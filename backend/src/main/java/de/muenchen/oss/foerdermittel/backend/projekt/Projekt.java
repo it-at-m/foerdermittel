@@ -1,9 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
-import de.muenchen.oss.foerdermittel.backend.bauprogramm.Bauprogramm;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
-import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
 import jakarta.persistence.Column;
@@ -27,8 +25,8 @@ import org.hibernate.type.SqlTypes;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "projekte")
 public class Projekt implements Serializable {
 
@@ -37,13 +35,7 @@ public class Projekt implements Serializable {
 
     @Id
     @Column(name = "projnr", nullable = false)
-    @NotNull @Size(min = 1, max = 7) private String projnr; // angepasst von projektnr auf projnr, da im Mapper so verwendet
-
-    @Column(name = "pname", nullable = false)
-    @NotNull @Size(min = 1, max = 100) private String pname;
-
-    @Column(name = "pstrasse", nullable = false)
-    @NotNull @Size(min = 1, max = 100) private String pstrasse;
+    @NotNull @Size(min = 7, max = 7) private String projnr; // angepasst von projektnr auf projnr, da im Mapper so verwendet
 
     @Column(name = "jahr", nullable = false)
     @NotNull private String jahr;
@@ -54,7 +46,19 @@ public class Projekt implements Serializable {
             referencedColumnName = "fb",
             nullable = false
     )
-    private Foerderbereich foerderbereich;
+    private Foerderbereich fobFb;
+
+    @Column(name = "lfdnr1", length = 1)
+    private String lfdnr1;
+
+    @Column(name = "lfdnr2", length = 2)
+    private String lfdnr2;
+
+    @Column(name = "pname", nullable = false)
+    @NotNull @Size(min = 1, max = 100) private String pname;
+
+    @Column(name = "pstrasse", nullable = false)
+    @NotNull @Size(min = 1, max = 100) private String pstrasse;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
@@ -70,7 +74,7 @@ public class Projekt implements Serializable {
             referencedColumnName = "ua",
             nullable = false
     )
-    private Unterabschnitt unterabschnitt;
+    private Unterabschnitt uasUa;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
@@ -78,23 +82,7 @@ public class Projekt implements Serializable {
             referencedColumnName = "kurzbez",
             nullable = false
     )
-    private Kurzbezeichnung kurzbezeichnung;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "sgt_siedlungsgebiet",
-            referencedColumnName = "siedlungsgebiet",
-            nullable = false
-    )
-    private Siedlungsgebiet siedlungsgebiet;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "bpg_bauprogramm",
-            referencedColumnName = "bauprogramm",
-            nullable = false
-    )
-    private Bauprogramm bauprogramm;
+    private Kurzbezeichnung kurKurzbez;
 
     @Enumerated(EnumType.STRING)
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)

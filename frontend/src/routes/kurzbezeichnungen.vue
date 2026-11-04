@@ -77,7 +77,7 @@ const EMPTY_ITEM_TEMPLATE: Partial<KurzbezeichnungResponseDTO> = {
 const kurzbezeichnungApi = useKurzbezeichnungApi();
 
 const kurzbezeichnungFormContext = computed(
-  () => kurzbezeichnungApi.context.data.value
+  () => kurzbezeichnungApi.context?.data.value
 );
 
 type KurzbezeichnungFormType = InstanceType<typeof KurzbezeichnungForm>;
@@ -90,7 +90,7 @@ const handleCreate = async (
 ) => {
   // TODO: some type checking improvements
   const model = kurzbezeichnungCreateDTO as KurzbezeichnungResponseDTO;
-  await kurzbezeichnungApi.create.call({
+  await kurzbezeichnungApi.create?.call({
     kurzbezeichnungCreateDTO: model,
   });
 };
@@ -100,14 +100,14 @@ const handleUpdate = async (
 ) => {
   // TODO: some type checking improvements
   const model = kurzbezeichnungUpdateDTO as KurzbezeichnungResponseDTO;
-  await kurzbezeichnungApi.update.call({
+  await kurzbezeichnungApi.update?.call({
     id: model.id,
     kurzbezeichnungUpdateDTO: model,
   });
 };
 
 const handleDelete = async (id: string) => {
-  await kurzbezeichnungApi.delete.call({
+  await kurzbezeichnungApi.delete?.call({
     id,
   });
 };

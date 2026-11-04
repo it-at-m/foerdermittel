@@ -125,6 +125,9 @@ const navigationItems: NavigationItem[] = [
     children: [
       {
         title: t("model.projekt.modelName", 2),
+        props: {
+          to: "/projekte",
+        },
       },
       {
         title: t("model.antrag.modelName", 2),
@@ -250,6 +253,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("domain.report.annahmeAnordnungSAP"),
+        props: {
+          to: "/report/annahmeanordnungsap",
+        },
       },
       {
         title: t("domain.report.auswertungProjekt.modelName"),
@@ -297,7 +303,10 @@ const navigationItems: NavigationItem[] = [
         title: t("domain.report.ausstGenehmigungVorzBeginn"),
       },
       {
-        title: t("domain.report.bewilligungAuszahlungProjekt"),
+        title: t("domain.report.bewilligungAuszahlungProjekt.modelName"),
+        props: {
+          to: "/report/bewilligungauszahlungprojekt",
+        },
       },
       {
         title: t("domain.report.bewilligungAuzahlungVergleich"),

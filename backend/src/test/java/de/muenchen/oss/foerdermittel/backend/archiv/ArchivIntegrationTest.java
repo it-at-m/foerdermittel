@@ -126,8 +126,17 @@ class ArchivIntegrationTest {
         final Bauprogramm bauprogramm = new Bauprogramm(new BigDecimal(1), "Test");
         bauprogrammRepository.save(bauprogramm);
 
-        projektRepository.save(new Projekt(EXISTING_PROJNR, "Testprojekt", "Teststraße", "2025",
-                foerderbereich, stadtbezirk, unterabschnitt, kurzbezeichnung, siedlungsgebiet, bauprogramm, Krisofp.K));
+        projektRepository.save(new Projekt(EXISTING_PROJNR,
+                "2023",
+                foerderbereich,
+                "1",
+                "1",
+                "Test",
+                "Straße 1",
+                stadtbezirk,
+                unterabschnitt,
+                kurzbezeichnung,
+                Krisofp.K));
 
     }
 
