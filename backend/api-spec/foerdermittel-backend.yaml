@@ -3045,11 +3045,11 @@ components:
           maximum: 99
           type: integer
           format: int32
-        stadtbezirk:
+        bezStadtbezirk:
           maximum: 99
           type: integer
           format: int32
-        krhname:
+        krnKrhname:
           maxLength: 1
           minLength: 0
           pattern: "^[A-Z]*$"
@@ -3059,7 +3059,7 @@ components:
           minLength: 0
           pattern: "^[A-Z0-9]+$"
           type: string
-        siedlungsgebiet:
+        sgtSiedlungsgebiet:
           maximum: 99
           type: integer
           format: int32
@@ -3084,7 +3084,7 @@ components:
           maxLength: 100
           minLength: 0
           type: string
-        bauprogramm:
+        bpgBauprogramm:
           maximum: 99
           type: integer
           format: int32
@@ -3136,9 +3136,9 @@ components:
           type: number
         kurKurzbez:
           type: string
-        stadtbezirk:
+        bezStadtbezirk:
           type: number
-        krhname:
+        krnKrhname:
           type: string
         krhzweck:
           type: string
@@ -3157,9 +3157,9 @@ components:
           - K
           - F
           - S
-        siedlungsgebiet:
+        sgtSiedlungsgebiet:
           type: number
-        bauprogramm:
+        bpgBauprogramm:
           type: number
         pname:
           type: string
@@ -3643,11 +3643,11 @@ components:
           maximum: 99
           type: integer
           format: int32
-        stadtbezirk:
+        bezStadtbezirk:
           maximum: 99
           type: integer
           format: int32
-        krhname:
+        krnKrhname:
           maxLength: 1
           minLength: 0
           pattern: "^[A-Z]+$"
@@ -3662,7 +3662,7 @@ components:
           minLength: 1
           pattern: "^[A-Z0-9]+$"
           type: string
-        siedlungsgebiet:
+        sgtSiedlungsgebiet:
           maximum: 99
           type: integer
           format: int32
@@ -3710,7 +3710,7 @@ components:
           maxLength: 100
           minLength: 0
           type: string
-        bauprogramm:
+        bpgBauprogramm:
           maximum: 99
           type: integer
           format: int32
@@ -3986,11 +3986,11 @@ components:
           $ref: "#/components/schemas/PageMetadata"
     ProjektFormContextDTO:
       required:
+      - bezStadtbezirk
       - fobFb
       - pname
       - projnr
       - pstrasse
-      - stadtbezirk
       type: object
       properties:
         projnr:
@@ -4005,18 +4005,16 @@ components:
         fobFb:
           type: number
           description: ""
-        stadtbezirk:
+        bezStadtbezirk:
           type: number
-          description: ""
         uasUa:
           type: string
           description: ""
         kurKurzbez:
           type: string
           description: ""
-        krhname:
+        krnKrhname:
           type: string
-          description: ""
         krhzweck:
           type: string
           description: ""
@@ -4036,12 +4034,10 @@ components:
           - K
           - F
           - S
-        siedlungsgebiet:
+        sgtSiedlungsgebiet:
           type: number
-          description: ""
-        bauprogramm:
+        bpgBauprogramm:
           type: number
-          description: ""
         projart:
           type: string
           description: ""
