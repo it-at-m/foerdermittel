@@ -6,3 +6,7 @@ CVE-2026-6009
 
 # http-cache-semantics is only uses as part of cyclonedx-npm dev dependency
 CVE-2026-93748
+
+# not relevant at the moment as these are only affecting dev dependencies but should be solved in the future
+CVE-2026-118773
+CVE-2026-118764
