@@ -122,14 +122,18 @@ public class ProjektService {
         final Projekt foundProjekt = ServiceUtils.getEntityOrThrowNotFoundException(
                 ha, projektRepository, Projekt.class);
 
-        projektMapper.updateEntity(projektUpdateDTO, foundProjekt);
+        final Projekt mappedProjekt = projektMapper.toEntity(projektUpdateDTO);
+
+        foundProjekt.setPname(mappedProjekt.getPname());
+        foundProjekt.setPstrasse(mappedProjekt.getPstrasse());
+        foundProjekt.setProjart(mappedProjekt.getProjart());
+        foundProjekt.setNotizen(mappedProjekt.getNotizen());
 
         if (projektUpdateDTO.fobFb() != null) {
             foundProjekt.setFobFb(foerderbereichService.getFoerderbereich(
                     BigDecimal.valueOf(projektUpdateDTO.fobFb())));
         }
 
-        // Optionale Beziehungen
         foundProjekt.setBezStadtbezirk(projektUpdateDTO.bezStadtbezirk() == null ? null
                 : stadtbezirkService.getStadtbezirk(
                         BigDecimal.valueOf(projektUpdateDTO.bezStadtbezirk())));
@@ -149,6 +153,14 @@ public class ProjektService {
         if (projektUpdateDTO.kurKurzbez() != null) {
             foundProjekt.setKurKurzbez(kurzbezeichnungService.getKurzbezeichnung(
                     projektUpdateDTO.kurKurzbez()));
+        }
+
+        if (projektUpdateDTO.kauf() != null) {
+            foundProjekt.setKauf(projektUpdateDTO.kauf());
+        }
+
+        if (projektUpdateDTO.refinanzierbar() != null) {
+            foundProjekt.setRefinanzierbar(projektUpdateDTO.refinanzierbar());
         }
 
         log.debug("Update Projekt {}", foundProjekt);

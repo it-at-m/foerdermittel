@@ -289,7 +289,7 @@ class ProjektServiceTest {
             final Projekt result = unitUnderTest.updateProjekt(dto, id);
 
             verify(projektRepository, times(1)).findById(id);
-            verify(projektMapper, times(1)).updateEntity(dto, projekt);
+            verify(projektMapper, times(1)).toEntity(dto);
             verify(projektRepository, times(1)).update(projekt);
 
             verify(foerderbereichService, never()).getFoerderbereich(Mockito.any());
@@ -319,7 +319,7 @@ class ProjektServiceTest {
                     .hasMessage("The Projekt with ID MISSING was not found.");
 
             verify(projektRepository, times(1)).findById(id);
-            verify(projektMapper, never()).updateEntity(dto, null);
+            verify(projektMapper, never()).toEntity(dto);
             verify(projektRepository, never()).update(Mockito.any(Projekt.class));
         }
     }
@@ -398,18 +398,13 @@ class ProjektServiceTest {
 
     @Test
     void givenProjects_thenMapsTheirReportFormContext() {
-        // Given
-        final List<Projekt> projekte = List.of(mock(Projekt.class));
-        final List<ReportProjektuebersichtFormContextDTO> expected = List
-                .of(mock(ReportProjektuebersichtFormContextDTO.class));
+        final List<ReportProjektuebersichtFormContextDTO> expected = List.of(mock(ReportProjektuebersichtFormContextDTO.class));
 
         when(projektRepository.findAllAsBasic()).thenReturn(List.of());
         when(projektMapper.toReportProjektuebersichtFormContext(List.of())).thenReturn(expected);
 
-        // When
         final var result = unitUnderTest.getReportProjektuebersichtFormContextDTOs();
 
-        // Then
         assertThat(result).isEqualTo(expected);
         verify(projektRepository).findAllAsBasic();
         verify(projektMapper).toReportProjektuebersichtFormContext(List.of());

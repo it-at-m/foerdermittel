@@ -184,33 +184,25 @@ class ProjektMapperTest {
                     null,
                     null);
 
-            final Projekt entity = new Projekt();
-            entity.setProjnr("1124101");
-            entity.setJahr("2026");
-            entity.setLfdnr1("0");
-            entity.setLfdnr2("01");
+            // When
+            final Projekt entity = projektMapper.toEntity(dto);
 
-            projektMapper.updateEntity(dto, entity);
-
+            // Then
             assertThat(entity.getPname()).isEqualTo(dto.pname());
             assertThat(entity.getPstrasse()).isEqualTo(dto.pstrasse());
             assertThat(entity.getProjart()).isEqualTo(dto.projart());
             assertThat(entity.getRefinanzierbar()).isEqualTo(dto.refinanzierbar());
             assertThat(entity.getKauf()).isEqualTo(dto.kauf());
 
-            assertThat(entity.getKripplatz())
-                    .isEqualByComparingTo(dto.kripplatz());
-            assertThat(entity.getKigaplatz())
-                    .isEqualByComparingTo(dto.kigaplatz());
-            assertThat(entity.getHortplatz())
-                    .isEqualByComparingTo(dto.hortplatz());
-
+            assertThat(entity.getKripplatz()).isEqualByComparingTo(dto.kripplatz());
+            assertThat(entity.getKigaplatz()).isEqualByComparingTo(dto.kigaplatz());
+            assertThat(entity.getHortplatz()).isEqualByComparingTo(dto.hortplatz());
             assertThat(entity.getNotizen()).isEqualTo(dto.notizen());
 
-            assertThat(entity.getProjnr()).isEqualTo("1124101");
-            assertThat(entity.getJahr()).isEqualTo("2026");
-            assertThat(entity.getLfdnr1()).isEqualTo("0");
-            assertThat(entity.getLfdnr2()).isEqualTo("01");
+            assertThat(entity.getProjnr()).isNull();
+            assertThat(entity.getJahr()).isNull();
+            assertThat(entity.getLfdnr1()).isNull();
+            assertThat(entity.getLfdnr2()).isNull();
         }
     }
 
@@ -285,14 +277,13 @@ class ProjektMapperTest {
 
         @Test
         void givenAuswertungProjektDAOList_thenReturnsAuswertungProjektFormContextList() {
-
-            final AuswertungProjektDAO projekt = new AuswertungProjektDAO("2026", "Projektstraße 1", "Projektname", null);
+            final AuswertungProjektDAO projekt = new AuswertungProjektDAO("2026", "Projektname", "Projektstraße 1", Krisofp.K);
 
             final List<ReportAuswertungProjektFormContextDTO> result = projektMapper.toReportAuswertungProjektFormContext(List.of(projekt));
 
             assertThat(result).containsExactly(
                     new ReportAuswertungProjektFormContextDTO(
-                            "2026", "Projektstraße 1", "Projektname", null));
+                            "2026", "Projektstraße 1", "Projektname", Krisofp.K));
         }
 
         @Test

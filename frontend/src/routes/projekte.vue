@@ -116,7 +116,15 @@
                 <div class="text-subtitle-2 mb-2">
                   {{ t(`model.projekt.${field}`) }}
                 </div>
-                <div>{{ item[field] ?? "—" }}</div>
+                <div>
+                  {{
+                    ["refinanzierbar", "kauf"].includes(field)
+                      ? item[field]
+                        ? "Ja"
+                        : "Nein"
+                      : (item[field] ?? "—")
+                  }}
+                </div>
               </v-col>
             </v-row>
             <v-row>

@@ -74,6 +74,7 @@
           :readonly="displayMode !== InputDisplayMode.CREATE"
           density="comfortable"
           @update:model-value="updateNumberField('lfdnr1', $event)"
+          @blur="formatLfdnr1"
         />
       </v-col>
 
@@ -493,15 +494,25 @@ function updateNumberField(
   value: string | number | null | undefined
 ) {
   const normalizedValue = String(value ?? "").trim();
+  const numericValue = Number(normalizedValue);
 
   modelValue.value[field] =
-    normalizedValue === "" ? undefined : Number(normalizedValue);
+    normalizedValue === "" || !Number.isFinite(numericValue)
+      ? undefined
+      : numericValue;
 }
 
 function formatJahr() {
   const value = String(modelValue.value.jahr ?? "").trim();
   if (!value) return;
   modelValue.value.jahr = Number(value.slice(-2));
+}
+
+function formatLfdnr1() {
+  const value = String(modelValue.value.lfdnr1 ?? "").trim();
+  if (!value) return;
+
+  modelValue.value.lfdnr1 = Number(value.slice(-1));
 }
 
 function formatLfdnr2() {

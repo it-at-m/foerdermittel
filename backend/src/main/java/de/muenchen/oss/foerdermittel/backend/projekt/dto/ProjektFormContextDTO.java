@@ -13,14 +13,14 @@ import java.math.BigDecimal;
  * @param pname
  * @param pstrasse
  * @param fobFb
- * @param stadtbezirk
+ * @param bezStadtbezirk
  * @param uasUa
  * @param kurKurzbez
- * @param krhname
+ * @param krnKrhname
  * @param krhzweck
  * @param krisofp
- * @param siedlungsgebiet
- * @param bauprogramm
+ * @param sgtSiedlungsgebiet
+ * @param bpgBauprogramm
  * @param projart
  * @param refinanzierbar
  * @param kauf

@@ -6,7 +6,6 @@ import de.muenchen.oss.foerdermittel.backend.projekt.dao.BasicProjektDAO;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface ProjektMapper {
@@ -42,7 +41,7 @@ public interface ProjektMapper {
     @Mapping(target = "bezStadtbezirk", ignore = true)
     @Mapping(target = "sgtSiedlungsgebiet", ignore = true)
     @Mapping(target = "bpgBauprogramm", ignore = true)
-    void updateEntity(ProjektUpdateDTO source, @MappingTarget Projekt target);
+    Projekt toEntity(ProjektUpdateDTO projektUpdateDTO);
 
     @Mapping(source = "projnr", target = "projnr")
     @Mapping(source = "fobFb.fb", target = "fobFb")
