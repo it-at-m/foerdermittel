@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 @Component
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
+@SuppressWarnings("CPD")
 public class ReportAuswertungAntraegeMapper {
 
     public Map<String, Object> toJasperParameters(
