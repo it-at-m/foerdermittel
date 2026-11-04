@@ -1,7 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
-import java.math.BigDecimal;
-
 public record ProjektFilter(
         String projnr,
         String fobFb,
@@ -9,4 +7,4 @@ public record ProjektFilter(
         String uasUa,
         String pname,
         String pstrasse) {
-        }
+}

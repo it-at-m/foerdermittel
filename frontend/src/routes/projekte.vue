@@ -2,47 +2,53 @@
   <base-view :domain-key="domainKey">
     <template #default="{ baseViewLoading }">
       <crud-card
-          :empty-item-template="EMPTY_ITEM_TEMPLATE"
-          :loading="baseViewLoading"
-          :table-headers="headers"
-          :filter-keys="['projnr', 'fobFb']"
-          :api="projektApi"
-          :domain-key="domainKey"
-          :handle-create="handleCreate"
-          :handle-update="handleUpdate"
-          :handle-delete="handleDelete"
-          :form-ref="projektFormRef"
-          should-load-form-context
-          :expandable="true"
-          :filter-default="{ projnr: undefined, fobFb: undefined }"
+        :empty-item-template="EMPTY_ITEM_TEMPLATE"
+        :loading="baseViewLoading"
+        :table-headers="headers"
+        :filter-keys="['projnr', 'fobFb']"
+        :api="projektApi"
+        :domain-key="domainKey"
+        :handle-create="handleCreate"
+        :handle-update="handleUpdate"
+        :handle-delete="handleDelete"
+        :form-ref="projektFormRef"
+        should-load-form-context
+        :expandable="true"
+        :filter-default="{ projnr: undefined, fobFb: undefined }"
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <projekt-form
-              v-if="projektFormContext"
-              ref="projektForm"
-              :model-value="item"
-              :display-mode="inputDisplayMode"
-              :projekt-form-context="projektFormContext"
-              @is-valid="updateValidity"
+            v-if="projektFormContext"
+            ref="projektForm"
+            :model-value="item"
+            :display-mode="inputDisplayMode"
+            :projekt-form-context="projektFormContext"
+            @is-valid="updateValidity"
           />
         </template>
 
         <template #filter-form="{ filter, updateValidity }">
           <v-form @update:model-value="updateValidity">
             <v-row>
-              <v-col cols="12" md="6">
+              <v-col
+                cols="12"
+                md="6"
+              >
                 <v-text-field
-                    v-model="filter.projnr"
-                    :label="t('model.projekt.projnr')"
-                    clearable
+                  v-model="filter.projnr"
+                  :label="t('model.projekt.projnr')"
+                  clearable
                 />
               </v-col>
 
-              <v-col cols="12" md="6">
+              <v-col
+                cols="12"
+                md="6"
+              >
                 <v-text-field
-                    v-model="filter.fobFb"
-                    :label="t('model.projekt.fobFb')"
-                    clearable
+                  v-model="filter.fobFb"
+                  :label="t('model.projekt.fobFb')"
+                  clearable
                 />
               </v-col>
             </v-row>
@@ -53,10 +59,10 @@
           <div class="pa-4">
             <v-row>
               <v-col
-                  v-for="field in expandedFields"
-                  :key="field"
-                  cols="12"
-                  md="2"
+                v-for="field in expandedFields"
+                :key="field"
+                cols="12"
+                md="2"
               >
                 <div class="text-subtitle-2 mb-2">
                   {{ t(`model.projekt.${field}`) }}
@@ -191,7 +197,7 @@ const EMPTY_ITEM_TEMPLATE: Partial<ProjektResponseDTO> = {
 
 const projektApi = useProjektApi();
 
-const projektFormContext = computed(() => projektApi.context.data.value);
+const projektFormContext = computed(() => projektApi.context?.data.value);
 
 type ProjektFormType = InstanceType<typeof ProjektForm>;
 const projektFormRef = useTemplateRef<ProjektFormType>("projektForm");
@@ -199,7 +205,7 @@ const projektFormRef = useTemplateRef<ProjektFormType>("projektForm");
 const handleCreate = async (projektCreateDTO: Partial<ProjektResponseDTO>) => {
   const model = projektCreateDTO as ProjektResponseDTO;
 
-  await projektApi.create.call({
+  await projektApi.create?.call({
     projektCreateDTO: model,
   });
 };
@@ -207,14 +213,14 @@ const handleCreate = async (projektCreateDTO: Partial<ProjektResponseDTO>) => {
 const handleUpdate = async (projektUpdateDTO: Partial<ProjektResponseDTO>) => {
   const model = projektUpdateDTO as ProjektResponseDTO;
 
-  await projektApi.update.call({
+  await projektApi.update?.call({
     id: model.projnr,
     projektUpdateDTO: model,
   });
 };
 
 const handleDelete = async (id: string) => {
-  await projektApi.delete.call({
+  await projektApi.delete?.call({
     id,
   });
 };
