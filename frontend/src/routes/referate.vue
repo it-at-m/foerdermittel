@@ -76,7 +76,7 @@ const EMPTY_ITEM_TEMPLATE: Partial<ReferatResponseDTO> = {
 
 const referatApi = useReferatApi();
 
-const referatFormContext = computed(() => referatApi.context.data.value);
+const referatFormContext = computed(() => referatApi.context?.data.value);
 
 type ReferatFormType = InstanceType<typeof ReferatForm>;
 const referatFormRef = useTemplateRef<ReferatFormType>("referatForm");
@@ -84,7 +84,7 @@ const referatFormRef = useTemplateRef<ReferatFormType>("referatForm");
 const handleCreate = async (referatCreateDTO: Partial<ReferatResponseDTO>) => {
   // TODO: some type checking improvements
   const model = referatCreateDTO as ReferatResponseDTO;
-  await referatApi.create.call({
+  await referatApi.create?.call({
     referatCreateDTO: model,
   });
 };
@@ -92,14 +92,14 @@ const handleCreate = async (referatCreateDTO: Partial<ReferatResponseDTO>) => {
 const handleUpdate = async (referatUpdateDTO: Partial<ReferatResponseDTO>) => {
   // TODO: some type checking improvements
   const model = referatUpdateDTO as ReferatResponseDTO;
-  await referatApi.update.call({
+  await referatApi.update?.call({
     id: model.id,
     referatUpdateDTO: model,
   });
 };
 
 const handleDelete = async (id: string) => {
-  await referatApi.delete.call({
+  await referatApi.delete?.call({
     id,
   });
 };

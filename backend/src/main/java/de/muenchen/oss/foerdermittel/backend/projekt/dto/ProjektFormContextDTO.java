@@ -10,13 +10,13 @@ import java.math.BigDecimal;
  * @param projnr
  * @param pname
  * @param pstrasse
- * @param foerderbereich
+ * @param fobFb
  * @param stadtbezirk
  */
 public record ProjektFormContextDTO(
         @NotNull String projnr,
         @NotNull String pname,
         @NotNull String pstrasse,
-        @NotNull String foerderbereich,
+        @NotNull String fobFb,
         @NotNull BigDecimal stadtbezirk) {
 }

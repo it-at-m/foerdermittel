@@ -125,6 +125,9 @@ const navigationItems: NavigationItem[] = [
     children: [
       {
         title: t("model.projekt.modelName", 2),
+        props: {
+          to: "/projekte",
+        },
       },
       {
         title: t("model.antrag.modelName", 2),

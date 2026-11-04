@@ -134,7 +134,7 @@ const EMPTY_ITEM_TEMPLATE: Partial<StadtbezirkslisteResponseDTO> = {
 const stadtbezirkslisteApi = useStadtbezirkslisteApi();
 
 const stadtbezirkslisteFormContext = computed(
-  () => stadtbezirkslisteApi.context.data.value
+  () => stadtbezirkslisteApi.context?.data.value
 );
 
 type StadtbezirkslisteFormType = InstanceType<typeof StadtbezirkslisteForm>;
@@ -148,7 +148,7 @@ const handleCreate = async (
 ) => {
   const model = stadtbezirkslisteCreateDTO as StadtbezirkslisteResponseDTO;
 
-  await stadtbezirkslisteApi.create.call({
+  await stadtbezirkslisteApi.create?.call({
     listennameCreateDTO: model,
   });
 };
@@ -158,14 +158,14 @@ const handleUpdate = async (
 ) => {
   const model = stadtbezirkslisteUpdateDTO as StadtbezirkslisteResponseDTO;
 
-  await stadtbezirkslisteApi.update.call({
+  await stadtbezirkslisteApi.update?.call({
     id: model.id,
     listennameUpdateDTO: model,
   });
 };
 
 const handleDelete = async (id: string) => {
-  await stadtbezirkslisteApi.delete.call({
+  await stadtbezirkslisteApi.delete?.call({
     id,
   });
 };

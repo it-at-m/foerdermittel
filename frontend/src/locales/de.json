@@ -55,11 +55,16 @@
   "model": {
     "projekt": {
       "modelName": "Projekt | Projekte",
+      "fobFb": "Förderbereich",
+      "jahr": "Jahr",
+      "kurKurzbez": "Kurzbezeichnung",
       "projnr": "Projektnummer",
+      "strasse": "Straße",
+      "name": "Name",
+      "uasUa": "UA",
+      "ausgabeNotiz": "Ausgabe Notiz",
       "pname": "Name",
       "pstrasse": "Straße",
-      "ausgabeNotiz": "Ausgabe Notiz",
-      "jahr": "Projektjahr",
       "krisofp": "Förderprogramm"
     },
     "antrag": {
