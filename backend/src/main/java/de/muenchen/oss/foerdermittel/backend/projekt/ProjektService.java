@@ -102,14 +102,14 @@ public class ProjektService {
         projekt.setKurKurzbez(kurzbezeichnungService.getKurzbezeichnung(projektCreateDTO.kurKurzbez()));
         projekt.setUasUa(unterabschnittService.getUnterabschnitt(projektCreateDTO.uasUa()));
 
-        projekt.setStadtbezirk(
-                projektCreateDTO.stadtbezirk() == null ? null : stadtbezirkService.getStadtbezirk(BigDecimal.valueOf(projektCreateDTO.stadtbezirk())));
-        projekt.setKrankenhaus(projektCreateDTO.krhname() == null || projektCreateDTO.krhname().isBlank() ? null
-                : krankenhausService.getKrankenhaus(projektCreateDTO.krhname()));
-        projekt.setSiedlungsgebiet(projektCreateDTO.siedlungsgebiet() == null ? null
-                : siedlungsgebietService.getSiedlungsgebiet(BigDecimal.valueOf(projektCreateDTO.siedlungsgebiet())));
-        projekt.setBauprogramm(
-                projektCreateDTO.bauprogramm() == null ? null : bauprogrammService.getBauprogramm(BigDecimal.valueOf(projektCreateDTO.bauprogramm())));
+        projekt.setBezStadtbezirk(
+                projektCreateDTO.bezStadtbezirk() == null ? null : stadtbezirkService.getStadtbezirk(BigDecimal.valueOf(projektCreateDTO.bezStadtbezirk())));
+        projekt.setKrnKrhname(projektCreateDTO.krnKrhname() == null || projektCreateDTO.krnKrhname().isBlank() ? null
+                : krankenhausService.getKrankenhaus(projektCreateDTO.krnKrhname()));
+        projekt.setSgtSiedlungsgebiet(projektCreateDTO.sgtSiedlungsgebiet() == null ? null
+                : siedlungsgebietService.getSiedlungsgebiet(BigDecimal.valueOf(projektCreateDTO.sgtSiedlungsgebiet())));
+        projekt.setBpgBauprogramm(
+                projektCreateDTO.bpgBauprogramm() == null ? null : bauprogrammService.getBauprogramm(BigDecimal.valueOf(projektCreateDTO.bpgBauprogramm())));
 
         projekt.setKauf(projekt.getKauf() != null && projekt.getKauf());
         projekt.setRefinanzierbar(projekt.getRefinanzierbar() == null || projekt.getRefinanzierbar());
@@ -130,21 +130,21 @@ public class ProjektService {
         }
 
         // Optionale Beziehungen
-        foundProjekt.setStadtbezirk(projektUpdateDTO.stadtbezirk() == null ? null
+        foundProjekt.setBezStadtbezirk(projektUpdateDTO.bezStadtbezirk() == null ? null
                 : stadtbezirkService.getStadtbezirk(
-                        BigDecimal.valueOf(projektUpdateDTO.stadtbezirk())));
+                        BigDecimal.valueOf(projektUpdateDTO.bezStadtbezirk())));
 
-        foundProjekt.setKrankenhaus(projektUpdateDTO.krhname() == null
-                || projektUpdateDTO.krhname().isBlank() ? null
-                        : krankenhausService.getKrankenhaus(projektUpdateDTO.krhname()));
+        foundProjekt.setKrnKrhname(projektUpdateDTO.krnKrhname() == null
+                || projektUpdateDTO.krnKrhname().isBlank() ? null
+                        : krankenhausService.getKrankenhaus(projektUpdateDTO.krnKrhname()));
 
-        foundProjekt.setSiedlungsgebiet(projektUpdateDTO.siedlungsgebiet() == null ? null
+        foundProjekt.setSgtSiedlungsgebiet(projektUpdateDTO.sgtSiedlungsgebiet() == null ? null
                 : siedlungsgebietService.getSiedlungsgebiet(
-                        BigDecimal.valueOf(projektUpdateDTO.siedlungsgebiet())));
+                        BigDecimal.valueOf(projektUpdateDTO.sgtSiedlungsgebiet())));
 
-        foundProjekt.setBauprogramm(projektUpdateDTO.bauprogramm() == null ? null
+        foundProjekt.setBpgBauprogramm(projektUpdateDTO.bpgBauprogramm() == null ? null
                 : bauprogrammService.getBauprogramm(
-                        BigDecimal.valueOf(projektUpdateDTO.bauprogramm())));
+                        BigDecimal.valueOf(projektUpdateDTO.bpgBauprogramm())));
 
         if (projektUpdateDTO.kurKurzbez() != null) {
             foundProjekt.setKurKurzbez(kurzbezeichnungService.getKurzbezeichnung(

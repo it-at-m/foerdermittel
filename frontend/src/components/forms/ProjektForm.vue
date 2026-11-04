@@ -214,18 +214,18 @@
         md="6"
       >
         <fm-autocomplete
-          :model-value="modelValue.stadtbezirk"
+          :model-value="modelValue.bezStadtbezirk"
           :items="projektFormContext.bezs"
-          item-value="stadtbezirk"
+          item-value="bezStadtbezirk"
           :item-title="getStadtbezirkTitle"
-          :label="t('model.projekt.stadtbezirk')"
+          :label="t('model.projekt.bezStadtbezirk')"
           :validation-attribute-map="
             ProjektCreateDTOPropertyValidationAttributesMap
           "
-          validation-attribute-key="stadtbezirk"
+          validation-attribute-key="bezStadtbezirk"
           density="comfortable"
           clearable
-          @update:model-value="updateNumberField('stadtbezirk', $event)"
+          @update:model-value="updateNumberField('bezStadtbezirk', $event)"
         />
       </v-col>
 
@@ -234,18 +234,18 @@
         md="6"
       >
         <fm-autocomplete
-          :model-value="modelValue.bauprogramm"
+          :model-value="modelValue.bpgBauprogramm"
           :items="projektFormContext.bpgs"
-          item-value="bauprogramm"
+          item-value="bpgBauprogramm"
           :item-title="getBauprogrammTitle"
-          :label="t('model.projekt.bauprogramm')"
+          :label="t('model.projekt.bpgBauprogramm')"
           :validation-attribute-map="
             ProjektCreateDTOPropertyValidationAttributesMap
           "
-          validation-attribute-key="bauprogramm"
+          validation-attribute-key="bpgBauprogramm"
           density="comfortable"
           clearable
-          @update:model-value="updateNumberField('bauprogramm', $event)"
+          @update:model-value="updateNumberField('bpgBauprogramm', $event)"
         />
       </v-col>
     </v-row>
@@ -256,18 +256,18 @@
         md="6"
       >
         <fm-autocomplete
-          :model-value="modelValue.siedlungsgebiet"
+          :model-value="modelValue.sgtSiedlungsgebiet"
           :items="projektFormContext.sgts"
-          item-value="siedlungsgebiet"
+          item-value="sgtSiedlungsgebiet"
           :item-title="getSiedlungsgebietTitle"
-          :label="t('model.projekt.siedlungsgebiet')"
+          :label="t('model.projekt.sgtSiedlungsgebiet')"
           :validation-attribute-map="
             ProjektCreateDTOPropertyValidationAttributesMap
           "
-          validation-attribute-key="siedlungsgebiet"
+          validation-attribute-key="sgtSiedlungsgebiet"
           density="comfortable"
           clearable
-          @update:model-value="updateNumberField('siedlungsgebiet', $event)"
+          @update:model-value="updateNumberField('sgtSiedlungsgebiet', $event)"
         />
       </v-col>
 
@@ -295,15 +295,15 @@
         md="6"
       >
         <fm-autocomplete
-          v-model="modelValue.krhname"
+          v-model="modelValue.krnKrhname"
           :items="projektFormContext.krhs"
-          item-value="krhname"
+          item-value="krnKrhname"
           :item-title="getKrankenhausTitle"
-          :label="t('model.projekt.krhname')"
+          :label="t('model.projekt.krnKrhname')"
           :validation-attribute-map="
             ProjektCreateDTOPropertyValidationAttributesMap
           "
-          validation-attribute-key="krhname"
+          validation-attribute-key="krnKrhname"
           density="comfortable"
           clearable
         />
@@ -487,9 +487,9 @@ function updateNumberField(
     | "lfdnr1"
     | "lfdnr2"
     | "fobFb"
-    | "stadtbezirk"
-    | "siedlungsgebiet"
-    | "bauprogramm",
+    | "bezStadtbezirk"
+    | "sgtSiedlungsgebiet"
+    | "bpgBauprogramm",
   value: string | number | null | undefined
 ) {
   const normalizedValue = String(value ?? "").trim();

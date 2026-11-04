@@ -13,11 +13,11 @@ import java.math.BigDecimal;
 public record ProjektCreateDTO(
         @NotNull @Size(min = 7, max = 7) @Pattern(regexp = "^[A-Z0-9]{7}$") String projnr,
         @NotNull @Max(99) Integer fobFb,
-        @Max(99) Integer stadtbezirk,
-        @Size(max = 1) @Pattern(regexp = "^[A-Z]+$") String krhname,
+        @Max(99) Integer bezStadtbezirk,
+        @Size(max = 1) @Pattern(regexp = "^[A-Z]+$") String krnKrhname,
         @NotNull @Size(min = 1, max = 3) @Pattern(regexp = "^[A-Z0-9]+$") String kurKurzbez,
         @NotNull @Size(min = 1, max = 2) @Pattern(regexp = "^[A-Z0-9]+$") String uasUa,
-        @Max(99) Integer siedlungsgebiet,
+        @Max(99) Integer sgtSiedlungsgebiet,
         @NotNull @Min(0) @Max(99) Integer jahr,
         @NotNull @Min(0) @Max(9) Integer lfdnr1,
         @NotNull @Min(0) @Max(99) Integer lfdnr2,
@@ -30,7 +30,7 @@ public record ProjektCreateDTO(
         @Digits(integer = 10, fraction = 0) @Min(0) BigDecimal kigaplatz,
         @Digits(integer = 10, fraction = 0) @Min(0) BigDecimal hortplatz,
         @Size(max = 100) String notizen,
-        @Max(99) Integer bauprogramm,
+        @Max(99) Integer bpgBauprogramm,
         Krisofp krisofp,
         Krhzweck krhzweck) {
 }

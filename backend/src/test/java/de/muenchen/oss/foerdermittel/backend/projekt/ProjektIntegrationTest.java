@@ -136,11 +136,11 @@ class ProjektIntegrationTest {
         exampleEntity.setPstrasse("Projektstraße 1");
 
         exampleEntity.setFobFb(foerderbereich);
-        exampleEntity.setStadtbezirk(stadtbezirk);
+        exampleEntity.setBezStadtbezirk(stadtbezirk);
         exampleEntity.setUasUa(unterabschnitt);
         exampleEntity.setKurKurzbez(kurzbezeichnung);
-        exampleEntity.setSiedlungsgebiet(siedlungsgebiet);
-        exampleEntity.setBauprogramm(bauprogramm);
+        exampleEntity.setSgtSiedlungsgebiet(siedlungsgebiet);
+        exampleEntity.setBpgBauprogramm(bauprogramm);
 
         exampleEntity.setKauf(false);
         exampleEntity.setRefinanzierbar(true);
@@ -290,12 +290,12 @@ class ProjektIntegrationTest {
                         assertThat(response.kauf()).isEqualTo(requestDTO.kauf());
                         assertThat(response.notizen()).isEqualTo(requestDTO.notizen());
                         assertThat(response.fobFb()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.fobFb()));
-                        assertThat(response.stadtbezirk()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.stadtbezirk()));
+                        assertThat(response.bezStadtbezirk()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bezStadtbezirk()));
                         assertThat(response.uasUa()).isEqualTo(requestDTO.uasUa());
                         assertThat(response.kurKurzbez()).isEqualTo(requestDTO.kurKurzbez());
-                        assertThat(response.siedlungsgebiet()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.siedlungsgebiet()));
-                        assertThat(response.bauprogramm()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bauprogramm()));
-                        assertThat(response.krhname()).isEqualTo(requestDTO.krhname());
+                        assertThat(response.sgtSiedlungsgebiet()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.sgtSiedlungsgebiet()));
+                        assertThat(response.bpgBauprogramm()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bpgBauprogramm()));
+                        assertThat(response.krnKrhname()).isEqualTo(requestDTO.krnKrhname());
                         assertThat(response.krisofp()).isEqualTo(requestDTO.krisofp());
                         assertThat(response.krhzweck()).isEqualTo(requestDTO.krhzweck());
                     })
@@ -318,11 +318,11 @@ class ProjektIntegrationTest {
             assertThat(entity.getNotizen()).isEqualTo(requestDTO.notizen());
 
             assertThat(entity.getFobFb().getFb()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.fobFb()));
-            assertThat(entity.getStadtbezirk().getStadtbezirk()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.stadtbezirk()));
+            assertThat(entity.getBezStadtbezirk().getStadtbezirk()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bezStadtbezirk()));
             assertThat(entity.getUasUa().getUa()).isEqualTo(requestDTO.uasUa());
             assertThat(entity.getKurKurzbez().getKurzbez()).isEqualTo(requestDTO.kurKurzbez());
-            assertThat(entity.getSiedlungsgebiet().getSiedlungsgebiet()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.siedlungsgebiet()));
-            assertThat(entity.getBauprogramm().getBauprogramm()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bauprogramm()));
+            assertThat(entity.getSgtSiedlungsgebiet().getSiedlungsgebiet()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.sgtSiedlungsgebiet()));
+            assertThat(entity.getBpgBauprogramm().getBauprogramm()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bpgBauprogramm()));
 
             assertThat(entity.getAnlagevon()).isEqualTo("test");
             assertThat(entity.getAnlagedatum()).isNotNull();
@@ -416,10 +416,10 @@ class ProjektIntegrationTest {
                         assertThat(response.kauf()).isEqualTo(requestDTO.kauf());
                         assertThat(response.notizen()).isEqualTo(requestDTO.notizen());
                         assertThat(response.fobFb()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.fobFb()));
-                        assertThat(response.stadtbezirk()).isEqualByComparingTo(BigDecimal.valueOf(99));
+                        assertThat(response.bezStadtbezirk()).isEqualByComparingTo(BigDecimal.valueOf(99));
                         assertThat(response.kurKurzbez()).isEqualTo(requestDTO.kurKurzbez());
-                        assertThat(response.siedlungsgebiet()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.siedlungsgebiet()));
-                        assertThat(response.bauprogramm()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bauprogramm()));
+                        assertThat(response.sgtSiedlungsgebiet()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.sgtSiedlungsgebiet()));
+                        assertThat(response.bpgBauprogramm()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bpgBauprogramm()));
                     })
                     .returnResult()
                     .getResponseBody();
@@ -435,11 +435,11 @@ class ProjektIntegrationTest {
             assertThat(entity.getKauf()).isEqualTo(requestDTO.kauf());
             assertThat(entity.getNotizen()).isEqualTo(requestDTO.notizen());
             assertThat(entity.getFobFb().getFb()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.fobFb()));
-            assertThat(entity.getStadtbezirk().getStadtbezirk()).isEqualByComparingTo(BigDecimal.valueOf(99));
+            assertThat(entity.getBezStadtbezirk().getStadtbezirk()).isEqualByComparingTo(BigDecimal.valueOf(99));
             assertThat(entity.getUasUa().getUa()).isEqualTo("L");
             assertThat(entity.getKurKurzbez().getKurzbez()).isEqualTo(requestDTO.kurKurzbez());
-            assertThat(entity.getSiedlungsgebiet().getSiedlungsgebiet()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.siedlungsgebiet()));
-            assertThat(entity.getBauprogramm().getBauprogramm()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bauprogramm()));
+            assertThat(entity.getSgtSiedlungsgebiet().getSiedlungsgebiet()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.sgtSiedlungsgebiet()));
+            assertThat(entity.getBpgBauprogramm().getBauprogramm()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bpgBauprogramm()));
         }
     }
 

@@ -82,7 +82,7 @@ public class Projekt extends AuditableEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bez_stadtbezirk", referencedColumnName = "stadtbezirk")
-    private Stadtbezirk stadtbezirk;
+    private Stadtbezirk bezStadtbezirk;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
@@ -103,21 +103,21 @@ public class Projekt extends AuditableEntity {
             name = "sgt_siedlungsgebiet",
             referencedColumnName = "siedlungsgebiet"
     )
-    private Siedlungsgebiet siedlungsgebiet;
+    private Siedlungsgebiet sgtSiedlungsgebiet;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "bpg_bauprogramm",
             referencedColumnName = "bauprogramm"
     )
-    private Bauprogramm bauprogramm;
+    private Bauprogramm bpgBauprogramm;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "krn_krhname",
             referencedColumnName = "krhname"
     )
-    private Krankenhaus krankenhaus;
+    private Krankenhaus krnKrhname;
 
     @Enumerated(EnumType.STRING)
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)

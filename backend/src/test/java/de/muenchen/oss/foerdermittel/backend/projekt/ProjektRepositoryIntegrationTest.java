@@ -120,11 +120,11 @@ class ProjektRepositoryIntegrationTest {
         exampleEntity.setPstrasse("Projektstraße 1");
 
         exampleEntity.setFobFb(foerderbereich);
-        exampleEntity.setStadtbezirk(stadtbezirk);
+        exampleEntity.setBezStadtbezirk(stadtbezirk);
         exampleEntity.setUasUa(unterabschnitt);
         exampleEntity.setKurKurzbez(kurzbezeichnung);
-        exampleEntity.setSiedlungsgebiet(siedlungsgebiet);
-        exampleEntity.setBauprogramm(bauprogramm);
+        exampleEntity.setSgtSiedlungsgebiet(siedlungsgebiet);
+        exampleEntity.setBpgBauprogramm(bauprogramm);
 
         exampleEntity.setKauf(false);
         exampleEntity.setRefinanzierbar(true);

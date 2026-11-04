@@ -66,9 +66,9 @@
       "uasUa": "Unterabschnitt",
       "lfdnr1": "Laufende Nummer 1",
       "lfdnr2": "Laufende Nummer 2",
-      "stadtbezirk": "Stadtbezirk",
-      "krhname": "Krankenhaus",
-      "siedlungsgebiet": "Siedlungsgebiet",
+      "bezStadtbezirk": "Stadtbezirk",
+      "krnKrhname": "Krankenhaus",
+      "sgtSiedlungsgebiet": "Siedlungsgebiet",
       "projart": "Projektart",
       "refinanzierbar": "Refinanzierbar",
       "kauf": "Kauf",
@@ -76,7 +76,7 @@
       "kigaplatz": "Kindergartenplätze",
       "hortplatz": "Hortplätze",
       "notizen": "Notizen",
-      "bauprogramm": "Bauprogramm",
+      "bpgBauprogramm": "Bauprogramm",
       "krhzweck": "Krankenhauszweck"
     },
     "antrag": {

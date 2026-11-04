@@ -13,10 +13,10 @@ public record ProjektUpdateDTO(
         @Size(max = 100) String pname,
         @Size(max = 100) String pstrasse,
         @Max(99) Integer fobFb,
-        @Max(99) Integer stadtbezirk,
-        @Size(max = 1) @Pattern(regexp = "^[A-Z]*$") String krhname,
+        @Max(99) Integer bezStadtbezirk,
+        @Size(max = 1) @Pattern(regexp = "^[A-Z]*$") String krnKrhname,
         @Size(max = 3) @Pattern(regexp = "^[A-Z0-9]+$") String kurKurzbez,
-        @Max(99) Integer siedlungsgebiet,
+        @Max(99) Integer sgtSiedlungsgebiet,
         @Size(max = 50) String projart,
         Boolean refinanzierbar,
         Boolean kauf,
@@ -24,7 +24,7 @@ public record ProjektUpdateDTO(
         @Digits(integer = 10, fraction = 0) @Min(0) BigDecimal kigaplatz,
         @Digits(integer = 10, fraction = 0) @Min(0) BigDecimal hortplatz,
         @Size(max = 100) String notizen,
-        @Max(99) Integer bauprogramm,
+        @Max(99) Integer bpgBauprogramm,
         Krisofp krisofp,
         Krhzweck krhzweck) {
 }

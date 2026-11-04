@@ -47,14 +47,14 @@ class ProjektMapperTest {
 
         projekt.setFobFb(new Foerderbereich(
                 BigDecimal.valueOf(12), "Test", false, false, false, false));
-        projekt.setStadtbezirk(new Stadtbezirk(BigDecimal.valueOf(13), "Test"));
+        projekt.setBezStadtbezirk(new Stadtbezirk(BigDecimal.valueOf(13), "Test"));
 
         final Hauptabschnitt hauptabschnitt = new Hauptabschnitt("HA", "Test");
         projekt.setUasUa(new Unterabschnitt("UA", "Test", hauptabschnitt));
 
         projekt.setKurKurzbez(new Kurzbezeichnung("KB1", "Test"));
-        projekt.setSiedlungsgebiet(new Siedlungsgebiet(BigDecimal.ONE, "Test"));
-        projekt.setBauprogramm(new Bauprogramm(BigDecimal.ONE, "Test"));
+        projekt.setSgtSiedlungsgebiet(new Siedlungsgebiet(BigDecimal.ONE, "Test"));
+        projekt.setBpgBauprogramm(new Bauprogramm(BigDecimal.ONE, "Test"));
 
         return projekt;
     }
@@ -90,15 +90,15 @@ class ProjektMapperTest {
             assertThat(dto.notizen()).isEqualTo(projekt.getNotizen());
             assertThat(dto.fobFb())
                     .isEqualByComparingTo(projekt.getFobFb().getFb());
-            assertThat(dto.stadtbezirk())
-                    .isEqualByComparingTo(projekt.getStadtbezirk().getStadtbezirk());
+            assertThat(dto.bezStadtbezirk())
+                    .isEqualByComparingTo(projekt.getBezStadtbezirk().getStadtbezirk());
             assertThat(dto.uasUa()).isEqualTo(projekt.getUasUa().getUa());
             assertThat(dto.kurKurzbez())
                     .isEqualTo(projekt.getKurKurzbez().getKurzbez());
-            assertThat(dto.siedlungsgebiet())
-                    .isEqualByComparingTo(projekt.getSiedlungsgebiet().getSiedlungsgebiet());
-            assertThat(dto.bauprogramm())
-                    .isEqualByComparingTo(projekt.getBauprogramm().getBauprogramm());
+            assertThat(dto.sgtSiedlungsgebiet())
+                    .isEqualByComparingTo(projekt.getSgtSiedlungsgebiet().getSiedlungsgebiet());
+            assertThat(dto.bpgBauprogramm())
+                    .isEqualByComparingTo(projekt.getBpgBauprogramm().getBauprogramm());
         }
     }
 
@@ -156,10 +156,10 @@ class ProjektMapperTest {
             assertThat(entity.getFobFb()).isNull();
             assertThat(entity.getUasUa()).isNull();
             assertThat(entity.getKurKurzbez()).isNull();
-            assertThat(entity.getStadtbezirk()).isNull();
-            assertThat(entity.getSiedlungsgebiet()).isNull();
-            assertThat(entity.getBauprogramm()).isNull();
-            assertThat(entity.getKrankenhaus()).isNull();
+            assertThat(entity.getBezStadtbezirk()).isNull();
+            assertThat(entity.getSgtSiedlungsgebiet()).isNull();
+            assertThat(entity.getBpgBauprogramm()).isNull();
+            assertThat(entity.getKrnKrhname()).isNull();
         }
 
         @Test
@@ -231,15 +231,15 @@ class ProjektMapperTest {
 
             assertThat(dto.fobFb())
                     .isEqualByComparingTo(projekt.getFobFb().getFb());
-            assertThat(dto.stadtbezirk())
-                    .isEqualByComparingTo(projekt.getStadtbezirk().getStadtbezirk());
+            assertThat(dto.bezStadtbezirk())
+                    .isEqualByComparingTo(projekt.getBezStadtbezirk().getStadtbezirk());
             assertThat(dto.uasUa()).isEqualTo(projekt.getUasUa().getUa());
             assertThat(dto.kurKurzbez())
                     .isEqualTo(projekt.getKurKurzbez().getKurzbez());
-            assertThat(dto.siedlungsgebiet())
-                    .isEqualByComparingTo(projekt.getSiedlungsgebiet().getSiedlungsgebiet());
-            assertThat(dto.bauprogramm())
-                    .isEqualByComparingTo(projekt.getBauprogramm().getBauprogramm());
+            assertThat(dto.sgtSiedlungsgebiet())
+                    .isEqualByComparingTo(projekt.getSgtSiedlungsgebiet().getSiedlungsgebiet());
+            assertThat(dto.bpgBauprogramm())
+                    .isEqualByComparingTo(projekt.getBpgBauprogramm().getBauprogramm());
 
             assertThat(dto.projart()).isEqualTo(projekt.getProjart());
             assertThat(dto.refinanzierbar()).isEqualTo(projekt.getRefinanzierbar());
@@ -252,7 +252,7 @@ class ProjektMapperTest {
                     .isEqualByComparingTo(projekt.getHortplatz());
             assertThat(dto.notizen()).isEqualTo(projekt.getNotizen());
 
-            assertThat(dto.krhname()).isNull();
+            assertThat(dto.krnKrhname()).isNull();
             assertThat(dto.krhzweck()).isNull();
             assertThat(dto.krisofp()).isNull();
         }

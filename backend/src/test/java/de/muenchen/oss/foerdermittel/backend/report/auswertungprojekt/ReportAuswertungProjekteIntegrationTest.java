@@ -131,11 +131,11 @@ public class ReportAuswertungProjekteIntegrationTest {
             projekt.setPstrasse("Projektstraße 1");
 
             projekt.setFobFb(foerderbereich);
-            projekt.setStadtbezirk(stadtbezirk);
+            projekt.setBezStadtbezirk(stadtbezirk);
             projekt.setUasUa(unterabschnitt);
             projekt.setKurKurzbez(kurzbezeichnung);
-            projekt.setSiedlungsgebiet(siedlungsgebiet);
-            projekt.setBauprogramm(bauprogramm);
+            projekt.setSgtSiedlungsgebiet(siedlungsgebiet);
+            projekt.setBpgBauprogramm(bauprogramm);
 
             projekt.setKrisofp(Krisofp.K);
             projekt.setKauf(false);

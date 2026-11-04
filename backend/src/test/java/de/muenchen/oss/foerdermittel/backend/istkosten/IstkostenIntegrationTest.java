@@ -136,9 +136,9 @@ class IstkostenIntegrationTest {
         projekt.setUasUa(unterabschnitt);
         projekt.setKurKurzbez(kurzbezeichnung);
 
-        projekt.setStadtbezirk(stadtbezirk);
-        projekt.setSiedlungsgebiet(siedlungsgebiet);
-        projekt.setBauprogramm(bauprogramm);
+        projekt.setBezStadtbezirk(stadtbezirk);
+        projekt.setSgtSiedlungsgebiet(siedlungsgebiet);
+        projekt.setBpgBauprogramm(bauprogramm);
         projekt.setKauf(false);
         projekt.setRefinanzierbar(true);
 

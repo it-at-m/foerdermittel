@@ -298,10 +298,10 @@ class ProjektServiceTest {
             assertThat(result).isSameAs(projekt);
             assertThat(projekt.getFobFb()).isSameAs(foerderbereich);
             assertThat(projekt.getKurKurzbez()).isSameAs(kurzbezeichnung);
-            assertThat(projekt.getStadtbezirk()).isNull();
-            assertThat(projekt.getKrankenhaus()).isNull();
-            assertThat(projekt.getSiedlungsgebiet()).isNull();
-            assertThat(projekt.getBauprogramm()).isNull();
+            assertThat(projekt.getBezStadtbezirk()).isNull();
+            assertThat(projekt.getKrnKrhname()).isNull();
+            assertThat(projekt.getSgtSiedlungsgebiet()).isNull();
+            assertThat(projekt.getBpgBauprogramm()).isNull();
         }
 
         @Test
