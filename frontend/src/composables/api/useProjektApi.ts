@@ -10,9 +10,7 @@ import type {
 import type { ApiComposables } from "@/util/composable-helper";
 
 import { ProjektControllerApi } from "@/api/generated/foerdermittel-backend";
-import {
-  createAPIComposables
-} from "@/util/composable-helper";
+import { createAPIComposables } from "@/util/composable-helper";
 
 export const {
   useCreate: useCreateProjekt,
@@ -21,22 +19,22 @@ export const {
   useDelete: useDeleteProjekt,
   useContext: useGetProjektFormContext,
 } = createAPIComposables<
-    ProjektControllerApi,
-    CreateProjektRequest,
-    UpdateProjektRequest,
-    never,
-    DeleteProjektRequest,
-    GetProjekteRequest,
-    ProjektResponseDTO,
-    PagedModelProjektResponseDTO,
-    ProjektFormContext
-  >(ProjektControllerApi, {
-    create: (api, req) => api.createProjekt(req),
-    update: (api, req) => api.updateProjekt(req),
-    getAll: (api, req) => api.getProjekte(req),
-    delete: (api, req) => api.deleteProjekt(req),
-    context: (api) => api.getProjektFormContext(),
-  });
+  ProjektControllerApi,
+  CreateProjektRequest,
+  UpdateProjektRequest,
+  never,
+  DeleteProjektRequest,
+  GetProjekteRequest,
+  ProjektResponseDTO,
+  PagedModelProjektResponseDTO,
+  ProjektFormContext
+>(ProjektControllerApi, {
+  create: (api, req) => api.createProjekt(req),
+  update: (api, req) => api.updateProjekt(req),
+  getAll: (api, req) => api.getProjekte(req),
+  delete: (api, req) => api.deleteProjekt(req),
+  context: (api) => api.getProjektFormContext(),
+});
 
 export function useProjektApi(): ApiComposables<
   ProjektResponseDTO,
