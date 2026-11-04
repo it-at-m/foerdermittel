@@ -1,8 +1,8 @@
 openapi: 3.0.1
 info:
-  title: '@project.artifactId@'
-  description: '@project.description@'
-  version: '@project.version@'
+  title: foerdermittel-backend
+  description: Backend component for the application foerdermittel
+  version: 0.4.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -3650,7 +3650,7 @@ components:
         krnKrhname:
           maxLength: 1
           minLength: 0
-          pattern: "^[A-Z]+$"
+          pattern: "^[A-Z]*$"
           type: string
         kurKurzbez:
           maxLength: 3
@@ -4007,6 +4007,7 @@ components:
           description: ""
         bezStadtbezirk:
           type: number
+          description: ""
         uasUa:
           type: string
           description: ""
@@ -4015,6 +4016,7 @@ components:
           description: ""
         krnKrhname:
           type: string
+          description: ""
         krhzweck:
           type: string
           description: ""
@@ -4036,8 +4038,10 @@ components:
           - S
         sgtSiedlungsgebiet:
           type: number
+          description: ""
         bpgBauprogramm:
           type: number
+          description: ""
         projart:
           type: string
           description: ""
