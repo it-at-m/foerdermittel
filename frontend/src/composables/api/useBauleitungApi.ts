@@ -10,10 +10,7 @@ import type {
 import type { ApiComposables } from "@/util/composable-helper";
 
 import { BauleitungControllerApi } from "@/api/generated/foerdermittel-backend";
-import {
-  createAPIComposables,
-  requireComposables,
-} from "@/util/composable-helper";
+import { createAPIComposables } from "@/util/composable-helper";
 
 export const {
   useCreate: useCreateBauleitung,
@@ -21,25 +18,23 @@ export const {
   useGetAll: useGetBauleitungen,
   useDelete: useDeleteBauleitung,
   useContext: useGetBauleitungFormContext,
-} = requireComposables(
-  createAPIComposables<
-    BauleitungControllerApi,
-    CreateBauleitungRequest,
-    UpdateBauleitungRequest,
-    never,
-    DeleteBauleitungRequest,
-    GetBauleitungenRequest,
-    BauleitungResponseDTO,
-    PagedModelBauleitungResponseDTO,
-    BauleitungFormContext
-  >(BauleitungControllerApi, {
-    create: (api, req) => api.createBauleitung(req),
-    update: (api, req) => api.updateBauleitung(req),
-    getAll: (api, req) => api.getBauleitungen(req),
-    delete: (api, req) => api.deleteBauleitung(req),
-    context: (api) => api.getBauleitungFormContext(),
-  })
-);
+} = createAPIComposables<
+  BauleitungControllerApi,
+  CreateBauleitungRequest,
+  UpdateBauleitungRequest,
+  never,
+  DeleteBauleitungRequest,
+  GetBauleitungenRequest,
+  BauleitungResponseDTO,
+  PagedModelBauleitungResponseDTO,
+  BauleitungFormContext
+>(BauleitungControllerApi, {
+  create: (api, req) => api.createBauleitung(req),
+  update: (api, req) => api.updateBauleitung(req),
+  getAll: (api, req) => api.getBauleitungen(req),
+  delete: (api, req) => api.deleteBauleitung(req),
+  context: (api) => api.getBauleitungFormContext(),
+});
 
 export function useBauleitungApi(): ApiComposables<
   BauleitungResponseDTO,
@@ -51,10 +46,10 @@ export function useBauleitungApi(): ApiComposables<
   DeleteBauleitungRequest
 > {
   return {
-    getAll: useGetBauleitungen(),
-    context: useGetBauleitungFormContext(),
-    create: useCreateBauleitung(),
-    update: useUpdateBauleitung(),
-    delete: useDeleteBauleitung(),
+    getAll: useGetBauleitungen?.(),
+    context: useGetBauleitungFormContext?.(),
+    create: useCreateBauleitung?.(),
+    update: useUpdateBauleitung?.(),
+    delete: useDeleteBauleitung?.(),
   };
 }

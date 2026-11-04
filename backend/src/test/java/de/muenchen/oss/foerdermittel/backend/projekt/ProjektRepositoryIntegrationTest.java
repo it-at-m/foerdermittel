@@ -492,8 +492,7 @@ class ProjektRepositoryIntegrationTest {
         final List<BasicProjektDAO> result = projektRepository.findAllAsBasic();
 
         // Then
-        assertThat(result).contains(
-                new BasicProjektDAO(EXISTING_PROJNR, "Projektname", "Projektstraße 1"));
+        assertThat(result).contains(new BasicProjektDAO("1234567", "Test", "Test 1"));
     }
 
 }

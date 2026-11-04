@@ -1,5 +1,8 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
+import static de.muenchen.oss.foerdermittel.backend.common.SpecificationUtils.addContains;
+import static de.muenchen.oss.foerdermittel.backend.common.SpecificationUtils.addEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
@@ -9,45 +12,16 @@ public final class ProjektSpecifications {
     private ProjektSpecifications() {
     }
 
-    public static Specification<Projekt> filter(ProjektFilter filter) {
-
-        List<Specification<Projekt>> specifications = new ArrayList<>();
-
-        addContains(specifications, "projnr", filter.projnr());
-        addEquals(specifications, "fobFb", filter.fobFb());
-        addContains(specifications, "kurKurzbez", filter.kurKurzbez());
-        addContains(specifications, "uasUa", filter.uasUa());
-        addContains(specifications, "pname", filter.pname());
-        addContains(specifications, "pstrasse", filter.pstrasse());
+    public static Specification<Projekt> filter(final ProjektFilter filter) {
+        final List<Specification<Projekt>> specifications = new ArrayList<>();
+        addContains(specifications, filter.projnr(), "projnr");
+        addEquals(specifications, filter.fobFb(), "fobFb", "fb");
+        addEquals(specifications, filter.kurKurzbez(), "kurKurzbez","kurzbez" );
+        addEquals(specifications,filter.uasUa(), "uasUa", "ua");
+        addContains(specifications,filter.pname(), "pname");
+        addContains(specifications, filter.pstrasse(), "pstrasse");
 
         return Specification.allOf(specifications);
     }
 
-    private static void addContains(
-            List<Specification<Projekt>> specifications,
-            String field,
-            String value) {
-
-        if (value == null || value.isBlank()) {
-            return;
-        }
-
-        specifications.add(
-                (root, query, cb) -> cb.like(
-                        cb.lower(root.get(field)),
-                        "%" + value.toLowerCase() + "%"));
-    }
-
-    private static <T> void addEquals(
-            List<Specification<Projekt>> specifications,
-            String field,
-            T value) {
-
-        if (value == null) {
-            return;
-        }
-
-        specifications.add(
-                (root, query, cb) -> cb.equal(root.get(field), value));
-    }
 }

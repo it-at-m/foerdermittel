@@ -12,6 +12,7 @@ import org.mapstruct.MappingTarget;
 public interface ProjektMapper {
 
     @Mapping(source = "projnr", target = "id")
+    @Mapping(source = "projnr", target = "projnr")
     @Mapping(source = "fobFb.fb", target = "fobFb")
     @Mapping(source = "uasUa.ua", target = "uasUa")
     @Mapping(source = "kurKurzbez.kurzbez", target = "kurKurzbez")
@@ -62,5 +63,8 @@ public interface ProjektMapper {
             List<AuswertungProjektDAO> projekte);
 
     List<ReportBewilligungAuszahlungProjektFormContextDTO> toReportBewilligungAuszahlungProjektFormContext(
+            List<BasicProjektDAO> projekte);
+
+    List<ReportAnnahmeAnordnungSapFormContextDTO> toReportAnnahmeAnordnungSapFormContext(
             List<BasicProjektDAO> projekte);
 }

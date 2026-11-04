@@ -1,4 +1,3 @@
-
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.Bauprogramm;

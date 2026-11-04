@@ -10,10 +10,7 @@ import type {
 import type { ApiComposables } from "@/util/composable-helper";
 
 import { FoerderbereichControllerApi } from "@/api/generated/foerdermittel-backend";
-import {
-  createAPIComposables,
-  requireComposables,
-} from "@/util/composable-helper";
+import { createAPIComposables } from "@/util/composable-helper";
 
 export const {
   useCreate: useCreateFoerderbereich,
@@ -21,25 +18,23 @@ export const {
   useGetAll: useGetFoerderbereiche,
   useDelete: useDeleteFoerderbereich,
   useContext: useGetFoerderbereichFormContext,
-} = requireComposables(
-  createAPIComposables<
-    FoerderbereichControllerApi,
-    CreateFoerderbereichRequest,
-    UpdateFoerderbereichRequest,
-    never,
-    DeleteFoerderbereichRequest,
-    GetFoerderbereicheRequest,
-    FoerderbereichResponseDTO,
-    PagedModelFoerderbereichResponseDTO,
-    FoerderbereichFormContext
-  >(FoerderbereichControllerApi, {
-    create: (api, req) => api.createFoerderbereich(req),
-    update: (api, req) => api.updateFoerderbereich(req),
-    getAll: (api, req) => api.getFoerderbereiche(req),
-    delete: (api, req) => api.deleteFoerderbereich(req),
-    context: (api) => api.getFoerderbereichFormContext(),
-  })
-);
+} = createAPIComposables<
+  FoerderbereichControllerApi,
+  CreateFoerderbereichRequest,
+  UpdateFoerderbereichRequest,
+  never,
+  DeleteFoerderbereichRequest,
+  GetFoerderbereicheRequest,
+  FoerderbereichResponseDTO,
+  PagedModelFoerderbereichResponseDTO,
+  FoerderbereichFormContext
+>(FoerderbereichControllerApi, {
+  create: (api, req) => api.createFoerderbereich(req),
+  update: (api, req) => api.updateFoerderbereich(req),
+  getAll: (api, req) => api.getFoerderbereiche(req),
+  delete: (api, req) => api.deleteFoerderbereich(req),
+  context: (api) => api.getFoerderbereichFormContext(),
+});
 
 export function useFoerderbereichApi(): ApiComposables<
   FoerderbereichResponseDTO,
@@ -51,10 +46,10 @@ export function useFoerderbereichApi(): ApiComposables<
   DeleteFoerderbereichRequest
 > {
   return {
-    getAll: useGetFoerderbereiche(),
-    context: useGetFoerderbereichFormContext(),
-    create: useCreateFoerderbereich(),
-    update: useUpdateFoerderbereich(),
-    delete: useDeleteFoerderbereich(),
+    getAll: useGetFoerderbereiche?.(),
+    context: useGetFoerderbereichFormContext?.(),
+    create: useCreateFoerderbereich?.(),
+    update: useUpdateFoerderbereich?.(),
+    delete: useDeleteFoerderbereich?.(),
   };
 }
