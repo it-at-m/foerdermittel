@@ -216,7 +216,7 @@
         <fm-autocomplete
           :model-value="modelValue.bezStadtbezirk"
           :items="projektFormContext.bezs"
-          item-value="bezStadtbezirk"
+          item-value="stadtbezirk"
           :item-title="getStadtbezirkTitle"
           :label="t('model.projekt.bezStadtbezirk')"
           :validation-attribute-map="
@@ -236,7 +236,7 @@
         <fm-autocomplete
           :model-value="modelValue.bpgBauprogramm"
           :items="projektFormContext.bpgs"
-          item-value="bpgBauprogramm"
+          item-value="bauprogramm"
           :item-title="getBauprogrammTitle"
           :label="t('model.projekt.bpgBauprogramm')"
           :validation-attribute-map="
@@ -258,7 +258,7 @@
         <fm-autocomplete
           :model-value="modelValue.sgtSiedlungsgebiet"
           :items="projektFormContext.sgts"
-          item-value="sgtSiedlungsgebiet"
+          item-value="siedlungsgebiet"
           :item-title="getSiedlungsgebietTitle"
           :label="t('model.projekt.sgtSiedlungsgebiet')"
           :validation-attribute-map="
@@ -297,7 +297,7 @@
         <fm-autocomplete
           v-model="modelValue.krnKrhname"
           :items="projektFormContext.krhs"
-          item-value="krnKrhname"
+          item-value="krhname"
           :item-title="getKrankenhausTitle"
           :label="t('model.projekt.krnKrhname')"
           :validation-attribute-map="
