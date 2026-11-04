@@ -1,7 +1,7 @@
 <template>
   <v-form
     ref="form"
-    :disabled="!reportAuswertungAntraegeFormContext"
+    :disabled="!reportauswertungantraegeformcontext"
     @update:model-value="onValidityChanged"
   >
     <v-row align="center">
@@ -29,7 +29,7 @@
           v-model="modelValue.parameters!.jahrbis"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
-            ReportStaedtebaufoerderungDTOPropertyValidationAttributesMap
+            ReportAuswertungAntragFormContextDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrBis"
           :label="t('domain.report.staedtebaufoerderung.jahrBis')"
@@ -44,7 +44,7 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.sbl"
-          :items="reportAuswertungAntraegeFormContext?.sbls ?? []"
+          :items="reportauswertungantraegeformcontext?.sbls ?? []"
           :item-title="getStadtbezirkslisteTitle"
           item-value="kurzbez"
           :validation-attribute-map="
@@ -63,7 +63,7 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.bez"
-          :items="reportAuswertungAntraegeFormContext?.bezs ?? []"
+          :items="reportauswertungantraegeformcontext?.bezs ?? []"
           :item-title="getStadtbezirkTitle"
           item-value="stadtbezirk"
           :validation-attribute-map="
@@ -83,7 +83,7 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.fb"
-          :items="reportAuswertungAntraegeFormContext?.fbs ?? []"
+          :items="reportauswertungantraegeformcontext?.fbs ?? []"
           :item-title="getFoerderbereichTitle"
           item-value="fb"
           :validation-attribute-map="
@@ -100,7 +100,7 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.ua"
-          :items="reportAuswertungAntraegeFormContext?.uas ?? []"
+          :items="reportauswertungantraegeformcontext?.uas ?? []"
           :item-title="getUnterabschnittTitle"
           item-value="ua"
           :validation-attribute-map="
@@ -117,7 +117,7 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.kurz"
-          :items="reportAuswertungAntraegeFormContext?.kurzs ?? []"
+          :items="reportauswertungantraegeformcontext?.kurzs ?? []"
           :item-title="getKurzbezeichnungTitle"
           item-value="kurzbez"
           :validation-attribute-map="
@@ -134,7 +134,7 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.projnr"
-          :items="reportAuswertungAntraegeFormContext?.projs"
+          :items="reportauswertungantraegeformcontext?.projs"
           :item-title="getProjektTitle"
           item-value="projnr"
           :validation-attribute-map="
@@ -227,7 +227,7 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.krisofp"
-          :items="reportAuswertungAntraegeFormContext?.krisofps"
+          :items="reportauswertungantraegeformcontext?.krisofps"
           :item-title="getKrisofpTitle"
           :item-value="getKrisofpValue"
           :validation-attribute-map="
@@ -246,7 +246,7 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.atyp"
-          :items="reportAuswertungAntraegeFormContext?.antraege"
+          :items="reportauswertungantraegeformcontext?.antraege"
           :item-title="getAntraegeTitle"
           :item-value="getAntraegeValue"
           :validation-attribute-map="
@@ -265,7 +265,7 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.sgt"
-          :items="reportAuswertungAntraegeFormContext?.sgts ?? []"
+          :items="reportauswertungantraegeformcontext?.sgts ?? []"
           :item-title="getSiedlungsgebietTitle"
           item-value="siedlungsgebiet"
           :validation-attribute-map="
@@ -283,7 +283,7 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.bpg"
-          :items="reportAuswertungAntraegeFormContext?.bpgs ?? []"
+          :items="reportauswertungantraegeformcontext?.bpgs ?? []"
           :item-title="getBauprogrammTitle"
           item-value="bauprogramm"
           :validation-attribute-map="
@@ -335,17 +335,12 @@ import type {
   BauprogrammFormContextDTO,
   FoerderbereichFormContextDTO,
   GetReportAuswertungAntraegeRequest,
-  GetReportAuswertungProjektRequest,
   KurzbezeichnungFormContextDTO,
   ListennameStadtbezirkslisteFormContextDTO,
-  ProjektFormContextDTO,
-  ReportAuswertungAntraegeDTO,
   ReportAuswertungAntraegeFormContext,
   ReportAuswertungAntraegeFormContextAntraegeEnum,
   ReportAuswertungAntraegeFormContextKrisofpsEnum,
   ReportAuswertungAntragFormContextDTO,
-  ReportAuswertungProjektFormContext,
-  ReportProjektuebersichtFormContextDTO,
   SiedlungsgebietFormContextDTO,
   StadtbezirkFormContextDTO,
   UnterabschnittFormContextDTO,
@@ -358,9 +353,7 @@ import { useI18n } from "vue-i18n";
 
 import {
   ReportAuswertungAntraegeDTOPropertyValidationAttributesMap,
-  ReportAuswertungProjekteDTOPropertyValidationAttributesMap,
-  ReportProjektuebersichtDTOPropertyValidationAttributesMap,
-  ReportStaedtebaufoerderungDTOPropertyValidationAttributesMap,
+  ReportAuswertungAntragFormContextDTOPropertyValidationAttributesMap,
 } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
@@ -376,8 +369,8 @@ const modelValue = defineModel<Partial<GetReportAuswertungAntraegeRequest>>({
   required: true,
 });
 
-const { reportAuswertungAntraegeFormContext } = defineProps<{
-  reportAuswertungAntraegeFormContext?: DeepReadonly<ReportAuswertungAntraegeFormContext>;
+const { reportauswertungantraegeformcontext } = defineProps<{
+  reportauswertungantraegeformcontext?: DeepReadonly<ReportAuswertungAntraegeFormContext>;
 }>();
 
 const emit = defineEmits<{
@@ -455,8 +448,10 @@ const filteredSortOptions = computed(() => {
 watch(
   () => modelValue.value.parameters?.type,
   (type) => {
-    if (type === "PDF") {
-      modelValue.value.parameters!.sort = "FOERDERBEREICH_PROJEKTNUMMER";
+    const parameters = modelValue.value.parameters;
+
+    if (type === "PDF" && parameters) {
+      parameters.sort = "FOERDERBEREICH_PROJEKTNUMMER";
     }
   }
 );
