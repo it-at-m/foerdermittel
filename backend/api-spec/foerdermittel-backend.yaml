@@ -3643,15 +3643,6 @@ components:
           maximum: 99
           type: integer
           format: int32
-        bezStadtbezirk:
-          maximum: 99
-          type: integer
-          format: int32
-        krnKrhname:
-          maxLength: 1
-          minLength: 0
-          pattern: "^[A-Z]*$"
-          type: string
         kurKurzbez:
           maxLength: 3
           minLength: 1
@@ -3662,10 +3653,6 @@ components:
           minLength: 1
           pattern: "^[A-Z0-9]+$"
           type: string
-        sgtSiedlungsgebiet:
-          maximum: 99
-          type: integer
-          format: int32
         jahr:
           maximum: 99
           minimum: 0
@@ -3679,6 +3666,19 @@ components:
         lfdnr2:
           maximum: 99
           minimum: 0
+          type: integer
+          format: int32
+        bezStadtbezirk:
+          maximum: 99
+          type: integer
+          format: int32
+        krnKrhname:
+          maxLength: 1
+          minLength: 0
+          pattern: "^[A-Z]*$"
+          type: string
+        sgtSiedlungsgebiet:
+          maximum: 99
           type: integer
           format: int32
         pname:
@@ -3697,15 +3697,6 @@ components:
           type: boolean
         kauf:
           type: boolean
-        kripplatz:
-          minimum: 0
-          type: number
-        kigaplatz:
-          minimum: 0
-          type: number
-        hortplatz:
-          minimum: 0
-          type: number
         notizen:
           maxLength: 100
           minLength: 0
@@ -3731,6 +3722,15 @@ components:
           - J
           - S
           - R
+        kripplatz:
+          minimum: 0
+          type: number
+        kigaplatz:
+          minimum: 0
+          type: number
+        hortplatz:
+          minimum: 0
+          type: number
     KurzbezeichnungCreateDTO:
       required:
       - bezeichnung
