@@ -15,8 +15,8 @@
           :validation-attribute-map="
             ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
           "
-          validation-attribute-key="jahrVon"
-          :label="t('domain.report.staedtebaufoerderung.jahrVon')"
+          validation-attribute-key="jahrvon"
+          :label="t('domain.report.common.jahrVon')"
           :error-messages="jahrVonError"
           density="comfortable"
         />
@@ -29,10 +29,10 @@
           v-model="modelValue.parameters!.jahrbis"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
-            ReportAuswertungAntragFormContextDTOPropertyValidationAttributesMap
+            ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
           "
-          validation-attribute-key="jahrBis"
-          :label="t('domain.report.staedtebaufoerderung.jahrBis')"
+          validation-attribute-key="jahrbis"
+          :label="t('domain.report.common.jahrBis')"
           :error-messages="jahrBisError"
           density="comfortable"
         />
@@ -51,7 +51,7 @@
             ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="kurzbez"
-          :label="t('domain.report.auswertungAntraege.sbl')"
+          :label="t('domain.report.common.sbl')"
           density="comfortable"
           @update:model-value="delete modelValue.parameters!.bez"
         />
@@ -70,7 +70,7 @@
             ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="stadtbezirk"
-          :label="t('domain.report.auswertungAntraege.bez')"
+          :label="t('domain.report.common.bez')"
           density="comfortable"
           @update:model-value="delete modelValue.parameters!.sbl"
         />
@@ -90,7 +90,7 @@
             ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="fb"
-          :label="t('domain.report.projektUebersichtMs.fb')"
+          :label="t('domain.report.common.fb')"
           density="comfortable"
         />
       </v-col>
@@ -107,7 +107,7 @@
             ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="ua"
-          :label="t('domain.report.auswertungAntraege.ua')"
+          :label="t('domain.report.common.ua')"
           density="comfortable"
         />
       </v-col>
@@ -124,7 +124,7 @@
             ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="kurz"
-          :label="t('domain.report.projektUebersichtMs.kurz')"
+          :label="t('domain.report.common.kurz')"
           density="comfortable"
         />
       </v-col>
@@ -158,7 +158,7 @@
             ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="pstrasse"
-          :label="t('domain.report.auswertungAntraege.pstrasse')"
+          :label="t('domain.report.common.pstrasse')"
           density="comfortable"
         />
       </v-col>
@@ -174,7 +174,7 @@
             ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="pname"
-          :label="t('domain.report.auswertungAntraege.pname')"
+          :label="t('domain.report.common.pname')"
           density="comfortable"
         />
       </v-col>
@@ -186,7 +186,7 @@
       >
         <fm-checkbox
           v-model="modelValue.parameters!.offen"
-          :label="t('domain.report.auswertungAntraege.offen')"
+          :label="t('domain.report.common.offen')"
           true-value="1"
           false-value="0"
           density="compact"
@@ -199,7 +199,7 @@
       >
         <fm-checkbox
           v-model="modelValue.parameters!.fag"
-          :label="t('domain.report.auswertungAntraege.fag')"
+          :label="t('domain.report.common.fag')"
           true-value="1"
           false-value="0"
           density="compact"
@@ -212,7 +212,7 @@
       >
         <fm-checkbox
           v-model="modelValue.parameters!.relevant"
-          :label="t('domain.report.auswertungAntraege.relevant')"
+          :label="t('domain.report.common.relevant')"
           true-value="1"
           false-value="0"
           density="compact"
@@ -253,7 +253,7 @@
             ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="antraege"
-          :label="t('domain.report.auswertungAntraege.atyp')"
+          :label="t('domain.report.common.atyp')"
           density="comfortable"
           clearable
         />
@@ -272,7 +272,7 @@
             ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="siedlungsgebiet"
-          :label="t('domain.report.auswertungAntraege.sgt')"
+          :label="t('domain.report.common.sgt')"
           density="comfortable"
         />
       </v-col>
@@ -290,7 +290,7 @@
             ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="bauprogramm"
-          :label="t('domain.report.auswertungAntraege.bpg')"
+          :label="t('domain.report.common.bpg')"
           density="comfortable"
         />
       </v-col>
@@ -351,10 +351,7 @@ import type { VForm } from "vuetify/components";
 import { computed, useTemplateRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
-import {
-  ReportAuswertungAntraegeDTOPropertyValidationAttributesMap,
-  ReportAuswertungAntragFormContextDTOPropertyValidationAttributesMap,
-} from "@/api/generated/foerdermittel-backend";
+import { ReportAuswertungAntraegeDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
 import FmTextField from "@/components/common/FmTextField.vue";

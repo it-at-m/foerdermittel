@@ -4516,10 +4516,10 @@ components:
       type: object
       properties:
         jahrvon:
-          pattern: "(\\d{4})?"
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
           type: string
         jahrbis:
-          pattern: "(\\d{4})?"
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
           type: string
         bez:
           type: string
