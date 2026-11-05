@@ -16,29 +16,6 @@ public final class ReportMapperUtil {
     }
 
     /**
-     * Adds common filter parameters to the provided Jasper parameter map
-     * used by the evaluation reports.
-     *
-     * <p>
-     * Empty or unset values are processed accordingly to ensure
-     * proper handling by JasperReports.
-     *
-     * @param parameters map containing the Jasper parameters
-     * @param fb
-     * @param ua
-     * @param kurz
-     * @param sgt
-     * @param bpg
-     * @param sbl districtlist
-     * @param bez district
-     * @param pstrasse street filter
-     * @param pname project name
-     * @param krisofp special funding program
-     * @param offen open status filter
-     * @param relevant relevance filter
-     */
-
-    /**
      * Adds common filter parameters to the provided Jasper parameter map.
      *
      * @param parameters map containing the Jasper parameters
