@@ -2,6 +2,7 @@ package de.muenchen.oss.foerdermittel.backend.report.auswertungantrag.dto;
 
 import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
 import de.muenchen.oss.foerdermittel.backend.report.util.ReportMapperUtil;
+import de.muenchen.oss.foerdermittel.backend.report.util.dto.CommonReportParameters;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.stereotype.Component;
@@ -19,18 +20,19 @@ public class ReportAuswertungAntraegeMapper {
 
         ReportMapperUtil.addCommonParameters(
                 parameters,
-                dto.fb(),
-                dto.ua(),
-                dto.kurz(),
-                dto.sgt(),
-                dto.bpg(),
-                dto.sbl(),
-                dto.bez(),
-                dto.pstrasse(),
-                dto.pname(),
-                dto.krisofp(),
-                dto.offen(),
-                dto.relevant());
+                new CommonReportParameters(
+                        dto.fb(),
+                        dto.ua(),
+                        dto.kurz(),
+                        dto.sgt(),
+                        dto.bpg(),
+                        dto.sbl(),
+                        dto.bez(),
+                        dto.pstrasse(),
+                        dto.pname(),
+                        dto.krisofp(),
+                        dto.offen(),
+                        dto.relevant()));
 
         parameters.put("P_PROJNR", ReportControllerUtil.nullIfBlank(dto.projnr()));
         parameters.put("P_ATYP", dto.atyp() != null ? dto.atyp().name() : null);

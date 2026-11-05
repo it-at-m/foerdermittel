@@ -2,6 +2,7 @@ package de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto;
 
 import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
 import de.muenchen.oss.foerdermittel.backend.report.util.ReportMapperUtil;
+import de.muenchen.oss.foerdermittel.backend.report.util.dto.CommonReportParameters;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.stereotype.Component;
@@ -18,18 +19,19 @@ public class ReportAuswertungProjekteMapper {
 
         ReportMapperUtil.addCommonParameters(
                 parameters,
-                dto.fb(),
-                dto.ua(),
-                dto.kurz(),
-                dto.sgt(),
-                dto.bpg(),
-                dto.sbl(),
-                dto.bez(),
-                dto.pstrasse(),
-                dto.pname(),
-                dto.krisofp(),
-                dto.offen(),
-                dto.relevant());
+                new CommonReportParameters(
+                        dto.fb(),
+                        dto.ua(),
+                        dto.kurz(),
+                        dto.sgt(),
+                        dto.bpg(),
+                        dto.sbl(),
+                        dto.bez(),
+                        dto.pstrasse(),
+                        dto.pname(),
+                        dto.krisofp(),
+                        dto.offen(),
+                        dto.relevant()));
 
         parameters.put("P_KAUF", ReportControllerUtil.nullIfBlank(dto.kauf()));
 
