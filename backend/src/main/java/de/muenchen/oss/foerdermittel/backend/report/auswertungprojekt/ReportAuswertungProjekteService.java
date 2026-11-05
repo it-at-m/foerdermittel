@@ -11,6 +11,7 @@ import de.muenchen.oss.foerdermittel.backend.report.ReportType;
 import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto.ReportAuswertungProjekteDTO;
 import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto.ReportAuswertungProjekteMapper;
 import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.formcontext.ReportAuswertungProjektFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.validation.CommonSearchParameters;
 import de.muenchen.oss.foerdermittel.backend.report.validation.ReportSearchParameterValidator;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietService;
@@ -49,13 +50,14 @@ public class ReportAuswertungProjekteService {
             final ReportAuswertungProjekteDTO parameters) {
 
         reportSearchParameterValidator.validateCommonSearchParameters(
-                parameters.fb(),
-                parameters.sbl(),
-                parameters.bez(),
-                parameters.ua(),
-                parameters.sgt(),
-                parameters.kurz(),
-                parameters.bpg());
+                new CommonSearchParameters(
+                        parameters.fb(),
+                        parameters.sbl(),
+                        parameters.bez(),
+                        parameters.ua(),
+                        parameters.sgt(),
+                        parameters.kurz(),
+                        parameters.bpg()));
 
         final String orderBy = parameters.sort().getOrderBy();
 

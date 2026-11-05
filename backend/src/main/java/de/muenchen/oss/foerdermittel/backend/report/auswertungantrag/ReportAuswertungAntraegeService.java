@@ -12,6 +12,7 @@ import de.muenchen.oss.foerdermittel.backend.report.ReportType;
 import de.muenchen.oss.foerdermittel.backend.report.auswertungantrag.dto.ReportAuswertungAntraegeDTO;
 import de.muenchen.oss.foerdermittel.backend.report.auswertungantrag.dto.ReportAuswertungAntraegeMapper;
 import de.muenchen.oss.foerdermittel.backend.report.auswertungantrag.formcontext.ReportAuswertungAntraegeFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.validation.CommonSearchParameters;
 import de.muenchen.oss.foerdermittel.backend.report.validation.ReportSearchParameterValidator;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietService;
@@ -51,13 +52,14 @@ public class ReportAuswertungAntraegeService {
             final ReportAuswertungAntraegeDTO parameters) {
 
         reportSearchParameterValidator.validateCommonSearchParameters(
-                parameters.fb(),
-                parameters.sbl(),
-                parameters.bez(),
-                parameters.ua(),
-                parameters.sgt(),
-                parameters.kurz(),
-                parameters.bpg());
+                new CommonSearchParameters(
+                        parameters.fb(),
+                        parameters.sbl(),
+                        parameters.bez(),
+                        parameters.ua(),
+                        parameters.sgt(),
+                        parameters.kurz(),
+                        parameters.bpg()));
 
         final String orderBy = parameters.sort().getOrderBy();
 

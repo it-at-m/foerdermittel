@@ -73,20 +73,14 @@ public class ReportSearchParameterValidator {
      * Validates all common search parameters used by evaluation reports.
      */
     public void validateCommonSearchParameters(
-            final String fb,
-            final String sbl,
-            final String bez,
-            final String ua,
-            final String sgt,
-            final String kurz,
-            final String bpg) {
+            final CommonSearchParameters parameters) {
 
-        validateFoerderbereich(fb);
-        validateStadtbezirksliste(sbl);
-        validateStadtbezirk(bez);
-        validateUnterabschnitt(ua);
-        validateSiedlungsgebiet(sgt);
-        validateKurzbezeichnung(kurz);
-        validateBauprogramm(bpg);
+        validateFoerderbereich(parameters.fb());
+        validateStadtbezirksliste(parameters.sbl());
+        validateStadtbezirk(parameters.bez());
+        validateUnterabschnitt(parameters.ua());
+        validateSiedlungsgebiet(parameters.sgt());
+        validateKurzbezeichnung(parameters.kurz());
+        validateBauprogramm(parameters.bpg());
     }
 }

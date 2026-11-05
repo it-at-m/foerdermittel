@@ -23,6 +23,7 @@ import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto.Report
 import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto.ReportAuswertungProjekteMapper;
 import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto.ReportAuswertungProjekteSort;
 import de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.formcontext.ReportAuswertungProjektFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.validation.CommonSearchParameters;
 import de.muenchen.oss.foerdermittel.backend.report.validation.ReportSearchParameterValidator;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietService;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietFormContextDTO;
@@ -134,7 +135,8 @@ class ReportAuswertungProjekteServiceTest {
                     parameters.sort().getOrderBy());
 
             verify(reportSearchParameterValidator).validateCommonSearchParameters(
-                    null, null, null, null, null, null, null);
+                    new CommonSearchParameters(
+                            null, null, null, null, null, null, null));
 
             assertThat(generatedReport).isSameAs(expectedReport);
         }
@@ -198,7 +200,8 @@ class ReportAuswertungProjekteServiceTest {
 
             // Then
             verify(reportSearchParameterValidator).validateCommonSearchParameters(
-                    "", "", "", "", "", "", "");
+                    new CommonSearchParameters(
+                            "", "", "", "", "", "", ""));
         }
 
         @Test
@@ -211,7 +214,8 @@ class ReportAuswertungProjekteServiceTest {
 
             doThrow(exception)
                     .when(reportSearchParameterValidator)
-                    .validateCommonSearchParameters("123", null, null, null, null, null, null);
+                    .validateCommonSearchParameters(new CommonSearchParameters(
+                            "123", null, null, null, null, null, null));
 
             // When
             final Exception thrown = Assertions.assertThrows(
@@ -223,7 +227,8 @@ class ReportAuswertungProjekteServiceTest {
             assertThat(thrown).isSameAs(exception);
 
             verify(reportSearchParameterValidator)
-                    .validateCommonSearchParameters("123", null, null, null, null, null, null);
+                    .validateCommonSearchParameters(new CommonSearchParameters(
+                            "123", null, null, null, null, null, null));
             verifyNoInteractions(reportAuswertungProjekteMapper);
         }
     }
