@@ -252,8 +252,25 @@ class ProjektIntegrationTest {
     class CreateProjekt {
 
         private static ProjektCreateDTO createProjektDTO(final String projnr) {
-            return new ProjektCreateDTO(projnr, 99, 99, null, "KB1", "L", 1, 26, 0, 1, "Projektname",
-                    "Projektstraße 1", "Test", true, false, null, null, null, "Testnotiz", 1, null, null);
+            return new ProjektCreateDTO(projnr, 99, "KB1", "L", 26, 0, 1, 99, null, 1, "Projektname",
+                    "Projektstraße 1", "Test", true, false, "Testnotiz", 1, null, null, null, null, null);
+        }
+
+        private static ProjektCreateDTO createProjektDTO(final String projnr, final String kurzbez) {
+            return createProjektDTO(projnr, kurzbez, "Projektname");
+        }
+
+        private static ProjektCreateDTO createProjektDTO(final String projnr, final String kurzbez, final String pname) {
+            return new ProjektCreateDTO(projnr, 99, kurzbez, "L", 26, 0, 1, 99, null, 1, pname,
+                    "Projektstraße 1", "Test", true, false, "Testnotiz", 1, null, null, null, null, null);
+        }
+
+        private static Stream<Arguments> invalidInputRequests() {
+            return Stream.of(
+                    arguments("kurzbez not uppercase", createProjektDTO(NON_PROJNR, "kb1")),
+                    arguments("kurzbez too long", createProjektDTO(NON_PROJNR, "ABCD")),
+                    arguments("kurzbez too short", createProjektDTO(NON_PROJNR, "")),
+                    arguments("pname too long", createProjektDTO(NON_PROJNR, "ABC", "a".repeat(101))));
         }
 
         @Test
@@ -279,12 +296,16 @@ class ProjektIntegrationTest {
                         assertThat(response.refinanzierbar()).isEqualTo(requestDTO.refinanzierbar());
                         assertThat(response.kauf()).isEqualTo(requestDTO.kauf());
                         assertThat(response.notizen()).isEqualTo(requestDTO.notizen());
-                        assertThat(response.fobFb()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.fobFb()));
-                        assertThat(response.bezStadtbezirk()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bezStadtbezirk()));
+                        assertThat(response.fobFb())
+                                .isEqualByComparingTo(BigDecimal.valueOf(requestDTO.fobFb()));
+                        assertThat(response.bezStadtbezirk())
+                                .isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bezStadtbezirk()));
                         assertThat(response.uasUa()).isEqualTo(requestDTO.uasUa());
                         assertThat(response.kurKurzbez()).isEqualTo(requestDTO.kurKurzbez());
-                        assertThat(response.sgtSiedlungsgebiet()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.sgtSiedlungsgebiet()));
-                        assertThat(response.bpgBauprogramm()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bpgBauprogramm()));
+                        assertThat(response.sgtSiedlungsgebiet())
+                                .isEqualByComparingTo(BigDecimal.valueOf(requestDTO.sgtSiedlungsgebiet()));
+                        assertThat(response.bpgBauprogramm())
+                                .isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bpgBauprogramm()));
                         assertThat(response.krnKrhname()).isEqualTo(requestDTO.krnKrhname());
                         assertThat(response.krisofp()).isEqualTo(requestDTO.krisofp());
                         assertThat(response.krhzweck()).isEqualTo(requestDTO.krhzweck());
@@ -306,12 +327,18 @@ class ProjektIntegrationTest {
             assertThat(entity.getRefinanzierbar()).isEqualTo(requestDTO.refinanzierbar());
             assertThat(entity.getKauf()).isEqualTo(requestDTO.kauf());
             assertThat(entity.getNotizen()).isEqualTo(requestDTO.notizen());
-            assertThat(entity.getFobFb().getFb()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.fobFb()));
-            assertThat(entity.getBezStadtbezirk().getStadtbezirk()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bezStadtbezirk()));
+
+            assertThat(entity.getFobFb().getFb())
+                    .isEqualByComparingTo(BigDecimal.valueOf(requestDTO.fobFb()));
+            assertThat(entity.getBezStadtbezirk().getStadtbezirk())
+                    .isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bezStadtbezirk()));
             assertThat(entity.getUasUa().getUa()).isEqualTo(requestDTO.uasUa());
             assertThat(entity.getKurKurzbez().getKurzbez()).isEqualTo(requestDTO.kurKurzbez());
-            assertThat(entity.getSgtSiedlungsgebiet().getSiedlungsgebiet()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.sgtSiedlungsgebiet()));
-            assertThat(entity.getBpgBauprogramm().getBauprogramm()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bpgBauprogramm()));
+            assertThat(entity.getSgtSiedlungsgebiet().getSiedlungsgebiet())
+                    .isEqualByComparingTo(BigDecimal.valueOf(requestDTO.sgtSiedlungsgebiet()));
+            assertThat(entity.getBpgBauprogramm().getBauprogramm())
+                    .isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bpgBauprogramm()));
+
             assertThat(entity.getAnlagevon()).isEqualTo("test");
             assertThat(entity.getAnlagedatum()).isNotNull();
             assertThat(entity.getAnlagedatum()).isBeforeOrEqualTo(LocalDateTime.now());
@@ -328,26 +355,10 @@ class ProjektIntegrationTest {
                     .expectStatus().isEqualTo(HttpStatus.CONFLICT);
         }
 
-        private static Stream<Arguments> invalidInputRequests() {
-            return Stream.of(
-                    arguments("kurzbez not uppercase", createProjektDTO(NON_PROJNR, "kb1")),
-                    arguments("kurzbez too long", createProjektDTO(NON_PROJNR, "ABCD")),
-                    arguments("kurzbez too short", createProjektDTO(NON_PROJNR, "")),
-                    arguments("pname too long", createProjektDTO(NON_PROJNR, "ABC", "a".repeat(101))));
-        }
-
-        private static ProjektCreateDTO createProjektDTO(final String projnr, final String kurzbez) {
-            return createProjektDTO(projnr, kurzbez, "Projektname");
-        }
-
-        private static ProjektCreateDTO createProjektDTO(final String projnr, final String kurzbez, final String pname) {
-            return new ProjektCreateDTO(projnr, 99, 99, null, kurzbez, "L", 1, 26, 0, 1, pname,
-                    "Projektstraße 1", "Test", true, false, null, null, null, "Testnotiz", 1, null, null);
-        }
-
         @ParameterizedTest(name = "{0}")
         @MethodSource("invalidInputRequests")
-        void givenInvalidInput_thenReturnBadRequest(final String description, final ProjektCreateDTO requestDTO) {
+        void givenInvalidInput_thenReturnBadRequest(
+                final String description, final ProjektCreateDTO requestDTO) {
             restTestClient.post()
                     .uri("/projekte")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")

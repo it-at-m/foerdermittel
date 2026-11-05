@@ -9,8 +9,8 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 
-@SuppressWarnings("PMD.CPD")
 public record ProjektUpdateDTO(
+        // Optional general information
         @Size(max = 100) String pname,
         @Size(max = 100) String pstrasse,
         @Max(99) Integer fobFb,

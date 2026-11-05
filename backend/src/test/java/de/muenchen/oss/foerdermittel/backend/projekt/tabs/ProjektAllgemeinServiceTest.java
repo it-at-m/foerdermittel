@@ -149,10 +149,8 @@ class ProjektAllgemeinServiceTest {
 
         @Test
         void givenValidCreateDTO_thenCreatesProjektWithRequiredFields() {
-            final ProjektCreateDTO dto = new ProjektCreateDTO(
-                    "1234567", 1, null, null, "ABC", "UA", null, 26, 0, 1,
-                    "Projektname", "Musterstraße 1", "Neubau", null, null,
-                    null, null, null, null, null, null, null);
+            final ProjektCreateDTO dto = new ProjektCreateDTO("1234567", 1, "ABC", "UA", 26, 0, 1, null, null, null,
+                    "Projektname", "Musterstraße 1", "Neubau", null, null, null, null, null, null, null, null, null);
             final Projekt projekt = new Projekt();
             final Foerderbereich foerderbereich = Mockito.mock(Foerderbereich.class);
             final Kurzbezeichnung kurzbezeichnung = Mockito.mock(Kurzbezeichnung.class);

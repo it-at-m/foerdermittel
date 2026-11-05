@@ -1,3 +1,4 @@
+
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -80,12 +81,9 @@ class ProjektMapperTest {
             assertThat(dto.refinanzierbar()).isEqualTo(projekt.getRefinanzierbar());
             assertThat(dto.kauf()).isEqualTo(projekt.getKauf());
 
-            assertThat(dto.kripplatz())
-                    .isEqualByComparingTo(projekt.getKripplatz());
-            assertThat(dto.kigaplatz())
-                    .isEqualByComparingTo(projekt.getKigaplatz());
-            assertThat(dto.hortplatz())
-                    .isEqualByComparingTo(projekt.getHortplatz());
+            assertThat(dto.kripplatz()).isEqualByComparingTo(projekt.getKripplatz());
+            assertThat(dto.kigaplatz()).isEqualByComparingTo(projekt.getKigaplatz());
+            assertThat(dto.hortplatz()).isEqualByComparingTo(projekt.getHortplatz());
 
             assertThat(dto.notizen()).isEqualTo(projekt.getNotizen());
             assertThat(dto.fobFb())
@@ -107,29 +105,9 @@ class ProjektMapperTest {
 
         @Test
         void givenCreateDTO_thenReturnsCorrectEntity() {
-            final ProjektCreateDTO dto = new ProjektCreateDTO(
-                    "1124101",
-                    12,
-                    null,
-                    null,
-                    "ABC",
-                    "12",
-                    null,
-                    26,
-                    0,
-                    1,
-                    "Test Projekt",
-                    "Teststraße 1",
-                    "Test",
-                    true,
-                    false,
-                    BigDecimal.valueOf(10),
-                    BigDecimal.valueOf(20),
-                    BigDecimal.valueOf(30),
-                    "Testnotiz",
-                    null,
-                    null,
-                    null);
+            final ProjektCreateDTO dto = new ProjektCreateDTO("1124101", 12, "ABC", "12", 26, 0, 1, null, null, null,
+                    "Test Projekt", "Teststraße 1", "Test", true, false, "Testnotiz", null, null, null,
+                    BigDecimal.valueOf(10), BigDecimal.valueOf(20), BigDecimal.valueOf(30));
 
             final Projekt entity = projektMapper.toEntity(dto);
 
@@ -144,12 +122,9 @@ class ProjektMapperTest {
             assertThat(entity.getRefinanzierbar()).isEqualTo(dto.refinanzierbar());
             assertThat(entity.getKauf()).isEqualTo(dto.kauf());
 
-            assertThat(entity.getKripplatz())
-                    .isEqualByComparingTo(dto.kripplatz());
-            assertThat(entity.getKigaplatz())
-                    .isEqualByComparingTo(dto.kigaplatz());
-            assertThat(entity.getHortplatz())
-                    .isEqualByComparingTo(dto.hortplatz());
+            assertThat(entity.getKripplatz()).isEqualByComparingTo(dto.kripplatz());
+            assertThat(entity.getKigaplatz()).isEqualByComparingTo(dto.kigaplatz());
+            assertThat(entity.getHortplatz()).isEqualByComparingTo(dto.hortplatz());
 
             assertThat(entity.getNotizen()).isEqualTo(dto.notizen());
 
