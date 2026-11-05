@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 
+@SuppressWarnings("PMD.CPD")
 public record ProjektCreateDTO(
         @NotNull @Size(min = 7, max = 7) @Pattern(regexp = "^[A-Z0-9]{7}$") String projnr,
         @NotNull @Max(99) Integer fobFb,
