@@ -5,6 +5,7 @@ import java.util.Map;
 /**
  * Utility class providing common Jasper parameters for different
  * report mapper implementations.
+ * used for ReportAuswertungAntraege, ReportAuswertungProjekte
  */
 
 public final class ReportMapperUtil {
@@ -16,7 +17,8 @@ public final class ReportMapperUtil {
      * Adds common filter parameters to the provided Jasper parameter map
      * used by the evaluation reports.
      *
-     * <p>Empty or unset values are processed accordingly to ensure
+     * <p>
+     * Empty or unset values are processed accordingly to ensure
      * proper handling by JasperReports.
      *
      * @param parameters map containing the Jasper parameters

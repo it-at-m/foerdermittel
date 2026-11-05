@@ -1,10 +1,9 @@
 package de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto;
 
 import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
+import de.muenchen.oss.foerdermittel.backend.report.util.ReportMapperUtil;
 import java.util.HashMap;
 import java.util.Map;
-
-import de.muenchen.oss.foerdermittel.backend.report.util.ReportMapperUtil;
 import org.springframework.stereotype.Component;
 
 @Component
