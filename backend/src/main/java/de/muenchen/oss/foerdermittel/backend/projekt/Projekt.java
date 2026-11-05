@@ -19,6 +19,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
+import java.io.Serial;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,8 +33,16 @@ import org.hibernate.type.SqlTypes;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@SuppressWarnings("PMD.TooManyFields")
 @Table(name = "projekte")
-public class Projekt extends AuditableEntity {
+public class Projekt extends AuditableEntity implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    // ========= //
+    // Variables //
+    // ========= //
 
     @Id
     @Column(name = "projnr", nullable = false)

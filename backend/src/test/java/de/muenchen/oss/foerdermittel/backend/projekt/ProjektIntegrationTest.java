@@ -1,3 +1,4 @@
+
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
 import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_TEST_PROFILE;
@@ -103,7 +104,6 @@ class ProjektIntegrationTest {
     @BeforeEach
     public void setUp() {
         when(auditorAware.getCurrentAuditor()).thenReturn(Optional.of("test"));
-
         projektRepository.deleteAll();
 
         final Foerderbereich foerderbereich = new Foerderbereich(BigDecimal.valueOf(99), "Test", false, false, false, false);
@@ -134,14 +134,12 @@ class ProjektIntegrationTest {
         exampleEntity.setLfdnr2("01");
         exampleEntity.setPname("Projektname");
         exampleEntity.setPstrasse("Projektstraße 1");
-
         exampleEntity.setFobFb(foerderbereich);
         exampleEntity.setBezStadtbezirk(stadtbezirk);
         exampleEntity.setUasUa(unterabschnitt);
         exampleEntity.setKurKurzbez(kurzbezeichnung);
         exampleEntity.setSgtSiedlungsgebiet(siedlungsgebiet);
         exampleEntity.setBpgBauprogramm(bauprogramm);
-
         exampleEntity.setKauf(false);
         exampleEntity.setRefinanzierbar(true);
 
@@ -157,10 +155,7 @@ class ProjektIntegrationTest {
         @Test
         void givenPageable_thenReturnPageOfEntities() {
             restTestClient.get()
-                    .uri(uriBuilder -> uriBuilder
-                            .path("/projekte")
-                            .queryParam("page", "0")
-                            .build())
+                    .uri(uriBuilder -> uriBuilder.path("/projekte").queryParam("page", "0").build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
                     .exchange()
                     .expectStatus().isOk()
@@ -168,30 +163,26 @@ class ProjektIntegrationTest {
                     .expectBody()
                     .jsonPath("$.content")
                     .value(new ParameterizedTypeReference<List<ProjektResponseDTO>>() {
-                    }, content -> assertThat(content.size()).isEqualTo(1));
+                    }, content -> assertThat(content).hasSize(1));
         }
 
         private static Stream<Arguments> authorizationMappings() {
             return Stream.of(
-                    Arguments.of("admin", HttpStatus.OK),
-                    Arguments.of("sachbearbeitung", HttpStatus.OK),
-                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.OK),
-                    Arguments.of("no-role", HttpStatus.FORBIDDEN));
+                    arguments("admin", HttpStatus.OK),
+                    arguments("sachbearbeitung", HttpStatus.OK),
+                    arguments("sachbearbeitunghaushalt", HttpStatus.OK),
+                    arguments("no-role", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
         @MethodSource("authorizationMappings")
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             restTestClient.get()
-                    .uri(uriBuilder -> uriBuilder
-                            .path("/projekte")
-                            .queryParam("page", "0")
-                            .build())
+                    .uri(uriBuilder -> uriBuilder.path("/projekte").queryParam("page", "0").build())
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()
                     .expectStatus().isEqualTo(httpStatus);
         }
-
     }
 
     @Nested
@@ -202,9 +193,7 @@ class ProjektIntegrationTest {
             projektRepository.deleteAll();
 
             final ProjektFormContext result = restTestClient.get()
-                    .uri(uriBuilder -> uriBuilder
-                            .path("/projekte/form-context")
-                            .build())
+                    .uri("/projekte/form-context")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus().isOk()
@@ -220,9 +209,7 @@ class ProjektIntegrationTest {
         @Test
         void givenEntitiesExist_thenReturnCorrectFormContext() {
             final ProjektFormContext result = restTestClient.get()
-                    .uri(uriBuilder -> uriBuilder
-                            .path("/projekte/form-context")
-                            .build())
+                    .uri("/projekte/form-context")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus().isOk()
@@ -234,36 +221,39 @@ class ProjektIntegrationTest {
             assertThat(result).isNotNull();
             assertThat(result.projekte()).hasSize(1);
             assertThat(result.projekte().getFirst().projnr()).isEqualTo(EXISTING_PROJNR);
-            ;
+            assertThat(result.fbs()).hasSize(1);
+            assertThat(result.bezs()).hasSize(1);
+            assertThat(result.uas()).hasSize(1);
+            assertThat(result.kurzs()).hasSize(1);
+            assertThat(result.bpgs()).hasSize(1);
+            assertThat(result.sgts()).hasSize(1);
         }
 
         private static Stream<Arguments> authorizationMappings() {
             return Stream.of(
-                    Arguments.of("admin", HttpStatus.OK),
-                    Arguments.of("sachbearbeitung", HttpStatus.FORBIDDEN),
-                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN),
-                    Arguments.of("no-role", HttpStatus.FORBIDDEN));
+                    arguments("admin", HttpStatus.OK),
+                    arguments("sachbearbeitung", HttpStatus.FORBIDDEN),
+                    arguments("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN),
+                    arguments("no-role", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
         @MethodSource("authorizationMappings")
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             restTestClient.get()
-                    .uri(uriBuilder -> uriBuilder
-                            .path("/projekte/form-context")
-                            .build())
+                    .uri("/projekte/form-context")
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()
                     .expectStatus().isEqualTo(httpStatus);
         }
-
     }
 
     @Nested
     class CreateProjekt {
+
         private static ProjektCreateDTO createProjektDTO(final String projnr) {
-            return new ProjektCreateDTO(projnr, 99, 99, null, "KB1", "L", 1, 26, 0, 1, "Projektname", "Projektstraße 1", "Test", true, false, null, null, null,
-                    "Testnotiz", 1, null, null);
+            return new ProjektCreateDTO(projnr, 99, 99, null, "KB1", "L", 1, 26, 0, 1, "Projektname",
+                    "Projektstraße 1", "Test", true, false, null, null, null, "Testnotiz", 1, null, null);
         }
 
         @Test
@@ -316,14 +306,12 @@ class ProjektIntegrationTest {
             assertThat(entity.getRefinanzierbar()).isEqualTo(requestDTO.refinanzierbar());
             assertThat(entity.getKauf()).isEqualTo(requestDTO.kauf());
             assertThat(entity.getNotizen()).isEqualTo(requestDTO.notizen());
-
             assertThat(entity.getFobFb().getFb()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.fobFb()));
             assertThat(entity.getBezStadtbezirk().getStadtbezirk()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bezStadtbezirk()));
             assertThat(entity.getUasUa().getUa()).isEqualTo(requestDTO.uasUa());
             assertThat(entity.getKurKurzbez().getKurzbez()).isEqualTo(requestDTO.kurKurzbez());
             assertThat(entity.getSgtSiedlungsgebiet().getSiedlungsgebiet()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.sgtSiedlungsgebiet()));
             assertThat(entity.getBpgBauprogramm().getBauprogramm()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bpgBauprogramm()));
-
             assertThat(entity.getAnlagevon()).isEqualTo("test");
             assertThat(entity.getAnlagedatum()).isNotNull();
             assertThat(entity.getAnlagedatum()).isBeforeOrEqualTo(LocalDateTime.now());
@@ -342,38 +330,24 @@ class ProjektIntegrationTest {
 
         private static Stream<Arguments> invalidInputRequests() {
             return Stream.of(
-                    arguments("kurzbez not uppercase",
-                            createProjektDTO(NON_PROJNR, "kb1")),
-                    arguments("kurzbez too long",
-                            createProjektDTO(NON_PROJNR, "ABCD")),
-                    arguments("kurzbez too short",
-                            createProjektDTO(NON_PROJNR, "")),
-                    arguments("pname too long",
-                            createProjektDTO(NON_PROJNR, "ABC", "a".repeat(101))));
+                    arguments("kurzbez not uppercase", createProjektDTO(NON_PROJNR, "kb1")),
+                    arguments("kurzbez too long", createProjektDTO(NON_PROJNR, "ABCD")),
+                    arguments("kurzbez too short", createProjektDTO(NON_PROJNR, "")),
+                    arguments("pname too long", createProjektDTO(NON_PROJNR, "ABC", "a".repeat(101))));
         }
 
-        private static ProjektCreateDTO createProjektDTO(
-                final String projnr,
-                final String kurzbez) {
+        private static ProjektCreateDTO createProjektDTO(final String projnr, final String kurzbez) {
             return createProjektDTO(projnr, kurzbez, "Projektname");
         }
 
-        private static ProjektCreateDTO createProjektDTO(
-                final String projnr,
-                final String kurzbez,
-                final String pname) {
-            return new ProjektCreateDTO(
-                    projnr, 99, 99, null, kurzbez, "L", 1,
-                    26, 0, 1, pname, "Projektstraße 1", "Test",
-                    true, false, null, null, null, "Testnotiz",
-                    1, null, null);
+        private static ProjektCreateDTO createProjektDTO(final String projnr, final String kurzbez, final String pname) {
+            return new ProjektCreateDTO(projnr, 99, 99, null, kurzbez, "L", 1, 26, 0, 1, pname,
+                    "Projektstraße 1", "Test", true, false, null, null, null, "Testnotiz", 1, null, null);
         }
 
         @ParameterizedTest(name = "{0}")
         @MethodSource("invalidInputRequests")
-        void givenInvalidInput_thenReturnBadRequest(
-                final String description,
-                final ProjektCreateDTO requestDTO) {
+        void givenInvalidInput_thenReturnBadRequest(final String description, final ProjektCreateDTO requestDTO) {
             restTestClient.post()
                     .uri("/projekte")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
@@ -388,9 +362,8 @@ class ProjektIntegrationTest {
     class UpdateProjekt {
 
         private static ProjektUpdateDTO createValidProjektUpdateDTO() {
-            return new ProjektUpdateDTO(
-                    "Neuer Projektname", "Neue Projektstraße 1", 99, 99, null, "KB1", 1, "Test", true,
-                    false, null, null, null, "Aktualisierte Notiz", 1, null, null);
+            return new ProjektUpdateDTO("Neuer Projektname", "Neue Projektstraße 1", 99, 99, null, "KB1", 1,
+                    "Test", true, false, null, null, null, "Aktualisierte Notiz", 1, null, null);
         }
 
         @Test
@@ -418,13 +391,10 @@ class ProjektIntegrationTest {
             assertThat(responseDTO.kauf()).isEqualTo(requestDTO.kauf());
             assertThat(responseDTO.notizen()).isEqualTo(requestDTO.notizen());
             assertThat(responseDTO.fobFb()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.fobFb()));
-            assertThat(responseDTO.bezStadtbezirk())
-                    .isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bezStadtbezirk()));
+            assertThat(responseDTO.bezStadtbezirk()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bezStadtbezirk()));
             assertThat(responseDTO.kurKurzbez()).isEqualTo(requestDTO.kurKurzbez());
-            assertThat(responseDTO.sgtSiedlungsgebiet())
-                    .isEqualByComparingTo(BigDecimal.valueOf(requestDTO.sgtSiedlungsgebiet()));
-            assertThat(responseDTO.bpgBauprogramm())
-                    .isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bpgBauprogramm()));
+            assertThat(responseDTO.sgtSiedlungsgebiet()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.sgtSiedlungsgebiet()));
+            assertThat(responseDTO.bpgBauprogramm()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bpgBauprogramm()));
 
             final Projekt entity = projektRepository.findById(EXISTING_PROJNR).orElseThrow();
 
@@ -434,16 +404,12 @@ class ProjektIntegrationTest {
             assertThat(entity.getRefinanzierbar()).isEqualTo(requestDTO.refinanzierbar());
             assertThat(entity.getKauf()).isEqualTo(requestDTO.kauf());
             assertThat(entity.getNotizen()).isEqualTo(requestDTO.notizen());
-            assertThat(entity.getFobFb().getFb())
-                    .isEqualByComparingTo(BigDecimal.valueOf(requestDTO.fobFb()));
-            assertThat(entity.getBezStadtbezirk().getStadtbezirk())
-                    .isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bezStadtbezirk()));
+            assertThat(entity.getFobFb().getFb()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.fobFb()));
+            assertThat(entity.getBezStadtbezirk().getStadtbezirk()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bezStadtbezirk()));
             assertThat(entity.getUasUa().getUa()).isEqualTo("L");
             assertThat(entity.getKurKurzbez().getKurzbez()).isEqualTo(requestDTO.kurKurzbez());
-            assertThat(entity.getSgtSiedlungsgebiet().getSiedlungsgebiet())
-                    .isEqualByComparingTo(BigDecimal.valueOf(requestDTO.sgtSiedlungsgebiet()));
-            assertThat(entity.getBpgBauprogramm().getBauprogramm())
-                    .isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bpgBauprogramm()));
+            assertThat(entity.getSgtSiedlungsgebiet().getSiedlungsgebiet()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.sgtSiedlungsgebiet()));
+            assertThat(entity.getBpgBauprogramm().getBauprogramm()).isEqualByComparingTo(BigDecimal.valueOf(requestDTO.bpgBauprogramm()));
             assertThat(entity.getProjnr()).isEqualTo(EXISTING_PROJNR);
             assertThat(entity.getJahr()).isEqualTo("24");
             assertThat(entity.getLfdnr1()).isEqualTo("0");
@@ -476,10 +442,10 @@ class ProjektIntegrationTest {
 
         private static Stream<Arguments> authorizationMappings() {
             return Stream.of(
-                    Arguments.of("admin", HttpStatus.OK),
-                    Arguments.of("sachbearbeitung", HttpStatus.FORBIDDEN),
-                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN),
-                    Arguments.of("no-role", HttpStatus.FORBIDDEN));
+                    arguments("admin", HttpStatus.OK),
+                    arguments("sachbearbeitung", HttpStatus.FORBIDDEN),
+                    arguments("sachbearbeitunghaushalt", HttpStatus.FORBIDDEN),
+                    arguments("no-role", HttpStatus.FORBIDDEN));
         }
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
@@ -491,7 +457,5 @@ class ProjektIntegrationTest {
                     .exchange()
                     .expectStatus().isEqualTo(httpStatus);
         }
-
     }
-
 }

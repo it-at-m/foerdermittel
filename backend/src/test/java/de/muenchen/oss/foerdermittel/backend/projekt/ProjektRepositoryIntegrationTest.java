@@ -1,3 +1,4 @@
+
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
 import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_TEST_PROFILE;
@@ -29,7 +30,6 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Import;
@@ -43,8 +43,7 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
 @Testcontainers
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureRestTestClient
+@SpringBootTest
 @ActiveProfiles(profiles = { SPRING_TEST_PROFILE })
 @Import(TestSecurityConfiguration.class)
 class ProjektRepositoryIntegrationTest {
@@ -85,9 +84,8 @@ class ProjektRepositoryIntegrationTest {
     private BauprogrammRepository bauprogrammRepository;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         when(auditorAware.getCurrentAuditor()).thenReturn(Optional.of("test"));
-
         projektRepository.deleteAll();
 
         final Foerderbereich foerderbereich = new Foerderbereich(BigDecimal.valueOf(99), "Test", false, false, false, false);
@@ -96,10 +94,10 @@ class ProjektRepositoryIntegrationTest {
         final Stadtbezirk stadtbezirk = new Stadtbezirk(BigDecimal.valueOf(99), "Test");
         stadtbezirkRepository.save(stadtbezirk);
 
-        final Hauptabschnitt exampleHa2 = new Hauptabschnitt("ha", "bz2");
-        hauptabschnittRepository.save(exampleHa2);
+        final Hauptabschnitt hauptabschnitt = new Hauptabschnitt("ha", "bz2");
+        hauptabschnittRepository.save(hauptabschnitt);
 
-        final Unterabschnitt unterabschnitt = new Unterabschnitt("L", "Test", exampleHa2);
+        final Unterabschnitt unterabschnitt = new Unterabschnitt("L", "Test", hauptabschnitt);
         unterabschnittRepository.save(unterabschnitt);
 
         final Kurzbezeichnung kurzbezeichnung = new Kurzbezeichnung("KB1", "Test");
@@ -111,46 +109,40 @@ class ProjektRepositoryIntegrationTest {
         final Bauprogramm bauprogramm = new Bauprogramm(BigDecimal.ONE, "Test");
         bauprogrammRepository.save(bauprogramm);
 
-        final Projekt exampleEntity = new Projekt();
-        exampleEntity.setProjnr(EXISTING_PROJNR);
-        exampleEntity.setJahr("24");
-        exampleEntity.setLfdnr1("0");
-        exampleEntity.setLfdnr2("01");
-        exampleEntity.setPname("Projektname");
-        exampleEntity.setPstrasse("Projektstraße 1");
+        final Projekt projekt = new Projekt();
+        projekt.setProjnr(EXISTING_PROJNR);
+        projekt.setJahr("24");
+        projekt.setLfdnr1("0");
+        projekt.setLfdnr2("01");
+        projekt.setPname("Projektname");
+        projekt.setPstrasse("Projektstraße 1");
+        projekt.setFobFb(foerderbereich);
+        projekt.setBezStadtbezirk(stadtbezirk);
+        projekt.setUasUa(unterabschnitt);
+        projekt.setKurKurzbez(kurzbezeichnung);
+        projekt.setSgtSiedlungsgebiet(siedlungsgebiet);
+        projekt.setBpgBauprogramm(bauprogramm);
+        projekt.setKauf(false);
+        projekt.setRefinanzierbar(true);
 
-        exampleEntity.setFobFb(foerderbereich);
-        exampleEntity.setBezStadtbezirk(stadtbezirk);
-        exampleEntity.setUasUa(unterabschnitt);
-        exampleEntity.setKurKurzbez(kurzbezeichnung);
-        exampleEntity.setSgtSiedlungsgebiet(siedlungsgebiet);
-        exampleEntity.setBpgBauprogramm(bauprogramm);
+        ReflectionTestUtils.setField(projekt, "anlagevon", "test");
+        ReflectionTestUtils.setField(projekt, "anlagedatum", LocalDateTime.now());
 
-        exampleEntity.setKauf(false);
-        exampleEntity.setRefinanzierbar(true);
-
-        ReflectionTestUtils.setField(exampleEntity, "anlagevon", "test");
-        ReflectionTestUtils.setField(exampleEntity, "anlagedatum", LocalDateTime.now());
-
-        projektRepository.save(exampleEntity);
+        projektRepository.save(projekt);
     }
 
     @Test
     void givenProjects_thenReturnsBasicProjektDAOs() {
-        // When
         final List<BasicProjektDAO> result = projektRepository.findAllAsBasic();
 
-        // Then
         assertThat(result)
-                .contains(new BasicProjektDAO("3003000", "Projektname", "Projektstraße 1"));
+                .contains(new BasicProjektDAO(EXISTING_PROJNR, "Projektname", "Projektstraße 1"));
     }
 
     @Test
     void givenProjects_thenReturnsAuswertungProjektDAOs() {
-        // When
         final List<AuswertungProjektDAO> result = projektRepository.findAllAuswertungProjekte();
 
-        // Then
         assertThat(result)
                 .contains(new AuswertungProjektDAO("24", "Projektname", "Projektstraße 1", null));
     }
