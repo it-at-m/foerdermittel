@@ -87,12 +87,12 @@ public class ReportAuswertungAntraegeIntegrationTest {
     private SiedlungsgebietRepository siedlungsgebietRepository;
 
     @Autowired
-    private BauprogrammRepository bauprogrammRepository;
+    private BauprogrammRepository bauprogrammRepository;;
 
     @Nested
     class GetReportAuswertungantraege {
 
-        private static final String VALID_SORT = "STADTBEZIRK_STRASSE";
+        private static final String VALID_SORT = "PROJEKTNUMMER";
         private static final String VALID_TYPE = "PDF";
 
         @BeforeEach
@@ -144,11 +144,11 @@ public class ReportAuswertungAntraegeIntegrationTest {
         }
 
         @Test
-        void givenInvalidYear_thenReturnBadRequest() {
+        void givenInvalidYearVon_thenReturnBadRequest() {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path(REPORT_PATH)
-                            .queryParam("jahr", "NOTFOUND")
+                            .queryParam("jahrvon", "NOTFOUND")
                             .queryParam("sort", VALID_SORT)
                             .queryParam("type", VALID_TYPE)
                             .build())
