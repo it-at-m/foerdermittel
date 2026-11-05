@@ -92,7 +92,6 @@ public class ReportAuswertungAntraegeIntegrationTest {
     @Nested
     class GetReportAuswertungantraege {
 
-        private static final String EXISTING_JAHR = "2026";
         private static final String VALID_SORT = "STADTBEZIRK_STRASSE";
         private static final String VALID_TYPE = "PDF";
 
@@ -188,13 +187,9 @@ public class ReportAuswertungAntraegeIntegrationTest {
         private static Stream<Arguments> invalidInputRequests() {
             return Stream.of(
                     Arguments.of(
-                            "sort missing",
-                            EXISTING_JAHR,
                             null,
                             VALID_TYPE),
                     Arguments.of(
-                            "type missing",
-                            EXISTING_JAHR,
                             VALID_SORT,
                             null));
         }
@@ -202,7 +197,6 @@ public class ReportAuswertungAntraegeIntegrationTest {
         @ParameterizedTest(name = "{0}")
         @MethodSource("invalidInputRequests")
         void givenInvalidInput_thenReturnBadRequest(
-                final String description,
                 final String sort,
                 final String type) {
 
