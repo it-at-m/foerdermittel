@@ -221,41 +221,36 @@ class ProjektServiceTest {
     class CreateProjekt {
 
         @Test
-        void givenProjektExists_thenUpdateProjekt() {
-            final String id = "1234567";
-            final ProjektUpdateDTO dto = new ProjektUpdateDTO(
-                    null, null, null, null, null, null, null,
-                    null, null, null, null, null, null, null, null, null, null);
-
+        void givenValidCreateDTO_thenCreatesProjekt() {
+            final ProjektCreateDTO dto = new ProjektCreateDTO(
+                    "1234567", 1, null, null, "ABC", "UA", null, 26, 0, 1,
+                    "Projektname", "Musterstraße 1", "Neubau", null, null,
+                    null, null, null, null, null, null, null);
             final Projekt projekt = new Projekt();
-            final Projekt mappedProjekt = new Projekt();
-
             final var foerderbereich = mock(Foerderbereich.class);
             final var kurzbezeichnung = mock(Kurzbezeichnung.class);
-
-            projekt.setFobFb(foerderbereich);
-            projekt.setKurKurzbez(kurzbezeichnung);
-
-            when(projektRepository.findById(id)).thenReturn(Optional.of(projekt));
-            when(projektMapper.toEntity(dto)).thenReturn(mappedProjekt);
-            when(projektRepository.update(projekt)).thenReturn(projekt);
-
-            final Projekt result = unitUnderTest.updateProjekt(dto, id);
-
-            verify(projektRepository, times(1)).findById(id);
-            verify(projektMapper, times(1)).toEntity(dto);
-            verify(projektRepository, times(1)).update(projekt);
-
-            verify(foerderbereichService, never()).getFoerderbereich(Mockito.any());
-            verify(kurzbezeichnungService, never()).getKurzbezeichnung(Mockito.any());
-
+            final var unterabschnitt = mock(Unterabschnitt.class);
+            when(projektMapper.toEntity(dto)).thenReturn(projekt);
+            when(foerderbereichService.getFoerderbereich(BigDecimal.ONE)).thenReturn(foerderbereich);
+            when(kurzbezeichnungService.getKurzbezeichnung("ABC")).thenReturn(kurzbezeichnung);
+            when(unterabschnittService.getUnterabschnitt("UA")).thenReturn(unterabschnitt);
+            when(projektRepository.insert(projekt)).thenReturn(projekt);
+            final Projekt result = unitUnderTest.createProjekt(dto);
+            verify(projektMapper).toEntity(dto);
+            verify(foerderbereichService).getFoerderbereich(BigDecimal.ONE);
+            verify(kurzbezeichnungService).getKurzbezeichnung("ABC");
+            verify(unterabschnittService).getUnterabschnitt("UA");
+            verify(stadtbezirkService, never()).getStadtbezirk(Mockito.any());
+            verify(krankenhausService, never()).getKrankenhaus(Mockito.any());
+            verify(siedlungsgebietService, never()).getSiedlungsgebiet(Mockito.any());
+            verify(bauprogrammService, never()).getBauprogramm(Mockito.any());
+            verify(projektRepository).insert(projekt);
             assertThat(result).isSameAs(projekt);
             assertThat(projekt.getFobFb()).isSameAs(foerderbereich);
             assertThat(projekt.getKurKurzbez()).isSameAs(kurzbezeichnung);
-            assertThat(projekt.getBezStadtbezirk()).isNull();
-            assertThat(projekt.getKrnKrhname()).isNull();
-            assertThat(projekt.getSgtSiedlungsgebiet()).isNull();
-            assertThat(projekt.getBpgBauprogramm()).isNull();
+            assertThat(projekt.getUasUa()).isSameAs(unterabschnitt);
+            assertThat(projekt.getKauf()).isFalse();
+            assertThat(projekt.getRefinanzierbar()).isTrue();
         }
     }
 
@@ -263,41 +258,18 @@ class ProjektServiceTest {
     class UpdateProjekt {
 
         @Test
-        void givenProjektExists_thenUpdateProjekt() {
-            final String id = "1234567";
-            final ProjektUpdateDTO dto = new ProjektUpdateDTO(
-                    null, null, null, null, null, null, null,
-                    null, null, null, null, null, null, null, null, null, null);
-
+        void givenUpdateDTO_thenUpdatesProjekt() {
+            final ProjektUpdateDTO dto = new ProjektUpdateDTO("Neuer Projektname", null, null, null, null, null, null, null, null, null, null, null, null, null,
+                    null, null, null);
             final Projekt projekt = new Projekt();
-
-            final var foerderbereich = mock(
-                    Foerderbereich.class);
-            final var kurzbezeichnung = mock(
-                    Kurzbezeichnung.class);
-
-            projekt.setFobFb(foerderbereich);
-            projekt.setKurKurzbez(kurzbezeichnung);
-
-            when(projektRepository.findById(id)).thenReturn(Optional.of(projekt));
+            final Projekt mappedProjekt = new Projekt();
+            mappedProjekt.setPname("Neuer Projektname");
+            when(projektRepository.findById("1234567")).thenReturn(Optional.of(projekt));
+            when(projektMapper.toEntity(dto)).thenReturn(mappedProjekt);
             when(projektRepository.update(projekt)).thenReturn(projekt);
-
-            final Projekt result = unitUnderTest.updateProjekt(dto, id);
-
-            verify(projektRepository, times(1)).findById(id);
-            verify(projektMapper, times(1)).toEntity(dto);
-            verify(projektRepository, times(1)).update(projekt);
-
-            verify(foerderbereichService, never()).getFoerderbereich(Mockito.any());
-            verify(kurzbezeichnungService, never()).getKurzbezeichnung(Mockito.any());
-
-            assertThat(result).isSameAs(projekt);
-            assertThat(projekt.getFobFb()).isSameAs(foerderbereich);
-            assertThat(projekt.getKurKurzbez()).isSameAs(kurzbezeichnung);
-            assertThat(projekt.getBezStadtbezirk()).isNull();
-            assertThat(projekt.getKrnKrhname()).isNull();
-            assertThat(projekt.getSgtSiedlungsgebiet()).isNull();
-            assertThat(projekt.getBpgBauprogramm()).isNull();
+            final Projekt result = unitUnderTest.updateProjekt(dto, "1234567");
+            assertThat(result.getPname()).isEqualTo("Neuer Projektname");
+            verify(projektRepository).update(projekt);
         }
 
         @Test
