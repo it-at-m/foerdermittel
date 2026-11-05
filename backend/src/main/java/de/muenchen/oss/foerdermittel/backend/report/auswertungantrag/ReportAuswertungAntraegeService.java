@@ -30,7 +30,6 @@ import org.springframework.util.StringUtils;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-@SuppressWarnings("CPD")
 public class ReportAuswertungAntraegeService {
 
     private final FoerderbereichService foerderbereichService;

@@ -29,7 +29,6 @@ import org.springframework.util.StringUtils;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-@SuppressWarnings("CPD")
 public class ReportAuswertungProjekteService {
 
     private final FoerderbereichService foerderbereichService;
