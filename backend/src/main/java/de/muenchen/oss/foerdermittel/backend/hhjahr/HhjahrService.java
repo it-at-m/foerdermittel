@@ -76,7 +76,7 @@ public class HhjahrService {
 
         log.debug("Delete Haushaltjahr with ID {}", hhjahrId);
 
-        if (hhplanRepository.existsByHhJahr(hhjahrId)) {
+        if (hhplanRepository.existsByHhjahr(hhjahrId)) {
             throw new DeleteNotAllowedException(
                     Hhjahr.class, Projekt.class);
         }

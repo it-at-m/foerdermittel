@@ -13,6 +13,8 @@ import org.springframework.stereotype.Repository;
 public interface HhplanRepository extends PagingAndSortingRepository<Hhplan, HhplanPrimaryKey>, ListCrudRepository<Hhplan, HhplanPrimaryKey>,
         InsertAndUpdateRepository<Hhplan> {
 
+    boolean existsByHhjahr(BigDecimal hhjahr);
+
     @Query("SELECT h.id.hhjJahr FROM Hhplan h ORDER BY h.id.hhjJahr")
     List<BigDecimal> findAllHhplan();
 
