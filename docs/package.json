@@ -6,7 +6,7 @@
     },
     "markdownlint-cli": {
       "katex": "0.18.2",
-      "re2js": "2.8.7"
+      "re2js": "2.8.8"
     },
     "mermaid": {
       "katex": "0.18.2"
