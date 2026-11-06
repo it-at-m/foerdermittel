@@ -234,7 +234,7 @@
         "bez": "oder einen Stadtbezirk",
         "bpg": "Bauprogramm",
         "fag": "Nur FAG",
-        "fb": "foerderbereich",
+        "fb": "Förderbereich",
         "jahr": "Jahr",
         "jahrBis": "Jahr bis",
         "jahrVon": "Jahr von",
@@ -291,7 +291,7 @@
         "sortEnum": {
           "fbProjektnummer": "Förderbereich, Projektnummer",
           "fbProjektstrasse": "Förderbereich, Projektstraße",
-          "strasseProjektnummer": "Straße, Projektnummer",
+          "strasseProjektnummer": "Projektstraße, Projektnummer",
           "projektnummer": "Projektnummer"
         },
         "reportType": {
