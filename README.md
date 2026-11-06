@@ -1,3 +1,7 @@
+[documentation]: https://it-at-m.github.io/foerdermittel/
+[itm-opensource]: https://opensource.muenchen.de/
+[license]: ../LICENSE
+[code-of-conduct]: ./CODE_OF_CONDUCT.md
 # Fördermittel Verwaltung
 
 The **Fördermittel Verwaltung** application is a web-based solution developed for the City Treasury Department of the City of Munich (Landeshauptstadt München). It is designed to centrally manage and document all municipal construction projects for which funding is requested from the State of Bavaria, the German federal government, the European Union, or other organizations and public authorities.
