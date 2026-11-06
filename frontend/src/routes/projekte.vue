@@ -12,20 +12,70 @@
         <template #filter-form="{ filter, updateValidity }">
           <v-form @update:model-value="updateValidity">
             <v-row>
-              <v-col cols="6">
+              <v-col
+                cols="12"
+                md="2"
+              >
                 <v-text-field
                   v-model="filter.projnr"
                   :label="t('model.projekt.projnr')"
                   clearable
+                  density="comfortable"
                 />
               </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="6">
+              <v-col
+                cols="12"
+                md="2"
+              >
                 <v-text-field
                   v-model="filter.fobFb"
                   :label="t('model.projekt.fobFb')"
                   clearable
+                  density="comfortable"
+                />
+              </v-col>
+              <v-col
+                cols="12"
+                md="2"
+              >
+                <v-text-field
+                  v-model="filter.kurz"
+                  :label="t('model.projekt.kurKurzbez')"
+                  clearable
+                  density="comfortable"
+                />
+              </v-col>
+              <v-col
+                cols="12"
+                md="2"
+              >
+                <v-text-field
+                  v-model="filter.ua"
+                  :label="t('model.projekt.uasUa')"
+                  clearable
+                  density="comfortable"
+                />
+              </v-col>
+              <v-col
+                cols="12"
+                md="2"
+              >
+                <v-text-field
+                  v-model="filter.pname"
+                  :label="t('model.projekt.name')"
+                  clearable
+                  density="comfortable"
+                />
+              </v-col>
+              <v-col
+                cols="12"
+                md="2"
+              >
+                <v-text-field
+                  v-model="filter.pstrasse"
+                  :label="t('model.projekt.strasse')"
+                  clearable
+                  density="comfortable"
                 />
               </v-col>
             </v-row>
