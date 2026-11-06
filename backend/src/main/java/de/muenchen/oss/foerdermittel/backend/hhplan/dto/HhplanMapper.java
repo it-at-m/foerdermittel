@@ -12,9 +12,17 @@ public interface HhplanMapper {
 
     @Mapping(source = "id.hhjJahr", target = "id", qualifiedByName = "bigDecimalToIntegerString")
     @Mapping(source = "id.hhjJahr", target = "hhjJahr")
+    @Mapping(source = "proProjnr.projnr", target = "proProjnr")
     HhplanResponseDTO toDTO(Hhplan hhplan);
 
-    @Mapping(source = "id.hhjJahr", target = "hhjJahr")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "hhJahr", ignore = true)
+    @Mapping(target = "proprojnr.projnr", source = "proProjnr")
+    Hhplan toEntity(HhplanResponseDTO dto);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "hhJahr", ignore = true)
+    @Mapping(source = "proProjnr.projnr", target = "proProjnr")
     HhplanFormContextDTO toFormContext(Hhplan hhplan);
 
     List<HhplanFormContextDTO> toFormContext(List<Hhplan> hhplanList);

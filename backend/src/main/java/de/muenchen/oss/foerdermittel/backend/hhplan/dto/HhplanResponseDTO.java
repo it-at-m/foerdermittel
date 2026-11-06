@@ -4,5 +4,10 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
-public record HhplanResponseDTO(@NotNull String id, @NotNull BigDecimal hhjJahr, @NotNull String fipo) {
+public record HhplanResponseDTO(
+        @NotNull String id,
+        @NotNull String proprojnr,
+        @NotNull BigDecimal hhjJahr,
+        @NotNull String fipo,
+        String notizen) {
 }
