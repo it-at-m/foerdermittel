@@ -5,11 +5,11 @@
       "vite": "6.4.5"
     },
     "markdownlint-cli": {
-      "katex": "0.18.2",
+      "katex": "0.18.10",
       "re2js": "2.8.7"
     },
     "mermaid": {
-      "katex": "0.18.2"
+      "katex": "0.18.10"
     }
   },
   "name": "foerdermittel-docs",
