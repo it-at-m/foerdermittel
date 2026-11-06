@@ -134,7 +134,7 @@
             ReportAuswertungProjekteDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="ua"
-          :label="t('domain.report.common.us')"
+          :label="t('domain.report.common.ua')"
           density="comfortable"
         />
       </v-col>
