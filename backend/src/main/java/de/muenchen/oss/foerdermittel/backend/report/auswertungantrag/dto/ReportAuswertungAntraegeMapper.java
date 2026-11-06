@@ -15,8 +15,8 @@ public class ReportAuswertungAntraegeMapper {
 
         final Map<String, Object> parameters = new HashMap<>();
 
-        parameters.put("P_JAHR_VON", ReportControllerUtil.nullIfBlank(dto.jahrvon()));
-        parameters.put("P_JAHR_BIS", ReportControllerUtil.nullIfBlank(dto.jahrbis()));
+        parameters.put("P_JAHR_VON", ReportControllerUtil.nullIfBlank(dto.jahrVon()));
+        parameters.put("P_JAHR_BIS", ReportControllerUtil.nullIfBlank(dto.jahrBis()));
 
         ReportMapperUtil.addCommonParameters(
                 parameters,
@@ -35,7 +35,7 @@ public class ReportAuswertungAntraegeMapper {
                         dto.relevant()));
 
         parameters.put("P_PROJNR", ReportControllerUtil.nullIfBlank(dto.projnr()));
-        parameters.put("P_ATYP", dto.atyp() != null ? dto.atyp().name() : null);
+        parameters.put("P_ATYP", dto.antragstyp() != null ? dto.antragstyp().name() : null);
         parameters.put("P_FAG", ReportControllerUtil.nullIfBlank(dto.fag()));
 
         return parameters;

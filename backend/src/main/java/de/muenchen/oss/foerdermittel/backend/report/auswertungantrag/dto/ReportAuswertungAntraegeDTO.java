@@ -1,6 +1,6 @@
 package de.muenchen.oss.foerdermittel.backend.report.auswertungantrag.dto;
 
-import de.muenchen.oss.foerdermittel.backend.projekt.Antrag;
+import de.muenchen.oss.foerdermittel.backend.projekt.Antragstyp;
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
 import jakarta.validation.constraints.NotNull;
@@ -8,8 +8,8 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record ReportAuswertungAntraegeDTO(
-        @Pattern(regexp = "^(|19[7-9]\\d|20\\d{2}|2100)$") String jahrvon,
-        @Pattern(regexp = "^(|19[7-9]\\d|20\\d{2}|2100)$") String jahrbis,
+        @Pattern(regexp = "^(|19[7-9]\\d|20\\d{2}|2100)$") String jahrVon,
+        @Pattern(regexp = "^(|19[7-9]\\d|20\\d{2}|2100)$") String jahrBis,
         String bez,
         String fb,
         String ua,
@@ -24,7 +24,7 @@ public record ReportAuswertungAntraegeDTO(
         String sbl,
         String bpg,
         Krisofp krisofp,
-        Antrag atyp,
+        Antragstyp antragstyp,
 
         String fag,
         String offen,

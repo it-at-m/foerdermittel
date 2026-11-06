@@ -3,7 +3,7 @@ package de.muenchen.oss.foerdermittel.backend.report.auswertungantrag;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammService;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichService;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungService;
-import de.muenchen.oss.foerdermittel.backend.projekt.Antrag;
+import de.muenchen.oss.foerdermittel.backend.projekt.Antragstyp;
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
 import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
@@ -83,7 +83,7 @@ public class ReportAuswertungAntraegeService {
                 kurzbezeichnungService.getKurzbezeichnungFormContextDTOs(),
                 projektService.getReportAuswertungAntragFormContextDTOs(),
                 List.of(Krisofp.values()),
-                List.of(Antrag.values()),
+                List.of(Antragstyp.values()),
                 siedlungsgebietService.getSiedlungsgebietFormContextDTOs(),
                 bauprogrammService.getBauprogrammFormContextDTOs());
 

@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum Antrag {
+public enum Antragstyp {
 
     E("Erstantrag"),
     V("Schlussantrag (VN)"),

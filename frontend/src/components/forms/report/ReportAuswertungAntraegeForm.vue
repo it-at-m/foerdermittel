@@ -10,12 +10,12 @@
         md="3"
       >
         <fm-text-field
-          v-model="modelValue.parameters!.jahrvon"
+          v-model="modelValue.parameters!.jahrVon"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
             ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
           "
-          validation-attribute-key="jahrvon"
+          validation-attribute-key="jahrVon"
           :label="t('domain.report.common.jahrVon')"
           :error-messages="jahrVonError"
           density="comfortable"
@@ -26,12 +26,12 @@
         md="3"
       >
         <fm-text-field
-          v-model="modelValue.parameters!.jahrbis"
+          v-model="modelValue.parameters!.jahrBis"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
             ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
           "
-          validation-attribute-key="jahrbis"
+          validation-attribute-key="jahrBis"
           :label="t('domain.report.common.jahrBis')"
           :error-messages="jahrBisError"
           density="comfortable"
@@ -245,7 +245,7 @@
         md="3"
       >
         <fm-autocomplete
-          v-model="modelValue.parameters!.atyp"
+          v-model="modelValue.parameters!.antragstyp"
           :items="reportauswertungantraegeformcontext?.antraege"
           :item-title="getAntraegeTitle"
           :item-value="getAntraegeValue"
@@ -253,7 +253,7 @@
             ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="antraege"
-          :label="t('domain.report.common.atyp')"
+          :label="t('domain.report.common.antragstyp')"
           density="comfortable"
           clearable
         />
@@ -489,15 +489,15 @@ const formatOptions = [
 
 const jahrVonError = computed(() =>
   getJahrVonError(
-    modelValue.value.parameters?.jahrvon,
-    modelValue.value.parameters?.jahrbis
+    modelValue.value.parameters?.jahrVon,
+    modelValue.value.parameters?.jahrBis
   )
 );
 
 const jahrBisError = computed(() =>
   getJahrBisError(
-    modelValue.value.parameters?.jahrvon,
-    modelValue.value.parameters?.jahrbis
+    modelValue.value.parameters?.jahrVon,
+    modelValue.value.parameters?.jahrBis
   )
 );
 </script>

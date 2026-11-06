@@ -3,7 +3,7 @@ package de.muenchen.oss.foerdermittel.backend.report.auswertungantrag.formcontex
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.dto.KurzbezeichnungFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.projekt.Antrag;
+import de.muenchen.oss.foerdermittel.backend.projekt.Antragstyp;
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungAntragFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietFormContextDTO;
@@ -22,7 +22,7 @@ public record ReportAuswertungAntraegeFormContext(
         @NotNull List<KurzbezeichnungFormContextDTO> kurzs,
         @NotNull List<ReportAuswertungAntragFormContextDTO> projs,
         @NotNull List<Krisofp> krisofps,
-        @NotNull List<Antrag> antraege,
+        @NotNull List<Antragstyp> antraege,
         @NotNull List<SiedlungsgebietFormContextDTO> sgts,
         @NotNull List<BauprogrammFormContextDTO> bpgs) {
 

@@ -230,7 +230,7 @@
     },
     "report": {
       "common": {
-        "atyp": "Antragstyp",
+        "antragstyp": "Antragstyp",
         "bez": "oder einen Stadtbezirk",
         "bpg": "Bauprogramm",
         "fag": "Nur FAG",

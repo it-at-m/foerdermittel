@@ -4515,10 +4515,10 @@ components:
       - type
       type: object
       properties:
-        jahrvon:
+        jahrVon:
           pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
           type: string
-        jahrbis:
+        jahrBis:
           pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
           type: string
         bez:
@@ -4558,7 +4558,7 @@ components:
           - X
           - "Y"
           - Z
-        atyp:
+        antragstyp:
           type: string
           enum:
           - E

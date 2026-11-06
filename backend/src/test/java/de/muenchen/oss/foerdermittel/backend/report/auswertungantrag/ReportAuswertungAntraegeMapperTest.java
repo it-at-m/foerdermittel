@@ -3,7 +3,7 @@ package de.muenchen.oss.foerdermittel.backend.report.auswertungantrag;
 import static de.muenchen.oss.foerdermittel.backend.report.auswertungantrag.dto.ReportAuswertungAntraegeSort.PROJEKTNUMMER;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.muenchen.oss.foerdermittel.backend.projekt.Antrag;
+import de.muenchen.oss.foerdermittel.backend.projekt.Antragstyp;
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
 import de.muenchen.oss.foerdermittel.backend.report.auswertungantrag.dto.ReportAuswertungAntraegeDTO;
@@ -19,7 +19,7 @@ public class ReportAuswertungAntraegeMapperTest {
         // Given
         final ReportAuswertungAntraegeDTO dto = new ReportAuswertungAntraegeDTO("2023", "2025", "1", "1", "11", "KB1", "Projektstraße 1", "Projekt 1",
                 "1234567", "1",
-                "SBL1", "1", Krisofp.K, Antrag.A, "1", "1", "1", PROJEKTNUMMER, ReportFormat.PDF);
+                "SBL1", "1", Krisofp.K, Antragstyp.A, "1", "1", "1", PROJEKTNUMMER, ReportFormat.PDF);
 
         // When
         final Map<String, Object> parameters = reportAuswertungAntraegeMapper.toJasperParameters(dto);
@@ -27,8 +27,8 @@ public class ReportAuswertungAntraegeMapperTest {
         // Then
         assertThat(parameters)
                 .hasSize(17)
-                .containsEntry("P_JAHR_VON", dto.jahrvon())
-                .containsEntry("P_JAHR_BIS", dto.jahrbis())
+                .containsEntry("P_JAHR_VON", dto.jahrVon())
+                .containsEntry("P_JAHR_BIS", dto.jahrBis())
                 .containsEntry("P_BEZ", "1")
                 .containsEntry("P_FB", "1")
                 .containsEntry("P_UA", "11")
@@ -42,7 +42,7 @@ public class ReportAuswertungAntraegeMapperTest {
                 .containsEntry("P_PROJNR", "1234567")
                 .containsEntry("P_OFFEN", "1")
                 .containsEntry("P_KRISOFP", Krisofp.K.name())
-                .containsEntry("P_ATYP", Antrag.A.name())
+                .containsEntry("P_ATYP", Antragstyp.A.name())
                 .containsEntry("P_RELEVANT", "1");
 
     }

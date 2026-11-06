@@ -148,7 +148,7 @@ public class ReportAuswertungAntraegeIntegrationTest {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path(REPORT_PATH)
-                            .queryParam("jahrvon", "NOTFOUND")
+                            .queryParam("jahrVon", "NOTFOUND")
                             .queryParam("sort", VALID_SORT)
                             .queryParam("type", VALID_TYPE)
                             .build())
