@@ -1,0 +1,89 @@
+<template>
+  <base-view :title="title">
+    <template #default="{ baseViewLoading }">
+      <report-card
+        :empty-form-template="EMPTY_FORM_TEMPLATE"
+        :loading="baseViewLoading"
+        :api="reportAuswertungAntraegeApi"
+        :form-ref="reportAuswertungAntraegeFormRef"
+      >
+        <template #form="{ item, updateValidity }">
+          <reportauswertungantraegeform
+            ref="reportAuswertungAntraegeForm"
+            :model-value="item"
+            :reportauswertungantraegeformcontext="
+              reportAuswertungAntraegeFormContext
+            "
+            @is-valid="updateValidity"
+          />
+        </template>
+      </report-card>
+    </template>
+  </base-view>
+</template>
+
+<script setup lang="ts">
+import type { GetReportAuswertungAntraegeRequest } from "@/api/generated/foerdermittel-backend";
+
+import { computed, useTemplateRef } from "vue";
+import { useI18n } from "vue-i18n";
+
+import BaseView from "@/components/common/BaseView.vue";
+import ReportCard from "@/components/common/ReportCard.vue";
+import reportauswertungantraegeform from "@/components/forms/report/ReportAuswertungAntraegeForm.vue";
+import { useReportAuswertungAntraegeApi } from "@/composables/api/report/useReportAuswertungAntraegeApi";
+import { Role } from "@/types/Role";
+
+definePage({
+  meta: {
+    hasAnyRole: [
+      Role.SACHBEARBEITUNG,
+      Role.SACHBEARBEITUNG_HAUSHALT,
+      Role.ADMIN,
+    ],
+  },
+});
+
+const { t } = useI18n();
+
+const title = t("common.generics.reportTitle", [
+  t("domain.report.auswertungAntraege.modelName", 1),
+]);
+
+const EMPTY_FORM_TEMPLATE: Partial<GetReportAuswertungAntraegeRequest> = {
+  parameters: {
+    jahrVon: "",
+    jahrBis: "",
+    sbl: "",
+    bez: "",
+    fb: "",
+    ua: "",
+    kurz: "",
+    pname: "",
+    pstrasse: "",
+    projnr: "",
+    sgt: "",
+    bpg: "",
+    fag: "0",
+    offen: "0",
+    relevant: "0",
+    sort: "FOERDERBEREICH_PROJEKTNUMMER",
+    type: "PDF",
+  },
+};
+
+const reportAuswertungAntraegeApi = useReportAuswertungAntraegeApi();
+
+const reportAuswertungAntraegeFormContext = computed(
+  () => reportAuswertungAntraegeApi.context.data.value
+);
+
+type ReportAuswertungAntraegeFormRef = InstanceType<
+  typeof reportauswertungantraegeform
+>;
+
+const reportAuswertungAntraegeFormRef =
+  useTemplateRef<ReportAuswertungAntraegeFormRef>(
+    "reportAuswertungAntraegeForm"
+  );
+</script>

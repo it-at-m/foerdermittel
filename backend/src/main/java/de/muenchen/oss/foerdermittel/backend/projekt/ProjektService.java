@@ -5,12 +5,14 @@ import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektMapper;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektUpdateDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAnnahmeAnordnungSapFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungAntragFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportBewilligungAuszahlungProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.tabs.allgemein.ProjektAllgemeinService;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -105,5 +107,12 @@ public class ProjektService {
     @Transactional(readOnly = true)
     public List<ReportAnnahmeAnordnungSapFormContextDTO> getReportAnnahmeAnordnungSapFormContextDTOs() {
         return projektMapper.toReportAnnahmeAnordnungSapFormContext(projektRepository.findAllAsBasic());
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<ReportAuswertungAntragFormContextDTO> getReportAuswertungAntragFormContextDTOs() {
+        return projektMapper.toReportAuswertungAntragFormContext(projektRepository.findAllAsBasic());
+
     }
 }
