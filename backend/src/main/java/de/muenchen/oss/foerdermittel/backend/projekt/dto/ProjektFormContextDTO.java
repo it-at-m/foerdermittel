@@ -1,5 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.projekt.dto;
 
+import de.muenchen.oss.foerdermittel.backend.projekt.Krhzweck;
+import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
@@ -11,12 +13,40 @@ import java.math.BigDecimal;
  * @param pname
  * @param pstrasse
  * @param fobFb
- * @param stadtbezirk
+ * @param bezStadtbezirk
+ * @param uasUa
+ * @param kurKurzbez
+ * @param krnKrhname
+ * @param krhzweck
+ * @param krisofp
+ * @param sgtSiedlungsgebiet
+ * @param bpgBauprogramm
+ * @param projart
+ * @param refinanzierbar
+ * @param kauf
+ * @param kripplatz
+ * @param kigaplatz
+ * @param hortplatz
+ * @param notizen
  */
 public record ProjektFormContextDTO(
         @NotNull String projnr,
         @NotNull String pname,
         @NotNull String pstrasse,
-        @NotNull String fobFb,
-        @NotNull BigDecimal stadtbezirk) {
+        @NotNull BigDecimal fobFb,
+        @NotNull BigDecimal bezStadtbezirk,
+        String uasUa,
+        String kurKurzbez,
+        String krnKrhname,
+        Krhzweck krhzweck,
+        Krisofp krisofp,
+        BigDecimal sgtSiedlungsgebiet,
+        BigDecimal bpgBauprogramm,
+        String projart,
+        Boolean refinanzierbar,
+        Boolean kauf,
+        BigDecimal kripplatz,
+        BigDecimal kigaplatz,
+        BigDecimal hortplatz,
+        String notizen) {
 }

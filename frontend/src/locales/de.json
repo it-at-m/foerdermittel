@@ -55,17 +55,29 @@
   "model": {
     "projekt": {
       "modelName": "Projekt | Projekte",
-      "fobFb": "Förderbereich",
-      "jahr": "Jahr",
-      "kurKurzbez": "Kurzbezeichnung",
       "projnr": "Projektnummer",
-      "strasse": "Straße",
-      "name": "Name",
-      "uasUa": "UA",
-      "ausgabeNotiz": "Ausgabe Notiz",
       "pname": "Name",
       "pstrasse": "Straße",
-      "krisofp": "Förderprogramm"
+      "ausgabeNotiz": "Ausgabe Notiz",
+      "jahr": "Projektjahr",
+      "krisofp": "Förderprogramm",
+      "fobFb": "Förderbereich",
+      "kurKurzbez": "Kurzbezeichnung",
+      "uasUa": "Unterabschnitt",
+      "lfdnr1": "Laufende Nummer 1",
+      "lfdnr2": "Laufende Nummer 2",
+      "bezStadtbezirk": "Stadtbezirk",
+      "krnKrhname": "Krankenhaus",
+      "sgtSiedlungsgebiet": "Siedlungsgebiet",
+      "projart": "Projektart",
+      "refinanzierbar": "Refinanzierbar",
+      "kauf": "Kauf",
+      "kripplatz": "Krippenplätze",
+      "kigaplatz": "Kindergartenplätze",
+      "hortplatz": "Hortplätze",
+      "notizen": "Notizen",
+      "bpgBauprogramm": "Bauprogramm",
+      "krhzweck": "Krankenhauszweck"
     },
     "antrag": {
       "modelName": "Antrag | Anträge"

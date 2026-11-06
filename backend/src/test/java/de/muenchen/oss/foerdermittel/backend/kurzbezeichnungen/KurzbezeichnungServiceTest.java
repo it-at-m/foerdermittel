@@ -43,6 +43,43 @@ public class KurzbezeichnungServiceTest {
     private KurzbezeichnungService unitUnderTest;
 
     @Nested
+    class GetKurzbezeichnung {
+
+        @Test
+        void givenIdExists_thenReturnEntity() {
+            // Given
+            final String kurzbez = "H4";
+            final Kurzbezeichnung expectedEntity = new Kurzbezeichnung(kurzbez, BEZEICHNUNG);
+
+            when(kurzbezeichnungRepository.findById(kurzbez)).thenReturn(Optional.of(expectedEntity));
+
+            // When
+            final Kurzbezeichnung result = unitUnderTest.getKurzbezeichnung(kurzbez);
+
+            // Then
+            verify(kurzbezeichnungRepository, times(1)).findById(kurzbez);
+
+            assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
+        }
+
+        @Test
+        void givenIdNotExists_thenThrowNotFoundException() {
+            // Given
+            final String kurzbez = "99";
+
+            when(kurzbezeichnungRepository.findById(kurzbez)).thenReturn(Optional.empty());
+
+            // When
+            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.getKurzbezeichnung(kurzbez));
+
+            // Then
+            verify(kurzbezeichnungRepository, times(1)).findById(kurzbez);
+
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Kurzbezeichnung.class.getSimpleName(), kurzbez));
+        }
+    }
+
+    @Nested
     class GetKurzbezeichnungen {
         @Test
         void givenPageable_thenReturnPageOfEntities() {
