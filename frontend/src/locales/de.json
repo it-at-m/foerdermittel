@@ -230,10 +230,26 @@
     },
     "report": {
       "common": {
+        "antragstyp": "Antragstyp",
+        "bez": "oder einen Stadtbezirk",
+        "bpg": "Bauprogramm",
+        "fag": "Nur FAG",
+        "fb": "Förderbereich",
         "jahr": "Jahr",
+        "jahrBis": "Jahr bis",
+        "jahrVon": "Jahr von",
+        "kurz": "Kurzbezeichnung",
+        "offen": "Nur offene Projekte",
+        "pname": "Projektname",
+        "pstrasse": "Projektstraße",
+        "relevant": "Nur relevante FB",
+        "sbl": "für Stadtbezirksliste",
+        "sgt": "Siedlungsgebiet",
+        "ua": "Unterabschnitt",
         "reportType": {
           "modelName": "Reporttyp",
           "pdf": "PDF",
+          "pdfFlat": "PDF: ohne Gruppierung",
           "excel": "Excel"
         },
         "reportSort": "Sortierung"
@@ -267,6 +283,19 @@
         "type": {
           "pdf": "PDF",
           "excel": "Excel"
+        }
+      },
+      "auswertungAntraege": {
+        "modelName": "Auswertung Anträge",
+
+        "sortEnum": {
+          "fbProjektnummer": "Förderbereich, Projektnummer",
+          "fbProjektstrasse": "Förderbereich, Projektstraße",
+          "strasseProjektnummer": "Projektstraße, Projektnummer",
+          "projektnummer": "Projektnummer"
+        },
+        "reportType": {
+          "pdf": "PDF: Gruppierung Förderbereich"
         }
       },
       "fortsetzungsAntrag": {

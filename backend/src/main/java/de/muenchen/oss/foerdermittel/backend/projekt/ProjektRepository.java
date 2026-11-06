@@ -3,6 +3,7 @@ package de.muenchen.oss.foerdermittel.backend.projekt;
 import de.muenchen.oss.foerdermittel.backend.common.InsertAndUpdateRepository;
 import de.muenchen.oss.foerdermittel.backend.projekt.dao.AuswertungProjektDAO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dao.BasicProjektDAO;
+
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -20,7 +21,7 @@ public interface ProjektRepository extends
     @Query("SELECT p.jahr, p.pname, p.pstrasse, p.krisofp FROM Projekt p")
     List<AuswertungProjektDAO> findAllAuswertungProjekte();
 
-    @Query("SELECT p.projnr, p.pname, p.pstrasse FROM Projekt p")
+    @Query("SELECT p.projnr, p.pname, p.pstrasse FROM Projekt p order by p.projnr")
     List<BasicProjektDAO> findAllAsBasic();
 
     @Query("SELECT p.projnr FROM Projekt p")
