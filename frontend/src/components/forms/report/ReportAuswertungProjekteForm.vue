@@ -307,6 +307,7 @@ import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
+import { getKrisofpTitle } from "@/util/krisofpUtils.ts";
 
 const { t } = useI18n();
 
@@ -355,27 +356,6 @@ const jahrOptions = computed(() => {
       value: jahr,
     }));
 });
-
-const krisofpBezeichnungen = new Map<string, string>([
-  ["X", "1.+2. SIP - KriSoFö 2008-2014"],
-  ["Y", "3. SIP - Kinderbetreuung 2015-2019"],
-  ["Z", "4. SIP - Kinderbetreuung 2017-2020/2021"],
-  ["W", "5. SIP - Schulkindbetreuung Land (Hortförd. GS)"],
-  ["V", "Schulkindbetreuung - Bund (GaFöG)"],
-  ["K", "KJP II"],
-  ["F", "FAGplus15"],
-  ["S", "Startchancen-Programm (SCP)"],
-]);
-
-function getKrisofpTitle(
-  item: ReportAuswertungProjektFormContextDTOKrisofpEnum
-): string {
-  return `${item} (${krisofpBezeichnungen.get(item) ?? item})`;
-function getKrisofpTitle(
- item: ReportAuswertungProjektFormContextDTOKrisofpEnum
-): string {
- return item ? `${item} (${krisofpBezeichnungen.get(item)})` : "";
-}
 
 function getKrisofpValue(
   item: ReportAuswertungProjektFormContextDTOKrisofpEnum
