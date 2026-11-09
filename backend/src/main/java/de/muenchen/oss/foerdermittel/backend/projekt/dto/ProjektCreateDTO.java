@@ -29,7 +29,7 @@ public record ProjektCreateDTO(
         @Size(max = 50) String projart,
         Boolean refinanzierbar,
         Boolean kauf,
-        @Size(max = 100) String notizen,
+        @Size(max = 4000) String notizen,
         @Max(99) Integer bpgBauprogramm,
         Krisofp krisofp,
         Krhzweck krhzweck,

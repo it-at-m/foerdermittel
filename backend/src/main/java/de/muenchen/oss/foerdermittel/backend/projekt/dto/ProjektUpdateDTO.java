@@ -24,7 +24,7 @@ public record ProjektUpdateDTO(
         @Digits(integer = 10, fraction = 0) @Min(0) BigDecimal kripplatz,
         @Digits(integer = 10, fraction = 0) @Min(0) BigDecimal kigaplatz,
         @Digits(integer = 10, fraction = 0) @Min(0) BigDecimal hortplatz,
-        @Size(max = 100) String notizen,
+        @Size(max = 4000) String notizen,
         @Max(99) Integer bpgBauprogramm,
         Krisofp krisofp,
         Krhzweck krhzweck) {

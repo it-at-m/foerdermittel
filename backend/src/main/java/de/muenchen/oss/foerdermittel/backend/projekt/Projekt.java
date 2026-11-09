@@ -70,7 +70,7 @@ public class Projekt extends AuditableEntity implements Serializable {
     private BigDecimal hortplatz;
 
     @Column(name = "notizen")
-    @Size(max = 100) private String notizen;
+    @Size(max = 4000) private String notizen;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(

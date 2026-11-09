@@ -51,12 +51,7 @@ public interface ProjektMapper {
     Projekt toEntity(ProjektUpdateDTO projektUpdateDTO);
 
     @Mapping(source = "fobFb.fb", target = FOB_FB)
-    @Mapping(source = "uasUa.ua", target = UAS_UA)
-    @Mapping(source = "kurKurzbez.kurzbez", target = KUR_KURZBEZ)
     @Mapping(source = "bezStadtbezirk.stadtbezirk", target = BEZ_STADTBEZIRK)
-    @Mapping(source = "krnKrhname.krhname", target = KRN_KRHNAME)
-    @Mapping(source = "sgtSiedlungsgebiet.siedlungsgebiet", target = SGT_SIEDLUNGSGEBIET)
-    @Mapping(source = "bpgBauprogramm.bauprogramm", target = BPG_BAUPROGRAMM)
     ProjektFormContextDTO toFormContext(Projekt projekt);
 
     List<ProjektFormContextDTO> toFormContext(List<Projekt> projektList);

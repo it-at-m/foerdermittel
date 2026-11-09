@@ -141,6 +141,21 @@
     <!-- Projektinformationen -->
     <v-row>
       <v-col
+          cols="12"
+          md="6"
+      >
+        <fm-text-field
+            v-model="modelValue.pstrasse"
+            :display-mode="displayMode"
+            :label="t('model.projekt.pstrasse')"
+            :validation-attribute-map="
+            ProjektCreateDTOPropertyValidationAttributesMap
+          "
+            validation-attribute-key="pstrasse"
+            density="comfortable"
+        />
+      </v-col>
+      <v-col
         cols="12"
         md="6"
       >
@@ -155,23 +170,6 @@
           density="comfortable"
         />
       </v-col>
-
-      <v-col
-        cols="12"
-        md="6"
-      >
-        <fm-text-field
-          v-model="modelValue.pstrasse"
-          :display-mode="displayMode"
-          :label="t('model.projekt.pstrasse')"
-          :validation-attribute-map="
-            ProjektCreateDTOPropertyValidationAttributesMap
-          "
-          validation-attribute-key="pstrasse"
-          density="comfortable"
-        />
-      </v-col>
-
       <v-col
         cols="12"
         md="6"

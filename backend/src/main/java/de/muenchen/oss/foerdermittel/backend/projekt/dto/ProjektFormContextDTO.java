@@ -14,39 +14,11 @@ import java.math.BigDecimal;
  * @param pstrasse
  * @param fobFb
  * @param bezStadtbezirk
- * @param uasUa
- * @param kurKurzbez
- * @param krnKrhname
- * @param krhzweck
- * @param krisofp
- * @param sgtSiedlungsgebiet
- * @param bpgBauprogramm
- * @param projart
- * @param refinanzierbar
- * @param kauf
- * @param kripplatz
- * @param kigaplatz
- * @param hortplatz
- * @param notizen
  */
 public record ProjektFormContextDTO(
         @NotNull String projnr,
         @NotNull String pname,
         @NotNull String pstrasse,
         @NotNull BigDecimal fobFb,
-        @NotNull BigDecimal bezStadtbezirk,
-        String uasUa,
-        String kurKurzbez,
-        String krnKrhname,
-        Krhzweck krhzweck,
-        Krisofp krisofp,
-        BigDecimal sgtSiedlungsgebiet,
-        BigDecimal bpgBauprogramm,
-        String projart,
-        Boolean refinanzierbar,
-        Boolean kauf,
-        BigDecimal kripplatz,
-        BigDecimal kigaplatz,
-        BigDecimal hortplatz,
-        String notizen) {
+        @NotNull BigDecimal bezStadtbezirk) {
 }
