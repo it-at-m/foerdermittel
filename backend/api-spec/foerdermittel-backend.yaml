@@ -507,6 +507,47 @@ paths:
           description: OK
       security:
       - bearerAuth: []
+  /hhjahre/{id}:
+    put:
+      tags:
+      - hhjahr-controller
+      operationId: updateHhjahr
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HhjahrUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HhjahrResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - hhjahr-controller
+      operationId: deleteHhjahr
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /hauptabschnitte/{id}:
     put:
       tags:
@@ -1491,6 +1532,67 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/IstkostenResponseDTO"
+      security:
+      - bearerAuth: []
+  /hhjahre:
+    get:
+      tags:
+      - hhjahr-controller
+      operationId: getHhjahre
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "hhjahr,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelHhjahrResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - hhjahr-controller
+      operationId: createHhjahr
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HhjahrCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HhjahrResponseDTO"
       security:
       - bearerAuth: []
   /hauptabschnitte:
@@ -2514,6 +2616,20 @@ paths:
                 $ref: "#/components/schemas/HhplanFormContext"
       security:
       - bearerAuth: []
+  /hhjahre/form-context:
+    get:
+      tags:
+      - hhjahr-controller
+      operationId: getHhjahrFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HhjahrFormContext"
+      security:
+      - bearerAuth: []
   /hauptabschnitte/form-context:
     get:
       tags:
@@ -3071,6 +3187,59 @@ components:
           type: string
         fob_fb:
           type: number
+    HhjahrUpdateDTO:
+      required:
+      - assignedProProjnr
+      - hhbezeichnung
+      type: object
+      properties:
+        hhbezeichnung:
+          type: string
+        notizen:
+          type: string
+        assignedProProjnr:
+          type: array
+          items:
+            $ref: "#/components/schemas/HhplanResponseDTO"
+    HhplanResponseDTO:
+      required:
+      - fipo
+      - hhjJahr
+      - id
+      - proProjnr
+      type: object
+      properties:
+        id:
+          type: string
+        proProjnr:
+          type: string
+        hhjJahr:
+          type: number
+        fipo:
+          type: string
+        notizen:
+          type: string
+    HhjahrResponseDTO:
+      required:
+      - assignedProProjnr
+      - hhbezeichnung
+      - hhjahr
+      - id
+      - notizen
+      type: object
+      properties:
+        id:
+          type: string
+        hhjahr:
+          type: number
+        hhbezeichnung:
+          type: string
+        notizen:
+          type: string
+        assignedProProjnr:
+          type: array
+          items:
+            $ref: "#/components/schemas/HhplanResponseDTO"
     HauptabschnittUpdateDTO:
       required:
       - bezeichnung
@@ -3485,6 +3654,24 @@ components:
         istkosten:
           minimum: 0
           type: number
+    HhjahrCreateDTO:
+      required:
+      - assignedProProjnr
+      - hhbezeichnung
+      - hhjahr
+      type: object
+      properties:
+        hhjahr:
+          minimum: 0
+          type: number
+        hhbezeichnung:
+          type: string
+        notizen:
+          type: string
+        assignedProProjnr:
+          type: array
+          items:
+            $ref: "#/components/schemas/HhplanResponseDTO"
     HauptabschnittCreateDTO:
       required:
       - bezeichnung
@@ -4107,13 +4294,15 @@ components:
           type: boolean
     HhplanFormContextDTO:
       required:
-      - fipo
       - hhjJahr
+      - proProjnr
       type: object
       properties:
         hhjJahr:
           type: number
           description: ""
+        proProjnr:
+          type: string
         fipo:
           type: string
           description: ""
@@ -4774,19 +4963,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ProjektFormContextDTO"
-    HhplanResponseDTO:
-      required:
-      - fipo
-      - hhjJahr
-      - id
-      type: object
-      properties:
-        id:
-          type: string
-        hhjJahr:
-          type: number
-        fipo:
-          type: string
     PagedModelHhplanResponseDTO:
       type: object
       properties:
@@ -4802,6 +4978,24 @@ components:
       type: object
       properties:
         hhp:
+          type: array
+          items:
+            type: number
+    PagedModelHhjahrResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/HhjahrResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    HhjahrFormContext:
+      required:
+      - hhj
+      type: object
+      properties:
+        hhj:
           type: array
           items:
             type: number
