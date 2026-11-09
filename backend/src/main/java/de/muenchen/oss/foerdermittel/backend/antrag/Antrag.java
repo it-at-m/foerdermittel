@@ -44,6 +44,7 @@ public class Antrag extends AuditableEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /// Projektnummer
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
             name = "pro_projnr",
@@ -52,53 +53,69 @@ public class Antrag extends AuditableEntity {
     )
     @NotNull private Projekt projekt;
 
+    /// Antragsdatum
     @Column(name = "antragsdatum")
     private LocalDate antragsdatum;
 
+    /// Antragstyp
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
     @Column(name = "antragstyp", nullable = false, columnDefinition = "antraege_antragstyp")
     @NotNull private Antragstyp antragstyp;
 
+    /// Beantragte Gesamtkosten
     @Column(name = "geskosten", nullable = false)
     @NotNull private BigDecimal geskosten;
 
+    /// Beantragte zuwendungsfähige Kosten
     @Column(name = "zwfkosten", nullable = false)
     @NotNull private BigDecimal zwfkosten;
 
+    /// Antrag auf vorzeitigen Baubeginn gestellt
     @Column(name = "vorzbeg", nullable = false)
     @NotNull private Boolean vorzbeg;
 
+    /// Genehmigt mit Datum vom
     @Column(name = "vbdatum")
     private LocalDate vbdatum;
 
+    /// Antrag auf Unbedenklichkeit gestellt am
     @Column(name = "unbeddat")
     private LocalDate unbeddat;
 
+    /// Antrag auf Unbedenklichkeit erteilt am
     @Column(name = "unbedja")
     private LocalDate unbedja;
 
+    /// Antrag auf Unbedenklichkeit befristet bis
     @Column(name = "unbedbis")
     private LocalDate unbedbis;
 
+    /// Beantragter Zuschuss (Jahr)
     @Column(name = "a_su_z", nullable = false)
     @NotNull private BigDecimal asuZ;
 
+    /// Beantragtes Darlehen (Jahr)
     @Column(name = "a_su_d", nullable = false)
     @NotNull private BigDecimal asuD;
 
+    /// Beantragte Konnexität (Jahr)
     @Column(name = "a_su_k", nullable = false)
     @NotNull private BigDecimal asuK;
 
+    /// Voraussichtlicher Gesamtzuschuss
     @Column(name = "b_vor_su_z", nullable = false)
     @NotNull private BigDecimal bvorSuZ;
 
+    /// Voraussichtliches Gesamtdarlehen
     @Column(name = "b_vor_su_d", nullable = false)
     @NotNull private BigDecimal bvorSuD;
 
+    /// Voraussichtliche Gesamtkonnexität
     @Column(name = "b_vor_su_k", nullable = false)
     @NotNull private BigDecimal bvorSuK;
 
+    /// Notizen / Zustimmung vorzeitiger Baubeginn notwendig bis
     @Column(name = "notizen")
     private String notizen;
 

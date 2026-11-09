@@ -11,7 +11,7 @@
     <template #label>
       {{ label }}
       <span
-        v-if="required && !canNotEdit"
+        v-if="isRequired && !canNotEdit"
         class="text-red"
       >
         {{ t("common.word.required") }}
@@ -34,6 +34,7 @@
 import type { ValidationAttributes } from "@/util/validation";
 import type { ValidationRule } from "vuetify/framework";
 
+import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
 import { useInputValidation } from "@/composables/useInputValidation";
@@ -46,6 +47,7 @@ const {
   validationAttributeMap,
   validationAttributeKey,
   additionalRules = [],
+  required = undefined,
 } = defineProps<{
   label: string;
   displayMode?: InputDisplayMode;
@@ -53,9 +55,16 @@ const {
   validationAttributeMap?: M;
   validationAttributeKey?: K;
   additionalRules?: ValidationRule[];
+  /** Overrides the required marker from the OpenAPI spec, e.g. for conditionally required fields */
+  required?: boolean;
 }>();
 
-const { required, allRules, counter, canNotEdit } = useInputValidation(
+const {
+  required: specRequired,
+  allRules,
+  counter,
+  canNotEdit,
+} = useInputValidation(
   displayMode,
   disableEdit,
   additionalRules,
@@ -63,6 +72,8 @@ const { required, allRules, counter, canNotEdit } = useInputValidation(
   validationAttributeKey,
   true
 );
+
+const isRequired = computed(() => required ?? specRequired.value);
 
 const model = defineModel<string>();
 

@@ -10,7 +10,7 @@
     <template #label>
       {{ label }}
       <span
-        v-if="required && !canNotEdit"
+        v-if="isRequired && !canNotEdit"
         class="text-red"
         >{{ t("common.word.required") }}</span
       >
@@ -55,6 +55,7 @@ const {
   validationAttributeMap,
   validationAttributeKey,
   additionalRules = [],
+  required = undefined,
 } = defineProps<{
   label: string;
   displayMode?: InputDisplayMode;
@@ -62,15 +63,23 @@ const {
   validationAttributeMap?: M;
   validationAttributeKey?: K;
   additionalRules?: ValidationRule[];
+  /** Overrides the required marker from the OpenAPI spec, e.g. for conditionally required fields */
+  required?: boolean;
 }>();
 
-const { required, allRules, canNotEdit } = useInputValidation(
+const {
+  required: specRequired,
+  allRules,
+  canNotEdit,
+} = useInputValidation(
   displayMode,
   disableEdit,
   additionalRules,
   validationAttributeMap,
   validationAttributeKey
 );
+
+const isRequired = computed(() => required ?? specRequired.value);
 
 const model = defineModel<Date | null>();
 

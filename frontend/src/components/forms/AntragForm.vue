@@ -70,6 +70,7 @@
       <v-col cols="4">
         <fm-date-input
           v-model="modelValue.antragsdatum"
+          :required="modelValue.antragstyp !== AntragCreateDTOAntragstypEnum.U"
           :display-mode="displayMode"
           :label="t('model.antrag.antragsdatum')"
           :additional-rules="[antragsdatumGesetzt]"
@@ -82,6 +83,7 @@
       <v-col cols="4">
         <fm-date-input
           v-model="modelValue.unbeddat"
+          :required="modelValue.antragstyp === AntragCreateDTOAntragstypEnum.U"
           :display-mode="displayMode"
           :label="t('model.antrag.unbeddat')"
           :additional-rules="[unbeddatGesetzt]"
