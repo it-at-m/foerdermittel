@@ -10,6 +10,6 @@ public record TerminUpdateDTO(
         @NotNull LocalDate termin,
         Boolean ueberwachung,
         @Size(min = 1, max = 30) String zustaendig,
-        @Size(min = 1, max = 30) @Pattern(regexp = "^\\d*$") String telefon,
+        @Size(min = 1, max = 30) String telefon,
         String notizen) {
 }
