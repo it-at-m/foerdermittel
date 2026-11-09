@@ -11,7 +11,7 @@ public interface TerminMapper {
     @Mapping(source = "projekt.projnr", target = "projnr")
     @Mapping(source = "projekt.pname", target = "pname")
     @Mapping(source = "projekt.pstrasse", target = "pstrasse")
-    @Mapping(source = "projekt.foerderbereich.fb", target = "fob_fb")
+    @Mapping(source = "projekt.fobFb.fb", target = "fob_fb")
     @Mapping(source = "projekt.stadtbezirk.stadtbezirk", target = "bez_stadtbezirk")
     TerminResponseDTO toDTO(Termin termin);
 

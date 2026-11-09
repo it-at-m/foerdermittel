@@ -7,6 +7,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichMapper;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +32,9 @@ class FoerderbereichServiceTest {
 
     @Mock
     private FoerderbereichRepository foerderbereichRepository;
+
+    @Mock
+    private FoerderbereichMapper foerderbereichMapper;
 
     @InjectMocks
     private FoerderbereichService unitUnderTest;
@@ -165,5 +170,68 @@ class FoerderbereichServiceTest {
             assertThat(formContext.fbs()).isEqualTo(allFoerderbereiche);
         }
 
+    }
+
+    @Nested
+    class GetFoerderbereichFormContextDTOs {
+
+        @Test
+        void givenEntitiesExist_thenReturnFormContextDTOs() {
+            // Given
+            final Foerderbereich entity1 = new Foerderbereich();
+            final Foerderbereich entity2 = new Foerderbereich();
+            final List<Foerderbereich> entities = List.of(entity1, entity2);
+
+            final List<FoerderbereichFormContextDTO> expectedDTOs = List.of(
+                    Mockito.mock(FoerderbereichFormContextDTO.class),
+                    Mockito.mock(FoerderbereichFormContextDTO.class));
+
+            when(foerderbereichRepository.findAll()).thenReturn(entities);
+            when(foerderbereichMapper.toFormContext(entities)).thenReturn(expectedDTOs);
+
+            // When
+            final List<FoerderbereichFormContextDTO> result = unitUnderTest.getFoerderbereichFormContextDTOs();
+
+            // Then
+            verify(foerderbereichRepository, times(1)).findAll();
+            verify(foerderbereichMapper, times(1)).toFormContext(entities);
+            assertThat(result).isEqualTo(expectedDTOs);
+        }
+    }
+
+    @Nested
+    class CheckExistsByFoerderbereich {
+
+        @Test
+        void givenIdExists_thenDoesNotThrowException() {
+            // Given
+            final BigDecimal id = BigDecimal.valueOf(1);
+            when(foerderbereichRepository.existsById(id)).thenReturn(true);
+
+            // When / Then
+            Assertions.assertDoesNotThrow(
+                    () -> unitUnderTest.checkExistsByFoerderbereich(id));
+
+            verify(foerderbereichRepository, times(1)).existsById(id);
+        }
+
+        @Test
+        void givenIdNotExists_thenThrowNotFoundException() {
+            // Given
+            final BigDecimal id = BigDecimal.valueOf(1);
+            when(foerderbereichRepository.existsById(id)).thenReturn(false);
+
+            // When / Then
+            final Exception exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> unitUnderTest.checkExistsByFoerderbereich(id));
+
+            verify(foerderbereichRepository, times(1)).existsById(id);
+            assertThat(exception.getMessage()).isEqualTo(
+                    String.format(
+                            "The %s with ID %s was not found.",
+                            Foerderbereich.class.getSimpleName(),
+                            id));
+        }
     }
 }

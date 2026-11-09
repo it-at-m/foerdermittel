@@ -10,10 +10,7 @@ import type {
 import type { ApiComposables } from "@/util/composable-helper";
 
 import { StadtbezirkslisteControllerApi } from "@/api/generated/foerdermittel-backend";
-import {
-  createAPIComposables,
-  requireComposables,
-} from "@/util/composable-helper";
+import { createAPIComposables } from "@/util/composable-helper";
 
 export const {
   useCreate: useCreateListenname,
@@ -21,25 +18,23 @@ export const {
   useGetAll: useGetStadtbezirkslisten,
   useDelete: useDeleteStadtbezirksliste,
   useContext: useGetStadtbezirkslisteFormContext,
-} = requireComposables(
-  createAPIComposables<
-    StadtbezirkslisteControllerApi,
-    CreateListennameRequest,
-    UpdateListennameRequest,
-    never,
-    DeleteListennameRequest,
-    GetStadtbezirklistenRequest,
-    StadtbezirkslisteResponseDTO,
-    PagedModelStadtbezirkslisteResponseDTO,
-    StadtbezirkslisteFormContext
-  >(StadtbezirkslisteControllerApi, {
-    create: (api, req) => api.createListenname(req),
-    update: (api, req) => api.updateListenname(req),
-    getAll: (api, req) => api.getStadtbezirklisten(req),
-    delete: (api, req) => api.deleteListenname(req),
-    context: (api) => api.getStadtbezirkslisteFormContext(),
-  })
-);
+} = createAPIComposables<
+  StadtbezirkslisteControllerApi,
+  CreateListennameRequest,
+  UpdateListennameRequest,
+  never,
+  DeleteListennameRequest,
+  GetStadtbezirklistenRequest,
+  StadtbezirkslisteResponseDTO,
+  PagedModelStadtbezirkslisteResponseDTO,
+  StadtbezirkslisteFormContext
+>(StadtbezirkslisteControllerApi, {
+  create: (api, req) => api.createListenname(req),
+  update: (api, req) => api.updateListenname(req),
+  getAll: (api, req) => api.getStadtbezirklisten(req),
+  delete: (api, req) => api.deleteListenname(req),
+  context: (api) => api.getStadtbezirkslisteFormContext(),
+});
 
 export function useStadtbezirkslisteApi(): ApiComposables<
   StadtbezirkslisteResponseDTO,
@@ -51,10 +46,10 @@ export function useStadtbezirkslisteApi(): ApiComposables<
   DeleteListennameRequest
 > {
   return {
-    getAll: useGetStadtbezirkslisten(),
-    context: useGetStadtbezirkslisteFormContext(),
-    create: useCreateListenname(),
-    update: useUpdateListenname(),
-    delete: useDeleteStadtbezirksliste(),
+    getAll: useGetStadtbezirkslisten?.(),
+    context: useGetStadtbezirkslisteFormContext?.(),
+    create: useCreateListenname?.(),
+    update: useUpdateListenname?.(),
+    delete: useDeleteStadtbezirksliste?.(),
   };
 }

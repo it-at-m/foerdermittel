@@ -8,8 +8,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
+import de.muenchen.oss.foerdermittel.backend.projekt.dao.AuswertungProjektDAO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dao.BasicProjektDAO;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektMapper;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
 import java.util.List;
 import java.util.Optional;
@@ -39,7 +42,7 @@ class ProjektServiceTest {
         final List<ReportProjektuebersichtFormContextDTO> expected = List.of(
                 new ReportProjektuebersichtFormContextDTO("P-123", "Projektname", "Projektstraße 1"));
         when(projektRepository.findAllAsBasic()).thenReturn(projekte);
-        when(projektMapper.toReportFormContext(projekte)).thenReturn(expected);
+        when(projektMapper.toReportProjektuebersichtFormContext(projekte)).thenReturn(expected);
 
         // When
         final List<ReportProjektuebersichtFormContextDTO> result = projektService.getReportProjektuebersichtFormContextDTOs();
@@ -47,7 +50,7 @@ class ProjektServiceTest {
         // Then
         assertThat(result).isEqualTo(expected);
         verify(projektRepository, times(1)).findAllAsBasic();
-        verify(projektMapper, times(1)).toReportFormContext(projekte);
+        verify(projektMapper, times(1)).toReportProjektuebersichtFormContext(projekte);
     }
 
     @Test
@@ -72,5 +75,47 @@ class ProjektServiceTest {
         assertThatThrownBy(() -> projektService.getProjekt("MISSING"))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("The Projekt with ID MISSING was not found.");
+    }
+
+    @Test
+    void givenProjects_thenReturnsProjektFormContextDTOs() {
+        // Given
+        final List<Projekt> projekte = List.of(mock(Projekt.class));
+        final List<ProjektFormContextDTO> expected = List.of(
+                mock(ProjektFormContextDTO.class));
+
+        when(projektRepository.findAll()).thenReturn(projekte);
+        when(projektMapper.toFormContext(projekte)).thenReturn(expected);
+
+        // When
+        final List<ProjektFormContextDTO> result = projektService.getProjektFormContextDTOs();
+
+        // Then
+        assertThat(result).isEqualTo(expected);
+        verify(projektRepository, times(1)).findAll();
+        verify(projektMapper, times(1)).toFormContext(projekte);
+    }
+
+    @Test
+    void givenAuswertungProjekte_thenReturnsReportAuswertungProjektFormContextDTOs() {
+        // Given
+        final List<AuswertungProjektDAO> projekte = List.of(
+                new AuswertungProjektDAO("2026", "Projektstraße 1", "Projektname", null));
+        final List<ReportAuswertungProjektFormContextDTO> expected = List.of(
+                new ReportAuswertungProjektFormContextDTO(
+                        "2026", "Projektstraße 1", "Projektname", null));
+
+        when(projektRepository.findAllAuswertungProjekte()).thenReturn(projekte);
+        when(projektMapper.toReportAuswertungProjektFormContext(projekte))
+                .thenReturn(expected);
+
+        // When
+        final List<ReportAuswertungProjektFormContextDTO> result = projektService.getReportAuswertungProjektFormContextDTOs();
+
+        // Then
+        assertThat(result).isEqualTo(expected);
+        verify(projektRepository, times(1)).findAllAuswertungProjekte();
+        verify(projektMapper, times(1))
+                .toReportAuswertungProjektFormContext(projekte);
     }
 }

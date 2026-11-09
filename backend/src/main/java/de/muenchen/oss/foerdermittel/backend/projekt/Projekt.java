@@ -1,9 +1,13 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
+import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -16,11 +20,13 @@ import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "projekte")
 public class Projekt implements Serializable {
 
@@ -29,7 +35,24 @@ public class Projekt implements Serializable {
 
     @Id
     @Column(name = "projnr", nullable = false)
-    @NotNull @Size(min = 1, max = 7) private String projnr; // angepasst von projektnr auf projnr, da im Mapper so verwendet
+    @NotNull @Size(min = 7, max = 7) private String projnr; // angepasst von projektnr auf projnr, da im Mapper so verwendet
+
+    @Column(name = "jahr", nullable = false)
+    @NotNull private String jahr;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "fob_fb",
+            referencedColumnName = "fb",
+            nullable = false
+    )
+    private Foerderbereich fobFb;
+
+    @Column(name = "lfdnr1", length = 1)
+    private String lfdnr1;
+
+    @Column(name = "lfdnr2", length = 2)
+    private String lfdnr2;
 
     @Column(name = "pname", nullable = false)
     @NotNull @Size(min = 1, max = 100) private String pname;
@@ -39,18 +62,31 @@ public class Projekt implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
-            name = "fob_fb",
-            referencedColumnName = "fb",
-            nullable = false
-    )
-    private Foerderbereich foerderbereich;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
             name = "bez_stadtbezirk",
             referencedColumnName = "stadtbezirk",
             nullable = false
     )
     private Stadtbezirk stadtbezirk;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "uas_ua",
+            referencedColumnName = "ua",
+            nullable = false
+    )
+    private Unterabschnitt uasUa;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "kur_kurzbez",
+            referencedColumnName = "kurzbez",
+            nullable = false
+    )
+    private Kurzbezeichnung kurKurzbez;
+
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "krisofp", columnDefinition = "projekte_krisofp")
+    private Krisofp krisofp;
 
 }

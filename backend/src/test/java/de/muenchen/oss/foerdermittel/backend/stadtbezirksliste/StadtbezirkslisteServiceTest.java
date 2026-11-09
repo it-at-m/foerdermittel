@@ -8,6 +8,8 @@ import static org.mockito.Mockito.when;
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameStadtbezirkslisteFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameStadtbezirkslisteMapper;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -32,8 +35,12 @@ class StadtbezirkslisteServiceTest {
 
     @Mock
     private ListennameRepository listennameRepository;
+
     @Mock
     private StadtbezirkslisteRepository stadtbezirkslisteRepository;
+
+    @Mock
+    private ListennameStadtbezirkslisteMapper listennameStadtbezirkslisteMapper;
 
     @InjectMocks
     private ListennameStadtbezirkslisteService unitUnderTest;
@@ -200,6 +207,69 @@ class StadtbezirkslisteServiceTest {
             verify(listennameRepository, times(1)).findById(KURZBEZ);
             verify(listennameRepository, never()).deleteById(KURZBEZ);
             assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Listenname.class.getSimpleName(), KURZBEZ));
+        }
+    }
+
+    @Nested
+    class GetListennameStadtbezirkslisteFormContextDTOs {
+
+        @Test
+        void givenEntitiesExist_thenReturnFormContextDTOs() {
+            // Given
+            final Listenname entity1 = new Listenname("ABC", "Liste A", List.of());
+            final Listenname entity2 = new Listenname("DEF", "Liste B", List.of());
+            final List<Listenname> entities = List.of(entity1, entity2);
+
+            final List<ListennameStadtbezirkslisteFormContextDTO> expectedDTOs = List.of(
+                    Mockito.mock(ListennameStadtbezirkslisteFormContextDTO.class),
+                    Mockito.mock(ListennameStadtbezirkslisteFormContextDTO.class));
+
+            when(listennameRepository.findAll()).thenReturn(entities);
+            when(listennameStadtbezirkslisteMapper.toFormContext(entities))
+                    .thenReturn(expectedDTOs);
+
+            // When
+            final List<ListennameStadtbezirkslisteFormContextDTO> result = unitUnderTest.getlistennameStadtbezirkslisteFormContextDTOs();
+
+            // Then
+            verify(listennameRepository, times(1)).findAll();
+            verify(listennameStadtbezirkslisteMapper, times(1))
+                    .toFormContext(entities);
+            assertThat(result).isEqualTo(expectedDTOs);
+        }
+    }
+
+    @Nested
+    class CheckExistsByListenname {
+
+        @Test
+        void givenListennameExists_thenDoesNotThrowException() {
+            // Given
+            when(listennameRepository.existsById(KURZBEZ)).thenReturn(true);
+
+            // When / Then
+            Assertions.assertDoesNotThrow(
+                    () -> unitUnderTest.checkExistsByListenname(KURZBEZ));
+
+            verify(listennameRepository, times(1)).existsById(KURZBEZ);
+        }
+
+        @Test
+        void givenListennameNotExists_thenThrowNotFoundException() {
+            // Given
+            when(listennameRepository.existsById(KURZBEZ)).thenReturn(false);
+
+            // When / Then
+            final Exception exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> unitUnderTest.checkExistsByListenname(KURZBEZ));
+
+            verify(listennameRepository, times(1)).existsById(KURZBEZ);
+            assertThat(exception.getMessage()).isEqualTo(
+                    String.format(
+                            "The %s with ID %s was not found.",
+                            Listenname.class.getSimpleName(),
+                            KURZBEZ));
         }
     }
 }

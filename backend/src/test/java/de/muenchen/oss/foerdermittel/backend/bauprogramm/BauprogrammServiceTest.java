@@ -6,6 +6,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammMapper;
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -30,6 +32,9 @@ class BauprogrammServiceTest {
 
     @Mock
     private BauprogrammRepository bauprogrammRepository;
+
+    @Mock
+    private BauprogrammMapper bauprogrammMapper;
 
     @InjectMocks
     private BauprogrammService unitUnderTest;
@@ -166,4 +171,59 @@ class BauprogrammServiceTest {
         }
 
     }
+
+    @Nested
+    class GetBauprogrammFormContextDTOs {
+
+        @Test
+        void givenEntities_thenReturnsFormContextDTOs() {
+            // Given
+            final List<Bauprogramm> entities = List.of(
+                    new Bauprogramm(BigDecimal.valueOf(1), "Test 1"),
+                    new Bauprogramm(BigDecimal.valueOf(2), "Test 2"));
+
+            final List<BauprogrammFormContextDTO> expected = List.of(
+                    Mockito.mock(BauprogrammFormContextDTO.class),
+                    Mockito.mock(BauprogrammFormContextDTO.class));
+
+            when(bauprogrammRepository.findAll()).thenReturn(entities);
+            when(bauprogrammMapper.toFormContext(entities)).thenReturn(expected);
+
+            // When
+            final List<BauprogrammFormContextDTO> result = unitUnderTest.getBauprogrammFormContextDTOs();
+
+            // Then
+            assertThat(result).isEqualTo(expected);
+            verify(bauprogrammRepository, times(1)).findAll();
+            verify(bauprogrammMapper, times(1)).toFormContext(entities);
+        }
+    }
+
+    @Nested
+    class CheckExistsByBauprogramm {
+
+        @Test
+        void givenIdExists_thenDoesNotThrowException() {
+            // Given
+            final BigDecimal id = BigDecimal.valueOf(1);
+            when(bauprogrammRepository.existsById(id)).thenReturn(true);
+
+            // When / Then
+            Assertions.assertDoesNotThrow(
+                    () -> unitUnderTest.checkExistsByBauprogramm(id));
+        }
+
+        @Test
+        void givenIdNotExists_thenThrowsNotFoundException() {
+            // Given
+            final BigDecimal id = BigDecimal.valueOf(1);
+            when(bauprogrammRepository.existsById(id)).thenReturn(false);
+
+            // When / Then
+            Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> unitUnderTest.checkExistsByBauprogramm(id));
+        }
+    }
+
 }

@@ -37,18 +37,19 @@ export interface ApiComposables<
   TUpdateRequest,
   TUpdateResponse,
   TDeleteRequest,
+  TGetAllRequest = Pageable,
 > {
-  getAll: ApiComposable<
-    Pageable,
+  getAll?: ApiComposable<
+    TGetAllRequest,
     {
       content?: TGetResponse[];
       page?: PageMetadata;
     }
   >;
-  context: ApiComposable<void, TContextResponse>;
-  create: ApiComposable<TCreateRequest, TCreateResponse>;
-  update: ApiComposable<TUpdateRequest, TUpdateResponse>;
-  delete: ApiComposable<TDeleteRequest, void>;
+  context?: ApiComposable<void, TContextResponse>;
+  create?: ApiComposable<TCreateRequest, TCreateResponse>;
+  update?: ApiComposable<TUpdateRequest, TUpdateResponse>;
+  delete?: ApiComposable<TDeleteRequest, void>;
 }
 
 export interface ReportApiComposables<TGetOptsRequest, TContextResponse> {

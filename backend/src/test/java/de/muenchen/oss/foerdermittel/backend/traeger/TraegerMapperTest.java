@@ -3,10 +3,12 @@ package de.muenchen.oss.foerdermittel.backend.traeger;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerCreateDTO;
+import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerMapper;
 import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.traeger.dto.TraegerUpdateDTO;
 import java.math.BigDecimal;
+import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -66,6 +68,31 @@ public class TraegerMapperTest {
             assertThat(entity.getBezeichnung()).isEqualTo(dto.bezeichnung());
         }
 
+    }
+
+    @Nested
+    class ToFormContext {
+
+        @Test
+        void givenEntityList_thenReturnsCorrectFormContextDTOList() {
+            // given
+            Traeger entity1 = new Traeger(BigDecimal.valueOf(1), "Test 1");
+            Traeger entity2 = new Traeger(BigDecimal.valueOf(2), "Test 2");
+
+            List<Traeger> entities = List.of(entity1, entity2);
+
+            // when
+            List<TraegerFormContextDTO> dtos = traegerMapper.toFormContext(entities);
+
+            // then
+            assertThat(dtos).hasSize(2);
+
+            assertThat(dtos.get(0).kurzform()).isEqualTo(entity1.getKurzform().toString());
+            assertThat(dtos.get(0).bezeichnung()).isEqualTo(entity1.getBezeichnung());
+
+            assertThat(dtos.get(1).kurzform()).isEqualTo(entity2.getKurzform().toString());
+            assertThat(dtos.get(1).bezeichnung()).isEqualTo(entity2.getBezeichnung());
+        }
     }
 
 }

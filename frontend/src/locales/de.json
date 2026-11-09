@@ -9,7 +9,8 @@
       "masterdata": "Stammdaten",
       "action": "Aktion | Aktionen",
       "readOnly": "(schreibgeschützt)",
-      "required": "*"
+      "required": "*",
+      "sort": "Sortierung"
     },
     "action": {
       "cancel": "Abbrechen",
@@ -54,10 +55,16 @@
   "model": {
     "projekt": {
       "modelName": "Projekt | Projekte",
+      "fobFb": "Förderbereich",
+      "kurKurzbez": "Kurzbezeichnung",
       "projnr": "Projektnummer",
-      "name": "Name",
       "strasse": "Straße",
-      "ausgabeNotiz": "Ausgabe Notiz"
+      "name": "Name",
+      "uasUa": "UA",
+      "ausgabeNotiz": "Ausgabe Notiz",
+      "pname": "Name",
+      "pstrasse": "Straße",
+      "krisofp": "Förderprogramm"
     },
     "antrag": {
       "modelName": "Antrag | Anträge",
@@ -183,6 +190,7 @@
       "kindergarten": "Kindergarten",
       "nichtRelevant": "Nicht relevant"
     },
+
     "krankenhaus": {
       "modelName": "Krankenhaus | Krankenhäuser",
       "krhname": "Kurzform",
@@ -263,6 +271,32 @@
       "generateJahresStatistik": "Generierung @:domain.statistic.jahresStatistik"
     },
     "report": {
+      "common": {
+        "antragstyp": "Antragstyp",
+        "bez": "oder einen Stadtbezirk",
+        "bpg": "Bauprogramm",
+        "fag": "Nur FAG",
+        "fb": "Förderbereich",
+        "jahr": "Jahr",
+        "jahrBis": "Jahr bis",
+        "jahrVon": "Jahr von",
+        "krisofp": "Sonderförderprogramm",
+        "kurz": "Kurzbezeichnung",
+        "offen": "Nur offene Projekte",
+        "pname": "Projektname",
+        "pstrasse": "Projektstraße",
+        "relevant": "Nur relevante FB",
+        "sbl": "für Stadtbezirksliste",
+        "sgt": "Siedlungsgebiet",
+        "ua": "Unterabschnitt",
+        "reportType": {
+          "modelName": "Reporttyp",
+          "pdf": "PDF",
+          "pdfFlat": "PDF: ohne Gruppierung",
+          "excel": "Excel"
+        },
+        "reportSort": "Sortierung"
+      },
       "projektUebersicht": "@:model.projekt.modelName{'übersicht'}",
       "projektUebersichtManagement": "@:domain.report.projektUebersicht (Management Summary)",
       "annahmeAnordnungSAP": "Annahmeanordnung SAP",
@@ -271,8 +305,44 @@
       "ausstBewilligungProjekt": "Ausst. @:model.bewilligung.modelName nach @:model.projekt.modelName",
       "ausstBewilligungFoerderbereich": "Ausst. @:model.bewilligung.modelName nach @:model.foerderbereich.modelName",
       "ausstGenehmigungVorzBeginn": "Ausst. Genehmigung vorz. Beginn",
-      "bewilligungAuszahlungProjekt": "@:model.bewilligung.modelName und @:domain.auszahlung eines @:model.projekt.modelName{'s'}",
+      "bewilligungAuszahlungProjekt": {
+        "modelName": "@:model.bewilligung.modelName und @:domain.auszahlung eines @:model.projekt.modelName{'s'}",
+        "erfolgt": "Nur erfolgte Bewilligungen und erhaltene Auszahlungen"
+      },
       "bewilligungAuzahlungVergleich": "@:model.bewilligung.modelName und @:domain.auszahlung (Vergleich)",
+      "auswertungProjekt": {
+        "modelName": "Projekte",
+        "offen": "Nur offene Projekte",
+        "jahr": "Projektjahr",
+        "kauf": "Nur Projekte mit Ankauf",
+        "relevant": "Nur relevante FB",
+        "sortierung": "Sortierung",
+
+        "sortEnum": {
+          "stadtbezirkStrasse": "Stadtbezirk, Straße",
+          "projektnummer": "Projektnummer",
+          "strasseProjektnummer": "Straße, Projektnummer",
+          "foerderbereichProjektnummer": "Förderbereich, Projektnummer",
+          "foerderbereichStrasse": "Förderbereich, Straße"
+        },
+        "type": {
+          "pdf": "PDF",
+          "excel": "Excel"
+        }
+      },
+      "auswertungAntraege": {
+        "modelName": "Auswertung Anträge",
+
+        "sortEnum": {
+          "fbProjektnummer": "Förderbereich, Projektnummer",
+          "fbProjektstrasse": "Förderbereich, Projektstraße",
+          "strasseProjektnummer": "Projektstraße, Projektnummer",
+          "projektnummer": "Projektnummer"
+        },
+        "reportType": {
+          "pdf": "PDF: Gruppierung Förderbereich"
+        }
+      },
       "fortsetzungsAntrag": {
         "modelName": "Fortsetzungsantrag | Fortsetzungsanträge",
         "fag": "Nur FAG",
@@ -282,9 +352,43 @@
           "excel": "Excel"
         }
       },
+      "euinformation": {
+        "publikation": "Publikation",
+        "referat": "Referat",
+        "inhalt": "Inhalt",
+        "jahrVon": "Jahr von",
+        "jahrBis": "Jahr bis",
+        "sortEnum": {
+          "publikation": "Publikation, Inhalt",
+          "jahr": "Erscheinungsjahr, Publikation, Inhalt",
+          "referat": "Referat, Publikation, Inhalt",
+          "referatJahr": "Referat, Erscheinungsjahr, Publikation, Inhalt"
+        },
+        "referatEnum": {
+          "alleReferate": "Alle Referate",
+          "raw": "RAW",
+          "rbs": "RBS",
+          "sozrefR5": "Sozref R 5",
+          "rgu11": "RGU 11",
+          "rguCs": "RGU Cs",
+          "krh": "Krh",
+          "awb": "AWB",
+          "swm": "SWM",
+          "kulturref": "Kulturref",
+          "bauref": "Bauref",
+          "planref": "Planref",
+          "direktorium": "Direktorium",
+          "por": "POR",
+          "kvr": "KVR",
+          "komref": "Kommref",
+          "mse": "MSE",
+          "stk": "Stk"
+        }
+      },
       "haushaltsplanung": {
         "modelName": "Haushaltsplanung",
         "hh": "Ausgabe nur mit Haushaltszahlen",
+        "fipo": "FIPO",
         "sortEnum": {
           "projektnummer": "Projektnummer",
           "strasse": "Straße, Projektnummer",
@@ -297,6 +401,31 @@
           "pdf": "PDF: Gruppierung Förderbereich",
           "pdfFlat": "PDF: keine Gruppierung",
           "excel": "Excel"
+        }
+      },
+      "staedtebaufoerderung": {
+        "notizen": "Ausgabe Notizen",
+        "pname": "Projektname",
+        "jahrVon": "Jahr von",
+        "jahrBis": "Jahr bis",
+        "traeger": "Träger"
+      },
+      "projektUebersichtMs": {
+        "modelName": "Projektübersicht (Management Summary)",
+        "sbl": "für Stadtbezirksliste",
+        "bez": "oder ein Stadtbezirk",
+        "fb": "Förderbereich",
+        "ua": "Unterabteilung",
+        "kurz": "Kurzbezeichnung",
+        "offen": "Nur offene Projekte",
+        "vn": "Nur Projekte mit VN",
+        "krisofp": "Sonderförderprogramm",
+        "sgt": "Siedlungsgebiet",
+        "bpg": "Bauprogramm",
+        "sortEnum": {
+          "projektnummer": "Projektnummer",
+          "strasseProjektnummer": "Straße, Projektnummer",
+          "fbProjektnummer": "Förderbereich, Projektnummer"
         }
       }
     }
@@ -321,6 +450,11 @@
       "changeText": "Auf die Darstellung '{0}' wechseln",
       "light": "Hell",
       "dark": "Dunkel"
+    },
+    "filterPanel": {
+      "title": "Suchen und Filtern",
+      "reset": "Filter zurücksetzen",
+      "showResults": "Ergebnisse anzeigen"
     }
   }
 }

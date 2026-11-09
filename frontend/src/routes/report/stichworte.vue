@@ -29,7 +29,7 @@ import { useI18n } from "vue-i18n";
 import BaseView from "@/components/common/BaseView.vue";
 import ReportCard from "@/components/common/ReportCard.vue";
 import ReportStichworteForm from "@/components/forms/report/ReportStichworteForm.vue";
-import { useReportStichworteApi } from "@/composables/api/useReportApi";
+import { useReportStichworteApi } from "@/composables/api/report/useReportStichworteApi";
 import { Role } from "@/types/Role";
 
 definePage({

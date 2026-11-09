@@ -3,10 +3,12 @@ package de.muenchen.oss.foerdermittel.backend.stadtbezirk;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkCreateDTO;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkMapper;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkUpdateDTO;
 import java.math.BigDecimal;
+import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -66,6 +68,31 @@ public class StadtbezirkMapperTest {
             assertThat(entity.getBezeichnung()).isEqualTo(dto.bezeichnung());
         }
 
+    }
+
+    @Nested
+    class ToFormContext {
+
+        @Test
+        void givenEntityList_thenReturnsCorrectFormContextDTOList() {
+            // given
+            Stadtbezirk entity1 = new Stadtbezirk(BigDecimal.valueOf(1), "Test 1");
+            Stadtbezirk entity2 = new Stadtbezirk(BigDecimal.valueOf(2), "Test 2");
+
+            List<Stadtbezirk> entities = List.of(entity1, entity2);
+
+            // when
+            List<StadtbezirkFormContextDTO> dtos = stadtbezirkMapper.toFormContext(entities);
+
+            // then
+            assertThat(dtos).hasSize(2);
+
+            assertThat(dtos.get(0).stadtbezirk()).isEqualTo(entity1.getStadtbezirk().toString());
+            assertThat(dtos.get(0).bezeichnung()).isEqualTo(entity1.getBezeichnung());
+
+            assertThat(dtos.get(1).stadtbezirk()).isEqualTo(entity2.getStadtbezirk().toString());
+            assertThat(dtos.get(1).bezeichnung()).isEqualTo(entity2.getBezeichnung());
+        }
     }
 
 }

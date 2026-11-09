@@ -15,7 +15,7 @@ public interface IstkostenMapper {
     @Mapping(source = "id", target = "id", qualifiedByName = "buildIdString")
     @Mapping(source = "projekt.pname", target = "pname")
     @Mapping(source = "projekt.pstrasse", target = "pstrasse")
-    @Mapping(source = "projekt.foerderbereich.fb", target = "fob_fb")
+    @Mapping(source = "projekt.fobFb.fb", target = "fob_fb")
     IstkostenResponseDTO toDTO(Istkosten istkosten);
 
     @Mapping(source = "projnr", target = "id.projnr")

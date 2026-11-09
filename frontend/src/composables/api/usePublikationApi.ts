@@ -10,10 +10,7 @@ import type {
 import type { ApiComposables } from "@/util/composable-helper";
 
 import { PublikationControllerApi } from "@/api/generated/foerdermittel-backend";
-import {
-  createAPIComposables,
-  requireComposables,
-} from "@/util/composable-helper";
+import { createAPIComposables } from "@/util/composable-helper";
 
 export const {
   useCreate: useCreatePublikation,
@@ -21,25 +18,23 @@ export const {
   useGetAll: useGetPublikationen,
   useDelete: useDeletePublikation,
   useContext: useGetPublikationFormContext,
-} = requireComposables(
-  createAPIComposables<
-    PublikationControllerApi,
-    CreatePublikationRequest,
-    UpdatePublikationRequest,
-    never,
-    DeletePublikationRequest,
-    GetPublikationenRequest,
-    PublikationResponseDTO,
-    PagedModelPublikationResponseDTO,
-    PublikationFormContext
-  >(PublikationControllerApi, {
-    create: (api, req) => api.createPublikation(req),
-    update: (api, req) => api.updatePublikation(req),
-    getAll: (api, req) => api.getPublikationen(req),
-    delete: (api, req) => api.deletePublikation(req),
-    context: (api) => api.getPublikationFormContext(),
-  })
-);
+} = createAPIComposables<
+  PublikationControllerApi,
+  CreatePublikationRequest,
+  UpdatePublikationRequest,
+  never,
+  DeletePublikationRequest,
+  GetPublikationenRequest,
+  PublikationResponseDTO,
+  PagedModelPublikationResponseDTO,
+  PublikationFormContext
+>(PublikationControllerApi, {
+  create: (api, req) => api.createPublikation(req),
+  update: (api, req) => api.updatePublikation(req),
+  getAll: (api, req) => api.getPublikationen(req),
+  delete: (api, req) => api.deletePublikation(req),
+  context: (api) => api.getPublikationFormContext(),
+});
 
 export function usePublikationApi(): ApiComposables<
   PublikationResponseDTO,
@@ -51,10 +46,10 @@ export function usePublikationApi(): ApiComposables<
   DeletePublikationRequest
 > {
   return {
-    getAll: useGetPublikationen(),
-    context: useGetPublikationFormContext(),
-    create: useCreatePublikation(),
-    update: useUpdatePublikation(),
-    delete: useDeletePublikation(),
+    getAll: useGetPublikationen?.(),
+    context: useGetPublikationFormContext?.(),
+    create: useCreatePublikation?.(),
+    update: useUpdatePublikation?.(),
+    delete: useDeletePublikation?.(),
   };
 }

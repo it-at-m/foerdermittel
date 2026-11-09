@@ -23,7 +23,7 @@
           :model-value="selectedProjekt?.pname ?? ''"
           :display-mode="InputDisplayMode.EDIT"
           :disable-edit="true"
-          :label="t('model.projekt.name')"
+          :label="t('model.projekt.pname')"
         />
       </v-col>
       <v-col cols="12">
@@ -31,7 +31,7 @@
           :model-value="selectedProjekt?.pstrasse ?? ''"
           :display-mode="InputDisplayMode.EDIT"
           :disable-edit="true"
-          :label="t('model.projekt.strasse')"
+          :label="t('model.projekt.pstrasse')"
         />
       </v-col>
       <v-col cols="12">

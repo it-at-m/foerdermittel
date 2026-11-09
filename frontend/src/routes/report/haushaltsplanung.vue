@@ -31,7 +31,7 @@ import { useI18n } from "vue-i18n";
 import BaseView from "@/components/common/BaseView.vue";
 import ReportCard from "@/components/common/ReportCard.vue";
 import ReportHaushaltsplanungForm from "@/components/forms/report/ReportHaushaltsplanungForm.vue";
-import { useReportHaushaltsplanungApi } from "@/composables/api/useReportApi";
+import { useReportHaushaltsplanungApi } from "@/composables/api/report/useReportHaushaltsplanungApi";
 import { Role } from "@/types/Role";
 
 definePage({

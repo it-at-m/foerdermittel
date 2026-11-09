@@ -125,6 +125,9 @@ const navigationItems: NavigationItem[] = [
     children: [
       {
         title: t("model.projekt.modelName", 2),
+        props: {
+          to: "/projekte",
+        },
       },
       {
         title: t("model.antrag.modelName", 2),
@@ -247,18 +250,30 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("domain.report.projektUebersichtManagement"),
+        props: {
+          to: "/report/projektuebersichtms",
+        },
       },
       {
         title: t("domain.report.annahmeAnordnungSAP"),
+        props: {
+          to: "/report/annahmeanordnungsap",
+        },
       },
       {
-        title: t("model.projekt.modelName", 2),
+        title: t("domain.report.auswertungProjekt.modelName"),
+        props: {
+          to: "/report/auswertungprojekte",
+        },
       },
       {
         title: t("domain.report.checklisten"),
       },
       {
         title: t("model.antrag.modelName", 2),
+        props: {
+          to: "/report/auswertungantraege",
+        },
       },
       {
         title: t("model.bewilligung.modelName", 2),
@@ -291,7 +306,10 @@ const navigationItems: NavigationItem[] = [
         title: t("domain.report.ausstGenehmigungVorzBeginn"),
       },
       {
-        title: t("domain.report.bewilligungAuszahlungProjekt"),
+        title: t("domain.report.bewilligungAuszahlungProjekt.modelName"),
+        props: {
+          to: "/report/bewilligungauszahlungprojekt",
+        },
       },
       {
         title: t("domain.report.bewilligungAuzahlungVergleich"),
@@ -313,9 +331,15 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.staedtebaufoerderung.modelName", 2),
+        props: {
+          to: "/report/staedtebaufoerderungen",
+        },
       },
       {
         title: t("model.euinformation.modelName", 2),
+        props: {
+          to: "/report/euinformationen",
+        },
       },
       {
         title: t("model.geplantemassnahme.modelName", 2),
