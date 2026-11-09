@@ -56,7 +56,6 @@
     "projekt": {
       "modelName": "Projekt | Projekte",
       "fobFb": "Förderbereich",
-      "jahr": "Jahr",
       "kurKurzbez": "Kurzbezeichnung",
       "projnr": "Projektnummer",
       "strasse": "Straße",
@@ -238,6 +237,7 @@
         "jahr": "Jahr",
         "jahrBis": "Jahr bis",
         "jahrVon": "Jahr von",
+        "krisofp": "Sonderförderprogramm",
         "kurz": "Kurzbezeichnung",
         "offen": "Nur offene Projekte",
         "pname": "Projektname",
@@ -268,11 +268,13 @@
       },
       "bewilligungAuzahlungVergleich": "@:model.bewilligung.modelName und @:domain.auszahlung (Vergleich)",
       "auswertungProjekt": {
-        "modelName": "Projekt",
+        "modelName": "Projekte",
         "offen": "Nur offene Projekte",
+        "jahr": "Projektjahr",
         "kauf": "Nur Projekte mit Ankauf",
-        "relevant": "Nur relevante Projekte",
+        "relevant": "Nur relevante FB",
         "sortierung": "Sortierung",
+
         "sortEnum": {
           "stadtbezirkStrasse": "Stadtbezirk, Straße",
           "projektnummer": "Projektnummer",
