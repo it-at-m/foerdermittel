@@ -32,5 +32,4 @@ public interface HhjahrMapper {
     HhjahrFormContextDTO toFormContext(Hhjahr hhjahr);
 
     List<HhjahrFormContextDTO> toFormContext(List<Hhjahr> hhjahrList);
-
 }

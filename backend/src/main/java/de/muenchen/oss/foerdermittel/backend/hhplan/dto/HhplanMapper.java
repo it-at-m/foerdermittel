@@ -7,22 +7,21 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(uses = NumberMapper.class)
+@Mapper(componentModel = "spring", uses = NumberMapper.class)
 public interface HhplanMapper {
 
     @Mapping(source = "id.hhjJahr", target = "id", qualifiedByName = "bigDecimalToIntegerString")
-    @Mapping(source = "id.hhjJahr", target = "hhjJahr")
-    @Mapping(source = "proProjnr.projnr", target = "proProjnr")
+    @Mapping(source = "id.proProjnr", target = "proProjnr")
+    @Mapping(source = "hhjJahr.hhjahr", target = "hhjJahr")
     HhplanResponseDTO toDTO(Hhplan hhplan);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "hhJahr", ignore = true)
-    @Mapping(target = "proprojnr.projnr", source = "proProjnr")
+    @Mapping(target = "hhjJahr", ignore = true)
+    @Mapping(target = "proProjnr", ignore = true)
     Hhplan toEntity(HhplanResponseDTO dto);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "hhJahr", ignore = true)
     @Mapping(source = "proProjnr.projnr", target = "proProjnr")
+    @Mapping(source = "hhjJahr.hhjahr", target = "hhjJahr")
     HhplanFormContextDTO toFormContext(Hhplan hhplan);
 
     List<HhplanFormContextDTO> toFormContext(List<Hhplan> hhplanList);

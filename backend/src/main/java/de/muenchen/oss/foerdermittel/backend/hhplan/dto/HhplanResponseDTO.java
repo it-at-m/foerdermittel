@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 public record HhplanResponseDTO(
         @NotNull String id,
-        @NotNull String proprojnr,
+        @NotNull String proProjnr,
         @NotNull BigDecimal hhjJahr,
         @NotNull String fipo,
         String notizen) {

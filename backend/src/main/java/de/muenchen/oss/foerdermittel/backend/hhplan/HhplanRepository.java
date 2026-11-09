@@ -10,15 +10,16 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface HhplanRepository extends PagingAndSortingRepository<Hhplan, HhplanPrimaryKey>, ListCrudRepository<Hhplan, HhplanPrimaryKey>,
+public interface HhplanRepository extends
+        PagingAndSortingRepository<Hhplan, HhplanPrimaryKey>,
+        ListCrudRepository<Hhplan, HhplanPrimaryKey>,
         InsertAndUpdateRepository<Hhplan> {
 
-    boolean existsByHhjahr(BigDecimal hhjahr);
+    boolean existsByHhjJahr_Hhjahr(BigDecimal hhjahr);
 
     @Query("SELECT h.id.hhjJahr FROM Hhplan h ORDER BY h.id.hhjJahr")
     List<BigDecimal> findAllHhplan();
 
-    @Query("SELECT Distinct h.id.hhjJahr, h.fipo FROM Hhplan h ORDER BY h.fipo")
+    @Query("SELECT DISTINCT h.id.hhjJahr, h.fipo FROM Hhplan h ORDER BY h.fipo")
     List<BasicHhplanDAO> findReportHhplan();
-
 }

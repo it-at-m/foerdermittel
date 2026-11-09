@@ -23,10 +23,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/// This class represents a Hhplan.
-///
-/// The entity's attributes are mapped to the corresponding database columns.
-///
 @Entity
 @Data
 @AllArgsConstructor
@@ -43,20 +39,22 @@ public class Hhjahr implements Serializable {
 
     @Id
     @Column(name = "hhjahr", nullable = false)
-    @NotNull @Min(0) @Digits(integer = 4, fraction = 0) private BigDecimal hhjahr;
+    @NotNull
+    @Min(0)
+    @Digits(integer = 4, fraction = 0)
+    private BigDecimal hhjahr;
 
     @Column(name = "hhbezeichnung")
-    @NotNull @Size(min = 1, max = 200) private String hhbezeichnung;
+    @NotNull
+    @Size(min = 1, max = 200)
+    private String hhbezeichnung;
 
     @Column(name = "notizen")
     private String notizen;
 
     @OneToMany(
-            mappedBy = "hhJahr",
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },
+            mappedBy = "hhjJahr",
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
@@ -74,5 +72,4 @@ public class Hhjahr implements Serializable {
             hhplanlisten.add(assignment);
         });
     }
-
 }

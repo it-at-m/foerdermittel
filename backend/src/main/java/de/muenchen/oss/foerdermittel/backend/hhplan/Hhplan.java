@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /// This class represents a Hhplan.
@@ -27,6 +28,7 @@ import lombok.NoArgsConstructor;
 ///
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "hhplan")
@@ -76,15 +78,12 @@ public class Hhplan extends AuditableEntity implements Serializable {
     private String notizen;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "pro_projnr",
-            referencedColumnName = "projnr",
-            nullable = false
-    )
-    private Projekt ProProjnr;
+    @MapsId("proProjnr")
+    @JoinColumn(name = "pro_projnr", referencedColumnName = "projnr", nullable = false)
+    private Projekt proProjnr;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("hhplan")
-    @JoinColumn(name = "hhj_jahr")
+    @MapsId("hhjJahr")
+    @JoinColumn(name = "hhj_jahr", nullable = false)
     private Hhjahr hhjJahr;
 }
