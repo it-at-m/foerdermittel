@@ -757,6 +757,47 @@ paths:
           description: OK
       security:
       - bearerAuth: []
+  /antraege/{id}:
+    put:
+      tags:
+      - antrag-controller
+      operationId: updateAntrag
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AntragUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AntragResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - antrag-controller
+      operationId: deleteAntrag
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /unterabschnitte:
     get:
       tags:
@@ -1819,6 +1860,68 @@ paths:
                 $ref: "#/components/schemas/ArchivResponseDTO"
       security:
       - bearerAuth: []
+  /antraege:
+    get:
+      tags:
+      - antrag-controller
+      operationId: getAntraege
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "projekt.projnr,ASC"
+          - "antragsdatum,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelAntragResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - antrag-controller
+      operationId: createAntrag
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AntragCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AntragResponseDTO"
+      security:
+      - bearerAuth: []
   /unterabschnitte/form-context:
     get:
       tags:
@@ -2259,6 +2362,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ArchivFormContext"
+      security:
+      - bearerAuth: []
+  /antraege/form-context:
+    get:
+      tags:
+      - antrag-controller
+      operationId: getAntragFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AntragFormContext"
       security:
       - bearerAuth: []
   /actuator:
@@ -2954,6 +3071,158 @@ components:
           type: string
         fob_fb:
           type: number
+    AntragUpdateDTO:
+      required:
+      - antragstyp
+      - asuD
+      - asuK
+      - asuZ
+      - bvorSuD
+      - bvorSuK
+      - bvorSuZ
+      - geskosten
+      - vorzbeg
+      - zwfkosten
+      type: object
+      properties:
+        antragstyp:
+          type: string
+          enum:
+          - A
+          - E
+          - F
+          - U
+          - V
+        antragsdatum:
+          type: string
+          format: date
+        geskosten:
+          minimum: 0
+          type: number
+        zwfkosten:
+          minimum: 0
+          type: number
+        vorzbeg:
+          type: boolean
+        vbdatum:
+          type: string
+          format: date
+        unbeddat:
+          type: string
+          format: date
+        unbedja:
+          type: string
+          format: date
+        unbedbis:
+          type: string
+          format: date
+        asuZ:
+          minimum: 0
+          type: number
+        asuD:
+          minimum: 0
+          type: number
+        asuK:
+          minimum: 0
+          type: number
+        bvorSuZ:
+          minimum: 0
+          type: number
+        bvorSuD:
+          minimum: 0
+          type: number
+        bvorSuK:
+          minimum: 0
+          type: number
+        notizen:
+          type: string
+    AntragResponseDTO:
+      required:
+      - anlagedatum
+      - anlagevon
+      - antragstyp
+      - asuD
+      - asuK
+      - asuZ
+      - bez_stadtbezirk
+      - bvorSuD
+      - bvorSuK
+      - bvorSuZ
+      - fob_fb
+      - geskosten
+      - id
+      - pname
+      - projnr
+      - pstrasse
+      - vorzbeg
+      - zwfkosten
+      type: object
+      properties:
+        id:
+          type: string
+        projnr:
+          type: string
+        pname:
+          type: string
+        pstrasse:
+          type: string
+        fob_fb:
+          type: number
+        bez_stadtbezirk:
+          type: number
+        antragstyp:
+          type: string
+          enum:
+          - A
+          - E
+          - F
+          - U
+          - V
+        antragsdatum:
+          type: string
+          format: date
+        geskosten:
+          type: number
+        zwfkosten:
+          type: number
+        vorzbeg:
+          type: boolean
+        vbdatum:
+          type: string
+          format: date
+        unbeddat:
+          type: string
+          format: date
+        unbedja:
+          type: string
+          format: date
+        unbedbis:
+          type: string
+          format: date
+        asuZ:
+          type: number
+        asuD:
+          type: number
+        asuK:
+          type: number
+        bvorSuZ:
+          type: number
+        bvorSuD:
+          type: number
+        bvorSuK:
+          type: number
+        notizen:
+          type: string
+        anlagedatum:
+          type: string
+          format: date-time
+        anlagevon:
+          type: string
+        aenderungsdatum:
+          type: string
+          format: date-time
+        aenderungvon:
+          type: string
     UnterabschnittCreateDTO:
       required:
       - bezeichnung
@@ -3282,6 +3551,75 @@ components:
           type: string
         projnr:
           minLength: 1
+          type: string
+    AntragCreateDTO:
+      required:
+      - antragstyp
+      - asuD
+      - asuK
+      - asuZ
+      - bvorSuD
+      - bvorSuK
+      - bvorSuZ
+      - geskosten
+      - projnr
+      - vorzbeg
+      - zwfkosten
+      type: object
+      properties:
+        projnr:
+          minLength: 1
+          type: string
+        antragstyp:
+          type: string
+          enum:
+          - A
+          - E
+          - F
+          - U
+          - V
+        antragsdatum:
+          type: string
+          format: date
+        geskosten:
+          minimum: 0
+          type: number
+        zwfkosten:
+          minimum: 0
+          type: number
+        vorzbeg:
+          type: boolean
+        vbdatum:
+          type: string
+          format: date
+        unbeddat:
+          type: string
+          format: date
+        unbedja:
+          type: string
+          format: date
+        unbedbis:
+          type: string
+          format: date
+        asuZ:
+          minimum: 0
+          type: number
+        asuD:
+          minimum: 0
+          type: number
+        asuK:
+          minimum: 0
+          type: number
+        bvorSuZ:
+          minimum: 0
+          type: number
+        bvorSuD:
+          minimum: 0
+          type: number
+        bvorSuK:
+          minimum: 0
+          type: number
+        notizen:
           type: string
     PageMetadata:
       type: object
@@ -3914,6 +4252,26 @@ components:
       description: |-
         DTO for [de.muenchen.oss.foerdermittel.backend.archiv.Archiv] to be used in other FormContexts
         other than its own.
+    PagedModelAntragResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/AntragResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    AntragFormContext:
+      required:
+      - projekte
+      type: object
+      properties:
+        projekte:
+          type: array
+          description: ""
+          items:
+            $ref: "#/components/schemas/ProjektFormContextDTO"
+      description: "FormContext for [Antrag]."
     Link:
       type: object
       properties:

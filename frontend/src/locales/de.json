@@ -60,7 +60,50 @@
       "ausgabeNotiz": "Ausgabe Notiz"
     },
     "antrag": {
-      "modelName": "Antrag | Anträge"
+      "modelName": "Antrag | Anträge",
+      "projnr": "Projektnummer",
+      "pname": "Projektname",
+      "pstrasse": "Straße",
+      "fobFb": "FB",
+      "antragstyp": "Antragstyp",
+      "antragsdatum": "Antragsdatum",
+      "geskosten": "Beantragte Gesamtkosten",
+      "zwfkosten": "Beantragte zuwendungsfähige Kosten",
+      "asuZ": "Beantragter Zuschuss (Jahr)",
+      "asuD": "Beantragtes Darlehen (Jahr)",
+      "asuK": "Beantragte Konnexität (Jahr)",
+      "bvorSuZ": "Voraussichtlicher Gesamtzuschuss",
+      "bvorSuD": "Voraussichtliches Gesamtdarlehen",
+      "bvorSuK": "Voraussichtliche Gesamtkonnexität",
+      "vorzbeg": "Antrag auf vorzeitigen Baubeginn gestellt",
+      "vbdatum": "Genehmigt mit Datum vom",
+      "unbeddat": "Antrag auf Unbedenklichkeit gestellt am",
+      "unbedja": "Antrag auf Unbedenklichkeit erteilt am",
+      "unbedbis": "Antrag auf Unbedenklichkeit befristet bis",
+      "notizen": "Notizen / Zustimmung vorzeitiger Baubeginn notwendig bis",
+      "angelegt": "Angelegt am {0} von {1}",
+      "geaendert": "Geändert am {0} von {1}",
+      "spalte": {
+        "asuZ": "Zuschuss",
+        "asuD": "Darlehen",
+        "asuK": "Konnexität",
+        "vorzbeg": "VB"
+      },
+      "typ": {
+        "erstantrag": "Erstantrag",
+        "schlussantrag": "Schlussantrag (VN)",
+        "aenderungsantrag": "Änderungsantrag",
+        "fortsetzungsantrag": "Fortsetzungsantrag",
+        "unbedenklichkeitsantrag": "Unbedenklichkeitsantrag"
+      },
+      "validation": {
+        "projektNichtVorhanden": "Diese Projektnummer existiert nicht",
+        "antragsdatumPflicht": "Antragsdatum ist außer bei Typ U Pflicht",
+        "unbeddatPflicht": "Bei Typ U ist das Datum des Unbedenklichkeitsantrags Pflicht",
+        "betragPflicht": "Bei gesetztem Antragsdatum muss ein Zuschuss, Darlehen oder eine Konnexität beantragt werden",
+        "unbedjaKonsistent": "Erteilt am erfordert einen Unbedenklichkeitsantrag und darf nicht davor liegen",
+        "unbedbisKonsistent": "Befristet bis erfordert ein Erteilungsdatum und darf nicht davor liegen"
+      }
     },
     "bewilligung": {
       "modelName": "Bewilligung | Bewilligungen"
