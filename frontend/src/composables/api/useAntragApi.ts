@@ -10,10 +10,7 @@ import type {
 import type { ApiComposables } from "@/util/composable-helper";
 
 import { AntragControllerApi } from "@/api/generated/foerdermittel-backend";
-import {
-  createAPIComposables,
-  requireComposables,
-} from "@/util/composable-helper";
+import { createAPIComposables } from "@/util/composable-helper";
 
 export const {
   useCreate: useCreateAntrag,
@@ -21,25 +18,23 @@ export const {
   useGetAll: useGetAntrag,
   useDelete: useDeleteAntrag,
   useContext: useGetAntragFormContext,
-} = requireComposables(
-  createAPIComposables<
-    AntragControllerApi,
-    CreateAntragRequest,
-    UpdateAntragRequest,
-    never,
-    DeleteAntragRequest,
-    GetAntraegeRequest,
-    AntragResponseDTO,
-    PagedModelAntragResponseDTO,
-    AntragFormContext
-  >(AntragControllerApi, {
-    create: (api, req) => api.createAntrag(req),
-    update: (api, req) => api.updateAntrag(req),
-    getAll: (api, req) => api.getAntraege(req),
-    delete: (api, req) => api.deleteAntrag(req),
-    context: (api) => api.getAntragFormContext(),
-  })
-);
+} = createAPIComposables<
+  AntragControllerApi,
+  CreateAntragRequest,
+  UpdateAntragRequest,
+  never,
+  DeleteAntragRequest,
+  GetAntraegeRequest,
+  AntragResponseDTO,
+  PagedModelAntragResponseDTO,
+  AntragFormContext
+>(AntragControllerApi, {
+  create: (api, req) => api.createAntrag(req),
+  update: (api, req) => api.updateAntrag(req),
+  getAll: (api, req) => api.getAntraege(req),
+  delete: (api, req) => api.deleteAntrag(req),
+  context: (api) => api.getAntragFormContext(),
+});
 
 export function useAntragApi(): ApiComposables<
   AntragResponseDTO,
@@ -51,10 +46,10 @@ export function useAntragApi(): ApiComposables<
   DeleteAntragRequest
 > {
   return {
-    getAll: useGetAntrag(),
-    context: useGetAntragFormContext(),
-    create: useCreateAntrag(),
-    update: useUpdateAntrag(),
-    delete: useDeleteAntrag(),
+    getAll: useGetAntrag?.(),
+    context: useGetAntragFormContext?.(),
+    create: useCreateAntrag?.(),
+    update: useUpdateAntrag?.(),
+    delete: useDeleteAntrag?.(),
   };
 }

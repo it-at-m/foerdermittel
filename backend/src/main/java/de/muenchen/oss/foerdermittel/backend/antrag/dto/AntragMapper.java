@@ -10,8 +10,8 @@ public interface AntragMapper {
     @Mapping(source = "projekt.projnr", target = "projnr")
     @Mapping(source = "projekt.pname", target = "pname")
     @Mapping(source = "projekt.pstrasse", target = "pstrasse")
-    @Mapping(source = "projekt.foerderbereich.fb", target = "fob_fb")
-    @Mapping(source = "projekt.stadtbezirk.stadtbezirk", target = "bez_stadtbezirk")
+    @Mapping(source = "projekt.fobFb.fb", target = "fobFb")
+    @Mapping(source = "projekt.stadtbezirk.stadtbezirk", target = "bezStadtbezirk")
     AntragResponseDTO toDTO(Antrag antrag);
 
     @Mapping(source = "projnr", target = "projekt.projnr")

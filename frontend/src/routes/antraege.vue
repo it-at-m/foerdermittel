@@ -106,7 +106,7 @@ const headers: DataTableHeader<Partial<AntragResponseDTO>>[] = [
   },
   {
     title: t("model.antrag.fobFb"),
-    key: "projekt.foerderbereich.fb",
+    key: "projekt.fobFb.fb",
     value: "fobFb",
     align: "center",
     width: 50,
@@ -187,7 +187,7 @@ const EMPTY_ITEM_TEMPLATE: Partial<AntragResponseDTO> = {
 
 const antragApi = useAntragApi();
 
-const antragFormContext = computed(() => antragApi.context.data.value);
+const antragFormContext = computed(() => antragApi.context?.data.value);
 
 const projekte = computed(() => antragFormContext.value?.projekte ?? []);
 
@@ -197,21 +197,21 @@ const antragFormRef = useTemplateRef<AntragFormType>("antragForm");
 const handleCreate = async (antragCreateDTO: Partial<AntragResponseDTO>) => {
   const model = antragCreateDTO as AntragResponseDTO;
 
-  await antragApi.create.call({
+  await antragApi.create?.call({
     antragCreateDTO: model,
   });
 };
 
 const handleUpdate = async (antragUpdateDTO: Partial<AntragResponseDTO>) => {
   const model = antragUpdateDTO as AntragResponseDTO;
-  await antragApi.update.call({
+  await antragApi.update?.call({
     id: model.id,
     antragUpdateDTO: model,
   });
 };
 
 const handleDelete = async (id: string) => {
-  await antragApi.delete.call({
+  await antragApi.delete?.call({
     id,
   });
 };

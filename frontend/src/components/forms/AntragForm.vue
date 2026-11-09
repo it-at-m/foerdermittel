@@ -44,7 +44,7 @@
           </v-col>
           <v-col cols="2">
             <fm-text-field
-              :model-value="selectedProjekt.foerderbereich"
+              :model-value="selectedProjekt.fobFb"
               :label="t('model.antrag.fobFb')"
               :display-mode="InputDisplayMode.READ"
               rows="1"

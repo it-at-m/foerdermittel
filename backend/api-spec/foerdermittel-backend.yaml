@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: foerdermittel-backend
   description: Backend component for the application foerdermittel
-  version: 0.4.0-SNAPSHOT
+  version: 0.5.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -3467,11 +3467,11 @@ components:
       - asuD
       - asuK
       - asuZ
-      - bez_stadtbezirk
+      - bezStadtbezirk
       - bvorSuD
       - bvorSuK
       - bvorSuZ
-      - fob_fb
+      - fobFb
       - geskosten
       - id
       - pname
@@ -3489,9 +3489,9 @@ components:
           type: string
         pstrasse:
           type: string
-        fob_fb:
+        fobFb:
           type: number
-        bez_stadtbezirk:
+        bezStadtbezirk:
           type: number
         antragstyp:
           type: string

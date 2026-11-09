@@ -8,14 +8,25 @@ import de.muenchen.oss.foerdermittel.backend.TestUtils;
 import de.muenchen.oss.foerdermittel.backend.antrag.dto.AntragCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.antrag.dto.AntragResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.antrag.dto.AntragUpdateDTO;
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.Bauprogramm;
+import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammRepository;
 import de.muenchen.oss.foerdermittel.backend.bewilligung.Bewilligung;
 import de.muenchen.oss.foerdermittel.backend.bewilligung.BewilligungRepository;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichRepository;
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
+import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.HauptabschnittRepository;
+import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
+import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungRepository;
+import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektRepository;
+import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
+import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietRepository;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -65,6 +76,21 @@ public class AntragIntegrationTest {
     private ProjektRepository projektRepository;
 
     @Autowired
+    private UnterabschnittRepository unterabschnittRepository;
+
+    @Autowired
+    private HauptabschnittRepository hauptabschnittRepository;
+
+    @Autowired
+    private KurzbezeichnungRepository kurzbezeichnungRepository;
+
+    @Autowired
+    private SiedlungsgebietRepository siedlungsgebietRepository;
+
+    @Autowired
+    private BauprogrammRepository bauprogrammRepository;
+
+    @Autowired
     private BewilligungRepository bewilligungRepository;
 
     @Container
@@ -87,27 +113,37 @@ public class AntragIntegrationTest {
     }
 
     private void createExistingProject() {
-        final Foerderbereich foerderbereich = new Foerderbereich();
-        foerderbereich.setFb(BigDecimal.valueOf(99));
-        foerderbereich.setBezeichnung("Test");
-        foerderbereich.setFinanzausgleich(false);
-        foerderbereich.setNichtRelevant(false);
-        foerderbereich.setJahresstatistik(false);
-        foerderbereich.setKindergarten(false);
+        final Foerderbereich foerderbereich = new Foerderbereich(BigDecimal.valueOf(99), "Test", false, false, false, false);
         foerderbereichRepository.save(foerderbereich);
 
-        final Stadtbezirk stadtbezirk = new Stadtbezirk();
-        stadtbezirk.setStadtbezirk(BigDecimal.valueOf(99));
-        stadtbezirk.setBezeichnung("Test Stadtbezirk 1");
+        final Stadtbezirk stadtbezirk = new Stadtbezirk(BigDecimal.valueOf(99), "Test Stadtbezirk 1");
         stadtbezirkRepository.save(stadtbezirk);
 
-        final Projekt projekt = new Projekt();
-        projekt.setProjnr(EXISTING_PROJNR);
-        projekt.setPname("Testprojekt");
-        projekt.setPstrasse("Teststraße");
-        projekt.setFoerderbereich(foerderbereich);
-        projekt.setStadtbezirk(stadtbezirk);
-        projektRepository.save(projekt);
+        final Hauptabschnitt exampleHa2 = new Hauptabschnitt("ha", "bz2");
+        hauptabschnittRepository.save(exampleHa2);
+        final Unterabschnitt unterabschnitt = new Unterabschnitt("L", "Test", exampleHa2);
+        unterabschnittRepository.save(unterabschnitt);
+
+        final Kurzbezeichnung kurzbezeichnung = new Kurzbezeichnung("KB1", "Test");
+        kurzbezeichnungRepository.save(kurzbezeichnung);
+
+        final Siedlungsgebiet siedlungsgebiet = new Siedlungsgebiet(new BigDecimal(1), "Test");
+        siedlungsgebietRepository.save(siedlungsgebiet);
+
+        final Bauprogramm bauprogramm = new Bauprogramm(new BigDecimal(1), "Test");
+        bauprogrammRepository.save(bauprogramm);
+
+        projektRepository.save(new Projekt(EXISTING_PROJNR,
+                "2023",
+                foerderbereich,
+                "1",
+                "1",
+                "Test",
+                "Straße 1",
+                stadtbezirk,
+                unterabschnitt,
+                kurzbezeichnung,
+                Krisofp.K));
     }
 
     private static AntragCreateDTO createRequest(final String projnr, final Antragstyp antragstyp, final LocalDate antragsdatum,
@@ -196,7 +232,7 @@ public class AntragIntegrationTest {
             assertThat(result).isNotNull();
             assertThat(result.id()).isNotNull();
             assertThat(result.projnr()).isEqualTo(EXISTING_PROJNR);
-            assertThat(result.pname()).isEqualTo("Testprojekt");
+            assertThat(result.pname()).isEqualTo("Test");
             assertThat(result.antragstyp()).isEqualTo(Antragstyp.E);
             assertThat(result.anlagevon()).isEqualTo("sachbearbeitung");
             assertThat(result.anlagedatum()).isNotNull();
