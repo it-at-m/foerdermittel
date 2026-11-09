@@ -17,7 +17,7 @@
             ReportAuswertungProjekteDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahr"
-          :label="t('model.projekt.jahr')"
+          :label="t('domain.report.auswertungProjekt.jahr')"
           density="comfortable"
         />
       </v-col>
@@ -70,25 +70,6 @@
         md="3"
       >
         <fm-autocomplete
-          v-model="modelValue.parameters!.bez"
-          :items="props.reportAuswertungProjektFormContext?.bezs ?? []"
-          :item-title="getStadtbezirkTitle"
-          item-value="stadtbezirk"
-          :validation-attribute-map="
-            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
-          "
-          validation-attribute-key="bez"
-          :label="t('model.stadtbezirk.modelName')"
-          density="comfortable"
-          @update:model-value="delete modelValue.parameters!.sbl"
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="3"
-      >
-        <fm-autocomplete
           v-model="modelValue.parameters!.sbl"
           :items="props.reportAuswertungProjektFormContext?.sbls ?? []"
           :item-title="getStadtbezirkslisteTitle"
@@ -97,9 +78,28 @@
             ReportAuswertungProjekteDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="sbl"
-          :label="t('model.stadtbezirksliste.modelName')"
+          :label="t('domain.report.common.sbl')"
           density="comfortable"
           @update:model-value="delete modelValue.parameters!.bez"
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <fm-autocomplete
+          v-model="modelValue.parameters!.bez"
+          :items="props.reportAuswertungProjektFormContext?.bezs ?? []"
+          :item-title="getStadtbezirkTitle"
+          item-value="stadtbezirk"
+          :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bez"
+          :label="t('domain.report.common.bez')"
+          density="comfortable"
+          @update:model-value="delete modelValue.parameters!.sbl"
         />
       </v-col>
 
@@ -116,7 +116,7 @@
             ReportAuswertungProjekteDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="fb"
-          :label="t('model.foerderbereich.modelName')"
+          :label="t('domain.report.common.fb')"
           density="comfortable"
         />
       </v-col>
@@ -134,7 +134,7 @@
             ReportAuswertungProjekteDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="ua"
-          :label="t('model.unterabschnitt.modelName')"
+          :label="t('domain.report.common.ua')"
           density="comfortable"
         />
       </v-col>
@@ -154,7 +154,7 @@
             ReportAuswertungProjekteDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="kurz"
-          :label="t('model.kurzbezeichnung.modelName')"
+          :label="t('domain.report.common.kurz')"
           density="comfortable"
         />
       </v-col>
@@ -172,7 +172,7 @@
             ReportAuswertungProjekteDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="sgt"
-          :label="t('model.siedlungsgebiet.modelName')"
+          :label="t('domain.report.common.sgt')"
           density="comfortable"
         />
       </v-col>
@@ -190,7 +190,7 @@
             ReportAuswertungProjekteDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="bpg"
-          :label="t('model.bauprogramm.modelName')"
+          :label="t('domain.report.common.bpg')"
           density="comfortable"
         />
       </v-col>
@@ -208,7 +208,7 @@
             ReportAuswertungProjekteDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="krisofp"
-          :label="t('model.projekt.krisofp')"
+          :label="t('domain.report.common.krisofp')"
           density="comfortable"
           clearable
         />
@@ -227,7 +227,7 @@
             ReportAuswertungProjekteDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="pname"
-          :label="t('model.projekt.pname')"
+          :label="t('domain.report.common.pname')"
           density="comfortable"
         />
       </v-col>
@@ -243,7 +243,7 @@
             ReportAuswertungProjekteDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="pstrasse"
-          :label="t('model.projekt.pstrasse')"
+          :label="t('domain.report.common.pstrasse')"
           density="comfortable"
         />
       </v-col>
@@ -307,6 +307,7 @@ import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
+import { getKrisofpTitle } from "@/util/krisofpUtils.ts";
 
 const { t } = useI18n();
 
@@ -348,28 +349,13 @@ const jahrOptions = computed(() => {
         .filter((jahr): jahr is string => !!jahr)
         .map((jahr) => (jahr.length === 2 ? `20${jahr}` : jahr))
     ),
-  ].map((jahr) => ({
-    title: jahr,
-    value: jahr,
-  }));
+  ]
+    .sort((a, b) => Number(b) - Number(a))
+    .map((jahr) => ({
+      title: jahr,
+      value: jahr,
+    }));
 });
-
-const krisofpBezeichnungen = new Map<string, string>([
-  ["X", "1.+2. SIP - KriSoFö 2008-2014"],
-  ["Y", "3. SIP - Kinderbetreuung 2015-2019"],
-  ["Z", "4. SIP - Kinderbetreuung 2017-2020/2021"],
-  ["W", "5. SIP - Schulkindbetreuung Land (Hortförd. GS)"],
-  ["V", "Schulkindbetreuung - Bund (GaFöG)"],
-  ["K", "KJP II"],
-  ["F", "FAGplus15"],
-  ["S", "Startchancen-Programm (SCP)"],
-]);
-
-function getKrisofpTitle(
-  item: ReportAuswertungProjektFormContextDTOKrisofpEnum
-): string {
-  return `${item} (${krisofpBezeichnungen.get(item) ?? item})`;
-}
 
 function getKrisofpValue(
   item: ReportAuswertungProjektFormContextDTOKrisofpEnum
