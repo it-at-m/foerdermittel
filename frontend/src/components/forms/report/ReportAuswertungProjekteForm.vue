@@ -371,6 +371,10 @@ function getKrisofpTitle(
   item: ReportAuswertungProjektFormContextDTOKrisofpEnum
 ): string {
   return `${item} (${krisofpBezeichnungen.get(item) ?? item})`;
+function getKrisofpTitle(
+ item: ReportAuswertungProjektFormContextDTOKrisofpEnum
+): string {
+ return item ? `${item} (${krisofpBezeichnungen.get(item)})` : "";
 }
 
 function getKrisofpValue(
