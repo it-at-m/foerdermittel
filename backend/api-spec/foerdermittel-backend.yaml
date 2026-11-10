@@ -2248,6 +2248,45 @@ paths:
                 format: binary
       security:
       - bearerAuth: []
+  /report/auswertungantraege/form-context:
+    get:
+      tags:
+      - report-auswertung-antraege-controller
+      operationId: getReportAuswertungAntraegeFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportAuswertungAntraegeFormContext"
+      security:
+      - bearerAuth: []
+  /report/auswertungantraege/:
+    get:
+      tags:
+      - report-auswertung-antraege-controller
+      operationId: getReportAuswertungAntraege
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportAuswertungAntraegeDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
   /report/annahmeAnordnungSap:
     get:
       tags:
@@ -3945,14 +3984,14 @@ components:
           items:
             type: string
             enum:
+            - F
+            - K
+            - S
+            - V
+            - W
             - X
             - "Y"
             - Z
-            - W
-            - V
-            - K
-            - F
-            - S
         siedlungsgebiete:
           type: array
           items:
@@ -4032,14 +4071,14 @@ components:
         krisofp:
           type: string
           enum:
+          - F
+          - K
+          - S
+          - V
+          - W
           - X
           - "Y"
           - Z
-          - W
-          - V
-          - K
-          - F
-          - S
         sgt:
           pattern: ^\d*$
           type: string
@@ -4320,14 +4359,14 @@ components:
           items:
             type: string
             enum:
+            - F
+            - K
+            - S
+            - V
+            - W
             - X
             - "Y"
             - Z
-            - W
-            - V
-            - K
-            - F
-            - S
     ReportAuswertungProjektFormContextDTO:
       required:
       - jahr
@@ -4342,14 +4381,14 @@ components:
         krisofp:
           type: string
           enum:
+          - F
+          - K
+          - S
+          - V
+          - W
           - X
           - "Y"
           - Z
-          - W
-          - V
-          - K
-          - F
-          - S
     ReportAuswertungProjekteDTO:
       required:
       - sort
@@ -4384,14 +4423,14 @@ components:
         krisofp:
           type: string
           enum:
+          - F
+          - K
+          - S
+          - V
+          - W
           - X
           - "Y"
           - Z
-          - W
-          - V
-          - K
-          - F
-          - S
         kauf:
           type: string
         offen:
@@ -4406,6 +4445,160 @@ components:
           - STRASSE_PROJEKTNUMMER
           - FOERDERBEREICH_STRASSE
           - FOERDERBEREICH_PROJEKTNUMMER
+        type:
+          $ref: "#/components/schemas/ReportFormat"
+    ReportAuswertungAntraegeFormContext:
+      required:
+      - antraege
+      - bezs
+      - bpgs
+      - fbs
+      - krisofps
+      - kurzs
+      - projs
+      - sbls
+      - sgts
+      - uas
+      type: object
+      properties:
+        sbls:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
+        bezs:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
+        fbs:
+          type: array
+          items:
+            $ref: "#/components/schemas/FoerderbereichFormContextDTO"
+        uas:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnterabschnittFormContextDTO"
+        kurzs:
+          type: array
+          items:
+            $ref: "#/components/schemas/KurzbezeichnungFormContextDTO"
+        projs:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportAuswertungAntragFormContextDTO"
+        krisofps:
+          type: array
+          items:
+            type: string
+            enum:
+            - F
+            - K
+            - S
+            - V
+            - W
+            - X
+            - "Y"
+            - Z
+        antraege:
+          type: array
+          items:
+            type: string
+            enum:
+            - E
+            - V
+            - A
+            - F
+            - U
+        sgts:
+          type: array
+          items:
+            $ref: "#/components/schemas/SiedlungsgebietFormContextDTO"
+        bpgs:
+          type: array
+          items:
+            $ref: "#/components/schemas/BauprogrammFormContextDTO"
+    ReportAuswertungAntragFormContextDTO:
+      required:
+      - pname
+      - projnr
+      - pstrasse
+      type: object
+      properties:
+        projnr:
+          type: string
+        pname:
+          type: string
+        pstrasse:
+          type: string
+    ReportAuswertungAntraegeDTO:
+      required:
+      - sort
+      - type
+      type: object
+      properties:
+        jahrVon:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        jahrBis:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        bez:
+          type: string
+        fb:
+          type: string
+        ua:
+          type: string
+        kurz:
+          type: string
+        pstrasse:
+          maxLength: 30
+          minLength: 0
+          type: string
+        pname:
+          maxLength: 30
+          minLength: 0
+          type: string
+        projnr:
+          maxLength: 7
+          minLength: 0
+          type: string
+        sgt:
+          type: string
+        sbl:
+          type: string
+        bpg:
+          type: string
+        krisofp:
+          type: string
+          enum:
+          - F
+          - K
+          - S
+          - V
+          - W
+          - X
+          - "Y"
+          - Z
+        antragstyp:
+          type: string
+          enum:
+          - E
+          - V
+          - A
+          - F
+          - U
+        fag:
+          type: string
+        offen:
+          type: string
+        relevant:
+          type: string
+        sort:
+          type: string
+          enum:
+          - FOERDERBEREICH_PROJEKTNUMMER
+          - FOERDERBEREICH_STRASSE
+          - PROJEKTSTRASSE_PROJEKTNUMMER
+          - PROJEKTNUMMER
         type:
           $ref: "#/components/schemas/ReportFormat"
     ReportAnnahmeAnordnungSapDTO:
@@ -4525,14 +4718,14 @@ components:
         krisofp:
           type: string
           enum:
+          - F
+          - K
+          - S
+          - V
+          - W
           - X
           - "Y"
           - Z
-          - W
-          - V
-          - K
-          - F
-          - S
     ProjektFormContext:
       required:
       - projekte
