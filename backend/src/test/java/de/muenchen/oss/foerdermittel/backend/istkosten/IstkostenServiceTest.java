@@ -92,42 +92,14 @@ class IstkostenServiceTest {
                     "Test Projekt",
                     "Test Strasse",
                     BigDecimal.valueOf(11),
-                    BigDecimal.valueOf(13),
-                    "Unterabschnitt 1",
-                    "Kurz1",
-                    "Krankenhaus 1",
-                    null,
-                    null,
-                    BigDecimal.valueOf(11),
-                    BigDecimal.valueOf(13),
-                    "Art",
-                    false,
-                    false,
-                    BigDecimal.valueOf(11),
-                    BigDecimal.valueOf(11),
-                    BigDecimal.valueOf(11),
-                    "Notizen");
+                    BigDecimal.valueOf(13));
 
             final ProjektFormContextDTO projektDTO2 = new ProjektFormContextDTO(
                     OTHER_PROJNR,
                     "Test Projekt 2",
                     "Test Strasse 2",
                     BigDecimal.valueOf(12),
-                    BigDecimal.valueOf(13),
-                    "Unterabschnitt 2",
-                    "Kurz2",
-                    "Krankenhaus 2",
-                    null,
-                    null,
-                    BigDecimal.valueOf(12),
-                    BigDecimal.valueOf(13),
-                    "Art",
-                    false,
-                    false,
-                    BigDecimal.valueOf(12),
-                    BigDecimal.valueOf(12),
-                    BigDecimal.valueOf(12),
-                    "Notizen 2");
+                    BigDecimal.valueOf(13));
 
             final List<ProjektFormContextDTO> projekte = List.of(projektDTO1, projektDTO2);
 

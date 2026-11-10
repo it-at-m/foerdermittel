@@ -196,32 +196,8 @@ class ProjektMapperTest {
             assertThat(dto.pname()).isEqualTo(projekt.getPname());
             assertThat(dto.pstrasse()).isEqualTo(projekt.getPstrasse());
 
-            assertThat(dto.fobFb())
-                    .isEqualByComparingTo(projekt.getFobFb().getFb());
-            assertThat(dto.bezStadtbezirk())
-                    .isEqualByComparingTo(projekt.getBezStadtbezirk().getStadtbezirk());
-            assertThat(dto.uasUa()).isEqualTo(projekt.getUasUa().getUa());
-            assertThat(dto.kurKurzbez())
-                    .isEqualTo(projekt.getKurKurzbez().getKurzbez());
-            assertThat(dto.sgtSiedlungsgebiet())
-                    .isEqualByComparingTo(projekt.getSgtSiedlungsgebiet().getSiedlungsgebiet());
-            assertThat(dto.bpgBauprogramm())
-                    .isEqualByComparingTo(projekt.getBpgBauprogramm().getBauprogramm());
-
-            assertThat(dto.projart()).isEqualTo(projekt.getProjart());
-            assertThat(dto.refinanzierbar()).isEqualTo(projekt.getRefinanzierbar());
-            assertThat(dto.kauf()).isEqualTo(projekt.getKauf());
-            assertThat(dto.kripplatz())
-                    .isEqualByComparingTo(projekt.getKripplatz());
-            assertThat(dto.kigaplatz())
-                    .isEqualByComparingTo(projekt.getKigaplatz());
-            assertThat(dto.hortplatz())
-                    .isEqualByComparingTo(projekt.getHortplatz());
-            assertThat(dto.notizen()).isEqualTo(projekt.getNotizen());
-
-            assertThat(dto.krnKrhname()).isNull();
-            assertThat(dto.krhzweck()).isNull();
-            assertThat(dto.krisofp()).isNull();
+            assertThat(dto.fobFb()).isEqualByComparingTo(projekt.getFobFb().getFb());
+            assertThat(dto.bezStadtbezirk()).isEqualByComparingTo(projekt.getBezStadtbezirk().getStadtbezirk());
         }
 
         @Test
