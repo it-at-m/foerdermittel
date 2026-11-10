@@ -65,7 +65,8 @@
       "ausgabeNotiz": "Ausgabe Notiz",
       "pname": "Name",
       "pstrasse": "Straße",
-      "krisofp": "Förderprogramm"
+      "krisofp": "Förderprogramm",
+      "bezStadtbezirk": "Bez."
     },
     "antrag": {
       "modelName": "Antrag | Anträge"
@@ -116,7 +117,6 @@
       "hhjahr": "Haushaltsjahr",
       "hhbezeichnung": "Bezeichnung",
       "notizen": "Notizen"
-
     },
     "haushaltsplanung": {
       "modelName": "Haushaltsplanung | Haushaltsplanungen",

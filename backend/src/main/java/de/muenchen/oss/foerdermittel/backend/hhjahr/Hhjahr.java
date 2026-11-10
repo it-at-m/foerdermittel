@@ -39,22 +39,17 @@ public class Hhjahr implements Serializable {
 
     @Id
     @Column(name = "hhjahr", nullable = false)
-    @NotNull
-    @Min(0)
-    @Digits(integer = 4, fraction = 0)
-    private BigDecimal hhjahr;
+    @NotNull @Min(0) @Digits(integer = 4, fraction = 0) private BigDecimal hhjahr;
 
     @Column(name = "hhbezeichnung")
-    @NotNull
-    @Size(min = 1, max = 200)
-    private String hhbezeichnung;
+    @NotNull @Size(min = 1, max = 200) private String hhbezeichnung;
 
     @Column(name = "notizen")
     private String notizen;
 
     @OneToMany(
             mappedBy = "hhjJahr",
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            cascade = { CascadeType.PERSIST, CascadeType.MERGE },
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )

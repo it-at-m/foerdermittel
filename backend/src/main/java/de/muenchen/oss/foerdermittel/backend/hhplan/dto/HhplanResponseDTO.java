@@ -9,5 +9,17 @@ public record HhplanResponseDTO(
         @NotNull String proProjnr,
         @NotNull BigDecimal hhjJahr,
         @NotNull String fipo,
-        String notizen) {
+        String notizen,
+        @NotNull String pname,
+        @NotNull String pstrasse,
+        @NotNull BigDecimal fobFb,
+        BigDecimal mitteleinplanung,
+        BigDecimal bewilligungVoj,
+        BigDecimal bewilligungHhj,
+        BigDecimal erhaltenVoj,
+        BigDecimal erhaltenHhj,
+        BigDecimal baustandaktuell,
+        BigDecimal an,
+        BigDecimal n1,
+        BigDecimal n2) {
 }

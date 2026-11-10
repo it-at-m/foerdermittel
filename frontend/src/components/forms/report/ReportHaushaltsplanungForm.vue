@@ -89,7 +89,7 @@
             ReportHaushaltsplanungDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="fipo"
-          :label="t('domain.report.haushaltsplanung.vue.fipo')"
+          :label="t('domain.report.haushaltsplanung.fipo')"
         />
       </v-col>
       <v-col
@@ -99,7 +99,7 @@
         <v-checkbox
           v-model="modelValue.parameters!.hh"
           item-value="hh"
-          :label="t('domain.report.haushaltsplanung.vue.hh')"
+          :label="t('domain.report.haushaltsplanung.hh')"
           true-value="1"
           false-value="0"
         />
@@ -217,42 +217,42 @@ const haushaltsjahre = computed(() => {
 
 const sortOptions = [
   {
-    title: t("domain.report.haushaltsplanung.vue.sortEnum.projektnummer"),
+    title: t("domain.report.haushaltsplanung.sortEnum.projektnummer"),
     value: "PROJEKTNUMMER",
   },
   {
-    title: t("domain.report.haushaltsplanung.vue.sortEnum.strasse"),
+    title: t("domain.report.haushaltsplanung.sortEnum.strasse"),
     value: "STRASSE",
   },
   {
-    title: t("domain.report.haushaltsplanung.vue.sortEnum.fipo"),
+    title: t("domain.report.haushaltsplanung.sortEnum.fipo"),
     value: "FIPO",
   },
   {
-    title: t("domain.report.haushaltsplanung.vue.sortEnum.fbProjektnummer"),
+    title: t("domain.report.haushaltsplanung.sortEnum.fbProjektnummer"),
     value: "FB_PROJEKTNUMMER",
   },
   {
-    title: t("domain.report.haushaltsplanung.vue.sortEnum.fbStrasseProjektnummer"),
+    title: t("domain.report.haushaltsplanung.sortEnum.fbStrasseProjektnummer"),
     value: "FB_STRASSE_PROJEKTNUMMER",
   },
   {
-    title: t("domain.report.haushaltsplanung.vue.sortEnum.fbFipo"),
+    title: t("domain.report.haushaltsplanung.sortEnum.fbFipo"),
     value: "FB_FIPO",
   },
 ];
 
 const formatOptions = [
   {
-    title: t("domain.report.haushaltsplanung.vue.type.pdf"),
+    title: t("domain.report.haushaltsplanung.type.pdf"),
     value: "PDF",
   },
   {
-    title: t("domain.report.haushaltsplanung.vue.type.pdfFlat"),
+    title: t("domain.report.haushaltsplanung.type.pdfFlat"),
     value: "PDF_FLAT",
   },
   {
-    title: t("domain.report.haushaltsplanung.vue.type.excel"),
+    title: t("domain.report.haushaltsplanung.type.excel"),
     value: "EXCEL",
   },
 ];

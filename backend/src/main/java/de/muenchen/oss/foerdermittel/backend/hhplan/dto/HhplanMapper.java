@@ -13,6 +13,9 @@ public interface HhplanMapper {
     @Mapping(source = "id.hhjJahr", target = "id", qualifiedByName = "bigDecimalToIntegerString")
     @Mapping(source = "id.proProjnr", target = "proProjnr")
     @Mapping(source = "hhjJahr.hhjahr", target = "hhjJahr")
+    @Mapping(source = "proProjnr.pname", target = "pname")
+    @Mapping(source = "proProjnr.pstrasse", target = "pstrasse")
+    @Mapping(source = "proProjnr.fobFb.fb", target = "fobFb")
     HhplanResponseDTO toDTO(Hhplan hhplan);
 
     @Mapping(target = "id", ignore = true)

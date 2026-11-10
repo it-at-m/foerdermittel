@@ -158,9 +158,15 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.haushaltsjahr.modelName", 2),
+        props: {
+          to: "/haushaltsjahr",
+        },
       },
       {
-        title: t("model.haushaltsplanung.vue.modelName", 2),
+        title: t("model.haushaltsplanung.modelName", 2),
+        props: {
+          to: "/haushaltsplanung",
+        },
       },
     ],
   },
@@ -209,7 +215,7 @@ const navigationItems: NavigationItem[] = [
         title: t("domain.kinderbetreuungsEinrichtung", 2),
       },
       {
-        title: t("model.haushaltsplanung.vue.modelName", 2),
+        title: t("model.haushaltsplanung.modelName", 2),
       },
     ],
   },
@@ -321,7 +327,7 @@ const navigationItems: NavigationItem[] = [
         title: t("domain.kinderbetreuungsEinrichtung", 2),
       },
       {
-        title: t("model.haushaltsplanung.vue.modelName", 2),
+        title: t("model.haushaltsplanung.modelName", 2),
         props: {
           to: "/report/haushaltsplanung",
         },
