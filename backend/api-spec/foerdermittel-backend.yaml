@@ -4357,7 +4357,7 @@ components:
       type: object
       properties:
         jahr:
-          pattern: "(\\d{4})?"
+          pattern: "^(\\d{4})?"
           type: string
         bez:
           type: string
