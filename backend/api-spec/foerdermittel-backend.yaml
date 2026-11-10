@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: foerdermittel-backend
   description: Backend component for the application foerdermittel
-  version: 0.4.0-SNAPSHOT
+  version: 0.5.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -3120,7 +3120,7 @@ components:
           minimum: 0
           type: number
         notizen:
-          maxLength: 100
+          maxLength: 4000
           minLength: 0
           type: string
         bpgBauprogramm:
@@ -3737,7 +3737,7 @@ components:
         kauf:
           type: boolean
         notizen:
-          maxLength: 100
+          maxLength: 4000
           minLength: 0
           type: string
         bpgBauprogramm:
@@ -4046,61 +4046,6 @@ components:
           description: ""
         bezStadtbezirk:
           type: number
-          description: ""
-        uasUa:
-          type: string
-          description: ""
-        kurKurzbez:
-          type: string
-          description: ""
-        krnKrhname:
-          type: string
-          description: ""
-        krhzweck:
-          type: string
-          description: ""
-          enum:
-          - J
-          - S
-          - R
-        krisofp:
-          type: string
-          description: ""
-          enum:
-          - F
-          - K
-          - S
-          - V
-          - W
-          - X
-          - "Y"
-          - Z
-        sgtSiedlungsgebiet:
-          type: number
-          description: ""
-        bpgBauprogramm:
-          type: number
-          description: ""
-        projart:
-          type: string
-          description: ""
-        refinanzierbar:
-          type: boolean
-          description: ""
-        kauf:
-          type: boolean
-          description: ""
-        kripplatz:
-          type: number
-          description: ""
-        kigaplatz:
-          type: number
-          description: ""
-        hortplatz:
-          type: number
-          description: ""
-        notizen:
-          type: string
           description: ""
       description: DTO for Projekt to be used in other FormContexts other than its
         own.
