@@ -1,19 +1,22 @@
 <template>
   <v-form
     ref="form"
-    :readonly="displayMode === InputDisplayMode.READ"
+    :readonly="props.displayMode === InputDisplayMode.READ"
     @update:model-value="onValidityChanged"
   >
     <v-row>
       <v-col cols="3">
-        <fm-text-field
-          v-model="hhjahr"
-          :display-mode="displayMode"
+        <fm-number-input
+          v-model="modelValue.hhjahr"
+          :display-mode="props.displayMode"
           disable-edit
           :validation-attribute-map="
             HhjahrCreateDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="hhjahr"
+          :additional-rules="[
+            rules['unique']!(props.hhjahrFormContext.hhj, currentHhjahr),
+          ]"
           :label="t('model.haushaltsjahr.hhjahr')"
         />
       </v-col>
@@ -21,7 +24,7 @@
       <v-col cols="4">
         <fm-text-field
           v-model="modelValue.hhbezeichnung"
-          :display-mode="displayMode"
+          :display-mode="props.displayMode"
           :validation-attribute-map="
             HhjahrCreateDTOPropertyValidationAttributesMap
           "
@@ -33,7 +36,7 @@
       <v-col cols="4">
         <fm-text-field
           v-model="modelValue.notizen"
-          :display-mode="displayMode"
+          :display-mode="props.displayMode"
           :validation-attribute-map="
             HhjahrCreateDTOPropertyValidationAttributesMap
           "
@@ -58,45 +61,27 @@ import { useI18n } from "vue-i18n";
 import { useRules } from "vuetify";
 
 import { HhjahrCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
+import FmNumberInput from "@/components/common/FmNumberInput.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
 const { t } = useI18n();
+const rules = useRules();
 
 const modelValue = defineModel<Partial<HhjahrResponseDTO>>({
   required: true,
 });
 
-const { haushaltsjahrFormContext, displayMode = InputDisplayMode.CREATE } =
-  defineProps<{
-    haushaltsjahrFormContext: DeepReadonly<HhjahrFormContext>;
-    displayMode?: InputDisplayMode;
-  }>();
+const props = defineProps<{
+  hhjahrFormContext: DeepReadonly<HhjahrFormContext>;
+  displayMode?: InputDisplayMode;
+}>();
 
 const emit = defineEmits<{
   isValid: [boolean | null];
 }>();
 
-const rules = useRules();
-
-const hhjahr = computed<string | undefined>({
-  get: () =>
-    modelValue.value.hhjahr !== undefined
-      ? String(modelValue.value.hhjahr)
-      : undefined,
-  set: (value) => {
-    if (value === undefined || value.trim() === "") {
-      modelValue.value.hhjahr = undefined;
-      return;
-    }
-
-    const numericValue = Number(value);
-
-    modelValue.value.hhjahr = Number.isNaN(numericValue)
-      ? undefined
-      : numericValue;
-  },
-});
+const currentHhjahr = computed(() => modelValue.value.hhjahr);
 
 function onValidityChanged(newIsValid: boolean | null) {
   emit("isValid", newIsValid);

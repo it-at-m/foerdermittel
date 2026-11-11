@@ -1,8 +1,11 @@
 import type {
+  CreateHhjahrRequest,
+  DeleteHhjahrRequest,
   GetHhjahreRequest,
   HhjahrFormContext,
   HhjahrResponseDTO,
   PagedModelHhjahrResponseDTO,
+  UpdateHhjahrRequest,
 } from "@/api/generated/foerdermittel-backend";
 import type { ApiComposables } from "@/util/composable-helper";
 
@@ -17,26 +20,30 @@ export const {
   useContext: useGetHaushaltsjahrFormContext,
 } = createAPIComposables<
   HhjahrControllerApi,
+  CreateHhjahrRequest,
+  UpdateHhjahrRequest,
   never,
-  never,
-  never,
-  never,
+  DeleteHhjahrRequest,
   GetHhjahreRequest,
   HhjahrResponseDTO,
   PagedModelHhjahrResponseDTO,
   HhjahrFormContext
 >(HhjahrControllerApi, {
+  create: (api, req) => api.createHhjahr(req),
+  update: (api, req) => api.updateHhjahr(req),
   getAll: (api, req) => api.getHhjahre(req),
+  delete: (api, req) => api.deleteHhjahr(req),
+  context: (api) => api.getHhjahrFormContext(),
 });
 
 export function useHaushaltsjahrApi(): ApiComposables<
   HhjahrResponseDTO,
   HhjahrFormContext,
-  never,
+  CreateHhjahrRequest,
   HhjahrResponseDTO,
-  never,
+  UpdateHhjahrRequest,
   HhjahrResponseDTO,
-  never
+  DeleteHhjahrRequest
 > {
   return {
     getAll: useGetHaushaltsjahre?.(),

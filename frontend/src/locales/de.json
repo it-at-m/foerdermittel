@@ -149,7 +149,10 @@
       "anlagevon": "Anlage von",
       "aenderungvon": "Änderung von",
       "aenderungdatum": "Änderungsdatum",
-      "lnaKurzbez": "Liste"
+      "lnaKurzbez": "Liste",
+      "keineZuordnungen": "Keine zugeordneten Haushaltsplanungen vorhanden.",
+      "trennzeichen": "–",
+      "bezeichnungInKlammern": "({bezeichnung})"
     },
     "staedtebaufoerderung": {
       "modelName": "Städtebauförderung | Städtebauförderungen"
