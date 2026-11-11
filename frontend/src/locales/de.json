@@ -55,18 +55,29 @@
   "model": {
     "projekt": {
       "modelName": "Projekt | Projekte",
-      "fobFb": "Förderbereich",
-      "jahr": "Jahr",
-      "kurKurzbez": "Kurzbezeichnung",
       "projnr": "Projektnummer",
-      "strasse": "Straße",
-      "name": "Name",
-      "uasUa": "UA",
-      "ausgabeNotiz": "Ausgabe Notiz",
       "pname": "Name",
       "pstrasse": "Straße",
+      "ausgabeNotiz": "Ausgabe Notiz",
+      "jahr": "Projektjahr",
       "krisofp": "Förderprogramm",
-      "bezStadtbezirk": "Bez."
+      "fobFb": "Förderbereich",
+      "kurKurzbez": "Kurzbezeichnung",
+      "uasUa": "Unterabschnitt",
+      "lfdnr1": "Laufende Nummer 1",
+      "lfdnr2": "Laufende Nummer 2",
+      "bezStadtbezirk": "Stadtbezirk",
+      "krnKrhname": "Krankenhaus",
+      "sgtSiedlungsgebiet": "Siedlungsgebiet",
+      "projart": "Projektart",
+      "refinanzierbar": "Refinanzierbar",
+      "kauf": "Kauf",
+      "kripplatz": "Krippenplätze",
+      "kigaplatz": "Kindergartenplätze",
+      "hortplatz": "Hortplätze",
+      "notizen": "Notizen",
+      "bpgBauprogramm": "Bauprogramm",
+      "krhzweck": "Krankenhauszweck"
     },
     "antrag": {
       "modelName": "Antrag | Anträge"
@@ -261,6 +272,7 @@
         "jahr": "Jahr",
         "jahrBis": "Jahr bis",
         "jahrVon": "Jahr von",
+        "krisofp": "Sonderförderprogramm",
         "kurz": "Kurzbezeichnung",
         "offen": "Nur offene Projekte",
         "pname": "Projektname",
@@ -291,11 +303,13 @@
       },
       "bewilligungAuzahlungVergleich": "@:model.bewilligung.modelName und @:domain.auszahlung (Vergleich)",
       "auswertungProjekt": {
-        "modelName": "Projekt",
+        "modelName": "Projekte",
         "offen": "Nur offene Projekte",
+        "jahr": "Projektjahr",
         "kauf": "Nur Projekte mit Ankauf",
-        "relevant": "Nur relevante Projekte",
+        "relevant": "Nur relevante FB",
         "sortierung": "Sortierung",
+
         "sortEnum": {
           "stadtbezirkStrasse": "Stadtbezirk, Straße",
           "projektnummer": "Projektnummer",

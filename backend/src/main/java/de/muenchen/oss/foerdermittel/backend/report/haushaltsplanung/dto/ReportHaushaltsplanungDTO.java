@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public record ReportHaushaltsplanungDTO(
-        @NotBlank @Pattern(regexp = "\\d{4}") String haushaltsjahr,
+        @NotBlank @Pattern(regexp = "^\\d{4}$") String haushaltsjahr,
         String fb,
         String fipo,
         String sbl,

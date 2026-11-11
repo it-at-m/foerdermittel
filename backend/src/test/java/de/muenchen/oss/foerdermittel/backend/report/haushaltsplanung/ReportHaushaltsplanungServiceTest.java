@@ -340,12 +340,12 @@ class ReportHaushaltsplanungServiceTest {
         @Test
         void givenEntitiesExists_thenReturnCorrectFormContext() {
             // Given
-            final List<StadtbezirkFormContextDTO> allStadtbezirke = List.of(new StadtbezirkFormContextDTO("K", "Test"),
-                    new StadtbezirkFormContextDTO("L", "Test 2"), new StadtbezirkFormContextDTO("M", "Test 3"));
+            final List<StadtbezirkFormContextDTO> allStadtbezirke = List.of(new StadtbezirkFormContextDTO(1, "Test"),
+                    new StadtbezirkFormContextDTO(1, "Test 2"), new StadtbezirkFormContextDTO(1, "Test 3"));
             when(stadtbezirkService.getStadtbezirkFormContextDTOs()).thenReturn(allStadtbezirke);
 
-            final List<FoerderbereichFormContextDTO> allFoerderbereiche = List.of(new FoerderbereichFormContextDTO("K", "Test"),
-                    new FoerderbereichFormContextDTO("L", "Test 2"), new FoerderbereichFormContextDTO("M", "Test 3"));
+            final List<FoerderbereichFormContextDTO> allFoerderbereiche = List.of(new FoerderbereichFormContextDTO(1, "Test"),
+                    new FoerderbereichFormContextDTO(1, "Test 2"), new FoerderbereichFormContextDTO(1, "Test 3"));
             when(foerderbereichService.getFoerderbereichFormContextDTOs()).thenReturn(allFoerderbereiche);
 
             final List<ListennameStadtbezirkslisteFormContextDTO> allStadtbezirkslisten = List.of(

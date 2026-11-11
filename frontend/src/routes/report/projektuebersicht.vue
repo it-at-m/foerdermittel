@@ -49,7 +49,7 @@ const { t } = useI18n();
 const EMPTY_FORM_TEMPLATE: Partial<GetReportProjektuebersichtRequest> = {
   parameters: {
     projnr: "",
-    notiz: false,
+    notiz: true,
   },
 };
 
