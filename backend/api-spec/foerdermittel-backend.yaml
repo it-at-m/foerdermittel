@@ -2875,7 +2875,6 @@ components:
         telefon:
           maxLength: 30
           minLength: 1
-          pattern: \d*
           type: string
         notizen:
           type: string
@@ -3560,7 +3559,6 @@ components:
         telefon:
           maxLength: 30
           minLength: 1
-          pattern: \d*
           type: string
         notizen:
           type: string
@@ -4490,7 +4488,7 @@ components:
       properties:
         haushaltsjahr:
           minLength: 1
-          pattern: "\\d{4}"
+          pattern: "^\\d{4}$"
           type: string
         fb:
           type: string
@@ -4716,7 +4714,7 @@ components:
       type: object
       properties:
         jahr:
-          pattern: "(\\d{4})?"
+          pattern: "^(\\d{4})?$"
           type: string
         bez:
           type: string
