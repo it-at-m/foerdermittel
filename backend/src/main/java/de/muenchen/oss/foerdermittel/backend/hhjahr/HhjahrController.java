@@ -40,14 +40,20 @@ public class HhjahrController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<HhjahrResponseDTO> getHhjahre(@ParameterObject @PageableDefault(
-            sort = "hhjahr"
-    ) final Pageable pageable) {
+    public Page<HhjahrResponseDTO> getHhjahre(
+            @ParameterObject @PageableDefault(sort = "hhjahr") final Pageable pageable) {
+
         final Page<Hhjahr> pageWithHhjahr = hhjahrService.getHhjahre(pageable);
-        final List<HhjahrResponseDTO> hhjahrResponseDTOList = pageWithHhjahr.getContent().stream()
+
+        final List<HhjahrResponseDTO> hhjahrResponseDTOList = pageWithHhjahr.getContent()
+                .stream()
                 .map(hhjahrMapper::toDTO)
                 .toList();
-        return new PageImpl<>(hhjahrResponseDTOList, pageWithHhjahr.getPageable(), pageWithHhjahr.getTotalElements());
+
+        return new PageImpl<>(
+                hhjahrResponseDTOList,
+                pageWithHhjahr.getPageable(),
+                pageWithHhjahr.getTotalElements());
     }
 
     @GetMapping("/form-context")
@@ -58,14 +64,19 @@ public class HhjahrController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public HhjahrResponseDTO createHhjahr(@Valid @RequestBody final HhjahrCreateDTO hhjahrCreateDTO) {
-        return hhjahrMapper.toDTO(hhjahrService.createHhjahr(hhjahrMapper.toEntity(hhjahrCreateDTO)));
+    public HhjahrResponseDTO createHhjahr(
+            @Valid @RequestBody final HhjahrCreateDTO hhjahrCreateDTO) {
+
+        return hhjahrMapper.toDTO(
+                hhjahrService.createHhjahr(hhjahrMapper.toEntity(hhjahrCreateDTO)));
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public HhjahrResponseDTO updateHhjahr(@Valid @RequestBody final HhjahrUpdateDTO hhjahrUpdateDTO,
+    public HhjahrResponseDTO updateHhjahr(
+            @Valid @RequestBody final HhjahrUpdateDTO hhjahrUpdateDTO,
             @PathVariable("id") final String hhjahrId) {
+
         return hhjahrMapper.toDTO(
                 hhjahrService.updateHhjahr(
                         hhjahrMapper.toEntity(hhjahrUpdateDTO),
@@ -77,5 +88,4 @@ public class HhjahrController {
     public void deleteHhjahr(@PathVariable("id") final String hhjahrId) {
         hhjahrService.deleteHhjahr(ControllerUtils.convertStringToBigDecimal(hhjahrId));
     }
-
 }

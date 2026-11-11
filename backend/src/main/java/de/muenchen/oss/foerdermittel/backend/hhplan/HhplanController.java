@@ -31,14 +31,20 @@ public class HhplanController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<HhplanResponseDTO> getHhplan(@ParameterObject @PageableDefault(
-            sort = "id.hhjJahr"
-    ) final Pageable pageable) {
+    public Page<HhplanResponseDTO> getHhplan(
+            @ParameterObject @PageableDefault(sort = "id.hhjJahr") final Pageable pageable) {
+
         final Page<Hhplan> pageWithHhplan = hhplanService.getHhplan(pageable);
-        final List<HhplanResponseDTO> hhplanResponseDTOList = pageWithHhplan.getContent().stream()
+
+        final List<HhplanResponseDTO> hhplanResponseDTOList = pageWithHhplan.getContent()
+                .stream()
                 .map(hhplanMapper::toDTO)
                 .toList();
-        return new PageImpl<>(hhplanResponseDTOList, pageWithHhplan.getPageable(), pageWithHhplan.getTotalElements());
+
+        return new PageImpl<>(
+                hhplanResponseDTOList,
+                pageWithHhplan.getPageable(),
+                pageWithHhplan.getTotalElements());
     }
 
     @GetMapping("/form-context")
@@ -46,5 +52,4 @@ public class HhplanController {
     public HhplanFormContext getHhplanFormContext() {
         return hhplanService.getHhplanFormContext();
     }
-
 }

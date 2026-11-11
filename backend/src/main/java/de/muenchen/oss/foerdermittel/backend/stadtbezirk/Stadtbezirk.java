@@ -1,8 +1,11 @@
 package de.muenchen.oss.foerdermittel.backend.stadtbezirk;
 
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.Stadtbezirksliste;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -12,6 +15,9 @@ import jakarta.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,5 +46,8 @@ public class Stadtbezirk implements Serializable {
 
     @Column(nullable = false)
     @NotBlank @Size(min = 1, max = 200) private String bezeichnung;
+
+    @OneToMany(mappedBy = "stadtbezirk", fetch = FetchType.EAGER)
+    private List<Stadtbezirksliste> stadtbezirkslisten = new ArrayList<>();
 
 }

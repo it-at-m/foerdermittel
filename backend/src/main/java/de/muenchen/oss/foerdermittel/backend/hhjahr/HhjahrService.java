@@ -35,7 +35,7 @@ public class HhjahrService {
     @Transactional(readOnly = true)
     public Page<Hhjahr> getHhjahre(final Pageable pageable) {
         log.info("Get Haushaltsjahre with Pageable {}", pageable);
-        return hhjahrRepository.findAll(pageable);
+        return hhjahrRepository.findAllWithHhplan(pageable);
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
