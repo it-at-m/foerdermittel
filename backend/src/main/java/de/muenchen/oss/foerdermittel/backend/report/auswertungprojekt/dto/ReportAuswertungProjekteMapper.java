@@ -30,9 +30,8 @@ public class ReportAuswertungProjekteMapper {
                         dto.pstrasse(),
                         dto.pname(),
                         dto.krisofp(),
-                        dto.offen(),
-                        dto.relevant()));
-
+                        dto.offen()));
+        parameters.put("P_RELEVANT", ReportControllerUtil.nullIfBlank(dto.relevant()));
         parameters.put("P_KAUF", ReportControllerUtil.nullIfBlank(dto.kauf()));
 
         return parameters;

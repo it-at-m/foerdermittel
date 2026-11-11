@@ -42,6 +42,5 @@ public final class ReportMapperUtil {
                         : null);
 
         parameters.put("P_OFFEN", ReportControllerUtil.nullIfBlank(commonParameters.offen()));
-        parameters.put("P_RELEVANT", ReportControllerUtil.nullIfBlank(commonParameters.relevant()));
     }
 }

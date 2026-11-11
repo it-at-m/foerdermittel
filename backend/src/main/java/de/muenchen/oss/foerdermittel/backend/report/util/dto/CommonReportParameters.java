@@ -14,6 +14,5 @@ public record CommonReportParameters(
         String pstrasse,
         String pname,
         Enum<?> krisofp,
-        String offen,
-        String relevant) {
+        String offen) {
 }

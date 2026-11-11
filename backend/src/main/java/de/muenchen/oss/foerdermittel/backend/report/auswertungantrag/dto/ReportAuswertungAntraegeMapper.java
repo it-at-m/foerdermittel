@@ -31,9 +31,8 @@ public class ReportAuswertungAntraegeMapper {
                         dto.pstrasse(),
                         dto.pname(),
                         dto.krisofp(),
-                        dto.offen(),
-                        dto.relevant()));
-
+                        dto.offen()));
+        parameters.put("P_RELEVANT", ReportControllerUtil.nullIfBlank(dto.relevant()));
         parameters.put("P_PROJNR", ReportControllerUtil.nullIfBlank(dto.projnr()));
         parameters.put("P_ATYP", dto.antragstyp() != null ? dto.antragstyp().name() : null);
         parameters.put("P_FAG", ReportControllerUtil.nullIfBlank(dto.fag()));

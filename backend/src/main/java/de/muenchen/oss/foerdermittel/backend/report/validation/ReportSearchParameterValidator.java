@@ -2,7 +2,9 @@ package de.muenchen.oss.foerdermittel.backend.report.validation;
 
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammService;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichService;
+import de.muenchen.oss.foerdermittel.backend.krankenhaus.KrankenhausService;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungService;
+import de.muenchen.oss.foerdermittel.backend.referat.ReferatService;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietService;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkService;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.ListennameStadtbezirkslisteService;
@@ -26,6 +28,8 @@ public class ReportSearchParameterValidator {
     private final SiedlungsgebietService siedlungsgebietService;
     private final KurzbezeichnungService kurzbezeichnungService;
     private final BauprogrammService bauprogrammService;
+    private final ReferatService referatService;
+    private final KrankenhausService krankenhausService;
 
     public void validateFoerderbereich(final String fb) {
         if (StringUtils.hasText(fb)) {
@@ -66,6 +70,18 @@ public class ReportSearchParameterValidator {
     public void validateBauprogramm(final String bpg) {
         if (StringUtils.hasText(bpg)) {
             bauprogrammService.checkExistsByBauprogramm(new BigDecimal(bpg));
+        }
+    }
+
+    public void validateReferat(final String ref) {
+        if (StringUtils.hasText(ref)) {
+            referatService.checkExistsByReferat(new BigDecimal(ref));
+        }
+    }
+
+    public void validateKrankenhaus(final String krh) {
+        if (StringUtils.hasText(krh)) {
+            krankenhausService.checkExistsByKrankenhaus(krh);
         }
     }
 
