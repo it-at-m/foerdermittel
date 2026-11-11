@@ -2366,6 +2366,26 @@ paths:
         required: false
         schema:
           type: string
+      - name: kurz
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: ua
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: pname
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: pstrasse
+        in: query
+        required: false
+        schema:
+          type: string
       - name: page
         in: query
         description: Zero-based page index (0..N)

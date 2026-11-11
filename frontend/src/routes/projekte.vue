@@ -7,79 +7,12 @@
         :table-headers="headers"
         :api="projektApi"
         :domain-key="domainKey"
-        :filter-default="{ projnr: undefined, fobFb: undefined }"
       >
         <template #filter-form="{ filter, updateValidity }">
-          <v-form @update:model-value="updateValidity">
-            <v-row>
-              <v-col
-                cols="12"
-                md="2"
-              >
-                <v-text-field
-                  v-model="filter.projnr"
-                  :label="t('model.projekt.projnr')"
-                  clearable
-                  density="comfortable"
-                />
-              </v-col>
-              <v-col
-                cols="12"
-                md="2"
-              >
-                <v-text-field
-                  v-model="filter.fobFb"
-                  :label="t('model.projekt.fobFb')"
-                  clearable
-                  density="comfortable"
-                />
-              </v-col>
-              <v-col
-                cols="12"
-                md="2"
-              >
-                <v-text-field
-                  v-model="filter.kurz"
-                  :label="t('model.projekt.kurKurzbez')"
-                  clearable
-                  density="comfortable"
-                />
-              </v-col>
-              <v-col
-                cols="12"
-                md="2"
-              >
-                <v-text-field
-                  v-model="filter.ua"
-                  :label="t('model.projekt.uasUa')"
-                  clearable
-                  density="comfortable"
-                />
-              </v-col>
-              <v-col
-                cols="12"
-                md="2"
-              >
-                <v-text-field
-                  v-model="filter.pname"
-                  :label="t('model.projekt.name')"
-                  clearable
-                  density="comfortable"
-                />
-              </v-col>
-              <v-col
-                cols="12"
-                md="2"
-              >
-                <v-text-field
-                  v-model="filter.pstrasse"
-                  :label="t('model.projekt.strasse')"
-                  clearable
-                  density="comfortable"
-                />
-              </v-col>
-            </v-row>
-          </v-form>
+          <filter-form
+            :model-value="filter"
+            @is-valid="updateValidity"
+          />
         </template>
       </crud-card>
     </template>
@@ -95,6 +28,7 @@ import { useI18n } from "vue-i18n";
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
 import { useProjektApi } from "@/composables/api/useProjektApi";
+import FilterForm from "@/routes/FilterForm.vue";
 import { Role } from "@/types/Role";
 
 definePage({
@@ -152,6 +86,15 @@ const EMPTY_ITEM_TEMPLATE: Partial<ProjektResponseDTO> = {
   uasUa: undefined,
   pname: "",
   pstrasse: "",
+};
+
+const FILTER_DEFAULT: Partial<ProjektFilter> = {
+  projnr: undefined,
+  fobFb: undefined,
+  kurz: undefined,
+  ua: undefined,
+  pname: undefined,
+  pstrasse: undefined,
 };
 
 const projektApi = useProjektApi();
