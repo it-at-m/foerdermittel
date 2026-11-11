@@ -5,6 +5,6 @@ import jakarta.validation.constraints.NotNull;
 /// @param stadtbezirk
 /// @param bezeichnung
 public record StadtbezirkFormContextDTO(
-        @NotNull String stadtbezirk,
+        @NotNull Integer stadtbezirk,
         @NotNull String bezeichnung) {
 }
