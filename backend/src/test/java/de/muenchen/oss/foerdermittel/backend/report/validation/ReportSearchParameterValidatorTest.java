@@ -60,7 +60,7 @@ class ReportSearchParameterValidatorTest {
     private ReportSearchParameterValidator validator;
 
     @Test
-    void validateFoerderbereich_validValue_callsServiceWithBigDecimal() {
+    void givenValidFoerderbereich_thenCallsServiceWithBigDecimal() {
         validator.validateFoerderbereich("123.45");
 
         verify(foerderbereichService)
@@ -68,7 +68,7 @@ class ReportSearchParameterValidatorTest {
     }
 
     @Test
-    void validateStadtbezirk_validValue_callsServiceWithBigDecimal() {
+    void givenValidStadtbezirk_thenCallsServiceWithBigDecimal() {
         validator.validateStadtbezirk("42");
 
         verify(stadtbezirkService)
@@ -76,7 +76,7 @@ class ReportSearchParameterValidatorTest {
     }
 
     @Test
-    void validateSiedlungsgebiet_validValue_callsServiceWithBigDecimal() {
+    void givenValidSiedlungsgebiet_thenCallsServiceWithBigDecimal() {
         validator.validateSiedlungsgebiet("12.5");
 
         verify(siedlungsgebietService)
@@ -84,7 +84,7 @@ class ReportSearchParameterValidatorTest {
     }
 
     @Test
-    void validateBauprogramm_validValue_callsServiceWithBigDecimal() {
+    void givenValidBauprogramm_thenCallsServiceWithBigDecimal() {
         validator.validateBauprogramm("100");
 
         verify(bauprogrammService)
@@ -92,7 +92,7 @@ class ReportSearchParameterValidatorTest {
     }
 
     @Test
-    void validateReferat_validValue_callsServiceWithBigDecimal() {
+    void givenValidReferat_thenCallsServiceWithBigDecimal() {
         validator.validateReferat("5");
 
         verify(referatService)
@@ -100,17 +100,8 @@ class ReportSearchParameterValidatorTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "abc", "12.34.56", "", " " })
-    void validateFoerderbereich_invalidValue_throwsBadRequest(
-            String value) {
-
-        if (value.isBlank()) {
-            validator.validateFoerderbereich(value);
-
-            verifyNoInteractions(foerderbereichService);
-            return;
-        }
-
+    @ValueSource(strings = { "abc", "12.34.56" })
+    void givenInvalidFoerderbereich_thenThrowsBadRequest(String value) {
         ResponseStatusException exception = assertThrows(
                 ResponseStatusException.class,
                 () -> validator.validateFoerderbereich(value));
@@ -124,7 +115,7 @@ class ReportSearchParameterValidatorTest {
     }
 
     @Test
-    void validateStadtbezirk_invalidValue_throwsBadRequest() {
+    void givenInvalidStadtbezirk_thenThrowsBadRequest() {
         ResponseStatusException exception = assertThrows(
                 ResponseStatusException.class,
                 () -> validator.validateStadtbezirk("abc"));
@@ -137,8 +128,16 @@ class ReportSearchParameterValidatorTest {
         verifyNoInteractions(stadtbezirkService);
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = { "", " " })
+    void givenBlankFoerderbereich_thenDoesNotCallService(String value) {
+        validator.validateFoerderbereich(value);
+
+        verifyNoInteractions(foerderbereichService);
+    }
+
     @Test
-    void validateFoerderbereich_nullValue_doesNotCallService() {
+    void givenNullFoerderbereich_thenDoesNotCallService() {
         validator.validateFoerderbereich(null);
 
         verifyNoInteractions(foerderbereichService);
