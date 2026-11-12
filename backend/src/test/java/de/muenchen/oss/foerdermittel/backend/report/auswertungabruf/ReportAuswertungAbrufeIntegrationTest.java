@@ -24,6 +24,7 @@ import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittRepository;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -40,6 +41,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.client.RestTestClient;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -117,20 +119,27 @@ public class ReportAuswertungAbrufeIntegrationTest {
 
             final Bauprogramm bauprogramm = new Bauprogramm(BigDecimal.ONE, "Test");
             bauprogrammRepository.save(bauprogramm);
+            final Projekt projekt = new Projekt();
+            projekt.setProjnr("1234567");
+            projekt.setJahr("01");
+            projekt.setLfdnr1("0");
+            projekt.setLfdnr2("01");
+            projekt.setPname("Test");
+            projekt.setPstrasse("Testsrasse");
+            projekt.setFobFb(foerderbereich);
+            projekt.setBezStadtbezirk(stadtbezirk);
+            projekt.setUasUa(unterabschnitt);
+            projekt.setKurKurzbez(kurzbezeichnung);
+            projekt.setSgtSiedlungsgebiet(siedlungsgebiet);
+            projekt.setBpgBauprogramm(bauprogramm);
+            projekt.setKrisofp(Krisofp.K);
+            projekt.setKauf(false);
+            projekt.setRefinanzierbar(true);
 
-            projektRepository.save(
-                    new Projekt(
-                            "1234567",
-                            "2001  ",
-                            foerderbereich,
-                            "1",
-                            "1",
-                            "Test",
-                            "Testsrasse",
-                            stadtbezirk,
-                            unterabschnitt,
-                            kurzbezeichnung,
-                            Krisofp.K));
+            ReflectionTestUtils.setField(projekt, "anlagevon", "test");
+            ReflectionTestUtils.setField(projekt, "anlagedatum", LocalDateTime.now());
+
+            projektRepository.save(projekt);
         }
 
         @Test
