@@ -6,11 +6,13 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+import static de.muenchen.oss.foerdermittel.backend.report.validation.ValidationPatterns.SUPPORTED_YEAR_RANGE_PATTERN;
+
 public record ReportAuswertungAbrufeDTO(
-        @Pattern(regexp = "^(|19[7-9]\\d|20\\d{2}|2100)$") String jahrAbrufVon,
-        @Pattern(regexp = "^(|19[7-9]\\d|20\\d{2}|2100)$") String jahrAbrufBis,
-        @Pattern(regexp = "^(|19[7-9]\\d|20\\d{2}|2100)$") String jahrErhaltVon,
-        @Pattern(regexp = "^(|19[7-9]\\d|20\\d{2}|2100)$") String jahrErhaltBis,
+        @Pattern(regexp = SUPPORTED_YEAR_RANGE_PATTERN) String jahrAbrufVon,
+        @Pattern(regexp = SUPPORTED_YEAR_RANGE_PATTERN) String jahrAbrufBis,
+        @Pattern(regexp = SUPPORTED_YEAR_RANGE_PATTERN) String jahrErhaltVon,
+        @Pattern(regexp = SUPPORTED_YEAR_RANGE_PATTERN) String jahrErhaltBis,
         String bez,
         String fb,
         String ua,
