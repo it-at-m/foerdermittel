@@ -40,8 +40,7 @@ public class HhjahrController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<HhjahrResponseDTO> getHhjahre(
-            @ParameterObject @PageableDefault(sort = "hhjahr") final Pageable pageable) {
+    public Page<HhjahrResponseDTO> getHhjahre(@ParameterObject @PageableDefault(sort = "hhjahr") final Pageable pageable) {
 
         final Page<Hhjahr> pageWithHhjahr = hhjahrService.getHhjahre(pageable);
 

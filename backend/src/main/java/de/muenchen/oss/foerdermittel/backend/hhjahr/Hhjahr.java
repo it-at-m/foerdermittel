@@ -2,6 +2,7 @@ package de.muenchen.oss.foerdermittel.backend.hhjahr;
 
 import de.muenchen.oss.foerdermittel.backend.hhplan.Hhplan;
 import de.muenchen.oss.foerdermittel.backend.hhplan.HhplanPrimaryKey;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.Stadtbezirksliste;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,24 +48,6 @@ public class Hhjahr implements Serializable {
     @Column(name = "notizen")
     private String notizen;
 
-    @OneToMany(
-            mappedBy = "hhjJahr",
-            cascade = { CascadeType.PERSIST, CascadeType.MERGE },
-            orphanRemoval = true,
-            fetch = FetchType.EAGER
-    )
-    @OrderBy("id.hhjJahr ASC")
+    @OneToMany(mappedBy = "hhjJahr", fetch = FetchType.EAGER)
     private List<Hhplan> hhplanlisten = new ArrayList<>();
-
-    public void updateHhplan(final List<Hhplan> listen, final BigDecimal hhjahr) {
-        hhplanlisten.clear();
-
-        listen.forEach(assignment -> {
-            assignment.setHhjJahr(this);
-            assignment.setId(new HhplanPrimaryKey(
-                    hhjahr,
-                    assignment.getProProjnr().getProjnr()));
-            hhplanlisten.add(assignment);
-        });
-    }
 }

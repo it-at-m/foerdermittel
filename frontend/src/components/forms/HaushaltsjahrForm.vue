@@ -1,21 +1,21 @@
 <template>
   <v-form
     ref="form"
-    :readonly="props.displayMode === InputDisplayMode.READ"
+    :readonly="displayMode === InputDisplayMode.READ"
     @update:model-value="onValidityChanged"
   >
     <v-row>
       <v-col cols="3">
         <fm-number-input
           v-model="modelValue.hhjahr"
-          :display-mode="props.displayMode"
+          :display-mode="displayMode"
           disable-edit
           :validation-attribute-map="
             HhjahrCreateDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="hhjahr"
           :additional-rules="[
-            rules['unique']!(props.hhjahrFormContext.hhj, currentHhjahr),
+            rules['unique']!(hhjahrFormContext.hhj, currentHhjahr),
           ]"
           :label="t('model.haushaltsjahr.hhjahr')"
         />
@@ -24,7 +24,7 @@
       <v-col cols="4">
         <fm-text-field
           v-model="modelValue.hhbezeichnung"
-          :display-mode="props.displayMode"
+          :display-mode="displayMode"
           :validation-attribute-map="
             HhjahrCreateDTOPropertyValidationAttributesMap
           "
@@ -36,7 +36,7 @@
       <v-col cols="4">
         <fm-text-field
           v-model="modelValue.notizen"
-          :display-mode="props.displayMode"
+          :display-mode="displayMode"
           :validation-attribute-map="
             HhjahrCreateDTOPropertyValidationAttributesMap
           "
@@ -51,7 +51,7 @@
 <script setup lang="ts">
 import type {
   HhjahrFormContext,
-  HhjahrResponseDTO,
+  HhjahrResponseDTO, StadtbezirkFormContext,
 } from "@/api/generated/foerdermittel-backend";
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
@@ -72,16 +72,18 @@ const modelValue = defineModel<Partial<HhjahrResponseDTO>>({
   required: true,
 });
 
-const props = defineProps<{
-  hhjahrFormContext: DeepReadonly<HhjahrFormContext>;
-  displayMode?: InputDisplayMode;
-}>();
+const currentHhjahr = computed(() => modelValue.value.hhjahr);
+
+
+const { hhjahrFormContext, displayMode = InputDisplayMode.CREATE } =
+    defineProps<{
+      hhjahrFormContext: DeepReadonly<HhjahrFormContext>;
+      displayMode?: InputDisplayMode;
+    }>();
 
 const emit = defineEmits<{
   isValid: [boolean | null];
 }>();
-
-const currentHhjahr = computed(() => modelValue.value.hhjahr);
 
 function onValidityChanged(newIsValid: boolean | null) {
   emit("isValid", newIsValid);

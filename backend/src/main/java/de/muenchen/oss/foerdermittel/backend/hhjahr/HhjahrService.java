@@ -1,12 +1,9 @@
 package de.muenchen.oss.foerdermittel.backend.hhjahr;
 
-import de.muenchen.oss.foerdermittel.backend.common.DeleteNotAllowedException;
-import de.muenchen.oss.foerdermittel.backend.hhplan.HhplanPrimaryKey;
-import de.muenchen.oss.foerdermittel.backend.hhplan.HhplanRepository;
-import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.math.BigDecimal;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class HhjahrService {
 
     private final HhjahrRepository hhjahrRepository;
-    private final HhplanRepository hhplanRepository;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -35,29 +31,19 @@ public class HhjahrService {
     @Transactional(readOnly = true)
     public Page<Hhjahr> getHhjahre(final Pageable pageable) {
         log.info("Get Haushaltsjahre with Pageable {}", pageable);
-        return hhjahrRepository.findAllWithHhplan(pageable);
+        return hhjahrRepository.findAll(pageable);
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     @Transactional(readOnly = true)
     public HhjahrFormContext getHhjahrFormContext() {
-        log.info("Get Haushaltsjahr form context");
+        log.info("Get Stadtbezirk form context");
         return new HhjahrFormContext(hhjahrRepository.findAllHhjahr());
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Hhjahr createHhjahr(final Hhjahr hhjahr) {
-        hhjahr.getHhplanlisten().forEach(assignment -> {
-            assignment.setHhjJahr(hhjahr);
-            assignment.setId(new HhplanPrimaryKey(
-                    hhjahr.getHhjahr(),
-                    assignment.getProProjnr().getProjnr()));
-        });
-
-        log.debug(
-                "Create Haushaltsjahr with hhjahr '{}' and hhbezeichnung '{}'",
-                hhjahr.getHhjahr(),
-                hhjahr.getHhbezeichnung());
+        log.debug("Create Haushaltsjahr with hhjahr '{}' ", hhjahr);
         return hhjahrRepository.insert(hhjahr);
     }
 
@@ -66,7 +52,6 @@ public class HhjahrService {
         final Hhjahr foundHhjahr = ServiceUtils.getEntityOrThrowNotFoundException(hhjahrId, hhjahrRepository, Hhjahr.class);
         foundHhjahr.setHhbezeichnung(hhjahr.getHhbezeichnung());
         foundHhjahr.setNotizen(hhjahr.getNotizen());
-        foundHhjahr.updateHhplan(hhjahr.getHhplanlisten(), hhjahrId);
         log.debug("Update Haushaltsjahr {}", foundHhjahr);
         return hhjahrRepository.update(foundHhjahr);
     }
@@ -75,16 +60,7 @@ public class HhjahrService {
     public void deleteHhjahr(final BigDecimal hhjahrId) {
 
         log.debug("Delete Haushaltjahr with ID {}", hhjahrId);
-
-        if (hhplanRepository.existsByHhjJahr_Hhjahr(hhjahrId)) {
-            throw new DeleteNotAllowedException(
-                    Hhjahr.class, Projekt.class);
-        }
-
-        final Hhjahr hhjahr = ServiceUtils.getEntityOrThrowNotFoundException(
-                hhjahrId,
-                hhjahrRepository, Hhjahr.class);
-
-        hhjahrRepository.delete(hhjahr);
+       ServiceUtils.getEntityOrThrowNotFoundException(hhjahrId, hhjahrRepository, Hhjahr.class);
+        hhjahrRepository.deleteById(hhjahrId);
     }
 }

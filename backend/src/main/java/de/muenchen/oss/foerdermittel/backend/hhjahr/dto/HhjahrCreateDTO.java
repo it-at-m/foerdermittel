@@ -12,10 +12,5 @@ import java.util.List;
 public record HhjahrCreateDTO(
         @NotNull @Min(0) @Digits(integer = 4, fraction = 0) BigDecimal hhjahr,
         @NotNull @Size(max = 200) String hhbezeichnung,
-        String notizen,
-        @NotNull List<HhplanResponseDTO> assignedProProjnr) {
-
-    public HhjahrCreateDTO {
-        assignedProProjnr = List.copyOf(assignedProProjnr);
-    }
+        String notizen) {
 }

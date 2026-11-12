@@ -8,10 +8,5 @@ import java.util.List;
 
 public record HhjahrUpdateDTO(
         @NotNull @Size(max = 200) String hhbezeichnung,
-        String notizen,
-        @NotNull List<HhplanResponseDTO> assignedProProjnr) {
-
-    public HhjahrUpdateDTO {
-        assignedProProjnr = List.copyOf(assignedProProjnr);
-    }
+        String notizen) {
 }
