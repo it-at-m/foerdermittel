@@ -3417,33 +3417,12 @@ components:
           type: number
     HhjahrUpdateDTO:
       required:
-      - assignedProProjnr
       - hhbezeichnung
       type: object
       properties:
         hhbezeichnung:
-          type: string
-        notizen:
-          type: string
-        assignedProProjnr:
-          type: array
-          items:
-            $ref: "#/components/schemas/HhplanResponseDTO"
-    HhplanResponseDTO:
-      required:
-      - fipo
-      - hhjJahr
-      - id
-      - proProjnr
-      type: object
-      properties:
-        id:
-          type: string
-        proProjnr:
-          type: string
-        hhjJahr:
-          type: number
-        fipo:
+          maxLength: 200
+          minLength: 0
           type: string
         notizen:
           type: string
@@ -3453,7 +3432,6 @@ components:
       - hhbezeichnung
       - hhjahr
       - id
-      - notizen
       type: object
       properties:
         id:
@@ -3468,6 +3446,67 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/HhplanResponseDTO"
+    HhplanResponseDTO:
+      required:
+      - fipo
+      - fobFb
+      - hhjJahr
+      - id
+      - listenname
+      - pname
+      - proProjnr
+      - pstrasse
+      - stadtbezirk
+      type: object
+      properties:
+        id:
+          type: string
+        proProjnr:
+          type: string
+        hhjJahr:
+          type: number
+        fipo:
+          type: string
+        notizen:
+          type: string
+        pname:
+          type: string
+        pstrasse:
+          type: string
+        fobFb:
+          type: number
+        mitteleinplanung:
+          type: number
+        bewilligungVoj:
+          type: number
+        bewilligungHhj:
+          type: number
+        erhaltenVoj:
+          type: number
+        erhaltenHhj:
+          type: number
+        baustandaktuell:
+          type: number
+        an:
+          type: number
+        n1:
+          type: number
+        n2:
+          type: number
+        stadtbezirk:
+          type: number
+        listenname:
+          type: string
+        anlagedatum:
+          type: string
+          format: date-time
+        anlagevon:
+          type: string
+        aenderungsdatum:
+          type: string
+          format: date-time
+        aenderungvon:
+          type: string
     HauptabschnittUpdateDTO:
       required:
       - bezeichnung
@@ -3991,7 +4030,6 @@ components:
           type: number
     HhjahrCreateDTO:
       required:
-      - assignedProProjnr
       - hhbezeichnung
       - hhjahr
       type: object
@@ -4000,13 +4038,11 @@ components:
           minimum: 0
           type: number
         hhbezeichnung:
+          maxLength: 200
+          minLength: 0
           type: string
         notizen:
           type: string
-        assignedProProjnr:
-          type: array
-          items:
-            $ref: "#/components/schemas/HhplanResponseDTO"
     HauptabschnittCreateDTO:
       required:
       - bezeichnung
