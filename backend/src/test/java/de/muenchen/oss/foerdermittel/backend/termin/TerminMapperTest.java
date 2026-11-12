@@ -35,7 +35,7 @@ public class TerminMapperTest {
             projekt.setPname("Test Projekt");
             projekt.setPstrasse("Teststraße 1");
             projekt.setFobFb(foerderbereich);
-            projekt.setStadtbezirk(stadtbezirk);
+            projekt.setBezStadtbezirk(stadtbezirk);
 
             final Termin entity = new Termin(
                     1L,
@@ -58,7 +58,7 @@ public class TerminMapperTest {
             assertThat(dto.pname()).isEqualTo(entity.getProjekt().getPname());
             assertThat(dto.pstrasse()).isEqualTo(entity.getProjekt().getPstrasse());
             assertThat(dto.fob_fb()).isEqualTo(entity.getProjekt().getFobFb().getFb());
-            assertThat(dto.bez_stadtbezirk()).isEqualTo(entity.getProjekt().getStadtbezirk().getStadtbezirk());
+            assertThat(dto.bez_stadtbezirk()).isEqualTo(entity.getProjekt().getBezStadtbezirk().getStadtbezirk());
         }
     }
 
