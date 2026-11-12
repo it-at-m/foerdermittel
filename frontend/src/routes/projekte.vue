@@ -10,7 +10,7 @@
         :domain-key="domainKey"
       >
         <template #filter-form="{ filter, updateValidity }">
-          <filter-form
+          <projekt-filter-form
             :model-value="filter"
             @is-valid="updateValidity"
           />
@@ -32,7 +32,7 @@ import { useI18n } from "vue-i18n";
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
 import { useProjektApi } from "@/composables/api/useProjektApi";
-import FilterForm from "@/routes/FilterForm.vue";
+import ProjektFilterForm from "@/components/forms/filter/ProjektFilterForm.vue";
 import { Role } from "@/types/Role";
 
 definePage({
