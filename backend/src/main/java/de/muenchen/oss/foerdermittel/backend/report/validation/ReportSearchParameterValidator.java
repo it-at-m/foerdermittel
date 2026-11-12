@@ -11,8 +11,10 @@ import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.ListennameStadtbe
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittService;
 import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  * Validates search parameters used by report services.
@@ -33,7 +35,7 @@ public class ReportSearchParameterValidator {
 
     public void validateFoerderbereich(final String fb) {
         if (StringUtils.hasText(fb)) {
-            foerderbereichService.checkExistsByFoerderbereich(new BigDecimal(fb));
+            foerderbereichService.checkExistsByFoerderbereich(parseBigDecimal(fb));
         }
     }
 
@@ -45,7 +47,7 @@ public class ReportSearchParameterValidator {
 
     public void validateStadtbezirk(final String bez) {
         if (StringUtils.hasText(bez)) {
-            stadtbezirkService.checkExistsByStadtbezirk(new BigDecimal(bez));
+            stadtbezirkService.checkExistsByStadtbezirk(parseBigDecimal(bez));
         }
     }
 
@@ -57,7 +59,7 @@ public class ReportSearchParameterValidator {
 
     public void validateSiedlungsgebiet(final String sgt) {
         if (StringUtils.hasText(sgt)) {
-            siedlungsgebietService.checkExistsBySiedlungsgebiet(new BigDecimal(sgt));
+            siedlungsgebietService.checkExistsBySiedlungsgebiet(parseBigDecimal(sgt));
         }
     }
 
@@ -69,13 +71,13 @@ public class ReportSearchParameterValidator {
 
     public void validateBauprogramm(final String bpg) {
         if (StringUtils.hasText(bpg)) {
-            bauprogrammService.checkExistsByBauprogramm(new BigDecimal(bpg));
+            bauprogrammService.checkExistsByBauprogramm(parseBigDecimal(bpg));
         }
     }
 
     public void validateReferat(final String ref) {
         if (StringUtils.hasText(ref)) {
-            referatService.checkExistsByReferat(new BigDecimal(ref));
+            referatService.checkExistsByReferat(parseBigDecimal(ref));
         }
     }
 
@@ -98,5 +100,16 @@ public class ReportSearchParameterValidator {
         validateSiedlungsgebiet(parameters.sgt());
         validateKurzbezeichnung(parameters.kurz());
         validateBauprogramm(parameters.bpg());
+    }
+
+    private BigDecimal parseBigDecimal(final String value) {
+        try {
+            return new BigDecimal(value);
+        } catch (NumberFormatException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Ungültiger numerischer Suchparameter: " + value,
+                    e);
+        }
     }
 }
