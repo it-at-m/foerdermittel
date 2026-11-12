@@ -3,6 +3,7 @@ package de.muenchen.oss.foerdermittel.backend.projekt;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.Bauprogramm;
 import de.muenchen.oss.foerdermittel.backend.common.AuditableEntity;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
+import de.muenchen.oss.foerdermittel.backend.hhplan.Hhplan;
 import de.muenchen.oss.foerdermittel.backend.krankenhaus.Krankenhaus;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
@@ -16,6 +17,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -23,6 +25,8 @@ import jakarta.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -139,4 +143,7 @@ public class Projekt extends AuditableEntity implements Serializable {
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(name = "krhzweck", columnDefinition = "projekte_krhzweck")
     private Krhzweck krhzweck;
+
+    @OneToMany(mappedBy = "proProjnr")
+    private List<Hhplan> hhplaene;
 }
