@@ -1,10 +1,10 @@
 package de.muenchen.oss.foerdermittel.backend.krankenhaus;
 
-import de.muenchen.oss.foerdermittel.backend.krankenhaus.Krankenhaus;
 import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausMapper;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -12,9 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
-import java.util.List;
 
 @Service
 @Slf4j

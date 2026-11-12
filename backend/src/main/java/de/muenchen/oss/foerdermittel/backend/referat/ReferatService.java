@@ -1,6 +1,5 @@
 package de.muenchen.oss.foerdermittel.backend.referat;
 
-
 import de.muenchen.oss.foerdermittel.backend.referat.dto.ReferatFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.referat.dto.ReferatMapper;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;

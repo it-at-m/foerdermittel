@@ -34,7 +34,6 @@ public record ReportAuswertungAbrufeDTO(
         String erh,
         String nichterh,
 
-
         @NotNull ReportAuswertungAbrufeSort sort,
 
         @NotNull ReportFormat type) {

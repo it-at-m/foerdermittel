@@ -1,12 +1,9 @@
 package de.muenchen.oss.foerdermittel.backend.krankenhaus.dto;
 
 import de.muenchen.oss.foerdermittel.backend.krankenhaus.Krankenhaus;
-import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.krankenhaus.Krankenhaus;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.List;
 
 @Mapper
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")

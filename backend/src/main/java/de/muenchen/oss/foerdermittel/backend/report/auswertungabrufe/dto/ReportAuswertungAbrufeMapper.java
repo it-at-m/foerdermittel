@@ -3,10 +3,9 @@ package de.muenchen.oss.foerdermittel.backend.report.auswertungabrufe.dto;
 import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
 import de.muenchen.oss.foerdermittel.backend.report.util.ReportMapperUtil;
 import de.muenchen.oss.foerdermittel.backend.report.util.dto.CommonReportParameters;
-import org.springframework.stereotype.Component;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ReportAuswertungAbrufeMapper {

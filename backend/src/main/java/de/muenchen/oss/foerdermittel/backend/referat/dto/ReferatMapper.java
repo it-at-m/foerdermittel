@@ -2,12 +2,9 @@ package de.muenchen.oss.foerdermittel.backend.referat.dto;
 
 import de.muenchen.oss.foerdermittel.backend.common.NumberMapper;
 import de.muenchen.oss.foerdermittel.backend.referat.Referat;
-import de.muenchen.oss.foerdermittel.backend.referat.dto.ReferatFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.referat.Referat;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.List;
 
 @Mapper(uses = NumberMapper.class)
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
