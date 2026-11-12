@@ -1,8 +1,8 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-
-@Schema (name = "ProjektFilter", description = "Filters for user searches")
+/**
+ * Filter object to use with Projekt.
+ */
 public record ProjektFilter(
         String projnr,
         String fobFb,
