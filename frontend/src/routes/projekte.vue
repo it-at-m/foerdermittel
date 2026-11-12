@@ -3,6 +3,7 @@
     <template #default="{ baseViewLoading }">
       <crud-card
         :empty-item-template="EMPTY_ITEM_TEMPLATE"
+        :filter-default="FILTER_DEFAULT"
         :loading="baseViewLoading"
         :table-headers="headers"
         :api="projektApi"
@@ -20,7 +21,10 @@
 </template>
 
 <script setup lang="ts">
-import type { ProjektResponseDTO } from "@/api/generated/foerdermittel-backend";
+import type {
+  ProjektFilter,
+  ProjektResponseDTO,
+} from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
 import { useI18n } from "vue-i18n";

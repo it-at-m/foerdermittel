@@ -77,18 +77,15 @@
 </template>
 
 <script setup lang="ts">
-import type { ProjekteFilterType } from "@/types/ProjekteFilterType.ts";
+import type { ProjektFilter } from "@/api/generated/foerdermittel-backend";
 
 import { useI18n } from "vue-i18n";
-import { useRules } from "vuetify";
 
 import FmTextField from "@/components/common/FmTextField.vue";
 
-const modelValue = defineModel<Partial<ProjekteFilterType>>({
+const modelValue = defineModel<Partial<ProjektFilter>>({
   required: true,
 });
-
-const rules = useRules();
 
 const { t } = useI18n();
 
