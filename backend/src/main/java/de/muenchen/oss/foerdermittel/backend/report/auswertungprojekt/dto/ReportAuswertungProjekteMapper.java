@@ -1,8 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.report.auswertungprojekt.dto;
 
 import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
-import de.muenchen.oss.foerdermittel.backend.report.util.ReportMapperUtil;
-import de.muenchen.oss.foerdermittel.backend.report.util.dto.CommonReportParameters;
+
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.stereotype.Component;
@@ -17,22 +16,24 @@ public class ReportAuswertungProjekteMapper {
 
         parameters.put("P_JAHR", ReportControllerUtil.nullIfBlank(dto.jahr()));
 
-        ReportMapperUtil.addCommonParameters(
-                parameters,
-                new CommonReportParameters(
-                        dto.fb(),
-                        dto.ua(),
-                        dto.kurz(),
-                        dto.sgt(),
-                        dto.bpg(),
-                        dto.sbl(),
-                        dto.bez(),
-                        dto.pstrasse(),
-                        dto.pname(),
-                        dto.krisofp(),
-                        dto.offen(),
-                        dto.relevant()));
+        parameters.put("P_FB", ReportControllerUtil.nullIfBlank(dto.fb()));
+        parameters.put("P_UA", ReportControllerUtil.nullIfBlank(dto.ua()));
+        parameters.put("P_KURZ", ReportControllerUtil.nullIfBlank(dto.kurz()));
+        parameters.put("P_SGT", ReportControllerUtil.nullIfBlank(dto.sgt()));
+        parameters.put("P_BPG", ReportControllerUtil.nullIfBlank(dto.bpg()));
+        parameters.put("P_SBL", ReportControllerUtil.nullIfBlank(dto.sbl()));
+        parameters.put("P_BEZ", ReportControllerUtil.nullIfBlank(dto.bez()));
+        parameters.put("P_PSTRASSE", ReportControllerUtil.toLikeParameter(dto.pstrasse()));
+        parameters.put("P_PNAME", ReportControllerUtil.toLikeParameter(dto.pname()));
 
+        parameters.put(
+                "P_KRISOFP",
+                dto.krisofp() != null
+                        ? dto.krisofp().name()
+                        : null);
+
+        parameters.put("P_OFFEN", ReportControllerUtil.nullIfBlank(dto.offen()));
+        parameters.put("P_RELEVANT", ReportControllerUtil.nullIfBlank(dto.relevant()));
         parameters.put("P_KAUF", ReportControllerUtil.nullIfBlank(dto.kauf()));
 
         return parameters;

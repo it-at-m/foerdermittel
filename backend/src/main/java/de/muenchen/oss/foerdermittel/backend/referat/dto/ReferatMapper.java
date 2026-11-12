@@ -2,6 +2,7 @@ package de.muenchen.oss.foerdermittel.backend.referat.dto;
 
 import de.muenchen.oss.foerdermittel.backend.common.NumberMapper;
 import de.muenchen.oss.foerdermittel.backend.referat.Referat;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -17,5 +18,9 @@ public interface ReferatMapper {
 
     @Mapping(target = "refnr", ignore = true)
     Referat toEntity(ReferatUpdateDTO referatUpdateDTO);
+
+    ReferatFormContextDTO toFormContext(Referat referat);
+
+    List<ReferatFormContextDTO> toFormContext(List<Referat> referatList);
 
 }
