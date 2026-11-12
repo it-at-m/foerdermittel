@@ -30,7 +30,7 @@
         md="2"
       >
         <fm-text-field
-          v-model="modelValue.kurz"
+          v-model="modelValue.kurKurzbez"
           :label="t('model.projekt.kurKurzbez')"
           clearable
           density="comfortable"
@@ -42,7 +42,7 @@
         md="2"
       >
         <fm-text-field
-          v-model="modelValue.ua"
+          v-model="modelValue.uasUa"
           :label="t('model.projekt.uasUa')"
           clearable
           density="comfortable"
@@ -55,7 +55,7 @@
       >
         <fm-text-field
           v-model="modelValue.pname"
-          :label="t('model.projekt.name')"
+          :label="t('model.projekt.pname')"
           clearable
           density="comfortable"
         />
@@ -67,7 +67,7 @@
       >
         <fm-text-field
           v-model="modelValue.pstrasse"
-          :label="t('model.projekt.strasse')"
+          :label="t('model.projekt.pstrasse')"
           clearable
           density="comfortable"
         />

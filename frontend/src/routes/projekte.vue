@@ -61,6 +61,7 @@
               </v-col>
             </v-row>
           </div>
+        </template>
         <template #filter-form="{ filter, updateValidity }">
           <projekt-filter-form
             :model-value="filter"
@@ -84,9 +85,9 @@ import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
+import ProjektFilterForm from "@/components/forms/filter/ProjektFilterForm.vue";
 import ProjektForm from "@/components/forms/ProjektForm.vue";
 import { useProjektApi } from "@/composables/api/useProjektApi";
-import ProjektFilterForm from "@/components/forms/filter/ProjektFilterForm.vue";
 import { Role } from "@/types/Role";
 
 definePage({
@@ -180,8 +181,8 @@ const EMPTY_ITEM_TEMPLATE: Partial<ProjektResponseDTO> = {
 const FILTER_DEFAULT: Partial<ProjektFilter> = {
   projnr: undefined,
   fobFb: undefined,
-  kurz: undefined,
-  ua: undefined,
+  kurKurzbez: undefined,
+  uasUa: undefined,
   pname: undefined,
   pstrasse: undefined,
 };
