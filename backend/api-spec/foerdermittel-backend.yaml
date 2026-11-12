@@ -5208,18 +5208,6 @@ components:
             $ref: "#/components/schemas/ProjektResponseDTO"
         page:
           $ref: "#/components/schemas/PageMetadata"
-    KrankenhausFormContextDTO:
-      required:
-      - bezeichnung
-      - krhname
-      type: object
-      properties:
-        krhname:
-          type: string
-          description: ""
-        bezeichnung:
-          type: string
-          description: ""
     ProjektFormContext:
       required:
       - bezs
