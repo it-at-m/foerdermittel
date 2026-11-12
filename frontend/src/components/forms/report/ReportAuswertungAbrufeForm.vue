@@ -550,7 +550,7 @@ const sortOptions = [
   },
   {
     title: t("domain.report.auswertungAbrufe.sortEnum.fbAdatum"),
-    value: " FOERDERBEREICH_ADATUM",
+    value: "FOERDERBEREICH_ADATUM",
   },
   {
     title: t(

@@ -159,6 +159,8 @@ class ReportAuswertungAbrufeServiceTest {
             when(parameters.type()).thenReturn(ReportFormat.PDF);
             when(parameters.sort())
                     .thenReturn(ReportAuswertungAbrufeSort.values()[0]);
+            when(parameters.ref()).thenReturn("12");
+            when(parameters.krh()).thenReturn("Klinikum");
             final Map<String, Object> jasperParameters = new HashMap<>();
             final GeneratedReport expectedReport = mock(GeneratedReport.class);
 
@@ -181,6 +183,8 @@ class ReportAuswertungAbrufeServiceTest {
             verify(searchParameterValidator).validateCommonSearchParameters(
                     new CommonSearchParameters(
                             null, null, null, null, null, null, null));
+            verify(searchParameterValidator).validateReferat("12");
+            verify(searchParameterValidator).validateKrankenhaus("Klinikum");
 
             verify(reportService).generateReport(
                     jasperParameters,
