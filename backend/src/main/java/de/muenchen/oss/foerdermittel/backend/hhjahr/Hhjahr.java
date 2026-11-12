@@ -1,15 +1,12 @@
+
 package de.muenchen.oss.foerdermittel.backend.hhjahr;
 
 import de.muenchen.oss.foerdermittel.backend.hhplan.Hhplan;
-import de.muenchen.oss.foerdermittel.backend.hhplan.HhplanPrimaryKey;
-import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.Stadtbezirksliste;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
@@ -23,6 +20,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -34,10 +32,6 @@ public class Hhjahr implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    // ========= //
-    // Variables //
-    // ========= //
-
     @Id
     @Column(name = "hhjahr", nullable = false)
     @NotNull @Min(0) @Digits(integer = 4, fraction = 0) private BigDecimal hhjahr;
@@ -48,6 +42,7 @@ public class Hhjahr implements Serializable {
     @Column(name = "notizen")
     private String notizen;
 
-    @OneToMany(mappedBy = "hhjJahr", fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @OneToMany(mappedBy = "hhjJahr", fetch = FetchType.LAZY)
     private List<Hhplan> hhplanlisten = new ArrayList<>();
 }

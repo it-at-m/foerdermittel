@@ -21,6 +21,7 @@
             :model-value="item"
             :display-mode="inputDisplayMode"
             :hhjahr-form-context="hhjahrFormContext"
+            @update:model-value="Object.assign(item, $event)"
             @is-valid="updateValidity"
           />
         </template>
@@ -44,6 +45,9 @@ import useHasAnyRole from "@/composables/useHasAnyRole";
 import { Role } from "@/types/Role";
 
 const domainKey = "model.haushaltsjahr.modelName";
+
+const { t } = useI18n();
+
 const isAdmin = useHasAnyRole(Role.ADMIN);
 
 definePage({
@@ -55,8 +59,6 @@ definePage({
     ],
   },
 });
-
-const { t } = useI18n();
 
 const headers: DataTableHeader<Partial<HhjahrResponseDTO>>[] = [
   {
@@ -79,6 +81,7 @@ const EMPTY_ITEM_TEMPLATE: Partial<HhjahrResponseDTO> = {
   hhjahr: undefined,
   hhbezeichnung: "",
   notizen: "",
+  assignedProProjnr: [],
 };
 
 const hhjahrApi = useHaushaltsjahrApi();
@@ -91,6 +94,7 @@ const hhjahrFormRef = useTemplateRef<HaushaltsjahrFormType>("hhjahrForm");
 
 const handleCreate = async (hhjahrCreateDTO: Partial<HhjahrResponseDTO>) => {
   const model = hhjahrCreateDTO as HhjahrResponseDTO;
+
   await hhjahrApi.create?.call({
     hhjahrCreateDTO: model,
   });
@@ -98,6 +102,7 @@ const handleCreate = async (hhjahrCreateDTO: Partial<HhjahrResponseDTO>) => {
 
 const handleUpdate = async (hhjahrUpdateDTO: Partial<HhjahrResponseDTO>) => {
   const model = hhjahrUpdateDTO as HhjahrResponseDTO;
+
   await hhjahrApi.update?.call({
     id: model.id,
     hhjahrUpdateDTO: model,

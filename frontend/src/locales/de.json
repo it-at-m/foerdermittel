@@ -131,16 +131,17 @@
     },
     "haushaltsplanung": {
       "modelName": "Haushaltsplanung | Haushaltsplanungen",
-      "proProjnr": "Projektnummer",
+      "proProjnr": "Projnr",
+      "fobFb": "FB",
       "fipo": "Fipo",
       "pname": "Projektname",
       "pstrasse": "Projektstraße",
-      "mitteleinplanung": "Mitteleinplanung",
+      "mitteleinplanung": "Mittel einplanung",
       "bewilligungVoj": "Bewilligung Vorjahre",
-      "bewilligungHhj": "Bewilligung Haushaltsjahr",
+      "bewilligungHhj": "Bewilligung HH",
       "erhaltenVoj": "Erhalten Vorjahre",
-      "erhaltenHhj": "Erhalten Haushaltsjahr",
-      "baustandaktuell": "Baustandaktuell",
+      "erhaltenHhj": "Erhalten HH",
+      "baustandaktuell": "Baust. aktuell",
       "an": "Ansatz",
       "n1": "N1",
       "n2": "N2",
@@ -149,10 +150,12 @@
       "anlagevon": "Anlage von",
       "aenderungvon": "Änderung von",
       "aenderungdatum": "Änderungsdatum",
-      "lnaKurzbez": "Liste",
+      "stadtbezirk": "Bez",
+      "listenname": "Liste",
       "keineZuordnungen": "Keine zugeordneten Haushaltsplanungen vorhanden.",
       "trennzeichen": "–",
-      "bezeichnungInKlammern": "({bezeichnung})"
+      "bezeichnungInKlammern": "({bezeichnung})",
+      "projektdetails": "Projektdetails"
     },
     "staedtebaufoerderung": {
       "modelName": "Städtebauförderung | Städtebauförderungen"

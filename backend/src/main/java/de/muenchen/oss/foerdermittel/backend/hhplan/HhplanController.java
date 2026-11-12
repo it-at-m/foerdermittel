@@ -1,15 +1,14 @@
+
 package de.muenchen.oss.foerdermittel.backend.hhplan;
 
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
 import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanMapper;
 import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanResponseDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -34,17 +33,10 @@ public class HhplanController {
     public Page<HhplanResponseDTO> getHhplan(
             @ParameterObject @PageableDefault(sort = "id.hhjJahr") final Pageable pageable) {
 
-        final Page<Hhplan> pageWithHhplan = hhplanService.getHhplan(pageable);
+        log.info("Get Hhplan with Pageable {}", pageable);
 
-        final List<HhplanResponseDTO> hhplanResponseDTOList = pageWithHhplan.getContent()
-                .stream()
-                .map(hhplanMapper::toDTO)
-                .toList();
-
-        return new PageImpl<>(
-                hhplanResponseDTOList,
-                pageWithHhplan.getPageable(),
-                pageWithHhplan.getTotalElements());
+        return hhplanService.getHhplan(pageable)
+                .map(hhplanMapper::toDTO);
     }
 
     @GetMapping("/form-context")

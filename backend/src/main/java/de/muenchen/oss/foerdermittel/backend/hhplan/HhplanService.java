@@ -1,3 +1,4 @@
+
 package de.muenchen.oss.foerdermittel.backend.hhplan;
 
 import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanFormContextDTO;
@@ -31,13 +32,16 @@ public class HhplanService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<HhplanFormContextDTO> getHhplanFormContextDTOs() {
-        return hhplanMapper.toFormContextFromBasic(hhplanRepository.findReportHhplan());
+        log.info("Get Hhplan report form context");
+        return hhplanMapper.toFormContextFromBasic(
+                hhplanRepository.findReportHhplan());
     }
 
-    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public HhplanFormContext getHhplanFormContext() {
         log.info("Get Hhplan form context");
-        return new HhplanFormContext(hhplanRepository.findAllHhplan());
+        return new HhplanFormContext(
+                hhplanRepository.findAllHhplan());
     }
 }

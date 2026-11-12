@@ -16,16 +16,13 @@ import jakarta.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-/// This class represents a Hhplan.
-///
-/// The entity's attributes are mapped to the corresponding database columns.
-///
+// This class represents a Hhplan.
+// The entity's attributes are mapped to the corresponding database columns.
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -37,15 +34,11 @@ public class Hhplan extends AuditableEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    // ========= //
-    // Variables //
-    // ========= //
-
     @EmbeddedId
     private HhplanPrimaryKey id;
 
-    @Column(nullable = false)
-    @NotBlank @Size(min = 0, max = 15) private String fipo;
+    @Column(name = "fipo", nullable = false, length = 15)
+    @NotBlank @Size(max = 15) private String fipo;
 
     @Column(name = "mitteleinplanung", precision = 12)
     private BigDecimal mitteleinplanung;
@@ -62,7 +55,7 @@ public class Hhplan extends AuditableEntity implements Serializable {
     @Column(name = "erhalten_hhj", precision = 12)
     private BigDecimal erhaltenHhj;
 
-    @Column(name = "baustandaktuell", precision = 12)
+    @Column(name = "baustandaktuell", precision = 12, scale = 2)
     private BigDecimal baustandaktuell;
 
     @Column(name = "an", precision = 12)
@@ -79,11 +72,20 @@ public class Hhplan extends AuditableEntity implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("proProjnr")
-    @JoinColumn(name = "pro_projnr", referencedColumnName = "projnr", nullable = false)
+    @JoinColumn(
+            name = "pro_projnr",
+            referencedColumnName = "projnr",
+            nullable = false
+    )
     private Projekt proProjnr;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("hhjJahr")
-    @JoinColumn(name = "hhj_jahr", nullable = false)
+    @JoinColumn(
+            name = "hhj_jahr",
+            referencedColumnName = "hhjahr",
+            nullable = false
+    )
     private Hhjahr hhjJahr;
+
 }

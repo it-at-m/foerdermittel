@@ -51,7 +51,7 @@
 <script setup lang="ts">
 import type {
   HhjahrFormContext,
-  HhjahrResponseDTO, StadtbezirkFormContext,
+  HhjahrResponseDTO,
 } from "@/api/generated/foerdermittel-backend";
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
@@ -74,12 +74,11 @@ const modelValue = defineModel<Partial<HhjahrResponseDTO>>({
 
 const currentHhjahr = computed(() => modelValue.value.hhjahr);
 
-
 const { hhjahrFormContext, displayMode = InputDisplayMode.CREATE } =
-    defineProps<{
-      hhjahrFormContext: DeepReadonly<HhjahrFormContext>;
-      displayMode?: InputDisplayMode;
-    }>();
+  defineProps<{
+    hhjahrFormContext: DeepReadonly<HhjahrFormContext>;
+    displayMode?: InputDisplayMode;
+  }>();
 
 const emit = defineEmits<{
   isValid: [boolean | null];

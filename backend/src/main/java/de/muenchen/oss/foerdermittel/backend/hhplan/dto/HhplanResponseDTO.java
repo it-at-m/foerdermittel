@@ -1,10 +1,8 @@
-
 package de.muenchen.oss.foerdermittel.backend.hhplan.dto;
 
-import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.StadtbezirkslisteResponseDTO;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.List;
+import java.time.LocalDateTime;
 
 public record HhplanResponseDTO(
         @NotNull String id,
@@ -24,10 +22,10 @@ public record HhplanResponseDTO(
         BigDecimal an,
         BigDecimal n1,
         BigDecimal n2,
-        String bezStadtbezirke,
-        @NotNull List<StadtbezirkslisteResponseDTO> stadtbezirkslisten) {
-
-    public HhplanResponseDTO {
-        stadtbezirkslisten = List.copyOf(stadtbezirkslisten);
-    }
+        @NotNull BigDecimal stadtbezirk,
+        @NotNull String listenname,
+        LocalDateTime anlagedatum,
+        String anlagevon,
+        LocalDateTime aenderungsdatum,
+        String aenderungvon) {
 }

@@ -20,6 +20,11 @@ public interface HhplanRepository extends
     @Query("SELECT h.id.hhjJahr FROM Hhplan h ORDER BY h.id.hhjJahr")
     List<BigDecimal> findAllHhplan();
 
-    @Query("SELECT DISTINCT h.id.hhjJahr, h.fipo FROM Hhplan h ORDER BY h.fipo")
+    @Query("SELECT DISTINCT h.id.hhjJahr, h.id.proProjnr, h.fipo FROM Hhplan h ORDER BY h.fipo")
     List<BasicHhplanDAO> findReportHhplan();
+
+    @Query(
+        "SELECT DISTINCT h FROM Hhplan h JOIN FETCH h.proProjnr p LEFT JOIN FETCH p.fobFb LEFT JOIN FETCH p.bezStadtbezirk b LEFT JOIN FETCH b.stadtbezirkslisten s LEFT JOIN FETCH s.listenName WHERE h.id.hhjJahr IN :hhjahre"
+    )
+    List<Hhplan> findAllByHhjJahrIn(List<BigDecimal> hhjahre);
 }

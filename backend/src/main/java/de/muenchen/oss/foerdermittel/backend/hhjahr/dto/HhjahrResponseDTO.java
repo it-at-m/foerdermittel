@@ -9,6 +9,11 @@ public record HhjahrResponseDTO(
         @NotNull String id,
         @NotNull BigDecimal hhjahr,
         @NotNull String hhbezeichnung,
-        @NotNull String notizen) {
-
+        String notizen,
+        @NotNull List<HhplanResponseDTO> assignedProProjnr) {
+    public HhjahrResponseDTO {
+        assignedProProjnr = assignedProProjnr == null
+                ? List.of()
+                : List.copyOf(assignedProProjnr);
+    }
 }
