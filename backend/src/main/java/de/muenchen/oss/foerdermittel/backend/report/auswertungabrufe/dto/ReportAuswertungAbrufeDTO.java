@@ -1,12 +1,12 @@
 package de.muenchen.oss.foerdermittel.backend.report.auswertungabrufe.dto;
 
+import static de.muenchen.oss.foerdermittel.backend.report.validation.ValidationPatterns.SUPPORTED_YEAR_RANGE_PATTERN;
+
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-
-import static de.muenchen.oss.foerdermittel.backend.report.validation.ValidationPatterns.SUPPORTED_YEAR_RANGE_PATTERN;
 
 public record ReportAuswertungAbrufeDTO(
         @Pattern(regexp = SUPPORTED_YEAR_RANGE_PATTERN) String jahrAbrufVon,
