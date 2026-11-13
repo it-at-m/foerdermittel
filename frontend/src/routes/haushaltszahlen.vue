@@ -1,228 +1,226 @@
+
 <template>
-  <v-card variant="flat">
-    <v-card-title class="text-h6 px-0">
-      {{ t("model.haushaltsplanung.modelName") }}
-    </v-card-title>
+  <base-view :domain-key="domainKey">
+    <template #default="{ baseViewLoading }">
+      <v-card variant="flat">
+        <v-card-title class="d-flex align-center text-h6 px-0">
+          <v-btn
+              :icon="mdiArrowLeft"
+              variant="text"
+              density="comfortable"
+              :to="{ path: '/haushaltsplanung' }"
+              aria-label="Zurück zur Haushaltsplanung"
+          />
+          <span>
+            {{ t("model.haushaltsplanung.modelName") }}
+            {{ hhjahr ?? "" }}
+          </span>
+        </v-card-title>
 
-    <v-data-table
-      :headers="headers"
-      :items="props.planungen"
-      item-value="proProjnr"
-      density="compact"
-      show-expand
-      expand-on-click
-      :items-per-page="-1"
-      hide-default-footer
-    >
-      <template #expanded-row="{ item, columns }">
-        <td :colspan="columns.length">
-          <v-card
-            variant="tonal"
-            class="ma-2"
-          >
-            <v-card-text>
-              <v-row align="start">
-                <v-col
-                  cols="12"
-                  md="2"
-                >
-                  <div class="text-subtitle-2">
-                    {{ t("model.haushaltsplanung.projektdetails") }}
-                  </div>
-                </v-col>
-
-                <v-col
-                  cols="12"
-                  md="10"
-                >
-                  <v-row>
-                    <v-col
-                      cols="12"
-                      md="3"
-                    >
-                      <v-label>
-                        {{ t("model.haushaltsplanung.proProjnr") }}
-                      </v-label>
-                      <div>{{ item.proProjnr }}</div>
+        <v-data-table
+            :headers="headers"
+            :items="planungen"
+            item-value="proProjnr"
+            density="compact"
+            show-expand
+            expand-on-click
+            :items-per-page="-1"
+            hide-default-footer
+            :loading="baseViewLoading || hhplanApi?.loading.value"
+        >
+          <template #expanded-row="{ item, columns }">
+            <td :colspan="columns.length">
+              <v-card variant="tonal" class="ma-2">
+                <v-card-text>
+                  <v-row align="start">
+                    <v-col cols="12" md="2">
+                      <div class="text-subtitle-2">
+                        {{ t("model.haushaltsplanung.projektdetails") }}
+                      </div>
                     </v-col>
 
-                    <v-col
-                      cols="12"
-                      md="3"
-                    >
-                      <v-label>
-                        {{ t("model.haushaltsplanung.pname") }}
-                      </v-label>
-                      <div>{{ item.pname }}</div>
-                    </v-col>
-
-                    <v-col
-                      cols="12"
-                      md="3"
-                    >
-                      <v-label>
-                        {{ t("model.haushaltsplanung.pstrasse") }}
-                      </v-label>
-                      <div>{{ item.pstrasse }}</div>
-                    </v-col>
-
-                    <v-col
-                      cols="12"
-                      md="3"
-                    >
-                      <v-label>
-                        {{ t("model.haushaltsplanung.notizen") }}
-                      </v-label>
-                      <div>{{ item.notizen || "—" }}</div>
-                    </v-col>
-
-                    <v-col
-                      cols="12"
-                      md="3"
-                    >
-                      <v-label>
-                        {{ t("model.haushaltsplanung.anlagedatum") }}
-                      </v-label>
-                      <div>{{ formatDate(item.anlagedatum) }}</div>
-                    </v-col>
-
-                    <v-col
-                      cols="12"
-                      md="3"
-                    >
-                      <v-label>
-                        {{ t("model.haushaltsplanung.anlagevon") }}
-                      </v-label>
-                      <div>{{ item.anlagevon || "—" }}</div>
-                    </v-col>
-
-                    <v-col
-                      cols="12"
-                      md="3"
-                    >
-                      <v-label>
-                        {{ t("model.haushaltsplanung.aenderungdatum") }}
-                      </v-label>
-                      <div>{{ formatDate(item.aenderungsdatum) }}</div>
-                    </v-col>
-
-                    <v-col
-                      cols="12"
-                      md="3"
-                    >
-                      <v-label>
-                        {{ t("model.haushaltsplanung.aenderungvon") }}
-                      </v-label>
-                      <div>{{ item.aenderungvon || "—" }}</div>
+                    <v-col cols="12" md="10">
+                      <v-row>
+                        <v-col
+                            v-for="detail in getProjektDetails(item)"
+                            :key="detail.label"
+                            cols="12"
+                            md="3"
+                        >
+                          <v-label>{{ detail.label }}</v-label>
+                          <div>{{ detail.value }}</div>
+                        </v-col>
+                      </v-row>
                     </v-col>
                   </v-row>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
-        </td>
-      </template>
+                </v-card-text>
+              </v-card>
+            </td>
+          </template>
 
-      <template #no-data>
-        {{ t("model.haushaltsplanung.keineZuordnungen") }}
-      </template>
-    </v-data-table>
-  </v-card>
+          <template #no-data>
+            {{ t("model.haushaltsplanung.keineZuordnungen") }}
+          </template>
+        </v-data-table>
+      </v-card>
+    </template>
+  </base-view>
 </template>
 
 <script setup lang="ts">
-import type { HhjahrResponseDTO } from "@/api/generated/foerdermittel-backend";
+import type { HhplanResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
+import { mdiArrowLeft } from "@mdi/js";
+import { computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRoute } from "vue-router";
 
-type Hhplan = NonNullable<HhjahrResponseDTO["assignedProProjnr"]>[number];
-
-const props = defineProps<{
-  planungen: Hhplan[];
-}>();
+import BaseView from "@/components/common/BaseView.vue";
+import { useGetHaushaltsplanungenByHhjahr } from "@/composables/api/useHaushaltsplanungApi";
+import { Role } from "@/types/Role";
 
 const { t } = useI18n();
+const route = useRoute();
 
-const headers: DataTableHeader<Hhplan>[] = [
+definePage({
+  path: "/haushaltsplanung/haushaltszahlen",
+  meta: {
+    hasAnyRole: [
+      Role.SACHBEARBEITUNG,
+      Role.SACHBEARBEITUNG_HAUSHALT,
+      Role.ADMIN,
+    ],
+  },
+});
+
+const hhjahr = computed(() => {
+  const value = route.query.hhjahr;
+
+  if (typeof value !== "string" || value.trim() === "") {
+    return undefined;
+  }
+
+  const year = Number(value);
+  return Number.isInteger(year) ? year : undefined;
+});
+
+const domainKey = "model.haushaltsplanung.modelName";
+
+const hhplanApi = useGetHaushaltsplanungenByHhjahr?.();
+
+watch(
+    hhjahr,
+    async (year) => {
+      if (year === undefined) {
+        return;
+      }
+
+      await hhplanApi?.call({ hhjahr: year });
+    },
+    { immediate: true }
+);
+
+const planungen = computed<HhplanResponseDTO[]>(() =>
+    hhjahr.value === undefined
+        ? []
+        : (hhplanApi?.data.value?.content ?? [])
+);
+
+const formatDate = (value?: Date | string | null) =>
+    value
+        ? new Date(value).toLocaleDateString("de-DE", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        })
+        : "";
+
+const getProjektDetails = (item: HhplanResponseDTO) =>
+    [
+      ["proProjnr", item.proProjnr],
+      ["pname", item.pname],
+      ["pstrasse", item.pstrasse],
+      ["notizen", item.notizen || "—"],
+      ["anlagedatum", formatDate(item.anlagedatum)],
+      ["anlagevon", item.anlagevon || "—"],
+      ["aenderungdatum", formatDate(item.aenderungsdatum)],
+      ["aenderungvon", item.aenderungvon || "—"],
+    ].map(([key, value]) => ({
+      label: t(`model.haushaltsplanung.${key}`),
+      value,
+    }));
+
+const headers: DataTableHeader<HhplanResponseDTO>[] = [
   {
     title: t("model.haushaltsplanung.proProjnr"),
-    key: "proProjnr",
-    width: 90,
+    value: "proProjnr",
+    width: 80,
   },
   {
     title: t("model.haushaltsplanung.fipo"),
-    key: "fipo",
-    width: 145,
+    value: "fipo",
+    width: 140,
   },
   {
     title: t("model.haushaltsplanung.fobFb"),
-    key: "fobFb",
-    width: 50,
+    value: "fobFb",
+    width: 30,
   },
   {
     title: t("model.haushaltsplanung.stadtbezirk"),
-    key: "stadtbezirk",
-    width: 50,
+    value: "stadtbezirk",
+    width: 30,
   },
   {
     title: t("model.haushaltsplanung.listenname"),
-    key: "listenname",
-    width: 60,
+    value: "listenname",
+    width: 30,
   },
   {
     title: t("model.haushaltsplanung.mitteleinplanung"),
-    key: "mitteleinplanung",
-    width: 90,
+    value: "mitteleinplanung",
+    width: 50,
   },
   {
     title: t("model.haushaltsplanung.bewilligungVoj"),
-    key: "bewilligungVoj",
-    width: 90,
+    value: "bewilligungVoj",
+    width: 50,
   },
   {
     title: t("model.haushaltsplanung.bewilligungHhj"),
-    key: "bewilligungHhj",
-    width: 80,
+    value: "bewilligungHhj",
+    width: 50,
   },
   {
     title: t("model.haushaltsplanung.erhaltenVoj"),
-    key: "erhaltenVoj",
-    width: 90,
+    value: "erhaltenVoj",
+    width: 50,
   },
   {
     title: t("model.haushaltsplanung.erhaltenHhj"),
-    key: "erhaltenHhj",
-    width: 80,
+    value: "erhaltenHhj",
+    width: 50,
   },
   {
     title: t("model.haushaltsplanung.baustandaktuell"),
-    key: "baustandaktuell",
-    width: 70,
+    value: "baustandaktuell",
+    width: 50,
   },
   {
     title: t("model.haushaltsplanung.an"),
-    key: "an",
-    width: 70,
+    value: "an",
+    width: 30,
   },
   {
     title: t("model.haushaltsplanung.n1"),
-    key: "n1",
-    width: 50,
+    value: "n1",
+    width: 30,
   },
   {
     title: t("model.haushaltsplanung.n2"),
-    key: "n2",
-    width: 50,
+    value: "n2",
+    width: 30,
   },
 ];
-
-const formatDate = (value?: Date | string | null) =>
-  value
-    ? new Date(value).toLocaleDateString("de-DE", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      })
-    : "";
 </script>

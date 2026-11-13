@@ -4,6 +4,8 @@ package de.muenchen.oss.foerdermittel.backend.hhplan;
 import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanMapper;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
+
+import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,13 @@ public class HhplanService {
 
     private final HhplanRepository hhplanRepository;
     private final HhplanMapper hhplanMapper;
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<Hhplan> getHhplanByHhjahr(final BigDecimal hhjahr) {
+        log.info("Get Hhplan for Haushaltsjahr {}", hhjahr);
+        return hhplanRepository.findAllByHhjJahrIn(List.of(hhjahr));
+    }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)

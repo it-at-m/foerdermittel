@@ -9,7 +9,6 @@
         :domain-key="domainKey"
         :enable-actions="isAdmin"
         :should-load-form-context="isAdmin"
-        :expandable="true"
         :handle-create="handleCreate"
         :handle-update="handleUpdate"
         :handle-delete="handleDelete"
@@ -27,12 +26,21 @@
           />
         </template>
 
-        <template #expanded="{ item }">
-          <haushaltszahlen
-            :planungen="item.assignedProProjnr ?? []"
-            :haushaltsjahr="item.hhjahr"
-            :haushaltsbezeichnung="item.hhbezeichnung"
-          />
+        <template #[`item.hhjahr`]="{ item }">
+          <v-chip
+            v-tooltip:end="item.hhbezeichnung"
+            label
+            :append-icon="mdiArrowTopRight"
+            :to="{
+              path: '/haushaltsplanung/haushaltszahlen',
+              query: {
+                hhjahr: String(item.hhjahr),
+              },
+            }"
+            @click.stop
+          >
+            {{ item.hhjahr }}
+          </v-chip>
         </template>
       </crud-card>
     </template>
@@ -43,6 +51,7 @@
 import type { HhjahrResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
+import { mdiArrowTopRight } from "@mdi/js";
 import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -51,7 +60,6 @@ import CrudCard from "@/components/common/CrudCard.vue";
 import HaushaltsjahrForm from "@/components/forms/HaushaltsjahrForm.vue";
 import { useHaushaltsjahrApi } from "@/composables/api/useHaushaltsjahrApi";
 import useHasAnyRole from "@/composables/useHasAnyRole";
-import Haushaltszahlen from "@/routes/haushaltszahlen.vue";
 import { Role } from "@/types/Role";
 
 const domainKey = "model.haushaltsplanung.modelName";

@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -26,5 +27,5 @@ public interface HhplanRepository extends
     @Query(
         "SELECT DISTINCT h FROM Hhplan h JOIN FETCH h.proProjnr p LEFT JOIN FETCH p.fobFb LEFT JOIN FETCH p.bezStadtbezirk b LEFT JOIN FETCH b.stadtbezirkslisten s LEFT JOIN FETCH s.listenName WHERE h.id.hhjJahr IN :hhjahre"
     )
-    List<Hhplan> findAllByHhjJahrIn(List<BigDecimal> hhjahre);
+    List<Hhplan> findAllByHhjJahrIn(@Param("hhjahre") List<BigDecimal> hhjahre);
 }
