@@ -131,6 +131,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.antrag.modelName", 2),
+        props: {
+          to: "/antraege",
+        },
       },
       {
         title: t("model.bewilligung.modelName", 2),
