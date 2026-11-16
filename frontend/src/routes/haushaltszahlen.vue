@@ -160,7 +160,7 @@ const headers: DataTableHeader<HhplanResponseDTO>[] = [
   {
     title: t("model.haushaltsplanung.fipo"),
     value: "fipo",
-    width: 140,
+    width: 100,
   },
   {
     title: t("model.haushaltsplanung.fobFb"),

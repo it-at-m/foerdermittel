@@ -74,6 +74,7 @@ public class HhjahrService {
         return hhjahrRepository.insert(hhjahr);
     }
 
+    @Transactional
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     public Hhjahr updateHhjahr(final Hhjahr hhjahr, final BigDecimal hhjahrId) {
         final Hhjahr foundHhjahr = ServiceUtils.getEntityOrThrowNotFoundException(
@@ -82,7 +83,10 @@ public class HhjahrService {
         foundHhjahr.setHhbezeichnung(hhjahr.getHhbezeichnung());
         foundHhjahr.setNotizen(hhjahr.getNotizen());
 
-        log.debug("Update Haushaltsjahr {}", foundHhjahr);
+        log.debug(
+                "Update Haushaltsjahr: hhjahr={}, hhbezeichnung={}",
+                foundHhjahr.getHhjahr(),
+                foundHhjahr.getHhbezeichnung());
         return hhjahrRepository.update(foundHhjahr);
     }
 

@@ -76,7 +76,7 @@ public class HhjahrController {
             @Valid @RequestBody final HhjahrUpdateDTO hhjahrUpdateDTO,
             @PathVariable("id") final String hhjahrId) {
 
-        return hhjahrMapper.toDTO(
+        return hhjahrMapper.toUpdateDTO(
                 hhjahrService.updateHhjahr(
                         hhjahrMapper.toEntity(hhjahrUpdateDTO),
                         ControllerUtils.convertStringToBigDecimal(hhjahrId)));

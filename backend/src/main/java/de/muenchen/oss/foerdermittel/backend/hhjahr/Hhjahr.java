@@ -42,7 +42,6 @@ public class Hhjahr implements Serializable {
     @Column(name = "notizen")
     private String notizen;
 
-    @ToString.Exclude
     @OneToMany(mappedBy = "hhjJahr", fetch = FetchType.LAZY)
     private List<Hhplan> hhplanlisten = new ArrayList<>();
 }
