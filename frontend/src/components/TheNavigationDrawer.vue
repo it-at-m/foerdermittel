@@ -277,6 +277,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.abruf.modelName", 2),
+        props: {
+          to: "/report/auswertungabrufe",
+        },
       },
       {
         title: t("domain.verwendungsNachweis", 2),

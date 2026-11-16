@@ -271,9 +271,11 @@
         "antragstyp": "Antragstyp",
         "bez": "oder einen Stadtbezirk",
         "bpg": "Bauprogramm",
+        "ohnebewill": "Nur Abrufe ohne Bewilligung",
         "fag": "Nur FAG",
         "fb": "Förderbereich",
         "jahr": "Jahr",
+
         "jahrBis": "Jahr bis",
         "jahrVon": "Jahr von",
         "krisofp": "Sonderförderprogramm",
@@ -281,6 +283,8 @@
         "offen": "Nur offene Projekte",
         "pname": "Projektname",
         "pstrasse": "Projektstraße",
+        "ref": "Referat",
+        "krh": "Krankenhaus",
         "relevant": "Nur relevante FB",
         "sbl": "für Stadtbezirksliste",
         "sgt": "Siedlungsgebiet",
@@ -334,6 +338,29 @@
           "fbProjektstrasse": "Förderbereich, Projektstraße",
           "strasseProjektnummer": "Projektstraße, Projektnummer",
           "projektnummer": "Projektnummer"
+        },
+        "reportType": {
+          "pdf": "PDF: Gruppierung Förderbereich"
+        }
+      },
+      "auswertungAbrufe": {
+        "modelName": "Auswertung Abrufe",
+        "erh": "erhaltene Abrufe",
+        "nichtErh": "nicht erhaltene Abrufe",
+        "jahrAbrufVon": "Abgerufen Jahr von",
+        "jahrAbrufBis": "Abgerufen Jahr bis",
+        "jahrErhaltVon": "Erhalten Jahr von",
+        "jahrErhaltBis": "Erhalten Jahr bis",
+
+        "sortEnum": {
+          "fbProjektnummerAdatum": "Förderbereich, Projektnummer, abgerufen am",
+          "fbEdatum": "Förderbereich, erhalten am",
+          "fbAdatum": "Förderbereich, abgerufen am",
+          "fbProjektnummerStrasseAdatum": "Förderbereich, Projektstraße, abgerufen am",
+          "projektnummerAdatum": "Projektnummer, abgerufen am",
+          "edatum": "erhalten am",
+          "adatum": "abgerufen am",
+          "projektstrasse": "Projektstraße, abgerufen am"
         },
         "reportType": {
           "pdf": "PDF: Gruppierung Förderbereich"

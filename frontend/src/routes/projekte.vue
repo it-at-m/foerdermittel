@@ -3,9 +3,9 @@
     <template #default="{ baseViewLoading }">
       <crud-card
         :empty-item-template="EMPTY_ITEM_TEMPLATE"
+        :filter-default="FILTER_DEFAULT"
         :loading="baseViewLoading"
         :table-headers="headers"
-        :filter-keys="['projnr', 'fobFb']"
         :api="projektApi"
         :domain-key="domainKey"
         :handle-create="handleCreate"
@@ -14,7 +14,6 @@
         :form-ref="projektFormRef"
         should-load-form-context
         :expandable="true"
-        :filter-default="{ projnr: undefined, fobFb: undefined }"
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <projekt-form
@@ -63,13 +62,22 @@
             </v-row>
           </div>
         </template>
+        <template #filter-form="{ filter, updateValidity }">
+          <projekt-filter-form
+            :model-value="filter"
+            @is-valid="updateValidity"
+          />
+        </template>
       </crud-card>
     </template>
   </base-view>
 </template>
 
 <script setup lang="ts">
-import type { ProjektResponseDTO } from "@/api/generated/foerdermittel-backend";
+import type {
+  ProjektFilter,
+  ProjektResponseDTO,
+} from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
 import { computed, useTemplateRef } from "vue";
@@ -77,6 +85,7 @@ import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
+import ProjektFilterForm from "@/components/forms/filter/ProjektFilterForm.vue";
 import ProjektForm from "@/components/forms/ProjektForm.vue";
 import { useProjektApi } from "@/composables/api/useProjektApi";
 import { Role } from "@/types/Role";
@@ -167,6 +176,15 @@ const EMPTY_ITEM_TEMPLATE: Partial<ProjektResponseDTO> = {
   bpgBauprogramm: undefined,
   krisofp: undefined,
   krhzweck: undefined,
+};
+
+const FILTER_DEFAULT: Partial<ProjektFilter> = {
+  projnr: undefined,
+  fobFb: undefined,
+  kurKurzbez: undefined,
+  uasUa: undefined,
+  pname: undefined,
+  pstrasse: undefined,
 };
 
 const projektApi = useProjektApi();

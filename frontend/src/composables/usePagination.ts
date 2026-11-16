@@ -1,4 +1,4 @@
-import type { Pageable } from "@/types/Pageable";
+import type { Pageable } from "@/api/generated/foerdermittel-backend";
 import type { Ref } from "vue";
 import type { DataTableSortItem } from "vuetify";
 
