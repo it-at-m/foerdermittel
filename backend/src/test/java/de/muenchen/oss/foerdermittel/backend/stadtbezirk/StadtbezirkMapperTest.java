@@ -87,10 +87,12 @@ public class StadtbezirkMapperTest {
             // then
             assertThat(dtos).hasSize(2);
 
-            assertThat(dtos.get(0).stadtbezirk()).isEqualTo(entity1.getStadtbezirk().toString());
+            assertThat(dtos.get(0).stadtbezirk())
+                    .isEqualTo(entity1.getStadtbezirk().intValueExact());
             assertThat(dtos.get(0).bezeichnung()).isEqualTo(entity1.getBezeichnung());
 
-            assertThat(dtos.get(1).stadtbezirk()).isEqualTo(entity2.getStadtbezirk().toString());
+            assertThat(dtos.get(1).stadtbezirk())
+                    .isEqualTo(entity2.getStadtbezirk().intValueExact());
             assertThat(dtos.get(1).bezeichnung()).isEqualTo(entity2.getBezeichnung());
         }
     }

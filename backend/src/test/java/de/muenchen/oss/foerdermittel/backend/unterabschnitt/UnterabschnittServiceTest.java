@@ -45,6 +45,44 @@ class UnterabschnittServiceTest {
     private UnterabschnittService unitUnderTest;
 
     @Nested
+    class GetUnterabschnitt {
+
+        @Test
+        void givenIdExists_thenReturnEntity() {
+            // Given
+            final String ua = "H4";
+            final Hauptabschnitt testHa = new Hauptabschnitt("H3", BEZEICHNUNG);
+            final Unterabschnitt expectedEntity = new Unterabschnitt(ua, BEZEICHNUNG, testHa);
+
+            when(unterabschnittRepository.findById(ua)).thenReturn(Optional.of(expectedEntity));
+
+            // When
+            final Unterabschnitt result = unitUnderTest.getUnterabschnitt(ua);
+
+            // Then
+            verify(unterabschnittRepository, times(1)).findById(ua);
+
+            assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
+        }
+
+        @Test
+        void givenIdNotExists_thenThrowNotFoundException() {
+            // Given
+            final String ua = "99";
+
+            when(unterabschnittRepository.findById(ua)).thenReturn(Optional.empty());
+
+            // When
+            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.getUnterabschnitt(ua));
+
+            // Then
+            verify(unterabschnittRepository, times(1)).findById(ua);
+
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Unterabschnitt.class.getSimpleName(), ua));
+        }
+    }
+
+    @Nested
     class GetUnterabschnitte {
         @Test
         void givenPageable_thenReturnPageOfEntities() {

@@ -26,6 +26,14 @@ public class SiedlungsgebietService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
+    public Siedlungsgebiet getSiedlungsgebiet(final BigDecimal siedlungsgebiet) {
+        log.info("Get Siedlungsgebiet with siedlungsgebiet {}", siedlungsgebiet);
+        return ServiceUtils.getEntityOrThrowNotFoundException(
+                siedlungsgebiet, siedlungsgebietRepository, Siedlungsgebiet.class);
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
     public Page<Siedlungsgebiet> getSiedlungsgebiete(final Pageable pageable) {
         log.info("Get Siedlungsgebiete with Pageable {}", pageable);
         return siedlungsgebietRepository.findAll(pageable);

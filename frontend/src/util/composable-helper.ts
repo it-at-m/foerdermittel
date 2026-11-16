@@ -1,10 +1,10 @@
 import type { ApiCtor } from "@/api/ApiFactory";
 import type {
+  Pageable,
   PageMetadata,
   RequestOpts,
 } from "@/api/generated/foerdermittel-backend";
 import type { ApiComposable, ReportApiComposable } from "@/composables/useAPI";
-import type { Pageable } from "@/types/Pageable";
 
 import { ApiFactory } from "@/api/ApiFactory";
 import { BaseAPI } from "@/api/generated/foerdermittel-backend";

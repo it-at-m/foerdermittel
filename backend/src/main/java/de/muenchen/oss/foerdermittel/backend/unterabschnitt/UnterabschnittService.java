@@ -27,6 +27,14 @@ public class UnterabschnittService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
+    public Unterabschnitt getUnterabschnitt(final String ua) {
+        log.info("Get Unterabschnitt with ua {}", ua);
+        return ServiceUtils.getEntityOrThrowNotFoundException(
+                ua, unterabschnittRepository, Unterabschnitt.class);
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
     public Page<Unterabschnitt> getUnterabschnitte(final Pageable pageable) {
         log.info("Get Unterabschnitte with Pageable {}", pageable);
         return unterabschnittRepository.findAll(pageable);

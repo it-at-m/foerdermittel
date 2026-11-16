@@ -1,12 +1,15 @@
 package de.muenchen.oss.foerdermittel.backend.projekt;
 
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektMapper;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektUpdateDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAnnahmeAnordnungSapFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungAntragFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportBewilligungAuszahlungProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.projekt.tabs.allgemein.ProjektAllgemeinService;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 
@@ -26,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProjektService {
 
     private final ProjektRepository projektRepository;
+    private final ProjektAllgemeinService projektAllgemeinService;
     private final ProjektMapper projektMapper;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
@@ -40,28 +44,51 @@ public class ProjektService {
     public Page<Projekt> getProjekte(
             final ProjektFilter filter,
             final Pageable pageable) {
-
         return projektRepository.findAll(
-                ProjektSpecifications.filter(filter), pageable);
+                ProjektSpecifications.filter(filter),
+                pageable);
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
     @Transactional(readOnly = true)
     public ProjektFormContext getProjektFormContext() {
-        log.info("Get Projekt form context");
-        return new ProjektFormContext(projektRepository.findAllProjekte());
+        return projektAllgemeinService.getProjektFormContext();
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<ProjektFormContextDTO> getProjektFormContextDTOs() {
-        return projektMapper.toFormContext(projektRepository.findAll());
+        return projektAllgemeinService.getProjektFormContextDTOs();
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<ReportProjektuebersichtFormContextDTO> getReportProjektuebersichtFormContextDTOs() {
         return projektMapper.toReportProjektuebersichtFormContext(projektRepository.findAllAsBasic());
+    }
+
+    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
+    public Projekt createProjekt(final ProjektCreateDTO projektCreateDTO) {
+        log.debug("Create Projekt {}", projektCreateDTO);
+        return projektRepository.insert(projektAllgemeinService.createProjekt(projektCreateDTO));
+    }
+
+    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
+    public Projekt updateProjekt(final ProjektUpdateDTO projektUpdateDTO, final String ha) {
+        final Projekt foundProjekt = ServiceUtils.getEntityOrThrowNotFoundException(
+                ha, projektRepository, Projekt.class);
+
+        projektAllgemeinService.updateProjekt(foundProjekt, projektUpdateDTO);
+
+        log.debug("Update Projekt {}", foundProjekt);
+        return projektRepository.update(foundProjekt);
+    }
+
+    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
+    public void deleteProjekt(final String ha) {
+        log.debug("Delete Projekt with ID {}", ha);
+        ServiceUtils.getEntityOrThrowNotFoundException(ha, projektRepository, Projekt.class);
+        projektRepository.deleteById(ha);
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)

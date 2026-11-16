@@ -16,6 +16,11 @@ public final class ProjektSpecifications {
         final List<Specification<Projekt>> specifications = new ArrayList<>();
         addContains(specifications, filter.projnr(), "projnr");
         addEquals(specifications, filter.fobFb(), "fobFb", "fb");
+        addEquals(specifications, filter.kurKurzbez(), "kurKurzbez", "kurzbez");
+        addEquals(specifications, filter.uasUa(), "uasUa", "ua");
+        addContains(specifications, filter.pname(), "pname");
+        addContains(specifications, filter.pstrasse(), "pstrasse");
+
         return Specification.allOf(specifications);
     }
 

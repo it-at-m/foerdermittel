@@ -7,6 +7,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
+import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausMapper;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +34,46 @@ class KrankenhausServiceTest {
 
     @InjectMocks
     private KrankenhausService unitUnderTest;
+
+    @Mock
+    private KrankenhausMapper krankenhausMapper;
+
+    @Nested
+    class GetKrankenhaus {
+
+        @Test
+        void givenIdExists_thenReturnEntity() {
+            // Given
+            final String krhname = "H4";
+            final Krankenhaus expectedEntity = new Krankenhaus(krhname, BEZEICHNUNG);
+
+            when(krankenhausRepository.findById(krhname)).thenReturn(Optional.of(expectedEntity));
+
+            // When
+            final Krankenhaus result = unitUnderTest.getKrankenhaus(krhname);
+
+            // Then
+            verify(krankenhausRepository, times(1)).findById(krhname);
+
+            assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
+        }
+
+        @Test
+        void givenIdNotExists_thenThrowNotFoundException() {
+            // Given
+            final String krhname = "99";
+
+            when(krankenhausRepository.findById(krhname)).thenReturn(Optional.empty());
+
+            // When
+            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.getKrankenhaus(krhname));
+
+            // Then
+            verify(krankenhausRepository, times(1)).findById(krhname);
+
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Krankenhaus.class.getSimpleName(), krhname));
+        }
+    }
 
     @Nested
     class GetKrankenhaeuser {
@@ -165,4 +207,32 @@ class KrankenhausServiceTest {
         }
 
     }
+
+    @Nested
+    class GetKrankenhausFormContextDTOs {
+
+        @Test
+        void givenEntitiesExist_thenReturnFormContextDTOs() {
+            // Given
+            final Krankenhaus entity1 = new Krankenhaus();
+            final Krankenhaus entity2 = new Krankenhaus();
+            final List<Krankenhaus> entities = List.of(entity1, entity2);
+
+            final List<KrankenhausFormContextDTO> expectedDTOs = List.of(
+                    Mockito.mock(KrankenhausFormContextDTO.class),
+                    Mockito.mock(KrankenhausFormContextDTO.class));
+
+            when(krankenhausRepository.findAll()).thenReturn(entities);
+            when(krankenhausMapper.toFormContext(entities)).thenReturn(expectedDTOs);
+
+            // When
+            final List<KrankenhausFormContextDTO> result = unitUnderTest.getKrankenhausFormContextDTOs();
+
+            // Then
+            verify(krankenhausRepository, times(1)).findAll();
+            verify(krankenhausMapper, times(1)).toFormContext(entities);
+            assertThat(result).isEqualTo(expectedDTOs);
+        }
+    }
+
 }

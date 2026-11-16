@@ -39,6 +39,43 @@ class StadtbezirkServiceTest {
     private StadtbezirkService unitUnderTest;
 
     @Nested
+    class GetStadtbezirk {
+
+        @Test
+        void givenIdExists_thenReturnEntity() {
+            // Given
+            final BigDecimal stadtbezirk = BigDecimal.valueOf(23);
+            final Stadtbezirk expectedEntity = new Stadtbezirk(stadtbezirk, BEZEICHNUNG);
+
+            when(stadtbezirkRepository.findById(stadtbezirk)).thenReturn(Optional.of(expectedEntity));
+
+            // When
+            final Stadtbezirk result = unitUnderTest.getStadtbezirk(stadtbezirk);
+
+            // Then
+            verify(stadtbezirkRepository, times(1)).findById(stadtbezirk);
+
+            assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
+        }
+
+        @Test
+        void givenIdNotExists_thenThrowNotFoundException() {
+            // Given
+            final BigDecimal stadtbezirk = BigDecimal.valueOf(99);
+
+            when(stadtbezirkRepository.findById(stadtbezirk)).thenReturn(Optional.empty());
+
+            // When
+            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.getStadtbezirk(stadtbezirk));
+
+            // Then
+            verify(stadtbezirkRepository, times(1)).findById(stadtbezirk);
+
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Stadtbezirk.class.getSimpleName(), stadtbezirk));
+        }
+    }
+
+    @Nested
     class GetStadtbezirke {
         @Test
         void givenPageable_thenReturnPageOfEntities() {
@@ -187,8 +224,8 @@ class StadtbezirkServiceTest {
             final List<Stadtbezirk> entities = List.of(entity1, entity2);
 
             final List<StadtbezirkFormContextDTO> expected = List.of(
-                    new StadtbezirkFormContextDTO("1", "Stadtbezirk 1"),
-                    new StadtbezirkFormContextDTO("2", "Stadtbezirk 2"));
+                    new StadtbezirkFormContextDTO(1, "Stadtbezirk 1"),
+                    new StadtbezirkFormContextDTO(2, "Stadtbezirk 2"));
 
             when(stadtbezirkRepository.findAll()).thenReturn(entities);
             when(stadtbezirkMapper.toFormContext(entities)).thenReturn(expected);

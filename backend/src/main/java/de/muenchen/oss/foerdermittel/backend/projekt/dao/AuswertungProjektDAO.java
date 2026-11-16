@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record AuswertungProjektDAO(
         @NotNull String jahr,
-        String pstrasse,
         String pname,
+        String pstrasse,
         Krisofp krisofp) {
 }

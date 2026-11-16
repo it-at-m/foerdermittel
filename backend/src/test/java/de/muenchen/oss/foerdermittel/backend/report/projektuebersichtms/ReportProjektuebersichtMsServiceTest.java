@@ -141,18 +141,18 @@ class ReportProjektuebersichtMsServiceTest {
 
             // Stadtbezirke
             final List<StadtbezirkFormContextDTO> allStadtbezirke = List.of(
-                    new StadtbezirkFormContextDTO("1", "Test 1"),
-                    new StadtbezirkFormContextDTO("2", "Test 2"),
-                    new StadtbezirkFormContextDTO("3", "Test 3"));
+                    new StadtbezirkFormContextDTO(1, "Test 1"),
+                    new StadtbezirkFormContextDTO(2, "Test 2"),
+                    new StadtbezirkFormContextDTO(3, "Test 3"));
 
             when(stadtbezirkService.getStadtbezirkFormContextDTOs())
                     .thenReturn(allStadtbezirke);
 
             // Foerderbereiche
             final List<FoerderbereichFormContextDTO> allFoerderbereiche = List.of(
-                    new FoerderbereichFormContextDTO("1", "Test 1"),
-                    new FoerderbereichFormContextDTO("2", "Test 2"),
-                    new FoerderbereichFormContextDTO("3", "Test 3"));
+                    new FoerderbereichFormContextDTO(1, "Test 1"),
+                    new FoerderbereichFormContextDTO(2, "Test 2"),
+                    new FoerderbereichFormContextDTO(3, "Test 3"));
 
             when(foerderbereichService.getFoerderbereichFormContextDTOs())
                     .thenReturn(allFoerderbereiche);
@@ -177,9 +177,9 @@ class ReportProjektuebersichtMsServiceTest {
 
             // Bauprogramme
             final List<BauprogrammFormContextDTO> allBauprogramme = List.of(
-                    new BauprogrammFormContextDTO("1", "Test 1"),
-                    new BauprogrammFormContextDTO("2", "Test 2"),
-                    new BauprogrammFormContextDTO("3", "Test 3"));
+                    new BauprogrammFormContextDTO(1, "Test 1"),
+                    new BauprogrammFormContextDTO(2, "Test 2"),
+                    new BauprogrammFormContextDTO(3, "Test 3"));
 
             when(bauprogrammService.getBauprogrammFormContextDTOs())
                     .thenReturn(allBauprogramme);

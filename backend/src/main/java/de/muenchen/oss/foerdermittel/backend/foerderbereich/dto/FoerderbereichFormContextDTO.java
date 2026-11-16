@@ -5,6 +5,6 @@ import jakarta.validation.constraints.NotNull;
 /// @param fb
 /// @param bezeichnung
 public record FoerderbereichFormContextDTO(
-        @NotNull String fb,
+        @NotNull Integer fb,
         @NotNull String bezeichnung) {
 }

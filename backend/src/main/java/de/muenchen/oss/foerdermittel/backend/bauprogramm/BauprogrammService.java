@@ -26,6 +26,14 @@ public class BauprogrammService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
+    public Bauprogramm getBauprogramm(final BigDecimal bauprogramm) {
+        log.info("Get Bauprogramm with bauprogramm {}", bauprogramm);
+        return ServiceUtils.getEntityOrThrowNotFoundException(
+                bauprogramm, bauprogrammRepository, Bauprogramm.class);
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
     public Page<Bauprogramm> getBauprogramme(final Pageable pageable) {
         log.info("Get Bauprogramme with Pageable {}", pageable);
         return bauprogrammRepository.findAll(pageable);

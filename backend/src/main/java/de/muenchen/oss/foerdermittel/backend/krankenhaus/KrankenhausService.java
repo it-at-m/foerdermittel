@@ -1,7 +1,10 @@
 package de.muenchen.oss.foerdermittel.backend.krankenhaus;
 
+import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausMapper;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -17,6 +20,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class KrankenhausService {
 
     private final KrankenhausRepository krankenhausRepository;
+    private final KrankenhausMapper krankenhausMapper;
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public Krankenhaus getKrankenhaus(final String krhname) {
+        log.info("Get Krankenhaus with krhname {}", krhname);
+        return ServiceUtils.getEntityOrThrowNotFoundException(
+                krhname, krankenhausRepository, Krankenhaus.class);
+    }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -51,5 +63,11 @@ public class KrankenhausService {
         log.debug("Delete Krankenhaus with ID {}", krhName);
         ServiceUtils.getEntityOrThrowNotFoundException(krhName, krankenhausRepository, Krankenhaus.class);
         krankenhausRepository.deleteById(krhName);
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<KrankenhausFormContextDTO> getKrankenhausFormContextDTOs() {
+        return krankenhausMapper.toFormContext(krankenhausRepository.findAll());
     }
 }

@@ -24,6 +24,14 @@ public class KurzbezeichnungService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
+    public Kurzbezeichnung getKurzbezeichnung(final String kurzbez) {
+        log.info("Get Kurzbezeichnung with kurzbez {}", kurzbez);
+        return ServiceUtils.getEntityOrThrowNotFoundException(
+                kurzbez, kurzbezeichnungRepository, Kurzbezeichnung.class);
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
     public Page<Kurzbezeichnung> getKurzbezeichnungen(final Pageable pageable) {
         log.info("Get Kurzbezeichnungen with Pageable {}", pageable);
         return kurzbezeichnungRepository.findAll(pageable);

@@ -40,6 +40,44 @@ class SiedlungsgebietServiceTest {
     private SiedlungsgebietService unitUnderTest;
 
     @Nested
+    class GetSiedlungsgebiet {
+
+        @Test
+        void givenIdExists_thenReturnEntity() {
+            // Given
+            final BigDecimal siedlungsgebiet = BigDecimal.valueOf(23);
+            final Siedlungsgebiet expectedEntity = new Siedlungsgebiet(siedlungsgebiet, BEZEICHNUNG);
+
+            when(siedlungsgebietRepository.findById(siedlungsgebiet)).thenReturn(Optional.of(expectedEntity));
+
+            // When
+            final Siedlungsgebiet result = unitUnderTest.getSiedlungsgebiet(siedlungsgebiet);
+
+            // Then
+            verify(siedlungsgebietRepository, times(1)).findById(siedlungsgebiet);
+
+            assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
+        }
+
+        @Test
+        void givenIdNotExists_thenThrowNotFoundException() {
+            // Given
+            final BigDecimal siedlungsgebiet = BigDecimal.valueOf(99);
+
+            when(siedlungsgebietRepository.findById(siedlungsgebiet)).thenReturn(Optional.empty());
+
+            // When
+            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.getSiedlungsgebiet(siedlungsgebiet));
+
+            // Then
+            verify(siedlungsgebietRepository, times(1)).findById(siedlungsgebiet);
+
+            assertThat(exception.getMessage())
+                    .isEqualTo(String.format("The %s with ID %s was not found.", Siedlungsgebiet.class.getSimpleName(), siedlungsgebiet));
+        }
+    }
+
+    @Nested
     class GetSiedlungsgebiete {
         @Test
         void givenPageable_thenReturnPageOfEntities() {

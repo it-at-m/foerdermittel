@@ -19,24 +19,31 @@ public final class SpecificationUtils {
         if (value == null || value.isBlank()) {
             return;
         }
+
+        final String escapedValue = value.toLowerCase(Locale.ROOT)
+                .replace("\\", "\\\\")
+                .replace("%", "\\%")
+                .replace("_", "\\_");
+
         specifications.add(
                 (root, query, cb) -> cb.like(
                         cb.lower(path(root, path).as(String.class)),
-                        "%" + value.toLowerCase(Locale.ROOT) + "%"));
+                        "%" + escapedValue + "%",
+                        '\\'));
     }
 
     public static <T> void addEquals(
             final List<Specification<T>> specifications,
             final Object value,
             final String... path) {
-        if (value == null) {
+        if (value == null || (value instanceof String string && string.isBlank())) {
             return;
         }
+
         specifications.add(
                 (root, query, cb) -> cb.equal(path(root, path), value));
     }
 
-    // walks root.get("a").get("b")... for nested attributes like fobFb.fb
     private static Path<?> path(final Root<?> root, final String... path) {
         Path<?> current = root;
         for (final String segment : path) {
@@ -44,5 +51,4 @@ public final class SpecificationUtils {
         }
         return current;
     }
-
 }

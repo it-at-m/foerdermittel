@@ -108,9 +108,9 @@ class ReportFortsetzungsantragServiceTest {
         void givenEntitiesExists_thenReturnCorrectFormContext() {
             // Given
             final List<StadtbezirkFormContextDTO> allStadtbezirke = List.of(
-                    new StadtbezirkFormContextDTO("1", "Test"),
-                    new StadtbezirkFormContextDTO("2", "Test 2"),
-                    new StadtbezirkFormContextDTO("3", "Test 3"));
+                    new StadtbezirkFormContextDTO(1, "Test"),
+                    new StadtbezirkFormContextDTO(2, "Test 2"),
+                    new StadtbezirkFormContextDTO(3, "Test 3"));
 
             when(stadtbezirkService.getStadtbezirkFormContextDTOs())
                     .thenReturn(allStadtbezirke);
