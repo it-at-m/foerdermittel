@@ -4,7 +4,7 @@
     :disabled="!reportauswertungabrufeformcontext"
     @update:model-value="onValidityChanged"
   >
-    <v-row align="center">
+    <v-row>
       <v-col
         cols="12"
         md="3"
@@ -16,11 +16,14 @@
             ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrAbrufVon"
-          :label="t('domain.report.common.jahrAbrufVon')"
+          :label="t('domain.report.auswertungAbrufe.jahrAbrufVon')"
+          validate-on="blur"
           :error-messages="jahrAbrufVonError"
           density="comfortable"
+          @blur="validateAbrufYears"
         />
       </v-col>
+
       <v-col
         cols="12"
         md="3"
@@ -32,11 +35,14 @@
             ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrAbrufBis"
-          :label="t('domain.report.common.jahrAbrufBis')"
+          :label="t('domain.report.auswertungAbrufe.jahrAbrufBis')"
+          validate-on="blur"
           :error-messages="jahrAbrufBisError"
           density="comfortable"
+          @blur="validateAbrufYears"
         />
       </v-col>
+
       <v-col
         cols="12"
         md="3"
@@ -48,11 +54,14 @@
             ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrErhaltVon"
-          :label="t('domain.report.common.jahrErhaltVon')"
+          :label="t('domain.report.auswertungAbrufe.jahrErhaltVon')"
+          validate-on="blur"
           :error-messages="jahrErhaltVonError"
           density="comfortable"
+          @blur="validateErhaltYears()"
         />
       </v-col>
+
       <v-col
         cols="12"
         md="3"
@@ -64,16 +73,18 @@
             ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrErhaltBis"
-          :label="t('domain.report.common.jahrErhaltBis')"
+          :label="t('domain.report.auswertungAbrufe.jahrErhaltBis')"
+          validate-on="blur"
           :error-messages="jahrErhaltBisError"
           density="comfortable"
+          @blur="validateErhaltYears()"
         />
       </v-col>
     </v-row>
     <v-row>
       <v-col
         cols="12"
-        md="3"
+        md="2"
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.sbl"
@@ -93,7 +104,7 @@
 
       <v-col
         cols="12"
-        md="3"
+        md="2"
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.bez"
@@ -110,9 +121,10 @@
           @update:model-value="delete modelValue.parameters!.sbl"
         />
       </v-col>
+
       <v-col
         cols="12"
-        md="3"
+        md="2"
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.fb"
@@ -128,6 +140,7 @@
           clearable
         />
       </v-col>
+
       <v-col
         cols="12"
         md="3"
@@ -146,8 +159,7 @@
           clearable
         />
       </v-col>
-    </v-row>
-    <v-row>
+
       <v-col
         cols="12"
         md="3"
@@ -166,9 +178,11 @@
           clearable
         />
       </v-col>
+    </v-row>
+    <v-row>
       <v-col
         cols="12"
-        md="3"
+        md="2"
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.projnr"
@@ -184,9 +198,26 @@
           clearable
         />
       </v-col>
+
       <v-col
         cols="12"
-        md="6"
+        md="5"
+      >
+        <fm-text-field
+          v-model="modelValue.parameters!.pname"
+          :display-mode="InputDisplayMode.EDIT"
+          :validation-attribute-map="
+            ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="pname"
+          :label="t('domain.report.common.pname')"
+          density="comfortable"
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="5"
       >
         <fm-text-field
           v-model="modelValue.parameters!.pstrasse"
@@ -200,25 +231,11 @@
         />
       </v-col>
     </v-row>
-    <v-row>
+
+    <v-row align="center">
       <v-col
         cols="12"
-        md="6"
-      >
-        <fm-text-field
-          v-model="modelValue.parameters!.pname"
-          :display-mode="InputDisplayMode.EDIT"
-          :validation-attribute-map="
-            ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
-          "
-          validation-attribute-key="pname"
-          :label="t('domain.report.common.pname')"
-          density="comfortable"
-        />
-      </v-col>
-      <v-col
-        cols="12"
-        md="1"
+        md="2"
       >
         <fm-checkbox
           v-model="modelValue.parameters!.fag"
@@ -260,33 +277,36 @@
 
       <v-col
         cols="12"
-        md="3"
+        md="2"
       >
         <fm-checkbox
           v-model="modelValue.parameters!.erh"
-          :label="t('domain.report.common.erh')"
+          :label="t('domain.report.auswertungAbrufe.erh')"
           true-value="1"
           false-value="0"
           density="compact"
           clearable
         />
       </v-col>
+
       <v-col
         cols="12"
         md="3"
       >
         <fm-checkbox
           v-model="modelValue.parameters!.nichterh"
-          :label="t('domain.report.common.nichtErh')"
+          :label="t('domain.report.auswertungAbrufe.nichtErh')"
           true-value="1"
           false-value="0"
           density="compact"
           clearable
         />
       </v-col>
+    </v-row>
+    <v-row>
       <v-col
         cols="12"
-        md="3"
+        md="2"
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.ref"
@@ -302,9 +322,10 @@
           clearable
         />
       </v-col>
+
       <v-col
         cols="12"
-        md="3"
+        md="2"
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.krh"
@@ -320,11 +341,10 @@
           clearable
         />
       </v-col>
-    </v-row>
-    <v-row>
+
       <v-col
         cols="12"
-        md="3"
+        md="4"
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.krisofp"
@@ -335,7 +355,7 @@
             ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="krisofp"
-          :label="t('model.projekt.krisofp')"
+          :label="t('domain.report.common.krisofp')"
           density="comfortable"
           clearable
         />
@@ -343,7 +363,7 @@
 
       <v-col
         cols="12"
-        md="3"
+        md="2"
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.sgt"
@@ -362,7 +382,7 @@
 
       <v-col
         cols="12"
-        md="3"
+        md="2"
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.bpg"
@@ -379,7 +399,6 @@
         />
       </v-col>
     </v-row>
-
     <v-row>
       <v-col
         cols="12"
@@ -433,7 +452,7 @@ import type {
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
 
-import { computed, useTemplateRef, watch } from "vue";
+import { computed, ref, useTemplateRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
 import { ReportAuswertungAbrufeDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
@@ -591,30 +610,25 @@ const formatOptions = [
   },
 ];
 
-const jahrAbrufVonError = computed(() =>
-  getJahrVonError(
-    modelValue.value.parameters?.jahrAbrufVon,
-    modelValue.value.parameters?.jahrAbrufBis
-  )
-);
+const jahrAbrufVonError = ref<ReturnType<typeof getJahrVonError>>();
+const jahrAbrufBisError = ref<ReturnType<typeof getJahrBisError>>();
 
-const jahrAbrufBisError = computed(() =>
-  getJahrBisError(
-    modelValue.value.parameters?.jahrAbrufVon,
-    modelValue.value.parameters?.jahrAbrufBis
-  )
-);
-const jahrErhaltVonError = computed(() =>
-  getJahrVonError(
-    modelValue.value.parameters?.jahrErhaltVon,
-    modelValue.value.parameters?.jahrErhaltBis
-  )
-);
+const jahrErhaltVonError = ref<ReturnType<typeof getJahrVonError>>();
+const jahrErhaltBisError = ref<ReturnType<typeof getJahrBisError>>();
 
-const jahrErhaltBisError = computed(() =>
-  getJahrBisError(
-    modelValue.value.parameters?.jahrErhaltVon,
-    modelValue.value.parameters?.jahrErhaltBis
-  )
-);
+function validateAbrufYears() {
+  const von = modelValue.value.parameters?.jahrAbrufVon;
+  const bis = modelValue.value.parameters?.jahrAbrufBis;
+
+  jahrAbrufVonError.value = getJahrVonError(von, bis);
+  jahrAbrufBisError.value = getJahrBisError(von, bis);
+}
+
+function validateErhaltYears() {
+  const von = modelValue.value.parameters?.jahrErhaltVon;
+  const bis = modelValue.value.parameters?.jahrErhaltBis;
+
+  jahrErhaltVonError.value = getJahrVonError(von, bis);
+  jahrErhaltBisError.value = getJahrBisError(von, bis);
+}
 </script>

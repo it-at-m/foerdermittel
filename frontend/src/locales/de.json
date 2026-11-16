@@ -246,15 +246,10 @@
         "bez": "oder einen Stadtbezirk",
         "bpg": "Bauprogramm",
         "ohnebewill": "Nur Abrufe ohne Bewilligung",
-        "erh": "erhaltene Bewilligungen",
-        "nichtErh": "nicht erhaltene Bewilligungen",
         "fag": "Nur FAG",
         "fb": "Förderbereich",
         "jahr": "Jahr",
-        "jahrAbrufVon": "Abgerufen Jahr von",
-        "jahrAbrufBis": "Jahr bis",
-        "jahrErhaltVon": "Erhalten Jahr von",
-        "jahrErhaltBis": "Jahr bis",
+
         "jahrBis": "Jahr bis",
         "jahrVon": "Jahr von",
         "krisofp": "Sonderförderprogramm",
@@ -324,6 +319,12 @@
       },
       "auswertungAbrufe": {
         "modelName": "Auswertung Abrufe",
+        "erh": "erhaltene Abrufe",
+        "nichtErh": "nicht erhaltene Abrufe",
+        "jahrAbrufVon": "Abgerufen Jahr von",
+        "jahrAbrufBis": "Abgerufen Jahr bis",
+        "jahrErhaltVon": "Erhalten Jahr von",
+        "jahrErhaltBis": "Erhalten Jahr bis",
 
         "sortEnum": {
           "fbProjektnummerAdatum": "Förderbereich, Projektnummer, abgerufen am",
