@@ -43,7 +43,7 @@
             />
           </v-col>
           <v-col cols="2">
-            <fm-text-field
+            <fm-number-input
               :model-value="selectedProjekt.fobFb"
               :label="t('model.antrag.fobFb')"
               :display-mode="InputDisplayMode.READ"

@@ -82,8 +82,8 @@ public class AntragServiceTest {
         void givenUniqueAntraege_thenReturnTheirIdsPerProjekt() {
             final String otherProjnr = "1124101";
             when(projektService.getProjektFormContextDTOs()).thenReturn(List.of(
-                    new ProjektFormContextDTO(PROJNR, "Projekt 1", "Straße 1", "11", BigDecimal.ONE),
-                    new ProjektFormContextDTO(otherProjnr, "Projekt 2", "Straße 2", "12", BigDecimal.ONE)));
+                    new ProjektFormContextDTO(PROJNR, "Projekt 1", "Straße 1", BigDecimal.valueOf(11), BigDecimal.ONE),
+                    new ProjektFormContextDTO(otherProjnr, "Projekt 2", "Straße 2", BigDecimal.valueOf(12), BigDecimal.ONE)));
             when(antragRepository.findUniqueAntraege(Set.of(Antragstyp.E, Antragstyp.U))).thenReturn(List.of(
                     uniqueAntrag(PROJNR, Antragstyp.E, 1L),
                     uniqueAntrag(PROJNR, Antragstyp.U, 2L)));
@@ -91,8 +91,8 @@ public class AntragServiceTest {
             final AntragFormContext result = unitUnderTest.getAntragFormContext();
 
             assertThat(result.projekte()).containsExactly(
-                    new AntragProjektFormContextDTO(PROJNR, "Projekt 1", "Straße 1", "11", 1L, 2L),
-                    new AntragProjektFormContextDTO(otherProjnr, "Projekt 2", "Straße 2", "12", null, null));
+                    new AntragProjektFormContextDTO(PROJNR, "Projekt 1", "Straße 1", BigDecimal.valueOf(11), 1L, 2L),
+                    new AntragProjektFormContextDTO(otherProjnr, "Projekt 2", "Straße 2", BigDecimal.valueOf(12), null, null));
         }
     }
 

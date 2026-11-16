@@ -5641,7 +5641,7 @@ components:
           type: string
           description: ""
         fobFb:
-          type: string
+          type: number
           description: ""
         erstantragId:
           type: integer

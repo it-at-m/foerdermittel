@@ -29,6 +29,7 @@ import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,6 +38,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -133,17 +135,23 @@ public class AntragIntegrationTest {
         final Bauprogramm bauprogramm = new Bauprogramm(new BigDecimal(1), "Test");
         bauprogrammRepository.save(bauprogramm);
 
-        projektRepository.save(new Projekt(EXISTING_PROJNR,
-                "2023",
-                foerderbereich,
-                "1",
-                "1",
-                "Test",
-                "Straße 1",
-                stadtbezirk,
-                unterabschnitt,
-                kurzbezeichnung,
-                Krisofp.K));
+        final Projekt projekt = new Projekt();
+        projekt.setProjnr(EXISTING_PROJNR);
+        projekt.setJahr("2023");
+        projekt.setFobFb(foerderbereich);
+        projekt.setLfdnr1("1");
+        projekt.setLfdnr2("1");
+        projekt.setPname("Test");
+        projekt.setPstrasse("Straße 1");
+        projekt.setBezStadtbezirk(stadtbezirk);
+        projekt.setUasUa(unterabschnitt);
+        projekt.setKurKurzbez(kurzbezeichnung);
+        projekt.setKrisofp(Krisofp.K);
+        projekt.setKauf(false);
+        projekt.setRefinanzierbar(true);
+        ReflectionTestUtils.setField(projekt, "anlagevon", "test");
+        ReflectionTestUtils.setField(projekt, "anlagedatum", LocalDateTime.now());
+        projektRepository.save(projekt);
     }
 
     private static AntragCreateDTO createRequest(final String projnr, final Antragstyp antragstyp, final LocalDate antragsdatum,

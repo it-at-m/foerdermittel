@@ -1,6 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.antrag.dto;
 
 import jakarta.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 /// Projekt for the [de.muenchen.oss.foerdermittel.backend.antrag.AntragFormContext], including
 /// the existing Antraege of the types that may exist only once per Projekt.
@@ -15,7 +16,7 @@ public record AntragProjektFormContextDTO(
         @NotNull String projnr,
         @NotNull String pname,
         @NotNull String pstrasse,
-        @NotNull String fobFb,
+        @NotNull BigDecimal fobFb,
         Long erstantragId,
         Long unbedenklichkeitsantragId) {
 }
