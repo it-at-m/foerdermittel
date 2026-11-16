@@ -7,12 +7,17 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import de.muenchen.oss.foerdermittel.backend.antrag.dto.AntragProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.bewilligung.BewilligungRepository;
 import de.muenchen.oss.foerdermittel.backend.common.ConflictException;
 import de.muenchen.oss.foerdermittel.backend.common.DeleteNotAllowedException;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,6 +54,46 @@ public class AntragServiceTest {
         antrag.setAntragstyp(antragstyp);
         antrag.setProjekt(projekt());
         return antrag;
+    }
+
+    @Nested
+    class GetAntragFormContext {
+
+        private static UniqueAntrag uniqueAntrag(final String projnr, final Antragstyp antragstyp, final Long id) {
+            return new UniqueAntrag() {
+                @Override
+                public String getProjnr() {
+                    return projnr;
+                }
+
+                @Override
+                public Antragstyp getAntragstyp() {
+                    return antragstyp;
+                }
+
+                @Override
+                public Long getId() {
+                    return id;
+                }
+            };
+        }
+
+        @Test
+        void givenUniqueAntraege_thenReturnTheirIdsPerProjekt() {
+            final String otherProjnr = "1124101";
+            when(projektService.getProjektFormContextDTOs()).thenReturn(List.of(
+                    new ProjektFormContextDTO(PROJNR, "Projekt 1", "Straße 1", "11", BigDecimal.ONE),
+                    new ProjektFormContextDTO(otherProjnr, "Projekt 2", "Straße 2", "12", BigDecimal.ONE)));
+            when(antragRepository.findUniqueAntraege(Set.of(Antragstyp.E, Antragstyp.U))).thenReturn(List.of(
+                    uniqueAntrag(PROJNR, Antragstyp.E, 1L),
+                    uniqueAntrag(PROJNR, Antragstyp.U, 2L)));
+
+            final AntragFormContext result = unitUnderTest.getAntragFormContext();
+
+            assertThat(result.projekte()).containsExactly(
+                    new AntragProjektFormContextDTO(PROJNR, "Projekt 1", "Straße 1", "11", 1L, 2L),
+                    new AntragProjektFormContextDTO(otherProjnr, "Projekt 2", "Straße 2", "12", null, null));
+        }
     }
 
     @Nested

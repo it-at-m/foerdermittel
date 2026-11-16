@@ -27,23 +27,23 @@ public interface AntragDTO {
     BigDecimal asuK();
 
     @JsonIgnore
-    @AssertTrue(message = "antragstyp U requires unbeddat") default boolean isPflichtdatumGesetzt() {
+    @AssertTrue(message = "antragstyp U requires unbeddat") default boolean isUnbeddatSetForTypeU() {
         return antragstyp() != Antragstyp.U || unbeddat() != null;
     }
 
     @JsonIgnore
-    @AssertTrue(message = "antragsdatum is required for all types except U") default boolean isAntragsdatumGesetzt() {
+    @AssertTrue(message = "antragsdatum is required for all types except U") default boolean isAntragsdatumSet() {
         return antragstyp() == Antragstyp.U || antragsdatum() != null;
     }
 
     @JsonIgnore
-    @AssertTrue(message = "antragsdatum requires at least one of asuZ, asuD or asuK to be greater than 0") default boolean isBetragBeantragt() {
+    @AssertTrue(message = "antragsdatum requires at least one of asuZ, asuD or asuK to be greater than 0") default boolean isAmountRequested() {
         return antragsdatum() == null || Stream.of(asuZ(), asuD(), asuK())
                 .anyMatch(betrag -> betrag != null && betrag.signum() > 0);
     }
 
     @JsonIgnore
-    @AssertTrue(message = "unbedja requires unbeddat and must not be before it, unbedbis requires unbedja and must not be before it") default boolean isUnbedenklichkeitKonsistent() {
+    @AssertTrue(message = "unbedja requires unbeddat and must not be before it, unbedbis requires unbedja and must not be before it") default boolean isUnbedenklichkeitConsistent() {
         final boolean unbedjaValid = unbedja() == null || unbeddat() != null && !unbedja().isBefore(unbeddat());
         final boolean unbedbisValid = unbedbis() == null || unbedja() != null && !unbedbis().isBefore(unbedja());
         return unbedjaValid && unbedbisValid;

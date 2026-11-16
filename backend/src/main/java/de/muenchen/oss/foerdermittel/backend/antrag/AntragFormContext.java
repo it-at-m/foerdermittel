@@ -1,6 +1,6 @@
 package de.muenchen.oss.foerdermittel.backend.antrag;
 
-import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.antrag.dto.AntragProjektFormContextDTO;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
 /// @param projekte
 
 public record AntragFormContext(
-        @NotNull List<ProjektFormContextDTO> projekte) {
+        @NotNull List<AntragProjektFormContextDTO> projekte) {
     public AntragFormContext {
         projekte = List.copyOf(projekte);
     }

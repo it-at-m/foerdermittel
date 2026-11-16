@@ -9,7 +9,7 @@
         <fm-autocomplete
           v-model="modelValue.projnr"
           :items="projektItems"
-          item-title="anzeige"
+          item-title="displayName"
           item-value="projnr"
           :display-mode="displayMode"
           :label="t('model.antrag.projnr')"
@@ -17,7 +17,7 @@
             AntragCreateDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="projnr"
-          :additional-rules="[projektExistiert]"
+          :additional-rules="[projektExists, antragstypUnique]"
           :disable-edit="displayMode === InputDisplayMode.EDIT"
         />
       </v-col>
@@ -65,6 +65,7 @@
             AntragCreateDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="antragstyp"
+          :additional-rules="[antragstypUnique]"
         />
       </v-col>
       <v-col cols="4">
@@ -73,7 +74,7 @@
           :required="modelValue.antragstyp !== AntragCreateDTOAntragstypEnum.U"
           :display-mode="displayMode"
           :label="t('model.antrag.antragsdatum')"
-          :additional-rules="[antragsdatumGesetzt]"
+          :additional-rules="[antragsdatumRequired]"
           clearable
         />
       </v-col>
@@ -86,7 +87,7 @@
           :required="modelValue.antragstyp === AntragCreateDTOAntragstypEnum.U"
           :display-mode="displayMode"
           :label="t('model.antrag.unbeddat')"
-          :additional-rules="[unbeddatGesetzt]"
+          :additional-rules="[unbeddatRequired]"
           clearable
         />
       </v-col>
@@ -95,7 +96,7 @@
           v-model="modelValue.unbedja"
           :display-mode="displayMode"
           :label="t('model.antrag.unbedja')"
-          :additional-rules="[unbedjaKonsistent]"
+          :additional-rules="[unbedjaConsistent]"
           clearable
         />
       </v-col>
@@ -104,7 +105,7 @@
           v-model="modelValue.unbedbis"
           :display-mode="displayMode"
           :label="t('model.antrag.unbedbis')"
-          :additional-rules="[unbedbisKonsistent]"
+          :additional-rules="[unbedbisConsistent]"
           clearable
         />
       </v-col>
@@ -150,7 +151,7 @@
           grouping
           class="currency-input"
           :label="t('model.antrag.asuZ')"
-          :additional-rules="[betragBeantragt]"
+          :additional-rules="[amountRequested]"
           :validation-attribute-map="
             AntragCreateDTOPropertyValidationAttributesMap
           "
@@ -165,7 +166,7 @@
           grouping
           class="currency-input"
           :label="t('model.antrag.asuD')"
-          :additional-rules="[betragBeantragt]"
+          :additional-rules="[amountRequested]"
           :validation-attribute-map="
             AntragCreateDTOPropertyValidationAttributesMap
           "
@@ -180,7 +181,7 @@
           grouping
           class="currency-input"
           :label="t('model.antrag.asuK')"
-          :additional-rules="[betragBeantragt]"
+          :additional-rules="[amountRequested]"
           :validation-attribute-map="
             AntragCreateDTOPropertyValidationAttributesMap
           "
@@ -269,7 +270,7 @@
       >
         <div>
           {{
-            t("model.antrag.angelegt", [
+            t("model.antrag.created", [
               formatDateTime(modelValue.anlagedatum),
               modelValue.anlagevon,
             ])
@@ -277,7 +278,7 @@
         </div>
         <div v-if="modelValue.aenderungsdatum">
           {{
-            t("model.antrag.geaendert", [
+            t("model.antrag.modified", [
               formatDateTime(modelValue.aenderungsdatum),
               modelValue.aenderungvon,
             ])
@@ -290,8 +291,8 @@
 
 <script setup lang="ts">
 import type {
+  AntragProjektFormContextDTO,
   AntragResponseDTO,
-  ProjektFormContextDTO,
 } from "@/api/generated/foerdermittel-backend";
 import type { VForm } from "vuetify/components";
 
@@ -313,7 +314,7 @@ import { InputDisplayMode } from "@/types/InputDisplayMode";
 const { t } = useI18n();
 
 const { projekte, displayMode = InputDisplayMode.CREATE } = defineProps<{
-  projekte: ProjektFormContextDTO[];
+  projekte: AntragProjektFormContextDTO[];
   displayMode?: InputDisplayMode;
 }>();
 
@@ -324,7 +325,7 @@ const modelValue = defineModel<Partial<AntragResponseDTO>>({
 const projektItems = computed(() =>
   projekte.map((projekt) => ({
     ...projekt,
-    anzeige: `${projekt.projnr} (${projekt.pname}, ${projekt.pstrasse})`,
+    displayName: `${projekt.projnr} (${projekt.pname}, ${projekt.pstrasse})`,
   }))
 );
 
@@ -333,11 +334,11 @@ const selectedProjekt = computed(() =>
 );
 
 const antragstypLabels: Record<AntragCreateDTOAntragstypEnum, string> = {
-  E: t("model.antrag.typ.erstantrag"),
-  V: t("model.antrag.typ.schlussantrag"),
-  A: t("model.antrag.typ.aenderungsantrag"),
-  F: t("model.antrag.typ.fortsetzungsantrag"),
-  U: t("model.antrag.typ.unbedenklichkeitsantrag"),
+  E: t("model.antrag.type.erstantrag"),
+  V: t("model.antrag.type.schlussantrag"),
+  A: t("model.antrag.type.aenderungsantrag"),
+  F: t("model.antrag.type.fortsetzungsantrag"),
+  U: t("model.antrag.type.unbedenklichkeitsantrag"),
 };
 
 const antragstypItems = Object.values(AntragCreateDTOAntragstypEnum).map(
@@ -345,43 +346,58 @@ const antragstypItems = Object.values(AntragCreateDTOAntragstypEnum).map(
 );
 
 // Mirrors the backend plausibility rules in AntragDTO.java
-const projektExistiert = (projnr?: string) =>
+const projektExists = (projnr?: string) =>
   !projnr ||
   projekte.some((projekt) => projekt.projnr === projnr) ||
-  t("model.antrag.validation.projektNichtVorhanden");
+  t("model.antrag.validation.projektNotFound");
 
-const antragsdatumGesetzt = () =>
+// E and U may exist only once per Projekt; the Antrag being edited itself is no duplicate
+const antragstypUnique = () => {
+  const existingId =
+    modelValue.value.antragstyp === AntragCreateDTOAntragstypEnum.E
+      ? selectedProjekt.value?.erstantragId
+      : modelValue.value.antragstyp === AntragCreateDTOAntragstypEnum.U
+        ? selectedProjekt.value?.unbedenklichkeitsantragId
+        : undefined;
+  return (
+    existingId === undefined ||
+    String(existingId) === modelValue.value.id ||
+    t("model.antrag.validation.antragstypExists")
+  );
+};
+
+const antragsdatumRequired = () =>
   modelValue.value.antragstyp === AntragCreateDTOAntragstypEnum.U ||
   !!modelValue.value.antragsdatum ||
-  t("model.antrag.validation.antragsdatumPflicht");
+  t("model.antrag.validation.antragsdatumRequired");
 
-const unbeddatGesetzt = () =>
+const unbeddatRequired = () =>
   modelValue.value.antragstyp !== AntragCreateDTOAntragstypEnum.U ||
   !!modelValue.value.unbeddat ||
-  t("model.antrag.validation.unbeddatPflicht");
+  t("model.antrag.validation.unbeddatRequired");
 
-const betragBeantragt = () =>
+const amountRequested = () =>
   !modelValue.value.antragsdatum ||
   [modelValue.value.asuZ, modelValue.value.asuD, modelValue.value.asuK].some(
     (betrag) => (betrag ?? 0) > 0
   ) ||
-  t("model.antrag.validation.betragPflicht");
+  t("model.antrag.validation.amountRequired");
 
-const unbedjaKonsistent = () => {
+const unbedjaConsistent = () => {
   const { unbeddat, unbedja } = modelValue.value;
   return (
     !unbedja ||
     (!!unbeddat && unbedja >= unbeddat) ||
-    t("model.antrag.validation.unbedjaKonsistent")
+    t("model.antrag.validation.unbedjaConsistent")
   );
 };
 
-const unbedbisKonsistent = () => {
+const unbedbisConsistent = () => {
   const { unbedja, unbedbis } = modelValue.value;
   return (
     !unbedbis ||
     (!!unbedja && unbedbis >= unbedja) ||
-    t("model.antrag.validation.unbedbisKonsistent")
+    t("model.antrag.validation.unbedbisConsistent")
   );
 };
 

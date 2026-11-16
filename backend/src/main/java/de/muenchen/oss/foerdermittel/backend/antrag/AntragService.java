@@ -1,5 +1,6 @@
 package de.muenchen.oss.foerdermittel.backend.antrag;
 
+import de.muenchen.oss.foerdermittel.backend.antrag.dto.AntragProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.bewilligung.Bewilligung;
 import de.muenchen.oss.foerdermittel.backend.bewilligung.BewilligungRepository;
 import de.muenchen.oss.foerdermittel.backend.common.ConflictException;
@@ -8,7 +9,9 @@ import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -41,7 +44,24 @@ public class AntragService {
     @Transactional(readOnly = true)
     public AntragFormContext getAntragFormContext() {
         log.info("Get Antrag form context");
-        return new AntragFormContext(projektService.getProjektFormContextDTOs());
+
+        // single query for all Projekte instead of one per Projekt
+        final Map<String, Map<Antragstyp, Long>> uniqueAntraegeByProjnr = antragRepository.findUniqueAntraege(UNIQUE_ANTRAGSTYPEN).stream()
+                .collect(Collectors.groupingBy(UniqueAntrag::getProjnr,
+                        Collectors.toMap(UniqueAntrag::getAntragstyp, UniqueAntrag::getId, (first, duplicate) -> first)));
+
+        return new AntragFormContext(projektService.getProjektFormContextDTOs().stream()
+                .map(projekt -> {
+                    final Map<Antragstyp, Long> uniqueAntraege = uniqueAntraegeByProjnr.getOrDefault(projekt.projnr(), Map.of());
+                    return new AntragProjektFormContextDTO(
+                            projekt.projnr(),
+                            projekt.pname(),
+                            projekt.pstrasse(),
+                            projekt.fobFb(),
+                            uniqueAntraege.get(Antragstyp.E),
+                            uniqueAntraege.get(Antragstyp.U));
+                })
+                .toList());
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)

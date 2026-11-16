@@ -223,6 +223,35 @@ public class AntragIntegrationTest {
     }
 
     @Nested
+    class GetAntragFormContext {
+
+        @Test
+        void givenErstantrag_thenReturnItsIdForProjekt() {
+            final AntragResponseDTO erstantrag = createExistingAntrag(erstantrag());
+            createExistingAntrag(createRequest(EXISTING_PROJNR, Antragstyp.F, DATUM, null, BigDecimal.ONE));
+
+            final AntragFormContext result = restTestClient.get()
+                    .uri("/antraege/form-context")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
+                    .exchange()
+                    .expectStatus()
+                    .isOk()
+                    .expectBody(AntragFormContext.class)
+                    .returnResult()
+                    .getResponseBody();
+
+            assertThat(result).isNotNull();
+            assertThat(result.projekte())
+                    .filteredOn(projekt -> EXISTING_PROJNR.equals(projekt.projnr()))
+                    .singleElement()
+                    .satisfies(projekt -> {
+                        assertThat(projekt.erstantragId()).isEqualTo(Long.valueOf(erstantrag.id()));
+                        assertThat(projekt.unbedenklichkeitsantragId()).isNull();
+                    });
+        }
+    }
+
+    @Nested
     class CreateAntrag {
 
         @Test

@@ -90,7 +90,7 @@ definePage({
 
 const { t } = useI18n();
 
-const formatBetrag = (value?: number) =>
+const formatAmount = (value?: number) =>
   value === undefined ? "" : value.toLocaleString("de-DE");
 
 const SHORT_HEADER_FIELDS = ["asuZ", "asuD", "asuK", "vorzbeg"] as const;
@@ -137,28 +137,28 @@ const headers: DataTableHeader<Partial<AntragResponseDTO>>[] = [
     width: 110,
   },
   {
-    title: t("model.antrag.spalte.asuZ"),
+    title: t("model.antrag.column.asuZ"),
     key: "asuZ",
-    value: (item) => formatBetrag(item.asuZ),
+    value: (item) => formatAmount(item.asuZ),
     align: "end",
     width: 110,
   },
   {
-    title: t("model.antrag.spalte.asuD"),
+    title: t("model.antrag.column.asuD"),
     key: "asuD",
-    value: (item) => formatBetrag(item.asuD),
+    value: (item) => formatAmount(item.asuD),
     align: "end",
     width: 110,
   },
   {
-    title: t("model.antrag.spalte.asuK"),
+    title: t("model.antrag.column.asuK"),
     key: "asuK",
-    value: (item) => formatBetrag(item.asuK),
+    value: (item) => formatAmount(item.asuK),
     align: "end",
     width: 110,
   },
   {
-    title: t("model.antrag.spalte.vorzbeg"),
+    title: t("model.antrag.column.vorzbeg"),
     value: "vorzbeg",
     align: "center",
     width: 50,

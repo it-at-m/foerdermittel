@@ -5262,8 +5262,39 @@ components:
           type: array
           description: ""
           items:
-            $ref: "#/components/schemas/ProjektFormContextDTO"
+            $ref: "#/components/schemas/AntragProjektFormContextDTO"
       description: "FormContext for [Antrag]."
+    AntragProjektFormContextDTO:
+      required:
+      - fobFb
+      - pname
+      - projnr
+      - pstrasse
+      type: object
+      properties:
+        projnr:
+          type: string
+          description: ""
+        pname:
+          type: string
+          description: ""
+        pstrasse:
+          type: string
+          description: ""
+        fobFb:
+          type: string
+          description: ""
+        erstantragId:
+          type: integer
+          description: "id of the existing Antrag of type E, null if there is none"
+          format: int64
+        unbedenklichkeitsantragId:
+          type: integer
+          description: "id of the existing Antrag of type U, null if there is none"
+          format: int64
+      description: |-
+        Projekt for the [de.muenchen.oss.foerdermittel.backend.antrag.AntragFormContext], including
+        the existing Antraege of the types that may exist only once per Projekt.
     Link:
       type: object
       properties:
