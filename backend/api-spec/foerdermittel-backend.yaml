@@ -2682,6 +2682,28 @@ paths:
                 $ref: "#/components/schemas/PagedModelHhplanResponseDTO"
       security:
       - bearerAuth: []
+  /hhplan/haushaltsjahr/{hhjahr}:
+    get:
+      tags:
+      - hhplan-controller
+      operationId: getHhplanByHhjahr
+      parameters:
+      - name: hhjahr
+        in: path
+        required: true
+        schema:
+          type: number
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HhplanResponseDTO"
+      security:
+      - bearerAuth: []
   /hhplan/form-context:
     get:
       tags:
