@@ -1,18 +1,17 @@
-
 <template>
   <base-view :domain-key="domainKey">
     <template #default="{ baseViewLoading }">
       <v-card variant="flat">
         <v-card-title
-            class="d-flex align-center justify-space-between text-h6 px-0"
+          class="d-flex align-center justify-space-between text-h6 px-0"
         >
           <div class="d-flex align-center">
             <v-btn
-                :icon="mdiArrowLeft"
-                variant="text"
-                density="comfortable"
-                :to="{ path: '/haushaltsplanung' }"
-                aria-label="Zurück zur Haushaltsplanung"
+              :icon="mdiArrowLeft"
+              variant="text"
+              density="comfortable"
+              :to="{ path: '/haushaltsplanung' }"
+              aria-label="Zurück zur Haushaltsplanung"
             />
 
             <span>
@@ -22,42 +21,48 @@
           </div>
 
           <action-button
-              :actions="actions"
-              :loading="baseViewLoading"
+            :actions="actions"
+            :loading="baseViewLoading"
           />
         </v-card-title>
 
         <crud-card
-            v-if="hhjahr !== undefined"
-            :empty-item-template="EMPTY_ITEM_TEMPLATE"
-            :loading="baseViewLoading || hhplanApi.getAll?.loading.value"
-            :domain-key="domainKey"
-            :table-headers="headers"
-            :api="hhplanApi"
-            :enable-actions="false"
-            :should-load-form-context="false"
-            :expandable="true"
+          v-if="hhjahr !== undefined"
+          :empty-item-template="EMPTY_ITEM_TEMPLATE"
+          :loading="baseViewLoading || hhplanApi.getAll?.loading.value"
+          :domain-key="domainKey"
+          :table-headers="headers"
+          :api="hhplanApi"
+          :enable-actions="false"
+          :should-load-form-context="false"
+          :expandable="true"
         >
           <template #form="{ item, inputDisplayMode }">
             <v-card
-                v-if="inputDisplayMode === InputDisplayMode.READ"
-                class="ma-2"
+              v-if="inputDisplayMode === InputDisplayMode.READ"
+              class="ma-2"
             >
               <v-card-text>
                 <v-row align="start">
-                  <v-col cols="12" md="2">
+                  <v-col
+                    cols="12"
+                    md="2"
+                  >
                     <div class="text-subtitle-2">
                       {{ t("model.haushaltsplanung.projektdetails") }}
                     </div>
                   </v-col>
 
-                  <v-col cols="12" md="10">
+                  <v-col
+                    cols="12"
+                    md="10"
+                  >
                     <v-row>
                       <v-col
-                          v-for="detail in getProjektDetails(item)"
-                          :key="detail.label"
-                          cols="12"
-                          md="3"
+                        v-for="detail in getProjektDetails(item)"
+                        :key="detail.label"
+                        cols="12"
+                        md="3"
                       >
                         <v-label>{{ detail.label }}</v-label>
                         <div>{{ detail.value }}</div>
@@ -76,6 +81,7 @@
 
 <script setup lang="ts">
 import type { HhplanResponseDTO } from "@/api/generated/foerdermittel-backend";
+import type { DataTableHeader } from "vuetify/framework";
 
 import { mdiArrowLeft } from "@mdi/js";
 import { computed, watch } from "vue";
@@ -120,15 +126,15 @@ const hhjahr = computed(() => {
 const hhplanApi = useHaushaltsplanungApi();
 
 watch(
-    hhjahr,
-    async (year) => {
-      if (year === undefined) {
-        return;
-      }
+  hhjahr,
+  async (year) => {
+    if (year === undefined) {
+      return;
+    }
 
-      await hhplanApi.getAll?.call({ hhjahr: year });
-    },
-    { immediate: true },
+    await hhplanApi.getAll?.call({ hhjahr: year });
+  },
+  { immediate: true }
 );
 
 const EMPTY_ITEM_TEMPLATE = {} as HhplanResponseDTO;
@@ -145,30 +151,30 @@ const actions = computed(() => [
 ]);
 
 const formatDate = (value?: Date | string | null): string =>
-    value
-        ? new Date(value).toLocaleDateString("de-DE", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-        })
-        : "";
+  value
+    ? new Date(value).toLocaleDateString("de-DE", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })
+    : "";
 
 const getProjektDetails = (item: HhplanResponseDTO) =>
-    [
-      ["proProjnr", item.proProjnr],
-      ["pname", item.pname],
-      ["pstrasse", item.pstrasse],
-      ["notizen", item.notizen || "—"],
-      ["anlagedatum", formatDate(item.anlagedatum)],
-      ["anlagevon", item.anlagevon || "—"],
-      ["aenderungdatum", formatDate(item.aenderungsdatum)],
-      ["aenderungvon", item.aenderungvon || "—"],
-    ].map(([key, value]) => ({
-      label: t(`model.haushaltsplanung.${key}`),
-      value,
-    }));
+  [
+    ["proProjnr", item.proProjnr],
+    ["pname", item.pname],
+    ["pstrasse", item.pstrasse],
+    ["notizen", item.notizen || "—"],
+    ["anlagedatum", formatDate(item.anlagedatum)],
+    ["anlagevon", item.anlagevon || "—"],
+    ["aenderungdatum", formatDate(item.aenderungsdatum)],
+    ["aenderungvon", item.aenderungvon || "—"],
+  ].map(([key, value]) => ({
+    label: t(`model.haushaltsplanung.${key}`),
+    value,
+  }));
 
-const headers = computed(() => [
+const headers = computed<DataTableHeader<HhplanResponseDTO>[]>(() => [
   {
     title: t("model.haushaltsplanung.proProjnr"),
     key: "proProjnr",

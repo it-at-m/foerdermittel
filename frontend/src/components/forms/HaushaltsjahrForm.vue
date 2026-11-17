@@ -34,7 +34,7 @@
       </v-col>
 
       <v-col cols="4">
-        <fm-text-field
+        <fm-text-area
           v-model="modelValue.notizen"
           :display-mode="displayMode"
           :validation-attribute-map="
@@ -62,6 +62,7 @@ import { useRules } from "vuetify";
 
 import { HhjahrCreateDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmNumberInput from "@/components/common/FmNumberInput.vue";
+import FmTextArea from "@/components/common/FmTextArea.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
