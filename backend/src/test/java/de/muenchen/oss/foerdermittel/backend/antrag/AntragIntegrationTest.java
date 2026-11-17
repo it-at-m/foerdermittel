@@ -228,6 +228,17 @@ public class AntragIntegrationTest {
                     .expectStatus()
                     .isEqualTo(httpStatus);
         }
+
+        @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
+        @MethodSource("authorizationMappings")
+        void givenRole_whenGetAntraege_thenReturnStatus(final String role, final HttpStatus httpStatus) {
+            restTestClient.get()
+                    .uri("/antraege")
+                    .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
+                    .exchange()
+                    .expectStatus()
+                    .isEqualTo(httpStatus);
+        }
     }
 
     @Nested
