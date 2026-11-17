@@ -10,10 +10,7 @@ import type {
 import type { ApiComposables } from "@/util/composable-helper";
 
 import { KurzbezeichnungControllerApi } from "@/api/generated/foerdermittel-backend";
-import {
-  createAPIComposables,
-  requireComposables,
-} from "@/util/composable-helper";
+import { createAPIComposables } from "@/util/composable-helper";
 
 export const {
   useCreate: useCreateKurzbezeichnung,
@@ -21,25 +18,23 @@ export const {
   useGetAll: useGetKurzbezeichnungen,
   useDelete: useDeleteKurzbezeichnung,
   useContext: useGetKurzbezeichnungFormContext,
-} = requireComposables(
-  createAPIComposables<
-    KurzbezeichnungControllerApi,
-    CreateKurzbezeichnungRequest,
-    UpdateKurzbezeichnungRequest,
-    never,
-    DeleteKurzbezeichnungRequest,
-    GetKurzbezeichnungenRequest,
-    KurzbezeichnungResponseDTO,
-    PagedModelKurzbezeichnungResponseDTO,
-    KurzbezeichnungFormContext
-  >(KurzbezeichnungControllerApi, {
-    create: (api, req) => api.createKurzbezeichnung(req),
-    update: (api, req) => api.updateKurzbezeichnung(req),
-    getAll: (api, req) => api.getKurzbezeichnungen(req),
-    delete: (api, req) => api.deleteKurzbezeichnung(req),
-    context: (api) => api.getKurzbezeichnungFormContext(),
-  })
-);
+} = createAPIComposables<
+  KurzbezeichnungControllerApi,
+  CreateKurzbezeichnungRequest,
+  UpdateKurzbezeichnungRequest,
+  never,
+  DeleteKurzbezeichnungRequest,
+  GetKurzbezeichnungenRequest,
+  KurzbezeichnungResponseDTO,
+  PagedModelKurzbezeichnungResponseDTO,
+  KurzbezeichnungFormContext
+>(KurzbezeichnungControllerApi, {
+  create: (api, req) => api.createKurzbezeichnung(req),
+  update: (api, req) => api.updateKurzbezeichnung(req),
+  getAll: (api, req) => api.getKurzbezeichnungen(req),
+  delete: (api, req) => api.deleteKurzbezeichnung(req),
+  context: (api) => api.getKurzbezeichnungFormContext(),
+});
 
 export function useKurzbezeichnungApi(): ApiComposables<
   KurzbezeichnungResponseDTO,
@@ -51,10 +46,10 @@ export function useKurzbezeichnungApi(): ApiComposables<
   DeleteKurzbezeichnungRequest
 > {
   return {
-    getAll: useGetKurzbezeichnungen(),
-    context: useGetKurzbezeichnungFormContext(),
-    create: useCreateKurzbezeichnung(),
-    update: useUpdateKurzbezeichnung(),
-    delete: useDeleteKurzbezeichnung(),
+    getAll: useGetKurzbezeichnungen?.(),
+    context: useGetKurzbezeichnungFormContext?.(),
+    create: useCreateKurzbezeichnung?.(),
+    update: useUpdateKurzbezeichnung?.(),
+    delete: useDeleteKurzbezeichnung?.(),
   };
 }

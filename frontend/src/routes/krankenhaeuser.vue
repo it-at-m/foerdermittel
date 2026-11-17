@@ -81,7 +81,7 @@ const krankenhausFormRef =
 const krankenhausApi = useKrankenhausApi();
 
 const krankenhausFormContext = computed(
-  () => krankenhausApi.context.data.value
+  () => krankenhausApi.context?.data.value
 );
 
 const handleCreate = async (
@@ -89,7 +89,7 @@ const handleCreate = async (
 ) => {
   // TODO: some type checking improvements
   const model = krankenhausCreateDTO as KrankenhausResponseDTO;
-  await krankenhausApi.create.call({
+  await krankenhausApi.create?.call({
     krankenhausCreateDTO: model,
   });
 };
@@ -99,14 +99,14 @@ const handleUpdate = async (
 ) => {
   // TODO: some type checking improvements
   const model = krankenhausUpdateDTO as KrankenhausResponseDTO;
-  await krankenhausApi.update.call({
+  await krankenhausApi.update?.call({
     id: model.id,
     krankenhausUpdateDTO: model,
   });
 };
 
 const handleDelete = async (id: string) => {
-  await krankenhausApi.delete.call({
+  await krankenhausApi.delete?.call({
     id,
   });
 };

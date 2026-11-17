@@ -76,7 +76,7 @@ const EMPTY_ITEM_TEMPLATE: Partial<BauleitungResponseDTO> = {
 
 const bauleitungApi = useBauleitungApi();
 
-const bauleitungFormContext = computed(() => bauleitungApi.context.data.value);
+const bauleitungFormContext = computed(() => bauleitungApi.context?.data.value);
 
 type BauleitungFormType = InstanceType<typeof BauleitungForm>;
 const bauleitungFormRef = useTemplateRef<BauleitungFormType>("bauleitungForm");
@@ -86,7 +86,7 @@ const handleCreate = async (
 ) => {
   // TODO: some type checking improvements
   const model = bauleitungCreateDTO as BauleitungResponseDTO;
-  await bauleitungApi.create.call({
+  await bauleitungApi.create?.call({
     bauleitungCreateDTO: model,
   });
 };
@@ -96,14 +96,14 @@ const handleUpdate = async (
 ) => {
   // TODO: some type checking improvements
   const model = bauleitungUpdateDTO as BauleitungResponseDTO;
-  await bauleitungApi.update.call({
+  await bauleitungApi.update?.call({
     id: model.id,
     bauleitungUpdateDTO: model,
   });
 };
 
 const handleDelete = async (id: string) => {
-  await bauleitungApi.delete.call({
+  await bauleitungApi.delete?.call({
     id,
   });
 };

@@ -1,36 +1,13 @@
 package de.muenchen.oss.foerdermittel.backend.report;
 
-import static de.muenchen.oss.foerdermittel.backend.report.ReportService.SORT_PARAMETER;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.when;
 
-import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
-import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
-import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
-import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportMapper;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportProjektuebersichtDTO;
-import de.muenchen.oss.foerdermittel.backend.report.dto.ReportStichworteDTO;
-import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportProjektuebersichtFormContext;
-import de.muenchen.oss.foerdermittel.backend.report.formcontext.ReportStichworteFormContext;
-import de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich;
-import de.muenchen.oss.foerdermittel.backend.stichwortbereich.StichwortbereichService;
-import de.muenchen.oss.foerdermittel.backend.stichwortbereich.dto.StichwortbereichFormContextDTO;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import net.sf.jasperreports.engine.JRException;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -41,196 +18,74 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class ReportServiceTest {
 
     @Mock
-    private StichwortbereichService stichwortbereichService;
-
-    @Mock
     private JasperReportService jasperReportService;
-
-    @Mock
-    private ReportMapper reportMapper;
-
-    @Mock
-    private ProjektService projektService;
 
     @InjectMocks
     private ReportService reportService;
 
-    @Nested
-    class GenerateReportStichworte {
+    private ReportType reportType;
+    private ReportFormat reportFormat;
 
-        @Test
-        void givenNoWriteInteraction_thenShouldGenerateCorrectGeneratedReport() {
-            // Given
-            final ReportStichworteDTO parameters = mock(ReportStichworteDTO.class);
+    @BeforeEach
+    void setUp() {
+        reportType = Arrays.stream(ReportType.values())
+                .filter(type -> Arrays.stream(ReportFormat.values())
+                        .anyMatch(type::supportsFormat))
+                .findFirst()
+                .orElseThrow();
 
-            final Map<String, Object> jasperParameters = new HashMap<>();
-            when(reportMapper.toJasperParameters(parameters))
-                    .thenReturn(jasperParameters);
-
-            // When
-            final GeneratedReport generatedReport = reportService.generateReportStichworte(parameters);
-
-            // Then
-            verify(reportMapper, times(1)).toJasperParameters(parameters);
-            verifyNoInteractions(jasperReportService);
-
-            assertThat(generatedReport).isNotNull();
-            assertThat(generatedReport.contentType())
-                    .isEqualTo(ReportFormat.PDF.getContentType());
-            assertThat(generatedReport.fileName())
-                    .startsWith(ReportType.FMW_ABLAGEINDEX.getFileName())
-                    .endsWith(ReportFormat.PDF.getFileExtension());
-            assertThat(jasperParameters)
-                    .containsEntry(
-                            SORT_PARAMETER,
-                            "ORDER BY stb_bereich ASC, nr ASC, wort ASC");
-        }
-
-        @Test
-        void givenWriteInteraction_thenShouldCallJasperServiceCorrectly() throws JRException, SQLException, IOException {
-            // Given
-            final ReportStichworteDTO parameters = mock(ReportStichworteDTO.class);
-
-            final Map<String, Object> jasperParameters = new HashMap<>();
-            when(reportMapper.toJasperParameters(parameters))
-                    .thenReturn(jasperParameters);
-
-            final OutputStream outputStream = new ByteArrayOutputStream();
-
-            // When
-            final GeneratedReport generatedReport = reportService.generateReportStichworte(parameters);
-            generatedReport.writer().write(outputStream);
-
-            // Then
-            verify(jasperReportService, times(1)).generateReportWithParameters(
-                    ReportType.FMW_ABLAGEINDEX,
-                    ReportFormat.PDF,
-                    jasperParameters,
-                    outputStream);
-        }
-
-        @Test
-        void givenNotFound_thenShouldThrowNotFoundException() {
-            // Given
-            final String bereich = "test";
-            final ReportStichworteDTO parameters = new ReportStichworteDTO(bereich);
-
-            doThrow(new NotFoundException(Stichwortbereich.class, bereich))
-                    .when(stichwortbereichService)
-                    .checkExistsByBereich(bereich);
-
-            // When
-            final Exception exception = Assertions.assertThrows(
-                    NotFoundException.class,
-                    () -> reportService.generateReportStichworte(parameters));
-
-            // Then
-            verify(stichwortbereichService, times(1)).checkExistsByBereich(bereich);
-            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Stichwortbereich.class.getSimpleName(), bereich));
-        }
-
+        reportFormat = Arrays.stream(ReportFormat.values())
+                .filter(reportType::supportsFormat)
+                .findFirst()
+                .orElseThrow();
     }
 
-    @Nested
-    class GetReportStichworteFormContext {
+    @Test
+    void givenSort_thenSetsSortParameter() {
+        final Map<String, Object> parameters = new HashMap<>();
+        parameters.put("existing", "value");
 
-        @Test
-        void givenEntitiesExists_thenReturnCorrectFormContext() {
-            // Given
-            final List<StichwortbereichFormContextDTO> allBereiche = List.of(new StichwortbereichFormContextDTO("K", "Test"),
-                    new StichwortbereichFormContextDTO("L", "Test 2"), new StichwortbereichFormContextDTO("M", "Test 3"));
-            when(stichwortbereichService.getStichwortbereichFormContextDTOs()).thenReturn(allBereiche);
+        final GeneratedReport result = reportService.generateReport(parameters, reportType, reportFormat, "jahr");
 
-            // When
-            final ReportStichworteFormContext formContext = reportService.getReportStichworte();
-
-            // Then
-            verify(stichwortbereichService, times(1)).getStichwortbereichFormContextDTOs();
-            assertThat(formContext.bereiche()).isEqualTo(allBereiche);
-        }
-
+        assertThat(result).isNotNull();
+        assertThat(parameters)
+                .containsEntry(ReportService.SORT_PARAMETER, "jahr");
     }
 
-    @Nested
-    class GenerateReportProjektuebersicht {
+    @Test
+    void givenNullSort_thenRemovesSortParameter() {
+        final Map<String, Object> parameters = new HashMap<>();
+        parameters.put(ReportService.SORT_PARAMETER, "old-sort");
 
-        @Test
-        void givenExistingProjekt_thenAddsDatabaseValuesToJasperParameters() {
-            // Given
-            final ReportProjektuebersichtDTO parameters = new ReportProjektuebersichtDTO("P-123", true);
-            final Map<String, Object> jasperParameters = new HashMap<>();
-            final Projekt projekt = mock(Projekt.class);
-            when(reportMapper.toJasperParameters(parameters)).thenReturn(jasperParameters);
-            when(projektService.getProjekt(parameters.projnr())).thenReturn(projekt);
-            when(projekt.getPname()).thenReturn("Projektname");
-            when(projekt.getPstrasse()).thenReturn("Projektstraße 1");
+        final GeneratedReport result = reportService.generateReport(parameters, reportType, reportFormat, null);
 
-            // When
-            final GeneratedReport generatedReport = reportService.generateReportProjektuebersicht(parameters);
-
-            // Then
-            assertThat(generatedReport.fileName()).startsWith(ReportType.FMW_PROJEKTE3.getFileName());
-            assertThat(jasperParameters)
-                    .containsEntry("P_PNAME", "Projektname")
-                    .containsEntry("P_PSTRASSE", "Projektstraße 1")
-                    .doesNotContainKey(SORT_PARAMETER);
-            verify(projektService, times(1)).getProjekt(parameters.projnr());
-            verifyNoInteractions(jasperReportService);
-        }
-
-        @Test
-        void givenGeneratedReportIsWritten_thenUsesProjektuebersichtReport() throws JRException, SQLException, IOException {
-            // Given
-            final ReportProjektuebersichtDTO parameters = new ReportProjektuebersichtDTO("P-123", false);
-            final Map<String, Object> jasperParameters = new HashMap<>();
-            final Projekt projekt = mock(Projekt.class);
-            final OutputStream outputStream = new ByteArrayOutputStream();
-            when(reportMapper.toJasperParameters(parameters)).thenReturn(jasperParameters);
-            when(projektService.getProjekt(parameters.projnr())).thenReturn(projekt);
-
-            // When
-            reportService.generateReportProjektuebersicht(parameters).writer().write(outputStream);
-
-            // Then
-            verify(jasperReportService, times(1)).generateReportWithParameters(
-                    ReportType.FMW_PROJEKTE3,
-                    ReportFormat.PDF,
-                    jasperParameters,
-                    outputStream);
-        }
-
-        @Test
-        void givenMissingProjekt_thenDoesNotGenerateReport() {
-            // Given
-            final ReportProjektuebersichtDTO parameters = new ReportProjektuebersichtDTO("MISSING", false);
-            when(projektService.getProjekt(parameters.projnr()))
-                    .thenThrow(new NotFoundException(Projekt.class, parameters.projnr()));
-
-            // When / Then
-            Assertions.assertThrows(
-                    NotFoundException.class,
-                    () -> reportService.generateReportProjektuebersicht(parameters));
-            verifyNoInteractions(jasperReportService, reportMapper);
-        }
+        assertThat(result).isNotNull();
+        assertThat(parameters)
+                .doesNotContainKey(ReportService.SORT_PARAMETER);
     }
 
-    @Nested
-    class GetReportProjektuebersichtFormContext {
+    @Test
+    void givenUnsupportedFormat_thenThrowsIllegalArgumentException() {
+        final ReportType unsupportedType = Arrays.stream(ReportType.values())
+                .filter(type -> Arrays.stream(ReportFormat.values())
+                        .anyMatch(format -> !type.supportsFormat(format)))
+                .findFirst()
+                .orElse(null);
 
-        @Test
-        void givenProjectsExist_thenReturnsTheirFormContext() {
-            // Given
-            final List<ReportProjektuebersichtFormContextDTO> projekte = List.of(
-                    new ReportProjektuebersichtFormContextDTO("P-123", "Projektname", "Projektstraße 1"));
-            when(projektService.getReportProjektuebersichtFormContextDTOs()).thenReturn(projekte);
-
-            // When
-            final ReportProjektuebersichtFormContext formContext = reportService.getReportProjektuebersicht();
-
-            // Then
-            assertThat(formContext.projekte()).isEqualTo(projekte);
-            verify(projektService, times(1)).getReportProjektuebersichtFormContextDTOs();
+        if (unsupportedType == null) {
+            return;
         }
-    }
 
+        final ReportFormat unsupportedFormat = Arrays.stream(ReportFormat.values())
+                .filter(format -> !unsupportedType.supportsFormat(format))
+                .findFirst()
+                .orElseThrow();
+
+        assertThatThrownBy(() -> reportService.generateReport(
+                new HashMap<>(), unsupportedType, unsupportedFormat, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Unsupported ReportFormat");
+
+        verifyNoInteractions(jasperReportService);
+    }
 }

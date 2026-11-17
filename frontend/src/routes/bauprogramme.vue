@@ -81,7 +81,7 @@ const bauprogrammFormRef =
 const bauprogrammApi = useBauprogrammApi();
 
 const bauprogrammFormContext = computed(
-  () => bauprogrammApi.context.data.value
+  () => bauprogrammApi.context?.data.value
 );
 
 const handleCreate = async (
@@ -89,7 +89,7 @@ const handleCreate = async (
 ) => {
   // TODO: some type checking improvements
   const model = bauprogrammCreateDTO as BauprogrammResponseDTO;
-  await bauprogrammApi.create.call({
+  await bauprogrammApi.create?.call({
     bauprogrammCreateDTO: model,
   });
 };
@@ -99,14 +99,14 @@ const handleUpdate = async (
 ) => {
   // TODO: some type checking improvements
   const model = bauprogrammUpdateDTO as BauprogrammResponseDTO;
-  await bauprogrammApi.update.call({
+  await bauprogrammApi.update?.call({
     id: model.id,
     bauprogrammUpdateDTO: model,
   });
 };
 
 const handleDelete = async (id: string) => {
-  await bauprogrammApi.delete.call({
+  await bauprogrammApi.delete?.call({
     id,
   });
 };

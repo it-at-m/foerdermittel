@@ -10,6 +10,8 @@ import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.HauptabschnittService;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.dto.HauptabschnittFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.dto.UnterabschnittFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.unterabschnitt.dto.UnterabschnittMapper;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -34,10 +36,51 @@ class UnterabschnittServiceTest {
     private UnterabschnittRepository unterabschnittRepository;
 
     @Mock
+    private UnterabschnittMapper unterabschnittMapper;
+
+    @Mock
     private HauptabschnittService hauptabschnittService;
 
     @InjectMocks
     private UnterabschnittService unitUnderTest;
+
+    @Nested
+    class GetUnterabschnitt {
+
+        @Test
+        void givenIdExists_thenReturnEntity() {
+            // Given
+            final String ua = "H4";
+            final Hauptabschnitt testHa = new Hauptabschnitt("H3", BEZEICHNUNG);
+            final Unterabschnitt expectedEntity = new Unterabschnitt(ua, BEZEICHNUNG, testHa);
+
+            when(unterabschnittRepository.findById(ua)).thenReturn(Optional.of(expectedEntity));
+
+            // When
+            final Unterabschnitt result = unitUnderTest.getUnterabschnitt(ua);
+
+            // Then
+            verify(unterabschnittRepository, times(1)).findById(ua);
+
+            assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
+        }
+
+        @Test
+        void givenIdNotExists_thenThrowNotFoundException() {
+            // Given
+            final String ua = "99";
+
+            when(unterabschnittRepository.findById(ua)).thenReturn(Optional.empty());
+
+            // When
+            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.getUnterabschnitt(ua));
+
+            // Then
+            verify(unterabschnittRepository, times(1)).findById(ua);
+
+            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Unterabschnitt.class.getSimpleName(), ua));
+        }
+    }
 
     @Nested
     class GetUnterabschnitte {
@@ -203,6 +246,70 @@ class UnterabschnittServiceTest {
 
             assertThat(formContext.uas()).isEqualTo(allUas);
             assertThat(formContext.hasHas()).containsExactly(dto);
+        }
+    }
+
+    @Nested
+    class GetUnterabschnittFormContextDTOs {
+
+        @Test
+        void givenEntitiesExist_thenReturnFormContextDTOs() {
+            // Given
+            final Hauptabschnitt hauptabschnitt = new Hauptabschnitt("H1", BEZEICHNUNG);
+            final Unterabschnitt entity1 = new Unterabschnitt("K", "Test 1", hauptabschnitt);
+            final Unterabschnitt entity2 = new Unterabschnitt("L", "Test 2", hauptabschnitt);
+            final List<Unterabschnitt> entities = List.of(entity1, entity2);
+
+            final List<UnterabschnittFormContextDTO> expectedDTOs = List.of(
+                    Mockito.mock(UnterabschnittFormContextDTO.class),
+                    Mockito.mock(UnterabschnittFormContextDTO.class));
+
+            when(unterabschnittRepository.findAll()).thenReturn(entities);
+            when(unterabschnittMapper.toFormContext(entities)).thenReturn(expectedDTOs);
+
+            // When
+            final List<UnterabschnittFormContextDTO> result = unitUnderTest.getUnterabschnittFormContextDTOs();
+
+            // Then
+            verify(unterabschnittRepository, times(1)).findAll();
+            verify(unterabschnittMapper, times(1)).toFormContext(entities);
+            assertThat(result).isEqualTo(expectedDTOs);
+        }
+    }
+
+    @Nested
+    class CheckExistsByUnterabschnitt {
+
+        @Test
+        void givenKurzformExists_thenDoesNotThrowException() {
+            // Given
+            final String kurzform = "K";
+            when(unterabschnittRepository.existsById(kurzform)).thenReturn(true);
+
+            // When / Then
+            Assertions.assertDoesNotThrow(
+                    () -> unitUnderTest.checkExistsByUnterabschnitt(kurzform));
+
+            verify(unterabschnittRepository, times(1)).existsById(kurzform);
+        }
+
+        @Test
+        void givenKurzformNotExists_thenThrowNotFoundException() {
+            // Given
+            final String kurzform = "K";
+            when(unterabschnittRepository.existsById(kurzform)).thenReturn(false);
+
+            // When / Then
+            final Exception exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> unitUnderTest.checkExistsByUnterabschnitt(kurzform));
+
+            verify(unterabschnittRepository, times(1)).existsById(kurzform);
+            assertThat(exception.getMessage()).isEqualTo(
+                    String.format(
+                            "The %s with ID %s was not found.",
+                            Unterabschnitt.class.getSimpleName(),
+                            kurzform));
         }
     }
 }

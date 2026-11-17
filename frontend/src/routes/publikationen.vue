@@ -77,7 +77,7 @@ const EMPTY_ITEM_TEMPLATE: Partial<PublikationResponseDTO> = {
 const publikationApi = usePublikationApi();
 
 const publikationFormContext = computed(
-  () => publikationApi.context.data.value
+  () => publikationApi.context?.data.value
 );
 
 type PublikationFormType = InstanceType<typeof PublikationForm>;
@@ -89,7 +89,7 @@ const handleCreate = async (
 ) => {
   // TODO: some type checking improvements
   const model = publikationCreateDTO as PublikationResponseDTO;
-  await publikationApi.create.call({
+  await publikationApi.create?.call({
     publikationCreateDTO: model,
   });
 };
@@ -99,14 +99,14 @@ const handleUpdate = async (
 ) => {
   // TODO: some type checking improvements
   const model = publikationUpdateDTO as PublikationResponseDTO;
-  await publikationApi.update.call({
+  await publikationApi.update?.call({
     id: model.id,
     publikationUpdateDTO: model,
   });
 };
 
 const handleDelete = async (id: string) => {
-  await publikationApi.delete.call({
+  await publikationApi.delete?.call({
     id,
   });
 };

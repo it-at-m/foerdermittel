@@ -1,10 +1,10 @@
 import type { ApiCtor } from "@/api/ApiFactory";
 import type {
+  Pageable,
   PageMetadata,
   RequestOpts,
 } from "@/api/generated/foerdermittel-backend";
 import type { ApiComposable, ReportApiComposable } from "@/composables/useAPI";
-import type { Pageable } from "@/types/Pageable";
 
 import { ApiFactory } from "@/api/ApiFactory";
 import { BaseAPI } from "@/api/generated/foerdermittel-backend";
@@ -37,18 +37,19 @@ export interface ApiComposables<
   TUpdateRequest,
   TUpdateResponse,
   TDeleteRequest,
+  TGetAllRequest = Pageable,
 > {
-  getAll: ApiComposable<
-    Pageable,
+  getAll?: ApiComposable<
+    TGetAllRequest,
     {
       content?: TGetResponse[];
       page?: PageMetadata;
     }
   >;
-  context: ApiComposable<void, TContextResponse>;
-  create: ApiComposable<TCreateRequest, TCreateResponse>;
-  update: ApiComposable<TUpdateRequest, TUpdateResponse>;
-  delete: ApiComposable<TDeleteRequest, void>;
+  context?: ApiComposable<void, TContextResponse>;
+  create?: ApiComposable<TCreateRequest, TCreateResponse>;
+  update?: ApiComposable<TUpdateRequest, TUpdateResponse>;
+  delete?: ApiComposable<TDeleteRequest, void>;
 }
 
 export interface ReportApiComposables<TGetOptsRequest, TContextResponse> {

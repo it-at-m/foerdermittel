@@ -9,7 +9,8 @@
       "masterdata": "Stammdaten",
       "action": "Aktion | Aktionen",
       "readOnly": "(schreibgeschützt)",
-      "required": "*"
+      "required": "*",
+      "sort": "Sortierung"
     },
     "action": {
       "cancel": "Abbrechen",
@@ -55,9 +56,28 @@
     "projekt": {
       "modelName": "Projekt | Projekte",
       "projnr": "Projektnummer",
-      "name": "Name",
-      "strasse": "Straße",
-      "ausgabeNotiz": "Ausgabe Notiz"
+      "pname": "Name",
+      "pstrasse": "Straße",
+      "ausgabeNotiz": "Ausgabe Notiz",
+      "jahr": "Projektjahr",
+      "krisofp": "Förderprogramm",
+      "fobFb": "Förderbereich",
+      "kurKurzbez": "Kurzbezeichnung",
+      "uasUa": "Unterabschnitt",
+      "lfdnr1": "Laufende Nummer 1",
+      "lfdnr2": "Laufende Nummer 2",
+      "bezStadtbezirk": "Stadtbezirk",
+      "krnKrhname": "Krankenhaus",
+      "sgtSiedlungsgebiet": "Siedlungsgebiet",
+      "projart": "Projektart",
+      "refinanzierbar": "Refinanzierbar",
+      "kauf": "Kauf",
+      "kripplatz": "Krippenplätze",
+      "kigaplatz": "Kindergartenplätze",
+      "hortplatz": "Hortplätze",
+      "notizen": "Notizen",
+      "bpgBauprogramm": "Bauprogramm",
+      "krhzweck": "Krankenhauszweck"
     },
     "antrag": {
       "modelName": "Antrag | Anträge"
@@ -69,10 +89,26 @@
       "modelName": "Abruf | Abrufe"
     },
     "termin": {
-      "modelName": "Termin | Termine"
+      "modelName": "Termin | Termine",
+      "termin": "Termin",
+      "ueberwachung": "TÜ",
+      "telefon": "Kontakt / Telefon",
+      "zustaendig": "Zuständig",
+      "notizen": "Notizen",
+      "projnr": "Projnr",
+      "pname": "Name",
+      "pstrasse": "Straße",
+      "fobFb": "FB",
+      "bezStadtbezirk": "Bez."
     },
     "istkosten": {
-      "modelName": "Ist-Kosten"
+      "modelName": "Ist-Kosten",
+      "jahr": "Jahr",
+      "monat": "Monat",
+      "projnr": "Projnr",
+      "pname": "Name",
+      "pstrasse": "Straße",
+      "fobFb": "FB"
     },
     "archiv": {
       "modelName": "Archiv",
@@ -124,6 +160,7 @@
       "kindergarten": "Kindergarten",
       "nichtRelevant": "Nicht relevant"
     },
+
     "krankenhaus": {
       "modelName": "Krankenhaus | Krankenhäuser",
       "krhname": "Kurzform",
@@ -204,6 +241,36 @@
       "generateJahresStatistik": "Generierung @:domain.statistic.jahresStatistik"
     },
     "report": {
+      "common": {
+        "antragstyp": "Antragstyp",
+        "bez": "oder einen Stadtbezirk",
+        "bpg": "Bauprogramm",
+        "ohnebewill": "Nur Abrufe ohne Bewilligung",
+        "fag": "Nur FAG",
+        "fb": "Förderbereich",
+        "jahr": "Jahr",
+
+        "jahrBis": "Jahr bis",
+        "jahrVon": "Jahr von",
+        "krisofp": "Sonderförderprogramm",
+        "kurz": "Kurzbezeichnung",
+        "offen": "Nur offene Projekte",
+        "pname": "Projektname",
+        "pstrasse": "Projektstraße",
+        "ref": "Referat",
+        "krh": "Krankenhaus",
+        "relevant": "Nur relevante FB",
+        "sbl": "für Stadtbezirksliste",
+        "sgt": "Siedlungsgebiet",
+        "ua": "Unterabschnitt",
+        "reportType": {
+          "modelName": "Reporttyp",
+          "pdf": "PDF",
+          "pdfFlat": "PDF: ohne Gruppierung",
+          "excel": "Excel"
+        },
+        "reportSort": "Sortierung"
+      },
       "projektUebersicht": "@:model.projekt.modelName{'übersicht'}",
       "projektUebersichtManagement": "@:domain.report.projektUebersicht (Management Summary)",
       "annahmeAnordnungSAP": "Annahmeanordnung SAP",
@@ -212,9 +279,152 @@
       "ausstBewilligungProjekt": "Ausst. @:model.bewilligung.modelName nach @:model.projekt.modelName",
       "ausstBewilligungFoerderbereich": "Ausst. @:model.bewilligung.modelName nach @:model.foerderbereich.modelName",
       "ausstGenehmigungVorzBeginn": "Ausst. Genehmigung vorz. Beginn",
-      "bewilligungAuszahlungProjekt": "@:model.bewilligung.modelName und @:domain.auszahlung eines @:model.projekt.modelName{'s'}",
+      "bewilligungAuszahlungProjekt": {
+        "modelName": "@:model.bewilligung.modelName und @:domain.auszahlung eines @:model.projekt.modelName{'s'}",
+        "erfolgt": "Nur erfolgte Bewilligungen und erhaltene Auszahlungen"
+      },
       "bewilligungAuzahlungVergleich": "@:model.bewilligung.modelName und @:domain.auszahlung (Vergleich)",
-      "fortsetzungsAntrag": "Fortsetzungsantrag | Fortsetzungsanträge"
+      "auswertungProjekt": {
+        "modelName": "Projekte",
+        "offen": "Nur offene Projekte",
+        "jahr": "Projektjahr",
+        "kauf": "Nur Projekte mit Ankauf",
+        "relevant": "Nur relevante FB",
+        "sortierung": "Sortierung",
+
+        "sortEnum": {
+          "stadtbezirkStrasse": "Stadtbezirk, Straße",
+          "projektnummer": "Projektnummer",
+          "strasseProjektnummer": "Straße, Projektnummer",
+          "foerderbereichProjektnummer": "Förderbereich, Projektnummer",
+          "foerderbereichStrasse": "Förderbereich, Straße"
+        },
+        "type": {
+          "pdf": "PDF",
+          "excel": "Excel"
+        }
+      },
+      "auswertungAntraege": {
+        "modelName": "Auswertung Anträge",
+
+        "sortEnum": {
+          "fbProjektnummer": "Förderbereich, Projektnummer",
+          "fbProjektstrasse": "Förderbereich, Projektstraße",
+          "strasseProjektnummer": "Projektstraße, Projektnummer",
+          "projektnummer": "Projektnummer"
+        },
+        "reportType": {
+          "pdf": "PDF: Gruppierung Förderbereich"
+        }
+      },
+      "auswertungAbrufe": {
+        "modelName": "Auswertung Abrufe",
+        "erh": "erhaltene Abrufe",
+        "nichtErh": "nicht erhaltene Abrufe",
+        "jahrAbrufVon": "Abgerufen Jahr von",
+        "jahrAbrufBis": "Abgerufen Jahr bis",
+        "jahrErhaltVon": "Erhalten Jahr von",
+        "jahrErhaltBis": "Erhalten Jahr bis",
+
+        "sortEnum": {
+          "fbProjektnummerAdatum": "Förderbereich, Projektnummer, abgerufen am",
+          "fbEdatum": "Förderbereich, erhalten am",
+          "fbAdatum": "Förderbereich, abgerufen am",
+          "fbProjektnummerStrasseAdatum": "Förderbereich, Projektstraße, abgerufen am",
+          "projektnummerAdatum": "Projektnummer, abgerufen am",
+          "edatum": "erhalten am",
+          "adatum": "abgerufen am",
+          "projektstrasse": "Projektstraße, abgerufen am"
+        },
+        "reportType": {
+          "pdf": "PDF: Gruppierung Förderbereich"
+        }
+      },
+      "fortsetzungsAntrag": {
+        "modelName": "Fortsetzungsantrag | Fortsetzungsanträge",
+        "fag": "Nur FAG",
+        "ofPro": "Nur offene Projekte",
+        "type": {
+          "pdf": "PDF",
+          "excel": "Excel"
+        }
+      },
+      "euinformation": {
+        "publikation": "Publikation",
+        "referat": "Referat",
+        "inhalt": "Inhalt",
+        "jahrVon": "Jahr von",
+        "jahrBis": "Jahr bis",
+        "sortEnum": {
+          "publikation": "Publikation, Inhalt",
+          "jahr": "Erscheinungsjahr, Publikation, Inhalt",
+          "referat": "Referat, Publikation, Inhalt",
+          "referatJahr": "Referat, Erscheinungsjahr, Publikation, Inhalt"
+        },
+        "referatEnum": {
+          "alleReferate": "Alle Referate",
+          "raw": "RAW",
+          "rbs": "RBS",
+          "sozrefR5": "Sozref R 5",
+          "rgu11": "RGU 11",
+          "rguCs": "RGU Cs",
+          "krh": "Krh",
+          "awb": "AWB",
+          "swm": "SWM",
+          "kulturref": "Kulturref",
+          "bauref": "Bauref",
+          "planref": "Planref",
+          "direktorium": "Direktorium",
+          "por": "POR",
+          "kvr": "KVR",
+          "komref": "Kommref",
+          "mse": "MSE",
+          "stk": "Stk"
+        }
+      },
+      "haushaltsplanung": {
+        "modelName": "Haushaltsplanung",
+        "hh": "Ausgabe nur mit Haushaltszahlen",
+        "fipo": "FIPO",
+        "sortEnum": {
+          "projektnummer": "Projektnummer",
+          "strasse": "Straße, Projektnummer",
+          "fipo": "FIPO",
+          "fbProjektnummer": "Förderbereich, Projektnummer",
+          "fbStrasseProjektnummer": "Förderbereich, Straße, Projektnummer",
+          "fbFipo": "Förderbereich, FIPO"
+        },
+        "type": {
+          "pdf": "PDF: Gruppierung Förderbereich",
+          "pdfFlat": "PDF: keine Gruppierung",
+          "excel": "Excel"
+        }
+      },
+      "staedtebaufoerderung": {
+        "notizen": "Ausgabe Notizen",
+        "pname": "Projektname",
+        "jahrVon": "Jahr von",
+        "jahrBis": "Jahr bis",
+        "traeger": "Träger"
+      },
+      "projektUebersichtMs": {
+        "modelName": "Projektübersicht (Management Summary)",
+        "sbl": "für Stadtbezirksliste",
+        "bez": "oder ein Stadtbezirk",
+        "fb": "Förderbereich",
+        "ua": "Unterabteilung",
+        "kurz": "Kurzbezeichnung",
+        "offen": "Nur offene Projekte",
+        "vn": "Nur Projekte mit VN",
+        "krisofp": "Sonderförderprogramm",
+        "sgt": "Siedlungsgebiet",
+        "bpg": "Bauprogramm",
+        "sortEnum": {
+          "projektnummer": "Projektnummer",
+          "strasseProjektnummer": "Straße, Projektnummer",
+          "fbProjektnummer": "Förderbereich, Projektnummer"
+        }
+      }
     }
   },
   "view": {
@@ -237,6 +447,11 @@
       "changeText": "Auf die Darstellung '{0}' wechseln",
       "light": "Hell",
       "dark": "Dunkel"
+    },
+    "filterPanel": {
+      "title": "Suchen und Filtern",
+      "reset": "Filter zurücksetzen",
+      "showResults": "Ergebnisse anzeigen"
     }
   }
 }
