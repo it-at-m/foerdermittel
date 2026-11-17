@@ -153,7 +153,9 @@
       "stadtbezirk": "Bez",
       "listenname": "Liste",
       "keineZuordnungen": "Keine zugeordneten Haushaltsplanungen vorhanden.",
-      "projektdetails": "Projektdetails"
+      "projektdetails": "Projektdetails",
+      "planungErstellen": "Planung erstellen",
+      "werteAktualisieren": "Werte aktualisieren"
     },
     "staedtebaufoerderung": {
       "modelName": "Städtebauförderung | Städtebauförderungen"

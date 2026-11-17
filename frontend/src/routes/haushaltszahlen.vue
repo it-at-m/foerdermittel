@@ -3,19 +3,28 @@
   <base-view :domain-key="domainKey">
     <template #default="{ baseViewLoading }">
       <v-card variant="flat">
-        <v-card-title class="d-flex align-center text-h6 px-0">
-          <v-btn
-              :icon="mdiArrowLeft"
-              variant="text"
-              density="comfortable"
-              :to="{ path: '/haushaltsplanung' }"
-              aria-label="Zurück zur Haushaltsplanung"
-          />
+        <v-card-title
+            class="d-flex align-center justify-space-between text-h6 px-0"
+        >
+          <div class="d-flex align-center">
+            <v-btn
+                :icon="mdiArrowLeft"
+                variant="text"
+                density="comfortable"
+                :to="{ path: '/haushaltsplanung' }"
+                aria-label="Zurück zur Haushaltsplanung"
+            />
 
-          <span>
-            {{ t("model.haushaltsplanung.modelName") }}
-            {{ hhjahr ?? "" }}
-          </span>
+            <span>
+              {{ t("model.haushaltsplanung.modelName") }}
+              {{ hhjahr ?? "" }}
+            </span>
+          </div>
+
+          <action-button
+              :actions="actions"
+              :loading="baseViewLoading"
+          />
         </v-card-title>
 
         <crud-card
@@ -73,14 +82,12 @@ import { computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
 
+import ActionButton from "@/components/common/ActionButton.vue";
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
 import { useHaushaltsplanungApi } from "@/composables/api/useHaushaltsplanungApi";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 import { Role } from "@/types/Role";
-
-const { t } = useI18n();
-const route = useRoute();
 
 definePage({
   path: "/haushaltsplanung/haushaltszahlen",
@@ -92,6 +99,9 @@ definePage({
     ],
   },
 });
+
+const { t } = useI18n();
+const route = useRoute();
 
 const domainKey = "model.haushaltsplanung.modelName";
 
@@ -121,8 +131,18 @@ watch(
     { immediate: true },
 );
 
-
 const EMPTY_ITEM_TEMPLATE = {} as HhplanResponseDTO;
+
+const actions = computed(() => [
+  {
+    label: t("model.haushaltsplanung.planungErstellen"),
+    onClick: () => {},
+  },
+  {
+    label: t("model.haushaltsplanung.werteAktualisieren"),
+    onClick: () => {},
+  },
+]);
 
 const formatDate = (value?: Date | string | null): string =>
     value
@@ -152,6 +172,7 @@ const headers = computed(() => [
   {
     title: t("model.haushaltsplanung.proProjnr"),
     key: "proProjnr",
+    align: "center",
     width: 100,
   },
   {
@@ -162,17 +183,17 @@ const headers = computed(() => [
   {
     title: t("model.haushaltsplanung.fobFb"),
     key: "fobFb",
-    width: 70,
+    width: 50,
   },
   {
     title: t("model.haushaltsplanung.stadtbezirk"),
     key: "stadtbezirk",
-    width: 70,
+    width: 50,
   },
   {
     title: t("model.haushaltsplanung.listenname"),
     key: "listenname",
-    width: 70,
+    width: 60,
   },
   {
     title: t("model.haushaltsplanung.mitteleinplanung"),
@@ -182,42 +203,42 @@ const headers = computed(() => [
   {
     title: t("model.haushaltsplanung.bewilligungVoj"),
     key: "bewilligungVoj",
-    width: 100,
+    width: 80,
   },
   {
     title: t("model.haushaltsplanung.bewilligungHhj"),
     key: "bewilligungHhj",
-    width: 100,
+    width: 80,
   },
   {
     title: t("model.haushaltsplanung.erhaltenVoj"),
     key: "erhaltenVoj",
-    width: 100,
+    width: 80,
   },
   {
     title: t("model.haushaltsplanung.erhaltenHhj"),
     key: "erhaltenHhj",
-    width: 100,
+    width: 80,
   },
   {
     title: t("model.haushaltsplanung.baustandaktuell"),
     key: "baustandaktuell",
-    width: 100,
+    width: 80,
   },
   {
     title: t("model.haushaltsplanung.an"),
     key: "an",
-    width: 70,
+    width: 60,
   },
   {
     title: t("model.haushaltsplanung.n1"),
     key: "n1",
-    width: 70,
+    width: 60,
   },
   {
     title: t("model.haushaltsplanung.n2"),
     key: "n2",
-    width: 70,
+    width: 60,
   },
 ]);
 </script>
