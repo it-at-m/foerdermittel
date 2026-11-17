@@ -3486,6 +3486,8 @@ components:
           minLength: 0
           type: string
         notizen:
+          maxLength: 4000
+          minLength: 0
           type: string
     HhjahrResponseDTO:
       required:
@@ -4103,6 +4105,8 @@ components:
           minLength: 0
           type: string
         notizen:
+          maxLength: 4000
+          minLength: 0
           type: string
     HauptabschnittCreateDTO:
       required:
@@ -4226,6 +4230,11 @@ components:
           minLength: 1
           type: string
     PageMetadata:
+      required:
+      - number
+      - size
+      - totalElements
+      - totalPages
       type: object
       properties:
         size:
@@ -4241,6 +4250,9 @@ components:
           type: integer
           format: int64
     PagedModelUnterabschnittResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -4279,6 +4291,9 @@ components:
           items:
             $ref: "#/components/schemas/HauptabschnittFormContextDTO"
     PagedModelTraegerResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -4297,6 +4312,9 @@ components:
           items:
             type: number
     PagedModelTerminResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -4351,6 +4369,9 @@ components:
       description: "DTO for [Termin] to be used in other FormContexts other than its\
         \ own."
     PagedModelStichwortbereichResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -4369,6 +4390,9 @@ components:
           items:
             type: string
     PagedModelStadtbezirkslisteResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -4387,6 +4411,9 @@ components:
           items:
             type: string
     PagedModelStadtbezirkResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -4405,6 +4432,9 @@ components:
           items:
             type: number
     PagedModelSiedlungsgebietResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5411,6 +5441,9 @@ components:
         pname:
           type: string
     PagedModelReferatResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5429,6 +5462,9 @@ components:
           items:
             type: number
     PagedModelPublikationResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5447,6 +5483,9 @@ components:
           items:
             type: string
     PagedModelProjektResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5523,6 +5562,9 @@ components:
             - S
             - R
     PagedModelKurzbezeichnungResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5541,6 +5583,9 @@ components:
           items:
             type: string
     PagedModelKrankenhausResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5559,6 +5604,9 @@ components:
           items:
             type: string
     PagedModelIstkostenResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5582,6 +5630,9 @@ components:
           items:
             $ref: "#/components/schemas/ProjektFormContextDTO"
     PagedModelHhplanResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5600,6 +5651,9 @@ components:
           items:
             type: number
     PagedModelHhjahrResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5618,6 +5672,9 @@ components:
           items:
             type: number
     PagedModelHauptabschnittResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5636,6 +5693,9 @@ components:
           items:
             type: string
     PagedModelFoerderbereichResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5654,6 +5714,9 @@ components:
           items:
             type: number
     PagedModelBauprogrammResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5672,6 +5735,9 @@ components:
           items:
             type: number
     PagedModelBauleitungResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5690,6 +5756,9 @@ components:
           items:
             type: string
     PagedModelArchivResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
