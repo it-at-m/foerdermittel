@@ -1,5 +1,6 @@
 package de.muenchen.oss.foerdermittel.backend.antrag;
 
+import de.muenchen.oss.foerdermittel.backend.antrag.dto.AntragMapper;
 import de.muenchen.oss.foerdermittel.backend.antrag.dto.AntragProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.bewilligung.Bewilligung;
 import de.muenchen.oss.foerdermittel.backend.bewilligung.BewilligungRepository;
@@ -30,6 +31,7 @@ public class AntragService {
     private static final Set<Antragstyp> UNIQUE_ANTRAGSTYPEN = Set.of(Antragstyp.E, Antragstyp.U);
 
     private final AntragRepository antragRepository;
+    private final AntragMapper antragMapper;
     private final ProjektService projektService;
     private final BewilligungRepository bewilligungRepository;
 
@@ -79,22 +81,7 @@ public class AntragService {
         final Antrag foundAntrag = ServiceUtils.getEntityOrThrowNotFoundException(antragID, antragRepository, Antrag.class);
         checkAntragstypUnique(foundAntrag.getProjekt().getProjnr(), antrag.getAntragstyp(), antragID);
 
-        foundAntrag.setAntragstyp(antrag.getAntragstyp());
-        foundAntrag.setAntragsdatum(antrag.getAntragsdatum());
-        foundAntrag.setGeskosten(antrag.getGeskosten());
-        foundAntrag.setZwfkosten(antrag.getZwfkosten());
-        foundAntrag.setVorzbeg(antrag.getVorzbeg());
-        foundAntrag.setVbdatum(antrag.getVbdatum());
-        foundAntrag.setUnbeddat(antrag.getUnbeddat());
-        foundAntrag.setUnbedja(antrag.getUnbedja());
-        foundAntrag.setUnbedbis(antrag.getUnbedbis());
-        foundAntrag.setAsuZ(antrag.getAsuZ());
-        foundAntrag.setAsuD(antrag.getAsuD());
-        foundAntrag.setAsuK(antrag.getAsuK());
-        foundAntrag.setBvorSuZ(antrag.getBvorSuZ());
-        foundAntrag.setBvorSuD(antrag.getBvorSuD());
-        foundAntrag.setBvorSuK(antrag.getBvorSuK());
-        foundAntrag.setNotizen(antrag.getNotizen());
+        antragMapper.update(antrag, foundAntrag);
 
         log.debug("Update Antrag: {}", foundAntrag);
         return antragRepository.update(foundAntrag);

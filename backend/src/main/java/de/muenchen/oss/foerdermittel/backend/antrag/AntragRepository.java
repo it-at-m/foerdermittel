@@ -3,6 +3,9 @@ package de.muenchen.oss.foerdermittel.backend.antrag;
 import de.muenchen.oss.foerdermittel.backend.common.InsertAndUpdateRepository;
 import java.util.Collection;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -12,6 +15,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AntragRepository extends PagingAndSortingRepository<Antrag, Long>, ListCrudRepository<Antrag, Long>,
         InsertAndUpdateRepository<Antrag> {
+
+    // load Projekt with the fields the list shows in one query instead of N+1
+    @Override
+    @EntityGraph(attributePaths = { "projekt.fobFb", "projekt.bezStadtbezirk" })
+    Page<Antrag> findAll(Pageable pageable);
 
     /// `id` is null on create, then no Antrag is excluded.
     @Query("SELECT COUNT(a) > 0 FROM Antrag a WHERE a.projekt.projnr = :projnr AND a.antragstyp = :antragstyp AND (:id IS NULL OR a.id <> :id)")

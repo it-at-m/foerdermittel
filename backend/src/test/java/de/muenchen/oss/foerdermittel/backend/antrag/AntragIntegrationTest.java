@@ -38,7 +38,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -49,6 +48,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.client.RestTestClient;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -222,17 +222,6 @@ public class AntragIntegrationTest {
         @MethodSource("authorizationMappings")
         void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
             restTestClient.get()
-                    .uri("/antraege/form-context")
-                    .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
-                    .exchange()
-                    .expectStatus()
-                    .isEqualTo(httpStatus);
-        }
-
-        @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
-        @MethodSource("authorizationMappings")
-        void givenRole_whenGetAntraege_thenReturnStatus(final String role, final HttpStatus httpStatus) {
-            restTestClient.get()
                     .uri("/antraege")
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()
@@ -267,6 +256,25 @@ public class AntragIntegrationTest {
                         assertThat(projekt.erstantragId()).isEqualTo(Long.valueOf(erstantrag.id()));
                         assertThat(projekt.unbedenklichkeitsantragId()).isNull();
                     });
+        }
+
+        private static Stream<Arguments> authorizationMappings() {
+            return Stream.of(
+                    Arguments.of("admin", HttpStatus.OK),
+                    Arguments.of("sachbearbeitung", HttpStatus.OK),
+                    Arguments.of("sachbearbeitunghaushalt", HttpStatus.OK),
+                    Arguments.of("no-role", HttpStatus.FORBIDDEN));
+        }
+
+        @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
+        @MethodSource("authorizationMappings")
+        void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
+            restTestClient.get()
+                    .uri("/antraege/form-context")
+                    .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
+                    .exchange()
+                    .expectStatus()
+                    .isEqualTo(httpStatus);
         }
     }
 

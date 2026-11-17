@@ -3,6 +3,7 @@ package de.muenchen.oss.foerdermittel.backend.antrag.dto;
 import de.muenchen.oss.foerdermittel.backend.antrag.Antrag;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper
 public interface AntragMapper {
@@ -21,4 +22,8 @@ public interface AntragMapper {
     @Mapping(target = "projekt", ignore = true)
     @Mapping(target = "id", ignore = true)
     Antrag toEntity(AntragUpdateDTO antragUpdateDTO);
+
+    @Mapping(target = "projekt", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    void update(Antrag source, @MappingTarget Antrag target);
 }

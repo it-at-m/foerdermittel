@@ -16,7 +16,9 @@ export function useInputValidation(
     Record<string, ValidationAttributes> | undefined
   >,
   property?: MaybeRefOrGetter<string | undefined>,
-  trimStringValues = false
+  trimStringValues = false,
+  // overrides the required marker from the OpenAPI spec, e.g. for conditionally required fields
+  requiredOverride: MaybeRefOrGetter<boolean | undefined> = undefined
 ) {
   const openApiRules = useOpenApiRules({
     validationAttributesMap,
@@ -25,6 +27,11 @@ export function useInputValidation(
   }) as ComputedRef<ValidationRule[]>;
 
   const required = computed(() => {
+    const override = toValue(requiredOverride);
+    if (override !== undefined) {
+      return override;
+    }
+
     const map = toValue(validationAttributesMap);
     const key = toValue(property);
 

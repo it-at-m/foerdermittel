@@ -13,7 +13,7 @@
     <template #label>
       {{ label }}
       <span
-        v-if="isRequired && !canNotEdit"
+        v-if="required && !canNotEdit"
         class="text-red"
         >{{ t("common.word.required") }}</span
       >
@@ -46,7 +46,7 @@ import type { ValidationAttributes } from "@/util/validation";
 import type { VTextField } from "vuetify/components";
 import type { ValidationRule } from "vuetify/framework";
 
-import { computed, nextTick, useTemplateRef } from "vue";
+import { nextTick, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import { useInputValidation } from "@/composables/useInputValidation";
@@ -60,7 +60,7 @@ const {
   validationAttributeMap,
   validationAttributeKey,
   additionalRules = [],
-  required = undefined,
+  required: requiredOverride = undefined,
 } = defineProps<{
   label: string;
   displayMode?: InputDisplayMode;
@@ -73,21 +73,15 @@ const {
   required?: boolean;
 }>();
 
-const {
-  required: specRequired,
-  allRules,
-  counter,
-  canNotEdit,
-} = useInputValidation(
+const { required, allRules, counter, canNotEdit } = useInputValidation(
   displayMode,
   disableEdit,
   additionalRules,
   validationAttributeMap,
   validationAttributeKey,
-  true
+  true,
+  () => requiredOverride
 );
-
-const isRequired = computed(() => required ?? specRequired.value);
 
 const model = defineModel<string>();
 const textFieldRef = useTemplateRef<VTextField>("textField");

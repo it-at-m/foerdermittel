@@ -64,6 +64,7 @@
           :validation-attribute-map="
             AntragCreateDTOPropertyValidationAttributesMap
           "
+          name="antragstyp"
           validation-attribute-key="antragstyp"
           :required="true"
           :additional-rules="[rules.required(), antragstypUnique]"
@@ -461,6 +462,11 @@ watch(
   afterRender
 );
 watch(
+  () => modelValue.value.projnr,
+  () => revalidate("antragstyp"),
+  afterRender
+);
+watch(
   () => modelValue.value.unbedbis,
   () => revalidate("unbedja"),
   afterRender
@@ -499,7 +505,7 @@ defineExpose({
 </script>
 
 <style>
-.currency-input :deep(input) {
+.currency-input input {
   text-align: right;
 }
 </style>

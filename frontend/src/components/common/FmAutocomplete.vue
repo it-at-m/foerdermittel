@@ -9,7 +9,7 @@
     <template #label>
       {{ label }}
       <span
-        v-if="isRequired && !canNotEdit"
+        v-if="required && !canNotEdit"
         class="text-red"
         >{{ t("common.word.required") }}</span
       >
@@ -41,7 +41,6 @@
 import type { ValidationAttributes } from "@/util/validation";
 import type { ValidationRule } from "vuetify/framework";
 
-import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
 import { useInputValidation } from "@/composables/useInputValidation";
@@ -53,7 +52,7 @@ const {
   validationAttributeMap,
   validationAttributeKey,
   additionalRules = [],
-  required = undefined,
+  required: requiredOverride = undefined,
 } = defineProps<{
   label: string;
   displayMode?: InputDisplayMode;
@@ -65,19 +64,15 @@ const {
   required?: boolean;
 }>();
 
-const {
-  required: specRequired,
-  allRules,
-  canNotEdit,
-} = useInputValidation(
+const { required, allRules, canNotEdit } = useInputValidation(
   displayMode,
   disableEdit,
   additionalRules,
   validationAttributeMap,
-  validationAttributeKey
+  validationAttributeKey,
+  false,
+  () => requiredOverride
 );
-
-const isRequired = computed(() => required ?? specRequired.value);
 
 const model = defineModel<T>({
   get(value) {
