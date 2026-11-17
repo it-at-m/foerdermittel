@@ -3,13 +3,6 @@
   "overrides": {
     "vitepress": {
       "vite": "6.4.5"
-    },
-    "markdownlint-cli": {
-      "katex": "0.18.2",
-      "re2js": "2.8.7"
-    },
-    "mermaid": {
-      "katex": "0.18.2"
     }
   },
   "name": "foerdermittel-docs",
@@ -18,8 +11,8 @@
   "private": true,
   "license": "MIT",
   "engines": {
-    "node": ">=24.11 <25",
-    "npm": ">=11.6 <12"
+    "node": ">=26.13 <27",
+    "npm": ">=11.20 <12"
   },
   "scripts": {
     "dev": "vitepress dev",
