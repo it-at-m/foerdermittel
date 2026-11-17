@@ -16,8 +16,6 @@ public interface HhplanRepository extends
         ListCrudRepository<Hhplan, HhplanPrimaryKey>,
         InsertAndUpdateRepository<Hhplan> {
 
-    boolean existsByHhjJahr_Hhjahr(BigDecimal hhjahr);
-
     @Query("SELECT h.id.hhjJahr FROM Hhplan h ORDER BY h.id.hhjJahr")
     List<BigDecimal> findAllHhplan();
 

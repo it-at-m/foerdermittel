@@ -36,7 +36,7 @@ public interface HhplanMapper {
     @Mapping(source = "aenderungsdatum", target = "aenderungsdatum")
     HhplanResponseDTO toDTO(Hhplan hhplan);
 
-    default String mapStadtbezirkToListenname(Stadtbezirk stadtbezirk) {
+    default String mapStadtbezirkToListenname(final Stadtbezirk stadtbezirk) {
         if (stadtbezirk == null || stadtbezirk.getStadtbezirkslisten() == null
                 || stadtbezirk.getStadtbezirkslisten().isEmpty()) {
             return null;
