@@ -28,9 +28,11 @@ public interface HhjahrMapper {
     @Mapping(target = "assignedProProjnr", ignore = true)
     HhjahrResponseDTO toUpdateDTO(Hhjahr hhjahr);
 
+    @Mapping(target = "hhplanlisten", ignore = true)
     Hhjahr toEntity(HhjahrCreateDTO hhjahrCreateDTO);
 
     @Mapping(target = "hhjahr", ignore = true)
+    @Mapping(target = "hhplanlisten", ignore = true)
     Hhjahr toEntity(HhjahrUpdateDTO hhjahrUpdateDTO);
 
     HhjahrFormContextDTO toFormContext(Hhjahr hhjahr);

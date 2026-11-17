@@ -10,52 +10,33 @@ import type { ApiComposables } from "@/util/composable-helper";
 import { HhplanControllerApi } from "@/api/generated/foerdermittel-backend";
 import { createAPIComposables } from "@/util/composable-helper";
 
-export const {
-  useCreate: useCreateHaushaltsplanung,
-  useUpdate: useUpdateHaushaltsplanung,
-  useGetAll: useGetHaushaltsplanungen,
-  useDelete: useDeleteHaushaltsplanung,
-  useContext: useGetHaushaltsplanungFormContext,
-} = createAPIComposables<
-    HhplanControllerApi,
-    never,
-    never,
-    never,
-    never,
-    GetHhplanRequest,
-    HhplanResponseDTO,
-    PagedModelHhplanResponseDTO,
-    never
->(HhplanControllerApi, {
-  getAll: (api, req) => api.getHhplan(req),
-});
+type GetHhplanCombinedRequest =
+    | GetHhplanRequest
+    | GetHhplanByHhjahrRequest;
 
-// Haushaltsplanungen eines bestimmten Haushaltsjahres laden
 export const {
-  useGetAll: useGetHaushaltsplanungenByHhjahr,
+  useGetAll: useGetHaushaltsplanungen,
 } = createAPIComposables<
     HhplanControllerApi,
     never,
     never,
     never,
     never,
-    GetHhplanByHhjahrRequest,
+    GetHhplanCombinedRequest,
     HhplanResponseDTO,
     PagedModelHhplanResponseDTO,
     never
 >(HhplanControllerApi, {
   getAll: async (api, req) => {
-    const content = await api.getHhplanByHhjahr(req);
+    if ("hhjahr" in req) {
+      const content = await api.getHhplanByHhjahr({
+        hhjahr: req.hhjahr,
+      });
 
-    return {
-      content,
-      page: {
-        size: content.length,
-        totalElements: content.length,
-        totalPages: 1,
-        number: 0,
-      },
-    } as PagedModelHhplanResponseDTO;
+      return { content };
+    }
+
+    return api.getHhplan(req);
   },
 });
 
@@ -66,13 +47,10 @@ export function useHaushaltsplanungApi(): ApiComposables<
     HhplanResponseDTO,
     never,
     HhplanResponseDTO,
-    never
+    never,
+    GetHhplanCombinedRequest
 > {
   return {
     getAll: useGetHaushaltsplanungen?.(),
-    context: useGetHaushaltsplanungFormContext?.(),
-    create: useCreateHaushaltsplanung?.(),
-    update: useUpdateHaushaltsplanung?.(),
-    delete: useDeleteHaushaltsplanung?.(),
   };
 }

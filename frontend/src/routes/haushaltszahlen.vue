@@ -11,57 +11,55 @@
               :to="{ path: '/haushaltsplanung' }"
               aria-label="Zurück zur Haushaltsplanung"
           />
+
           <span>
             {{ t("model.haushaltsplanung.modelName") }}
             {{ hhjahr ?? "" }}
           </span>
         </v-card-title>
 
-        <v-data-table
-            :headers="headers"
-            :items="planungen"
-            item-value="proProjnr"
-            density="compact"
-            show-expand
-            expand-on-click
-            :items-per-page="-1"
-            hide-default-footer
-            :loading="baseViewLoading || hhplanApi?.loading.value"
+        <crud-card
+            v-if="hhjahr !== undefined"
+            :empty-item-template="EMPTY_ITEM_TEMPLATE"
+            :loading="baseViewLoading || hhplanApi.getAll?.loading.value"
+            :domain-key="domainKey"
+            :table-headers="headers"
+            :api="hhplanApi"
+            :enable-actions="false"
+            :should-load-form-context="false"
+            :expandable="true"
         >
-          <template #expanded-row="{ item, columns }">
-            <td :colspan="columns.length">
-              <v-card variant="tonal" class="ma-2">
-                <v-card-text>
-                  <v-row align="start">
-                    <v-col cols="12" md="2">
-                      <div class="text-subtitle-2">
-                        {{ t("model.haushaltsplanung.projektdetails") }}
-                      </div>
-                    </v-col>
+          <template #form="{ item, inputDisplayMode }">
+            <v-card
+                v-if="inputDisplayMode === InputDisplayMode.READ"
+                class="ma-2"
+            >
+              <v-card-text>
+                <v-row align="start">
+                  <v-col cols="12" md="2">
+                    <div class="text-subtitle-2">
+                      {{ t("model.haushaltsplanung.projektdetails") }}
+                    </div>
+                  </v-col>
 
-                    <v-col cols="12" md="10">
-                      <v-row>
-                        <v-col
-                            v-for="detail in getProjektDetails(item)"
-                            :key="detail.label"
-                            cols="12"
-                            md="3"
-                        >
-                          <v-label>{{ detail.label }}</v-label>
-                          <div>{{ detail.value }}</div>
-                        </v-col>
-                      </v-row>
-                    </v-col>
-                  </v-row>
-                </v-card-text>
-              </v-card>
-            </td>
+                  <v-col cols="12" md="10">
+                    <v-row>
+                      <v-col
+                          v-for="detail in getProjektDetails(item)"
+                          :key="detail.label"
+                          cols="12"
+                          md="3"
+                      >
+                        <v-label>{{ detail.label }}</v-label>
+                        <div>{{ detail.value }}</div>
+                      </v-col>
+                    </v-row>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
           </template>
-
-          <template #no-data>
-            {{ t("model.haushaltsplanung.keineZuordnungen") }}
-          </template>
-        </v-data-table>
+        </crud-card>
       </v-card>
     </template>
   </base-view>
@@ -69,7 +67,6 @@
 
 <script setup lang="ts">
 import type { HhplanResponseDTO } from "@/api/generated/foerdermittel-backend";
-import type { DataTableHeader } from "vuetify/framework";
 
 import { mdiArrowLeft } from "@mdi/js";
 import { computed, watch } from "vue";
@@ -77,7 +74,9 @@ import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
 
 import BaseView from "@/components/common/BaseView.vue";
-import { useGetHaushaltsplanungenByHhjahr } from "@/composables/api/useHaushaltsplanungApi";
+import CrudCard from "@/components/common/CrudCard.vue";
+import { useHaushaltsplanungApi } from "@/composables/api/useHaushaltsplanungApi";
+import { InputDisplayMode } from "@/types/InputDisplayMode";
 import { Role } from "@/types/Role";
 
 const { t } = useI18n();
@@ -94,6 +93,8 @@ definePage({
   },
 });
 
+const domainKey = "model.haushaltsplanung.modelName";
+
 const hhjahr = computed(() => {
   const value = route.query.hhjahr;
 
@@ -102,12 +103,11 @@ const hhjahr = computed(() => {
   }
 
   const year = Number(value);
+
   return Number.isInteger(year) ? year : undefined;
 });
 
-const domainKey = "model.haushaltsplanung.modelName";
-
-const hhplanApi = useGetHaushaltsplanungenByHhjahr?.();
+const hhplanApi = useHaushaltsplanungApi();
 
 watch(
     hhjahr,
@@ -116,18 +116,15 @@ watch(
         return;
       }
 
-      await hhplanApi?.call({ hhjahr: year });
+      await hhplanApi.getAll?.call({ hhjahr: year });
     },
-    { immediate: true }
+    { immediate: true },
 );
 
-const planungen = computed<HhplanResponseDTO[]>(() =>
-    hhjahr.value === undefined
-        ? []
-        : (hhplanApi?.data.value?.content ?? [])
-);
 
-const formatDate = (value?: Date | string | null) =>
+const EMPTY_ITEM_TEMPLATE = {} as HhplanResponseDTO;
+
+const formatDate = (value?: Date | string | null): string =>
     value
         ? new Date(value).toLocaleDateString("de-DE", {
           day: "2-digit",
@@ -151,76 +148,76 @@ const getProjektDetails = (item: HhplanResponseDTO) =>
       value,
     }));
 
-const headers: DataTableHeader<HhplanResponseDTO>[] = [
+const headers = computed(() => [
   {
     title: t("model.haushaltsplanung.proProjnr"),
-    value: "proProjnr",
-    width: 80,
-  },
-  {
-    title: t("model.haushaltsplanung.fipo"),
-    value: "fipo",
+    key: "proProjnr",
     width: 100,
   },
   {
+    title: t("model.haushaltsplanung.fipo"),
+    key: "fipo",
+    width: 150,
+  },
+  {
     title: t("model.haushaltsplanung.fobFb"),
-    value: "fobFb",
-    width: 30,
+    key: "fobFb",
+    width: 70,
   },
   {
     title: t("model.haushaltsplanung.stadtbezirk"),
-    value: "stadtbezirk",
-    width: 30,
+    key: "stadtbezirk",
+    width: 70,
   },
   {
     title: t("model.haushaltsplanung.listenname"),
-    value: "listenname",
-    width: 30,
+    key: "listenname",
+    width: 70,
   },
   {
     title: t("model.haushaltsplanung.mitteleinplanung"),
-    value: "mitteleinplanung",
-    width: 50,
+    key: "mitteleinplanung",
+    width: 100,
   },
   {
     title: t("model.haushaltsplanung.bewilligungVoj"),
-    value: "bewilligungVoj",
-    width: 50,
+    key: "bewilligungVoj",
+    width: 100,
   },
   {
     title: t("model.haushaltsplanung.bewilligungHhj"),
-    value: "bewilligungHhj",
-    width: 50,
+    key: "bewilligungHhj",
+    width: 100,
   },
   {
     title: t("model.haushaltsplanung.erhaltenVoj"),
-    value: "erhaltenVoj",
-    width: 50,
+    key: "erhaltenVoj",
+    width: 100,
   },
   {
     title: t("model.haushaltsplanung.erhaltenHhj"),
-    value: "erhaltenHhj",
-    width: 50,
+    key: "erhaltenHhj",
+    width: 100,
   },
   {
     title: t("model.haushaltsplanung.baustandaktuell"),
-    value: "baustandaktuell",
-    width: 50,
+    key: "baustandaktuell",
+    width: 100,
   },
   {
     title: t("model.haushaltsplanung.an"),
-    value: "an",
-    width: 30,
+    key: "an",
+    width: 70,
   },
   {
     title: t("model.haushaltsplanung.n1"),
-    value: "n1",
-    width: 30,
+    key: "n1",
+    width: 70,
   },
   {
     title: t("model.haushaltsplanung.n2"),
-    value: "n2",
-    width: 30,
+    key: "n2",
+    width: 70,
   },
-];
+]);
 </script>
