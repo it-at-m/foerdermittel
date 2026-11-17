@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.report.auswertungabruf;
+package de.muenchen.oss.foerdermittel.backend.report.auswertungbewilligung;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doThrow;
@@ -11,23 +11,18 @@ import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammService;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichService;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.krankenhaus.KrankenhausService;
-import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungService;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.dto.KurzbezeichnungFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
-import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungAntragFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.referat.ReferatService;
-import de.muenchen.oss.foerdermittel.backend.referat.dto.ReferatFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungBewilligungFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
 import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
 import de.muenchen.oss.foerdermittel.backend.report.ReportService;
 import de.muenchen.oss.foerdermittel.backend.report.ReportType;
-import de.muenchen.oss.foerdermittel.backend.report.auswertungabrufe.ReportAuswertungAbrufeService;
-import de.muenchen.oss.foerdermittel.backend.report.auswertungabrufe.dto.ReportAuswertungAbrufeDTO;
-import de.muenchen.oss.foerdermittel.backend.report.auswertungabrufe.dto.ReportAuswertungAbrufeMapper;
-import de.muenchen.oss.foerdermittel.backend.report.auswertungabrufe.dto.ReportAuswertungAbrufeSort;
-import de.muenchen.oss.foerdermittel.backend.report.auswertungabrufe.formcontext.ReportAuswertungAbrufeFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungbewilligung.dto.ReportAuswertungBewilligungenDTO;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungbewilligung.dto.ReportAuswertungBewilligungenMapper;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungbewilligung.dto.ReportAuswertungBewilligungenSort;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungbewilligung.formcontext.ReportAuswertungBewilligungenFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.validation.CommonSearchParameters;
 import de.muenchen.oss.foerdermittel.backend.report.validation.ReportSearchParameterValidator;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietService;
@@ -50,7 +45,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class ReportAuswertungAbrufeServiceTest {
+class ReportAuswertungBewilligungenServiceTest {
 
     @Mock
     private StadtbezirkService stadtbezirkService;
@@ -68,7 +63,7 @@ class ReportAuswertungAbrufeServiceTest {
     private ReportService reportService;
 
     @Mock
-    private ReportAuswertungAbrufeMapper reportAuswertungabrufeMapper;
+    private ReportAuswertungBewilligungenMapper reportAuswertungbewilligungenMapper;
 
     @Mock
     private ReportSearchParameterValidator searchParameterValidator;
@@ -85,20 +80,14 @@ class ReportAuswertungAbrufeServiceTest {
     @Mock
     private SiedlungsgebietService siedlungsgebietService;
 
-    @Mock
-    private ReferatService referatService;
-
-    @Mock
-    private KrankenhausService krankenhausService;
-
     @InjectMocks
-    private ReportAuswertungAbrufeService reportAuswertungabrufeService;
+    private ReportAuswertungBewilligungenService reportAuswertungbewilligungenService;
 
     @Nested
-    class GenerateReportAuswertungabrufe {
+    class GenerateReportAuswertungbewilligungen {
 
-        private ReportAuswertungAbrufeDTO createProjektParameters() {
-            final ReportAuswertungAbrufeDTO parameters = mock(ReportAuswertungAbrufeDTO.class);
+        private ReportAuswertungBewilligungenDTO createProjektParameters() {
+            final ReportAuswertungBewilligungenDTO parameters = mock(ReportAuswertungBewilligungenDTO.class);
 
             when(parameters.fb()).thenReturn(null);
             when(parameters.sbl()).thenReturn(null);
@@ -114,34 +103,34 @@ class ReportAuswertungAbrufeServiceTest {
         @Test
         void givenNoFilters_thenShouldGenerateCorrectGeneratedReport() {
             // Given
-            final ReportAuswertungAbrufeDTO parameters = createProjektParameters();
+            final ReportAuswertungBewilligungenDTO parameters = createProjektParameters();
             final Map<String, Object> jasperParameters = new HashMap<>();
             final GeneratedReport expectedReport = mock(GeneratedReport.class);
 
             when(parameters.type()).thenReturn(ReportFormat.PDF);
             when(parameters.sort())
-                    .thenReturn(ReportAuswertungAbrufeSort.values()[0]);
+                    .thenReturn(ReportAuswertungBewilligungenSort.values()[0]);
 
-            when(reportAuswertungabrufeMapper.toJasperParameters(parameters))
+            when(reportAuswertungbewilligungenMapper.toJasperParameters(parameters))
                     .thenReturn(jasperParameters);
 
             when(reportService.generateReport(
                     jasperParameters,
-                    ReportType.FMW_ABRUFE1,
+                    ReportType.FMW_BEWILL1,
                     ReportFormat.PDF,
                     parameters.sort().getOrderBy()))
                     .thenReturn(expectedReport);
 
             // When
-            final GeneratedReport generatedReport = reportAuswertungabrufeService.generateReportAuswertungAbrufe(parameters);
+            final GeneratedReport generatedReport = reportAuswertungbewilligungenService.generateReportAuswertungBewilligungen(parameters);
 
             // Then
-            verify(reportAuswertungabrufeMapper)
+            verify(reportAuswertungbewilligungenMapper)
                     .toJasperParameters(parameters);
 
             verify(reportService).generateReport(
                     jasperParameters,
-                    ReportType.FMW_ABRUFE1,
+                    ReportType.FMW_BEWILL1,
                     ReportFormat.PDF,
                     parameters.sort().getOrderBy());
 
@@ -155,27 +144,25 @@ class ReportAuswertungAbrufeServiceTest {
         @Test
         void givenValidParameters_thenShouldDelegateReportGeneration() {
             // Given
-            final ReportAuswertungAbrufeDTO parameters = createProjektParameters();
+            final ReportAuswertungBewilligungenDTO parameters = createProjektParameters();
             when(parameters.type()).thenReturn(ReportFormat.PDF);
             when(parameters.sort())
-                    .thenReturn(ReportAuswertungAbrufeSort.values()[0]);
-            when(parameters.ref()).thenReturn("12");
-            when(parameters.krh()).thenReturn("Klinikum");
+                    .thenReturn(ReportAuswertungBewilligungenSort.values()[0]);
             final Map<String, Object> jasperParameters = new HashMap<>();
             final GeneratedReport expectedReport = mock(GeneratedReport.class);
 
-            when(reportAuswertungabrufeMapper.toJasperParameters(parameters))
+            when(reportAuswertungbewilligungenMapper.toJasperParameters(parameters))
                     .thenReturn(jasperParameters);
 
             when(reportService.generateReport(
                     jasperParameters,
-                    ReportType.FMW_ABRUFE1,
+                    ReportType.FMW_BEWILL1,
                     ReportFormat.PDF,
                     parameters.sort().getOrderBy()))
                     .thenReturn(expectedReport);
 
             // When
-            final GeneratedReport actualReport = reportAuswertungabrufeService.generateReportAuswertungAbrufe(parameters);
+            final GeneratedReport actualReport = reportAuswertungbewilligungenService.generateReportAuswertungBewilligungen(parameters);
 
             // Then
             assertThat(actualReport).isSameAs(expectedReport);
@@ -183,12 +170,10 @@ class ReportAuswertungAbrufeServiceTest {
             verify(searchParameterValidator).validateCommonSearchParameters(
                     new CommonSearchParameters(
                             null, null, null, null, null, null, null));
-            verify(searchParameterValidator).validateReferat("12");
-            verify(searchParameterValidator).validateKrankenhaus("Klinikum");
 
             verify(reportService).generateReport(
                     jasperParameters,
-                    ReportType.FMW_ABRUFE1,
+                    ReportType.FMW_BEWILL1,
                     ReportFormat.PDF,
                     parameters.sort().getOrderBy());
         }
@@ -196,7 +181,7 @@ class ReportAuswertungAbrufeServiceTest {
         @Test
         void givenInvalidSearchParameter_thenShouldPropagateValidationException() {
             // Given
-            final ReportAuswertungAbrufeDTO parameters = createProjektParameters();
+            final ReportAuswertungBewilligungenDTO parameters = createProjektParameters();
             when(parameters.fb()).thenReturn("123");
 
             final RuntimeException exception = new RuntimeException("Ungültiger Förderbereich");
@@ -210,8 +195,8 @@ class ReportAuswertungAbrufeServiceTest {
             // When
             final RuntimeException thrown = Assertions.assertThrows(
                     RuntimeException.class,
-                    () -> reportAuswertungabrufeService
-                            .generateReportAuswertungAbrufe(parameters));
+                    () -> reportAuswertungbewilligungenService
+                            .generateReportAuswertungBewilligungen(parameters));
 
             // Then
             assertThat(thrown).isSameAs(exception);
@@ -219,17 +204,17 @@ class ReportAuswertungAbrufeServiceTest {
                     .validateCommonSearchParameters(
                             new CommonSearchParameters(
                                     "123", null, null, null, null, null, null));
-            verifyNoInteractions(reportAuswertungabrufeMapper, reportService);
+            verifyNoInteractions(reportAuswertungbewilligungenMapper, reportService);
         }
 
         @Test
         void givenEmptyFilters_thenShouldValidateCommonParametersWithoutValues() {
             // Given
-            final ReportAuswertungAbrufeDTO parameters = createProjektParameters();
+            final ReportAuswertungBewilligungenDTO parameters = createProjektParameters();
 
             when(parameters.type()).thenReturn(ReportFormat.PDF);
             when(parameters.sort())
-                    .thenReturn(ReportAuswertungAbrufeSort.values()[0]);
+                    .thenReturn(ReportAuswertungBewilligungenSort.values()[0]);
 
             when(parameters.fb()).thenReturn("");
             when(parameters.sbl()).thenReturn("");
@@ -239,11 +224,11 @@ class ReportAuswertungAbrufeServiceTest {
             when(parameters.kurz()).thenReturn("");
             when(parameters.bpg()).thenReturn("");
 
-            when(reportAuswertungabrufeMapper.toJasperParameters(parameters))
+            when(reportAuswertungbewilligungenMapper.toJasperParameters(parameters))
                     .thenReturn(new HashMap<>());
 
             // When
-            reportAuswertungabrufeService.generateReportAuswertungAbrufe(parameters);
+            reportAuswertungbewilligungenService.generateReportAuswertungBewilligungen(parameters);
 
             // Then
             verify(searchParameterValidator).validateCommonSearchParameters(
@@ -254,12 +239,12 @@ class ReportAuswertungAbrufeServiceTest {
     }
 
     @Nested
-    class GetReportAuswertungAntragFormContext {
+    class GetReportAuswertungBewilligungFormContext {
 
         @Test
         void givenEntitiesExists_thenReturnCorrectFormContext() {
             // Given
-            final List<ReportAuswertungAntragFormContextDTO> projektContext = List.of(mock(ReportAuswertungAntragFormContextDTO.class));
+            final List<ReportAuswertungBewilligungFormContextDTO> projektContext = List.of(mock(ReportAuswertungBewilligungFormContextDTO.class));
 
             final List<FoerderbereichFormContextDTO> foerderbereichContext = List.of(mock(FoerderbereichFormContextDTO.class));
 
@@ -275,11 +260,7 @@ class ReportAuswertungAbrufeServiceTest {
 
             final List<SiedlungsgebietFormContextDTO> siedlungsgebietContext = List.of(mock(SiedlungsgebietFormContextDTO.class));
 
-            final List<ReferatFormContextDTO> referatContext = List.of(mock(ReferatFormContextDTO.class));
-
-            final List<KrankenhausFormContextDTO> krankenhausContext = List.of(mock(KrankenhausFormContextDTO.class));
-
-            when(projektService.getReportAuswertungAntragFormContextDTOs())
+            when(projektService.getReportAuswertungBewilligungFormContextDTOs())
                     .thenReturn(projektContext);
 
             when(foerderbereichService.getFoerderbereichFormContextDTOs())
@@ -304,17 +285,11 @@ class ReportAuswertungAbrufeServiceTest {
             when(siedlungsgebietService.getSiedlungsgebietFormContextDTOs())
                     .thenReturn(siedlungsgebietContext);
 
-            when(referatService.getReferatFormContextDTOs())
-                    .thenReturn(referatContext);
-
-            when(krankenhausService.getKrankenhausFormContextDTOs())
-                    .thenReturn(krankenhausContext);
-
             // When
-            final ReportAuswertungAbrufeFormContext formContext = reportAuswertungabrufeService.getReportAuswertungAbrufeFormContext();
+            final ReportAuswertungBewilligungenFormContext formContext = reportAuswertungbewilligungenService.getReportAuswertungBewilligungenFormContext();
 
             // Then
-            verify(projektService).getReportAuswertungAntragFormContextDTOs();
+            verify(projektService).getReportAuswertungBewilligungFormContextDTOs();
             verify(foerderbereichService).getFoerderbereichFormContextDTOs();
 
             verify(listennameStadtbezirkslisteService)

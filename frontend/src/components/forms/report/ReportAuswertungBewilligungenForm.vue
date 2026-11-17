@@ -1,241 +1,225 @@
 <template>
   <v-form
     ref="form"
-    :disabled="!reportauswertungabrufeformcontext"
+    :disabled="!reportauswertungbewilligungenformcontext"
     @update:model-value="onValidityChanged"
   >
-    <v-row>
-      <v-col
-        cols="12"
-        md="3"
-      >
-        <fm-text-field
-          v-model="modelValue.parameters!.jahrAbrufVon"
-          :display-mode="InputDisplayMode.EDIT"
-          :validation-attribute-map="
-            ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
-          "
-          validation-attribute-key="jahrAbrufVon"
-          :label="t('domain.report.auswertungAbrufe.jahrAbrufVon')"
-          validate-on="blur"
-          :error-messages="jahrAbrufVonError"
-          density="comfortable"
-          @blur="validateAbrufYears"
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="3"
-      >
-        <fm-text-field
-          v-model="modelValue.parameters!.jahrAbrufBis"
-          :display-mode="InputDisplayMode.EDIT"
-          :validation-attribute-map="
-            ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
-          "
-          validation-attribute-key="jahrAbrufBis"
-          :label="t('domain.report.auswertungAbrufe.jahrAbrufBis')"
-          validate-on="blur"
-          :error-messages="jahrAbrufBisError"
-          density="comfortable"
-          @blur="validateAbrufYears"
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="3"
-      >
-        <fm-text-field
-          v-model="modelValue.parameters!.jahrErhaltVon"
-          :display-mode="InputDisplayMode.EDIT"
-          :validation-attribute-map="
-            ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
-          "
-          validation-attribute-key="jahrErhaltVon"
-          :label="t('domain.report.auswertungAbrufe.jahrErhaltVon')"
-          validate-on="blur"
-          :error-messages="jahrErhaltVonError"
-          density="comfortable"
-          @blur="validateErhaltYears()"
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="3"
-      >
-        <fm-text-field
-          v-model="modelValue.parameters!.jahrErhaltBis"
-          :display-mode="InputDisplayMode.EDIT"
-          :validation-attribute-map="
-            ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
-          "
-          validation-attribute-key="jahrErhaltBis"
-          :label="t('domain.report.auswertungAbrufe.jahrErhaltBis')"
-          validate-on="blur"
-          :error-messages="jahrErhaltBisError"
-          density="comfortable"
-          @blur="validateErhaltYears()"
-        />
-      </v-col>
-    </v-row>
-    <v-row>
+    <v-row align="center">
       <v-col
         cols="12"
         md="2"
       >
+        <fm-text-field
+          v-model="modelValue.parameters!.jahrVon"
+          :display-mode="InputDisplayMode.EDIT"
+          :validation-attribute-map="
+            ReportAuswertungBewilligungenDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="jahrVon"
+          :label="t('domain.report.common.jahrVon')"
+          :error-messages="jahrVonError"
+          density="comfortable"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        md="2"
+      >
+        <fm-text-field
+          v-model="modelValue.parameters!.jahrBis"
+          :display-mode="InputDisplayMode.EDIT"
+          :validation-attribute-map="
+            ReportAuswertungBewilligungenDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="jahrBis"
+          :label="t('domain.report.common.jahrBis')"
+          :error-messages="jahrBisError"
+          density="comfortable"
+        />
+      </v-col>
+      <v-col
+          cols="12"
+          md="1"
+      >
+        <fm-text-field
+            v-model="modelValue.parameters!.monat"
+            :display-mode="InputDisplayMode.EDIT"
+            :label="t('domain.report.common.monat')"
+            :validation-attribute-map="
+            ReportAuswertungBewilligungenDTOPropertyValidationAttributesMap
+            "
+            validation-attribute-key="monat"
+            density="comfortable"
+        />
+      </v-col>
+      <v-col
+          cols="12"
+          md="1"
+      >
+        <fm-date-input :label="t('domain.report.auswertungBewilligungen.datum')">
+          v-model="modelValue.parameters!.datum"
+          :display-mode="displayMode"
+          clearable
+        </fm-date-input>
+      </v-col>
+      <v-col
+        cols="12"
+        md="3"
+      >
         <fm-autocomplete
           v-model="modelValue.parameters!.sbl"
-          :items="reportauswertungabrufeformcontext?.sbls ?? []"
+          :items="reportauswertungbewilligungenformcontext?.sbls ?? []"
           :item-title="getStadtbezirkslisteTitle"
           item-value="kurzbez"
           :validation-attribute-map="
-            ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
+            ReportAuswertungBewilligungenDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="kurzbez"
           :label="t('domain.report.common.sbl')"
           density="comfortable"
-          clearable
           @update:model-value="delete modelValue.parameters!.bez"
         />
       </v-col>
 
       <v-col
         cols="12"
-        md="2"
+        md="3"
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.bez"
-          :items="reportauswertungabrufeformcontext?.bezs ?? []"
+          :items="reportauswertungbewilligungenformcontext?.bezs ?? []"
           :item-title="getStadtbezirkTitle"
           item-value="stadtbezirk"
           :validation-attribute-map="
-            ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
+            ReportAuswertungBewilligungenDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="stadtbezirk"
           :label="t('domain.report.common.bez')"
           density="comfortable"
-          clearable
           @update:model-value="delete modelValue.parameters!.sbl"
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="2"
-      >
-        <fm-autocomplete
-          v-model="modelValue.parameters!.fb"
-          :items="reportauswertungabrufeformcontext?.fbs ?? []"
-          :item-title="getFoerderbereichTitle"
-          item-value="fb"
-          :validation-attribute-map="
-            ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
-          "
-          validation-attribute-key="fb"
-          :label="t('domain.report.common.fb')"
-          density="comfortable"
-          clearable
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="3"
-      >
-        <fm-autocomplete
-          v-model="modelValue.parameters!.ua"
-          :items="reportauswertungabrufeformcontext?.uas ?? []"
-          :item-title="getUnterabschnittTitle"
-          item-value="ua"
-          :validation-attribute-map="
-            ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
-          "
-          validation-attribute-key="ua"
-          :label="t('domain.report.common.ua')"
-          density="comfortable"
-          clearable
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="3"
-      >
-        <fm-autocomplete
-          v-model="modelValue.parameters!.kurz"
-          :items="reportauswertungabrufeformcontext?.kurzs ?? []"
-          :item-title="getKurzbezeichnungTitle"
-          item-value="kurzbez"
-          :validation-attribute-map="
-            ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
-          "
-          validation-attribute-key="kurz"
-          :label="t('domain.report.common.kurz')"
-          density="comfortable"
-          clearable
         />
       </v-col>
     </v-row>
     <v-row>
       <v-col
         cols="12"
-        md="2"
+        md="3"
+      >
+        <fm-autocomplete
+          v-model="modelValue.parameters!.fb"
+          :items="reportauswertungbewilligungenformcontext?.fbs ?? []"
+          :item-title="getFoerderbereichTitle"
+          item-value="fb"
+          :validation-attribute-map="
+            ReportAuswertungBewilligungenDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="fb"
+          :label="t('domain.report.common.fb')"
+          density="comfortable"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <fm-autocomplete
+          v-model="modelValue.parameters!.ua"
+          :items="reportauswertungbewilligungenformcontext?.uas ?? []"
+          :item-title="getUnterabschnittTitle"
+          item-value="ua"
+          :validation-attribute-map="
+            ReportAuswertungBewilligungenDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="ua"
+          :label="t('domain.report.common.ua')"
+          density="comfortable"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <fm-autocomplete
+          v-model="modelValue.parameters!.kurz"
+          :items="reportauswertungbewilligungenformcontext?.kurzs ?? []"
+          :item-title="getKurzbezeichnungTitle"
+          item-value="kurzbez"
+          :validation-attribute-map="
+            ReportAuswertungBewilligungenDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="kurz"
+          :label="t('domain.report.common.kurz')"
+          density="comfortable"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        md="3"
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.projnr"
-          :items="reportauswertungabrufeformcontext?.projs"
+          :items="reportauswertungbewilligungenformcontext?.projs"
           :item-title="getProjektTitle"
           item-value="projnr"
           :validation-attribute-map="
-            ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
+            ReportAuswertungBewilligungenDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="projnr"
           :label="t('model.projekt.projnr')"
           density="comfortable"
-          clearable
         />
       </v-col>
-
+    </v-row>
+    <v-row>
       <v-col
         cols="12"
-        md="5"
-      >
-        <fm-text-field
-          v-model="modelValue.parameters!.pname"
-          :display-mode="InputDisplayMode.EDIT"
-          :validation-attribute-map="
-            ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
-          "
-          validation-attribute-key="pname"
-          :label="t('domain.report.common.pname')"
-          density="comfortable"
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="5"
+        md="6"
       >
         <fm-text-field
           v-model="modelValue.parameters!.pstrasse"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
-            ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
+            ReportAuswertungBewilligungenDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="pstrasse"
           :label="t('domain.report.common.pstrasse')"
           density="comfortable"
         />
       </v-col>
-    </v-row>
 
-    <v-row align="center">
       <v-col
         cols="12"
-        md="2"
+        md="6"
+      >
+        <fm-text-field
+          v-model="modelValue.parameters!.pname"
+          :display-mode="InputDisplayMode.EDIT"
+          :validation-attribute-map="
+            ReportAuswertungBewilligungenDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="pname"
+          :label="t('domain.report.common.pname')"
+          density="comfortable"
+        />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <fm-checkbox
+          v-model="modelValue.parameters!.erfolgt"
+          :label="t('domain.report.common.erfolgt')"
+          true-value="1"
+          false-value="0"
+          density="compact"
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="3"
       >
         <fm-checkbox
           v-model="modelValue.parameters!.fag"
@@ -243,21 +227,6 @@
           true-value="1"
           false-value="0"
           density="compact"
-          clearable
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="2"
-      >
-        <fm-checkbox
-          v-model="modelValue.parameters!.offen"
-          :label="t('domain.report.common.offen')"
-          true-value="1"
-          false-value="0"
-          density="compact"
-          clearable
         />
       </v-col>
 
@@ -266,96 +235,30 @@
         md="3"
       >
         <fm-checkbox
-          v-model="modelValue.parameters!.ohnebewill"
-          :label="t('domain.report.common.ohnebewill')"
+          v-model="modelValue.parameters!.notizen"
+          :label="t('domain.report.common.notizen')"
           true-value="1"
           false-value="0"
           density="compact"
-          clearable
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="2"
-      >
-        <fm-checkbox
-          v-model="modelValue.parameters!.erh"
-          :label="t('domain.report.auswertungAbrufe.erh')"
-          true-value="1"
-          false-value="0"
-          density="compact"
-          clearable
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="3"
-      >
-        <fm-checkbox
-          v-model="modelValue.parameters!.nichterh"
-          :label="t('domain.report.auswertungAbrufe.nichtErh')"
-          true-value="1"
-          false-value="0"
-          density="compact"
-          clearable
         />
       </v-col>
     </v-row>
+
     <v-row>
       <v-col
         cols="12"
-        md="2"
-      >
-        <fm-autocomplete
-          v-model="modelValue.parameters!.ref"
-          :items="reportauswertungabrufeformcontext?.refs"
-          :item-title="getReferatTitle"
-          item-value="refnr"
-          :validation-attribute-map="
-            ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
-          "
-          validation-attribute-key="ref"
-          :label="t('domain.report.common.ref')"
-          density="comfortable"
-          clearable
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="2"
-      >
-        <fm-autocomplete
-          v-model="modelValue.parameters!.krh"
-          :items="reportauswertungabrufeformcontext?.krhs"
-          :item-title="getKrankenhausTitle"
-          item-value="krhname"
-          :validation-attribute-map="
-            ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
-          "
-          validation-attribute-key="krh"
-          :label="t('domain.report.common.krh')"
-          density="comfortable"
-          clearable
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="4"
+        md="3"
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.krisofp"
-          :items="reportauswertungabrufeformcontext?.krisofps"
+          :items="reportauswertungbewilligungenformcontext?.krisofps"
           :item-title="getKrisofpTitle"
           :item-value="getKrisofpValue"
           :validation-attribute-map="
-            ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
+            ReportAuswertungBewilligungenDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="krisofp"
-          :label="t('domain.report.common.krisofp')"
+          :label="t('model.projekt.krisofp')"
           density="comfortable"
           clearable
         />
@@ -363,42 +266,60 @@
 
       <v-col
         cols="12"
-        md="2"
+        md="3"
+      >
+        <fm-autocomplete
+          v-model="modelValue.parameters!.zuwendungsart"
+          :items="reportauswertungbewilligungenformcontext?.zuwendungen"
+          :item-title="getBewilligungenTitle"
+          :item-value="getBewilligungenValue"
+          :validation-attribute-map="
+            ReportAuswertungBewilligungenDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bewilligungen"
+          :label="t('domain.report.common.zuwendungsart')"
+          density="comfortable"
+          clearable
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="3"
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.sgt"
-          :items="reportauswertungabrufeformcontext?.sgts ?? []"
+          :items="reportauswertungbewilligungenformcontext?.sgts ?? []"
           :item-title="getSiedlungsgebietTitle"
           item-value="siedlungsgebiet"
           :validation-attribute-map="
-            ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
+            ReportAuswertungBewilligungenDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="siedlungsgebiet"
           :label="t('domain.report.common.sgt')"
           density="comfortable"
-          clearable
         />
       </v-col>
 
       <v-col
         cols="12"
-        md="2"
+        md="3"
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.bpg"
-          :items="reportauswertungabrufeformcontext?.bpgs ?? []"
+          :items="reportauswertungbewilligungenformcontext?.bpgs ?? []"
           :item-title="getBauprogrammTitle"
           item-value="bauprogramm"
           :validation-attribute-map="
-            ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
+            ReportAuswertungBewilligungenDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="bauprogramm"
           :label="t('domain.report.common.bpg')"
           density="comfortable"
-          clearable
         />
       </v-col>
     </v-row>
+
     <v-row>
       <v-col
         cols="12"
@@ -437,14 +358,13 @@
 import type {
   BauprogrammFormContextDTO,
   FoerderbereichFormContextDTO,
-  GetReportAuswertungAbrufeRequest,
-  KrankenhausFormContextDTO,
+  GetReportAuswertungBewilligungenRequest,
   KurzbezeichnungFormContextDTO,
   ListennameStadtbezirkslisteFormContextDTO,
-  ReferatFormContextDTO,
-  ReportAuswertungAbrufeFormContext,
-  ReportAuswertungAbrufeFormContextKrisofpsEnum,
-  ReportAuswertungAntragFormContextDTO,
+  ReportAuswertungBewilligungenFormContext,
+  ReportAuswertungBewilligungenFormContextKrisofpsEnum,
+  ReportAuswertungBewilligungenFormContextZuwendungenEnum,
+  ReportAuswertungBewilligungFormContextDTO,
   SiedlungsgebietFormContextDTO,
   StadtbezirkFormContextDTO,
   UnterabschnittFormContextDTO,
@@ -452,25 +372,29 @@ import type {
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
 
-import { computed, ref, useTemplateRef, watch } from "vue";
+import { computed, useTemplateRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
-import { ReportAuswertungAbrufeDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
+import { ReportAuswertungBewilligungenDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
+import FmDateInput from "@/components/common/FmDateInput.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
+import { getBewilligungenTitle } from "@/util/bewilligungenUtils.ts";
 import { getKrisofpTitle } from "@/util/krisofpUtils";
 import { getJahrBisError, getJahrVonError } from "@/util/yearHelper.ts";
 
 const { t } = useI18n();
 
-const modelValue = defineModel<Partial<GetReportAuswertungAbrufeRequest>>({
+const modelValue = defineModel<
+  Partial<GetReportAuswertungBewilligungenRequest>
+>({
   required: true,
 });
 
-const { reportauswertungabrufeformcontext } = defineProps<{
-  reportauswertungabrufeformcontext?: DeepReadonly<ReportAuswertungAbrufeFormContext>;
+const { reportauswertungbewilligungenformcontext } = defineProps<{
+  reportauswertungbewilligungenformcontext?: DeepReadonly<ReportAuswertungBewilligungenFormContext>;
 }>();
 
 const emit = defineEmits<{
@@ -504,7 +428,13 @@ function getKurzbezeichnungTitle(item: KurzbezeichnungFormContextDTO) {
 }
 
 function getKrisofpValue(
-  item: ReportAuswertungAbrufeFormContextKrisofpsEnum
+  item: ReportAuswertungBewilligungenFormContextKrisofpsEnum
+): string {
+  return item;
+}
+
+function getBewilligungenValue(
+  item: ReportAuswertungBewilligungenFormContextZuwendungenEnum
 ): string {
   return item;
 }
@@ -513,20 +443,12 @@ function getSiedlungsgebietTitle(item: SiedlungsgebietFormContextDTO) {
   return item ? `${item.siedlungsgebiet} (${item.bezeichnung})` : "";
 }
 
-function getProjektTitle(item: ReportAuswertungAntragFormContextDTO) {
+function getProjektTitle(item: ReportAuswertungBewilligungFormContextDTO) {
   return item ? `${item.projnr} (${item.pname})` : "";
 }
 
 function getBauprogrammTitle(item: BauprogrammFormContextDTO) {
   return item ? `${item.bauprogramm} (${item.bezeichnung})` : "";
-}
-
-function getReferatTitle(item: ReferatFormContextDTO) {
-  return item ? `${item.refnr} (${item.bezeichnung})` : "";
-}
-
-function getKrankenhausTitle(item: KrankenhausFormContextDTO) {
-  return item ? `${item.krhname} (${item.bezeichnung})` : "";
 }
 
 const formRef = useTemplateRef<VForm>("form");
@@ -541,7 +463,7 @@ defineExpose({
 
 const filteredSortOptions = computed(() => {
   if (modelValue.value.parameters?.type === "PDF") {
-    return sortOptions.slice(0, 4);
+    return sortOptions.slice(0, 2);
   }
 
   return sortOptions;
@@ -553,51 +475,45 @@ watch(
     const parameters = modelValue.value.parameters;
 
     if (type === "PDF" && parameters) {
-      parameters.sort = "FOERDERBEREICH_PROJEKTNUMMER_ADATUM";
+      parameters.sort = "FOERDERBEREICH_PROJEKTNUMMER_BEWILLIGTAM";
     }
   }
 );
 
 const sortOptions = [
   {
-    title: t("domain.report.auswertungAbrufe.sortEnum.fbProjektnummerAdatum"),
-    value: "FOERDERBEREICH_PROJEKTNUMMER_ADATUM",
-  },
-  {
-    title: t("domain.report.auswertungAbrufe.sortEnum.fbEdatum"),
-    value: "FOERDERBEREICH_EDATUM",
-  },
-  {
-    title: t("domain.report.auswertungAbrufe.sortEnum.fbAdatum"),
-    value: "FOERDERBEREICH_ADATUM",
+    title: t(
+      "domain.report.auswertungBewilligungen.sortEnum.fbProjektnummerBewilligtAm"
+    ),
+    value: "FOERDERBEREICH_PROJEKTNUMMER_BEWILLIGTAM",
   },
   {
     title: t(
-      "domain.report.auswertungAbrufe.sortEnum.fbProjektnummerStrasseAdatum"
+      "domain.report.auswertungBewilligungen.sortEnum.fbProjektstrasseProjektNummer"
     ),
-    value: "FOERDERBEREICH_PROJEKTSTRASSE_ADATUM",
+    value: "FOERDERBEREICH_STRASSE_PROJEKTNUMMER",
   },
   {
-    title: t("domain.report.auswertungAbrufe.sortEnum.projektnummerAdatum"),
-    value: "PROJEKTNUMMER_ADATUM",
+    title: t(
+      "domain.report.auswertungBewilligungen.sortEnum.projektnummerBewilligtAm"
+    ),
+    value: "PROJEKTNUMMER_BEWILLIGTAM",
   },
   {
-    title: t("domain.report.auswertungAbrufe.sortEnum.edatum"),
-    value: "EDATUM",
+    title: t(
+      "domain.report.auswertungBewilligungen.sortEnum.strasseProjektnummerBewilligtAm"
+    ),
+    value: "PROJEKTSTRASSE_PROJEKTNUMMER_BEWILLIGTAM",
   },
   {
-    title: t("domain.report.auswertungAbrufe.sortEnum.adatum"),
-    value: "ADATUM",
-  },
-  {
-    title: t("domain.report.auswertungAbrufe.sortEnum.projektstrasse"),
-    value: "PROJEKTSTRASSE",
+    title: t("domain.report.auswertungBewilligungen.sortEnum.bewilligtAm"),
+    value: "BEWILLIGTAM",
   },
 ];
 
 const formatOptions = [
   {
-    title: t("domain.report.auswertungAbrufe.reportType.pdf"),
+    title: t("domain.report.auswertungAntraege.reportType.pdf"),
     value: "PDF",
   },
   {
@@ -610,25 +526,17 @@ const formatOptions = [
   },
 ];
 
-const jahrAbrufVonError = ref<ReturnType<typeof getJahrVonError>>();
-const jahrAbrufBisError = ref<ReturnType<typeof getJahrBisError>>();
+const jahrVonError = computed(() =>
+  getJahrVonError(
+    modelValue.value.parameters?.jahrVon,
+    modelValue.value.parameters?.jahrBis
+  )
+);
 
-const jahrErhaltVonError = ref<ReturnType<typeof getJahrVonError>>();
-const jahrErhaltBisError = ref<ReturnType<typeof getJahrBisError>>();
-
-function validateAbrufYears() {
-  const von = modelValue.value.parameters?.jahrAbrufVon;
-  const bis = modelValue.value.parameters?.jahrAbrufBis;
-
-  jahrAbrufVonError.value = getJahrVonError(von, bis);
-  jahrAbrufBisError.value = getJahrBisError(von, bis);
-}
-
-function validateErhaltYears() {
-  const von = modelValue.value.parameters?.jahrErhaltVon;
-  const bis = modelValue.value.parameters?.jahrErhaltBis;
-
-  jahrErhaltVonError.value = getJahrVonError(von, bis);
-  jahrErhaltBisError.value = getJahrBisError(von, bis);
-}
+const jahrBisError = computed(() =>
+  getJahrBisError(
+    modelValue.value.parameters?.jahrVon,
+    modelValue.value.parameters?.jahrBis
+  )
+);
 </script>

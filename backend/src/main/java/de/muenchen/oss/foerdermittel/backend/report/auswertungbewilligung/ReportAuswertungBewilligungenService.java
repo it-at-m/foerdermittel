@@ -1,18 +1,17 @@
-package de.muenchen.oss.foerdermittel.backend.report.auswertungabrufe;
+package de.muenchen.oss.foerdermittel.backend.report.auswertungbewilligung;
 
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammService;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichService;
-import de.muenchen.oss.foerdermittel.backend.krankenhaus.KrankenhausService;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungService;
+import de.muenchen.oss.foerdermittel.backend.projekt.Zuwendungsart;
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
-import de.muenchen.oss.foerdermittel.backend.referat.ReferatService;
 import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
 import de.muenchen.oss.foerdermittel.backend.report.ReportService;
 import de.muenchen.oss.foerdermittel.backend.report.ReportType;
-import de.muenchen.oss.foerdermittel.backend.report.auswertungabrufe.dto.ReportAuswertungAbrufeDTO;
-import de.muenchen.oss.foerdermittel.backend.report.auswertungabrufe.dto.ReportAuswertungAbrufeMapper;
-import de.muenchen.oss.foerdermittel.backend.report.auswertungabrufe.formcontext.ReportAuswertungAbrufeFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungbewilligung.dto.ReportAuswertungBewilligungenDTO;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungbewilligung.dto.ReportAuswertungBewilligungenMapper;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungbewilligung.formcontext.ReportAuswertungBewilligungenFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.validation.CommonSearchParameters;
 import de.muenchen.oss.foerdermittel.backend.report.validation.ReportSearchParameterValidator;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
@@ -20,6 +19,7 @@ import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietServ
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkService;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.ListennameStadtbezirkslisteService;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittService;
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class ReportAuswertungAbrufeService {
+public class ReportAuswertungBewilligungenService {
 
     private final FoerderbereichService foerderbereichService;
     private final ListennameStadtbezirkslisteService listennameStadtbezirkslisteService;
@@ -40,18 +40,16 @@ public class ReportAuswertungAbrufeService {
     private final BauprogrammService bauprogrammService;
     private final UnterabschnittService unterabschnittService;
     private final SiedlungsgebietService siedlungsgebietService;
-    private final ReportAuswertungAbrufeMapper reportMapper;
+    private final ReportAuswertungBewilligungenMapper reportMapper;
     private final ReportService reportService;
     private final ProjektService projektService;
 
     private final ReportSearchParameterValidator reportSearchParameterValidator;
-    private final ReferatService referatService;
-    private final KrankenhausService krankenhausService;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public GeneratedReport generateReportAuswertungAbrufe(
-            final ReportAuswertungAbrufeDTO parameters) {
+    public GeneratedReport generateReportAuswertungBewilligungen(
+            final ReportAuswertungBewilligungenDTO parameters) {
 
         reportSearchParameterValidator.validateCommonSearchParameters(
                 new CommonSearchParameters(
@@ -62,33 +60,30 @@ public class ReportAuswertungAbrufeService {
                         parameters.sgt(),
                         parameters.kurz(),
                         parameters.bpg()));
-        reportSearchParameterValidator.validateReferat(parameters.ref());
-        reportSearchParameterValidator.validateKrankenhaus(parameters.krh());
 
         final String orderBy = parameters.sort().getOrderBy();
 
         return reportService.generateReport(
                 reportMapper.toJasperParameters(parameters),
-                ReportType.FMW_ABRUFE1,
+                ReportType.FMW_BEWILL1,
                 parameters.type(),
                 orderBy);
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public ReportAuswertungAbrufeFormContext getReportAuswertungAbrufeFormContext() {
-        log.info("Get ReportAuswertungAbrufe form context");
+    public ReportAuswertungBewilligungenFormContext getReportAuswertungBewilligungenFormContext() {
+        log.info("Get ReportAuswertungBewilligungen form context");
 
-        return new ReportAuswertungAbrufeFormContext(
+        return new ReportAuswertungBewilligungenFormContext(
                 listennameStadtbezirkslisteService.getlistennameStadtbezirkslisteFormContextDTOs(),
                 stadtbezirkService.getStadtbezirkFormContextDTOs(),
                 foerderbereichService.getFoerderbereichFormContextDTOs(),
                 unterabschnittService.getUnterabschnittFormContextDTOs(),
                 kurzbezeichnungService.getKurzbezeichnungFormContextDTOs(),
-                projektService.getReportAuswertungAntragFormContextDTOs(),
-                referatService.getReferatFormContextDTOs(),
-                krankenhausService.getKrankenhausFormContextDTOs(),
+                projektService.getReportAuswertungBewilligungFormContextDTOs(),
                 List.of(Krisofp.values()),
+                List.of(Zuwendungsart.values()),
                 siedlungsgebietService.getSiedlungsgebietFormContextDTOs(),
                 bauprogrammService.getBauprogrammFormContextDTOs());
 

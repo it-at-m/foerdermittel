@@ -1,10 +1,10 @@
-package de.muenchen.oss.foerdermittel.backend.report.auswertungabrufe;
+package de.muenchen.oss.foerdermittel.backend.report.auswertungbewilligung;
 
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
 import de.muenchen.oss.foerdermittel.backend.report.CustomReportContentTypes;
 import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
-import de.muenchen.oss.foerdermittel.backend.report.auswertungabrufe.dto.ReportAuswertungAbrufeDTO;
-import de.muenchen.oss.foerdermittel.backend.report.auswertungabrufe.formcontext.ReportAuswertungAbrufeFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungbewilligung.dto.ReportAuswertungBewilligungenDTO;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungbewilligung.formcontext.ReportAuswertungBewilligungenFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,11 +29,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/report/auswertungabrufe")
+@RequestMapping("/report/auswertungbewilligungen")
 @SecurityRequirement(name = OpenAPIDocumentationConfiguration.SECURITY_SCHEME_NAME)
-public class ReportAuswertungAbrufeController {
+public class ReportAuswertungBewilligungenController {
 
-    private final ReportAuswertungAbrufeService reportAuswertungAbrufeService;
+    private final ReportAuswertungBewilligungenService reportAuswertungBewilligungenService;
 
     @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
@@ -53,19 +53,19 @@ public class ReportAuswertungAbrufeController {
                     }
             )
     )
-    public void getReportAuswertungAbrufe(
-            @Valid @ModelAttribute final ReportAuswertungAbrufeDTO parameters,
+    public void getReportAuswertungBewilligungen(
+            @Valid @ModelAttribute final ReportAuswertungBewilligungenDTO parameters,
             final HttpServletResponse response)
             throws IOException, SQLException, JRException {
-        final GeneratedReport generatedReport = reportAuswertungAbrufeService.generateReportAuswertungAbrufe(parameters);
+        final GeneratedReport generatedReport = reportAuswertungBewilligungenService.generateReportAuswertungBewilligungen(parameters);
         ReportControllerUtil.setMetadata(response, generatedReport);
         generatedReport.writer().write(response.getOutputStream());
     }
 
     @GetMapping(value = "/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ReportAuswertungAbrufeFormContext getReportAuswertungAbrufeFormContext() {
-        return reportAuswertungAbrufeService.getReportAuswertungAbrufeFormContext();
+    public ReportAuswertungBewilligungenFormContext getReportAuswertungBewilligungenFormContext() {
+        return reportAuswertungBewilligungenService.getReportAuswertungBewilligungenFormContext();
     }
 
 }

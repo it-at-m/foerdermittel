@@ -11,8 +11,6 @@ import de.muenchen.oss.foerdermittel.backend.referat.Referat;
 import de.muenchen.oss.foerdermittel.backend.referat.ReferatFormContext;
 import de.muenchen.oss.foerdermittel.backend.referat.ReferatRepository;
 import de.muenchen.oss.foerdermittel.backend.referat.ReferatService;
-import de.muenchen.oss.foerdermittel.backend.referat.dto.ReferatFormContextDTO;
-import de.muenchen.oss.foerdermittel.backend.referat.dto.ReferatMapper;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -39,9 +37,6 @@ class ReferatServiceTest {
 
     @InjectMocks
     private ReferatService unitUnderTest;
-
-    @Mock
-    private ReferatMapper referatMapper;
 
     @Nested
     class GetReferate {
@@ -174,68 +169,5 @@ class ReferatServiceTest {
             assertThat(formContext.refNrs()).isEqualTo(allReferate);
         }
 
-    }
-
-    @Nested
-    class GetReferatFormContextDTOs {
-
-        @Test
-        void givenEntitiesExist_thenReturnFormContextDTOs() {
-            // Given
-            final Referat entity1 = new Referat();
-            final Referat entity2 = new Referat();
-            final List<Referat> entities = List.of(entity1, entity2);
-
-            final List<ReferatFormContextDTO> expectedDTOs = List.of(
-                    Mockito.mock(ReferatFormContextDTO.class),
-                    Mockito.mock(ReferatFormContextDTO.class));
-
-            when(referatRepository.findAll()).thenReturn(entities);
-            when(referatMapper.toFormContext(entities)).thenReturn(expectedDTOs);
-
-            // When
-            final List<ReferatFormContextDTO> result = unitUnderTest.getReferatFormContextDTOs();
-
-            // Then
-            verify(referatRepository, times(1)).findAll();
-            verify(referatMapper, times(1)).toFormContext(entities);
-            assertThat(result).isEqualTo(expectedDTOs);
-        }
-    }
-
-    @Nested
-    class CheckExistsByReferat {
-
-        @Test
-        void givenIdExists_thenDoesNotThrowException() {
-            // Given
-            final BigDecimal id = BigDecimal.valueOf(1);
-            when(referatRepository.existsById(id)).thenReturn(true);
-
-            // When / Then
-            Assertions.assertDoesNotThrow(
-                    () -> unitUnderTest.checkExistsByReferat(id));
-
-            verify(referatRepository, times(1)).existsById(id);
-        }
-
-        @Test
-        void givenIdNotExists_thenThrowNotFoundException() {
-            // Given
-            final BigDecimal id = BigDecimal.valueOf(1);
-            when(referatRepository.existsById(id)).thenReturn(false);
-
-            // When / Then
-            final Exception exception = Assertions.assertThrows(
-                    NotFoundException.class,
-                    () -> unitUnderTest.checkExistsByReferat(id));
-
-            verify(referatRepository, times(1)).existsById(id);
-            assertThat(exception.getMessage()).isEqualTo(
-                    String.format(
-                            "The %s with ID %s was not found.",
-                            Referat.class.getSimpleName(),
-                            id));
-        }
     }
 }

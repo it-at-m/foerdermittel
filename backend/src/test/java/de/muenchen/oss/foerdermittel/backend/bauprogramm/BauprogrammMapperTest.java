@@ -83,8 +83,7 @@ public class BauprogrammMapperTest {
 
             // then
             assertThat(dto).isNotNull();
-            assertThat(dto.bauprogramm())
-                    .isEqualTo(entity.getBauprogramm().intValueExact());
+            assertThat(dto.bauprogramm()).isEqualTo(entity.getBauprogramm().toString());
             assertThat(dto.bezeichnung()).isEqualTo(entity.getBezeichnung());
         }
 
@@ -102,12 +101,10 @@ public class BauprogrammMapperTest {
             // then
             assertThat(dtos).hasSize(2);
 
-            assertThat(dtos.get(0).bauprogramm())
-                    .isEqualTo(entity1.getBauprogramm().intValueExact());
+            assertThat(dtos.get(0).bauprogramm()).isEqualTo(entity1.getBauprogramm().toString());
             assertThat(dtos.get(0).bezeichnung()).isEqualTo(entity1.getBezeichnung());
 
-            assertThat(dtos.get(1).bauprogramm())
-                    .isEqualTo(entity2.getBauprogramm().intValueExact());
+            assertThat(dtos.get(1).bauprogramm()).isEqualTo(entity2.getBauprogramm().toString());
             assertThat(dtos.get(1).bezeichnung()).isEqualTo(entity2.getBezeichnung());
         }
     }

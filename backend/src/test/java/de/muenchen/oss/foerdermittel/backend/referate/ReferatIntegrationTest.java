@@ -158,7 +158,7 @@ class ReferatIntegrationTest {
         private static Stream<Arguments> invalidInputRequests() {
             return Stream.of(
                     arguments(
-                            "ref too high",
+                            "referat too high",
                             new ReferatCreateDTO(100, "Test")),
                     arguments(
                             "bezeichnung too short",

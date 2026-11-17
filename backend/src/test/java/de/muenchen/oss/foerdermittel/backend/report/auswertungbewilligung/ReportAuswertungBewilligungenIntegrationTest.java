@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.report.auswertungabruf;
+package de.muenchen.oss.foerdermittel.backend.report.auswertungbewilligung;
 
 import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_TEST_PROFILE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,7 +16,7 @@ import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungRepo
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektRepository;
-import de.muenchen.oss.foerdermittel.backend.report.auswertungabrufe.formcontext.ReportAuswertungAbrufeFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungbewilligung.formcontext.ReportAuswertungBewilligungenFormContext;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietRepository;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
@@ -24,7 +24,6 @@ import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittRepository;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -41,7 +40,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.client.RestTestClient;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -53,10 +51,10 @@ import org.testcontainers.utility.DockerImageName;
 @AutoConfigureRestTestClient
 @ActiveProfiles(profiles = { SPRING_TEST_PROFILE })
 @Import(TestSecurityConfiguration.class)
-public class ReportAuswertungAbrufeIntegrationTest {
+public class ReportAuswertungBewilligungenIntegrationTest {
 
-    private static final String REPORT_PATH = "/report/auswertungabrufe/";
-    private static final String FORM_CONTEXT_PATH = "/report/auswertungabrufe/form-context";
+    private static final String REPORT_PATH = "/report/auswertungbewilligungen/";
+    private static final String FORM_CONTEXT_PATH = "/report/auswertungbewilligungen/form-context";
 
     @Autowired
     private RestTestClient restTestClient;
@@ -89,10 +87,10 @@ public class ReportAuswertungAbrufeIntegrationTest {
     private SiedlungsgebietRepository siedlungsgebietRepository;
 
     @Autowired
-    private BauprogrammRepository bauprogrammRepository;
+    private BauprogrammRepository bauprogrammRepository;;
 
     @Nested
-    class GetReportAuswertungabrufe {
+    class GetReportAuswertungbewilligungen {
 
         private static final String VALID_SORT = "PROJEKTNUMMER";
         private static final String VALID_TYPE = "PDF";
@@ -119,27 +117,20 @@ public class ReportAuswertungAbrufeIntegrationTest {
 
             final Bauprogramm bauprogramm = new Bauprogramm(BigDecimal.ONE, "Test");
             bauprogrammRepository.save(bauprogramm);
-            final Projekt projekt = new Projekt();
-            projekt.setProjnr("1234567");
-            projekt.setJahr("01");
-            projekt.setLfdnr1("0");
-            projekt.setLfdnr2("01");
-            projekt.setPname("Test");
-            projekt.setPstrasse("Testsrasse");
-            projekt.setFobFb(foerderbereich);
-            projekt.setBezStadtbezirk(stadtbezirk);
-            projekt.setUasUa(unterabschnitt);
-            projekt.setKurKurzbez(kurzbezeichnung);
-            projekt.setSgtSiedlungsgebiet(siedlungsgebiet);
-            projekt.setBpgBauprogramm(bauprogramm);
-            projekt.setKrisofp(Krisofp.K);
-            projekt.setKauf(false);
-            projekt.setRefinanzierbar(true);
 
-            ReflectionTestUtils.setField(projekt, "anlagevon", "test");
-            ReflectionTestUtils.setField(projekt, "anlagedatum", LocalDateTime.now());
-
-            projektRepository.save(projekt);
+            projektRepository.save(
+                    new Projekt(
+                            "1234567",
+                            "2001  ",
+                            foerderbereich,
+                            "1",
+                            "1",
+                            "Test",
+                            "Testsrasse",
+                            stadtbezirk,
+                            unterabschnitt,
+                            kurzbezeichnung,
+                            Krisofp.K));
         }
 
         @Test
@@ -230,12 +221,12 @@ public class ReportAuswertungAbrufeIntegrationTest {
     }
 
     @Nested
-    class GetReportAuswertungabrufeFormContext {
+    class GetReportAuswertungbewilligungenFormContext {
 
         @Test
         void givenRequest_thenReturnFormContext() {
             // When
-            final ReportAuswertungAbrufeFormContext result = restTestClient.get()
+            final ReportAuswertungBewilligungenFormContext result = restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path(FORM_CONTEXT_PATH)
                             .build())
@@ -243,7 +234,7 @@ public class ReportAuswertungAbrufeIntegrationTest {
                     .exchange()
                     .expectStatus().isOk()
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(ReportAuswertungAbrufeFormContext.class)
+                    .expectBody(ReportAuswertungBewilligungenFormContext.class)
                     .returnResult()
                     .getResponseBody();
 

@@ -88,14 +88,14 @@ class ArchivServiceTest {
                     PROJNR,
                     "Test Projekt",
                     "Test Strasse",
-                    BigDecimal.valueOf(1),
+                    "11",
                     BigDecimal.valueOf(99));
 
             final ProjektFormContextDTO projektDTO2 = new ProjektFormContextDTO(
                     OTHER_PROJNR,
                     "Test Projekt 2",
                     "Test Strasse 2",
-                    BigDecimal.valueOf(12),
+                    "12",
                     BigDecimal.valueOf(99));
 
             final List<ProjektFormContextDTO> projekte = List.of(projektDTO1, projektDTO2);
