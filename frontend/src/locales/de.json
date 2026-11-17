@@ -121,9 +121,8 @@
         "antragstypExists": "Für dieses Projekt existiert bereits ein Antrag dieses Typs",
         "antragsdatumRequired": "Antragsdatum ist außer bei Typ U Pflicht",
         "unbeddatRequired": "Bei Typ U ist das Datum des Unbedenklichkeitsantrags Pflicht",
-        "amountRequired": "Bei gesetztem Antragsdatum muss ein Zuschuss, Darlehen oder eine Konnexität beantragt werden",
-        "unbedjaConsistent": "Erteilt am erfordert einen Unbedenklichkeitsantrag und darf nicht davor liegen",
-        "unbedbisConsistent": "Befristet bis erfordert ein Erteilungsdatum und darf nicht davor liegen"
+        "amountRequired": "Außer bei Unbedenklichkeitsanträgen muss ein Zuschuss, Darlehen oder eine Konnexität beantragt werden",
+        "unbedjaRequired": "Bei gesetztem Befristungsdatum ist das Erteilungsdatum Pflicht"
       }
     },
     "bewilligung": {

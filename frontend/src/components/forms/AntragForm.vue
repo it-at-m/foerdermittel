@@ -65,14 +65,19 @@
             AntragCreateDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="antragstyp"
-          :additional-rules="[antragstypUnique]"
+          :required="true"
+          :additional-rules="[rules.required(), antragstypUnique]"
+          :disabled="noProjekt"
+          @update:model-value="onAntragstypChanged"
         />
       </v-col>
       <v-col cols="4">
         <fm-date-input
           v-model="modelValue.antragsdatum"
-          :required="modelValue.antragstyp !== AntragCreateDTOAntragstypEnum.U"
+          name="antragsdatum"
+          :required="!isU"
           :display-mode="displayMode"
+          :disabled="locked || isU"
           :label="t('model.antrag.antragsdatum')"
           :additional-rules="[antragsdatumRequired]"
           clearable
@@ -84,8 +89,10 @@
       <v-col cols="4">
         <fm-date-input
           v-model="modelValue.unbeddat"
-          :required="modelValue.antragstyp === AntragCreateDTOAntragstypEnum.U"
+          name="unbeddat"
+          :required="isU"
           :display-mode="displayMode"
+          :disabled="locked || !isU"
           :label="t('model.antrag.unbeddat')"
           :additional-rules="[unbeddatRequired]"
           clearable
@@ -94,9 +101,12 @@
       <v-col cols="4">
         <fm-date-input
           v-model="modelValue.unbedja"
+          name="unbedja"
+          :required="!!modelValue.unbedbis"
           :display-mode="displayMode"
+          :disabled="locked || !isU"
           :label="t('model.antrag.unbedja')"
-          :additional-rules="[unbedjaConsistent]"
+          :additional-rules="[unbedjaRequired]"
           clearable
         />
       </v-col>
@@ -104,8 +114,8 @@
         <fm-date-input
           v-model="modelValue.unbedbis"
           :display-mode="displayMode"
+          :disabled="locked || !isU"
           :label="t('model.antrag.unbedbis')"
-          :additional-rules="[unbedbisConsistent]"
           clearable
         />
       </v-col>
@@ -116,6 +126,7 @@
         <fm-number-input
           v-model="modelValue.geskosten"
           :display-mode="displayMode"
+          :disabled="locked"
           prefix="€"
           grouping
           class="currency-input"
@@ -130,6 +141,7 @@
         <fm-number-input
           v-model="modelValue.zwfkosten"
           :display-mode="displayMode"
+          :disabled="locked"
           prefix="€"
           grouping
           class="currency-input"
@@ -146,7 +158,9 @@
       <v-col cols="4">
         <fm-number-input
           v-model="modelValue.asuZ"
+          name="asuZ"
           :display-mode="displayMode"
+          :disabled="locked"
           prefix="€"
           grouping
           class="currency-input"
@@ -161,7 +175,9 @@
       <v-col cols="4">
         <fm-number-input
           v-model="modelValue.asuD"
+          name="asuD"
           :display-mode="displayMode"
+          :disabled="locked"
           prefix="€"
           grouping
           class="currency-input"
@@ -176,7 +192,9 @@
       <v-col cols="4">
         <fm-number-input
           v-model="modelValue.asuK"
+          name="asuK"
           :display-mode="displayMode"
+          :disabled="locked"
           prefix="€"
           grouping
           class="currency-input"
@@ -195,6 +213,7 @@
         <fm-number-input
           v-model="modelValue.bvorSuZ"
           :display-mode="displayMode"
+          :disabled="locked"
           prefix="€"
           grouping
           class="currency-input"
@@ -209,6 +228,7 @@
         <fm-number-input
           v-model="modelValue.bvorSuD"
           :display-mode="displayMode"
+          :disabled="locked"
           prefix="€"
           grouping
           class="currency-input"
@@ -223,6 +243,7 @@
         <fm-number-input
           v-model="modelValue.bvorSuK"
           :display-mode="displayMode"
+          :disabled="locked"
           prefix="€"
           grouping
           class="currency-input"
@@ -240,6 +261,7 @@
         <fm-checkbox
           v-model="modelValue.vorzbeg"
           :display-mode="displayMode"
+          :disabled="locked"
           :label="t('model.antrag.vorzbeg')"
         />
       </v-col>
@@ -247,6 +269,7 @@
         <fm-date-input
           v-model="modelValue.vbdatum"
           :display-mode="displayMode"
+          :disabled="locked"
           :label="t('model.antrag.vbdatum')"
           clearable
         />
@@ -258,6 +281,7 @@
         <fm-text-area
           v-model="modelValue.notizen"
           :display-mode="displayMode"
+          :disabled="locked"
           :label="t('model.antrag.notizen')"
         />
       </v-col>
@@ -298,6 +322,7 @@ import type { VForm } from "vuetify/components";
 
 import { computed, useTemplateRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRules } from "vuetify";
 
 import {
   AntragCreateDTOAntragstypEnum,
@@ -312,6 +337,7 @@ import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 
 const { t } = useI18n();
+const rules = useRules();
 
 const { projekte, displayMode = InputDisplayMode.CREATE } = defineProps<{
   projekte: AntragProjektFormContextDTO[];
@@ -332,6 +358,23 @@ const projektItems = computed(() =>
 const selectedProjekt = computed(() =>
   projekte.find((projekt) => projekt.projnr === modelValue.value.projnr)
 );
+
+const noProjekt = computed(() => !modelValue.value.projnr);
+const locked = computed(() => noProjekt.value || !modelValue.value.antragstyp);
+const isU = computed(
+  () => modelValue.value.antragstyp === AntragCreateDTOAntragstypEnum.U
+);
+
+// clear only on user action, so loading an existing Antrag never wipes data
+function onAntragstypChanged(antragstyp?: AntragCreateDTOAntragstypEnum) {
+  if (antragstyp === AntragCreateDTOAntragstypEnum.U) {
+    modelValue.value.antragsdatum = undefined;
+  } else {
+    modelValue.value.unbeddat = undefined;
+    modelValue.value.unbedja = undefined;
+    modelValue.value.unbedbis = undefined;
+  }
+}
 
 const antragstypLabels: Record<AntragCreateDTOAntragstypEnum, string> = {
   E: t("model.antrag.type.erstantrag"),
@@ -367,39 +410,26 @@ const antragstypUnique = () => {
 };
 
 const antragsdatumRequired = () =>
-  modelValue.value.antragstyp === AntragCreateDTOAntragstypEnum.U ||
+  isU.value ||
   !!modelValue.value.antragsdatum ||
   t("model.antrag.validation.antragsdatumRequired");
 
 const unbeddatRequired = () =>
-  modelValue.value.antragstyp !== AntragCreateDTOAntragstypEnum.U ||
+  !isU.value ||
   !!modelValue.value.unbeddat ||
   t("model.antrag.validation.unbeddatRequired");
 
 const amountRequested = () =>
-  !modelValue.value.antragsdatum ||
+  isU.value ||
   [modelValue.value.asuZ, modelValue.value.asuD, modelValue.value.asuK].some(
     (betrag) => (betrag ?? 0) > 0
   ) ||
   t("model.antrag.validation.amountRequired");
 
-const unbedjaConsistent = () => {
-  const { unbeddat, unbedja } = modelValue.value;
-  return (
-    !unbedja ||
-    (!!unbeddat && unbedja >= unbeddat) ||
-    t("model.antrag.validation.unbedjaConsistent")
-  );
-};
-
-const unbedbisConsistent = () => {
-  const { unbedja, unbedbis } = modelValue.value;
-  return (
-    !unbedbis ||
-    (!!unbedja && unbedbis >= unbedja) ||
-    t("model.antrag.validation.unbedbisConsistent")
-  );
-};
+const unbedjaRequired = () =>
+  !modelValue.value.unbedbis ||
+  !!modelValue.value.unbedja ||
+  t("model.antrag.validation.unbedjaRequired");
 
 const formatDateTime = (value?: Date) => value?.toLocaleString("de-DE") ?? "";
 
@@ -413,14 +443,42 @@ function onValidityChanged(value: boolean | null) {
 
 const formRef = useTemplateRef<VForm>("form");
 
-// cross-field rules: re-check only fields showing an error, e.g. unbedja after unbeddat was entered
-// isValid is null for untouched fields whose errors Vuetify keeps hidden
+// cross-field rules: re-check dependent fields (matched by their name attribute), showing errors even if untouched;
+// disabled fields only get their stale errors cleared
+function revalidate(...names: string[]) {
+  formRef.value?.items
+    .filter((item) => names.includes(String(item.id)))
+    .forEach((item) =>
+      item.vm.props.disabled ? item.resetValidation() : item.validate()
+    );
+}
+
+// flush post: run after re-render, so the disabled state already reflects the new values
+const afterRender = { flush: "post" } as const;
 watch(
-  () => ({ ...modelValue.value }),
-  () =>
-    formRef.value?.items
-      .filter((item) => item.isValid === false)
-      .forEach((item) => item.validate())
+  () => modelValue.value.antragstyp,
+  () => revalidate("antragsdatum", "unbeddat", "asuZ", "asuD", "asuK"),
+  afterRender
+);
+watch(
+  () => modelValue.value.unbedbis,
+  () => revalidate("unbedja"),
+  afterRender
+);
+watch(
+  () => modelValue.value.asuZ,
+  () => revalidate("asuD", "asuK"),
+  afterRender
+);
+watch(
+  () => modelValue.value.asuD,
+  () => revalidate("asuZ", "asuK"),
+  afterRender
+);
+watch(
+  () => modelValue.value.asuK,
+  () => revalidate("asuZ", "asuD"),
+  afterRender
 );
 
 async function validate(): Promise<boolean> {
