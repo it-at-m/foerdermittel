@@ -235,4 +235,40 @@ class KrankenhausServiceTest {
         }
     }
 
+    @Nested
+    class CheckExistsByKrankenhaus {
+
+        @Test
+        void givenIdExists_thenDoesNotThrowException() {
+            // Given
+            final String id = "1";
+            when(krankenhausRepository.existsById(id)).thenReturn(true);
+
+            // When / Then
+            Assertions.assertDoesNotThrow(
+                    () -> unitUnderTest.checkExistsByKrankenhaus(id));
+
+            verify(krankenhausRepository, times(1)).existsById(id);
+        }
+
+        @Test
+        void givenIdNotExists_thenThrowNotFoundException() {
+            // Given
+            final String id = "1";
+            when(krankenhausRepository.existsById(id)).thenReturn(false);
+
+            // When / Then
+            final Exception exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> unitUnderTest.checkExistsByKrankenhaus(id));
+
+            verify(krankenhausRepository, times(1)).existsById(id);
+            assertThat(exception.getMessage()).isEqualTo(
+                    String.format(
+                            "The %s with ID %s was not found.",
+                            Krankenhaus.class.getSimpleName(),
+                            id));
+        }
+    }
+
 }

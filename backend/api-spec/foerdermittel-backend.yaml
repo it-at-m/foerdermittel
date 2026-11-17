@@ -2419,6 +2419,45 @@ paths:
                 format: binary
       security:
       - bearerAuth: []
+  /report/auswertungabrufe/form-context:
+    get:
+      tags:
+      - report-auswertung-abrufe-controller
+      operationId: getReportAuswertungAbrufeFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportAuswertungAbrufeFormContext"
+      security:
+      - bearerAuth: []
+  /report/auswertungabrufe/:
+    get:
+      tags:
+      - report-auswertung-abrufe-controller
+      operationId: getReportAuswertungAbrufe
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportAuswertungAbrufeDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
   /report/annahmeAnordnungSap:
     get:
       tags:
@@ -4919,6 +4958,180 @@ components:
           - PROJEKTNUMMER
         type:
           $ref: "#/components/schemas/ReportFormat"
+    KrankenhausFormContextDTO:
+      required:
+      - bezeichnung
+      - krhname
+      type: object
+      properties:
+        krhname:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+    ReferatFormContextDTO:
+      required:
+      - bezeichnung
+      - refnr
+      type: object
+      properties:
+        refnr:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+    ReportAuswertungAbrufeFormContext:
+      required:
+      - bezs
+      - bpgs
+      - fbs
+      - krhs
+      - krisofps
+      - kurzs
+      - projs
+      - refs
+      - sbls
+      - sgts
+      - uas
+      type: object
+      properties:
+        sbls:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
+        bezs:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
+        fbs:
+          type: array
+          items:
+            $ref: "#/components/schemas/FoerderbereichFormContextDTO"
+        uas:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnterabschnittFormContextDTO"
+        kurzs:
+          type: array
+          items:
+            $ref: "#/components/schemas/KurzbezeichnungFormContextDTO"
+        projs:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportAuswertungAntragFormContextDTO"
+        refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReferatFormContextDTO"
+        krhs:
+          type: array
+          items:
+            $ref: "#/components/schemas/KrankenhausFormContextDTO"
+        krisofps:
+          type: array
+          items:
+            type: string
+            enum:
+            - F
+            - K
+            - S
+            - V
+            - W
+            - X
+            - "Y"
+            - Z
+        sgts:
+          type: array
+          items:
+            $ref: "#/components/schemas/SiedlungsgebietFormContextDTO"
+        bpgs:
+          type: array
+          items:
+            $ref: "#/components/schemas/BauprogrammFormContextDTO"
+    ReportAuswertungAbrufeDTO:
+      required:
+      - sort
+      - type
+      type: object
+      properties:
+        jahrAbrufVon:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        jahrAbrufBis:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        jahrErhaltVon:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        jahrErhaltBis:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        bez:
+          type: string
+        fb:
+          type: string
+        ua:
+          type: string
+        kurz:
+          type: string
+        pstrasse:
+          maxLength: 30
+          minLength: 0
+          type: string
+        pname:
+          maxLength: 30
+          minLength: 0
+          type: string
+        projnr:
+          maxLength: 7
+          minLength: 0
+          type: string
+        sgt:
+          type: string
+        sbl:
+          type: string
+        bpg:
+          type: string
+        krisofp:
+          type: string
+          enum:
+          - F
+          - K
+          - S
+          - V
+          - W
+          - X
+          - "Y"
+          - Z
+        ref:
+          type: string
+        krh:
+          type: string
+        fag:
+          type: string
+        offen:
+          type: string
+        ohnebewill:
+          type: string
+        erh:
+          type: string
+        nichterh:
+          type: string
+        sort:
+          type: string
+          enum:
+          - FOERDERBEREICH_PROJEKTNUMMER_ADATUM
+          - FOERDERBEREICH_EDATUM
+          - FOERDERBEREICH_ADATUM
+          - FOERDERBEREICH_PROJEKTSTRASSE_ADATUM
+          - PROJEKTNUMMER_ADATUM
+          - EDATUM
+          - ADATUM
+          - PROJEKTSTRASSE
+        type:
+          $ref: "#/components/schemas/ReportFormat"
     ReportAnnahmeAnordnungSapDTO:
       required:
       - projnr
@@ -4995,18 +5208,6 @@ components:
             $ref: "#/components/schemas/ProjektResponseDTO"
         page:
           $ref: "#/components/schemas/PageMetadata"
-    KrankenhausFormContextDTO:
-      required:
-      - bezeichnung
-      - krhname
-      type: object
-      properties:
-        krhname:
-          type: string
-          description: ""
-        bezeichnung:
-          type: string
-          description: ""
     ProjektFormContext:
       required:
       - bezs
