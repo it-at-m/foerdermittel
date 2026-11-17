@@ -249,7 +249,6 @@
         "fag": "Nur FAG",
         "fb": "Förderbereich",
         "jahr": "Jahr",
-
         "jahrBis": "Jahr bis",
         "jahrVon": "Jahr von",
         "krisofp": "Sonderförderprogramm",
@@ -269,7 +268,8 @@
           "pdfFlat": "PDF: ohne Gruppierung",
           "excel": "Excel"
         },
-        "reportSort": "Sortierung"
+        "reportSort": "Sortierung",
+
       },
       "projektUebersicht": "@:model.projekt.modelName{'übersicht'}",
       "projektUebersichtManagement": "@:domain.report.projektUebersicht (Management Summary)",
@@ -312,6 +312,24 @@
           "fbProjektstrasse": "Förderbereich, Projektstraße",
           "strasseProjektnummer": "Projektstraße, Projektnummer",
           "projektnummer": "Projektnummer"
+        },
+        "reportType": {
+          "pdf": "PDF: Gruppierung Förderbereich"
+        }
+      },
+      "auswertungBewilligungen": {
+        "modelName": "Auswertung Bewilligungen",
+        "datum": "Bewilligungsdatum",
+        "erfolgt": "Nur erfolgte Bewilligungen",
+        "notizen": "Notizen",
+        "monat": "Monat",
+        "zuwendungsart": "Zuwendungsart",
+        "sortEnum": {
+          "fbProjektnummerBewilligtAm": "Förderbereich, Projektnummer, bewilligt am",
+          "fbProjektstrasseProjektNummer": "Förderbereich, Projektstraße, Projektnummer",
+          "projektnummerBewilligtAm": "Projektnummer, bewilligt am",
+          "strasseProjektnummerBewilligtAm": "Projektstraße, Projektnummer, bewilligt am",
+          "bewilligtAm": "bewilligt am"
         },
         "reportType": {
           "pdf": "PDF: Gruppierung Förderbereich"

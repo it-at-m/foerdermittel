@@ -2380,6 +2380,45 @@ paths:
                 format: binary
       security:
       - bearerAuth: []
+  /report/auswertungbewilligungen/form-context:
+    get:
+      tags:
+      - report-auswertung-bewilligungen-controller
+      operationId: getReportAuswertungBewilligungenFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportAuswertungBewilligungenFormContext"
+      security:
+      - bearerAuth: []
+  /report/auswertungbewilligungen/:
+    get:
+      tags:
+      - report-auswertung-bewilligungen-controller
+      operationId: getReportAuswertungBewilligungen
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportAuswertungBewilligungenDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
   /report/auswertungantraege/form-context:
     get:
       tags:
@@ -3981,6 +4020,11 @@ components:
           minLength: 1
           type: string
     PageMetadata:
+      required:
+      - number
+      - size
+      - totalElements
+      - totalPages
       type: object
       properties:
         size:
@@ -3996,6 +4040,9 @@ components:
           type: integer
           format: int64
     PagedModelUnterabschnittResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -4034,6 +4081,9 @@ components:
           items:
             $ref: "#/components/schemas/HauptabschnittFormContextDTO"
     PagedModelTraegerResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -4052,6 +4102,9 @@ components:
           items:
             type: number
     PagedModelTerminResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -4106,6 +4159,9 @@ components:
       description: "DTO for [Termin] to be used in other FormContexts other than its\
         \ own."
     PagedModelStichwortbereichResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -4124,6 +4180,9 @@ components:
           items:
             type: string
     PagedModelStadtbezirkslisteResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -4142,6 +4201,9 @@ components:
           items:
             type: string
     PagedModelStadtbezirkResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -4160,6 +4222,9 @@ components:
           items:
             type: number
     PagedModelSiedlungsgebietResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -4804,6 +4869,164 @@ components:
           - FOERDERBEREICH_PROJEKTNUMMER
         type:
           $ref: "#/components/schemas/ReportFormat"
+    ReportAuswertungBewilligungFormContextDTO:
+      required:
+      - pname
+      - projnr
+      - pstrasse
+      type: object
+      properties:
+        projnr:
+          type: string
+        pname:
+          type: string
+        pstrasse:
+          type: string
+    ReportAuswertungBewilligungenFormContext:
+      required:
+      - bezs
+      - bpgs
+      - fbs
+      - krisofps
+      - kurzs
+      - projs
+      - sbls
+      - sgts
+      - uas
+      - zuwendungen
+      type: object
+      properties:
+        sbls:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
+        bezs:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
+        fbs:
+          type: array
+          items:
+            $ref: "#/components/schemas/FoerderbereichFormContextDTO"
+        uas:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnterabschnittFormContextDTO"
+        kurzs:
+          type: array
+          items:
+            $ref: "#/components/schemas/KurzbezeichnungFormContextDTO"
+        projs:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportAuswertungBewilligungFormContextDTO"
+        krisofps:
+          type: array
+          items:
+            type: string
+            enum:
+            - F
+            - K
+            - S
+            - V
+            - W
+            - X
+            - "Y"
+            - Z
+        zuwendungen:
+          type: array
+          items:
+            type: string
+            enum:
+            - G
+            - R
+            - T
+            - V
+        sgts:
+          type: array
+          items:
+            $ref: "#/components/schemas/SiedlungsgebietFormContextDTO"
+        bpgs:
+          type: array
+          items:
+            $ref: "#/components/schemas/BauprogrammFormContextDTO"
+    ReportAuswertungBewilligungenDTO:
+      required:
+      - sort
+      - type
+      type: object
+      properties:
+        jahrVon:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        jahrBis:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        monat:
+          pattern: "^([1-9]|1[0-2])$"
+          type: string
+        datum:
+          type: string
+        bez:
+          type: string
+        fb:
+          type: string
+        ua:
+          type: string
+        kurz:
+          type: string
+        pstrasse:
+          maxLength: 30
+          minLength: 0
+          type: string
+        pname:
+          maxLength: 30
+          minLength: 0
+          type: string
+        projnr:
+          maxLength: 7
+          minLength: 0
+          type: string
+        sgt:
+          type: string
+        sbl:
+          type: string
+        bpg:
+          type: string
+        krisofp:
+          type: string
+          enum:
+          - F
+          - K
+          - S
+          - V
+          - W
+          - X
+          - "Y"
+          - Z
+        zuwendungsart:
+          type: string
+          enum:
+          - G
+          - R
+          - T
+          - V
+        fag:
+          type: string
+        erfolgt:
+          type: string
+        notizen:
+          type: string
+        sort:
+          type: string
+          enum:
+          - FOERDERBEREICH_PROJEKTNUMMER_BEWILLIGTAM
+          - FOERDERBEREICH_STRASSE_PROJEKTNUMMER
+          - PROJEKTNUMMER_BEWILLIGTAM
+          - PROJEKTSTRASSE_PROJEKTNUMMER_BEWILLIGTAM
+          - BEWILLIGTAM
+        type:
+          $ref: "#/components/schemas/ReportFormat"
     ReportAuswertungAntraegeFormContext:
       required:
       - antraege
@@ -5164,6 +5387,9 @@ components:
         pname:
           type: string
     PagedModelReferatResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5182,6 +5408,9 @@ components:
           items:
             type: number
     PagedModelPublikationResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5200,6 +5429,9 @@ components:
           items:
             type: string
     PagedModelProjektResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5276,6 +5508,9 @@ components:
             - S
             - R
     PagedModelKurzbezeichnungResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5294,6 +5529,9 @@ components:
           items:
             type: string
     PagedModelKrankenhausResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5312,6 +5550,9 @@ components:
           items:
             type: string
     PagedModelIstkostenResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5348,6 +5589,9 @@ components:
         fipo:
           type: string
     PagedModelHhplanResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5366,6 +5610,9 @@ components:
           items:
             type: number
     PagedModelHauptabschnittResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5384,6 +5631,9 @@ components:
           items:
             type: string
     PagedModelFoerderbereichResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5402,6 +5652,9 @@ components:
           items:
             type: number
     PagedModelBauprogrammResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5420,6 +5673,9 @@ components:
           items:
             type: number
     PagedModelBauleitungResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:
@@ -5438,6 +5694,9 @@ components:
           items:
             type: string
     PagedModelArchivResponseDTO:
+      required:
+      - content
+      - page
       type: object
       properties:
         content:

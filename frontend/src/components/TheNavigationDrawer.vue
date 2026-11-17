@@ -274,6 +274,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.bewilligung.modelName", 2),
+        props: {
+          to: "/report/auswertungbewilligungen",
+        },
       },
       {
         title: t("model.abruf.modelName", 2),
