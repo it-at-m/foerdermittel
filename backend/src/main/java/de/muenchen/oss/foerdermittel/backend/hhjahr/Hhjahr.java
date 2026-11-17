@@ -39,7 +39,7 @@ public class Hhjahr implements Serializable {
     @NotNull @Size(min = 1, max = 200) private String hhbezeichnung;
 
     @Column(name = "notizen")
-    private String notizen;
+    @Size(max = 4000) private String notizen;
 
     @OneToMany(mappedBy = "hhjJahr", fetch = FetchType.LAZY)
     private List<Hhplan> hhplanlisten = new ArrayList<>();
