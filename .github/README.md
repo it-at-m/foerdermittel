@@ -3,17 +3,16 @@
 [itm-opensource]: https://opensource.muenchen.de/
 [license]: ../LICENSE
 [code-of-conduct]: ./CODE_OF_CONDUCT.md
+[refarch-templates]: https://refarch.oss.muenchen.de/templates/
 
 <!-- Project specific links -->
-[spring-documentation]: https://spring.io/ 
-[vuejs-documentation]:  https://vuejs.org/
+[spring-documentation]: https://spring.io/
+[vuejs-documentation]: https://vuejs.org/
 
 <!-- Shields.io links -->
 [documentation-shield]: https://img.shields.io/badge/documentation-blue?style=for-the-badge
 [made-with-love-shield]: https://img.shields.io/badge/made%20with%20%E2%9D%A4%20by-it%40M-yellow?style=for-the-badge
 [license-shield]: https://img.shields.io/github/license/it-at-m/foerdermittel?style=for-the-badge
-
-# Fördermittel (foerdermittel)
 
 [![Documentation][documentation-shield]][documentation]
 [![Made with love by it@M][made-with-love-shield]][itm-opensource]
@@ -25,8 +24,9 @@ The **Fördermittel Verwaltung** application is a web-based solution developed f
 
 The application supports the entire funding process, from the initial funding application through approval and disbursement of funds to the final proof of use. The stored data can be queried and evaluated at any time using reports, either by organizational area and/or by project.
 
-The application consists of a backend and a frontend and is built using Java, Spring Boot, Vue.js, and Vuetify. PostgreSQL is used as the database management system.
+The application consists of a backend and a frontend and is built using Java, Spring Boot, Vue.js, JasperReports and Vuetify. PostgreSQL is used as the database management system.
 
+The application is built using [Spring][spring-documentation], [Vue.js][vuejs-documentation], Vuetify, JasperReports and PostgreSQL. It is based on the [refarch-templates] provided by it@M.
 ## Features
 
 The application provides the following core functional areas:
@@ -36,17 +36,6 @@ The application provides the following core functional areas:
 - **Fund Disbursements:** Management and documentation of funding disbursements.
 - **Proof of Use:** Recording and management of documentation demonstrating how allocated funds have been used.
 - **Reporting and Analytics:** Reports for evaluating stored data by organizational area and/or project.
-
-## Technologies
-
-The project uses the following technologies:
-
-- Java
-- Spring Boot
-- Vue.js
-- Vuetify
-- Jasper Reports
-- PostgreSQL
 
 ## Project Structure
 
@@ -82,25 +71,31 @@ Information about application configuration and setup will be added.
 
 Detailed project documentation is available at:
 
-[Funding Management – Project Documentation](https://it-at-m.github.io/foerdermittel/)
+[Fördermittel Verwaltung – Project Documentation][documentation]
 
+## Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+## License
+
+Distributed under the MIT License. See the [LICENSE][license] file for more information.
+
+## Contact
+
+it@M – opensource@muenchen.de
 
 ---
 
-[GitHub Repository – it-at-m/foerdermittel](https://github.com/it-at-m/foerdermittel)
-
----
-#German
----
-
-# Fördermittel Verwaltung
+# Deutsch
 
 Die **Fördermittel Verwaltung** ist eine Webanwendung der Landeshauptstadt München, Stadtkämmerei. Sie dient der zentralen Verwaltung und Dokumentation aller baulichen Maßnahmen der Stadt München, für die Fördermittel bei Land, Bund, Europäischer Union sowie weiteren Organisationen und Behörden beantragt werden.
 
-Die Anwendung unterstützt den gesamten Fördermittelprozess – von der Antragstellung über die Bewilligung und den Mittelabruf bis hin zum Verwendungsnachweis. Die zugrunde liegenden Daten können jederzeit projekt- und/oder bereichsbezogen über Reports ausgewertet werden.
+Die Anwendung unterstützt den gesamten Fördermittelprozess – von der Antragstellung über die Bewilligung und den Mittelabruf bis hin zum Verwendungsnachweis. Die zugrunde liegenden Daten können jederzeit projekt- und/oder bereichsbezogen über Berichte ausgewertet werden.
 
-Die Anwendung besteht aus einem Backend und einem Frontend und basiert auf Java, Spring Boot, Vue.js und Vuetify. Als Datenbank wird PostgreSQL eingesetzt.
+Die Anwendung besteht aus einem Backend und einem Frontend und basiert auf Java, Spring Boot, Vue.js, JasperReports und Vuetify. Als Datenbankmanagementsystem wird PostgreSQL eingesetzt.
 
+Die Anwendung basiert auf [Spring][spring-documentation], [Vue.js][vuejs-documentation], Vuetify, JasperReports und PostgreSQL. Als Grundlage dienen die von it@M bereitgestellten [refarch-templates].
 ## Funktionsumfang
 
 Die Anwendung umfasst folgende zentrale Funktionsbereiche:
@@ -109,18 +104,7 @@ Die Anwendung umfasst folgende zentrale Funktionsbereiche:
 - **Bewilligungen:** Erfassung und Verwaltung der bewilligten Fördermittel.
 - **Mittelabrufe:** Verwaltung und Dokumentation der Mittelabrufe.
 - **Verwendungsnachweise:** Erfassung und Verwaltung der Verwendungsnachweise.
-- **Reporting und Auswertungen:** Bereichs- und projektbezogene Auswertung der erfassten Daten mittels Reports.
-
-## Verwendete Technologien
-
-Das Projekt verwendet folgende Technologien:
-
-- Java
-- Spring Boot
-- Vue.js
-- Vuetify
-- Jasper Reports
-- PostgreSQL
+- **Reporting und Auswertungen:** Bereichs- und projektbezogene Auswertung der erfassten Daten mittels Berichten.
 
 ## Projektstruktur
 
@@ -146,7 +130,7 @@ Die konkret erforderlichen Versionsstände und weiteren Abhängigkeiten sind den
 
 ## Installation und Inbetriebnahme
 
-Die Installations- und Deployment-Anleitung wird ergänzt.
+Die Installations- und Bereitstellungsanleitung wird ergänzt.
 
 ## Konfiguration
 
@@ -156,16 +140,16 @@ Informationen zur Konfiguration und Einrichtung der Anwendung werden ergänzt.
 
 Die ausführliche Projektdokumentation ist unter folgendem Link verfügbar:
 
-The application is built with [Spring][spring-documentation] and [Vue.js][vuejs-documentation] and is based on the [refarch-templates](https://refarch.oss.muenchen.de/templates/) of it@M.
+[Fördermittel Verwaltung – Projektdokumentation][documentation]
 
-## Contributing
+## Mitwirken
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Beiträge zur Weiterentwicklung des Projekts sind herzlich willkommen. Wir freuen uns über jede Unterstützung aus der Open-Source-Community.
 
-## License
+## Lizenz
 
-Distributed under the MIT License. See [LICENSE][license] file for more information.
+Dieses Projekt wird unter der MIT-Lizenz veröffentlicht. Weitere Informationen findest du in der Datei [LICENSE][license].
 
-## Contact
+## Kontakt
 
-it@M - opensource@muenchen.de
+it@M – opensource@muenchen.de
