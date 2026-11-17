@@ -1,6 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.publikation.dto;
 
 import de.muenchen.oss.foerdermittel.backend.publikation.Publikation;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -17,4 +18,7 @@ public interface PublikationMapper {
     @Mapping(target = "kurzform", ignore = true)
     Publikation toEntity(PublikationUpdateDTO publikationUpdateDTO);
 
+    PublikationFormContextDTO toFormContext(Publikation publikation);
+
+    List<PublikationFormContextDTO> toFormContext(List<Publikation> publikationList);
 }

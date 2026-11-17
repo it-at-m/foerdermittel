@@ -92,13 +92,13 @@ const headers: DataTableHeader<Partial<TerminResponseDTO>>[] = [
     title: t("model.termin.projnr"),
     value: "projnr",
     align: "center",
-    width: 100,
+    width: 90,
   },
   {
     title: t("model.termin.termin"),
     value: "termin",
     align: "center",
-    width: 100,
+    width: 110,
   },
   {
     title: t("model.termin.zustaendig"),
@@ -156,7 +156,7 @@ const EMPTY_ITEM_TEMPLATE: Partial<TerminResponseDTO> = {
 
 const terminApi = useTerminApi();
 
-const terminFormContext = computed(() => terminApi.context.data.value);
+const terminFormContext = computed(() => terminApi.context?.data.value);
 
 const projekte = computed(() => terminFormContext.value?.projekte ?? []);
 
@@ -166,25 +166,31 @@ const terminFormRef = useTemplateRef<TerminFormType>("terminForm");
 const handleCreate = async (terminCreateDTO: Partial<TerminResponseDTO>) => {
   const model = terminCreateDTO as TerminResponseDTO;
 
-  await terminApi.create.call({
+  await terminApi.create?.call({
     terminCreateDTO: model,
   });
 };
 
 const handleUpdate = async (terminUpdateDTO: Partial<TerminResponseDTO>) => {
   const model = terminUpdateDTO as TerminResponseDTO;
-  await terminApi.update.call({
+  await terminApi.update?.call({
     id: model.id,
     terminUpdateDTO: model,
   });
 };
 
 const handleDelete = async (id: string) => {
-  await terminApi.delete.call({
+  await terminApi.delete?.call({
     id,
   });
 };
 
 const formatDate = (value?: Date | null) =>
-  value ? value.toLocaleDateString("de-DE") : "";
+  value
+    ? value.toLocaleDateString("de-DE", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })
+    : "";
 </script>

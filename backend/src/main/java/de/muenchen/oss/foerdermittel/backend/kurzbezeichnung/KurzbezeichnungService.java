@@ -1,7 +1,10 @@
 package de.muenchen.oss.foerdermittel.backend.kurzbezeichnung;
 
+import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.dto.KurzbezeichnungFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.dto.KurzbezeichnungMapper;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -17,6 +20,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class KurzbezeichnungService {
 
     private final KurzbezeichnungRepository kurzbezeichnungRepository;
+    private final KurzbezeichnungMapper kurzbezeichnungMapper;
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public Kurzbezeichnung getKurzbezeichnung(final String kurzbez) {
+        log.info("Get Kurzbezeichnung with kurzbez {}", kurzbez);
+        return ServiceUtils.getEntityOrThrowNotFoundException(
+                kurzbez, kurzbezeichnungRepository, Kurzbezeichnung.class);
+    }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -52,4 +64,17 @@ public class KurzbezeichnungService {
         ServiceUtils.getEntityOrThrowNotFoundException(kurzBez, kurzbezeichnungRepository, Kurzbezeichnung.class);
         kurzbezeichnungRepository.deleteById(kurzBez);
     }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<KurzbezeichnungFormContextDTO> getKurzbezeichnungFormContextDTOs() {
+        return kurzbezeichnungMapper.toFormContext(kurzbezeichnungRepository.findAll());
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public void checkExistsByKurzbezeichnung(final String kurzId) {
+        ServiceUtils.checkExistsOrThrowNotFoundException(kurzId, kurzbezeichnungRepository, Kurzbezeichnung.class);
+    }
+
 }

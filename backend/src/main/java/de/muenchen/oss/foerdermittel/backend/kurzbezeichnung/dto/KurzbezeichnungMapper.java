@@ -1,6 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.dto;
 
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -16,5 +17,9 @@ public interface KurzbezeichnungMapper {
 
     @Mapping(target = "kurzbez", ignore = true)
     Kurzbezeichnung toEntity(KurzbezeichnungUpdateDTO kurzbezeichnungUpdateDTO);
+
+    KurzbezeichnungFormContextDTO toFormContext(Kurzbezeichnung kurzbezeichnung);
+
+    List<KurzbezeichnungFormContextDTO> toFormContext(List<Kurzbezeichnung> kurzbezeichnungList);
 
 }

@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
@@ -60,7 +61,7 @@ public class Termin implements Serializable {
     private Boolean ueberwachung;
 
     @Column(name = "telefon")
-    @Size(min = 1, max = 30) private String telefon;
+    @Size(min = 1, max = 30) @Pattern(regexp = "\\d*") private String telefon;
 
     @Column(name = "notizen")
     private String notizen;

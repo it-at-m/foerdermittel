@@ -3,6 +3,7 @@ package de.muenchen.oss.foerdermittel.backend.stadtbezirksliste;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameCreateDTO;
+import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameStadtbezirkslisteFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameStadtbezirkslisteMapper;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameUpdateDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.StadtbezirkslisteResponseDTO;
@@ -64,6 +65,31 @@ public class StadtbezirkslisteMapperTest {
             assertThat(entity.getBezeichnung()).isEqualTo(dto.bezeichnung());
         }
 
+    }
+
+    @Nested
+    class ToFormContext {
+
+        @Test
+        void givenEntityList_thenReturnsCorrectFormContextDTOList() {
+            // given
+            Listenname entity1 = new Listenname("SL1", "Test 1", List.of());
+            Listenname entity2 = new Listenname("SL2", "Test 2", List.of());
+
+            List<Listenname> entities = List.of(entity1, entity2);
+
+            // when
+            List<ListennameStadtbezirkslisteFormContextDTO> dtos = stadtbezirkslisteMapper.toFormContext(entities);
+
+            // then
+            assertThat(dtos).hasSize(2);
+
+            assertThat(dtos.get(0).kurzbez()).isEqualTo(entity1.getKurzbez());
+            assertThat(dtos.get(0).bezeichnung()).isEqualTo(entity1.getBezeichnung());
+
+            assertThat(dtos.get(1).kurzbez()).isEqualTo(entity2.getKurzbez());
+            assertThat(dtos.get(1).bezeichnung()).isEqualTo(entity2.getBezeichnung());
+        }
     }
 
 }

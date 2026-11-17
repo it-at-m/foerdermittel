@@ -3,10 +3,12 @@ package de.muenchen.oss.foerdermittel.backend.siedlungsgebiet;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietCreateDTO;
+import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietMapper;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietUpdateDTO;
 import java.math.BigDecimal;
+import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -66,6 +68,45 @@ public class SiedlungsgebietMapperTest {
             assertThat(entity.getBezeichnung()).isEqualTo(dto.bezeichnung());
         }
 
+    }
+
+    @Nested
+    class ToFormContext {
+
+        @Test
+        void givenEntity_thenReturnsCorrectFormContextDTO() {
+            // given
+            Siedlungsgebiet entity = new Siedlungsgebiet(BigDecimal.valueOf(1), "Test");
+
+            // when
+            SiedlungsgebietFormContextDTO dto = siedlungsgebietMapper.toFormContext(entity);
+
+            // then
+            assertThat(dto).isNotNull();
+            assertThat(dto.siedlungsgebiet()).isEqualTo(entity.getSiedlungsgebiet().intValueExact());
+            assertThat(dto.bezeichnung()).isEqualTo(entity.getBezeichnung());
+
+        }
+
+        @Test
+        void givenEntityList_thenReturnsCorrectFormContextDTOList() {
+            // given
+            Siedlungsgebiet entity1 = new Siedlungsgebiet(BigDecimal.valueOf(1), "Test 1");
+            Siedlungsgebiet entity2 = new Siedlungsgebiet(BigDecimal.valueOf(2), "Test 2");
+
+            List<Siedlungsgebiet> entities = List.of(entity1, entity2);
+
+            // when
+            List<SiedlungsgebietFormContextDTO> dtos = siedlungsgebietMapper.toFormContext(entities);
+
+            // then
+            assertThat(dtos).hasSize(2);
+            assertThat(dtos.get(0).siedlungsgebiet()).isEqualTo(entity1.getSiedlungsgebiet().intValueExact());
+            assertThat(dtos.get(0).bezeichnung()).isEqualTo(entity1.getBezeichnung());
+
+            assertThat(dtos.get(1).siedlungsgebiet()).isEqualTo(entity2.getSiedlungsgebiet().intValueExact());
+            assertThat(dtos.get(1).bezeichnung()).isEqualTo(entity2.getBezeichnung());
+        }
     }
 
 }

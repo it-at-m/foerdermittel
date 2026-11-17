@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: foerdermittel-backend
   description: Backend component for the application foerdermittel
-  version: 0.3.0-SNAPSHOT
+  version: 0.5.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -382,6 +382,47 @@ paths:
           description: OK
       security:
       - bearerAuth: []
+  /projekte/{id}:
+    put:
+      tags:
+      - projekt-controller
+      operationId: updateProjekt
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjektUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjektResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - projekt-controller
+      operationId: deleteProjekt
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
   /kurzbezeichnungen/{id}:
     put:
       tags:
@@ -458,6 +499,49 @@ paths:
         in: path
         required: true
         schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /istkosten/{id}:
+    put:
+      tags:
+      - istkosten-controller
+      operationId: updateIstkosten
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          pattern: "^(?<id>.+?)-(?<jahr>19[7-9]\\d|20\\d{2}|2100)-(?<monat>[1-9]|1[0-2])$"
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IstkostenUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IstkostenResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - istkosten-controller
+      operationId: deleteIstkosten
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          pattern: "^(?<id>.+?)-(?<jahr>19[7-9]\\d|20\\d{2}|2100)-(?<monat>[1-9]|1[0-2])$"
           type: string
       responses:
         "200":
@@ -1265,6 +1349,97 @@ paths:
                 $ref: "#/components/schemas/PublikationResponseDTO"
       security:
       - bearerAuth: []
+  /projekte:
+    get:
+      tags:
+      - projekt-controller
+      operationId: getProjekte
+      parameters:
+      - name: projnr
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: fobFb
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: kurKurzbez
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: uasUa
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: pname
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: pstrasse
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "projnr,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelProjektResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - projekt-controller
+      operationId: createProjekt
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjektCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjektResponseDTO"
+      security:
+      - bearerAuth: []
   /kurzbezeichnungen:
     get:
       tags:
@@ -1385,6 +1560,69 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/KrankenhausResponseDTO"
+      security:
+      - bearerAuth: []
+  /istkosten:
+    get:
+      tags:
+      - istkosten-controller
+      operationId: getIstkostenEintraege
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "id.jahr,DESC"
+          - "id.monat,DESC"
+          - "id.projnr,DESC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelIstkostenResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - istkosten-controller
+      operationId: createIstkosten
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IstkostenCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IstkostenResponseDTO"
       security:
       - bearerAuth: []
   /hauptabschnitte:
@@ -1811,10 +2049,24 @@ paths:
                 $ref: "#/components/schemas/SiedlungsgebietFormContext"
       security:
       - bearerAuth: []
-  /report/stichworte:
+  /report/stichworte/form-context:
     get:
       tags:
-      - report-controller
+      - report-stichworte-controller
+      operationId: getReportStichworteFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportStichworteFormContext"
+      security:
+      - bearerAuth: []
+  /report/stichworte/:
+    get:
+      tags:
+      - report-stichworte-controller
       operationId: getReportStichworte
       parameters:
       - name: parameters
@@ -1832,24 +2084,98 @@ paths:
                 format: binary
       security:
       - bearerAuth: []
-  /report/stichworte/form-context:
+  /report/staedtebaufoerderungen/form-context:
     get:
       tags:
-      - report-controller
-      operationId: getReportStichworteFormContext
+      - report-staedtebaufoerderung-controller
+      operationId: getReportStaedtebaufoerderungFormContext
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ReportStichworteFormContext"
+                $ref: "#/components/schemas/ReportStaedtebaufoerderungFormContext"
       security:
       - bearerAuth: []
-  /report/projektuebersicht:
+  /report/staedtebaufoerderungen/:
     get:
       tags:
-      - report-controller
+      - report-staedtebaufoerderung-controller
+      operationId: getReportStaedtebaufoerderung
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportStaedtebaufoerderungDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/projektuebersichtms/form-context:
+    get:
+      tags:
+      - report-projektuebersicht-ms-controller
+      operationId: getReportProjektuebersichtMsFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportProjektuebersichtMsFormContext"
+      security:
+      - bearerAuth: []
+  /report/projektuebersichtms/:
+    get:
+      tags:
+      - report-projektuebersicht-ms-controller
+      operationId: getReportProjektuebersichtMs
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportProjektuebersichtMsDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/projektuebersicht/form-context:
+    get:
+      tags:
+      - report-projektuebersicht-controller
+      operationId: getReportProjektuebersichtFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportProjektuebersichtFormContext"
+      security:
+      - bearerAuth: []
+  /report/projektuebersicht/:
+    get:
+      tags:
+      - report-projektuebersicht-controller
       operationId: getReportProjektuebersicht
       parameters:
       - name: parameters
@@ -1867,18 +2193,304 @@ paths:
                 format: binary
       security:
       - bearerAuth: []
-  /report/projektuebersicht/form-context:
+  /report/haushaltsplanung/form-context:
     get:
       tags:
-      - report-controller
-      operationId: getReportProjektuebersichtFormContext
+      - report-haushaltsplanung-controller
+      operationId: getReportHaushaltsplanungFormContext
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ReportProjektuebersichtFormContext"
+                $ref: "#/components/schemas/ReportHaushaltsplanungFormContext"
+      security:
+      - bearerAuth: []
+  /report/haushaltsplanung/:
+    get:
+      tags:
+      - report-haushaltsplanung-controller
+      operationId: getReportHaushaltsplanung
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportHaushaltsplanungDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/fortsetzungsantrag/form-context:
+    get:
+      tags:
+      - report-fortsetzungsantrag-controller
+      operationId: getReportFortsetzungsantragFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportFortsetzungsantragFormContext"
+      security:
+      - bearerAuth: []
+  /report/fortsetzungsantrag/:
+    get:
+      tags:
+      - report-fortsetzungsantrag-controller
+      operationId: getReportFortsetzungsantrag
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportFortsetzungsantragDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/euinformationen/form-context:
+    get:
+      tags:
+      - report-euinformation-controller
+      operationId: getReportEuinformationenFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportEuinformationFormContext"
+      security:
+      - bearerAuth: []
+  /report/euinformationen/:
+    get:
+      tags:
+      - report-euinformation-controller
+      operationId: getReportEuinformationen
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportEuinformationDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/bewilligungAuszahlungProjekt:
+    get:
+      tags:
+      - report-bewilligung-auszahlung-projekt-controller
+      operationId: getReportBewilligungAuszahlungProjekt
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportBewilligungAuszahlungProjektDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/bewilligungAuszahlungProjekt/form-context:
+    get:
+      tags:
+      - report-bewilligung-auszahlung-projekt-controller
+      operationId: getReportBewilligungAuszahlungProjektFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportBewilligungAuszahlungProjektFormContext"
+      security:
+      - bearerAuth: []
+  /report/auswertungprojekte/form-context:
+    get:
+      tags:
+      - report-auswertung-projekte-controller
+      operationId: getReportAuswertungProjektFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportAuswertungProjektFormContext"
+      security:
+      - bearerAuth: []
+  /report/auswertungprojekte/:
+    get:
+      tags:
+      - report-auswertung-projekte-controller
+      operationId: getReportAuswertungProjekt
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportAuswertungProjekteDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/auswertungantraege/form-context:
+    get:
+      tags:
+      - report-auswertung-antraege-controller
+      operationId: getReportAuswertungAntraegeFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportAuswertungAntraegeFormContext"
+      security:
+      - bearerAuth: []
+  /report/auswertungantraege/:
+    get:
+      tags:
+      - report-auswertung-antraege-controller
+      operationId: getReportAuswertungAntraege
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportAuswertungAntraegeDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/auswertungabrufe/form-context:
+    get:
+      tags:
+      - report-auswertung-abrufe-controller
+      operationId: getReportAuswertungAbrufeFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportAuswertungAbrufeFormContext"
+      security:
+      - bearerAuth: []
+  /report/auswertungabrufe/:
+    get:
+      tags:
+      - report-auswertung-abrufe-controller
+      operationId: getReportAuswertungAbrufe
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportAuswertungAbrufeDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/annahmeAnordnungSap:
+    get:
+      tags:
+      - report-annahme-anordnung-sap-controller
+      operationId: getReportAnnahmeAnordnungSap
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportAnnahmeAnordnungSapDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
+  /report/annahmeAnordnungSap/form-context:
+    get:
+      tags:
+      - report-annahme-anordnung-sap-controller
+      operationId: getReportAnnahmeAnordnungSapFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportAnnahmeAnordnungSapFormContext"
       security:
       - bearerAuth: []
   /referate/form-context:
@@ -1909,6 +2521,20 @@ paths:
                 $ref: "#/components/schemas/PublikationFormContext"
       security:
       - bearerAuth: []
+  /projekte/form-context:
+    get:
+      tags:
+      - projekt-controller
+      operationId: getProjektFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjektFormContext"
+      security:
+      - bearerAuth: []
   /kurzbezeichnungen/form-context:
     get:
       tags:
@@ -1935,6 +2561,76 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/KrankenhausFormContext"
+      security:
+      - bearerAuth: []
+  /istkosten/form-context:
+    get:
+      tags:
+      - istkosten-controller
+      operationId: getIstkostenFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IstkostenFormContext"
+      security:
+      - bearerAuth: []
+  /hhplan:
+    get:
+      tags:
+      - hhplan-controller
+      operationId: getHhplan
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "id.hhjJahr,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelHhplanResponseDTO"
+      security:
+      - bearerAuth: []
+  /hhplan/form-context:
+    get:
+      tags:
+      - hhplan-controller
+      operationId: getHhplanFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HhplanFormContext"
       security:
       - bearerAuth: []
   /hauptabschnitte/form-context:
@@ -2411,6 +3107,155 @@ components:
           type: string
         bezeichnung:
           type: string
+    ProjektUpdateDTO:
+      type: object
+      properties:
+        pname:
+          maxLength: 100
+          minLength: 0
+          type: string
+        pstrasse:
+          maxLength: 100
+          minLength: 0
+          type: string
+        fobFb:
+          maximum: 99
+          type: integer
+          format: int32
+        bezStadtbezirk:
+          maximum: 99
+          type: integer
+          format: int32
+        krnKrhname:
+          maxLength: 1
+          minLength: 0
+          pattern: "^[A-Z]*$"
+          type: string
+        kurKurzbez:
+          maxLength: 3
+          minLength: 0
+          pattern: "^[A-Z0-9]+$"
+          type: string
+        sgtSiedlungsgebiet:
+          maximum: 99
+          type: integer
+          format: int32
+        projart:
+          maxLength: 50
+          minLength: 0
+          type: string
+        refinanzierbar:
+          type: boolean
+        kauf:
+          type: boolean
+        kripplatz:
+          minimum: 0
+          type: number
+        kigaplatz:
+          minimum: 0
+          type: number
+        hortplatz:
+          minimum: 0
+          type: number
+        notizen:
+          maxLength: 4000
+          minLength: 0
+          type: string
+        bpgBauprogramm:
+          maximum: 99
+          type: integer
+          format: int32
+        krisofp:
+          type: string
+          enum:
+          - F
+          - K
+          - S
+          - V
+          - W
+          - X
+          - "Y"
+          - Z
+        krhzweck:
+          type: string
+          enum:
+          - J
+          - S
+          - R
+    ProjektResponseDTO:
+      required:
+      - fobFb
+      - id
+      - jahr
+      - kurKurzbez
+      - lfdnr1
+      - lfdnr2
+      - projnr
+      - uasUa
+      type: object
+      properties:
+        id:
+          type: string
+        projnr:
+          type: string
+        uasUa:
+          type: string
+        jahr:
+          type: integer
+          format: int32
+        lfdnr1:
+          type: integer
+          format: int32
+        lfdnr2:
+          type: integer
+          format: int32
+        fobFb:
+          type: number
+        kurKurzbez:
+          type: string
+        bezStadtbezirk:
+          type: number
+        krnKrhname:
+          type: string
+        krhzweck:
+          type: string
+          enum:
+          - J
+          - S
+          - R
+        krisofp:
+          type: string
+          enum:
+          - F
+          - K
+          - S
+          - V
+          - W
+          - X
+          - "Y"
+          - Z
+        sgtSiedlungsgebiet:
+          type: number
+        bpgBauprogramm:
+          type: number
+        pname:
+          type: string
+        pstrasse:
+          type: string
+        projart:
+          type: string
+        refinanzierbar:
+          type: boolean
+        kauf:
+          type: boolean
+        kripplatz:
+          type: number
+        kigaplatz:
+          type: number
+        hortplatz:
+          type: number
+        notizen:
+          type: string
     KurzbezeichnungUpdateDTO:
       required:
       - bezeichnung
@@ -2455,6 +3300,44 @@ components:
           type: string
         bezeichnung:
           type: string
+    IstkostenUpdateDTO:
+      required:
+      - istkosten
+      type: object
+      properties:
+        istkosten:
+          minimum: 0
+          type: number
+    IstkostenResponseDTO:
+      required:
+      - fob_fb
+      - id
+      - istkosten
+      - jahr
+      - monat
+      - pname
+      - projnr
+      - pstrasse
+      type: object
+      properties:
+        id:
+          minLength: 1
+          type: string
+        projnr:
+          minLength: 1
+          type: string
+        jahr:
+          type: number
+        monat:
+          type: number
+        istkosten:
+          type: number
+        pname:
+          type: string
+        pstrasse:
+          type: string
+        fob_fb:
+          type: number
     HauptabschnittUpdateDTO:
       required:
       - bezeichnung
@@ -2816,6 +3699,114 @@ components:
           maxLength: 200
           minLength: 1
           type: string
+    ProjektCreateDTO:
+      required:
+      - fobFb
+      - jahr
+      - kurKurzbez
+      - lfdnr1
+      - lfdnr2
+      - projnr
+      - uasUa
+      type: object
+      properties:
+        projnr:
+          maxLength: 7
+          minLength: 7
+          pattern: "^[A-Z0-9]{7}$"
+          type: string
+        fobFb:
+          maximum: 99
+          type: integer
+          format: int32
+        kurKurzbez:
+          maxLength: 3
+          minLength: 1
+          pattern: "^[A-Z0-9]+$"
+          type: string
+        uasUa:
+          maxLength: 2
+          minLength: 1
+          pattern: "^[A-Z0-9]+$"
+          type: string
+        jahr:
+          maximum: 99
+          minimum: 0
+          type: integer
+          format: int32
+        lfdnr1:
+          maximum: 9
+          minimum: 0
+          type: integer
+          format: int32
+        lfdnr2:
+          maximum: 99
+          minimum: 0
+          type: integer
+          format: int32
+        bezStadtbezirk:
+          maximum: 99
+          type: integer
+          format: int32
+        krnKrhname:
+          maxLength: 1
+          minLength: 0
+          pattern: "^[A-Z]*$"
+          type: string
+        sgtSiedlungsgebiet:
+          maximum: 99
+          type: integer
+          format: int32
+        pname:
+          maxLength: 100
+          minLength: 0
+          type: string
+        pstrasse:
+          maxLength: 100
+          minLength: 0
+          type: string
+        projart:
+          maxLength: 50
+          minLength: 0
+          type: string
+        refinanzierbar:
+          type: boolean
+        kauf:
+          type: boolean
+        notizen:
+          maxLength: 4000
+          minLength: 0
+          type: string
+        bpgBauprogramm:
+          maximum: 99
+          type: integer
+          format: int32
+        krisofp:
+          type: string
+          enum:
+          - F
+          - K
+          - S
+          - V
+          - W
+          - X
+          - "Y"
+          - Z
+        krhzweck:
+          type: string
+          enum:
+          - J
+          - S
+          - R
+        kripplatz:
+          minimum: 0
+          type: number
+        kigaplatz:
+          minimum: 0
+          type: number
+        hortplatz:
+          minimum: 0
+          type: number
     KurzbezeichnungCreateDTO:
       required:
       - bezeichnung
@@ -2846,6 +3837,28 @@ components:
           maxLength: 200
           minLength: 1
           type: string
+    IstkostenCreateDTO:
+      required:
+      - istkosten
+      - jahr
+      - monat
+      - projnr
+      type: object
+      properties:
+        projnr:
+          minLength: 1
+          type: string
+        jahr:
+          maximum: 2100
+          minimum: 1970
+          type: number
+        monat:
+          maximum: 12
+          minimum: 1
+          type: number
+        istkosten:
+          minimum: 0
+          type: number
     HauptabschnittCreateDTO:
       required:
       - bezeichnung
@@ -3049,11 +4062,11 @@ components:
           $ref: "#/components/schemas/PageMetadata"
     ProjektFormContextDTO:
       required:
-      - foerderbereich
+      - bezStadtbezirk
+      - fobFb
       - pname
       - projnr
       - pstrasse
-      - stadtbezirk
       type: object
       properties:
         projnr:
@@ -3065,10 +4078,10 @@ components:
         pstrasse:
           type: string
           description: ""
-        foerderbereich:
-          type: string
+        fobFb:
+          type: number
           description: ""
-        stadtbezirk:
+        bezStadtbezirk:
           type: number
           description: ""
       description: DTO for Projekt to be used in other FormContexts other than its
@@ -3164,16 +4177,6 @@ components:
           type: array
           items:
             type: number
-    ReportStichworteDTO:
-      required:
-      - bereich
-      type: object
-      properties:
-        bereich:
-          maxLength: 30
-          minLength: 1
-          pattern: "^[A-Z0-9\\-]+$"
-          type: string
     ReportStichworteFormContext:
       required:
       - bereiche
@@ -3198,16 +4201,255 @@ components:
       description: |-
         DTO for [de.muenchen.oss.foerdermittel.backend.stichwortbereich.Stichwortbereich] to be used in
         other FormContexts other than its own.
-    ReportProjektuebersichtDTO:
+    ReportStichworteDTO:
       required:
-      - projnr
+      - bereich
       type: object
       properties:
-        projnr:
+        bereich:
+          maxLength: 30
           minLength: 1
+          pattern: "^[A-Z0-9\\-]+$"
           type: string
-        notiz:
-          type: boolean
+    ReportStaedtebaufoerderungFormContext:
+      required:
+      - traeger
+      type: object
+      properties:
+        traeger:
+          type: array
+          items:
+            $ref: "#/components/schemas/TraegerFormContextDTO"
+    TraegerFormContextDTO:
+      required:
+      - bezeichnung
+      - kurzform
+      type: object
+      properties:
+        kurzform:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+      description: |-
+        DTO for [de.muenchen.oss.foerdermittel.backend.publikation.Publikation] to be used in
+        other FormContexts other than its own.
+    ReportStaedtebaufoerderungDTO:
+      type: object
+      properties:
+        jahrVon:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        jahrBis:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        pname:
+          maxLength: 40
+          minLength: 0
+          type: string
+        traeger:
+          pattern: "^[0-9]?$"
+          type: string
+        notizen:
+          type: string
+    BauprogrammFormContextDTO:
+      required:
+      - bauprogramm
+      - bezeichnung
+      type: object
+      properties:
+        bauprogramm:
+          type: integer
+          description: ""
+          format: int32
+        bezeichnung:
+          type: string
+          description: ""
+    FoerderbereichFormContextDTO:
+      required:
+      - bezeichnung
+      - fb
+      type: object
+      properties:
+        fb:
+          type: integer
+          description: ""
+          format: int32
+        bezeichnung:
+          type: string
+          description: ""
+    KurzbezeichnungFormContextDTO:
+      required:
+      - bezeichnung
+      - kurzbez
+      type: object
+      properties:
+        kurzbez:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+    ListennameStadtbezirkslisteFormContextDTO:
+      required:
+      - bezeichnung
+      - kurzbez
+      type: object
+      properties:
+        kurzbez:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+    ReportProjektuebersichtMsFormContext:
+      required:
+      - bauprogramme
+      - foerderbereiche
+      - krisofps
+      - kurzbezeichnungen
+      - siedlungsgebiete
+      - stadtbezirke
+      - stadtbezirkslisten
+      - unterabschnitte
+      type: object
+      properties:
+        stadtbezirkslisten:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
+        stadtbezirke:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
+        foerderbereiche:
+          type: array
+          items:
+            $ref: "#/components/schemas/FoerderbereichFormContextDTO"
+        unterabschnitte:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnterabschnittFormContextDTO"
+        kurzbezeichnungen:
+          type: array
+          items:
+            $ref: "#/components/schemas/KurzbezeichnungFormContextDTO"
+        krisofps:
+          type: array
+          items:
+            type: string
+            enum:
+            - F
+            - K
+            - S
+            - V
+            - W
+            - X
+            - "Y"
+            - Z
+        siedlungsgebiete:
+          type: array
+          items:
+            $ref: "#/components/schemas/SiedlungsgebietFormContextDTO"
+        bauprogramme:
+          type: array
+          items:
+            $ref: "#/components/schemas/BauprogrammFormContextDTO"
+    SiedlungsgebietFormContextDTO:
+      required:
+      - bezeichnung
+      - siedlungsgebiet
+      type: object
+      properties:
+        siedlungsgebiet:
+          type: integer
+          description: ""
+          format: int32
+        bezeichnung:
+          type: string
+          description: ""
+    StadtbezirkFormContextDTO:
+      required:
+      - bezeichnung
+      - stadtbezirk
+      type: object
+      properties:
+        stadtbezirk:
+          type: integer
+          description: ""
+          format: int32
+        bezeichnung:
+          type: string
+          description: ""
+    UnterabschnittFormContextDTO:
+      required:
+      - bezeichnung
+      - ua
+      type: object
+      properties:
+        ua:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+    ReportFormat:
+      type: string
+      enum:
+      - PDF
+      - PDF_FLAT
+      - EXCEL
+    ReportProjektuebersichtMsDTO:
+      required:
+      - sort
+      - type
+      type: object
+      properties:
+        jahr:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        sbl:
+          type: string
+        bez:
+          pattern: ^\d*$
+          type: string
+        fb:
+          pattern: ^\d*$
+          type: string
+        ua:
+          type: string
+        kurz:
+          type: string
+        offen:
+          type: string
+        vn:
+          type: string
+        krisofp:
+          type: string
+          enum:
+          - F
+          - K
+          - S
+          - V
+          - W
+          - X
+          - "Y"
+          - Z
+        sgt:
+          pattern: ^\d*$
+          type: string
+        bpg:
+          pattern: ^\d*$
+          type: string
+        type:
+          $ref: "#/components/schemas/ReportFormat"
+        sort:
+          type: string
+          enum:
+          - PROJEKTNUMMER
+          - STRASSEPROJNR
+          - FBPROJNR
     ReportProjektuebersichtFormContext:
       required:
       - projekte
@@ -3229,6 +4471,697 @@ components:
         pname:
           type: string
         pstrasse:
+          type: string
+    ReportProjektuebersichtDTO:
+      required:
+      - projnr
+      type: object
+      properties:
+        projnr:
+          minLength: 1
+          type: string
+        notiz:
+          type: boolean
+    HhplanFormContextDTO:
+      required:
+      - fipo
+      - hhjJahr
+      type: object
+      properties:
+        hhjJahr:
+          type: number
+          description: ""
+        fipo:
+          type: string
+          description: ""
+    ReportHaushaltsplanungFormContext:
+      required:
+      - bezs
+      - fbs
+      - fipos
+      - sbls
+      type: object
+      properties:
+        fbs:
+          type: array
+          items:
+            $ref: "#/components/schemas/FoerderbereichFormContextDTO"
+        sbls:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
+        bezs:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
+        fipos:
+          type: array
+          items:
+            $ref: "#/components/schemas/HhplanFormContextDTO"
+    ReportHaushaltsplanungDTO:
+      required:
+      - haushaltsjahr
+      - sort
+      - type
+      type: object
+      properties:
+        haushaltsjahr:
+          minLength: 1
+          pattern: "^\\d{4}$"
+          type: string
+        fb:
+          type: string
+        fipo:
+          type: string
+        sbl:
+          type: string
+        bez:
+          type: string
+        hh:
+          type: string
+        sort:
+          type: string
+          enum:
+          - PROJEKTNUMMER
+          - STRASSE
+          - FIPO
+          - FB_PROJEKTNUMMER
+          - FB_STRASSE_PROJEKTNUMMER
+          - FB_FIPO
+        type:
+          $ref: "#/components/schemas/ReportFormat"
+    ReportFortsetzungsantragFormContext:
+      required:
+      - bezs
+      - sbls
+      type: object
+      properties:
+        sbls:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
+        bezs:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
+    ReportFortsetzungsantragDTO:
+      required:
+      - type
+      type: object
+      properties:
+        sbl:
+          pattern: "^[A-Z0-9]*$"
+          type: string
+        bez:
+          pattern: "^([0-9]|[1-9][0-9])?$"
+          type: string
+        fag:
+          type: string
+        ofPro:
+          type: string
+        type:
+          $ref: "#/components/schemas/ReportFormat"
+    PublikationFormContextDTO:
+      required:
+      - bezeichnung
+      - kurzform
+      type: object
+      properties:
+        kurzform:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+      description: |-
+        DTO for [de.muenchen.oss.foerdermittel.backend.publikation.Publikation] to be used in
+        other FormContexts other than its own.
+    ReportEuinformationFormContext:
+      required:
+      - publikationen
+      type: object
+      properties:
+        publikationen:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublikationFormContextDTO"
+    ReportEuinformationDTO:
+      required:
+      - sort
+      type: object
+      properties:
+        jahrVon:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        jahrBis:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        inhalt:
+          maxLength: 40
+          minLength: 0
+          type: string
+        publikation:
+          pattern: "^[A-Z0-9]*$"
+          type: string
+        referatId:
+          pattern: "^(?:[1-9]|1[0-7]|20)$"
+          type: string
+        sort:
+          type: string
+          enum:
+          - PUBLIKATION
+          - JAHR
+          - REFERAT
+          - REFERAT_JAHR
+    ReportBewilligungAuszahlungProjektDTO:
+      required:
+      - projnr
+      type: object
+      properties:
+        projnr:
+          minLength: 1
+          pattern: \S
+          type: string
+        erfolgt:
+          type: boolean
+    ReportBewilligungAuszahlungProjektFormContext:
+      required:
+      - projekte
+      type: object
+      properties:
+        projekte:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportBewilligungAuszahlungProjektFormContextDTO"
+    ReportBewilligungAuszahlungProjektFormContextDTO:
+      required:
+      - pname
+      - projnr
+      - pstrasse
+      type: object
+      properties:
+        projnr:
+          type: string
+        pstrasse:
+          type: string
+        pname:
+          type: string
+    ReportAuswertungProjektFormContext:
+      required:
+      - bezs
+      - bpgs
+      - fbs
+      - krisofps
+      - kurzs
+      - projekte
+      - sbls
+      - sgts
+      - uas
+      type: object
+      properties:
+        projekte:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportAuswertungProjektFormContextDTO"
+        fbs:
+          type: array
+          items:
+            $ref: "#/components/schemas/FoerderbereichFormContextDTO"
+        sbls:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
+        bezs:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
+        uas:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnterabschnittFormContextDTO"
+        kurzs:
+          type: array
+          items:
+            $ref: "#/components/schemas/KurzbezeichnungFormContextDTO"
+        bpgs:
+          type: array
+          items:
+            $ref: "#/components/schemas/BauprogrammFormContextDTO"
+        sgts:
+          type: array
+          items:
+            $ref: "#/components/schemas/SiedlungsgebietFormContextDTO"
+        krisofps:
+          type: array
+          items:
+            type: string
+            enum:
+            - F
+            - K
+            - S
+            - V
+            - W
+            - X
+            - "Y"
+            - Z
+    ReportAuswertungProjektFormContextDTO:
+      required:
+      - jahr
+      type: object
+      properties:
+        jahr:
+          type: string
+        pstrasse:
+          type: string
+        pname:
+          type: string
+        krisofp:
+          type: string
+          enum:
+          - F
+          - K
+          - S
+          - V
+          - W
+          - X
+          - "Y"
+          - Z
+    ReportAuswertungProjekteDTO:
+      required:
+      - sort
+      - type
+      type: object
+      properties:
+        jahr:
+          pattern: "^(\\d{4})?$"
+          type: string
+        bez:
+          type: string
+        fb:
+          type: string
+        ua:
+          type: string
+        kurz:
+          type: string
+        pstrasse:
+          maxLength: 30
+          minLength: 0
+          type: string
+        pname:
+          maxLength: 30
+          minLength: 0
+          type: string
+        sgt:
+          type: string
+        sbl:
+          type: string
+        bpg:
+          type: string
+        krisofp:
+          type: string
+          enum:
+          - F
+          - K
+          - S
+          - V
+          - W
+          - X
+          - "Y"
+          - Z
+        kauf:
+          type: string
+        offen:
+          type: string
+        relevant:
+          type: string
+        sort:
+          type: string
+          enum:
+          - STADTBEZIRK_STRASSE
+          - PROJEKTNUMMER
+          - STRASSE_PROJEKTNUMMER
+          - FOERDERBEREICH_STRASSE
+          - FOERDERBEREICH_PROJEKTNUMMER
+        type:
+          $ref: "#/components/schemas/ReportFormat"
+    ReportAuswertungAntraegeFormContext:
+      required:
+      - antraege
+      - bezs
+      - bpgs
+      - fbs
+      - krisofps
+      - kurzs
+      - projs
+      - sbls
+      - sgts
+      - uas
+      type: object
+      properties:
+        sbls:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
+        bezs:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
+        fbs:
+          type: array
+          items:
+            $ref: "#/components/schemas/FoerderbereichFormContextDTO"
+        uas:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnterabschnittFormContextDTO"
+        kurzs:
+          type: array
+          items:
+            $ref: "#/components/schemas/KurzbezeichnungFormContextDTO"
+        projs:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportAuswertungAntragFormContextDTO"
+        krisofps:
+          type: array
+          items:
+            type: string
+            enum:
+            - F
+            - K
+            - S
+            - V
+            - W
+            - X
+            - "Y"
+            - Z
+        antraege:
+          type: array
+          items:
+            type: string
+            enum:
+            - E
+            - V
+            - A
+            - F
+            - U
+        sgts:
+          type: array
+          items:
+            $ref: "#/components/schemas/SiedlungsgebietFormContextDTO"
+        bpgs:
+          type: array
+          items:
+            $ref: "#/components/schemas/BauprogrammFormContextDTO"
+    ReportAuswertungAntragFormContextDTO:
+      required:
+      - pname
+      - projnr
+      - pstrasse
+      type: object
+      properties:
+        projnr:
+          type: string
+        pname:
+          type: string
+        pstrasse:
+          type: string
+    ReportAuswertungAntraegeDTO:
+      required:
+      - sort
+      - type
+      type: object
+      properties:
+        jahrVon:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        jahrBis:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        bez:
+          type: string
+        fb:
+          type: string
+        ua:
+          type: string
+        kurz:
+          type: string
+        pstrasse:
+          maxLength: 30
+          minLength: 0
+          type: string
+        pname:
+          maxLength: 30
+          minLength: 0
+          type: string
+        projnr:
+          maxLength: 7
+          minLength: 0
+          type: string
+        sgt:
+          type: string
+        sbl:
+          type: string
+        bpg:
+          type: string
+        krisofp:
+          type: string
+          enum:
+          - F
+          - K
+          - S
+          - V
+          - W
+          - X
+          - "Y"
+          - Z
+        antragstyp:
+          type: string
+          enum:
+          - E
+          - V
+          - A
+          - F
+          - U
+        fag:
+          type: string
+        offen:
+          type: string
+        relevant:
+          type: string
+        sort:
+          type: string
+          enum:
+          - FOERDERBEREICH_PROJEKTNUMMER
+          - FOERDERBEREICH_STRASSE
+          - PROJEKTSTRASSE_PROJEKTNUMMER
+          - PROJEKTNUMMER
+        type:
+          $ref: "#/components/schemas/ReportFormat"
+    KrankenhausFormContextDTO:
+      required:
+      - bezeichnung
+      - krhname
+      type: object
+      properties:
+        krhname:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+    ReferatFormContextDTO:
+      required:
+      - bezeichnung
+      - refnr
+      type: object
+      properties:
+        refnr:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+    ReportAuswertungAbrufeFormContext:
+      required:
+      - bezs
+      - bpgs
+      - fbs
+      - krhs
+      - krisofps
+      - kurzs
+      - projs
+      - refs
+      - sbls
+      - sgts
+      - uas
+      type: object
+      properties:
+        sbls:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
+        bezs:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
+        fbs:
+          type: array
+          items:
+            $ref: "#/components/schemas/FoerderbereichFormContextDTO"
+        uas:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnterabschnittFormContextDTO"
+        kurzs:
+          type: array
+          items:
+            $ref: "#/components/schemas/KurzbezeichnungFormContextDTO"
+        projs:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportAuswertungAntragFormContextDTO"
+        refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReferatFormContextDTO"
+        krhs:
+          type: array
+          items:
+            $ref: "#/components/schemas/KrankenhausFormContextDTO"
+        krisofps:
+          type: array
+          items:
+            type: string
+            enum:
+            - F
+            - K
+            - S
+            - V
+            - W
+            - X
+            - "Y"
+            - Z
+        sgts:
+          type: array
+          items:
+            $ref: "#/components/schemas/SiedlungsgebietFormContextDTO"
+        bpgs:
+          type: array
+          items:
+            $ref: "#/components/schemas/BauprogrammFormContextDTO"
+    ReportAuswertungAbrufeDTO:
+      required:
+      - sort
+      - type
+      type: object
+      properties:
+        jahrAbrufVon:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        jahrAbrufBis:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        jahrErhaltVon:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        jahrErhaltBis:
+          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
+          type: string
+        bez:
+          type: string
+        fb:
+          type: string
+        ua:
+          type: string
+        kurz:
+          type: string
+        pstrasse:
+          maxLength: 30
+          minLength: 0
+          type: string
+        pname:
+          maxLength: 30
+          minLength: 0
+          type: string
+        projnr:
+          maxLength: 7
+          minLength: 0
+          type: string
+        sgt:
+          type: string
+        sbl:
+          type: string
+        bpg:
+          type: string
+        krisofp:
+          type: string
+          enum:
+          - F
+          - K
+          - S
+          - V
+          - W
+          - X
+          - "Y"
+          - Z
+        ref:
+          type: string
+        krh:
+          type: string
+        fag:
+          type: string
+        offen:
+          type: string
+        ohnebewill:
+          type: string
+        erh:
+          type: string
+        nichterh:
+          type: string
+        sort:
+          type: string
+          enum:
+          - FOERDERBEREICH_PROJEKTNUMMER_ADATUM
+          - FOERDERBEREICH_EDATUM
+          - FOERDERBEREICH_ADATUM
+          - FOERDERBEREICH_PROJEKTSTRASSE_ADATUM
+          - PROJEKTNUMMER_ADATUM
+          - EDATUM
+          - ADATUM
+          - PROJEKTSTRASSE
+        type:
+          $ref: "#/components/schemas/ReportFormat"
+    ReportAnnahmeAnordnungSapDTO:
+      required:
+      - projnr
+      type: object
+      properties:
+        projnr:
+          minLength: 1
+          pattern: \S
+          type: string
+    ReportAnnahmeAnordnungSapFormContext:
+      required:
+      - projekte
+      type: object
+      properties:
+        projekte:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportAnnahmeAnordnungSapFormContextDTO"
+    ReportAnnahmeAnordnungSapFormContextDTO:
+      required:
+      - pname
+      - projnr
+      - pstrasse
+      type: object
+      properties:
+        projnr:
+          type: string
+        pstrasse:
+          type: string
+        pname:
           type: string
     PagedModelReferatResponseDTO:
       type: object
@@ -3266,6 +5199,82 @@ components:
           type: array
           items:
             type: string
+    PagedModelProjektResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProjektResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    ProjektFormContext:
+      required:
+      - bezs
+      - bpgs
+      - fbs
+      - krhs
+      - krhzwecks
+      - krisofps
+      - kurzs
+      - projekte
+      - sgts
+      - uas
+      type: object
+      properties:
+        projekte:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProjektFormContextDTO"
+        fbs:
+          type: array
+          items:
+            $ref: "#/components/schemas/FoerderbereichFormContextDTO"
+        bezs:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
+        uas:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnterabschnittFormContextDTO"
+        kurzs:
+          type: array
+          items:
+            $ref: "#/components/schemas/KurzbezeichnungFormContextDTO"
+        bpgs:
+          type: array
+          items:
+            $ref: "#/components/schemas/BauprogrammFormContextDTO"
+        sgts:
+          type: array
+          items:
+            $ref: "#/components/schemas/SiedlungsgebietFormContextDTO"
+        krhs:
+          type: array
+          items:
+            $ref: "#/components/schemas/KrankenhausFormContextDTO"
+        krisofps:
+          type: array
+          items:
+            type: string
+            enum:
+            - F
+            - K
+            - S
+            - V
+            - W
+            - X
+            - "Y"
+            - Z
+        krhzwecks:
+          type: array
+          items:
+            type: string
+            enum:
+            - J
+            - S
+            - R
     PagedModelKurzbezeichnungResponseDTO:
       type: object
       properties:
@@ -3302,6 +5311,60 @@ components:
           type: array
           items:
             type: string
+    PagedModelIstkostenResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/IstkostenResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    IstkostenFormContext:
+      required:
+      - istkosten
+      - projekte
+      type: object
+      properties:
+        istkosten:
+          type: array
+          items:
+            type: string
+        projekte:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProjektFormContextDTO"
+    HhplanResponseDTO:
+      required:
+      - fipo
+      - hhjJahr
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        hhjJahr:
+          type: number
+        fipo:
+          type: string
+    PagedModelHhplanResponseDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/HhplanResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    HhplanFormContext:
+      required:
+      - hhp
+      type: object
+      properties:
+        hhp:
+          type: array
+          items:
+            type: number
     PagedModelHauptabschnittResponseDTO:
       type: object
       properties:
@@ -3410,6 +5473,37 @@ components:
           type: string
         templated:
           type: boolean
+    Pageable:
+      type: object
+      properties:
+        page:
+          minimum: 0
+          type: integer
+          format: int32
+        size:
+          minimum: 1
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            type: string
+    ProjektFilter:
+      type: object
+      properties:
+        projnr:
+          type: string
+        fobFb:
+          type: string
+        kurKurzbez:
+          type: string
+        uasUa:
+          type: string
+        pname:
+          type: string
+        pstrasse:
+          type: string
+      description: Filter object to use with Projekt.
   securitySchemes:
     bearerAuth:
       type: http

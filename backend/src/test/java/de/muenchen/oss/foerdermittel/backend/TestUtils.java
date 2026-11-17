@@ -1,5 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -7,6 +9,10 @@ import java.nio.file.Path;
 import java.util.Map;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.client.RestTestClient;
 import org.yaml.snakeyaml.Yaml;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -68,4 +74,27 @@ public final class TestUtils {
         return imageName;
     }
 
+    /// Utility expectation that checks for non JSON, plain or Octet content type, validates a body
+    /// exists and checks the correct headers.
+    ///
+    /// @param response Response retrieved using a [WebTestClient]
+    public static void expectFileResponse(RestTestClient.ResponseSpec response) {
+        response
+                .expectHeader()
+                .value(HttpHeaders.CONTENT_DISPOSITION, value -> assertThat(ContentDisposition.parse(value).getType())
+                        .isEqualTo("attachment"))
+                .expectHeader()
+                .value(HttpHeaders.CONTENT_TYPE, value -> {
+                    MediaType contentType = MediaType.parseMediaType(value);
+
+                    assertThat(contentType)
+                            .isNotEqualTo(MediaType.APPLICATION_JSON)
+                            .isNotEqualTo(MediaType.APPLICATION_OCTET_STREAM)
+                            .isNotEqualTo(MediaType.TEXT_PLAIN);
+                })
+                .expectBody()
+                .consumeWith(result -> assertThat(result.getResponseBody())
+                        .isNotNull()
+                        .isNotEmpty());
+    }
 }

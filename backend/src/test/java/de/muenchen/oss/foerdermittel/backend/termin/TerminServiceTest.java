@@ -88,14 +88,14 @@ public class TerminServiceTest {
                     PROJNR,
                     "Test Projekt",
                     "Test Strasse",
-                    "11",
+                    BigDecimal.valueOf(11),
                     BigDecimal.valueOf(13));
 
             final ProjektFormContextDTO projektDTO2 = new ProjektFormContextDTO(
                     OTHER_PROJNR,
                     "Test Projekt 2",
                     "Test Strasse 2",
-                    "12",
+                    BigDecimal.valueOf(12),
                     BigDecimal.valueOf(13));
 
             final List<ProjektFormContextDTO> projekte = List.of(projektDTO1, projektDTO2);

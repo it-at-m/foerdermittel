@@ -30,7 +30,7 @@ class ArchivMapperTest {
             projekt.setProjnr("1124101");
             projekt.setPname("Test Projekt");
             projekt.setPstrasse("Teststraße 1");
-            projekt.setFoerderbereich(foerderbereich);
+            projekt.setFobFb(foerderbereich);
 
             final Archiv entity = new Archiv(
                     1L,
@@ -55,7 +55,7 @@ class ArchivMapperTest {
             assertThat(dto.projnr()).isEqualTo(entity.getProjekt().getProjnr());
             assertThat(dto.pname()).isEqualTo(entity.getProjekt().getPname());
             assertThat(dto.pstrasse()).isEqualTo(entity.getProjekt().getPstrasse());
-            assertThat(dto.fob_fb()).isEqualTo(entity.getProjekt().getFoerderbereich().getFb());
+            assertThat(dto.fob_fb()).isEqualTo(entity.getProjekt().getFobFb().getFb());
         }
     }
 

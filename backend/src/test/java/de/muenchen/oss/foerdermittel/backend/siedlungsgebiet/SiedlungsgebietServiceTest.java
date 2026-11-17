@@ -7,6 +7,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
+import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietMapper;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -31,8 +33,49 @@ class SiedlungsgebietServiceTest {
     @Mock
     private SiedlungsgebietRepository siedlungsgebietRepository;
 
+    @Mock
+    private SiedlungsgebietMapper siedlungsgebietMapper;
+
     @InjectMocks
     private SiedlungsgebietService unitUnderTest;
+
+    @Nested
+    class GetSiedlungsgebiet {
+
+        @Test
+        void givenIdExists_thenReturnEntity() {
+            // Given
+            final BigDecimal siedlungsgebiet = BigDecimal.valueOf(23);
+            final Siedlungsgebiet expectedEntity = new Siedlungsgebiet(siedlungsgebiet, BEZEICHNUNG);
+
+            when(siedlungsgebietRepository.findById(siedlungsgebiet)).thenReturn(Optional.of(expectedEntity));
+
+            // When
+            final Siedlungsgebiet result = unitUnderTest.getSiedlungsgebiet(siedlungsgebiet);
+
+            // Then
+            verify(siedlungsgebietRepository, times(1)).findById(siedlungsgebiet);
+
+            assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
+        }
+
+        @Test
+        void givenIdNotExists_thenThrowNotFoundException() {
+            // Given
+            final BigDecimal siedlungsgebiet = BigDecimal.valueOf(99);
+
+            when(siedlungsgebietRepository.findById(siedlungsgebiet)).thenReturn(Optional.empty());
+
+            // When
+            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.getSiedlungsgebiet(siedlungsgebiet));
+
+            // Then
+            verify(siedlungsgebietRepository, times(1)).findById(siedlungsgebiet);
+
+            assertThat(exception.getMessage())
+                    .isEqualTo(String.format("The %s with ID %s was not found.", Siedlungsgebiet.class.getSimpleName(), siedlungsgebiet));
+        }
+    }
 
     @Nested
     class GetSiedlungsgebiete {
@@ -165,6 +208,68 @@ class SiedlungsgebietServiceTest {
             verify(siedlungsgebietRepository, times(1)).findAllSiedlungsgebiete();
             assertThat(formContext.siedlungsgebiete()).isEqualTo(allSiedlungsgebiete);
         }
+    }
 
+    @Nested
+    class GetSiedlungsgebietFormContextDTOs {
+
+        @Test
+        void givenEntitiesExist_thenReturnFormContextDTOs() {
+            // Given
+            final Siedlungsgebiet entity1 = new Siedlungsgebiet(BigDecimal.valueOf(1), "Test 1");
+            final Siedlungsgebiet entity2 = new Siedlungsgebiet(BigDecimal.valueOf(2), "Test 2");
+            final List<Siedlungsgebiet> entities = List.of(entity1, entity2);
+
+            final List<SiedlungsgebietFormContextDTO> expectedDTOs = List.of(
+                    Mockito.mock(SiedlungsgebietFormContextDTO.class),
+                    Mockito.mock(SiedlungsgebietFormContextDTO.class));
+
+            when(siedlungsgebietRepository.findAll()).thenReturn(entities);
+            when(siedlungsgebietMapper.toFormContext(entities)).thenReturn(expectedDTOs);
+
+            // When
+            final List<SiedlungsgebietFormContextDTO> result = unitUnderTest.getSiedlungsgebietFormContextDTOs();
+
+            // Then
+            verify(siedlungsgebietRepository, times(1)).findAll();
+            verify(siedlungsgebietMapper, times(1)).toFormContext(entities);
+            assertThat(result).isEqualTo(expectedDTOs);
+        }
+    }
+
+    @Nested
+    class CheckExistsBySiedlungsgebiet {
+
+        @Test
+        void givenIdExists_thenDoesNotThrowException() {
+            // Given
+            final BigDecimal id = BigDecimal.valueOf(1);
+            when(siedlungsgebietRepository.existsById(id)).thenReturn(true);
+
+            // When / Then
+            Assertions.assertDoesNotThrow(
+                    () -> unitUnderTest.checkExistsBySiedlungsgebiet(id));
+
+            verify(siedlungsgebietRepository, times(1)).existsById(id);
+        }
+
+        @Test
+        void givenIdNotExists_thenThrowNotFoundException() {
+            // Given
+            final BigDecimal id = BigDecimal.valueOf(1);
+            when(siedlungsgebietRepository.existsById(id)).thenReturn(false);
+
+            // When / Then
+            final Exception exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> unitUnderTest.checkExistsBySiedlungsgebiet(id));
+
+            verify(siedlungsgebietRepository, times(1)).existsById(id);
+            assertThat(exception.getMessage()).isEqualTo(
+                    String.format(
+                            "The %s with ID %s was not found.",
+                            Siedlungsgebiet.class.getSimpleName(),
+                            id));
+        }
     }
 }

@@ -163,10 +163,10 @@ class FoerderbereichIntegrationTest {
         private static Stream<Arguments> invalidInputRequests() {
             return Stream.of(
                     arguments(
-                            "foerderbereich too low",
+                            "fobFb too low",
                             new FoerderbereichCreateDTO(-1, "Test", true, false, true, false)),
                     arguments(
-                            "foerderbereich missing",
+                            "fobFb missing",
                             new FoerderbereichCreateDTO(null, "Test", true, false, true, false)),
                     arguments(
                             "bezeichnung missing",
@@ -184,7 +184,7 @@ class FoerderbereichIntegrationTest {
                             "nichtRelevant missing",
                             new FoerderbereichCreateDTO(2, "Test", true, false, true, null)),
                     arguments(
-                            "foerderbereich too high",
+                            "fobFb too high",
                             new FoerderbereichCreateDTO(100, "Test", true, false, true, false)),
                     arguments(
                             "bezeichnung too short",

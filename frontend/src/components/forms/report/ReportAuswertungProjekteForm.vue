@@ -1,0 +1,433 @@
+<template>
+  <v-form
+    ref="form"
+    @update:model-value="onValidityChanged"
+  >
+    <v-row align="center">
+      <v-col
+        cols="12"
+        md="2"
+      >
+        <fm-autocomplete
+          v-model="modelValue.parameters!.jahr"
+          :items="jahrOptions"
+          item-title="title"
+          item-value="value"
+          :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="jahr"
+          :label="t('domain.report.auswertungProjekt.jahr')"
+          density="comfortable"
+        />
+      </v-col>
+
+      <v-spacer />
+
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <fm-checkbox
+          v-model="modelValue.parameters!.offen"
+          :label="t('domain.report.auswertungProjekt.offen')"
+          true-value="1"
+          false-value="0"
+          density="compact"
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <fm-checkbox
+          v-model="modelValue.parameters!.kauf"
+          :label="t('domain.report.auswertungProjekt.kauf')"
+          true-value="1"
+          false-value="0"
+          density="compact"
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <fm-checkbox
+          v-model="modelValue.parameters!.relevant"
+          :label="t('domain.report.auswertungProjekt.relevant')"
+          true-value="1"
+          false-value="0"
+          density="compact"
+        />
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <fm-autocomplete
+          v-model="modelValue.parameters!.sbl"
+          :items="props.reportAuswertungProjektFormContext?.sbls ?? []"
+          :item-title="getStadtbezirkslisteTitle"
+          item-value="kurzbez"
+          :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="sbl"
+          :label="t('domain.report.common.sbl')"
+          density="comfortable"
+          @update:model-value="delete modelValue.parameters!.bez"
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <fm-autocomplete
+          v-model="modelValue.parameters!.bez"
+          :items="props.reportAuswertungProjektFormContext?.bezs ?? []"
+          :item-title="getStadtbezirkTitle"
+          item-value="stadtbezirk"
+          :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bez"
+          :label="t('domain.report.common.bez')"
+          density="comfortable"
+          @update:model-value="delete modelValue.parameters!.sbl"
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <fm-autocomplete
+          v-model="modelValue.parameters!.fb"
+          :items="props.reportAuswertungProjektFormContext?.fbs ?? []"
+          :item-title="getFoerderbereichTitle"
+          item-value="fb"
+          :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="fb"
+          :label="t('domain.report.common.fb')"
+          density="comfortable"
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <fm-autocomplete
+          v-model="modelValue.parameters!.ua"
+          :items="props.reportAuswertungProjektFormContext?.uas ?? []"
+          :item-title="getUnterabschnittTitle"
+          item-value="ua"
+          :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="ua"
+          :label="t('domain.report.common.ua')"
+          density="comfortable"
+        />
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <fm-autocomplete
+          v-model="modelValue.parameters!.kurz"
+          :items="props.reportAuswertungProjektFormContext?.kurzs ?? []"
+          :item-title="getKurzbezeichnungTitle"
+          item-value="kurzbez"
+          :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="kurz"
+          :label="t('domain.report.common.kurz')"
+          density="comfortable"
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <fm-autocomplete
+          v-model="modelValue.parameters!.sgt"
+          :items="props.reportAuswertungProjektFormContext?.sgts ?? []"
+          :item-title="getSiedlungsgebietTitle"
+          item-value="siedlungsgebiet"
+          :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="sgt"
+          :label="t('domain.report.common.sgt')"
+          density="comfortable"
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <fm-autocomplete
+          v-model="modelValue.parameters!.bpg"
+          :items="props.reportAuswertungProjektFormContext?.bpgs ?? []"
+          :item-title="getBauprogrammTitle"
+          item-value="bauprogramm"
+          :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="bpg"
+          :label="t('domain.report.common.bpg')"
+          density="comfortable"
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <fm-autocomplete
+          v-model="modelValue.parameters!.krisofp"
+          :items="props.reportAuswertungProjektFormContext?.krisofps ?? []"
+          :item-title="getKrisofpTitle"
+          :item-value="getKrisofpValue"
+          :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="krisofp"
+          :label="t('domain.report.common.krisofp')"
+          density="comfortable"
+          clearable
+        />
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <fm-text-field
+          v-model="modelValue.parameters!.pname"
+          :display-mode="InputDisplayMode.EDIT"
+          :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="pname"
+          :label="t('domain.report.common.pname')"
+          density="comfortable"
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <fm-text-field
+          v-model="modelValue.parameters!.pstrasse"
+          :display-mode="InputDisplayMode.EDIT"
+          :validation-attribute-map="
+            ReportAuswertungProjekteDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="pstrasse"
+          :label="t('domain.report.common.pstrasse')"
+          density="comfortable"
+        />
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <fm-autocomplete
+          v-model="modelValue.parameters!.sort"
+          :items="sortOptions"
+          item-value="value"
+          item-title="title"
+          :label="t('domain.report.auswertungProjekt.sortierung')"
+          density="comfortable"
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <v-select
+          v-model="modelValue.parameters!.type"
+          :items="formatOptions"
+          item-value="value"
+          label="Format"
+          variant="outlined"
+          density="comfortable"
+        />
+      </v-col>
+    </v-row>
+  </v-form>
+</template>
+
+<script setup lang="ts">
+import type {
+  BauprogrammFormContextDTO,
+  FoerderbereichFormContextDTO,
+  GetReportAuswertungProjektRequest,
+  KurzbezeichnungFormContextDTO,
+  ListennameStadtbezirkslisteFormContextDTO,
+  ReportAuswertungProjektFormContext,
+  SiedlungsgebietFormContextDTO,
+  StadtbezirkFormContextDTO,
+  UnterabschnittFormContextDTO,
+} from "@/api/generated/foerdermittel-backend";
+import type { DeepReadonly } from "vue";
+import type { VForm } from "vuetify/components";
+
+import { computed, useTemplateRef } from "vue";
+import { useI18n } from "vue-i18n";
+
+import {
+  ReportAuswertungProjekteDTOPropertyValidationAttributesMap,
+  ReportAuswertungProjektFormContextDTOKrisofpEnum,
+} from "@/api/generated/foerdermittel-backend";
+import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
+import FmCheckbox from "@/components/common/FmCheckbox.vue";
+import FmTextField from "@/components/common/FmTextField.vue";
+import { InputDisplayMode } from "@/types/InputDisplayMode";
+import { getKrisofpTitle } from "@/util/krisofpUtils.ts";
+
+const { t } = useI18n();
+
+const modelValue = defineModel<Partial<GetReportAuswertungProjektRequest>>({
+  required: true,
+});
+
+const props = defineProps<{
+  reportAuswertungProjektFormContext?: DeepReadonly<ReportAuswertungProjektFormContext>;
+}>();
+
+const emit = defineEmits<{
+  isValid: [boolean | null];
+}>();
+
+const formRef = useTemplateRef<VForm>("form");
+
+function onValidityChanged(newIsValid: boolean | null) {
+  emit("isValid", newIsValid);
+}
+
+async function validate() {
+  if (formRef.value) {
+    await formRef.value.validate();
+  }
+}
+
+defineExpose({
+  validate,
+});
+
+const jahrOptions = computed(() => {
+  const projekte = props.reportAuswertungProjektFormContext?.projekte ?? [];
+
+  return [
+    ...new Set(
+      projekte
+        .map((projekt) => projekt.jahr)
+        .filter((jahr): jahr is string => !!jahr)
+        .map((jahr) => (jahr.length === 2 ? `20${jahr}` : jahr))
+    ),
+  ]
+    .sort((a, b) => Number(b) - Number(a))
+    .map((jahr) => ({
+      title: jahr,
+      value: jahr,
+    }));
+});
+
+function getKrisofpValue(
+  item: ReportAuswertungProjektFormContextDTOKrisofpEnum
+): string {
+  return item;
+}
+
+function getFoerderbereichTitle(item: FoerderbereichFormContextDTO) {
+  return item ? `${item.fb} (${item.bezeichnung})` : "";
+}
+
+/**
+ * Stadtbezirksliste.
+ */
+function getStadtbezirkslisteTitle(
+  item: ListennameStadtbezirkslisteFormContextDTO
+) {
+  return item ? `${item.kurzbez} (${item.bezeichnung})` : "";
+}
+
+function getStadtbezirkTitle(item: StadtbezirkFormContextDTO) {
+  return item ? `${item.stadtbezirk} (${item.bezeichnung})` : "";
+}
+
+function getUnterabschnittTitle(item: UnterabschnittFormContextDTO) {
+  return item ? `${item.ua} (${item.bezeichnung})` : "";
+}
+
+function getKurzbezeichnungTitle(item: KurzbezeichnungFormContextDTO) {
+  return item ? `${item.kurzbez ?? ""} (${item.bezeichnung})` : "";
+}
+
+function getSiedlungsgebietTitle(item: SiedlungsgebietFormContextDTO) {
+  return item ? `${item.siedlungsgebiet ?? ""} (${item.bezeichnung})` : "";
+}
+
+function getBauprogrammTitle(item: BauprogrammFormContextDTO) {
+  return item ? `${item.bauprogramm} (${item.bezeichnung})` : "";
+}
+
+const sortOptions = computed(() => [
+  {
+    title: t("domain.report.auswertungProjekt.sortEnum.stadtbezirkStrasse"),
+    value: "STADTBEZIRK_STRASSE",
+  },
+  {
+    title: t("domain.report.auswertungProjekt.sortEnum.projektnummer"),
+    value: "PROJEKTNUMMER",
+  },
+  {
+    title: t("domain.report.auswertungProjekt.sortEnum.strasseProjektnummer"),
+    value: "STRASSE_PROJEKTNUMMER",
+  },
+  {
+    title: t("domain.report.auswertungProjekt.sortEnum.foerderbereichStrasse"),
+    value: "FOERDERBEREICH_STRASSE",
+  },
+  {
+    title: t(
+      "domain.report.auswertungProjekt.sortEnum.foerderbereichProjektnummer"
+    ),
+    value: "FOERDERBEREICH_PROJEKTNUMMER",
+  },
+]);
+const formatOptions = [
+  {
+    title: t("domain.report.auswertungProjekt.type.pdf"),
+    value: "PDF",
+  },
+  {
+    title: t("domain.report.auswertungProjekt.type.excel"),
+    value: "EXCEL",
+  },
+];
+</script>

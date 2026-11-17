@@ -1,8 +1,12 @@
 package de.muenchen.oss.foerdermittel.backend.referat;
 
+import de.muenchen.oss.foerdermittel.backend.referat.dto.ReferatFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.referat.dto.ReferatMapper;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.math.BigDecimal;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ReferatService {
 
     private final ReferatRepository referatRepository;
+    private final ReferatMapper referatMapper;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -52,6 +57,18 @@ public class ReferatService {
         log.debug("Delete Referat with ID {}", referatId);
         ServiceUtils.getEntityOrThrowNotFoundException(referatId, referatRepository, Referat.class);
         referatRepository.deleteById(referatId);
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public List<ReferatFormContextDTO> getReferatFormContextDTOs() {
+        return referatMapper.toFormContext(referatRepository.findAll());
+    }
+
+    @PreAuthorize(Authorities.HAS_ANY_ROLE)
+    @Transactional(readOnly = true)
+    public void checkExistsByReferat(final BigDecimal refId) {
+        ServiceUtils.checkExistsOrThrowNotFoundException(refId, referatRepository, Referat.class);
     }
 
 }
