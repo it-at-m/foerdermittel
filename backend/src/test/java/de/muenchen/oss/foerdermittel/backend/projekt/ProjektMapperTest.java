@@ -21,6 +21,7 @@ import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -48,7 +49,7 @@ class ProjektMapperTest {
 
         projekt.setFobFb(new Foerderbereich(
                 BigDecimal.valueOf(12), "Test", false, false, false, false));
-        projekt.setBezStadtbezirk(new Stadtbezirk(BigDecimal.valueOf(13), "Test"));
+        projekt.setBezStadtbezirk(new Stadtbezirk(BigDecimal.valueOf(13), "Test", new ArrayList<>()));
 
         final Hauptabschnitt hauptabschnitt = new Hauptabschnitt("HA", "Test");
         projekt.setUasUa(new Unterabschnitt("UA", "Test", hauptabschnitt));

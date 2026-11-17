@@ -1,21 +1,20 @@
 
 package de.muenchen.oss.foerdermittel.backend.hhjahr;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
+
 import de.muenchen.oss.foerdermittel.backend.hhjahr.dto.HhjahrCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.hhjahr.dto.HhjahrFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.hhjahr.dto.HhjahrMapper;
 import de.muenchen.oss.foerdermittel.backend.hhjahr.dto.HhjahrResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.hhjahr.dto.HhjahrUpdateDTO;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.mapstruct.factory.Mappers;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 
 class HhjahrMapperTest {
 
@@ -31,8 +30,7 @@ class HhjahrMapperTest {
                     BigDecimal.valueOf(2024),
                     "Haushaltsjahr 2024",
                     "Testnotiz",
-                    new ArrayList<>()
-            );
+                    new ArrayList<>());
 
             // when
             HhjahrResponseDTO dto = hhjahrMapper.toDTO(entity);
@@ -57,8 +55,7 @@ class HhjahrMapperTest {
                     BigDecimal.valueOf(2024),
                     "Haushaltsjahr 2024",
                     "Testnotiz",
-                    new ArrayList<>()
-            );
+                    new ArrayList<>());
 
             // when
             HhjahrResponseDTO dto = hhjahrMapper.toUpdateDTO(entity);
@@ -82,8 +79,7 @@ class HhjahrMapperTest {
             HhjahrCreateDTO dto = new HhjahrCreateDTO(
                     BigDecimal.valueOf(2024),
                     "Haushaltsjahr 2024",
-                    "Testnotiz"
-            );
+                    "Testnotiz");
 
             // when
             Hhjahr entity = hhjahrMapper.toEntity(dto);
@@ -101,8 +97,7 @@ class HhjahrMapperTest {
             // given
             HhjahrUpdateDTO dto = new HhjahrUpdateDTO(
                     "Haushaltsjahr aktualisiert",
-                    "Aktualisierte Notiz"
-            );
+                    "Aktualisierte Notiz");
 
             // when
             Hhjahr entity = hhjahrMapper.toEntity(dto);
@@ -125,8 +120,7 @@ class HhjahrMapperTest {
                     BigDecimal.valueOf(2024),
                     "Haushaltsjahr 2024",
                     "Testnotiz",
-                    new ArrayList<>()
-            );
+                    new ArrayList<>());
 
             // when
             HhjahrFormContextDTO dto = hhjahrMapper.toFormContext(entity);
@@ -145,15 +139,13 @@ class HhjahrMapperTest {
                     BigDecimal.valueOf(2024),
                     "Haushaltsjahr 2024",
                     "Notiz 1",
-                    new ArrayList<>()
-            );
+                    new ArrayList<>());
 
             Hhjahr entity2 = new Hhjahr(
                     BigDecimal.valueOf(2025),
                     "Haushaltsjahr 2025",
                     "Notiz 2",
-                    new ArrayList<>()
-            );
+                    new ArrayList<>());
 
             List<Hhjahr> list = List.of(entity1, entity2);
 
@@ -166,12 +158,10 @@ class HhjahrMapperTest {
                     .extracting(
                             HhjahrFormContextDTO::hhjahr,
                             HhjahrFormContextDTO::hhbezeichnung,
-                            HhjahrFormContextDTO::notizen
-                    )
+                            HhjahrFormContextDTO::notizen)
                     .containsExactly(
                             tuple("2024", "Haushaltsjahr 2024", "Notiz 1"),
-                            tuple("2025", "Haushaltsjahr 2025", "Notiz 2")
-                    );
+                            tuple("2025", "Haushaltsjahr 2025", "Notiz 2"));
         }
     }
 }

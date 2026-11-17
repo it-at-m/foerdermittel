@@ -18,6 +18,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,6 +43,7 @@ public class StadtbezirkslisteController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @Transactional(readOnly = true)
     public Page<StadtbezirkslisteResponseDTO> getStadtbezirklisten(@ParameterObject @PageableDefault(
             sort = "kurzbez"
     ) final Pageable pageable) {

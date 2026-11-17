@@ -27,6 +27,7 @@ import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittRepository;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -109,7 +110,7 @@ class ProjektIntegrationTest {
         final Foerderbereich foerderbereich = new Foerderbereich(BigDecimal.valueOf(99), "Test", false, false, false, false);
         foerderbereichRepository.save(foerderbereich);
 
-        final Stadtbezirk stadtbezirk = new Stadtbezirk(BigDecimal.valueOf(99), "Test");
+        final Stadtbezirk stadtbezirk = new Stadtbezirk(BigDecimal.valueOf(99), "Test", new ArrayList<>());
         stadtbezirkRepository.save(stadtbezirk);
 
         final Hauptabschnitt exampleHa2 = new Hauptabschnitt("ha", "bz2");
