@@ -545,21 +545,38 @@ const datumAsDate = computed<Date | undefined>({
   get: () => {
     const datum = modelValue.value.parameters?.datum;
 
-    if (!datum) {
+    if (!datum || !/^\d{2}\.\d{2}\.\d{4}$/.test(datum)) {
       return undefined;
     }
 
-    const [day, month, year] = datum.split(".");
+    const parts = datum.split(".");
 
-    return new Date(Number(year), Number(month) - 1, Number(day));
+    const day = Number(parts[0] ?? "");
+    const month = Number(parts[1] ?? "");
+    const year = Number(parts[2] ?? "");
+
+    const date = new Date(year, month - 1, day);
+
+    return Number.isNaN(date.getTime()) ? undefined : date;
   },
 
   set: (date) => {
-    if (modelValue.value.parameters) {
-      modelValue.value.parameters.datum = date
-        ? date.toLocaleDateString("de-DE")
-        : undefined;
+    const parameters = modelValue.value.parameters;
+
+    if (!parameters) {
+      return;
     }
+
+    if (!date) {
+      delete parameters.datum;
+      return;
+    }
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+
+    parameters.datum = `${day}.${month}.${year}`;
   },
 });
 </script>
