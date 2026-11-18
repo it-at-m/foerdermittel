@@ -8,6 +8,9 @@
 <!-- Project specific links -->
 [spring-documentation]: https://spring.io/
 [vuejs-documentation]: https://vuejs.org/
+[jasper-documentation]: https://www.jaspersoft.com/
+[vuetify-documentation]: https://vuetifyjs.com/
+[postgres-documentation]: https://www.postgresql.org/
 
 <!-- Shields.io links -->
 [documentation-shield]: https://img.shields.io/badge/documentation-blue?style=for-the-badge
@@ -24,9 +27,7 @@ The **Fördermittel Verwaltung** application is a web-based solution developed f
 
 The application supports the entire funding process, from the initial funding application through approval and disbursement of funds to the final proof of use. The stored data can be queried and evaluated at any time using reports, either by organizational area and/or by project.
 
-The application consists of a backend and a frontend and is built using Java, Spring Boot, Vue.js, JasperReports and Vuetify. PostgreSQL is used as the database management system.
-
-The application is built using [Spring][spring-documentation], [Vue.js][vuejs-documentation], Vuetify, JasperReports and PostgreSQL. It is based on the [refarch-templates] provided by it@M.
+The application is built using [Spring][spring-documentation], [Vue.js][vuejs-documentation], [Vuetify][vuetify-documentation], [JasperReports][jasper-documentation] and [PostgreSQL][postgres-documentation]. It is based on the [refarch-templates] provided by it@M.
 ## Features
 
 The application provides the following core functional areas:
@@ -63,10 +64,6 @@ The specific required versions and additional dependencies are defined in the re
 
 Installation and deployment instructions will be added.
 
-## Configuration
-
-Information about application configuration and setup will be added.
-
 ## Documentation
 
 Detailed project documentation is available at:
@@ -93,9 +90,7 @@ Die **Fördermittel Verwaltung** ist eine Webanwendung der Landeshauptstadt Mün
 
 Die Anwendung unterstützt den gesamten Fördermittelprozess – von der Antragstellung über die Bewilligung und den Mittelabruf bis hin zum Verwendungsnachweis. Die zugrunde liegenden Daten können jederzeit projekt- und/oder bereichsbezogen über Berichte ausgewertet werden.
 
-Die Anwendung besteht aus einem Backend und einem Frontend und basiert auf Java, Spring Boot, Vue.js, JasperReports und Vuetify. Als Datenbankmanagementsystem wird PostgreSQL eingesetzt.
-
-Die Anwendung basiert auf [Spring][spring-documentation], [Vue.js][vuejs-documentation], Vuetify, JasperReports und PostgreSQL. Als Grundlage dienen die von it@M bereitgestellten [refarch-templates].
+Die Anwendung basiert auf [Spring][spring-documentation], [Vue.js][vuejs-documentation], [Vuetify][vuetify-documentation], [JasperReports][jasper-documentation] and [PostgreSQL][postgres-documentation]. Als Grundlage dienen die von it@M bereitgestellten [refarch-templates].
 ## Funktionsumfang
 
 Die Anwendung umfasst folgende zentrale Funktionsbereiche:
@@ -132,13 +127,10 @@ Die konkret erforderlichen Versionsstände und weiteren Abhängigkeiten sind den
 
 Die Installations- und Bereitstellungsanleitung wird ergänzt.
 
-## Konfiguration
-
-Informationen zur Konfiguration und Einrichtung der Anwendung werden ergänzt.
 
 ## Dokumentation
 
-Die ausführliche Projektdokumentation ist unter folgendem Link verfügbar:
+Die ausführliche Projektdokumentation ist in englischer Sprache unter folgendem Link verfügbar:
 
 [Fördermittel Verwaltung – Projektdokumentation][documentation]
 
