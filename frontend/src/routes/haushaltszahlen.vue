@@ -1,17 +1,18 @@
+
 <template>
   <base-view :domain-key="domainKey">
     <template #default="{ baseViewLoading }">
       <v-card variant="flat">
         <v-card-title
-          class="d-flex align-center justify-space-between text-h6 px-0"
+            class="d-flex align-center justify-space-between text-h6 px-0"
         >
           <div class="d-flex align-center">
             <v-btn
-              :icon="mdiArrowLeft"
-              variant="text"
-              density="comfortable"
-              :to="{ path: '/haushaltsplanung' }"
-              aria-label="Zurück zur Haushaltsplanung"
+                :icon="mdiArrowLeft"
+                variant="text"
+                density="comfortable"
+                :to="{ path: '/haushaltsplanung' }"
+                aria-label="Zurück zur Haushaltsplanung"
             />
 
             <span>
@@ -21,48 +22,40 @@
           </div>
 
           <action-button
-            :actions="actions"
-            :loading="baseViewLoading"
+              :actions="actions"
+              :loading="baseViewLoading"
           />
         </v-card-title>
 
         <crud-card
-          v-if="hhjahr !== undefined"
-          :empty-item-template="EMPTY_ITEM_TEMPLATE"
-          :loading="baseViewLoading || hhplanApi.getAll?.loading.value"
-          :domain-key="domainKey"
-          :table-headers="headers"
-          :api="hhplanApi"
-          :enable-actions="false"
-          :should-load-form-context="false"
-          :expandable="true"
+            v-if="hhjahr !== undefined"
+            :empty-item-template="EMPTY_ITEM_TEMPLATE"
+            :loading="baseViewLoading || hhplanApi.getAll?.loading.value"
+            :domain-key="domainKey"
+            :table-headers="headers"
+            :api="hhplanApi"
+            :enable-actions="false"
+            :should-load-form-context="false"
+            :expandable="true"
+            :sort-by="[{ key: 'proProjnr', order: 'asc' }]"
         >
           <template #form="{ item, inputDisplayMode }">
             <v-card
-              v-if="inputDisplayMode === InputDisplayMode.READ"
-              class="ma-2"
+                v-if="inputDisplayMode === InputDisplayMode.READ"
             >
-              <v-card-text>
-                <v-row align="start">
-                  <v-col
-                    cols="12"
-                    md="2"
-                  >
+                <v-row>
+                  <v-col cols="12" md="2">
                     <div class="text-subtitle-2">
                       {{ t("model.haushaltsplanung.projektdetails") }}
                     </div>
                   </v-col>
-
-                  <v-col
-                    cols="12"
-                    md="10"
-                  >
+                  <v-col cols="12" md="10">
                     <v-row>
                       <v-col
-                        v-for="detail in getProjektDetails(item)"
-                        :key="detail.label"
-                        cols="12"
-                        md="3"
+                          v-for="detail in getProjektDetails(item)"
+                          :key="detail.label"
+                          cols="12"
+                          md="3"
                       >
                         <v-label>{{ detail.label }}</v-label>
                         <div>{{ detail.value }}</div>
@@ -70,8 +63,50 @@
                     </v-row>
                   </v-col>
                 </v-row>
-              </v-card-text>
             </v-card>
+          </template>
+          <template
+              v-for="header in headers"
+              #[`header.${header.key}`]="{ column, getSortIcon, toggleSort, isSorted }"
+              :key="header.key"
+          >
+            <v-tooltip
+                v-if="getHeaderTooltip(header.key)"
+                location="top"
+            >
+              <template #activator="{ props }">
+      <span
+          v-bind="props"
+          class="d-inline-flex align-center cursor-pointer"
+          @click="toggleSort(column)"
+      >
+        {{ column.title }}
+
+        <v-icon
+            v-if="isSorted(column)"
+            :icon="getSortIcon(column)"
+            size="small"
+            class="ms-1"
+        />
+      </span>
+              </template>
+              {{ getHeaderTooltip(header.key) }}
+            </v-tooltip>
+
+            <span
+                v-else
+                class="d-inline-flex align-center cursor-pointer"
+                @click="toggleSort(column)"
+            >
+    {{ column.title }}
+
+    <v-icon
+        v-if="isSorted(column)"
+        :icon="getSortIcon(column)"
+        size="small"
+        class="ms-1"
+    />
+  </span>
           </template>
         </crud-card>
       </v-card>
@@ -126,15 +161,15 @@ const hhjahr = computed(() => {
 const hhplanApi = useHaushaltsplanungApi();
 
 watch(
-  hhjahr,
-  async (year) => {
-    if (year === undefined) {
-      return;
-    }
+    hhjahr,
+    async (year) => {
+      if (year === undefined) {
+        return;
+      }
 
-    await hhplanApi.getAll?.call({ hhjahr: year });
-  },
-  { immediate: true }
+      await hhplanApi.getAll?.call({ hhjahr: year });
+    },
+    { immediate: true },
 );
 
 const EMPTY_ITEM_TEMPLATE = {} as HhplanResponseDTO;
@@ -150,36 +185,52 @@ const actions = computed(() => [
   },
 ]);
 
+const headerTooltips: Record<string, string> = {
+  mitteleinplanung: "Mitteleinplanung",
+  bewilligungVoj: "Bewilligung Vorjahre",
+  bewilligungHhj: "Bewilligung Haushaltsjahr",
+  erhaltenVoj: "Erhalten Vorjahre",
+  erhaltenHhj: "Erhalten Haushaltsjahr",
+  baustandaktuell: "Aktueller Baustand",
+  an: "Ansatz",
+  n1: "1. Nachtrag",
+  n2: "2. Nachtrag",
+};
+
+const getHeaderTooltip = (key: string | undefined): string | undefined => {
+  return key ? headerTooltips[key] : undefined;
+};
+
 const formatDate = (value?: Date | string | null): string =>
-  value
-    ? new Date(value).toLocaleDateString("de-DE", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      })
-    : "";
+    value
+        ? new Date(value).toLocaleDateString("de-DE", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        })
+        : "";
 
 const getProjektDetails = (item: HhplanResponseDTO) =>
-  [
-    ["proProjnr", item.proProjnr],
-    ["pname", item.pname],
-    ["pstrasse", item.pstrasse],
-    ["notizen", item.notizen || "—"],
-    ["anlagedatum", formatDate(item.anlagedatum)],
-    ["anlagevon", item.anlagevon || "—"],
-    ["aenderungdatum", formatDate(item.aenderungsdatum)],
-    ["aenderungvon", item.aenderungvon || "—"],
-  ].map(([key, value]) => ({
-    label: t(`model.haushaltsplanung.${key}`),
-    value,
-  }));
+    [
+      ["proProjnr", item.proProjnr],
+      ["pname", item.pname],
+      ["pstrasse", item.pstrasse],
+      ["notizen", item.notizen || "—"],
+      ["anlagedatum", formatDate(item.anlagedatum)],
+      ["anlagevon", item.anlagevon || "—"],
+      ["aenderungdatum", formatDate(item.aenderungsdatum)],
+      ["aenderungvon", item.aenderungvon || "—"],
+    ].map(([key, value]) => ({
+      label: t(`model.haushaltsplanung.${key}`),
+      value,
+    }));
 
 const headers = computed<DataTableHeader<HhplanResponseDTO>[]>(() => [
   {
     title: t("model.haushaltsplanung.proProjnr"),
     key: "proProjnr",
-    align: "center",
-    width: 100,
+    sortable: true,
+    width: 150,
   },
   {
     title: t("model.haushaltsplanung.fipo"),
@@ -189,62 +240,62 @@ const headers = computed<DataTableHeader<HhplanResponseDTO>[]>(() => [
   {
     title: t("model.haushaltsplanung.fobFb"),
     key: "fobFb",
-    width: 50,
+    width: 80,
   },
   {
     title: t("model.haushaltsplanung.stadtbezirk"),
     key: "stadtbezirk",
-    width: 50,
+    width: 80,
   },
   {
     title: t("model.haushaltsplanung.listenname"),
     key: "listenname",
-    width: 60,
+    width: 80,
   },
   {
     title: t("model.haushaltsplanung.mitteleinplanung"),
     key: "mitteleinplanung",
-    width: 100,
+    width: 120,
   },
   {
     title: t("model.haushaltsplanung.bewilligungVoj"),
     key: "bewilligungVoj",
-    width: 80,
+    width: 120,
   },
   {
     title: t("model.haushaltsplanung.bewilligungHhj"),
     key: "bewilligungHhj",
-    width: 80,
+    width: 120,
   },
   {
     title: t("model.haushaltsplanung.erhaltenVoj"),
     key: "erhaltenVoj",
-    width: 80,
+    width: 120,
   },
   {
     title: t("model.haushaltsplanung.erhaltenHhj"),
     key: "erhaltenHhj",
-    width: 80,
+    width: 120,
   },
   {
     title: t("model.haushaltsplanung.baustandaktuell"),
     key: "baustandaktuell",
-    width: 80,
+    width: 120,
   },
   {
     title: t("model.haushaltsplanung.an"),
     key: "an",
-    width: 60,
+    width: 80,
   },
   {
     title: t("model.haushaltsplanung.n1"),
     key: "n1",
-    width: 60,
+    width: 80,
   },
   {
     title: t("model.haushaltsplanung.n2"),
     key: "n2",
-    width: 60,
+    width: 80,
   },
 ]);
 </script>

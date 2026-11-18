@@ -13,6 +13,7 @@
         :handle-update="handleUpdate"
         :handle-delete="handleDelete"
         :form-ref="hhjahrFormRef"
+        :expandable="true"
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <haushaltsjahr-form
@@ -41,6 +42,20 @@
           >
             {{ item.hhjahr }}
           </v-chip>
+        </template>
+        <template #expanded="{ item }">
+          <div class="pa-4">
+            <div class="text-subtitle-2 mb-2">
+              {{ t("model.haushaltsjahr.notizen") }}
+            </div>
+
+            <div
+                class="text-body-2"
+                style="white-space: pre-wrap"
+            >
+              {{ item.notizen || "—" }}
+            </div>
+          </div>
         </template>
       </crud-card>
     </template>
@@ -82,18 +97,11 @@ const headers: DataTableHeader<Partial<HhjahrResponseDTO>>[] = [
   {
     title: t("model.haushaltsjahr.hhjahr"),
     value: "hhjahr",
-    align: "center",
-    width: 120,
+    width: 150,
   },
   {
     title: t("model.haushaltsjahr.hhbezeichnung"),
     value: "hhbezeichnung",
-    width: 200,
-  },
-  {
-    title: t("model.haushaltsjahr.notizen"),
-    value: "notizen",
-    width: 200,
   },
 ];
 
