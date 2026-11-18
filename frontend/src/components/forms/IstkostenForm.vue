@@ -184,7 +184,7 @@ defineExpose({
 const monatOptions = Array.from({ length: 12 }, (_, i) => i + 1);
 </script>
 <style>
-.currency-input :deep(input) {
+.currency-input input {
   text-align: right;
 }
 </style>

@@ -80,7 +80,50 @@
       "krhzweck": "Krankenhauszweck"
     },
     "antrag": {
-      "modelName": "Antrag | Anträge"
+      "modelName": "Förderantrag | Förderanträge",
+      "projnr": "Projektnummer",
+      "pname": "Projektname",
+      "pstrasse": "Straße",
+      "fobFb": "FB",
+      "antragstyp": "Antragstyp",
+      "antragsdatum": "Antragsdatum",
+      "geskosten": "Beantragte Gesamtkosten",
+      "zwfkosten": "Beantragte zuwendungsfähige Kosten",
+      "asuZ": "Beantragter Zuschuss (Jahr)",
+      "asuD": "Beantragtes Darlehen (Jahr)",
+      "asuK": "Beantragte Konnexität (Jahr)",
+      "bvorSuZ": "Voraussichtlicher Gesamtzuschuss",
+      "bvorSuD": "Voraussichtliches Gesamtdarlehen",
+      "bvorSuK": "Voraussichtliche Gesamtkonnexität",
+      "vorzbeg": "Antrag auf vorzeitigen Baubeginn gestellt",
+      "vbdatum": "Genehmigt mit Datum vom",
+      "unbeddat": "Antrag auf Unbedenklichkeit gestellt am",
+      "unbedja": "Antrag auf Unbedenklichkeit erteilt am",
+      "unbedbis": "Antrag auf Unbedenklichkeit befristet bis",
+      "notizen": "Notizen / Zustimmung vorzeitiger Baubeginn notwendig bis",
+      "created": "Angelegt am {0} von {1}",
+      "modified": "Geändert am {0} von {1}",
+      "column": {
+        "asuZ": "Zuschuss",
+        "asuD": "Darlehen",
+        "asuK": "Konnexität",
+        "vorzbeg": "VB"
+      },
+      "type": {
+        "erstantrag": "Erstantrag",
+        "schlussantrag": "Schlussantrag (VN)",
+        "aenderungsantrag": "Änderungsantrag",
+        "fortsetzungsantrag": "Fortsetzungsantrag",
+        "unbedenklichkeitsantrag": "Unbedenklichkeitsantrag"
+      },
+      "validation": {
+        "projektNotFound": "Diese Projektnummer existiert nicht",
+        "antragstypExists": "Für dieses Projekt existiert bereits ein Antrag dieses Typs",
+        "antragsdatumRequired": "Antragsdatum ist außer bei Typ U Pflicht",
+        "unbeddatRequired": "Bei Typ U ist das Datum des Unbedenklichkeitsantrags Pflicht",
+        "amountRequired": "Außer bei Unbedenklichkeitsanträgen muss ein Zuschuss, Darlehen oder eine Konnexität beantragt werden",
+        "unbedjaRequired": "Bei gesetztem Befristungsdatum ist das Erteilungsdatum Pflicht"
+      }
     },
     "bewilligung": {
       "modelName": "Bewilligung | Bewilligungen"
