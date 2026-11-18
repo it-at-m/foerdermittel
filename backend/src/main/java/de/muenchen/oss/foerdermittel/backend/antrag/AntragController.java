@@ -15,7 +15,9 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,7 +43,9 @@ public class AntragController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<AntragResponseDTO> getAntraege(
-            @ParameterObject @PageableDefault(sort = { "projekt.projnr", "antragsdatum" }) final Pageable pageable) {
+            @ParameterObject @PageableDefault @SortDefault.SortDefaults(
+                { @SortDefault(sort = "projekt.projnr", direction = Sort.Direction.DESC), @SortDefault("antragsdatum") }
+            ) final Pageable pageable) {
         final Page<Antrag> pageWithAntraege = antragService.getAntraege(pageable);
 
         final List<AntragResponseDTO> antragResponseDTOList = pageWithAntraege.getContent().stream()
