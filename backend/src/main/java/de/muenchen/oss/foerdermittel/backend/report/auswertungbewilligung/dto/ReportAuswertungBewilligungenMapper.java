@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 @Component
+@SuppressWarnings("CPD-START")
 public class ReportAuswertungBewilligungenMapper {
 
     public Map<String, Object> toJasperParameters(

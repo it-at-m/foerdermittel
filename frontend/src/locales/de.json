@@ -268,8 +268,7 @@
           "pdfFlat": "PDF: ohne Gruppierung",
           "excel": "Excel"
         },
-        "reportSort": "Sortierung",
-
+        "reportSort": "Sortierung"
       },
       "projektUebersicht": "@:model.projekt.modelName{'übersicht'}",
       "projektUebersichtManagement": "@:domain.report.projektUebersicht (Management Summary)",
