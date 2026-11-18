@@ -23,11 +23,12 @@
 
 # Fördermittel Verwaltung
 
-The **Fördermittel Verwaltung** application is a web-based solution developed for the City Treasury Department of the City of Munich (Landeshauptstadt München). It is designed to centrally manage and document all municipal construction projects for which funding is requested from the State of Bavaria, the German federal government, the European Union, or other organizations and public authorities.
+The **Fördermittel Verwaltung** application is a web-based solution developed for the City Treasury Department (Stadtkämmerei) of the City of Munich (Landeshauptstadt München). It is designed to centrally manage and document all municipal construction projects for which funding is requested from the State of Bavaria, the German federal government, the European Union, or other organizations and public authorities.
 
 The application supports the entire funding process, from the initial funding application through approval and disbursement of funds to the final proof of use. The stored data can be queried and evaluated at any time using reports, either by organizational area and/or by project.
 
 The application is built using [Spring][spring-documentation], [Vue.js][vuejs-documentation], [Vuetify][vuetify-documentation], [JasperReports][jasper-documentation] and [PostgreSQL][postgres-documentation]. It is based on the [refarch-templates] provided by it@M.
+
 ## Features
 
 The application provides the following core functional areas:
@@ -91,6 +92,7 @@ Die **Fördermittel Verwaltung** ist eine Webanwendung der Landeshauptstadt Mün
 Die Anwendung unterstützt den gesamten Fördermittelprozess – von der Antragstellung über die Bewilligung und den Mittelabruf bis hin zum Verwendungsnachweis. Die zugrunde liegenden Daten können jederzeit projekt- und/oder bereichsbezogen über Berichte ausgewertet werden.
 
 Die Anwendung basiert auf [Spring][spring-documentation], [Vue.js][vuejs-documentation], [Vuetify][vuetify-documentation], [JasperReports][jasper-documentation] and [PostgreSQL][postgres-documentation]. Als Grundlage dienen die von it@M bereitgestellten [refarch-templates].
+
 ## Funktionsumfang
 
 Die Anwendung umfasst folgende zentrale Funktionsbereiche:
@@ -126,7 +128,6 @@ Die konkret erforderlichen Versionsstände und weiteren Abhängigkeiten sind den
 ## Installation und Inbetriebnahme
 
 Die Installations- und Bereitstellungsanleitung wird ergänzt.
-
 
 ## Dokumentation
 
