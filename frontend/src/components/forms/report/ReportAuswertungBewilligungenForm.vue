@@ -514,7 +514,7 @@ const sortOptions = [
 
 const formatOptions = [
   {
-    title: t("domain.report.auswertungAntraege.reportType.pdf"),
+    title: t("domain.report.auswertungBewilligungen.reportType.pdf"),
     value: "PDF",
   },
   {
