@@ -80,7 +80,7 @@
       "krhzweck": "Krankenhauszweck"
     },
     "antrag": {
-      "modelName": "Antrag | Anträge",
+      "modelName": "Förderantrag | Förderanträge",
       "projnr": "Projektnummer",
       "pname": "Projektname",
       "pstrasse": "Straße",

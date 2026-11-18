@@ -26,16 +26,6 @@
           />
         </template>
 
-        <template
-          v-for="field in SHORT_HEADER_FIELDS"
-          :key="field"
-          #[`header.${field}`]="{ column }"
-        >
-          <span v-tooltip:top="t(`model.antrag.${field}`)">
-            {{ column.title }}
-          </span>
-        </template>
-
         <template #[`item.vorzbeg`]="{ item }">
           <v-icon
             v-if="item.vorzbeg"
@@ -93,8 +83,6 @@ const { t } = useI18n();
 const formatAmount = (value?: number) =>
   value === undefined ? "" : value.toLocaleString("de-DE");
 
-const SHORT_HEADER_FIELDS = ["asuZ", "asuD", "asuK", "vorzbeg"] as const;
-
 // key is the backend sort path, value the displayed DTO field
 const headers: DataTableHeader<Partial<AntragResponseDTO>>[] = [
   {
@@ -142,6 +130,7 @@ const headers: DataTableHeader<Partial<AntragResponseDTO>>[] = [
     value: (item) => formatAmount(item.asuZ),
     align: "end",
     width: 110,
+    headerProps: { title: t("model.antrag.asuZ") },
   },
   {
     title: t("model.antrag.column.asuD"),
@@ -149,6 +138,7 @@ const headers: DataTableHeader<Partial<AntragResponseDTO>>[] = [
     value: (item) => formatAmount(item.asuD),
     align: "end",
     width: 110,
+    headerProps: { title: t("model.antrag.asuD") },
   },
   {
     title: t("model.antrag.column.asuK"),
@@ -156,12 +146,14 @@ const headers: DataTableHeader<Partial<AntragResponseDTO>>[] = [
     value: (item) => formatAmount(item.asuK),
     align: "end",
     width: 110,
+    headerProps: { title: t("model.antrag.asuK") },
   },
   {
     title: t("model.antrag.column.vorzbeg"),
     value: "vorzbeg",
     align: "center",
     width: 50,
+    headerProps: { title: t("model.antrag.vorzbeg") },
   },
 ];
 
