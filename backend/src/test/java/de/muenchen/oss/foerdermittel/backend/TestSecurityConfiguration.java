@@ -43,6 +43,7 @@ public class TestSecurityConfiguration {
     private Jwt jwtWithRole(String role) {
         return Jwt.withTokenValue(role)
                 .header("alg", "none")
+                .claim(securityProperties.getUsernameClaim(), role)
                 .claim(
                         "resource_access",
                         Map.of(

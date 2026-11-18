@@ -60,6 +60,7 @@ const {
   validationAttributeMap,
   validationAttributeKey,
   additionalRules = [],
+  required: requiredOverride = undefined,
 } = defineProps<{
   label: string;
   displayMode?: InputDisplayMode;
@@ -68,6 +69,8 @@ const {
   validationAttributeMap?: M;
   validationAttributeKey?: K;
   additionalRules?: ValidationRule[];
+  /** Overrides the required marker from the OpenAPI spec, e.g. for conditionally required fields */
+  required?: boolean;
 }>();
 
 const { required, allRules, counter, canNotEdit } = useInputValidation(
@@ -76,7 +79,8 @@ const { required, allRules, counter, canNotEdit } = useInputValidation(
   additionalRules,
   validationAttributeMap,
   validationAttributeKey,
-  true
+  true,
+  () => requiredOverride
 );
 
 const model = defineModel<string>();
