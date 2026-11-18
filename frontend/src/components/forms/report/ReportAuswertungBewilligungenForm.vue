@@ -545,7 +545,7 @@ const datumAsDate = computed<Date | undefined>({
   get: () => {
     const datum = modelValue.value.parameters?.datum;
 
-    if (!datum || !/^\d{2}\.\d{2}\.\d{4}$/.test(datum)) {
+    if (!datum) {
       return undefined;
     }
 
