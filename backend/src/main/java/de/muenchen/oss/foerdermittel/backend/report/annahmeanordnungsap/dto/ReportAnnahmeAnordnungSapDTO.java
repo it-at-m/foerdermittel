@@ -1,7 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.report.annahmeanordnungsap.dto;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
-public record ReportAnnahmeAnordnungSapDTO(@NotBlank @Schema(pattern = "\\S") String projnr) {
+public record ReportAnnahmeAnordnungSapDTO(@NotBlank @Pattern(regexp = "\\S") String projnr) {
 }
