@@ -52,19 +52,6 @@ const title = t("common.generics.reportTitle", [
 
 const EMPTY_FORM_TEMPLATE: Partial<GetReportAuswertungAntraegeRequest> = {
   parameters: {
-    sbl: "",
-    bez: "",
-    fb: "",
-    ua: "",
-    kurz: "",
-    pname: "",
-    pstrasse: "",
-    projnr: "",
-    sgt: "",
-    bpg: "",
-    fag: "0",
-    offen: "0",
-    relevant: "0",
     sort: "FOERDERBEREICH_PROJEKTNUMMER",
     type: "PDF",
   },
