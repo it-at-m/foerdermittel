@@ -3,6 +3,7 @@ package de.muenchen.oss.foerdermittel.backend.hhplan;
 
 import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanMapper;
+import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 
 import java.math.BigDecimal;
@@ -26,16 +27,22 @@ public class HhplanService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public List<Hhplan> getHhplanByHhjahr(final BigDecimal hhjahr) {
+    public List<HhplanResponseDTO> getHhplanByHhjahr(final BigDecimal hhjahr) {
         log.info("Get Hhplan for Haushaltsjahr {}", hhjahr);
-        return hhplanRepository.findAllByHhjJahrIn(List.of(hhjahr));
+
+        return hhplanRepository.findAllByHhjJahrIn(List.of(hhjahr))
+                .stream()
+                .map(hhplanMapper::toDTO)
+                .toList();
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public Page<Hhplan> getHhplan(final Pageable pageable) {
+    public Page<HhplanResponseDTO> getHhplan(final Pageable pageable) {
         log.info("Get Hhplan with Pageable {}", pageable);
-        return hhplanRepository.findAll(pageable);
+
+        return hhplanRepository.findAll(pageable)
+                .map(hhplanMapper::toDTO);
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)

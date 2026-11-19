@@ -38,8 +38,7 @@ public class HhplanController {
 
         log.info("Get Hhplan with Pageable {}", pageable);
 
-        return hhplanService.getHhplan(pageable)
-                .map(hhplanMapper::toDTO);
+        return hhplanService.getHhplan(pageable);
     }
 
     @GetMapping("/haushaltsjahr/{hhjahr}")
@@ -49,10 +48,7 @@ public class HhplanController {
 
         log.info("Get Hhplan for Haushaltsjahr {}", hhjahr);
 
-        return hhplanService.getHhplanByHhjahr(hhjahr)
-                .stream()
-                .map(hhplanMapper::toDTO)
-                .toList();
+        return hhplanService.getHhplanByHhjahr(hhjahr);
     }
 
     @GetMapping("/form-context")

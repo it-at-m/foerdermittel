@@ -29,7 +29,9 @@ import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -144,6 +146,8 @@ public class Projekt extends AuditableEntity implements Serializable {
     @Column(name = "krhzweck", columnDefinition = "projekte_krhzweck")
     private Krhzweck krhzweck;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "proProjnr")
     private List<Hhplan> hhplaene;
 }

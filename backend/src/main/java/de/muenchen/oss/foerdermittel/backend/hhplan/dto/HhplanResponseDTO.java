@@ -23,7 +23,7 @@ public record HhplanResponseDTO(
         BigDecimal n1,
         BigDecimal n2,
         @NotNull BigDecimal stadtbezirk,
-        @NotNull String listenname,
+        String listenname,
         LocalDateTime anlagedatum,
         String anlagevon,
         LocalDateTime aenderungsdatum,

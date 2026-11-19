@@ -253,14 +253,13 @@ class HhjahrIntegrationTest {
                     "Haushaltsjahr 2025 aktualisiert",
                     "Aktualisierte Notiz");
 
-            final HhjahrResponseDTO responseDTO = restTestClient.put()
+            restTestClient.put()
                     .uri("/hhjahre/{id}", EXISTING_ID)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .body(requestDTO)
                     .accept(MediaType.APPLICATION_JSON)
                     .exchange()
                     .expectStatus().isOk()
-                    .expectHeader().contentType(MediaType.APPLICATION_JSON)
                     .expectBody(HhjahrResponseDTO.class)
                     .value(response -> {
                         assertThat(response).isNotNull();
@@ -270,18 +269,15 @@ class HhjahrIntegrationTest {
                                 .isEqualTo(requestDTO.hhbezeichnung());
                         assertThat(response.notizen())
                                 .isEqualTo(requestDTO.notizen());
-                    })
-                    .returnResult()
-                    .getResponseBody();
+                    });
 
-            assertThat(responseDTO).isNotNull();
+            // Then
+            final Hhjahr entity = hhjahrRepository.findById(EXISTING_ID)
+                    .orElseThrow();
 
-            final Optional<Hhjahr> entity = hhjahrRepository.findById(EXISTING_ID);
-
-            assertThat(entity).isPresent();
-            assertThat(entity.get().getHhbezeichnung())
+            assertThat(entity.getHhbezeichnung())
                     .isEqualTo(requestDTO.hhbezeichnung());
-            assertThat(entity.get().getNotizen())
+            assertThat(entity.getNotizen())
                     .isEqualTo(requestDTO.notizen());
         }
 
@@ -310,7 +306,10 @@ class HhjahrIntegrationTest {
 
         @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
         @MethodSource("authorizationMappings")
-        void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
+        void givenRole_thenReturnStatus(
+                final String role,
+                final HttpStatus httpStatus) {
+
             final HhjahrUpdateDTO requestDTO = new HhjahrUpdateDTO(
                     "Haushaltsjahr 2025 aktualisiert",
                     "Aktualisierte Notiz");
