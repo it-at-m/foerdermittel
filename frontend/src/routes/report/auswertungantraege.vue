@@ -52,8 +52,6 @@ const title = t("common.generics.reportTitle", [
 
 const EMPTY_FORM_TEMPLATE: Partial<GetReportAuswertungAntraegeRequest> = {
   parameters: {
-    jahrVon: "",
-    jahrBis: "",
     sbl: "",
     bez: "",
     fb: "",

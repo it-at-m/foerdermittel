@@ -9,7 +9,7 @@
         cols="12"
         md="3"
       >
-        <fm-text-field
+        <fm-number-input
           v-model="modelValue.parameters!.jahrVon"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
@@ -17,17 +17,16 @@
           "
           validation-attribute-key="jahrVon"
           :label="t('domain.report.common.jahrVon')"
-          validate-on="blur"
-          :error-messages="jahrVonError"
           density="comfortable"
-          @blur="validateYears"
+          control-variant="hidden"
+          clearable
         />
       </v-col>
       <v-col
         cols="12"
         md="3"
       >
-        <fm-text-field
+        <fm-number-input
           v-model="modelValue.parameters!.jahrBis"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
@@ -35,10 +34,8 @@
           "
           validation-attribute-key="jahrBis"
           :label="t('domain.report.common.jahrBis')"
-          validate-on="blur"
-          :error-messages="jahrBisError"
           density="comfortable"
-          @blur="validateYears"
+          control-variant="hidden"
         />
       </v-col>
 
@@ -360,17 +357,17 @@ import type {
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
 
-import { computed, ref, useTemplateRef, watch } from "vue";
+import { computed, useTemplateRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
 import { ReportAuswertungAntraegeDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
+import FmNumberInput from "@/components/common/FmNumberInput.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 import { getAntraegeTitle } from "@/util/antraegeUtils.ts";
 import { getKrisofpTitle } from "@/util/krisofpUtils";
-import { getJahrBisError, getJahrVonError } from "@/util/yearHelper.ts";
 
 const { t } = useI18n();
 
@@ -498,31 +495,4 @@ const formatOptions = [
     value: "EXCEL",
   },
 ];
-
-const jahrValidationMessages = computed(() => ({
-  bereich: t("domain.report.common.validation.jahr.bereich"),
-  groesser: t("domain.report.common.validation.jahr.groesser"),
-  kleiner: t("domain.report.common.validation.jahr.kleiner"),
-}));
-
-const jahrVonError = ref<ReturnType<typeof getJahrVonError>>();
-const jahrBisError = ref<ReturnType<typeof getJahrBisError>>();
-
-function validateYears() {
-  const { jahrVon: von, jahrBis: bis } = modelValue.value.parameters ?? {};
-  const errors = jahrValidationMessages.value;
-
-  jahrVonError.value = getJahrVonError(
-    von,
-    bis,
-    errors.bereich,
-    errors.groesser
-  );
-  jahrBisError.value = getJahrBisError(
-    von,
-    bis,
-    errors.bereich,
-    errors.kleiner
-  );
-}
 </script>
