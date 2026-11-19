@@ -17,8 +17,10 @@
           "
           validation-attribute-key="jahrVon"
           :label="t('domain.report.common.jahrVon')"
+          validate-on="blur"
           :error-messages="jahrVonError"
           density="comfortable"
+          @blur="validateYears"
         />
       </v-col>
       <v-col
@@ -33,8 +35,10 @@
           "
           validation-attribute-key="jahrBis"
           :label="t('domain.report.common.jahrBis')"
+          validate-on="blur"
           :error-messages="jahrBisError"
           density="comfortable"
+          @blur="validateYears"
         />
       </v-col>
 
@@ -53,6 +57,7 @@
           validation-attribute-key="kurzbez"
           :label="t('domain.report.common.sbl')"
           density="comfortable"
+          clearable
           @update:model-value="delete modelValue.parameters!.bez"
         />
       </v-col>
@@ -72,6 +77,7 @@
           validation-attribute-key="stadtbezirk"
           :label="t('domain.report.common.bez')"
           density="comfortable"
+          clearable
           @update:model-value="delete modelValue.parameters!.sbl"
         />
       </v-col>
@@ -92,6 +98,7 @@
           validation-attribute-key="fb"
           :label="t('domain.report.common.fb')"
           density="comfortable"
+          clearable
         />
       </v-col>
       <v-col
@@ -109,6 +116,7 @@
           validation-attribute-key="ua"
           :label="t('domain.report.common.ua')"
           density="comfortable"
+          clearable
         />
       </v-col>
       <v-col
@@ -126,6 +134,7 @@
           validation-attribute-key="kurz"
           :label="t('domain.report.common.kurz')"
           density="comfortable"
+          clearable
         />
       </v-col>
       <v-col
@@ -143,6 +152,7 @@
           validation-attribute-key="projnr"
           :label="t('model.projekt.projnr')"
           density="comfortable"
+          clearable
         />
       </v-col>
     </v-row>
@@ -274,6 +284,7 @@
           validation-attribute-key="siedlungsgebiet"
           :label="t('domain.report.common.sgt')"
           density="comfortable"
+          clearable
         />
       </v-col>
 
@@ -292,6 +303,7 @@
           validation-attribute-key="bauprogramm"
           :label="t('domain.report.common.bpg')"
           density="comfortable"
+          clearable
         />
       </v-col>
     </v-row>
@@ -348,7 +360,7 @@ import type {
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
 
-import { computed, useTemplateRef, watch } from "vue";
+import { computed, ref, useTemplateRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
 import { ReportAuswertungAntraegeDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
@@ -487,17 +499,14 @@ const formatOptions = [
   },
 ];
 
-const jahrVonError = computed(() =>
-  getJahrVonError(
-    modelValue.value.parameters?.jahrVon,
-    modelValue.value.parameters?.jahrBis
-  )
-);
+const jahrVonError = ref<ReturnType<typeof getJahrVonError>>();
+const jahrBisError = ref<ReturnType<typeof getJahrBisError>>();
 
-const jahrBisError = computed(() =>
-  getJahrBisError(
-    modelValue.value.parameters?.jahrVon,
-    modelValue.value.parameters?.jahrBis
-  )
-);
+function validateYears() {
+  const von = modelValue.value.parameters?.jahrVon;
+  const bis = modelValue.value.parameters?.jahrBis;
+
+  jahrVonError.value = getJahrVonError(von, bis);
+  jahrBisError.value = getJahrBisError(von, bis);
+}
 </script>
