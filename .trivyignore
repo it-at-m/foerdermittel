@@ -18,5 +18,5 @@ CVE-2026-118764
 # katex: No attacker-controlled mathematical LaTeX expressions possible
 CVE-2026-103923
 
-# picomatch: denial of service not possible because node.js not used for production build
+# picomatch: denial of service not possible because picomatch is not used in production
 CVE-2026-112366
