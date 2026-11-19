@@ -50,8 +50,8 @@
             </div>
 
             <div
-                class="text-body-2"
-                style="white-space: pre-wrap"
+              class="text-body-2"
+              style="white-space: pre-wrap"
             >
               {{ item.notizen || "—" }}
             </div>
