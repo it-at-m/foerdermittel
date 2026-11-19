@@ -610,25 +610,53 @@ const formatOptions = [
   },
 ];
 
+const jahrValidationMessages = computed(() => ({
+  bereich: t("domain.report.common.validation.jahr.bereich"),
+  groesser: t("domain.report.common.validation.jahr.groesser"),
+  kleiner: t("domain.report.common.validation.jahr.kleiner"),
+}));
+
 const jahrAbrufVonError = ref<ReturnType<typeof getJahrVonError>>();
 const jahrAbrufBisError = ref<ReturnType<typeof getJahrBisError>>();
+
+function validateAbrufYears() {
+  const { jahrAbrufVon: von, jahrAbrufBis: bis } =
+    modelValue.value.parameters ?? {};
+  const errors = jahrValidationMessages.value;
+
+  jahrAbrufVonError.value = getJahrVonError(
+    von,
+    bis,
+    errors.bereich,
+    errors.groesser
+  );
+  jahrAbrufBisError.value = getJahrBisError(
+    von,
+    bis,
+    errors.bereich,
+    errors.kleiner
+  );
+}
 
 const jahrErhaltVonError = ref<ReturnType<typeof getJahrVonError>>();
 const jahrErhaltBisError = ref<ReturnType<typeof getJahrBisError>>();
 
-function validateAbrufYears() {
-  const von = modelValue.value.parameters?.jahrAbrufVon;
-  const bis = modelValue.value.parameters?.jahrAbrufBis;
-
-  jahrAbrufVonError.value = getJahrVonError(von, bis);
-  jahrAbrufBisError.value = getJahrBisError(von, bis);
-}
-
 function validateErhaltYears() {
-  const von = modelValue.value.parameters?.jahrErhaltVon;
-  const bis = modelValue.value.parameters?.jahrErhaltBis;
+  const { jahrErhaltVon: von, jahrErhaltBis: bis } =
+    modelValue.value.parameters ?? {};
+  const errors = jahrValidationMessages.value;
 
-  jahrErhaltVonError.value = getJahrVonError(von, bis);
-  jahrErhaltBisError.value = getJahrBisError(von, bis);
+  jahrErhaltVonError.value = getJahrVonError(
+    von,
+    bis,
+    errors.bereich,
+    errors.groesser
+  );
+  jahrErhaltBisError.value = getJahrBisError(
+    von,
+    bis,
+    errors.bereich,
+    errors.kleiner
+  );
 }
 </script>

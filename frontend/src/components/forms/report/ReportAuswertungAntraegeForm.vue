@@ -499,14 +499,30 @@ const formatOptions = [
   },
 ];
 
+const jahrValidationMessages = computed(() => ({
+  bereich: t("domain.report.common.validation.jahr.bereich"),
+  groesser: t("domain.report.common.validation.jahr.groesser"),
+  kleiner: t("domain.report.common.validation.jahr.kleiner"),
+}));
+
 const jahrVonError = ref<ReturnType<typeof getJahrVonError>>();
 const jahrBisError = ref<ReturnType<typeof getJahrBisError>>();
 
 function validateYears() {
-  const von = modelValue.value.parameters?.jahrVon;
-  const bis = modelValue.value.parameters?.jahrBis;
+  const { jahrVon: von, jahrBis: bis } = modelValue.value.parameters ?? {};
+  const errors = jahrValidationMessages.value;
 
-  jahrVonError.value = getJahrVonError(von, bis);
-  jahrBisError.value = getJahrBisError(von, bis);
+  jahrVonError.value = getJahrVonError(
+    von,
+    bis,
+    errors.bereich,
+    errors.groesser
+  );
+  jahrBisError.value = getJahrBisError(
+    von,
+    bis,
+    errors.bereich,
+    errors.kleiner
+  );
 }
 </script>
