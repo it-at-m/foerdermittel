@@ -48,7 +48,9 @@
                       :key="detail.label"
                       dense
                     >
-                      <v-col cols="5"> {{ detail.label }}: </v-col>
+                      <v-col cols="5">
+                        {{ `${detail.label}:` }}
+                      </v-col>
                       <v-col cols="7">
                         {{ detail.value }}
                       </v-col>
@@ -64,16 +66,16 @@
                     </div>
 
                     <div style="white-space: pre-wrap">
-                      {{ item.notizen || "—" }}
+                      {{ item.notizen || "" }}
                     </div>
                   </v-col>
+
                   <v-divider />
+
                   <v-col cols="12">
                     <div v-if="item.anlagedatum || item.anlagevon">
                       {{ t("model.haushaltsplanung.anlagedatum") }}
-                      {{
-                        item.anlagedatum ? formatDate(item.anlagedatum) : "—"
-                      }}
+                      {{ item.anlagedatum ? formatDate(item.anlagedatum) : "" }}
                       {{
                         item.anlagevon
                           ? t("model.haushaltsplanung.anlagevon") +
@@ -88,7 +90,7 @@
                       {{
                         item.aenderungsdatum
                           ? formatDate(item.aenderungsdatum)
-                          : "—"
+                          : ""
                       }}
                       {{
                         item.aenderungvon
@@ -212,20 +214,20 @@ const formatDate = (value?: Date | string | null): string =>
         month: "2-digit",
         year: "numeric",
       })
-    : "—";
+    : "";
 
 const getProjektDetails = (item: HhplanResponseDTO) => [
   {
     label: t("model.haushaltsplanung.proProjnr"),
-    value: item.proProjnr || "—",
+    value: item.proProjnr || "",
   },
   {
     label: t("model.haushaltsplanung.pname"),
-    value: item.pname || "—",
+    value: item.pname || "",
   },
   {
     label: t("model.haushaltsplanung.pstrasse"),
-    value: item.pstrasse || "—",
+    value: item.pstrasse || "",
   },
 ];
 
@@ -234,85 +236,71 @@ const headers = computed<DataTableHeader<HhplanResponseDTO>[]>(() => [
     title: t("model.haushaltsplanung.proProjnr"),
     key: "proProjnr",
     width: 150,
-    sortable: false,
   },
   {
     title: t("model.haushaltsplanung.fipo"),
     key: "fipo",
     width: 150,
-    sortable: false,
   },
   {
     title: t("model.haushaltsplanung.fobFb"),
     key: "fobFb",
     width: 80,
-    sortable: false,
   },
   {
     title: t("model.haushaltsplanung.stadtbezirk"),
     key: "stadtbezirk",
     width: 80,
-    sortable: false,
   },
   {
     title: t("model.haushaltsplanung.listenname"),
     key: "listenname",
     width: 80,
-    sortable: false,
   },
   {
     title: t("model.haushaltsplanung.mitteleinplanung"),
     key: "mitteleinplanung",
     width: 120,
-    sortable: false,
   },
   {
     title: t("model.haushaltsplanung.bewilligungVoj"),
     key: "bewilligungVoj",
     width: 120,
-    sortable: false,
   },
   {
     title: t("model.haushaltsplanung.bewilligungHhj"),
     key: "bewilligungHhj",
     width: 120,
-    sortable: false,
   },
   {
     title: t("model.haushaltsplanung.erhaltenVoj"),
     key: "erhaltenVoj",
     width: 120,
-    sortable: false,
   },
   {
     title: t("model.haushaltsplanung.erhaltenHhj"),
     key: "erhaltenHhj",
     width: 120,
-    sortable: false,
   },
   {
     title: t("model.haushaltsplanung.baustandaktuell"),
     key: "baustandaktuell",
     width: 120,
-    sortable: false,
   },
   {
     title: t("model.haushaltsplanung.an"),
     key: "an",
     width: 80,
-    sortable: false,
   },
   {
     title: t("model.haushaltsplanung.n1"),
     key: "n1",
     width: 80,
-    sortable: false,
   },
   {
     title: t("model.haushaltsplanung.n2"),
     key: "n2",
     width: 80,
-    sortable: false,
   },
 ]);
 </script>

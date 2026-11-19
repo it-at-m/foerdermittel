@@ -195,10 +195,7 @@
       "aenderungdatum": "Letzte Änderung am",
       "stadtbezirk": "Bez",
       "listenname": "Liste",
-      "keineZuordnungen": "Keine zugeordneten Haushaltsplanungen vorhanden.",
-      "details": "Weitere Details",
-      "planungErstellen": "Planung erstellen",
-      "werteAktualisieren": "Werte aktualisieren"
+      "details": "Weitere Details"
     },
     "staedtebaufoerderung": {
       "modelName": "Städtebauförderung | Städtebauförderungen"
