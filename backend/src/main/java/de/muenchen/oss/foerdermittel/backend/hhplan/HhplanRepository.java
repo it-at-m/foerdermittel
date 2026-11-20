@@ -47,7 +47,12 @@ public interface HhplanRepository extends
                     "hhjJahr"
             }
     )
+    @Query("""
+            SELECT h
+            FROM Hhplan h
+            WHERE h.hhjJahr.hhjahr = :hhjahr
+            """)
     Page<Hhplan> findAllByHhjJahr(
-            BigDecimal hhjahr,
+            @Param("hhjahr") BigDecimal hhjahr,
             Pageable pageable);
 }
