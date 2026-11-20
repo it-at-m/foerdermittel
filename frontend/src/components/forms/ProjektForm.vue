@@ -7,23 +7,22 @@
     <v-row>
       <v-col
         cols="12"
-        md="3"
+        md="2"
       >
         <fm-text-field
+          v-if="projnr"
           :model-value="projnr"
           :label="t('model.projekt.projnr')"
-          :display-mode="displayMode"
+          :display-mode="InputDisplayMode.READ"
           density="comfortable"
           disable-edit
           readonly
+          rows="1"
         />
       </v-col>
-    </v-row>
-
-    <v-row>
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <fm-autocomplete
           v-model="modelValue.uasUa"
@@ -100,7 +99,7 @@
     <v-row>
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <fm-autocomplete
           :model-value="modelValue.fobFb"
@@ -120,7 +119,7 @@
 
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <fm-autocomplete
           v-model="modelValue.kurKurzbez"
@@ -136,13 +135,34 @@
           density="comfortable"
         />
       </v-col>
+      <v-col
+        cols="12"
+        md="2"
+      >
+        <fm-checkbox
+          v-model="modelValue.refinanzierbar"
+          :display-mode="displayMode"
+          :label="t('model.projekt.refinanzierbar')"
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="2"
+      >
+        <fm-checkbox
+          v-model="modelValue.kauf"
+          :display-mode="displayMode"
+          :label="t('model.projekt.kauf')"
+        />
+      </v-col>
     </v-row>
 
     <!-- Projektinformationen -->
     <v-row>
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <fm-text-field
           v-model="modelValue.pstrasse"
@@ -157,7 +177,7 @@
       </v-col>
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <fm-text-field
           v-model="modelValue.pname"
@@ -172,7 +192,7 @@
       </v-col>
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <fm-text-field
           v-model="modelValue.projart"
@@ -185,32 +205,11 @@
           density="comfortable"
         />
       </v-col>
-      <v-col
-        cols="12"
-        md="3"
-      >
-        <fm-checkbox
-          v-model="modelValue.refinanzierbar"
-          :display-mode="displayMode"
-          :label="t('model.projekt.refinanzierbar')"
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="3"
-      >
-        <fm-checkbox
-          v-model="modelValue.kauf"
-          :display-mode="displayMode"
-          :label="t('model.projekt.kauf')"
-        />
-      </v-col>
     </v-row>
     <v-row>
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <fm-autocomplete
           :model-value="modelValue.bezStadtbezirk"
@@ -230,7 +229,7 @@
 
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <fm-autocomplete
           :model-value="modelValue.bpgBauprogramm"
@@ -247,12 +246,9 @@
           @update:model-value="updateNumberField('bpgBauprogramm', $event)"
         />
       </v-col>
-    </v-row>
-
-    <v-row>
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <fm-autocomplete
           :model-value="modelValue.sgtSiedlungsgebiet"
@@ -269,10 +265,12 @@
           @update:model-value="updateNumberField('sgtSiedlungsgebiet', $event)"
         />
       </v-col>
+    </v-row>
 
+    <v-row>
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <fm-autocomplete
           v-model="modelValue.krisofp"
@@ -291,7 +289,7 @@
 
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <fm-autocomplete
           v-model="modelValue.krnKrhname"
@@ -309,7 +307,7 @@
       </v-col>
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <fm-autocomplete
           v-model="modelValue.krhzweck"
@@ -330,7 +328,7 @@
     <v-row>
       <v-col
         cols="12"
-        md="4"
+        md="3"
       >
         <fm-number-input
           v-model="modelValue.kripplatz"
@@ -342,12 +340,6 @@
           validation-attribute-key="kripplatz"
           density="comfortable"
         />
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="4"
-      >
         <fm-number-input
           v-model="modelValue.kigaplatz"
           :display-mode="displayMode"
@@ -358,11 +350,6 @@
           validation-attribute-key="kigaplatz"
           density="comfortable"
         />
-      </v-col>
-      <v-col
-        cols="12"
-        md="4"
-      >
         <fm-number-input
           v-model="modelValue.hortplatz"
           :display-mode="displayMode"
@@ -374,9 +361,10 @@
           density="comfortable"
         />
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="12">
+      <v-col
+        cols="12"
+        md="9"
+      >
         <fm-text-area
           v-model="modelValue.notizen"
           :display-mode="displayMode"
