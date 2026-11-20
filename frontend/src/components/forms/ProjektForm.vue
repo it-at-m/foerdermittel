@@ -6,18 +6,18 @@
   >
     <v-row>
       <v-col
-          cols="12"
-          md="2"
+        cols="12"
+        md="2"
       >
         <fm-text-field
-            :model-value="projnr"
-            :label="t('model.projekt.projnr')"
-            :display-mode="InputDisplayMode.READ"
-            density="comfortable"
-            disable-edit
-            readonly
-            rows="1"
-            v-if="projnr"
+          v-if="projnr"
+          :model-value="projnr"
+          :label="t('model.projekt.projnr')"
+          :display-mode="InputDisplayMode.READ"
+          density="comfortable"
+          disable-edit
+          readonly
+          rows="1"
         />
       </v-col>
       <v-col
@@ -268,7 +268,6 @@
     </v-row>
 
     <v-row>
-
       <v-col
         cols="12"
         md="5"
