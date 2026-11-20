@@ -14,6 +14,7 @@
         :form-ref="projektFormRef"
         should-load-form-context
         :expandable="true"
+        :dialog-width="DialogWidth.LARGE"
       >
         <template #form="{ item, updateValidity, inputDisplayMode }">
           <projekt-form
@@ -89,6 +90,7 @@ import ProjektFilterForm from "@/components/forms/filter/ProjektFilterForm.vue";
 import ProjektForm from "@/components/forms/ProjektForm.vue";
 import { useProjektApi } from "@/composables/api/useProjektApi";
 import { Role } from "@/types/Role";
+import {DialogWidth} from "@/types/DialogWidth.ts";
 
 definePage({
   meta: {
