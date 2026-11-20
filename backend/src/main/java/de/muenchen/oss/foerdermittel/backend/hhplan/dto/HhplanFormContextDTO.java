@@ -8,5 +8,8 @@ import java.math.BigDecimal;
 /// @param fipo
 public record HhplanFormContextDTO(
         @NotNull BigDecimal hhjJahr,
-        @NotNull String fipo) {
+        @NotNull String proProjnr,
+        String fipo
+
+) {
 }

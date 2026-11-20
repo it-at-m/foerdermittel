@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: foerdermittel-backend
   description: Backend component for the application foerdermittel
-  version: 0.5.0-SNAPSHOT
+  version: 0.6.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -542,6 +542,47 @@ paths:
         required: true
         schema:
           pattern: "^(?<id>.+?)-(?<jahr>19[7-9]\\d|20\\d{2}|2100)-(?<monat>[1-9]|1[0-2])$"
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth: []
+  /hhjahre/{id}:
+    put:
+      tags:
+      - hhjahr-controller
+      operationId: updateHhjahr
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HhjahrUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HhjahrResponseDTO"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - hhjahr-controller
+      operationId: deleteHhjahr
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
           type: string
       responses:
         "200":
@@ -1666,6 +1707,67 @@ paths:
                 $ref: "#/components/schemas/IstkostenResponseDTO"
       security:
       - bearerAuth: []
+  /hhjahre:
+    get:
+      tags:
+      - hhjahr-controller
+      operationId: getHhjahre
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "hhjahr,ASC"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedModelHhjahrResponseDTO"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - hhjahr-controller
+      operationId: createHhjahr
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HhjahrCreateDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HhjahrResponseDTO"
+      security:
+      - bearerAuth: []
   /hauptabschnitte:
     get:
       tags:
@@ -2023,9 +2125,6 @@ paths:
           type: array
           items:
             type: string
-          default:
-          - "projekt.projnr,ASC"
-          - "antragsdatum,ASC"
       responses:
         "200":
           description: OK
@@ -2686,6 +2785,11 @@ paths:
       - hhplan-controller
       operationId: getHhplan
       parameters:
+      - name: hhjahr
+        in: query
+        required: true
+        schema:
+          type: number
       - name: page
         in: query
         description: Zero-based page index (0..N)
@@ -2734,6 +2838,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HhplanFormContext"
+      security:
+      - bearerAuth: []
+  /hhjahre/form-context:
+    get:
+      tags:
+      - hhjahr-controller
+      operationId: getHhjahrFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HhjahrFormContext"
       security:
       - bearerAuth: []
   /hauptabschnitte/form-context:
@@ -3455,6 +3573,99 @@ components:
           type: string
         fob_fb:
           type: number
+    HhjahrUpdateDTO:
+      required:
+      - hhbezeichnung
+      type: object
+      properties:
+        hhbezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+        notizen:
+          maxLength: 4000
+          minLength: 0
+          type: string
+    HhjahrResponseDTO:
+      required:
+      - assignedProProjnr
+      - hhbezeichnung
+      - hhjahr
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        hhjahr:
+          type: number
+        hhbezeichnung:
+          type: string
+        notizen:
+          type: string
+        assignedProProjnr:
+          type: array
+          items:
+            $ref: "#/components/schemas/HhplanResponseDTO"
+    HhplanResponseDTO:
+      required:
+      - fipo
+      - fobFb
+      - hhjJahr
+      - id
+      - pname
+      - proProjnr
+      - pstrasse
+      - stadtbezirk
+      type: object
+      properties:
+        id:
+          type: string
+        proProjnr:
+          type: string
+        hhjJahr:
+          type: number
+        fipo:
+          type: string
+        notizen:
+          type: string
+        pname:
+          type: string
+        pstrasse:
+          type: string
+        fobFb:
+          type: number
+        mitteleinplanung:
+          type: number
+        bewilligungVoj:
+          type: number
+        bewilligungHhj:
+          type: number
+        erhaltenVoj:
+          type: number
+        erhaltenHhj:
+          type: number
+        baustandaktuell:
+          type: number
+        an:
+          type: number
+        n1:
+          type: number
+        n2:
+          type: number
+        stadtbezirk:
+          type: number
+        listenname:
+          type: string
+        anlagedatum:
+          type: string
+          format: date-time
+        anlagevon:
+          type: string
+        aenderungsdatum:
+          type: string
+          format: date-time
+        aenderungvon:
+          type: string
     HauptabschnittUpdateDTO:
       required:
       - bezeichnung
@@ -4128,6 +4339,23 @@ components:
         istkosten:
           minimum: 0
           type: number
+    HhjahrCreateDTO:
+      required:
+      - hhbezeichnung
+      - hhjahr
+      type: object
+      properties:
+        hhjahr:
+          minimum: 0
+          type: number
+        hhbezeichnung:
+          maxLength: 200
+          minLength: 1
+          type: string
+        notizen:
+          maxLength: 4000
+          minLength: 0
+          type: string
     HauptabschnittCreateDTO:
       required:
       - bezeichnung
@@ -4848,13 +5076,15 @@ components:
           type: boolean
     HhplanFormContextDTO:
       required:
-      - fipo
       - hhjJahr
+      - proProjnr
       type: object
       properties:
         hhjJahr:
           type: number
           description: ""
+        proProjnr:
+          type: string
         fipo:
           type: string
           description: ""
@@ -5716,19 +5946,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ProjektFormContextDTO"
-    HhplanResponseDTO:
-      required:
-      - fipo
-      - hhjJahr
-      - id
-      type: object
-      properties:
-        id:
-          type: string
-        hhjJahr:
-          type: number
-        fipo:
-          type: string
     PagedModelHhplanResponseDTO:
       required:
       - content
@@ -5747,6 +5964,27 @@ components:
       type: object
       properties:
         hhp:
+          type: array
+          items:
+            type: number
+    PagedModelHhjahrResponseDTO:
+      required:
+      - content
+      - page
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/HhjahrResponseDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    HhjahrFormContext:
+      required:
+      - hhj
+      type: object
+      properties:
+        hhj:
           type: array
           items:
             type: number

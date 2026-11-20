@@ -160,10 +160,10 @@ const navigationItems: NavigationItem[] = [
         },
       },
       {
-        title: t("model.haushaltsjahr.modelName", 2),
-      },
-      {
         title: t("model.haushaltsplanung.modelName", 2),
+        props: {
+          to: "/haushaltsplanung",
+        },
       },
     ],
   },
