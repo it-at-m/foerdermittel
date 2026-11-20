@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: foerdermittel-backend
   description: Backend component for the application foerdermittel
-  version: 0.5.0-SNAPSHOT
+  version: 0.6.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -2023,9 +2023,6 @@ paths:
           type: array
           items:
             type: string
-          default:
-          - "projekt.projnr,ASC"
-          - "antragsdatum,ASC"
       responses:
         "200":
           description: OK
@@ -3246,12 +3243,12 @@ components:
         krnKrhname:
           maxLength: 1
           minLength: 0
-          pattern: "^[A-Z]*$"
+          pattern: "^[A-ZÄÖÜ]*$"
           type: string
         kurKurzbez:
           maxLength: 3
           minLength: 0
-          pattern: "^[A-Z0-9]+$"
+          pattern: "^[A-ZÄÖÜ0-9]+$"
           type: string
         sgtSiedlungsgebiet:
           maximum: 99
@@ -3991,7 +3988,7 @@ components:
         kurKurzbez:
           maxLength: 3
           minLength: 1
-          pattern: "^[A-Z0-9]+$"
+          pattern: "^[A-ZÄÖÜ0-9]+$"
           type: string
         uasUa:
           maxLength: 2
@@ -4020,7 +4017,7 @@ components:
         krnKrhname:
           maxLength: 1
           minLength: 0
-          pattern: "^[A-Z]*$"
+          pattern: "^[A-ZÄÖÜ]*$"
           type: string
         sgtSiedlungsgebiet:
           maximum: 99
