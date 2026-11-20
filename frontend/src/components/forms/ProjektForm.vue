@@ -6,24 +6,23 @@
   >
     <v-row>
       <v-col
-        cols="12"
-        md="3"
+          cols="12"
+          md="2"
       >
         <fm-text-field
-          :model-value="projnr"
-          :label="t('model.projekt.projnr')"
-          :display-mode="displayMode"
-          density="comfortable"
-          disable-edit
-          readonly
+            :model-value="projnr"
+            :label="t('model.projekt.projnr')"
+            :display-mode="InputDisplayMode.READ"
+            density="comfortable"
+            disable-edit
+            readonly
+            rows="1"
+            v-if="projnr"
         />
       </v-col>
-    </v-row>
-
-    <v-row>
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <fm-autocomplete
           v-model="modelValue.uasUa"
@@ -210,7 +209,7 @@
     <v-row>
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <fm-autocomplete
           :model-value="modelValue.bezStadtbezirk"
@@ -230,7 +229,7 @@
 
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <fm-autocomplete
           :model-value="modelValue.bpgBauprogramm"
@@ -247,12 +246,9 @@
           @update:model-value="updateNumberField('bpgBauprogramm', $event)"
         />
       </v-col>
-    </v-row>
-
-    <v-row>
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <fm-autocomplete
           :model-value="modelValue.sgtSiedlungsgebiet"
@@ -269,10 +265,13 @@
           @update:model-value="updateNumberField('sgtSiedlungsgebiet', $event)"
         />
       </v-col>
+    </v-row>
+
+    <v-row>
 
       <v-col
         cols="12"
-        md="6"
+        md="5"
       >
         <fm-autocomplete
           v-model="modelValue.krisofp"
@@ -291,7 +290,7 @@
 
       <v-col
         cols="12"
-        md="6"
+        md="3"
       >
         <fm-autocomplete
           v-model="modelValue.krnKrhname"
@@ -309,7 +308,7 @@
       </v-col>
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <fm-autocomplete
           v-model="modelValue.krhzweck"
