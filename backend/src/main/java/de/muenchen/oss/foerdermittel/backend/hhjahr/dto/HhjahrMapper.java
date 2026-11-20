@@ -23,11 +23,6 @@ public interface HhjahrMapper {
     @Mapping(source = "hhplanlisten", target = "assignedProProjnr")
     HhjahrResponseDTO toDTO(Hhjahr hhjahr);
 
-    @Mapping(source = "hhjahr", target = "id", qualifiedByName = "bigDecimalToIntegerString")
-    @Mapping(source = "hhjahr", target = "hhjahr")
-    @Mapping(target = "assignedProProjnr", ignore = true)
-    HhjahrResponseDTO toUpdateDTO(Hhjahr hhjahr);
-
     @Mapping(target = "hhplanlisten", ignore = true)
     Hhjahr toEntity(HhjahrCreateDTO hhjahrCreateDTO);
 

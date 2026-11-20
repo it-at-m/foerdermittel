@@ -76,10 +76,9 @@ public class HhjahrController {
             @Valid @RequestBody final HhjahrUpdateDTO hhjahrUpdateDTO,
             @PathVariable("id") final String hhjahrId) {
 
-        return hhjahrMapper.toUpdateDTO(
-                hhjahrService.updateHhjahr(
-                        hhjahrMapper.toEntity(hhjahrUpdateDTO),
-                        ControllerUtils.convertStringToBigDecimal(hhjahrId)));
+        return hhjahrService.updateHhjahr(
+                hhjahrMapper.toEntity(hhjahrUpdateDTO),
+                ControllerUtils.convertStringToBigDecimal(hhjahrId));
     }
 
     @DeleteMapping("/{id}")

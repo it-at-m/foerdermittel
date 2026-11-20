@@ -5,7 +5,6 @@ import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanMapper;
 import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
-
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -27,21 +26,14 @@ public class HhplanService {
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
-    public List<HhplanResponseDTO> getHhplanByHhjahr(final BigDecimal hhjahr) {
+    public Page<HhplanResponseDTO> getHhplan(
+            final BigDecimal hhjahr,
+            final Pageable pageable) {
+
         log.info("Get Hhplan for Haushaltsjahr {}", hhjahr);
 
-        return hhplanRepository.findAllByHhjJahrIn(List.of(hhjahr))
-                .stream()
-                .map(hhplanMapper::toDTO)
-                .toList();
-    }
-
-    @PreAuthorize(Authorities.HAS_ANY_ROLE)
-    @Transactional(readOnly = true)
-    public Page<HhplanResponseDTO> getHhplan(final Pageable pageable) {
-        log.info("Get Hhplan with Pageable {}", pageable);
-
-        return hhplanRepository.findAll(pageable)
+        return hhplanRepository
+                .findAllByHhjJahr(hhjahr, pageable)
                 .map(hhplanMapper::toDTO);
     }
 
@@ -49,6 +41,7 @@ public class HhplanService {
     @Transactional(readOnly = true)
     public List<HhplanFormContextDTO> getHhplanFormContextDTOs() {
         log.info("Get Hhplan report form context");
+
         return hhplanMapper.toFormContextFromBasic(
                 hhplanRepository.findReportHhplan());
     }
@@ -57,6 +50,7 @@ public class HhplanService {
     @Transactional(readOnly = true)
     public HhplanFormContext getHhplanFormContext() {
         log.info("Get Hhplan form context");
+
         return new HhplanFormContext(
                 hhplanRepository.findAllHhplan());
     }

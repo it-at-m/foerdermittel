@@ -1,9 +1,13 @@
+
 package de.muenchen.oss.foerdermittel.backend.hhplan;
 
 import de.muenchen.oss.foerdermittel.backend.common.InsertAndUpdateRepository;
 import de.muenchen.oss.foerdermittel.backend.hhplan.dao.BasicHhplanDAO;
 import java.math.BigDecimal;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -23,7 +27,27 @@ public interface HhplanRepository extends
     List<BasicHhplanDAO> findReportHhplan();
 
     @Query(
-        "SELECT DISTINCT h FROM Hhplan h JOIN FETCH h.proProjnr p LEFT JOIN FETCH p.fobFb LEFT JOIN FETCH p.bezStadtbezirk b LEFT JOIN FETCH b.stadtbezirkslisten s LEFT JOIN FETCH s.listenName WHERE h.id.hhjJahr IN :hhjahre"
+        "SELECT DISTINCT h FROM Hhplan h "
+                + "JOIN FETCH h.proProjnr p "
+                + "LEFT JOIN FETCH p.fobFb "
+                + "LEFT JOIN FETCH p.bezStadtbezirk b "
+                + "LEFT JOIN FETCH b.stadtbezirkslisten s "
+                + "LEFT JOIN FETCH s.listenName "
+                + "WHERE h.id.hhjJahr IN :hhjahre"
     )
     List<Hhplan> findAllByHhjJahrIn(@Param("hhjahre") List<BigDecimal> hhjahre);
+
+    @EntityGraph(
+            attributePaths = {
+                    "proProjnr",
+                    "proProjnr.fobFb",
+                    "proProjnr.bezStadtbezirk",
+                    "proProjnr.bezStadtbezirk.stadtbezirkslisten",
+                    "proProjnr.bezStadtbezirk.stadtbezirkslisten.listenName",
+                    "hhjJahr"
+            }
+    )
+    Page<Hhplan> findAllByHhjJahr(
+            BigDecimal hhjahr,
+            Pageable pageable);
 }

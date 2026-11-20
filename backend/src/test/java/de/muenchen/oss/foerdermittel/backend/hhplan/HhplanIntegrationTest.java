@@ -65,6 +65,7 @@ class HhplanIntegrationTest {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/hhplan")
+                            .queryParam("hhjahr", HHJAHR_ID)
                             .queryParam("page", "0")
                             .build())
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
@@ -74,7 +75,8 @@ class HhplanIntegrationTest {
                     .expectBody()
                     .jsonPath("$.content")
                     .value(new ParameterizedTypeReference<List<Object>>() {
-                    }, content -> assertThat(content).isEmpty());
+                    },
+                            content -> assertThat(content).isEmpty());
         }
 
         private static Stream<Arguments> authorizationMappings() {
@@ -91,43 +93,9 @@ class HhplanIntegrationTest {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/hhplan")
+                            .queryParam("hhjahr", HHJAHR_ID)
                             .queryParam("page", "0")
                             .build())
-                    .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
-                    .exchange()
-                    .expectStatus().isEqualTo(httpStatus);
-        }
-    }
-
-    @Nested
-    class GetHhplanByHhjahr {
-
-        @Test
-        void givenNoEntitiesExist_thenReturnEmptyList() {
-            restTestClient.get()
-                    .uri("/hhplan/haushaltsjahr/{hhjahr}", HHJAHR_ID)
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
-                    .exchange()
-                    .expectStatus().isOk()
-                    .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(new ParameterizedTypeReference<List<Object>>() {
-                    })
-                    .value(result -> assertThat(result).isEmpty());
-        }
-
-        private static Stream<Arguments> authorizationMappings() {
-            return Stream.of(
-                    arguments("admin", HttpStatus.OK),
-                    arguments("sachbearbeitung", HttpStatus.OK),
-                    arguments("sachbearbeitunghaushalt", HttpStatus.OK),
-                    arguments("no-role", HttpStatus.FORBIDDEN));
-        }
-
-        @ParameterizedTest(name = "Authorization: Role ''{0}'' -> {1}")
-        @MethodSource("authorizationMappings")
-        void givenRole_thenReturnStatus(final String role, final HttpStatus httpStatus) {
-            restTestClient.get()
-                    .uri("/hhplan/haushaltsjahr/{hhjahr}", HHJAHR_ID)
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", role))
                     .exchange()
                     .expectStatus().isEqualTo(httpStatus);

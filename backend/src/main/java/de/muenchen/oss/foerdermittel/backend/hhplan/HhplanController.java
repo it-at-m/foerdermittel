@@ -2,11 +2,9 @@
 package de.muenchen.oss.foerdermittel.backend.hhplan;
 
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
-import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanMapper;
 import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanResponseDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.math.BigDecimal;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
@@ -16,8 +14,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,26 +27,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class HhplanController {
 
     private final HhplanService hhplanService;
-    private final HhplanMapper hhplanMapper;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<HhplanResponseDTO> getHhplan(
+            @RequestParam final BigDecimal hhjahr,
             @ParameterObject @PageableDefault(sort = "id.hhjJahr") final Pageable pageable) {
 
-        log.info("Get Hhplan with Pageable {}", pageable);
-
-        return hhplanService.getHhplan(pageable);
-    }
-
-    @GetMapping("/haushaltsjahr/{hhjahr}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<HhplanResponseDTO> getHhplanByHhjahr(
-            @PathVariable final BigDecimal hhjahr) {
-
-        log.info("Get Hhplan for Haushaltsjahr {}", hhjahr);
-
-        return hhplanService.getHhplanByHhjahr(hhjahr);
+        return hhplanService.getHhplan(hhjahr, pageable);
     }
 
     @GetMapping("/form-context")

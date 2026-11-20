@@ -1,6 +1,8 @@
 
 package de.muenchen.oss.foerdermittel.backend.hhjahr;
 
+import de.muenchen.oss.foerdermittel.backend.hhjahr.dto.HhjahrMapper;
+import de.muenchen.oss.foerdermittel.backend.hhjahr.dto.HhjahrResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.hhplan.Hhplan;
 import de.muenchen.oss.foerdermittel.backend.hhplan.HhplanRepository;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
@@ -25,6 +27,7 @@ public class HhjahrService {
 
     private final HhjahrRepository hhjahrRepository;
     private final HhplanRepository hhplanRepository;
+    private final HhjahrMapper hhjahrMapper;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -76,7 +79,10 @@ public class HhjahrService {
 
     @Transactional
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    public Hhjahr updateHhjahr(final Hhjahr hhjahr, final BigDecimal hhjahrId) {
+    public HhjahrResponseDTO updateHhjahr(
+            final Hhjahr hhjahr,
+            final BigDecimal hhjahrId) {
+
         final Hhjahr foundHhjahr = ServiceUtils.getEntityOrThrowNotFoundException(
                 hhjahrId, hhjahrRepository, Hhjahr.class);
 
@@ -87,7 +93,10 @@ public class HhjahrService {
                 "Update Haushaltsjahr: hhjahr={}, hhbezeichnung={}",
                 foundHhjahr.getHhjahr(),
                 foundHhjahr.getHhbezeichnung());
-        return hhjahrRepository.update(foundHhjahr);
+
+        final Hhjahr updatedHhjahr = hhjahrRepository.update(foundHhjahr);
+
+        return hhjahrMapper.toDTO(updatedHhjahr);
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)

@@ -2,12 +2,15 @@
 package de.muenchen.oss.foerdermittel.backend.hhplan;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import de.muenchen.oss.foerdermittel.backend.hhplan.dao.BasicHhplanDAO;
 import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanMapper;
+import de.muenchen.oss.foerdermittel.backend.hhplan.dto.HhplanResponseDTO;
 import java.math.BigDecimal;
 import java.util.List;
 import org.assertj.core.api.Assertions;
@@ -37,53 +40,42 @@ class HhplanServiceTest {
     private HhplanService unitUnderTest;
 
     @Nested
-    class GetHhplanByHhjahr {
-
-        @Test
-        void givenHhjahr_thenReturnListOfEntities() {
-            // Given
-            final Hhplan entity1 = new Hhplan();
-            final Hhplan entity2 = new Hhplan();
-            final List<Hhplan> expectedEntities = List.of(entity1, entity2);
-
-            when(hhplanRepository.findAllByHhjJahrIn(List.of(HHJAHR_ID)))
-                    .thenReturn(expectedEntities);
-
-            // When
-            final List<Hhplan> result = unitUnderTest.getHhplanByHhjahr(HHJAHR_ID);
-
-            // Then
-            verify(hhplanRepository, times(1))
-                    .findAllByHhjJahrIn(List.of(HHJAHR_ID));
-
-            assertThat(result).containsExactlyElementsOf(expectedEntities);
-        }
-    }
-
-    @Nested
     class GetHhplan {
 
         @Test
-        void givenPageable_thenReturnPageOfEntities() {
+        void givenHhjahrAndPageable_thenReturnPageOfDTOs() {
             // Given
-            final int pageNumber = 0;
-            final int pageSize = 10;
-            final Pageable pageable = PageRequest.of(pageNumber, pageSize);
+            final Pageable pageable = PageRequest.of(0, 10);
 
-            final Hhplan entity1 = new Hhplan();
-            final Hhplan entity2 = new Hhplan();
+            final Hhplan entity1 = mock(Hhplan.class);
+            final Hhplan entity2 = mock(Hhplan.class);
+
+            final HhplanResponseDTO dto1 = mock(HhplanResponseDTO.class);
+            final HhplanResponseDTO dto2 = mock(HhplanResponseDTO.class);
+
             final List<Hhplan> entities = List.of(entity1, entity2);
-            final Page<Hhplan> expectedPage = new PageImpl<>(entities, pageable, entities.size());
+            final List<HhplanResponseDTO> expectedDTOs = List.of(dto1, dto2);
 
-            when(hhplanRepository.findAll(pageable)).thenReturn(expectedPage);
+            final Page<Hhplan> entityPage = new PageImpl<>(entities, pageable, entities.size());
+
+            when(hhplanRepository.findAllByHhjJahr(HHJAHR_ID, pageable))
+                    .thenReturn(entityPage);
+            when(hhplanMapper.toDTO(entity1)).thenReturn(dto1);
+            when(hhplanMapper.toDTO(entity2)).thenReturn(dto2);
 
             // When
-            final Page<Hhplan> result = unitUnderTest.getHhplan(pageable);
+            final Page<HhplanResponseDTO> result = unitUnderTest.getHhplan(HHJAHR_ID, pageable);
 
             // Then
-            verify(hhplanRepository, times(1)).findAll(pageable);
+            verify(hhplanRepository, times(1))
+                    .findAllByHhjJahr(HHJAHR_ID, pageable);
+            verify(hhplanMapper, times(1)).toDTO(entity1);
+            verify(hhplanMapper, times(1)).toDTO(entity2);
 
-            assertThat(result).isEqualTo(expectedPage);
+            assertThat(result.getContent()).containsExactlyElementsOf(expectedDTOs);
+            assertThat(result.getNumber()).isZero();
+            assertThat(result.getSize()).isEqualTo(10);
+            assertThat(result.getTotalElements()).isEqualTo(2);
         }
     }
 
@@ -93,22 +85,27 @@ class HhplanServiceTest {
         @Test
         void givenEntitiesExists_thenReturnCorrectList() {
             // Given
+            final List<BasicHhplanDAO> entities = List.of(
+                    new BasicHhplanDAO(
+                            BigDecimal.valueOf(2025), "3003000", "123456"),
+                    new BasicHhplanDAO(
+                            BigDecimal.valueOf(2026), "3003001", "654321"));
+
             final List<HhplanFormContextDTO> expectedDTOs = List.of(
                     new HhplanFormContextDTO(
                             BigDecimal.valueOf(2025), "3003000", "123456"),
                     new HhplanFormContextDTO(
                             BigDecimal.valueOf(2026), "3003001", "654321"));
 
-            when(hhplanRepository.findReportHhplan()).thenReturn(List.of());
-            when(hhplanMapper.toFormContextFromBasic(List.of()))
-                    .thenReturn(expectedDTOs);
+            when(hhplanRepository.findReportHhplan()).thenReturn(entities);
+            when(hhplanMapper.toFormContextFromBasic(entities)).thenReturn(expectedDTOs);
 
             // When
             final List<HhplanFormContextDTO> result = unitUnderTest.getHhplanFormContextDTOs();
 
             // Then
             verify(hhplanRepository, times(1)).findReportHhplan();
-            verify(hhplanMapper, times(1)).toFormContextFromBasic(List.of());
+            verify(hhplanMapper, times(1)).toFormContextFromBasic(entities);
 
             assertThat(result)
                     .hasSize(2)

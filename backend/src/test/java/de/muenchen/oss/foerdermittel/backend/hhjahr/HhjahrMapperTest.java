@@ -46,31 +46,6 @@ class HhjahrMapperTest {
     }
 
     @Nested
-    class ToUpdateDTO {
-
-        @Test
-        void givenEntity_thenReturnsCorrectDTO() {
-            // given
-            Hhjahr entity = new Hhjahr(
-                    BigDecimal.valueOf(2024),
-                    "Haushaltsjahr 2024",
-                    "Testnotiz",
-                    new ArrayList<>());
-
-            // when
-            HhjahrResponseDTO dto = hhjahrMapper.toUpdateDTO(entity);
-
-            // then
-            assertThat(dto).isNotNull();
-            assertThat(dto.id()).isEqualTo("2024");
-            assertThat(dto.hhjahr()).isEqualTo(entity.getHhjahr());
-            assertThat(dto.hhbezeichnung()).isEqualTo(entity.getHhbezeichnung());
-            assertThat(dto.notizen()).isEqualTo(entity.getNotizen());
-            assertThat(dto.assignedProProjnr()).isEmpty();
-        }
-    }
-
-    @Nested
     class ToEntity {
 
         @Test

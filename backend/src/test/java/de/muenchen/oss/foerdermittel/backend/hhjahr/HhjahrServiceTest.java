@@ -2,12 +2,17 @@
 package de.muenchen.oss.foerdermittel.backend.hhjahr;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
+import de.muenchen.oss.foerdermittel.backend.hhjahr.dto.HhjahrMapper;
+import de.muenchen.oss.foerdermittel.backend.hhjahr.dto.HhjahrResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.hhplan.HhplanRepository;
 import java.math.BigDecimal;
 import java.util.List;
@@ -34,6 +39,9 @@ class HhjahrServiceTest {
 
     @Mock
     private HhplanRepository hhplanRepository;
+
+    @Mock
+    private HhjahrMapper hhjahrMapper;
 
     @Mock
     private Hhjahr hhjahr;
@@ -171,28 +179,38 @@ class HhjahrServiceTest {
     class UpdateHhjahr {
 
         @Test
-        void givenEntityExists_thenReturnUpdatedEntity() {
+        void givenEntityExists_thenReturnUpdatedDTO() {
             // Given
             final String hhbezeichnung = "Haushaltsjahr 2026";
             final String notizen = "Testnotiz";
 
+            final Hhjahr existingHhjahr = mock(Hhjahr.class);
+            final Hhjahr updatedHhjahr = mock(Hhjahr.class);
+            final HhjahrResponseDTO expectedDTO = mock(HhjahrResponseDTO.class);
+
             when(hhjahrRepository.findById(HHJAHR_ID))
-                    .thenReturn(Optional.of(hhjahr));
+                    .thenReturn(Optional.of(existingHhjahr));
+            when(hhjahrRepository.update(existingHhjahr))
+                    .thenReturn(updatedHhjahr);
+            when(hhjahrMapper.toDTO(updatedHhjahr))
+                    .thenReturn(expectedDTO);
+
             when(hhjahr.getHhbezeichnung()).thenReturn(hhbezeichnung);
             when(hhjahr.getNotizen()).thenReturn(notizen);
-            when(hhjahrRepository.update(hhjahr))
-                    .thenReturn(hhjahr);
 
             // When
-            final Hhjahr result = unitUnderTest.updateHhjahr(hhjahr, HHJAHR_ID);
+            final HhjahrResponseDTO result = unitUnderTest.updateHhjahr(hhjahr, HHJAHR_ID);
 
             // Then
             verify(hhjahrRepository, times(1)).findById(HHJAHR_ID);
-            verify(hhjahr, times(1)).setHhbezeichnung(hhbezeichnung);
-            verify(hhjahr, times(1)).setNotizen(notizen);
-            verify(hhjahrRepository, times(1)).update(hhjahr);
 
-            assertThat(result).isEqualTo(hhjahr);
+            verify(existingHhjahr, times(1)).setHhbezeichnung(hhbezeichnung);
+            verify(existingHhjahr, times(1)).setNotizen(notizen);
+
+            verify(hhjahrRepository, times(1)).update(existingHhjahr);
+            verify(hhjahrMapper, times(1)).toDTO(updatedHhjahr);
+
+            assertThat(result).isSameAs(expectedDTO);
         }
 
         @Test
@@ -208,7 +226,8 @@ class HhjahrServiceTest {
 
             // Then
             verify(hhjahrRepository, times(1)).findById(HHJAHR_ID);
-            verify(hhjahrRepository, never()).update(hhjahr);
+            verify(hhjahrRepository, never()).update(any(Hhjahr.class));
+            verifyNoInteractions(hhjahrMapper);
 
             assertThat(exception.getMessage()).isEqualTo(
                     String.format(

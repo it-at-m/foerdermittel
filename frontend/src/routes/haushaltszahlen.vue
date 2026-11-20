@@ -1,134 +1,140 @@
 <template>
-  <base-view :domain-key="domainKey">
+  <base-view
+    :domain-key="domainKey"
+    :title="`${t('model.haushaltsplanung.modelName')} ${hhjahr ?? ''} verwalten`"
+  >
+    <template #actions>
+      <v-tooltip
+        text="Zur Übersicht Haushaltsplanung"
+        location="bottom"
+      >
+        <template #activator="{ props }">
+          <v-btn
+            v-bind="props"
+            :icon="mdiArrowLeft"
+            density="comfortable"
+            :to="{ path: '/haushaltsplanung' }"
+          />
+        </template>
+      </v-tooltip>
+    </template>
+
     <template #default="{ baseViewLoading }">
-      <v-card variant="flat">
-        <v-card-title>
-          <div>
-            <v-btn
-              :icon="mdiArrowLeft"
-              density="comfortable"
-              :to="{ path: '/haushaltsplanung' }"
-            />
-            {{ t("model.haushaltsplanung.modelName") }}
-            {{ hhjahr ?? "" }}
-          </div>
-        </v-card-title>
+      <crud-card
+        v-if="hhjahr !== undefined"
+        :key="hhjahr"
+        :empty-item-template="EMPTY_ITEM_TEMPLATE"
+        :loading="baseViewLoading"
+        :domain-key="domainKey"
+        :table-headers="headers"
+        :api="hhplanApi"
+        :enable-actions="false"
+        should-load-form-context
+        :expandable="true"
+      >
+        <template #form="{ item, inputDisplayMode }">
+          <v-card
+            v-if="inputDisplayMode === InputDisplayMode.READ"
+            variant="flat"
+            class="px-4 py-2"
+          >
+            <div class="text-subtitle-1 font-weight-medium mb-2">
+              {{ t("model.haushaltsplanung.details") }}
+            </div>
 
-        <crud-card
-          v-if="hhjahr !== undefined"
-          :empty-item-template="EMPTY_ITEM_TEMPLATE"
-          :loading="baseViewLoading || hhplanApi.getAll?.loading.value"
-          :domain-key="domainKey"
-          :table-headers="headers"
-          :api="hhplanApi"
-          :enable-actions="false"
-          :should-load-form-context="false"
-          :expandable="true"
-        >
-          <template #form="{ item, inputDisplayMode }">
-            <v-card
-              v-if="inputDisplayMode === InputDisplayMode.READ"
-              variant="flat"
-            >
-              <div class="pa-2">
-                <v-card-title class="pa-0">
-                  {{ t("model.haushaltsplanung.details") }}
-                </v-card-title>
-
+            <v-row dense>
+              <v-col
+                cols="12"
+                md="6"
+              >
                 <v-row
+                  v-for="detail in getProjektDetails(item)"
+                  :key="detail.label"
                   dense
-                  class="mt-2"
+                  class="mb-0"
                 >
                   <v-col
-                    cols="12"
-                    md="6"
+                    cols="4"
+                    class="py-1 text-medium-emphasis"
                   >
-                    <v-row
-                      v-for="detail in getProjektDetails(item)"
-                      :key="detail.label"
-                      dense
-                    >
-                      <v-col cols="5">
-                        {{ `${detail.label}:` }}
-                      </v-col>
-                      <v-col cols="7">
-                        {{ detail.value }}
-                      </v-col>
-                    </v-row>
+                    {{ detail.label }}
                   </v-col>
-
                   <v-col
-                    cols="12"
-                    md="6"
+                    cols="8"
+                    class="py-1"
                   >
-                    <div>
-                      {{ t("model.haushaltsplanung.notizen") }}
-                    </div>
-
-                    <div style="white-space: pre-wrap">
-                      {{ item.notizen || "" }}
-                    </div>
-                  </v-col>
-
-                  <v-divider />
-
-                  <v-col cols="12">
-                    <div v-if="item.anlagedatum || item.anlagevon">
-                      {{ t("model.haushaltsplanung.anlagedatum") }}
-                      {{ item.anlagedatum ? formatDate(item.anlagedatum) : "" }}
-                      {{
-                        item.anlagevon
-                          ? t("model.haushaltsplanung.anlagevon") +
-                            " " +
-                            item.anlagevon
-                          : ""
-                      }}
-                    </div>
-
-                    <div v-if="item.aenderungsdatum || item.aenderungvon">
-                      {{ t("model.haushaltsplanung.aenderungdatum") }}
-                      {{
-                        item.aenderungsdatum
-                          ? formatDate(item.aenderungsdatum)
-                          : ""
-                      }}
-                      {{
-                        item.aenderungvon
-                          ? t("model.haushaltsplanung.aenderungvon") +
-                            " " +
-                            item.aenderungvon
-                          : ""
-                      }}
-                    </div>
+                    {{ detail.value }}
                   </v-col>
                 </v-row>
+              </v-col>
+
+              <v-col
+                cols="12"
+                md="6"
+              >
+                <div class="text-medium-emphasis mb-1">
+                  {{ t("model.haushaltsplanung.notizen") }}
+                </div>
+                <div style="white-space: pre-wrap">
+                  {{ item.notizen || "–" }}
+                </div>
+              </v-col>
+            </v-row>
+
+            <v-divider class="my-2" />
+
+            <div class="text-caption text-medium-emphasis">
+              <div v-if="item.anlagedatum || item.anlagevon">
+                {{ t("model.haushaltsplanung.anlagedatum") }}
+                {{ item.anlagedatum ? formatDate(item.anlagedatum) : "" }}
+                {{
+                  item.anlagevon
+                    ? t("model.haushaltsplanung.anlagevon") +
+                      " " +
+                      item.anlagevon
+                    : ""
+                }}
               </div>
-            </v-card>
-          </template>
 
-          <template
-            v-for="header in headers"
-            #[`header.${header.key}`]="{ column }"
-            :key="header.key"
+              <div v-if="item.aenderungsdatum || item.aenderungvon">
+                {{ t("model.haushaltsplanung.aenderungdatum") }}
+                {{
+                  item.aenderungsdatum ? formatDate(item.aenderungsdatum) : ""
+                }}
+                {{
+                  item.aenderungvon
+                    ? t("model.haushaltsplanung.aenderungvon") +
+                      " " +
+                      item.aenderungvon
+                    : ""
+                }}
+              </div>
+            </div>
+          </v-card>
+        </template>
+
+        <template
+          v-for="header in headers"
+          #[`header.${header.key}`]="{ column }"
+          :key="header.key"
+        >
+          <v-tooltip
+            v-if="getHeaderTooltip(header.key)"
+            :text="getHeaderTooltip(header.key)"
+            location="top"
           >
-            <v-tooltip
-              v-if="getHeaderTooltip(header.key)"
-              :text="getHeaderTooltip(header.key)"
-              location="top"
-            >
-              <template #activator="{ props }">
-                <span v-bind="props">
-                  {{ column.title }}
-                </span>
-              </template>
-            </v-tooltip>
+            <template #activator="{ props }">
+              <span v-bind="props">
+                {{ column.title }}
+              </span>
+            </template>
+          </v-tooltip>
 
-            <span v-else>
-              {{ column.title }}
-            </span>
-          </template>
-        </crud-card>
-      </v-card>
+          <span v-else>
+            {{ column.title }}
+          </span>
+        </template>
+      </crud-card>
     </template>
   </base-view>
 </template>
@@ -138,7 +144,7 @@ import type { HhplanResponseDTO } from "@/api/generated/foerdermittel-backend";
 import type { DataTableHeader } from "vuetify/framework";
 
 import { mdiArrowLeft } from "@mdi/js";
-import { computed, watch } from "vue";
+import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
 
@@ -176,19 +182,7 @@ const hhjahr = computed(() => {
   return Number.isInteger(year) ? year : undefined;
 });
 
-const hhplanApi = useHaushaltsplanungApi();
-
-watch(
-  hhjahr,
-  async (year) => {
-    if (year === undefined) {
-      return;
-    }
-
-    await hhplanApi.getAll?.call({ hhjahr: year });
-  },
-  { immediate: true }
-);
+const hhplanApi = useHaushaltsplanungApi(hhjahr);
 
 const EMPTY_ITEM_TEMPLATE = {} as HhplanResponseDTO;
 

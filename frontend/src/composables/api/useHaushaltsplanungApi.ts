@@ -1,59 +1,56 @@
 import type {
-  GetHhplanByHhjahrRequest,
-  GetHhplanRequest,
   HhplanResponseDTO,
+  Pageable,
   PagedModelHhplanResponseDTO,
 } from "@/api/generated/foerdermittel-backend";
 import type { ApiComposables } from "@/util/composable-helper";
+import type { ComputedRef } from "vue";
 
 import { HhplanControllerApi } from "@/api/generated/foerdermittel-backend";
-import { createAPIComposables } from "@/util/composable-helper";
+import {
+  createAPIComposables,
+  requireComposables,
+} from "@/util/composable-helper";
 
-type GetHhplanCombinedRequest = GetHhplanRequest | GetHhplanByHhjahrRequest;
-
-export const { useGetAll: useGetHaushaltsplanungen } = createAPIComposables<
-  HhplanControllerApi,
-  never,
-  never,
-  never,
-  never,
-  GetHhplanCombinedRequest,
+export function useHaushaltsplanungApi(
+  hhjahr: ComputedRef<number | undefined>
+): ApiComposables<
   HhplanResponseDTO,
-  PagedModelHhplanResponseDTO,
+  never,
+  never,
+  never,
+  never,
+  HhplanResponseDTO,
   never
->(HhplanControllerApi, {
-  getAll: async (api, req) => {
-    if ("hhjahr" in req) {
-      const content = await api.getHhplanByHhjahr({
-        hhjahr: req.hhjahr,
-      });
-
-      return {
-        content,
-        page: {
-          size: content.length,
-          totalElements: content.length,
-          totalPages: content.length > 0 ? 1 : 0,
-          number: 0,
-        },
-      };
-    }
-
-    return api.getHhplan(req);
-  },
-});
-
-export function useHaushaltsplanungApi(): ApiComposables<
-  HhplanResponseDTO,
-  never,
-  never,
-  HhplanResponseDTO,
-  never,
-  HhplanResponseDTO,
-  never,
-  GetHhplanCombinedRequest
 > {
+  const { useGetAll } = requireComposables(
+    createAPIComposables<
+      HhplanControllerApi,
+      never,
+      never,
+      never,
+      never,
+      Pageable,
+      HhplanResponseDTO,
+      PagedModelHhplanResponseDTO,
+      never
+    >(HhplanControllerApi, {
+      getAll: (api, req) => {
+        const year = hhjahr.value;
+
+        if (year === undefined) {
+          throw new Error("Es wurde kein Haushaltsjahr ausgewählt.");
+        }
+
+        return api.getHhplan({
+          ...req,
+          hhjahr: year,
+        });
+      },
+    })
+  );
+
   return {
-    getAll: useGetHaushaltsplanungen?.(),
+    getAll: useGetAll(),
   };
 }
