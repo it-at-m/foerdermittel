@@ -16,6 +16,7 @@
             ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrVon"
+          :additional-rules="jahrVonAdditionalRules"
           :label="t('domain.report.common.jahrVon')"
           density="comfortable"
           control-variant="hidden"
@@ -33,6 +34,7 @@
             ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrBis"
+          :additional-rules="jahrBisAdditionalRules"
           :label="t('domain.report.common.jahrBis')"
           density="comfortable"
           control-variant="hidden"
@@ -359,6 +361,7 @@ import type { VForm } from "vuetify/components";
 
 import { computed, useTemplateRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRules } from "vuetify";
 
 import { ReportAuswertungAntraegeDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
@@ -370,6 +373,8 @@ import { getAntraegeTitle } from "@/util/antraegeUtils.ts";
 import { getKrisofpTitle } from "@/util/krisofpUtils";
 
 const { t } = useI18n();
+
+const rules = useRules();
 
 const modelValue = defineModel<Partial<GetReportAuswertungAntraegeRequest>>({
   required: true,
@@ -495,4 +500,16 @@ const formatOptions = [
     value: "EXCEL",
   },
 ];
+
+const jahrVonAdditionalRules = computed(() => {
+  const jahrBis = modelValue.value.parameters?.jahrBis;
+  const rule = jahrBis != null && rules["max"]?.(jahrBis, false);
+  return rule ? [rule] : [];
+});
+
+const jahrBisAdditionalRules = computed(() => {
+  const jahrVon = modelValue.value.parameters?.jahrVon;
+  const rule = jahrVon != null && rules["min"]?.(jahrVon, false);
+  return rule ? [rule] : [];
+});
 </script>
