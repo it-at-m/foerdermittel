@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: foerdermittel-backend
   description: Backend component for the application foerdermittel
-  version: 0.5.0-SNAPSHOT
+  version: 0.6.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -2024,8 +2024,8 @@ paths:
           items:
             type: string
           default:
-          - "projekt.projnr,ASC"
-          - "antragsdatum,ASC"
+          - "projekt.projnr,DESC"
+          - "speicherDatum,DESC"
       responses:
         "200":
           description: OK
@@ -5257,11 +5257,15 @@ components:
       type: object
       properties:
         jahrVon:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
         jahrBis:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
         bez:
           type: string
         fb:

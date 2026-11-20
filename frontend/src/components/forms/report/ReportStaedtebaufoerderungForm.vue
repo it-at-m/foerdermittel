@@ -17,7 +17,10 @@
           "
           validation-attribute-key="jahrVon"
           :label="t('domain.report.staedtebaufoerderung.jahrVon')"
+          validate-on="blur"
           :error-messages="jahrVonError"
+          density="comfortable"
+          @blur="validateYears"
         />
       </v-col>
 
@@ -33,7 +36,10 @@
           "
           validation-attribute-key="jahrBis"
           :label="t('domain.report.staedtebaufoerderung.jahrBis')"
+          validate-on="blur"
           :error-messages="jahrBisError"
+          density="comfortable"
+          @blur="validateYears"
         />
       </v-col>
       <v-col
@@ -51,6 +57,7 @@
           validation-attribute-key="traeger"
           :label="t('domain.report.staedtebaufoerderung.traeger')"
           :error-messages="traegerError"
+          density="comfortable"
         />
       </v-col>
     </v-row>
@@ -67,7 +74,7 @@
           "
           validation-attribute-key="pname"
           :label="t('domain.report.staedtebaufoerderung.pname')"
-          density="comfort"
+          density="comfortable"
         />
       </v-col>
 
@@ -93,7 +100,7 @@ import type {
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
 
-import { computed, useTemplateRef } from "vue";
+import { computed, ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import { ReportStaedtebaufoerderungDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
@@ -137,19 +144,6 @@ function getTraegerTitle(item: TraegerFormContextDTO) {
   return item ? `${item.kurzform} (${item.bezeichnung})` : "";
 }
 
-const jahrVonError = computed(() =>
-  getJahrVonError(
-    modelValue.value.parameters?.jahrVon,
-    modelValue.value.parameters?.jahrBis
-  )
-);
-
-const jahrBisError = computed(() =>
-  getJahrBisError(
-    modelValue.value.parameters?.jahrVon,
-    modelValue.value.parameters?.jahrBis
-  )
-);
 const traegerError = computed(() => {
   const selectedTraeger = modelValue.value.parameters?.traeger;
   const traegerOptions = reportStaedtebaufoerderungFormContext?.traeger;
@@ -162,4 +156,31 @@ const traegerError = computed(() => {
     ? []
     : ["Der ausgewählte Träger wurde nicht gefunden."];
 });
+
+const jahrValidationMessages = computed(() => ({
+  bereich: t("domain.report.common.validation.jahr.bereich"),
+  groesser: t("domain.report.common.validation.jahr.groesser"),
+  kleiner: t("domain.report.common.validation.jahr.kleiner"),
+}));
+
+const jahrVonError = ref<ReturnType<typeof getJahrVonError>>();
+const jahrBisError = ref<ReturnType<typeof getJahrBisError>>();
+
+function validateYears() {
+  const { jahrVon: von, jahrBis: bis } = modelValue.value.parameters ?? {};
+  const errors = jahrValidationMessages.value;
+
+  jahrVonError.value = getJahrVonError(
+    von,
+    bis,
+    errors.bereich,
+    errors.groesser
+  );
+  jahrBisError.value = getJahrBisError(
+    von,
+    bis,
+    errors.bereich,
+    errors.kleiner
+  );
+}
 </script>
