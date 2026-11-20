@@ -8,7 +8,7 @@
         :form-ref="reportAuswertungAntraegeFormRef"
       >
         <template #form="{ item, updateValidity }">
-          <reportauswertungantraegeform
+          <report-auswertung-antraege-form
             ref="reportAuswertungAntraegeForm"
             :model-value="item"
             :reportauswertungantraegeformcontext="
@@ -30,7 +30,7 @@ import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
 import ReportCard from "@/components/common/ReportCard.vue";
-import reportauswertungantraegeform from "@/components/forms/report/ReportAuswertungAntraegeForm.vue";
+import ReportAuswertungAntraegeForm from "@/components/forms/report/ReportAuswertungAntraegeForm.vue";
 import { useReportAuswertungAntraegeApi } from "@/composables/api/report/useReportAuswertungAntraegeApi";
 import { Role } from "@/types/Role";
 
@@ -64,7 +64,7 @@ const reportAuswertungAntraegeFormContext = computed(
 );
 
 type ReportAuswertungAntraegeFormRef = InstanceType<
-  typeof reportauswertungantraegeform
+  typeof ReportAuswertungAntraegeForm
 >;
 
 const reportAuswertungAntraegeFormRef =
