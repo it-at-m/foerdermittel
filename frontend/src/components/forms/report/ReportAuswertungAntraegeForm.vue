@@ -20,7 +20,6 @@
           :label="t('domain.report.common.jahrVon')"
           density="comfortable"
           control-variant="hidden"
-          clearable
         />
       </v-col>
       <v-col
