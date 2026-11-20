@@ -99,7 +99,7 @@
     <v-row>
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <fm-autocomplete
           :model-value="modelValue.fobFb"
@@ -119,7 +119,7 @@
 
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <fm-autocomplete
           v-model="modelValue.kurKurzbez"
@@ -135,13 +135,34 @@
           density="comfortable"
         />
       </v-col>
+      <v-col
+        cols="12"
+        md="2"
+      >
+        <fm-checkbox
+          v-model="modelValue.refinanzierbar"
+          :display-mode="displayMode"
+          :label="t('model.projekt.refinanzierbar')"
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="2"
+      >
+        <fm-checkbox
+          v-model="modelValue.kauf"
+          :display-mode="displayMode"
+          :label="t('model.projekt.kauf')"
+        />
+      </v-col>
     </v-row>
 
     <!-- Projektinformationen -->
     <v-row>
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <fm-text-field
           v-model="modelValue.pstrasse"
@@ -156,7 +177,7 @@
       </v-col>
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <fm-text-field
           v-model="modelValue.pname"
@@ -171,7 +192,7 @@
       </v-col>
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
         <fm-text-field
           v-model="modelValue.projart"
@@ -182,27 +203,6 @@
           "
           validation-attribute-key="projart"
           density="comfortable"
-        />
-      </v-col>
-      <v-col
-        cols="12"
-        md="3"
-      >
-        <fm-checkbox
-          v-model="modelValue.refinanzierbar"
-          :display-mode="displayMode"
-          :label="t('model.projekt.refinanzierbar')"
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="3"
-      >
-        <fm-checkbox
-          v-model="modelValue.kauf"
-          :display-mode="displayMode"
-          :label="t('model.projekt.kauf')"
         />
       </v-col>
     </v-row>
@@ -270,7 +270,7 @@
     <v-row>
       <v-col
         cols="12"
-        md="5"
+        md="4"
       >
         <fm-autocomplete
           v-model="modelValue.krisofp"
@@ -289,7 +289,7 @@
 
       <v-col
         cols="12"
-        md="3"
+        md="4"
       >
         <fm-autocomplete
           v-model="modelValue.krnKrhname"
@@ -328,7 +328,7 @@
     <v-row>
       <v-col
         cols="12"
-        md="4"
+        md="3"
       >
         <fm-number-input
           v-model="modelValue.kripplatz"
@@ -340,12 +340,6 @@
           validation-attribute-key="kripplatz"
           density="comfortable"
         />
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="4"
-      >
         <fm-number-input
           v-model="modelValue.kigaplatz"
           :display-mode="displayMode"
@@ -356,11 +350,6 @@
           validation-attribute-key="kigaplatz"
           density="comfortable"
         />
-      </v-col>
-      <v-col
-        cols="12"
-        md="4"
-      >
         <fm-number-input
           v-model="modelValue.hortplatz"
           :display-mode="displayMode"
@@ -372,9 +361,10 @@
           density="comfortable"
         />
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="12">
+      <v-col
+        cols="12"
+        md="9"
+      >
         <fm-text-area
           v-model="modelValue.notizen"
           :display-mode="displayMode"
