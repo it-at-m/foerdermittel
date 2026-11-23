@@ -467,6 +467,30 @@
           "strasseProjektnummer": "Straße, Projektnummer",
           "fbProjektnummer": "Förderbereich, Projektnummer"
         }
+      },
+      "verwendungsnachweis": {
+        "modelName": "Verwendungsnachweis",
+        "jahr": "VN aus Jahr",
+        "monat": "Monat",
+        "sbl": "für Stadtbezirksliste",
+        "bez": "oder ein Stadtbezirk",
+        "fb": "Förderbereich",
+        "ua": "Unterabteilung",
+        "kurz": "Kurzbezeichnung",
+        "fag": "Nur FAG",
+        "notizen": "Ausgabe Notizen",
+        "win": "nur falls Mittelvergabe vorhanden",
+        "ohneschluss": "nur mit fehlenden Schlussbeschleid",
+        "krisofp": "Sonderförderprogramm",
+        "sgt": "Siedlungsgebiet",
+        "bpg": "Bauprogramm",
+        "krh": "Krankenhaus",
+        "sortEnum": {
+          "projektnummer": "Projektnummer",
+          "strasseProjektnummer": "Straße, Projektnummer",
+          "fbProjektnummer": "Förderbereich, Projektnummer",
+          "fbProjektstrasse": "Förderbereich, Projektstrasse"
+        }
       }
     }
   },
