@@ -5,6 +5,7 @@ import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichMa
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,10 @@ public class FoerderbereichService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<FoerderbereichFormContextDTO> getFoerderbereichFormContextDTOs() {
-        return foerderbereichMapper.toFormContext(foerderbereichRepository.findAll());
+        return foerderbereichMapper.toFormContext(foerderbereichRepository.findAll().stream()
+                .sorted(Comparator.comparing(
+                        Foerderbereich::getFb))
+                .toList());
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)

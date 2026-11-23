@@ -6,6 +6,8 @@ import de.muenchen.oss.foerdermittel.backend.security.Authorities;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.dto.UnterabschnittFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.dto.UnterabschnittMapper;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
+
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -78,7 +80,10 @@ public class UnterabschnittService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<UnterabschnittFormContextDTO> getUnterabschnittFormContextDTOs() {
-        return unterabschnittMapper.toFormContext(unterabschnittRepository.findAll());
+        return unterabschnittMapper.toFormContext(unterabschnittRepository.findAll().stream()
+                .sorted(Comparator.comparing(
+                        Unterabschnitt::getUa))
+                .toList());
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
