@@ -2474,10 +2474,6 @@ paths:
               schema:
                 type: string
                 format: binary
-            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
-              schema:
-                type: string
-                format: binary
       security:
       - bearerAuth: []
   /report/auswertungprojekte/form-context:
