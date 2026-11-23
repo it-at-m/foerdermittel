@@ -216,7 +216,9 @@ class FoerderbereichServiceTest {
         void givenEntitiesExist_thenReturnFormContextDTOs() {
             // Given
             final Foerderbereich entity1 = new Foerderbereich();
+            entity1.setFb(new BigDecimal(1));
             final Foerderbereich entity2 = new Foerderbereich();
+            entity2.setFb(new BigDecimal(2));
             final List<Foerderbereich> entities = List.of(entity1, entity2);
 
             final List<FoerderbereichFormContextDTO> expectedDTOs = List.of(

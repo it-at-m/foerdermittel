@@ -85,7 +85,7 @@ class ReportAuswertungTermineServiceTest {
     class GenerateReportAuswertungTermine {
 
         @Test
-        void givenNoFilters_whenGeneratingReport_thenShouldReturnGeneratedReport() {
+        void givenNoFilters_thenShouldReturnGeneratedReport() {
             // Given
             final ReportAuswertungTermineDTO parameters = createParameters();
             final ReportAuswertungTermineSort sort = ReportAuswertungTermineSort.values()[0];
@@ -123,7 +123,7 @@ class ReportAuswertungTermineServiceTest {
         }
 
         @Test
-        void givenEmptyFilters_whenGeneratingReport_thenShouldPreserveEmptyValues() {
+        void givenEmptyFilters_thenShouldPreserveEmptyValues() {
             // Given
             final ReportAuswertungTermineDTO parameters = createParameters();
             final ReportAuswertungTermineSort sort = ReportAuswertungTermineSort.values()[0];
@@ -167,7 +167,7 @@ class ReportAuswertungTermineServiceTest {
         }
 
         @Test
-        void givenInvalidSearchParameters_whenGeneratingReport_thenShouldPropagateException() {
+        void givenInvalidSearchParameters_thenShouldPropagateException() {
             // Given
             final ReportAuswertungTermineDTO parameters = createParameters();
             when(parameters.fb()).thenReturn("123");
@@ -204,7 +204,7 @@ class ReportAuswertungTermineServiceTest {
     class GetReportAuswertungTermineFormContext {
 
         @Test
-        void givenAvailableFormContextData_whenRetrievingFormContext_thenShouldCallAllServices() {
+        void givenAvailableFormContextDatawhenRetrievingFormContext_thenShouldCallAllServices() {
             // Given
             final List<FoerderbereichFormContextDTO> foerderbereichContext = List.of(mock(FoerderbereichFormContextDTO.class));
 
