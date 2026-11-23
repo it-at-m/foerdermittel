@@ -5,13 +5,13 @@ import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkFormCont
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkMapper;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.math.BigDecimal;
-import java.util.Comparator;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,10 +43,7 @@ public class StadtbezirkService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<StadtbezirkFormContextDTO> getStadtbezirkFormContextDTOs() {
-        return stadtbezirkMapper.toFormContext(stadtbezirkRepository.findAll().stream()
-                .sorted(Comparator.comparing(
-                        Stadtbezirk::getStadtbezirk))
-                .toList());
+        return stadtbezirkMapper.toFormContext(stadtbezirkRepository.findAll(Sort.by("stadtbezirk")));
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)

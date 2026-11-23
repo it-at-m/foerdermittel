@@ -21,6 +21,6 @@ public interface StadtbezirkMapper {
 
     StadtbezirkFormContextDTO toFormContext(Stadtbezirk stadtbezirk);
 
-    List<StadtbezirkFormContextDTO> toFormContext(List<Stadtbezirk> stadtbezirkList);
+    List<StadtbezirkFormContextDTO> toFormContext(Iterable<Stadtbezirk> stadtbezirkList);
 
 }

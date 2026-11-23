@@ -20,6 +20,6 @@ public interface KrankenhausMapper {
 
     KrankenhausFormContextDTO toFormContext(Krankenhaus krankenhaus);
 
-    List<KrankenhausFormContextDTO> toFormContext(List<Krankenhaus> krankenhausList);
+    List<KrankenhausFormContextDTO> toFormContext(Iterable<Krankenhaus> krankenhausList);
 
 }

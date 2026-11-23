@@ -21,6 +21,6 @@ public interface ReferatMapper {
 
     ReferatFormContextDTO toFormContext(Referat referat);
 
-    List<ReferatFormContextDTO> toFormContext(List<Referat> referatList);
+    List<ReferatFormContextDTO> toFormContext(Iterable<Referat> referatList);
 
 }

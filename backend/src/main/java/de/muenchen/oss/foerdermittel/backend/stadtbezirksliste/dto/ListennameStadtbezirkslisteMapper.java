@@ -31,5 +31,5 @@ public interface ListennameStadtbezirkslisteMapper {
 
     StadtbezirkslisteFormContext toFormContext(Listenname listenname);
 
-    List<ListennameStadtbezirkslisteFormContextDTO> toFormContext(List<Listenname> listennameList);
+    List<ListennameStadtbezirkslisteFormContextDTO> toFormContext(Iterable<Listenname> listennameList);
 }

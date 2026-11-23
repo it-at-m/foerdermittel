@@ -20,6 +20,6 @@ public interface KurzbezeichnungMapper {
 
     KurzbezeichnungFormContextDTO toFormContext(Kurzbezeichnung kurzbezeichnung);
 
-    List<KurzbezeichnungFormContextDTO> toFormContext(List<Kurzbezeichnung> kurzbezeichnungList);
+    List<KurzbezeichnungFormContextDTO> toFormContext(Iterable<Kurzbezeichnung> kurzbezeichnungList);
 
 }
