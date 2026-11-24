@@ -25,6 +25,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @ExtendWith(MockitoExtension.class)
 class StadtbezirkServiceTest {
@@ -227,14 +228,14 @@ class StadtbezirkServiceTest {
                     new StadtbezirkFormContextDTO(1, "Stadtbezirk 1"),
                     new StadtbezirkFormContextDTO(2, "Stadtbezirk 2"));
 
-            when(stadtbezirkRepository.findAll()).thenReturn(entities);
+            when(stadtbezirkRepository.findAll(Sort.by("stadtbezirk"))).thenReturn(entities);
             when(stadtbezirkMapper.toFormContext(entities)).thenReturn(expected);
 
             // When
             final List<StadtbezirkFormContextDTO> result = unitUnderTest.getStadtbezirkFormContextDTOs();
 
             // Then
-            verify(stadtbezirkRepository, times(1)).findAll();
+            verify(stadtbezirkRepository, times(1)).findAll(Sort.by("stadtbezirk"));
             verify(stadtbezirkMapper, times(1)).toFormContext(entities);
 
             assertThat(result).containsExactlyElementsOf(expected);

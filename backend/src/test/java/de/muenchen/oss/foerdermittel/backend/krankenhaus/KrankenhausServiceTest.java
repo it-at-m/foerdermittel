@@ -24,6 +24,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @ExtendWith(MockitoExtension.class)
 class KrankenhausServiceTest {
@@ -222,14 +223,14 @@ class KrankenhausServiceTest {
                     Mockito.mock(KrankenhausFormContextDTO.class),
                     Mockito.mock(KrankenhausFormContextDTO.class));
 
-            when(krankenhausRepository.findAll()).thenReturn(entities);
+            when(krankenhausRepository.findAll(Sort.by("krhname"))).thenReturn(entities);
             when(krankenhausMapper.toFormContext(entities)).thenReturn(expectedDTOs);
 
             // When
             final List<KrankenhausFormContextDTO> result = unitUnderTest.getKrankenhausFormContextDTOs();
 
             // Then
-            verify(krankenhausRepository, times(1)).findAll();
+            verify(krankenhausRepository, times(1)).findAll(Sort.by("krhname"));
             verify(krankenhausMapper, times(1)).toFormContext(entities);
             assertThat(result).isEqualTo(expectedDTOs);
         }

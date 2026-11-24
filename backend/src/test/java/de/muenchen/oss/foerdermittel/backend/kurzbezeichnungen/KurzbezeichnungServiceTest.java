@@ -28,6 +28,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @ExtendWith(MockitoExtension.class)
 public class KurzbezeichnungServiceTest {
@@ -226,14 +227,14 @@ public class KurzbezeichnungServiceTest {
                     Mockito.mock(KurzbezeichnungFormContextDTO.class),
                     Mockito.mock(KurzbezeichnungFormContextDTO.class));
 
-            when(kurzbezeichnungRepository.findAll()).thenReturn(entities);
+            when(kurzbezeichnungRepository.findAll(Sort.by("kurzbez"))).thenReturn(entities);
             when(kurzbezeichnungMapper.toFormContext(entities)).thenReturn(expectedDTOs);
 
             // When
             final List<KurzbezeichnungFormContextDTO> result = unitUnderTest.getKurzbezeichnungFormContextDTOs();
 
             // Then
-            verify(kurzbezeichnungRepository, times(1)).findAll();
+            verify(kurzbezeichnungRepository, times(1)).findAll(Sort.by("kurzbez"));
             verify(kurzbezeichnungMapper, times(1)).toFormContext(entities);
             assertThat(result).isEqualTo(expectedDTOs);
         }

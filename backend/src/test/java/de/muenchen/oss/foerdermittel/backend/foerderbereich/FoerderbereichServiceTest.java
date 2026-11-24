@@ -25,6 +25,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @ExtendWith(MockitoExtension.class)
 class FoerderbereichServiceTest {
@@ -223,14 +224,14 @@ class FoerderbereichServiceTest {
                     Mockito.mock(FoerderbereichFormContextDTO.class),
                     Mockito.mock(FoerderbereichFormContextDTO.class));
 
-            when(foerderbereichRepository.findAll()).thenReturn(entities);
+            when(foerderbereichRepository.findAll(Sort.by("fb"))).thenReturn(entities);
             when(foerderbereichMapper.toFormContext(entities)).thenReturn(expectedDTOs);
 
             // When
             final List<FoerderbereichFormContextDTO> result = unitUnderTest.getFoerderbereichFormContextDTOs();
 
             // Then
-            verify(foerderbereichRepository, times(1)).findAll();
+            verify(foerderbereichRepository, times(1)).findAll(Sort.by("fb"));
             verify(foerderbereichMapper, times(1)).toFormContext(entities);
             assertThat(result).isEqualTo(expectedDTOs);
         }
