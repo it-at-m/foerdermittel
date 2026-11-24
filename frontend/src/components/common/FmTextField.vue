@@ -76,7 +76,7 @@ const {
 const { required, allRules, counter, canNotEdit } = useInputValidation(
   displayMode,
   disableEdit,
-  additionalRules,
+  () => additionalRules,
   validationAttributeMap,
   validationAttributeKey,
   true,
