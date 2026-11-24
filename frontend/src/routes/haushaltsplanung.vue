@@ -58,14 +58,11 @@ import { useI18n } from "vue-i18n";
 import BaseView from "@/components/common/BaseView.vue";
 import CrudCard from "@/components/common/CrudCard.vue";
 import { useHaushaltsjahrApi } from "@/composables/api/useHaushaltsjahrApi";
-import useHasAnyRole from "@/composables/useHasAnyRole";
 import { Role } from "@/types/Role";
 
 const domainKey = "model.haushaltsplanung.modelName";
 
 const { t } = useI18n();
-
-const isAdmin = useHasAnyRole(Role.ADMIN);
 
 definePage({
   meta: {
