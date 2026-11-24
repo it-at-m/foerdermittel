@@ -34,12 +34,9 @@ public class ReportAuswertungTermineService {
     private final ListennameStadtbezirkslisteService listennameStadtbezirkslisteService;
     private final StadtbezirkService stadtbezirkService;
     private final KurzbezeichnungService kurzbezeichnungService;
-    private final BauprogrammService bauprogrammService;
     private final UnterabschnittService unterabschnittService;
-    private final SiedlungsgebietService siedlungsgebietService;
     private final ReportAuswertungTermineMapper reportMapper;
     private final ReportService reportService;
-    private final ProjektService projektService;
 
     private final ReportSearchParameterValidator reportSearchParameterValidator;
 

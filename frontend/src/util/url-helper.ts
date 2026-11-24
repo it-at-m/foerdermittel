@@ -9,7 +9,7 @@ function flattenQuery(obj: Record<string, unknown>): Record<string, string> {
     if (value !== null && typeof value === "object" && !Array.isArray(value)) {
       Object.assign(result, flattenQuery(value as Record<string, unknown>));
     } else {
-      if (value !== null) {
+      if (value !== null && value !== undefined) {
         result[key] = String(value);
       }
     }

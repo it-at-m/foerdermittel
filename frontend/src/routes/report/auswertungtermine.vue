@@ -52,6 +52,8 @@ const title = t("common.generics.reportTitle", [
 
 const EMPTY_FORM_TEMPLATE: Partial<GetReportAuswertungTermineRequest> = {
   parameters: {
+    zukunft: false,
+    ueb: false,
     sort: "PROJEKTNUMMER",
   },
 };

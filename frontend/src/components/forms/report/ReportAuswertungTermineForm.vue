@@ -52,9 +52,10 @@
           :validation-attribute-map="
             ReportAuswertungTermineDTOPropertyValidationAttributesMap
           "
-          validation-attribute-key="kurzbez"
+          validation-attribute-key="sbl"
           :label="t('domain.report.common.sbl')"
           density="comfortable"
+          clearable
           @update:model-value="delete modelValue.parameters!.bez"
         />
       </v-col>
@@ -71,9 +72,10 @@
           :validation-attribute-map="
             ReportAuswertungTermineDTOPropertyValidationAttributesMap
           "
-          validation-attribute-key="stadtbezirk"
+          validation-attribute-key="bez"
           :label="t('domain.report.common.bez')"
           density="comfortable"
+          clearable
           @update:model-value="delete modelValue.parameters!.sbl"
         />
       </v-col>
@@ -94,6 +96,7 @@
           validation-attribute-key="fb"
           :label="t('domain.report.common.fb')"
           density="comfortable"
+          clearable
         />
       </v-col>
       <v-col
@@ -111,6 +114,7 @@
           validation-attribute-key="ua"
           :label="t('domain.report.common.ua')"
           density="comfortable"
+          clearable
         />
       </v-col>
       <v-col
@@ -128,6 +132,7 @@
           validation-attribute-key="kurz"
           :label="t('domain.report.common.kurz')"
           density="comfortable"
+          clearable
         />
       </v-col>
     </v-row>
@@ -145,6 +150,7 @@
           validation-attribute-key="pstrasse"
           :label="t('domain.report.common.pstrasse')"
           density="comfortable"
+          clearable
         />
       </v-col>
 
@@ -161,6 +167,7 @@
           validation-attribute-key="pname"
           :label="t('domain.report.common.pname')"
           density="comfortable"
+          clearable
         />
       </v-col>
     </v-row>
