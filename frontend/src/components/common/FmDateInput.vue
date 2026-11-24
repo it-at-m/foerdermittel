@@ -68,7 +68,7 @@ const {
   required?: boolean;
 }>();
 
-const { required, allRules, canNotEdit, inputRef } = useInputValidation(
+const { required, allRules, canNotEdit } = useInputValidation(
   displayMode,
   disableEdit,
   () => additionalRules,
