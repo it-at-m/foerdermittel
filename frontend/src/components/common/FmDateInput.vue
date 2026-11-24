@@ -1,6 +1,7 @@
 <template>
   <v-date-input
     v-if="displayMode !== InputDisplayMode.READ"
+    ref="inputRef"
     v-model="model"
     :rules="allRules"
     :readonly="canNotEdit"
@@ -67,7 +68,7 @@ const {
   required?: boolean;
 }>();
 
-const { required, allRules, canNotEdit } = useInputValidation(
+const { required, allRules, canNotEdit, inputRef } = useInputValidation(
   displayMode,
   disableEdit,
   () => additionalRules,

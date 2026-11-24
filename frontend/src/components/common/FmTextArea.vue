@@ -1,5 +1,6 @@
 <template>
   <v-textarea
+    ref="inputRef"
     v-model="model"
     :readonly="canNotEdit"
     :counter="counter"
@@ -58,15 +59,16 @@ const {
   required?: boolean;
 }>();
 
-const { required, allRules, counter, canNotEdit } = useInputValidation(
-  displayMode,
-  disableEdit,
-  () => additionalRules,
-  validationAttributeMap,
-  validationAttributeKey,
-  true,
-  () => requiredOverride
-);
+const { required, allRules, counter, canNotEdit, inputRef } =
+  useInputValidation(
+    displayMode,
+    disableEdit,
+    () => additionalRules,
+    validationAttributeMap,
+    validationAttributeKey,
+    true,
+    () => requiredOverride
+  );
 
 const model = defineModel<string>();
 
