@@ -364,6 +364,7 @@
       <v-col
         cols="12"
         md="9"
+        class="d-flex"
       >
         <fm-text-area
           v-model="modelValue.notizen"
