@@ -7,8 +7,8 @@
         :table-headers="headers"
         :api="hhjahrApi"
         :domain-key="domainKey"
-        :enable-actions="isAdmin"
-        :should-load-form-context="isAdmin"
+        :enable-actions="false"
+        :should-load-form-context="false"
         :expandable="true"
       >
         <template #form="{}" />
