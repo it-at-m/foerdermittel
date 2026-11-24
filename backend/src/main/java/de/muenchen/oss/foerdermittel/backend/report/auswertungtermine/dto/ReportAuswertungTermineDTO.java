@@ -16,8 +16,8 @@ public record ReportAuswertungTermineDTO(
         @Size(max = 30) String pstrasse,
         @Size(max = 30) String pname,
         String sbl,
-        Boolean zukunft,
-        Boolean ueb,
+        boolean zukunft,
+        boolean ueb,
 
         @NotNull ReportAuswertungTermineSort sort) {
 }
