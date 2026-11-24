@@ -2,17 +2,12 @@
 package de.muenchen.oss.foerdermittel.backend.hhjahr;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
-import de.muenchen.oss.foerdermittel.backend.hhjahr.dto.HhjahrMapper;
-import de.muenchen.oss.foerdermittel.backend.hhjahr.dto.HhjahrResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.hhplan.HhplanRepository;
 import java.math.BigDecimal;
 import java.util.List;
@@ -39,9 +34,6 @@ class HhjahrServiceTest {
 
     @Mock
     private HhplanRepository hhplanRepository;
-
-    @Mock
-    private HhjahrMapper hhjahrMapper;
 
     @Mock
     private Hhjahr hhjahr;
@@ -99,7 +91,7 @@ class HhjahrServiceTest {
             final Page<Hhjahr> expectedPage = new PageImpl<>(List.of(hhjahr), pageable, 1);
 
             when(hhjahr.getHhjahr()).thenReturn(HHJAHR_ID);
-            when(hhjahrRepository.findAllHhjahre(pageable))
+            when(hhjahrRepository.findAll(pageable))
                     .thenReturn(expectedPage);
             when(hhplanRepository.findAllByHhjJahrIn(List.of(HHJAHR_ID)))
                     .thenReturn(List.of());
@@ -108,7 +100,7 @@ class HhjahrServiceTest {
             final Page<Hhjahr> result = unitUnderTest.getHhjahre(pageable);
 
             // Then
-            verify(hhjahrRepository, times(1)).findAllHhjahre(pageable);
+            verify(hhjahrRepository, times(1)).findAll(pageable);
             verify(hhplanRepository, times(1))
                     .findAllByHhjJahrIn(List.of(HHJAHR_ID));
             verify(hhjahr, times(1)).setHhplanlisten(List.of());
@@ -123,157 +115,17 @@ class HhjahrServiceTest {
             final Pageable pageable = PageRequest.of(0, 10);
             final Page<Hhjahr> emptyPage = Page.empty(pageable);
 
-            when(hhjahrRepository.findAllHhjahre(pageable))
+            when(hhjahrRepository.findAll(pageable))
                     .thenReturn(emptyPage);
 
             // When
             final Page<Hhjahr> result = unitUnderTest.getHhjahre(pageable);
 
             // Then
-            verify(hhjahrRepository, times(1)).findAllHhjahre(pageable);
+            verify(hhjahrRepository, times(1)).findAll(pageable);
             verify(hhplanRepository, never()).findAllByHhjJahrIn(List.of());
 
             assertThat(result).isEmpty();
-        }
-    }
-
-    @Nested
-    class GetHhjahrFormContext {
-
-        @Test
-        void givenEntitiesExists_thenReturnFormContext() {
-            // Given
-            when(hhjahrRepository.findAllHhjahr())
-                    .thenReturn(List.of(HHJAHR_ID));
-
-            // When
-            final HhjahrFormContext result = unitUnderTest.getHhjahrFormContext();
-
-            // Then
-            verify(hhjahrRepository, times(1)).findAllHhjahr();
-
-            assertThat(result).isNotNull();
-        }
-    }
-
-    @Nested
-    class CreateHhjahr {
-
-        @Test
-        void givenHhjahr_thenReturnCreatedEntity() {
-            // Given
-            when(hhjahrRepository.insert(hhjahr))
-                    .thenReturn(hhjahr);
-
-            // When
-            final Hhjahr result = unitUnderTest.createHhjahr(hhjahr);
-
-            // Then
-            verify(hhjahrRepository, times(1)).insert(hhjahr);
-
-            assertThat(result).isEqualTo(hhjahr);
-        }
-    }
-
-    @Nested
-    class UpdateHhjahr {
-
-        @Test
-        void givenEntityExists_thenReturnUpdatedDTO() {
-            // Given
-            final String hhbezeichnung = "Haushaltsjahr 2026";
-            final String notizen = "Testnotiz";
-
-            final Hhjahr existingHhjahr = mock(Hhjahr.class);
-            final Hhjahr updatedHhjahr = mock(Hhjahr.class);
-            final HhjahrResponseDTO expectedDTO = mock(HhjahrResponseDTO.class);
-
-            when(hhjahrRepository.findById(HHJAHR_ID))
-                    .thenReturn(Optional.of(existingHhjahr));
-            when(hhjahrRepository.update(existingHhjahr))
-                    .thenReturn(updatedHhjahr);
-            when(hhjahrMapper.toDTO(updatedHhjahr))
-                    .thenReturn(expectedDTO);
-
-            when(hhjahr.getHhbezeichnung()).thenReturn(hhbezeichnung);
-            when(hhjahr.getNotizen()).thenReturn(notizen);
-
-            // When
-            final HhjahrResponseDTO result = unitUnderTest.updateHhjahr(hhjahr, HHJAHR_ID);
-
-            // Then
-            verify(hhjahrRepository, times(1)).findById(HHJAHR_ID);
-
-            verify(existingHhjahr, times(1)).setHhbezeichnung(hhbezeichnung);
-            verify(existingHhjahr, times(1)).setNotizen(notizen);
-
-            verify(hhjahrRepository, times(1)).update(existingHhjahr);
-            verify(hhjahrMapper, times(1)).toDTO(updatedHhjahr);
-
-            assertThat(result).isSameAs(expectedDTO);
-        }
-
-        @Test
-        void givenEntityNotExists_thenThrowNotFoundException() {
-            // Given
-            when(hhjahrRepository.findById(HHJAHR_ID))
-                    .thenReturn(Optional.empty());
-
-            // When
-            final Exception exception = Assertions.assertThrows(
-                    NotFoundException.class,
-                    () -> unitUnderTest.updateHhjahr(hhjahr, HHJAHR_ID));
-
-            // Then
-            verify(hhjahrRepository, times(1)).findById(HHJAHR_ID);
-            verify(hhjahrRepository, never()).update(any(Hhjahr.class));
-            verifyNoInteractions(hhjahrMapper);
-
-            assertThat(exception.getMessage()).isEqualTo(
-                    String.format(
-                            "The %s with ID %s was not found.",
-                            Hhjahr.class.getSimpleName(),
-                            HHJAHR_ID));
-        }
-    }
-
-    @Nested
-    class DeleteHhjahr {
-
-        @Test
-        void givenIdExists_thenDeleteEntity() {
-            // Given
-            when(hhjahrRepository.findById(HHJAHR_ID))
-                    .thenReturn(Optional.of(hhjahr));
-
-            // When
-            unitUnderTest.deleteHhjahr(HHJAHR_ID);
-
-            // Then
-            verify(hhjahrRepository, times(1)).findById(HHJAHR_ID);
-            verify(hhjahrRepository, times(1)).deleteById(HHJAHR_ID);
-        }
-
-        @Test
-        void givenIdNotExists_thenThrowNotFoundException() {
-            // Given
-            when(hhjahrRepository.findById(HHJAHR_ID))
-                    .thenReturn(Optional.empty());
-
-            // When
-            final Exception exception = Assertions.assertThrows(
-                    NotFoundException.class,
-                    () -> unitUnderTest.deleteHhjahr(HHJAHR_ID));
-
-            // Then
-            verify(hhjahrRepository, times(1)).findById(HHJAHR_ID);
-            verify(hhjahrRepository, never()).deleteById(HHJAHR_ID);
-
-            assertThat(exception.getMessage()).isEqualTo(
-                    String.format(
-                            "The %s with ID %s was not found.",
-                            Hhjahr.class.getSimpleName(),
-                            HHJAHR_ID));
         }
     }
 }

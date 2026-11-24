@@ -1,8 +1,6 @@
 
 package de.muenchen.oss.foerdermittel.backend.hhjahr;
 
-import de.muenchen.oss.foerdermittel.backend.hhjahr.dto.HhjahrMapper;
-import de.muenchen.oss.foerdermittel.backend.hhjahr.dto.HhjahrResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.hhplan.Hhplan;
 import de.muenchen.oss.foerdermittel.backend.hhplan.HhplanRepository;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
@@ -27,7 +25,6 @@ public class HhjahrService {
 
     private final HhjahrRepository hhjahrRepository;
     private final HhplanRepository hhplanRepository;
-    private final HhjahrMapper hhjahrMapper;
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
@@ -42,7 +39,7 @@ public class HhjahrService {
     public Page<Hhjahr> getHhjahre(final Pageable pageable) {
         log.info("Get Haushaltsjahre with Pageable {}", pageable);
 
-        final Page<Hhjahr> hhjahre = hhjahrRepository.findAllHhjahre(pageable);
+        final Page<Hhjahr> hhjahre = hhjahrRepository.findAll(pageable);
 
         final List<BigDecimal> hhjahrIds = hhjahre.getContent()
                 .stream()
@@ -64,46 +61,4 @@ public class HhjahrService {
         return hhjahre;
     }
 
-    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    @Transactional(readOnly = true)
-    public HhjahrFormContext getHhjahrFormContext() {
-        log.info("Get Haushaltsjahr form context");
-        return new HhjahrFormContext(hhjahrRepository.findAllHhjahr());
-    }
-
-    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    public Hhjahr createHhjahr(final Hhjahr hhjahr) {
-        log.debug("Create Haushaltsjahr with hhjahr '{}'", hhjahr);
-        return hhjahrRepository.insert(hhjahr);
-    }
-
-    @Transactional
-    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    public HhjahrResponseDTO updateHhjahr(
-            final Hhjahr hhjahr,
-            final BigDecimal hhjahrId) {
-
-        final Hhjahr foundHhjahr = ServiceUtils.getEntityOrThrowNotFoundException(
-                hhjahrId, hhjahrRepository, Hhjahr.class);
-
-        foundHhjahr.setHhbezeichnung(hhjahr.getHhbezeichnung());
-        foundHhjahr.setNotizen(hhjahr.getNotizen());
-
-        log.debug(
-                "Update Haushaltsjahr: hhjahr={}, hhbezeichnung={}",
-                foundHhjahr.getHhjahr(),
-                foundHhjahr.getHhbezeichnung());
-
-        final Hhjahr updatedHhjahr = hhjahrRepository.update(foundHhjahr);
-
-        return hhjahrMapper.toDTO(updatedHhjahr);
-    }
-
-    @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
-    public void deleteHhjahr(final BigDecimal hhjahrId) {
-        log.debug("Delete Haushaltsjahr with ID {}", hhjahrId);
-        ServiceUtils.getEntityOrThrowNotFoundException(
-                hhjahrId, hhjahrRepository, Hhjahr.class);
-        hhjahrRepository.deleteById(hhjahrId);
-    }
 }
