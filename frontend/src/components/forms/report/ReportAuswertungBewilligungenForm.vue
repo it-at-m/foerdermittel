@@ -16,9 +16,11 @@
             ReportAuswertungBewilligungenDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrVon"
+          validate-on="blur"
           :label="t('domain.report.common.jahrVon')"
           :error-messages="jahrVonError"
           density="comfortable"
+          @blur="validateYears"
         />
       </v-col>
       <v-col
@@ -32,9 +34,11 @@
             ReportAuswertungBewilligungenDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrBis"
+          validate-on="blur"
           :label="t('domain.report.common.jahrBis')"
           :error-messages="jahrBisError"
           density="comfortable"
+          @blur="validateYears"
         />
       </v-col>
       <v-col
@@ -42,7 +46,7 @@
         md="1"
       >
         <fm-text-field
-          v-model="modelValue.parameters!.monat"
+          v-model="monat"
           :display-mode="InputDisplayMode.EDIT"
           :label="t('domain.report.auswertungBewilligungen.monat')"
           :validation-attribute-map="
@@ -50,6 +54,7 @@
           "
           validation-attribute-key="monat"
           density="comfortable"
+          clearable
         />
       </v-col>
       <v-col
@@ -373,7 +378,7 @@ import type {
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
 
-import { computed, useTemplateRef, watch } from "vue";
+import { computed, ref, useTemplateRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
 import { ReportAuswertungBewilligungenDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
@@ -527,19 +532,16 @@ const formatOptions = [
   },
 ];
 
-const jahrVonError = computed(() =>
-  getJahrVonError(
-    modelValue.value.parameters?.jahrVon,
-    modelValue.value.parameters?.jahrBis
-  )
-);
+const jahrVonError = ref<ReturnType<typeof getJahrVonError>>();
+const jahrBisError = ref<ReturnType<typeof getJahrBisError>>();
 
-const jahrBisError = computed(() =>
-  getJahrBisError(
-    modelValue.value.parameters?.jahrVon,
-    modelValue.value.parameters?.jahrBis
-  )
-);
+function validateYears() {
+  const von = modelValue.value.parameters?.jahrVon;
+  const bis = modelValue.value.parameters?.jahrBis;
+
+  jahrVonError.value = getJahrVonError(von, bis);
+  jahrBisError.value = getJahrBisError(von, bis);
+}
 
 const datumAsDate = computed<Date | undefined>({
   get: () => {
@@ -577,6 +579,25 @@ const datumAsDate = computed<Date | undefined>({
     const year = date.getFullYear();
 
     parameters.datum = `${day}.${month}.${year}`;
+  },
+});
+
+const monat = computed<string | undefined>({
+  get: () => modelValue.value.parameters?.monat,
+
+  set: (value) => {
+    const parameters = modelValue.value.parameters;
+
+    if (!parameters) {
+      return;
+    }
+
+    if (!value?.trim()) {
+      delete parameters.monat;
+      return;
+    }
+
+    parameters.monat = value;
   },
 });
 </script>

@@ -302,6 +302,14 @@ class ReportAuswertungBewilligungenServiceTest {
             verify(siedlungsgebietService).getSiedlungsgebietFormContextDTOs();
 
             assertThat(formContext).isNotNull();
+            assertThat(formContext.projs()).isEqualTo(projektContext);
+            assertThat(formContext.fbs()).isEqualTo(foerderbereichContext);
+            assertThat(formContext.sbls()).isEqualTo(listennameContext);
+            assertThat(formContext.bezs()).isEqualTo(stadtbezirkContext);
+            assertThat(formContext.uas()).isEqualTo(unterabschnittContext);
+            assertThat(formContext.kurzs()).isEqualTo(kurzbezeichnungContext);
+            assertThat(formContext.bpgs()).isEqualTo(bauprogrammContext);
+            assertThat(formContext.sgts()).isEqualTo(siedlungsgebietContext);
         }
     }
 }

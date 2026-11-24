@@ -38,8 +38,8 @@ public class ReportAuswertungBewilligungenMapper {
         parameters.put("P_BZUWART", dto.zuwendungsart() != null ? dto.zuwendungsart().name() : null);
         parameters.put("P_FAG", ReportControllerUtil.nullIfBlank(dto.fag()));
 
-        parameters.put("P_ERFOLGT", ReportControllerUtil.nullIfBlank(dto.fag()));
-        parameters.put("P_NOTIZ", ReportControllerUtil.nullIfBlank(dto.fag()));
+        parameters.put("P_ERFOLGT", ReportControllerUtil.nullIfBlank(dto.erfolgt()));
+        parameters.put("P_NOTIZ", ReportControllerUtil.nullIfBlank(dto.notizen()));
 
         return parameters;
     }

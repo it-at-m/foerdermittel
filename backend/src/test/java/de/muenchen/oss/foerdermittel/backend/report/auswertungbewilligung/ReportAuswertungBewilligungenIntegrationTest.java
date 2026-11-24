@@ -94,7 +94,7 @@ public class ReportAuswertungBewilligungenIntegrationTest {
     @Nested
     class GetReportAuswertungbewilligungen {
 
-        private static final String VALID_SORT = "PROJEKTNUMMER";
+        private static final String VALID_SORT = "PROJEKTNUMMER_BEWILLIGTAM";
         private static final String VALID_TYPE = "PDF";
 
         @BeforeEach
@@ -176,7 +176,7 @@ public class ReportAuswertungBewilligungenIntegrationTest {
 
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path(FORM_CONTEXT_PATH)
+                            .path(REPORT_PATH)
                             .build())
                     .header(
                             HttpHeaders.AUTHORIZATION,

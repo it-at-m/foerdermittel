@@ -175,7 +175,7 @@ public class ReportAuswertungAbrufeIntegrationTest {
 
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path(FORM_CONTEXT_PATH)
+                            .path(REPORT_PATH)
                             .build())
                     .header(
                             HttpHeaders.AUTHORIZATION,

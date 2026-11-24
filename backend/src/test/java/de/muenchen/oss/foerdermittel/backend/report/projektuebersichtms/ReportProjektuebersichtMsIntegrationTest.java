@@ -77,7 +77,7 @@ class ReportProjektuebersichtMsIntegrationTest {
                 final HttpStatus httpStatus) {
 
             restTestClient.get()
-                    .uri(FORM_CONTEXT_PATH)
+                    .uri(REPORT_PATH)
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             String.format("Bearer %s", role))
