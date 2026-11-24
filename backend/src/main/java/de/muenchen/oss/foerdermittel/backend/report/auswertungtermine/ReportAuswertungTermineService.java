@@ -1,9 +1,7 @@
 package de.muenchen.oss.foerdermittel.backend.report.auswertungtermine;
 
-import de.muenchen.oss.foerdermittel.backend.bauprogramm.BauprogrammService;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichService;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungService;
-import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
 import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
 import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
 import de.muenchen.oss.foerdermittel.backend.report.ReportService;
@@ -14,7 +12,6 @@ import de.muenchen.oss.foerdermittel.backend.report.auswertungtermine.formcontex
 import de.muenchen.oss.foerdermittel.backend.report.validation.CommonSearchParameters;
 import de.muenchen.oss.foerdermittel.backend.report.validation.ReportSearchParameterValidator;
 import de.muenchen.oss.foerdermittel.backend.security.Authorities;
-import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietService;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkService;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.ListennameStadtbezirkslisteService;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittService;
