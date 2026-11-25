@@ -312,14 +312,7 @@
           "pdfFlat": "PDF: ohne Gruppierung",
           "excel": "Excel"
         },
-        "reportSort": "Sortierung",
-        "validation": {
-          "jahr": {
-            "bereich": "Muss im Bereich von 1970 - 2100 liegen.",
-            "groesser": "Jahr von darf nicht größer als Jahr bis sein.",
-            "kleiner": "Jahr bis darf nicht kleiner als Jahr von sein."
-          }
-        }
+        "reportSort": "Sortierung"
       },
       "projektUebersicht": "@:model.projekt.modelName{'übersicht'}",
       "projektUebersichtManagement": "@:domain.report.projektUebersicht (Management Summary)",

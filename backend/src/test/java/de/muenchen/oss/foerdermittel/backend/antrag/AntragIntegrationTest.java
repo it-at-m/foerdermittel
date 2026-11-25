@@ -2,6 +2,7 @@ package de.muenchen.oss.foerdermittel.backend.antrag;
 
 import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_TEST_PROFILE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
 import de.muenchen.oss.foerdermittel.backend.TestUtils;
@@ -151,6 +152,7 @@ public class AntragIntegrationTest {
         projekt.setRefinanzierbar(true);
         ReflectionTestUtils.setField(projekt, "anlagevon", "test");
         ReflectionTestUtils.setField(projekt, "anlagedatum", LocalDateTime.now());
+        ReflectionTestUtils.setField(projekt, "speicherdatum", LocalDateTime.now());
         projektRepository.save(projekt);
     }
 
