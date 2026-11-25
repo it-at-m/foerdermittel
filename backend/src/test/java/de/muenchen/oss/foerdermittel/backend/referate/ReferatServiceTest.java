@@ -29,7 +29,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 @ExtendWith(MockitoExtension.class)
 class ReferatServiceTest {
@@ -191,14 +190,14 @@ class ReferatServiceTest {
                     Mockito.mock(ReferatFormContextDTO.class),
                     Mockito.mock(ReferatFormContextDTO.class));
 
-            when(referatRepository.findAll(Sort.by("refnr"))).thenReturn(entities);
+            when(referatRepository.findAllByOrderByRefnrAsc()).thenReturn(entities);
             when(referatMapper.toFormContext(entities)).thenReturn(expectedDTOs);
 
             // When
             final List<ReferatFormContextDTO> result = unitUnderTest.getReferatFormContextDTOs();
 
             // Then
-            verify(referatRepository, times(1)).findAll(Sort.by("refnr"));
+            verify(referatRepository, times(1)).findAllByOrderByRefnrAsc();
             verify(referatMapper, times(1)).toFormContext(entities);
             assertThat(result).isEqualTo(expectedDTOs);
         }

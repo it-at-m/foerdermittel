@@ -26,7 +26,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 @ExtendWith(MockitoExtension.class)
 class StadtbezirkslisteServiceTest {
@@ -225,7 +224,7 @@ class StadtbezirkslisteServiceTest {
                     Mockito.mock(ListennameStadtbezirkslisteFormContextDTO.class),
                     Mockito.mock(ListennameStadtbezirkslisteFormContextDTO.class));
 
-            when(listennameRepository.findAll(Sort.by("kurzbez"))).thenReturn(entities);
+            when(listennameRepository.findAllByOrderByKurzbezAsc()).thenReturn(entities);
             when(listennameStadtbezirkslisteMapper.toFormContext(entities))
                     .thenReturn(expectedDTOs);
 
@@ -233,7 +232,7 @@ class StadtbezirkslisteServiceTest {
             final List<ListennameStadtbezirkslisteFormContextDTO> result = unitUnderTest.getlistennameStadtbezirkslisteFormContextDTOs();
 
             // Then
-            verify(listennameRepository, times(1)).findAll(Sort.by("kurzbez"));
+            verify(listennameRepository, times(1)).findAllByOrderByKurzbezAsc();
             verify(listennameStadtbezirkslisteMapper, times(1))
                     .toFormContext(entities);
             assertThat(result).isEqualTo(expectedDTOs);

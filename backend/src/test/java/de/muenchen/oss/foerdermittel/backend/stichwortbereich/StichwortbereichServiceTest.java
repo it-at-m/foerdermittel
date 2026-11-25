@@ -25,7 +25,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 @ExtendWith(MockitoExtension.class)
 public class StichwortbereichServiceTest {
@@ -184,14 +183,14 @@ public class StichwortbereichServiceTest {
                     new Stichwortbereich("M", "Test 3"));
             final List<StichwortbereichFormContextDTO> mappedBereiche = List.of(new StichwortbereichFormContextDTO("L", "Test"),
                     new StichwortbereichFormContextDTO("K", "Test 2"), new StichwortbereichFormContextDTO("M", "Test 3"));
-            when(stichwortbereichRepository.findAll(Sort.by("bereich"))).thenReturn(allBereiche);
+            when(stichwortbereichRepository.findAllByOrderByBereichAsc()).thenReturn(allBereiche);
             when(stichwortbereichMapper.toFormContext(allBereiche)).thenReturn(mappedBereiche);
 
             // When
             final List<StichwortbereichFormContextDTO> result = unitUnderTest.getStichwortbereichFormContextDTOs();
 
             // Then
-            verify(stichwortbereichRepository, times(1)).findAll(Sort.by("bereich"));
+            verify(stichwortbereichRepository, times(1)).findAllByOrderByBereichAsc();
             assertThat(result)
                     .hasSize(3)
                     .extracting(

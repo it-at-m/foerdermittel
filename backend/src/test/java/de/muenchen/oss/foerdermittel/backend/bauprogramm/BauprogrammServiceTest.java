@@ -25,7 +25,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 @ExtendWith(MockitoExtension.class)
 class BauprogrammServiceTest {
@@ -224,7 +223,7 @@ class BauprogrammServiceTest {
                     Mockito.mock(BauprogrammFormContextDTO.class),
                     Mockito.mock(BauprogrammFormContextDTO.class));
 
-            when(bauprogrammRepository.findAll(Sort.by("bauprogramm"))).thenReturn(entities);
+            when(bauprogrammRepository.findAllByOrderByBauprogrammAsc()).thenReturn(entities);
             when(bauprogrammMapper.toFormContext(entities)).thenReturn(expected);
 
             // When
@@ -232,7 +231,7 @@ class BauprogrammServiceTest {
 
             // Then
             assertThat(result).isEqualTo(expected);
-            verify(bauprogrammRepository, times(1)).findAll(Sort.by("bauprogramm"));
+            verify(bauprogrammRepository, times(1)).findAllByOrderByBauprogrammAsc();
             verify(bauprogrammMapper, times(1)).toFormContext(entities);
         }
     }

@@ -25,7 +25,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 @ExtendWith(MockitoExtension.class)
 class SiedlungsgebietServiceTest {
@@ -225,14 +224,14 @@ class SiedlungsgebietServiceTest {
                     Mockito.mock(SiedlungsgebietFormContextDTO.class),
                     Mockito.mock(SiedlungsgebietFormContextDTO.class));
 
-            when(siedlungsgebietRepository.findAll(Sort.by("siedlungsgebiet"))).thenReturn(entities);
+            when(siedlungsgebietRepository.findAllByOrderBySiedlungsgebietAsc()).thenReturn(entities);
             when(siedlungsgebietMapper.toFormContext(entities)).thenReturn(expectedDTOs);
 
             // When
             final List<SiedlungsgebietFormContextDTO> result = unitUnderTest.getSiedlungsgebietFormContextDTOs();
 
             // Then
-            verify(siedlungsgebietRepository, times(1)).findAll(Sort.by("siedlungsgebiet"));
+            verify(siedlungsgebietRepository, times(1)).findAllByOrderBySiedlungsgebietAsc();
             verify(siedlungsgebietMapper, times(1)).toFormContext(entities);
             assertThat(result).isEqualTo(expectedDTOs);
         }

@@ -27,7 +27,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 @ExtendWith(MockitoExtension.class)
 class UnterabschnittServiceTest {
@@ -265,14 +264,14 @@ class UnterabschnittServiceTest {
                     Mockito.mock(UnterabschnittFormContextDTO.class),
                     Mockito.mock(UnterabschnittFormContextDTO.class));
 
-            when(unterabschnittRepository.findAll(Sort.by("ua"))).thenReturn(entities);
+            when(unterabschnittRepository.findAllByOrderByUaAsc()).thenReturn(entities);
             when(unterabschnittMapper.toFormContext(entities)).thenReturn(expectedDTOs);
 
             // When
             final List<UnterabschnittFormContextDTO> result = unitUnderTest.getUnterabschnittFormContextDTOs();
 
             // Then
-            verify(unterabschnittRepository, times(1)).findAll(Sort.by("ua"));
+            verify(unterabschnittRepository, times(1)).findAllByOrderByUaAsc();
             verify(unterabschnittMapper, times(1)).toFormContext(entities);
             assertThat(result).isEqualTo(expectedDTOs);
         }
