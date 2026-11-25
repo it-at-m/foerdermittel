@@ -42,7 +42,7 @@ public class AntragController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<AntragResponseDTO> getAntraege(
-            @ParameterObject @PageableDefault(sort = { "projekt.projnr", "speicherDatum" }, direction = Sort.Direction.DESC) final Pageable pageable) {
+            @ParameterObject @PageableDefault(sort = { "projekt.projnr", "aenderungsdatum" }, direction = Sort.Direction.DESC) final Pageable pageable) {
         final Page<Antrag> pageWithAntraege = antragService.getAntraege(pageable);
 
         final List<AntragResponseDTO> antragResponseDTOList = pageWithAntraege.getContent().stream()
