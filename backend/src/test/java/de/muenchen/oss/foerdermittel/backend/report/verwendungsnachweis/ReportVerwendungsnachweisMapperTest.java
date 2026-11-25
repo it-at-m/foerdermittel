@@ -12,8 +12,7 @@ import org.junit.jupiter.api.Test;
 
 class ReportVerwendungsnachweisMapperTest {
 
-    private final ReportVerwendungsnachweisMapper reportVerwendungsnachweisMapper =
-            new ReportVerwendungsnachweisMapper();
+    private final ReportVerwendungsnachweisMapper reportVerwendungsnachweisMapper = new ReportVerwendungsnachweisMapper();
 
     @Test
     void givenReportVerwendungsnachweisDTO_thenReturnsCorrectParameters() {
@@ -38,8 +37,7 @@ class ReportVerwendungsnachweisMapperTest {
                 ReportFormat.PDF,
                 PROJEKTNUMMER);
 
-        final Map<String, Object> parameters =
-                reportVerwendungsnachweisMapper.toJasperParameters(dto);
+        final Map<String, Object> parameters = reportVerwendungsnachweisMapper.toJasperParameters(dto);
 
         assertThat(parameters)
                 .hasSize(17)
