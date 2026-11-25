@@ -472,19 +472,15 @@
         "modelName": "Verwendungsnachweis",
         "jahr": "VN aus Jahr",
         "monat": "Monat",
-        "sbl": "für Stadtbezirksliste",
-        "bez": "oder ein Stadtbezirk",
-        "fb": "Förderbereich",
-        "ua": "Unterabteilung",
-        "kurz": "Kurzbezeichnung",
         "fag": "Nur FAG",
         "notizen": "Ausgabe Notizen",
         "win": "nur falls Mittelvergabe vorhanden",
         "ohneschluss": "nur mit fehlenden Schlussbeschleid",
-        "krisofp": "Sonderförderprogramm",
-        "sgt": "Siedlungsgebiet",
-        "bpg": "Bauprogramm",
         "krh": "Krankenhaus",
+        "type": {
+          "pdf": "PDF: Gruppierung Förderbereich",
+          "pdfFlat": "PDF: keine Gruppierung"
+        },
         "sortEnum": {
           "projektnummer": "Projektnummer",
           "strasseProjektnummer": "Straße, Projektnummer",
