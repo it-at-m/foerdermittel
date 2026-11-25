@@ -12,5 +12,7 @@ public enum ReportVerwendungsnachweisSort {
         this.orderBy = orderBy;
     }
 
-
+    public String getOrderBy() {
+        return orderBy;
+    }
 }

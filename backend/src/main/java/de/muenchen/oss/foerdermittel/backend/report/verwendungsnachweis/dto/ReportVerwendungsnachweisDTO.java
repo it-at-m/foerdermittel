@@ -5,6 +5,7 @@ import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
+@SuppressWarnings("Avoi")
 public record ReportVerwendungsnachweisDTO(
 
         @Pattern(regexp = "^(|19[7-9]\\d|20\\d{2}|2100)$") String jahr,

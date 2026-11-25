@@ -13,7 +13,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-public record ReportVerwendungsnachweisFormContext (
+public record ReportVerwendungsnachweisFormContext(
         @NotNull List<FoerderbereichFormContextDTO> fbs,
         @NotNull List<ListennameStadtbezirkslisteFormContextDTO> sbls,
         @NotNull List<StadtbezirkFormContextDTO> bezs,
@@ -22,19 +22,18 @@ public record ReportVerwendungsnachweisFormContext (
         @NotNull List<BauprogrammFormContextDTO> bpgs,
         @NotNull List<SiedlungsgebietFormContextDTO> sgts,
         @NotNull List<KrankenhausFormContextDTO> krhs,
-        @NotNull List<Krisofp> krisofps
-){
+        @NotNull List<Krisofp> krisofps) {
     public ReportVerwendungsnachweisFormContext {
-    fbs = List.copyOf(fbs);
-    sbls = List.copyOf(sbls);
-    bezs = List.copyOf(bezs);
-    uas = List.copyOf(uas);
-    kurzs = List.copyOf(kurzs);
-    bpgs = List.copyOf(bpgs);
-    sgts = List.copyOf(sgts);
-    krhs = List.copyOf(krhs);
-    krisofps = List.copyOf(krisofps);
+        fbs = List.copyOf(fbs);
+        sbls = List.copyOf(sbls);
+        bezs = List.copyOf(bezs);
+        uas = List.copyOf(uas);
+        kurzs = List.copyOf(kurzs);
+        bpgs = List.copyOf(bpgs);
+        sgts = List.copyOf(sgts);
+        krhs = List.copyOf(krhs);
+        krisofps = List.copyOf(krisofps);
 
-}
+    }
 
 }

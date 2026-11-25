@@ -1,10 +1,9 @@
 package de.muenchen.oss.foerdermittel.backend.report.verwendungsnachweis.dto;
 
 import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
-import org.springframework.stereotype.Component;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ReportVerwendungsnachweisMapper {
@@ -27,11 +26,11 @@ public class ReportVerwendungsnachweisMapper {
                         : null);
         parameters.put("P_SGT", ReportControllerUtil.nullIfBlank(dto.sgt()));
         parameters.put("P_BPG", ReportControllerUtil.nullIfBlank(dto.bpg()));
-        parameters.put("P_KRH",ReportControllerUtil.nullIfBlank(dto.krh()));
+        parameters.put("P_KRH", ReportControllerUtil.nullIfBlank(dto.krh()));
         parameters.put("P_PSTRASSE", ReportControllerUtil.toLikeParameter(dto.pstrasse()));
         parameters.put("P_PNAME", ReportControllerUtil.toLikeParameter(dto.pname()));
         parameters.put("P_NOTIZ", ReportControllerUtil.nullIfBlank(dto.notizen()));
-        parameters.put("P_OHNE_Schluss", ReportControllerUtil.nullIfBlank(dto.ohneschluss()));
+        parameters.put("P_OHNE_SCHLUSS", ReportControllerUtil.nullIfBlank(dto.ohneschluss()));
         parameters.put("P_FAG", ReportControllerUtil.nullIfBlank(dto.fag()));
         parameters.put("P_WIN", ReportControllerUtil.nullIfBlank(dto.win()));
 
