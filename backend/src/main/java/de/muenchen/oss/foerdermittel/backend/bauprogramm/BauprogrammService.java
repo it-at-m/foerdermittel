@@ -71,7 +71,7 @@ public class BauprogrammService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<BauprogrammFormContextDTO> getBauprogrammFormContextDTOs() {
-        return bauprogrammMapper.toFormContext(bauprogrammRepository.findAll(Sort.by("bauprogramm")));
+        return bauprogrammMapper.toFormContext(bauprogrammRepository.findAllByOrderByBauprogrammAsc());
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)

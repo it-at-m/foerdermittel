@@ -43,7 +43,7 @@ public class StadtbezirkService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<StadtbezirkFormContextDTO> getStadtbezirkFormContextDTOs() {
-        return stadtbezirkMapper.toFormContext(stadtbezirkRepository.findAll(Sort.by("stadtbezirk")));
+        return stadtbezirkMapper.toFormContext(stadtbezirkRepository.findAllByOrderByStadtbezirkAsc());
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)

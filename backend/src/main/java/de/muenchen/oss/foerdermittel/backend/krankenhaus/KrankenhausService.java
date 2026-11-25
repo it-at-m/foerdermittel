@@ -69,7 +69,7 @@ public class KrankenhausService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<KrankenhausFormContextDTO> getKrankenhausFormContextDTOs() {
-        return krankenhausMapper.toFormContext(krankenhausRepository.findAll(Sort.by("krhname")));
+        return krankenhausMapper.toFormContext(krankenhausRepository.findAllByOrderByKrhnameAsc());
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)

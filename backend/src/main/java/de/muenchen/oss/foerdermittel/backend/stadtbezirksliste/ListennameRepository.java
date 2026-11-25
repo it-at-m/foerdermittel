@@ -13,4 +13,6 @@ public interface ListennameRepository extends PagingAndSortingRepository<Listenn
 
     @Query("SELECT l.kurzbez FROM Listenname l")
     List<String> findAllKurzBezn();
+
+    List<Listenname> findAllByOrderByKurzbezAsc();
 }

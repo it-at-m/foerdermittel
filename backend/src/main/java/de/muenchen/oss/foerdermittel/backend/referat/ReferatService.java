@@ -63,7 +63,7 @@ public class ReferatService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<ReferatFormContextDTO> getReferatFormContextDTOs() {
-        return referatMapper.toFormContext(referatRepository.findAll(Sort.by("refnr")));
+        return referatMapper.toFormContext(referatRepository.findAllByOrderByRefnrAsc());
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)

@@ -14,4 +14,5 @@ public interface StichwortbereichRepository extends PagingAndSortingRepository<S
     @Query("SELECT s.bereich FROM Stichwortbereich s")
     List<String> findAllStichwortbereiche();
 
+    List<Stichwortbereich> findAllByOrderByBereichAsc();
 }

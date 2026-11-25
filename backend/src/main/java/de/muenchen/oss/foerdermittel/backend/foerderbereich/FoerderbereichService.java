@@ -43,7 +43,7 @@ public class FoerderbereichService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<FoerderbereichFormContextDTO> getFoerderbereichFormContextDTOs() {
-        return foerderbereichMapper.toFormContext(foerderbereichRepository.findAll(Sort.by("fb")));
+        return foerderbereichMapper.toFormContext(foerderbereichRepository.findAllByOrderByFbAsc());
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)
