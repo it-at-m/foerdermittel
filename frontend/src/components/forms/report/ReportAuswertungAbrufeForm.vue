@@ -9,18 +9,17 @@
         cols="12"
         md="3"
       >
-        <fm-text-field
+        <fm-number-input
           v-model="modelValue.parameters!.jahrAbrufVon"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
             ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrAbrufVon"
+          :additional-rules="jahrAbrufVonAdditionalRules"
           :label="t('domain.report.auswertungAbrufe.jahrAbrufVon')"
-          validate-on="blur"
-          :error-messages="jahrAbrufVonError"
           density="comfortable"
-          @blur="validateAbrufYears"
+          control-variant="hidden"
         />
       </v-col>
 
@@ -28,18 +27,17 @@
         cols="12"
         md="3"
       >
-        <fm-text-field
+        <fm-number-input
           v-model="modelValue.parameters!.jahrAbrufBis"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
             ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrAbrufBis"
+          :additional-rules="jahrAbrufBisAdditionalRules"
           :label="t('domain.report.auswertungAbrufe.jahrAbrufBis')"
-          validate-on="blur"
-          :error-messages="jahrAbrufBisError"
           density="comfortable"
-          @blur="validateAbrufYears"
+          control-variant="hidden"
         />
       </v-col>
 
@@ -47,18 +45,17 @@
         cols="12"
         md="3"
       >
-        <fm-text-field
+        <fm-number-input
           v-model="modelValue.parameters!.jahrErhaltVon"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
             ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrErhaltVon"
+          :additional-rules="jahrErhaltVonAdditionalRules"
           :label="t('domain.report.auswertungAbrufe.jahrErhaltVon')"
-          validate-on="blur"
-          :error-messages="jahrErhaltVonError"
           density="comfortable"
-          @blur="validateErhaltYears()"
+          control-variant="hidden"
         />
       </v-col>
 
@@ -66,18 +63,17 @@
         cols="12"
         md="3"
       >
-        <fm-text-field
+        <fm-number-input
           v-model="modelValue.parameters!.jahrErhaltBis"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
             ReportAuswertungAbrufeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrErhaltBis"
+          :additional-rules="jahrErhaltBisAdditionalRules"
           :label="t('domain.report.auswertungAbrufe.jahrErhaltBis')"
-          validate-on="blur"
-          :error-messages="jahrErhaltBisError"
           density="comfortable"
-          @blur="validateErhaltYears()"
+          control-variant="hidden"
         />
       </v-col>
     </v-row>
@@ -452,18 +448,21 @@ import type {
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
 
-import { computed, ref, useTemplateRef, watch } from "vue";
+import { computed, useTemplateRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRules } from "vuetify";
 
 import { ReportAuswertungAbrufeDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
+import FmNumberInput from "@/components/common/FmNumberInput.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 import { getKrisofpTitle } from "@/util/krisofpUtils";
-import { getJahrBisError, getJahrVonError } from "@/util/yearHelper.ts";
 
 const { t } = useI18n();
+
+const rules = useRules();
 
 const modelValue = defineModel<Partial<GetReportAuswertungAbrufeRequest>>({
   required: true,
@@ -610,53 +609,27 @@ const formatOptions = [
   },
 ];
 
-const jahrValidationMessages = computed(() => ({
-  bereich: t("domain.report.common.validation.jahr.bereich"),
-  groesser: t("domain.report.common.validation.jahr.groesser"),
-  kleiner: t("domain.report.common.validation.jahr.kleiner"),
-}));
+const jahrAbrufVonAdditionalRules = computed(() => {
+  const jahrBis = modelValue.value.parameters?.jahrAbrufBis;
+  const rule = jahrBis != null && rules["max"]?.(jahrBis, false);
+  return rule ? [rule] : [];
+});
 
-const jahrAbrufVonError = ref<ReturnType<typeof getJahrVonError>>();
-const jahrAbrufBisError = ref<ReturnType<typeof getJahrBisError>>();
+const jahrAbrufBisAdditionalRules = computed(() => {
+  const jahrVon = modelValue.value.parameters?.jahrAbrufVon;
+  const rule = jahrVon != null && rules["min"]?.(jahrVon, false);
+  return rule ? [rule] : [];
+});
 
-function validateAbrufYears() {
-  const { jahrAbrufVon: von, jahrAbrufBis: bis } =
-    modelValue.value.parameters ?? {};
-  const errors = jahrValidationMessages.value;
+const jahrErhaltVonAdditionalRules = computed(() => {
+  const jahrBis = modelValue.value.parameters?.jahrErhaltVon;
+  const rule = jahrBis != null && rules["max"]?.(jahrBis, false);
+  return rule ? [rule] : [];
+});
 
-  jahrAbrufVonError.value = getJahrVonError(
-    von,
-    bis,
-    errors.bereich,
-    errors.groesser
-  );
-  jahrAbrufBisError.value = getJahrBisError(
-    von,
-    bis,
-    errors.bereich,
-    errors.kleiner
-  );
-}
-
-const jahrErhaltVonError = ref<ReturnType<typeof getJahrVonError>>();
-const jahrErhaltBisError = ref<ReturnType<typeof getJahrBisError>>();
-
-function validateErhaltYears() {
-  const { jahrErhaltVon: von, jahrErhaltBis: bis } =
-    modelValue.value.parameters ?? {};
-  const errors = jahrValidationMessages.value;
-
-  jahrErhaltVonError.value = getJahrVonError(
-    von,
-    bis,
-    errors.bereich,
-    errors.groesser
-  );
-  jahrErhaltBisError.value = getJahrBisError(
-    von,
-    bis,
-    errors.bereich,
-    errors.kleiner
-  );
-}
+const jahrErhaltBisAdditionalRules = computed(() => {
+  const jahrVon = modelValue.value.parameters?.jahrErhaltBis;
+  const rule = jahrVon != null && rules["min"]?.(jahrVon, false);
+  return rule ? [rule] : [];
+});
 </script>

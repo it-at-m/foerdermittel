@@ -9,18 +9,17 @@
         cols="12"
         md="3"
       >
-        <fm-text-field
+        <fm-number-input
           v-model="modelValue.parameters!.jahrVon"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
             ReportStaedtebaufoerderungDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrVon"
+          :additional-rules="jahrVonAdditionalRules"
           :label="t('domain.report.staedtebaufoerderung.jahrVon')"
-          validate-on="blur"
-          :error-messages="jahrVonError"
           density="comfortable"
-          @blur="validateYears"
+          control-variant="hidden"
         />
       </v-col>
 
@@ -28,18 +27,17 @@
         cols="12"
         md="3"
       >
-        <fm-text-field
+        <fm-number-input
           v-model="modelValue.parameters!.jahrBis"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
             ReportStaedtebaufoerderungDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrBis"
+          :additional-rules="jahrBisAdditionalRules"
           :label="t('domain.report.staedtebaufoerderung.jahrBis')"
-          validate-on="blur"
-          :error-messages="jahrBisError"
           density="comfortable"
-          @blur="validateYears"
+          control-variant="hidden"
         />
       </v-col>
       <v-col
@@ -100,17 +98,20 @@ import type {
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
 
-import { computed, ref, useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRules } from "vuetify";
 
 import { ReportStaedtebaufoerderungDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
+import FmNumberInput from "@/components/common/FmNumberInput.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
-import { getJahrBisError, getJahrVonError } from "@/util/yearHelper.ts";
 
 const { t } = useI18n();
+
+const rules = useRules();
 
 const modelValue = defineModel<Partial<GetReportStaedtebaufoerderungRequest>>({
   required: true,
@@ -157,30 +158,15 @@ const traegerError = computed(() => {
     : ["Der ausgewählte Träger wurde nicht gefunden."];
 });
 
-const jahrValidationMessages = computed(() => ({
-  bereich: t("domain.report.common.validation.jahr.bereich"),
-  groesser: t("domain.report.common.validation.jahr.groesser"),
-  kleiner: t("domain.report.common.validation.jahr.kleiner"),
-}));
+const jahrVonAdditionalRules = computed(() => {
+  const jahrBis = modelValue.value.parameters?.jahrBis;
+  const rule = jahrBis != null && rules["max"]?.(jahrBis, false);
+  return rule ? [rule] : [];
+});
 
-const jahrVonError = ref<ReturnType<typeof getJahrVonError>>();
-const jahrBisError = ref<ReturnType<typeof getJahrBisError>>();
-
-function validateYears() {
-  const { jahrVon: von, jahrBis: bis } = modelValue.value.parameters ?? {};
-  const errors = jahrValidationMessages.value;
-
-  jahrVonError.value = getJahrVonError(
-    von,
-    bis,
-    errors.bereich,
-    errors.groesser
-  );
-  jahrBisError.value = getJahrBisError(
-    von,
-    bis,
-    errors.bereich,
-    errors.kleiner
-  );
-}
+const jahrBisAdditionalRules = computed(() => {
+  const jahrVon = modelValue.value.parameters?.jahrVon;
+  const rule = jahrVon != null && rules["min"]?.(jahrVon, false);
+  return rule ? [rule] : [];
+});
 </script>

@@ -12,6 +12,15 @@
     </EXTENSION>
     <method v="2">
       <option name="RunConfigurationTask" enabled="true" run_configuration_name="openapi_generate" run_configuration_type="MavenRunConfiguration" />
+      <option name="NpmBeforeRunTask" enabled="true">
+        <package-json value="$PROJECT_DIR$/frontend/package.json" />
+        <command value="run" />
+        <scripts>
+          <script value="pre-build" />
+        </scripts>
+        <node-interpreter value="project" />
+        <envs />
+      </option>
     </method>
   </configuration>
 </component>
