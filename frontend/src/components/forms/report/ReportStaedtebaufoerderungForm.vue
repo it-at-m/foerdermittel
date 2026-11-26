@@ -20,6 +20,7 @@
           :label="t('domain.report.staedtebaufoerderung.jahrVon')"
           density="comfortable"
           control-variant="hidden"
+          clearable
         />
       </v-col>
 
@@ -38,6 +39,7 @@
           :label="t('domain.report.staedtebaufoerderung.jahrBis')"
           density="comfortable"
           control-variant="hidden"
+          clearable
         />
       </v-col>
       <v-col
@@ -56,6 +58,7 @@
           :label="t('domain.report.staedtebaufoerderung.traeger')"
           :error-messages="traegerError"
           density="comfortable"
+          clearable
         />
       </v-col>
     </v-row>
@@ -73,6 +76,7 @@
           validation-attribute-key="pname"
           :label="t('domain.report.staedtebaufoerderung.pname')"
           density="comfortable"
+          clearable
         />
       </v-col>
 

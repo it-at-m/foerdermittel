@@ -622,13 +622,13 @@ const jahrAbrufBisAdditionalRules = computed(() => {
 });
 
 const jahrErhaltVonAdditionalRules = computed(() => {
-  const jahrBis = modelValue.value.parameters?.jahrErhaltVon;
+  const jahrBis = modelValue.value.parameters?.jahrErhaltBis;
   const rule = jahrBis != null && rules["max"]?.(jahrBis, false);
   return rule ? [rule] : [];
 });
 
 const jahrErhaltBisAdditionalRules = computed(() => {
-  const jahrVon = modelValue.value.parameters?.jahrErhaltBis;
+  const jahrVon = modelValue.value.parameters?.jahrErhaltVon;
   const rule = jahrVon != null && rules["min"]?.(jahrVon, false);
   return rule ? [rule] : [];
 });

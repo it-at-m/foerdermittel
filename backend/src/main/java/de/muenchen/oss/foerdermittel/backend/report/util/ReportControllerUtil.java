@@ -36,7 +36,7 @@ public final class ReportControllerUtil {
         return "%" + value.trim() + "%";
     }
 
-    public static String nullIfBlank(final Object value) {
+    public static String toTrimmedStringOrNull(final Object value) {
         if (value == null) {
             return null;
         }

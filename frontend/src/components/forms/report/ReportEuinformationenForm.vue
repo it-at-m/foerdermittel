@@ -20,6 +20,7 @@
           :label="t('domain.report.euinformation.jahrVon')"
           density="comfortable"
           control-variant="hidden"
+          clearable
         />
       </v-col>
       <v-col md="6">
@@ -34,6 +35,7 @@
           :label="t('domain.report.euinformation.jahrBis')"
           density="comfortable"
           control-variant="hidden"
+          clearable
         />
       </v-col>
     </v-row>
@@ -52,6 +54,7 @@
           "
           validation-attribute-key="publikation"
           :label="t('domain.report.euinformation.publikation')"
+          clearable
         />
       </v-col>
 
@@ -62,6 +65,7 @@
           item-value="value"
           :label="t('domain.report.euinformation.referat')"
           variant="outlined"
+          clearable
         />
       </v-col>
     </v-row>
@@ -78,6 +82,7 @@
           "
           validation-attribute-key="inhalt"
           :label="t('domain.report.euinformation.inhalt')"
+          clearable
         />
       </v-col>
 
