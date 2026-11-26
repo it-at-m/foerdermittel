@@ -264,14 +264,14 @@ class UnterabschnittServiceTest {
                     Mockito.mock(UnterabschnittFormContextDTO.class),
                     Mockito.mock(UnterabschnittFormContextDTO.class));
 
-            when(unterabschnittRepository.findAll()).thenReturn(entities);
+            when(unterabschnittRepository.findAllByOrderByUaAsc()).thenReturn(entities);
             when(unterabschnittMapper.toFormContext(entities)).thenReturn(expectedDTOs);
 
             // When
             final List<UnterabschnittFormContextDTO> result = unitUnderTest.getUnterabschnittFormContextDTOs();
 
             // Then
-            verify(unterabschnittRepository, times(1)).findAll();
+            verify(unterabschnittRepository, times(1)).findAllByOrderByUaAsc();
             verify(unterabschnittMapper, times(1)).toFormContext(entities);
             assertThat(result).isEqualTo(expectedDTOs);
         }

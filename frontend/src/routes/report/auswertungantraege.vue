@@ -8,7 +8,7 @@
         :form-ref="reportAuswertungAntraegeFormRef"
       >
         <template #form="{ item, updateValidity }">
-          <reportauswertungantraegeform
+          <report-auswertung-antraege-form
             ref="reportAuswertungAntraegeForm"
             :model-value="item"
             :reportauswertungantraegeformcontext="
@@ -30,7 +30,7 @@ import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
 import ReportCard from "@/components/common/ReportCard.vue";
-import reportauswertungantraegeform from "@/components/forms/report/ReportAuswertungAntraegeForm.vue";
+import ReportAuswertungAntraegeForm from "@/components/forms/report/ReportAuswertungAntraegeForm.vue";
 import { useReportAuswertungAntraegeApi } from "@/composables/api/report/useReportAuswertungAntraegeApi";
 import { Role } from "@/types/Role";
 
@@ -52,21 +52,6 @@ const title = t("common.generics.reportTitle", [
 
 const EMPTY_FORM_TEMPLATE: Partial<GetReportAuswertungAntraegeRequest> = {
   parameters: {
-    jahrVon: "",
-    jahrBis: "",
-    sbl: "",
-    bez: "",
-    fb: "",
-    ua: "",
-    kurz: "",
-    pname: "",
-    pstrasse: "",
-    projnr: "",
-    sgt: "",
-    bpg: "",
-    fag: "0",
-    offen: "0",
-    relevant: "0",
     sort: "FOERDERBEREICH_PROJEKTNUMMER",
     type: "PDF",
   },
@@ -79,7 +64,7 @@ const reportAuswertungAntraegeFormContext = computed(
 );
 
 type ReportAuswertungAntraegeFormRef = InstanceType<
-  typeof reportauswertungantraegeform
+  typeof ReportAuswertungAntraegeForm
 >;
 
 const reportAuswertungAntraegeFormRef =

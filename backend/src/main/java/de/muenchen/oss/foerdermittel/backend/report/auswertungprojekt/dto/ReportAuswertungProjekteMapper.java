@@ -14,15 +14,15 @@ public class ReportAuswertungProjekteMapper {
 
         final Map<String, Object> parameters = new HashMap<>();
 
-        parameters.put("P_JAHR", ReportControllerUtil.nullIfBlank(dto.jahr()));
+        parameters.put("P_JAHR", ReportControllerUtil.toTrimmedStringOrNull(dto.jahr()));
 
-        parameters.put("P_FB", ReportControllerUtil.nullIfBlank(dto.fb()));
-        parameters.put("P_UA", ReportControllerUtil.nullIfBlank(dto.ua()));
-        parameters.put("P_KURZ", ReportControllerUtil.nullIfBlank(dto.kurz()));
-        parameters.put("P_SGT", ReportControllerUtil.nullIfBlank(dto.sgt()));
-        parameters.put("P_BPG", ReportControllerUtil.nullIfBlank(dto.bpg()));
-        parameters.put("P_SBL", ReportControllerUtil.nullIfBlank(dto.sbl()));
-        parameters.put("P_BEZ", ReportControllerUtil.nullIfBlank(dto.bez()));
+        parameters.put("P_FB", ReportControllerUtil.toTrimmedStringOrNull(dto.fb()));
+        parameters.put("P_UA", ReportControllerUtil.toTrimmedStringOrNull(dto.ua()));
+        parameters.put("P_KURZ", ReportControllerUtil.toTrimmedStringOrNull(dto.kurz()));
+        parameters.put("P_SGT", ReportControllerUtil.toTrimmedStringOrNull(dto.sgt()));
+        parameters.put("P_BPG", ReportControllerUtil.toTrimmedStringOrNull(dto.bpg()));
+        parameters.put("P_SBL", ReportControllerUtil.toTrimmedStringOrNull(dto.sbl()));
+        parameters.put("P_BEZ", ReportControllerUtil.toTrimmedStringOrNull(dto.bez()));
         parameters.put("P_PSTRASSE", ReportControllerUtil.toLikeParameter(dto.pstrasse()));
         parameters.put("P_PNAME", ReportControllerUtil.toLikeParameter(dto.pname()));
 
@@ -32,9 +32,9 @@ public class ReportAuswertungProjekteMapper {
                         ? dto.krisofp().name()
                         : null);
 
-        parameters.put("P_OFFEN", ReportControllerUtil.nullIfBlank(dto.offen()));
-        parameters.put("P_RELEVANT", ReportControllerUtil.nullIfBlank(dto.relevant()));
-        parameters.put("P_KAUF", ReportControllerUtil.nullIfBlank(dto.kauf()));
+        parameters.put("P_OFFEN", ReportControllerUtil.toTrimmedStringOrNull(dto.offen()));
+        parameters.put("P_RELEVANT", ReportControllerUtil.toTrimmedStringOrNull(dto.relevant()));
+        parameters.put("P_KAUF", ReportControllerUtil.toTrimmedStringOrNull(dto.kauf()));
 
         return parameters;
     }

@@ -10,10 +10,10 @@ public class ReportStaedtebaufoerderungMapper {
 
     public Map<String, Object> toJasperParameters(final ReportStaedtebaufoerderungDTO dto) {
         final Map<String, Object> parameters = new HashMap<>();
-        parameters.put("P_JAHR_BIS", ReportControllerUtil.nullIfBlank(dto.jahrBis()));
-        parameters.put("P_JAHR_VON", ReportControllerUtil.nullIfBlank(dto.jahrVon()));
+        parameters.put("P_JAHR_BIS", ReportControllerUtil.toTrimmedStringOrNull(dto.jahrBis()));
+        parameters.put("P_JAHR_VON", ReportControllerUtil.toTrimmedStringOrNull(dto.jahrVon()));
         parameters.put("P_PNAME", ReportControllerUtil.toLikeParameter(dto.pname()));
-        parameters.put("P_TRAEGER", ReportControllerUtil.nullIfBlank(dto.traeger()));
+        parameters.put("P_TRAEGER", ReportControllerUtil.toTrimmedStringOrNull(dto.traeger()));
         parameters.put("P_NOTIZ", dto.notizen());
         return parameters;
     }

@@ -10,8 +10,8 @@ public class ReportFortsetzungsantragMapper {
 
     public Map<String, Object> toJasperParameters(final ReportFortsetzungsantragDTO dto) {
         final Map<String, Object> parameters = new HashMap<>();
-        parameters.put("P_BEZ", ReportControllerUtil.nullIfBlank(dto.bez()));
-        parameters.put("P_SBL", ReportControllerUtil.nullIfBlank(dto.sbl()));
+        parameters.put("P_BEZ", ReportControllerUtil.toTrimmedStringOrNull(dto.bez()));
+        parameters.put("P_SBL", ReportControllerUtil.toTrimmedStringOrNull(dto.sbl()));
         parameters.put("P_OFFEN", dto.ofPro());
         parameters.put("P_FAG", dto.fag());
         return parameters;

@@ -36,12 +36,17 @@ public final class ReportControllerUtil {
         return "%" + value.trim() + "%";
     }
 
-    public static String nullIfBlank(final String value) {
-        if (!StringUtils.hasText(value)
-                || "null".equalsIgnoreCase(value)) {
+    public static String toTrimmedStringOrNull(final Object value) {
+        if (value == null) {
             return null;
         }
 
-        return value.trim();
+        final String strValue = value.toString();
+
+        if (!StringUtils.hasText(strValue)) {
+            return null;
+        }
+
+        return strValue.trim();
     }
 }

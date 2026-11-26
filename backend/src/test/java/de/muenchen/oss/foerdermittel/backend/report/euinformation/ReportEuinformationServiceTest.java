@@ -47,8 +47,8 @@ class ReportEuinformationServiceTest {
         @Test
         void givenAllParameters_thenShouldGenerateCorrectGeneratedReport() {
             // Given
-            final String jahrVon = "1998";
-            final String jahrBis = "2010";
+            final Integer jahrVon = 1998;
+            final Integer jahrBis = 2010;
             final ReportEuinformationDTO parameters = new ReportEuinformationDTO(
                     jahrVon, jahrBis, "Test", "1", "1", ReportEuinformationSort.REFERAT);
 

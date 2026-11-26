@@ -224,7 +224,7 @@ class StadtbezirkslisteServiceTest {
                     Mockito.mock(ListennameStadtbezirkslisteFormContextDTO.class),
                     Mockito.mock(ListennameStadtbezirkslisteFormContextDTO.class));
 
-            when(listennameRepository.findAll()).thenReturn(entities);
+            when(listennameRepository.findAllByOrderByKurzbezAsc()).thenReturn(entities);
             when(listennameStadtbezirkslisteMapper.toFormContext(entities))
                     .thenReturn(expectedDTOs);
 
@@ -232,7 +232,7 @@ class StadtbezirkslisteServiceTest {
             final List<ListennameStadtbezirkslisteFormContextDTO> result = unitUnderTest.getlistennameStadtbezirkslisteFormContextDTOs();
 
             // Then
-            verify(listennameRepository, times(1)).findAll();
+            verify(listennameRepository, times(1)).findAllByOrderByKurzbezAsc();
             verify(listennameStadtbezirkslisteMapper, times(1))
                     .toFormContext(entities);
             assertThat(result).isEqualTo(expectedDTOs);

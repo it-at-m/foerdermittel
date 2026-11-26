@@ -1,6 +1,7 @@
 <template>
   <v-autocomplete
     v-if="displayMode !== InputDisplayMode.READ"
+    ref="inputRef"
     v-model="model"
     :readonly="canNotEdit"
     :rules="allRules"
@@ -67,7 +68,7 @@ const {
 const { required, allRules, canNotEdit } = useInputValidation(
   displayMode,
   disableEdit,
-  additionalRules,
+  () => additionalRules,
   validationAttributeMap,
   validationAttributeKey,
   false,
