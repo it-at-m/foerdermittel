@@ -86,7 +86,7 @@ public class ListennameStadtbezirkslisteService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<ListennameStadtbezirkslisteFormContextDTO> getlistennameStadtbezirkslisteFormContextDTOs() {
-        return listennameStadtbezirkslisteMapper.toFormContext(listennameRepository.findAll());
+        return listennameStadtbezirkslisteMapper.toFormContext(listennameRepository.findAllByOrderByKurzbezAsc());
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)

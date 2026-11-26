@@ -223,7 +223,7 @@ class BauprogrammServiceTest {
                     Mockito.mock(BauprogrammFormContextDTO.class),
                     Mockito.mock(BauprogrammFormContextDTO.class));
 
-            when(bauprogrammRepository.findAll()).thenReturn(entities);
+            when(bauprogrammRepository.findAllByOrderByBauprogrammAsc()).thenReturn(entities);
             when(bauprogrammMapper.toFormContext(entities)).thenReturn(expected);
 
             // When
@@ -231,7 +231,7 @@ class BauprogrammServiceTest {
 
             // Then
             assertThat(result).isEqualTo(expected);
-            verify(bauprogrammRepository, times(1)).findAll();
+            verify(bauprogrammRepository, times(1)).findAllByOrderByBauprogrammAsc();
             verify(bauprogrammMapper, times(1)).toFormContext(entities);
         }
     }

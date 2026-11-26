@@ -14,4 +14,5 @@ public interface UnterabschnittRepository extends PagingAndSortingRepository<Unt
     @Query("SELECT u.ua FROM Unterabschnitt u")
     List<String> findAllUas();
 
+    List<Unterabschnitt> findAllByOrderByUaAsc();
 }

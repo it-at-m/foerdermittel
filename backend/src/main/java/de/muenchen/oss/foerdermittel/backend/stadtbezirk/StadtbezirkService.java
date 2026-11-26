@@ -5,7 +5,6 @@ import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkFormCont
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkMapper;
 import de.muenchen.oss.foerdermittel.backend.util.ServiceUtils;
 import java.math.BigDecimal;
-import java.util.Comparator;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
@@ -43,10 +42,7 @@ public class StadtbezirkService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<StadtbezirkFormContextDTO> getStadtbezirkFormContextDTOs() {
-        return stadtbezirkMapper.toFormContext(stadtbezirkRepository.findAll().stream()
-                .sorted(Comparator.comparing(
-                        Stadtbezirk::getStadtbezirk))
-                .toList());
+        return stadtbezirkMapper.toFormContext(stadtbezirkRepository.findAllByOrderByStadtbezirkAsc());
     }
 
     @PreAuthorize(Authorities.HAS_ROLE_ADMIN)

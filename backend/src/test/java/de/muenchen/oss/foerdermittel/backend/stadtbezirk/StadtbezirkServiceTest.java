@@ -227,14 +227,14 @@ class StadtbezirkServiceTest {
                     new StadtbezirkFormContextDTO(1, "Stadtbezirk 1"),
                     new StadtbezirkFormContextDTO(2, "Stadtbezirk 2"));
 
-            when(stadtbezirkRepository.findAll()).thenReturn(entities);
+            when(stadtbezirkRepository.findAllByOrderByStadtbezirkAsc()).thenReturn(entities);
             when(stadtbezirkMapper.toFormContext(entities)).thenReturn(expected);
 
             // When
             final List<StadtbezirkFormContextDTO> result = unitUnderTest.getStadtbezirkFormContextDTOs();
 
             // Then
-            verify(stadtbezirkRepository, times(1)).findAll();
+            verify(stadtbezirkRepository, times(1)).findAllByOrderByStadtbezirkAsc();
             verify(stadtbezirkMapper, times(1)).toFormContext(entities);
 
             assertThat(result).containsExactlyElementsOf(expected);
