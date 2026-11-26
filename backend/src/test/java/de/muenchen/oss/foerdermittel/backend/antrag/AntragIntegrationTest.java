@@ -137,7 +137,7 @@ public class AntragIntegrationTest {
 
         final Projekt projekt = new Projekt();
         projekt.setProjnr(EXISTING_PROJNR);
-        projekt.setJahr("2023");
+        projekt.setJahr("23");
         projekt.setFobFb(foerderbereich);
         projekt.setLfdnr1("1");
         projekt.setLfdnr2("1");
@@ -431,7 +431,8 @@ public class AntragIntegrationTest {
         @Test
         void givenAntragWithBewilligung_thenReturnConflict() {
             final AntragResponseDTO existing = createExistingAntrag(erstantrag());
-            bewilligungRepository.save(new Bewilligung(null, antragRepository.findById(Long.valueOf(existing.id())).orElseThrow()));
+            bewilligungRepository.save(new Bewilligung(null, antragRepository.findById(Long.valueOf(existing.id())).orElseThrow(), existing.projnr(),
+                    new BigDecimal(1), new BigDecimal(1), new BigDecimal(1), new BigDecimal(1), new BigDecimal(1), LocalDateTime.now(), "test"));
 
             delete(existing.id()).expectStatus().isEqualTo(HttpStatus.CONFLICT);
 

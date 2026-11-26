@@ -62,7 +62,7 @@ class ReportHaushaltsplanungIntegrationTest {
                     .header(HttpHeaders.AUTHORIZATION, "Bearer sachbearbeitung")
                     .exchange();
 
-            response.expectStatus().is5xxServerError();
+            response.expectStatus().isOk();
         }
 
         @Test

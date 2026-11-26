@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: foerdermittel-backend
   description: Backend component for the application foerdermittel
-  version: 0.5.0-SNAPSHOT
+  version: 0.6.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -2023,9 +2023,6 @@ paths:
           type: array
           items:
             type: string
-          default:
-          - "projekt.projnr,ASC"
-          - "antragsdatum,ASC"
       responses:
         "200":
           description: OK
@@ -5043,7 +5040,6 @@ components:
       properties:
         projnr:
           minLength: 1
-          pattern: \S
           type: string
         erfolgt:
           type: boolean
@@ -5209,9 +5205,7 @@ components:
           $ref: "#/components/schemas/ReportFormat"
     ReportAuswertungBewilligungFormContextDTO:
       required:
-      - pname
       - projnr
-      - pstrasse
       type: object
       properties:
         projnr:
@@ -5700,7 +5694,6 @@ components:
       properties:
         projnr:
           minLength: 1
-          pattern: \S
           type: string
     ReportAnnahmeAnordnungSapFormContext:
       required:

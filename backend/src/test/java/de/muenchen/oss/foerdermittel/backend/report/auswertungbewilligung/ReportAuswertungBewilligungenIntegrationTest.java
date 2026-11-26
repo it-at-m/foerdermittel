@@ -65,7 +65,7 @@ public class ReportAuswertungBewilligungenIntegrationTest {
     @ServiceConnection
     @SuppressWarnings("unused")
     private static final PostgreSQLContainer POSTGRE_SQL_CONTAINER = new PostgreSQLContainer(
-            DockerImageName.parse(TestUtils.getImageFromDockerCompose("postgres")));
+            DockerImageName.parse(TestUtils.getImageFromDockerCompose("postgres"))).withUsername("admin").withPassword("admin").withDatabaseName("public");
 
     @Autowired
     private ProjektRepository projektRepository;
@@ -177,6 +177,8 @@ public class ReportAuswertungBewilligungenIntegrationTest {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path(REPORT_PATH)
+                            .queryParam("sort", VALID_SORT)
+                            .queryParam("type", VALID_TYPE)
                             .build())
                     .header(
                             HttpHeaders.AUTHORIZATION,
