@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: foerdermittel-backend
   description: Backend component for the application foerdermittel
-  version: 0.5.0-SNAPSHOT
+  version: 0.6.0-SNAPSHOT
 servers:
 - url: http://localhost:8086
   description: Generated server url
@@ -2023,9 +2023,6 @@ paths:
           type: array
           items:
             type: string
-          default:
-          - "projekt.projnr,ASC"
-          - "antragsdatum,ASC"
       responses:
         "200":
           description: OK
@@ -2442,6 +2439,41 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ReportBewilligungAuszahlungProjektFormContext"
+      security:
+      - bearerAuth: []
+  /report/auswertungtermine/form-context:
+    get:
+      tags:
+      - report-auswertung-termine-controller
+      operationId: getReportAuswertungTermineFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportAuswertungTermineFormContext"
+      security:
+      - bearerAuth: []
+  /report/auswertungtermine/:
+    get:
+      tags:
+      - report-auswertung-termine-controller
+      operationId: getReportAuswertungTermine
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportAuswertungTermineDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
       security:
       - bearerAuth: []
   /report/auswertungprojekte/form-context:
@@ -5030,6 +5062,77 @@ components:
           type: string
         pname:
           type: string
+    ReportAuswertungTermineFormContext:
+      required:
+      - bezs
+      - fbs
+      - kurzs
+      - sbls
+      - uas
+      type: object
+      properties:
+        sbls:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
+        bezs:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
+        fbs:
+          type: array
+          items:
+            $ref: "#/components/schemas/FoerderbereichFormContextDTO"
+        uas:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnterabschnittFormContextDTO"
+        kurzs:
+          type: array
+          items:
+            $ref: "#/components/schemas/KurzbezeichnungFormContextDTO"
+    ReportAuswertungTermineDTO:
+      required:
+      - sort
+      type: object
+      properties:
+        jahr:
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
+        monat:
+          maximum: 12
+          minimum: 1
+          type: integer
+          format: int32
+        bez:
+          type: string
+        fb:
+          type: string
+        ua:
+          type: string
+        kurz:
+          type: string
+        pstrasse:
+          maxLength: 30
+          minLength: 0
+          type: string
+        pname:
+          maxLength: 30
+          minLength: 0
+          type: string
+        sbl:
+          type: string
+        zukunft:
+          type: boolean
+        ueb:
+          type: boolean
+        sort:
+          type: string
+          enum:
+          - PROJEKTNUMMER
+          - TERMINE
     ReportAuswertungProjektFormContext:
       required:
       - bezs

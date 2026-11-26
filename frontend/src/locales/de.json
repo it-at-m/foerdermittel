@@ -292,11 +292,11 @@
         "fag": "Nur FAG",
         "fb": "Förderbereich",
         "jahr": "Jahr",
-
         "jahrBis": "Jahr bis",
         "jahrVon": "Jahr von",
         "krisofp": "Sonderförderprogramm",
         "kurz": "Kurzbezeichnung",
+        "monat": "Monat",
         "offen": "Nur offene Projekte",
         "pname": "Projektname",
         "pstrasse": "Projektstraße",
@@ -381,6 +381,16 @@
         },
         "reportType": {
           "pdf": "PDF: Gruppierung Förderbereich"
+        }
+      },
+      "auswertungTermine": {
+        "modelName": "Auswertung Termine",
+        "jahr": "Termin im Jahr",
+        "ueb": "Nur Termine in Überwachung",
+        "zukunft": "Nur Termine in der Zukunft",
+        "sortEnum": {
+          "projektnummer": "Projektnummer",
+          "termine": "Termine (Datum)"
         }
       },
       "fortsetzungsAntrag": {

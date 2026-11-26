@@ -18,7 +18,8 @@ public enum ReportType {
     FMW_PROJEKTE1(Set.of(ReportFormat.PDF)),
     FMW_ANNAHMESAP(Set.of(ReportFormat.PDF)),
     FMW_ANTRAEGE1(Set.of(ReportFormat.PDF, ReportFormat.PDF_FLAT, ReportFormat.EXCEL)),
-    FMW_ABRUFE1(Set.of(ReportFormat.PDF, ReportFormat.PDF_FLAT, ReportFormat.EXCEL));
+    FMW_ABRUFE1(Set.of(ReportFormat.PDF, ReportFormat.PDF_FLAT, ReportFormat.EXCEL)),
+    FMW_TERMINE(Set.of(ReportFormat.PDF));
 
     private final Set<ReportFormat> supportedFormats;
 
