@@ -9,32 +9,34 @@
         cols="12"
         md="3"
       >
-        <fm-text-field
+        <fm-number-input
           v-model="modelValue.parameters!.jahrVon"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
             ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrVon"
+          :additional-rules="jahrVonAdditionalRules"
           :label="t('domain.report.common.jahrVon')"
-          :error-messages="jahrVonError"
           density="comfortable"
+          control-variant="hidden"
         />
       </v-col>
       <v-col
         cols="12"
         md="3"
       >
-        <fm-text-field
+        <fm-number-input
           v-model="modelValue.parameters!.jahrBis"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
             ReportAuswertungAntraegeDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrBis"
+          :additional-rules="jahrBisAdditionalRules"
           :label="t('domain.report.common.jahrBis')"
-          :error-messages="jahrBisError"
           density="comfortable"
+          control-variant="hidden"
         />
       </v-col>
 
@@ -53,6 +55,7 @@
           validation-attribute-key="kurzbez"
           :label="t('domain.report.common.sbl')"
           density="comfortable"
+          clearable
           @update:model-value="delete modelValue.parameters!.bez"
         />
       </v-col>
@@ -72,6 +75,7 @@
           validation-attribute-key="stadtbezirk"
           :label="t('domain.report.common.bez')"
           density="comfortable"
+          clearable
           @update:model-value="delete modelValue.parameters!.sbl"
         />
       </v-col>
@@ -92,6 +96,7 @@
           validation-attribute-key="fb"
           :label="t('domain.report.common.fb')"
           density="comfortable"
+          clearable
         />
       </v-col>
       <v-col
@@ -109,6 +114,7 @@
           validation-attribute-key="ua"
           :label="t('domain.report.common.ua')"
           density="comfortable"
+          clearable
         />
       </v-col>
       <v-col
@@ -126,6 +132,7 @@
           validation-attribute-key="kurz"
           :label="t('domain.report.common.kurz')"
           density="comfortable"
+          clearable
         />
       </v-col>
       <v-col
@@ -143,6 +150,7 @@
           validation-attribute-key="projnr"
           :label="t('model.projekt.projnr')"
           density="comfortable"
+          clearable
         />
       </v-col>
     </v-row>
@@ -274,6 +282,7 @@
           validation-attribute-key="siedlungsgebiet"
           :label="t('domain.report.common.sgt')"
           density="comfortable"
+          clearable
         />
       </v-col>
 
@@ -292,6 +301,7 @@
           validation-attribute-key="bauprogramm"
           :label="t('domain.report.common.bpg')"
           density="comfortable"
+          clearable
         />
       </v-col>
     </v-row>
@@ -350,17 +360,20 @@ import type { VForm } from "vuetify/components";
 
 import { computed, useTemplateRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRules } from "vuetify";
 
 import { ReportAuswertungAntraegeDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
+import FmNumberInput from "@/components/common/FmNumberInput.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 import { getAntraegeTitle } from "@/util/antraegeUtils.ts";
 import { getKrisofpTitle } from "@/util/krisofpUtils";
-import { getJahrBisError, getJahrVonError } from "@/util/yearHelper.ts";
 
 const { t } = useI18n();
+
+const rules = useRules();
 
 const modelValue = defineModel<Partial<GetReportAuswertungAntraegeRequest>>({
   required: true,
@@ -487,17 +500,15 @@ const formatOptions = [
   },
 ];
 
-const jahrVonError = computed(() =>
-  getJahrVonError(
-    modelValue.value.parameters?.jahrVon,
-    modelValue.value.parameters?.jahrBis
-  )
-);
+const jahrVonAdditionalRules = computed(() => {
+  const jahrBis = modelValue.value.parameters?.jahrBis;
+  const rule = jahrBis != null && rules["max"]?.(jahrBis, false);
+  return rule ? [rule] : [];
+});
 
-const jahrBisError = computed(() =>
-  getJahrBisError(
-    modelValue.value.parameters?.jahrVon,
-    modelValue.value.parameters?.jahrBis
-  )
-);
+const jahrBisAdditionalRules = computed(() => {
+  const jahrVon = modelValue.value.parameters?.jahrVon;
+  const rule = jahrVon != null && rules["min"]?.(jahrVon, false);
+  return rule ? [rule] : [];
+});
 </script>

@@ -8,7 +8,7 @@
         :form-ref="reportAuswertungAbrufeFormRef"
       >
         <template #form="{ item, updateValidity }">
-          <reportauswertungabrufeform
+          <report-auswertung-abrufe-form
             ref="reportAuswertungAbrufeForm"
             :model-value="item"
             :reportauswertungabrufeformcontext="
@@ -30,7 +30,7 @@ import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
 import ReportCard from "@/components/common/ReportCard.vue";
-import reportauswertungabrufeform from "@/components/forms/report/ReportAuswertungAbrufeForm.vue";
+import ReportAuswertungAbrufeForm from "@/components/forms/report/ReportAuswertungAbrufeForm.vue";
 import { useReportAuswertungAbrufeApi } from "@/composables/api/report/useReportAuswertungAbrufeApi";
 import { Role } from "@/types/Role";
 
@@ -52,20 +52,6 @@ const title = t("common.generics.reportTitle", [
 
 const EMPTY_FORM_TEMPLATE: Partial<GetReportAuswertungAbrufeRequest> = {
   parameters: {
-    jahrAbrufVon: "",
-    jahrAbrufBis: "",
-    jahrErhaltVon: "",
-    jahrErhaltBis: "",
-    sbl: "",
-    bez: "",
-    fb: "",
-    ua: "",
-    kurz: "",
-    pname: "",
-    pstrasse: "",
-    projnr: "",
-    sgt: "",
-    bpg: "",
     fag: "0",
     offen: "0",
     ohnebewill: "0",
@@ -83,7 +69,7 @@ const reportAuswertungAbrufeFormContext = computed(
 );
 
 type ReportAuswertungAbrufeFormRef = InstanceType<
-  typeof reportauswertungabrufeform
+  typeof ReportAuswertungAbrufeForm
 >;
 
 const reportAuswertungAbrufeFormRef =
