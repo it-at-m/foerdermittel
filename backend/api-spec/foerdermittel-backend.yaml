@@ -5091,7 +5091,7 @@ components:
         projekte:
           type: array
           items:
-            $ref: "#/components/schemas/ProjektFormContextDTO"
+            $ref: "#/components/schemas/ReportAuswertungVerwendungsnachweisFormContextDTO"
         fbs:
           type: array
           items:
@@ -5137,16 +5137,35 @@ components:
             - X
             - "Y"
             - Z
+    ReportAuswertungVerwendungsnachweisFormContextDTO:
+      type: object
+      properties:
+        vndat:
+          type: string
+          format: date
+        pstrasse:
+          type: string
+        pname:
+          type: string
+        krisofp:
+          type: string
+          enum:
+          - F
+          - K
+          - S
+          - V
+          - W
+          - X
+          - "Y"
+          - Z
     ReportAuswertungVerwendungsnachweisDTO:
       required:
       - type
       type: object
       properties:
         jahr:
-          pattern: "^(\\d{4})?$"
           type: string
         monat:
-          pattern: "^(\\d{2})?$"
           type: string
         sbl:
           type: string
