@@ -72,7 +72,7 @@ public class SiedlungsgebietService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<SiedlungsgebietFormContextDTO> getSiedlungsgebietFormContextDTOs() {
-        return siedlungsgebietMapper.toFormContext(siedlungsgebietRepository.findAll());
+        return siedlungsgebietMapper.toFormContext(siedlungsgebietRepository.findAllByOrderBySiedlungsgebietAsc());
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)

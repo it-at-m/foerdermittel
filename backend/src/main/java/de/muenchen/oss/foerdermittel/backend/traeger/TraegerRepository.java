@@ -15,4 +15,5 @@ public interface TraegerRepository extends PagingAndSortingRepository<Traeger, B
     @Query("SELECT t.kurzform FROM Traeger t")
     List<BigDecimal> findAllKurzformen();
 
+    List<Traeger> findAllByOrderByKurzformAsc();
 }

@@ -15,4 +15,5 @@ public interface BauprogrammRepository extends PagingAndSortingRepository<Baupro
     @Query("SELECT b.bauprogramm FROM Bauprogramm b")
     List<BigDecimal> findAllBauprogramme();
 
+    List<Bauprogramm> findAllByOrderByBauprogrammAsc();
 }

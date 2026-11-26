@@ -190,14 +190,14 @@ class ReferatServiceTest {
                     Mockito.mock(ReferatFormContextDTO.class),
                     Mockito.mock(ReferatFormContextDTO.class));
 
-            when(referatRepository.findAll()).thenReturn(entities);
+            when(referatRepository.findAllByOrderByRefnrAsc()).thenReturn(entities);
             when(referatMapper.toFormContext(entities)).thenReturn(expectedDTOs);
 
             // When
             final List<ReferatFormContextDTO> result = unitUnderTest.getReferatFormContextDTOs();
 
             // Then
-            verify(referatRepository, times(1)).findAll();
+            verify(referatRepository, times(1)).findAllByOrderByRefnrAsc();
             verify(referatMapper, times(1)).toFormContext(entities);
             assertThat(result).isEqualTo(expectedDTOs);
         }
