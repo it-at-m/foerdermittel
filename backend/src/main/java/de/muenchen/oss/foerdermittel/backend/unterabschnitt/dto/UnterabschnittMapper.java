@@ -23,6 +23,6 @@ public interface UnterabschnittMapper {
 
     UnterabschnittFormContextDTO toFormContext(Unterabschnitt unterabschnitt);
 
-    List<UnterabschnittFormContextDTO> toFormContext(Iterable<Unterabschnitt> unterabschnittList);
+    List<UnterabschnittFormContextDTO> toFormContext(List<Unterabschnitt> unterabschnittList);
 
 }

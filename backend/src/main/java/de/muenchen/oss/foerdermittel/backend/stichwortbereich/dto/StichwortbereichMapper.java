@@ -20,6 +20,6 @@ public interface StichwortbereichMapper {
 
     StichwortbereichFormContextDTO toFormContext(Stichwortbereich stichwortbereich);
 
-    List<StichwortbereichFormContextDTO> toFormContext(Iterable<Stichwortbereich> stichwortbereichList);
+    List<StichwortbereichFormContextDTO> toFormContext(List<Stichwortbereich> stichwortbereichList);
 
 }

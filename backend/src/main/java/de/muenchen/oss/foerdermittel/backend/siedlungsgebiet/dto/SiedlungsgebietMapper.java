@@ -21,6 +21,6 @@ public interface SiedlungsgebietMapper {
 
     SiedlungsgebietFormContextDTO toFormContext(Siedlungsgebiet siedlungsgebiet);
 
-    List<SiedlungsgebietFormContextDTO> toFormContext(Iterable<Siedlungsgebiet> siedlungsgebietList);
+    List<SiedlungsgebietFormContextDTO> toFormContext(List<Siedlungsgebiet> siedlungsgebietList);
 
 }

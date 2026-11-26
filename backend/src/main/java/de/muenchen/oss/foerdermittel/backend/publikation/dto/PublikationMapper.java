@@ -20,5 +20,5 @@ public interface PublikationMapper {
 
     PublikationFormContextDTO toFormContext(Publikation publikation);
 
-    List<PublikationFormContextDTO> toFormContext(Iterable<Publikation> publikationList);
+    List<PublikationFormContextDTO> toFormContext(List<Publikation> publikationList);
 }

@@ -20,6 +20,6 @@ public interface FoerderbereichMapper {
 
     FoerderbereichFormContextDTO toFormContext(Foerderbereich foerderbereich);
 
-    List<FoerderbereichFormContextDTO> toFormContext(Iterable<Foerderbereich> foerderbereichList);
+    List<FoerderbereichFormContextDTO> toFormContext(List<Foerderbereich> foerderbereichList);
 
 }

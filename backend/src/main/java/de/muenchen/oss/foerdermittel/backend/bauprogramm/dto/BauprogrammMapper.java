@@ -21,6 +21,6 @@ public interface BauprogrammMapper {
 
     BauprogrammFormContextDTO toFormContext(Bauprogramm bauprogramm);
 
-    List<BauprogrammFormContextDTO> toFormContext(Iterable<Bauprogramm> bauprogrammList);
+    List<BauprogrammFormContextDTO> toFormContext(List<Bauprogramm> bauprogrammList);
 
 }
