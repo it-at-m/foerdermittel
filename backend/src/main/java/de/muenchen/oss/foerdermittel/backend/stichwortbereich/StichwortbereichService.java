@@ -25,7 +25,7 @@ public class StichwortbereichService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<StichwortbereichFormContextDTO> getStichwortbereichFormContextDTOs() {
-        return stichwortbereichMapper.toFormContext(stichwortbereichRepository.findAll());
+        return stichwortbereichMapper.toFormContext(stichwortbereichRepository.findAllByOrderByBereichAsc());
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)

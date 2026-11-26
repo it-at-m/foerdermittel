@@ -1,7 +1,7 @@
 <template>
   <v-text-field
     v-if="displayMode !== InputDisplayMode.READ"
-    ref="textField"
+    ref="inputRef"
     :model-value="model"
     :readonly="canNotEdit"
     :counter="counter"
@@ -46,7 +46,7 @@ import type { ValidationAttributes } from "@/util/validation";
 import type { VTextField } from "vuetify/components";
 import type { ValidationRule } from "vuetify/framework";
 
-import { nextTick, useTemplateRef } from "vue";
+import { nextTick } from "vue";
 import { useI18n } from "vue-i18n";
 
 import { useInputValidation } from "@/composables/useInputValidation";
@@ -73,23 +73,21 @@ const {
   required?: boolean;
 }>();
 
-const { required, allRules, counter, canNotEdit } = useInputValidation(
-  displayMode,
-  disableEdit,
-  additionalRules,
-  validationAttributeMap,
-  validationAttributeKey,
-  true,
-  () => requiredOverride
-);
+const { required, allRules, counter, canNotEdit, inputRef } =
+  useInputValidation<VTextField>(
+    displayMode,
+    disableEdit,
+    () => additionalRules,
+    validationAttributeMap,
+    validationAttributeKey,
+    true,
+    () => requiredOverride
+  );
 
 const model = defineModel<string>();
-const textFieldRef = useTemplateRef<VTextField>("textField");
 
 async function updateModel(newModelValue: string) {
-  const input = textFieldRef.value?.$el.querySelector(
-    "input"
-  ) as HTMLInputElement;
+  const input = inputRef.value?.$el.querySelector("input") as HTMLInputElement;
 
   const start = input?.selectionStart;
   const end = input?.selectionEnd;

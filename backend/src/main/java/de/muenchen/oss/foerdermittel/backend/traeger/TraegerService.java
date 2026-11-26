@@ -64,7 +64,7 @@ public class TraegerService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<TraegerFormContextDTO> getTraegerFormContextDTOs() {
-        return traegerMapper.toFormContext(traegerRepository.findAll());
+        return traegerMapper.toFormContext(traegerRepository.findAllByOrderByKurzformAsc());
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)

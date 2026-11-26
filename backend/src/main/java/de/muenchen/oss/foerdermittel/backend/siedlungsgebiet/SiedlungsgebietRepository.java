@@ -15,4 +15,5 @@ public interface SiedlungsgebietRepository extends PagingAndSortingRepository<Si
     @Query("SELECT s.siedlungsgebiet FROM Siedlungsgebiet s")
     List<BigDecimal> findAllSiedlungsgebiete();
 
+    List<Siedlungsgebiet> findAllByOrderBySiedlungsgebietAsc();
 }

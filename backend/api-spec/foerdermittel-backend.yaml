@@ -2023,6 +2023,9 @@ paths:
           type: array
           items:
             type: string
+          default:
+          - "projekt.projnr,DESC"
+          - "aenderungsdatum,DESC"
       responses:
         "200":
           description: OK
@@ -3243,12 +3246,12 @@ components:
         krnKrhname:
           maxLength: 1
           minLength: 0
-          pattern: "^[A-ZÄÖÜ]*$"
+          pattern: "^[A-Z]*$"
           type: string
         kurKurzbez:
           maxLength: 3
           minLength: 0
-          pattern: "^[A-ZÄÖÜ0-9]+$"
+          pattern: "^[A-Z0-9]+$"
           type: string
         sgtSiedlungsgebiet:
           maximum: 99
@@ -3988,7 +3991,7 @@ components:
         kurKurzbez:
           maxLength: 3
           minLength: 1
-          pattern: "^[A-ZÄÖÜ0-9]+$"
+          pattern: "^[A-Z0-9]+$"
           type: string
         uasUa:
           maxLength: 2
@@ -4017,7 +4020,7 @@ components:
         krnKrhname:
           maxLength: 1
           minLength: 0
-          pattern: "^[A-ZÄÖÜ]*$"
+          pattern: "^[A-Z]*$"
           type: string
         sgtSiedlungsgebiet:
           maximum: 99
@@ -4600,11 +4603,15 @@ components:
       type: object
       properties:
         jahrVon:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
         jahrBis:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
         pname:
           maxLength: 40
           minLength: 0
@@ -4972,11 +4979,15 @@ components:
       type: object
       properties:
         jahrVon:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
         jahrBis:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
         inhalt:
           maxLength: 40
           minLength: 0
@@ -5254,11 +5265,15 @@ components:
       type: object
       properties:
         jahrVon:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
         jahrBis:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
         bez:
           type: string
         fb:
@@ -5418,17 +5433,25 @@ components:
       type: object
       properties:
         jahrAbrufVon:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
         jahrAbrufBis:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
         jahrErhaltVon:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
         jahrErhaltBis:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
         bez:
           type: string
         fb:
