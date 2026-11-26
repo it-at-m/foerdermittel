@@ -3246,12 +3246,12 @@ components:
         krnKrhname:
           maxLength: 1
           minLength: 0
-          pattern: "^[A-Z]*$"
+          pattern: "^[A-ZÄÖÜ]*$"
           type: string
         kurKurzbez:
           maxLength: 3
           minLength: 0
-          pattern: "^[A-Z0-9]+$"
+          pattern: "^[A-ZÄÖÜ0-9]+$"
           type: string
         sgtSiedlungsgebiet:
           maximum: 99
@@ -3991,7 +3991,7 @@ components:
         kurKurzbez:
           maxLength: 3
           minLength: 1
-          pattern: "^[A-Z0-9]+$"
+          pattern: "^[A-ZÄÖÜ0-9]+$"
           type: string
         uasUa:
           maxLength: 2
@@ -4020,7 +4020,7 @@ components:
         krnKrhname:
           maxLength: 1
           minLength: 0
-          pattern: "^[A-Z]*$"
+          pattern: "^[A-ZÄÖÜ]*$"
           type: string
         sgtSiedlungsgebiet:
           maximum: 99
