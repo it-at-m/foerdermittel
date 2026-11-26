@@ -2149,45 +2149,6 @@ paths:
                 $ref: "#/components/schemas/SiedlungsgebietFormContext"
       security:
       - bearerAuth: []
-  /report/verwendungsnachweis/form-context:
-    get:
-      tags:
-      - report-verwendungsnachweis-controller
-      operationId: getReportVerwendungsnachweisFormContext
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ReportVerwendungsnachweisFormContext"
-      security:
-      - bearerAuth: []
-  /report/verwendungsnachweis/:
-    get:
-      tags:
-      - report-verwendungsnachweis-controller
-      operationId: getReportVerwendungsnachweis
-      parameters:
-      - name: parameters
-        in: query
-        required: true
-        schema:
-          $ref: "#/components/schemas/ReportVerwendungsnachweisDTO"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/pdf:
-              schema:
-                type: string
-                format: binary
-            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
-              schema:
-                type: string
-                format: binary
-      security:
-      - bearerAuth: []
   /report/stichworte/form-context:
     get:
       tags:
@@ -2478,6 +2439,41 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ReportBewilligungAuszahlungProjektFormContext"
+      security:
+      - bearerAuth: []
+  /report/auswertungverwendungsnachweis/form-context:
+    get:
+      tags:
+      - report-auswertung-verwendungsnachweis-controller
+      operationId: getReportAuswertungVerwendungsnachweisFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportAuswertungVerwendungsnachweisFormContext"
+      security:
+      - bearerAuth: []
+  /report/auswertungverwendungsnachweis/:
+    get:
+      tags:
+      - report-auswertung-verwendungsnachweis-controller
+      operationId: getReportAuswertungVerwendungsnachweis
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportAuswertungVerwendungsnachweisDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
       security:
       - bearerAuth: []
   /report/auswertungprojekte/form-context:
@@ -4577,232 +4573,6 @@ components:
           type: array
           items:
             type: number
-    BauprogrammFormContextDTO:
-      required:
-      - bauprogramm
-      - bezeichnung
-      type: object
-      properties:
-        bauprogramm:
-          type: integer
-          description: ""
-          format: int32
-        bezeichnung:
-          type: string
-          description: ""
-    FoerderbereichFormContextDTO:
-      required:
-      - bezeichnung
-      - fb
-      type: object
-      properties:
-        fb:
-          type: integer
-          description: ""
-          format: int32
-        bezeichnung:
-          type: string
-          description: ""
-    KrankenhausFormContextDTO:
-      required:
-      - bezeichnung
-      - krhname
-      type: object
-      properties:
-        krhname:
-          type: string
-          description: ""
-        bezeichnung:
-          type: string
-          description: ""
-    KurzbezeichnungFormContextDTO:
-      required:
-      - bezeichnung
-      - kurzbez
-      type: object
-      properties:
-        kurzbez:
-          type: string
-          description: ""
-        bezeichnung:
-          type: string
-          description: ""
-    ListennameStadtbezirkslisteFormContextDTO:
-      required:
-      - bezeichnung
-      - kurzbez
-      type: object
-      properties:
-        kurzbez:
-          type: string
-          description: ""
-        bezeichnung:
-          type: string
-          description: ""
-    ReportVerwendungsnachweisFormContext:
-      required:
-      - bezs
-      - bpgs
-      - fbs
-      - krhs
-      - krisofps
-      - kurzs
-      - sbls
-      - sgts
-      - uas
-      type: object
-      properties:
-        fbs:
-          type: array
-          items:
-            $ref: "#/components/schemas/FoerderbereichFormContextDTO"
-        sbls:
-          type: array
-          items:
-            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
-        bezs:
-          type: array
-          items:
-            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
-        uas:
-          type: array
-          items:
-            $ref: "#/components/schemas/UnterabschnittFormContextDTO"
-        kurzs:
-          type: array
-          items:
-            $ref: "#/components/schemas/KurzbezeichnungFormContextDTO"
-        bpgs:
-          type: array
-          items:
-            $ref: "#/components/schemas/BauprogrammFormContextDTO"
-        sgts:
-          type: array
-          items:
-            $ref: "#/components/schemas/SiedlungsgebietFormContextDTO"
-        krhs:
-          type: array
-          items:
-            $ref: "#/components/schemas/KrankenhausFormContextDTO"
-        krisofps:
-          type: array
-          items:
-            type: string
-            enum:
-            - F
-            - K
-            - S
-            - V
-            - W
-            - X
-            - "Y"
-            - Z
-    SiedlungsgebietFormContextDTO:
-      required:
-      - bezeichnung
-      - siedlungsgebiet
-      type: object
-      properties:
-        siedlungsgebiet:
-          type: integer
-          description: ""
-          format: int32
-        bezeichnung:
-          type: string
-          description: ""
-    StadtbezirkFormContextDTO:
-      required:
-      - bezeichnung
-      - stadtbezirk
-      type: object
-      properties:
-        stadtbezirk:
-          type: integer
-          description: ""
-          format: int32
-        bezeichnung:
-          type: string
-          description: ""
-    UnterabschnittFormContextDTO:
-      required:
-      - bezeichnung
-      - ua
-      type: object
-      properties:
-        ua:
-          type: string
-          description: ""
-        bezeichnung:
-          type: string
-          description: ""
-    ReportFormat:
-      type: string
-      enum:
-      - PDF
-      - PDF_FLAT
-      - EXCEL
-    ReportVerwendungsnachweisDTO:
-      required:
-      - type
-      type: object
-      properties:
-        jahr:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
-        monat:
-          type: string
-        sbl:
-          type: string
-        bez:
-          pattern: ^\d*$
-          type: string
-        fb:
-          pattern: ^\d*$
-          type: string
-        ua:
-          type: string
-        krh:
-          type: string
-        pname:
-          type: string
-        pstrasse:
-          type: string
-        kurz:
-          type: string
-        ohneschluss:
-          type: string
-        notizen:
-          type: string
-        fag:
-          type: string
-        win:
-          type: string
-        krisofp:
-          type: string
-          enum:
-          - F
-          - K
-          - S
-          - V
-          - W
-          - X
-          - "Y"
-          - Z
-        sgt:
-          pattern: ^\d*$
-          type: string
-        bpg:
-          pattern: ^\d*$
-          type: string
-        type:
-          $ref: "#/components/schemas/ReportFormat"
-        sort:
-          type: string
-          enum:
-          - FBPROJNR
-          - FBSTRASSE
-          - STRASSENAME
-          - PROJEKTNUMMER
     ReportStichworteFormContext:
       required:
       - bereiche
@@ -4879,6 +4649,56 @@ components:
           type: string
         notizen:
           type: string
+    BauprogrammFormContextDTO:
+      required:
+      - bauprogramm
+      - bezeichnung
+      type: object
+      properties:
+        bauprogramm:
+          type: integer
+          description: ""
+          format: int32
+        bezeichnung:
+          type: string
+          description: ""
+    FoerderbereichFormContextDTO:
+      required:
+      - bezeichnung
+      - fb
+      type: object
+      properties:
+        fb:
+          type: integer
+          description: ""
+          format: int32
+        bezeichnung:
+          type: string
+          description: ""
+    KurzbezeichnungFormContextDTO:
+      required:
+      - bezeichnung
+      - kurzbez
+      type: object
+      properties:
+        kurzbez:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+    ListennameStadtbezirkslisteFormContextDTO:
+      required:
+      - bezeichnung
+      - kurzbez
+      type: object
+      properties:
+        kurzbez:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
     ReportProjektuebersichtMsFormContext:
       required:
       - bauprogramme
@@ -4932,6 +4752,50 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/BauprogrammFormContextDTO"
+    SiedlungsgebietFormContextDTO:
+      required:
+      - bezeichnung
+      - siedlungsgebiet
+      type: object
+      properties:
+        siedlungsgebiet:
+          type: integer
+          description: ""
+          format: int32
+        bezeichnung:
+          type: string
+          description: ""
+    StadtbezirkFormContextDTO:
+      required:
+      - bezeichnung
+      - stadtbezirk
+      type: object
+      properties:
+        stadtbezirk:
+          type: integer
+          description: ""
+          format: int32
+        bezeichnung:
+          type: string
+          description: ""
+    UnterabschnittFormContextDTO:
+      required:
+      - bezeichnung
+      - ua
+      type: object
+      properties:
+        ua:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+    ReportFormat:
+      type: string
+      enum:
+      - PDF
+      - PDF_FLAT
+      - EXCEL
     ReportProjektuebersichtMsDTO:
       required:
       - sort
@@ -5198,6 +5062,144 @@ components:
           type: string
         pname:
           type: string
+    KrankenhausFormContextDTO:
+      required:
+      - bezeichnung
+      - krhname
+      type: object
+      properties:
+        krhname:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
+    ReportAuswertungVerwendungsnachweisFormContext:
+      required:
+      - bezs
+      - bpgs
+      - fbs
+      - krhs
+      - krisofps
+      - kurzs
+      - projekte
+      - sbls
+      - sgts
+      - uas
+      type: object
+      properties:
+        projekte:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProjektFormContextDTO"
+        fbs:
+          type: array
+          items:
+            $ref: "#/components/schemas/FoerderbereichFormContextDTO"
+        sbls:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
+        bezs:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
+        uas:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnterabschnittFormContextDTO"
+        kurzs:
+          type: array
+          items:
+            $ref: "#/components/schemas/KurzbezeichnungFormContextDTO"
+        bpgs:
+          type: array
+          items:
+            $ref: "#/components/schemas/BauprogrammFormContextDTO"
+        sgts:
+          type: array
+          items:
+            $ref: "#/components/schemas/SiedlungsgebietFormContextDTO"
+        krhs:
+          type: array
+          items:
+            $ref: "#/components/schemas/KrankenhausFormContextDTO"
+        krisofps:
+          type: array
+          items:
+            type: string
+            enum:
+            - F
+            - K
+            - S
+            - V
+            - W
+            - X
+            - "Y"
+            - Z
+    ReportAuswertungVerwendungsnachweisDTO:
+      required:
+      - type
+      type: object
+      properties:
+        jahr:
+          pattern: "^(\\d{4})?$"
+          type: string
+        monat:
+          pattern: "^(\\d{2})?$"
+          type: string
+        sbl:
+          type: string
+        bez:
+          pattern: ^\d*$
+          type: string
+        fb:
+          pattern: ^\d*$
+          type: string
+        ua:
+          type: string
+        krh:
+          type: string
+        pname:
+          type: string
+        pstrasse:
+          type: string
+        kurz:
+          type: string
+        ohneschluss:
+          type: string
+        notizen:
+          type: string
+        fag:
+          type: string
+        win:
+          type: string
+        krisofp:
+          type: string
+          enum:
+          - F
+          - K
+          - S
+          - V
+          - W
+          - X
+          - "Y"
+          - Z
+        sgt:
+          pattern: ^\d*$
+          type: string
+        bpg:
+          pattern: ^\d*$
+          type: string
+        type:
+          $ref: "#/components/schemas/ReportFormat"
+        sort:
+          type: string
+          enum:
+          - FOERDERBEREICH_PROJEKTNUMMER
+          - FOERDERBEREICH_STRASSE
+          - PROJEKTSTRASSE_PROJEKTNUMMER
+          - PROJEKTNUMMER
     ReportAuswertungProjektFormContext:
       required:
       - bezs
