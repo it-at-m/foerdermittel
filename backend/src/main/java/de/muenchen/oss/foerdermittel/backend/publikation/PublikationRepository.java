@@ -14,4 +14,5 @@ public interface PublikationRepository extends PagingAndSortingRepository<Publik
     @Query("SELECT p.kurzform FROM Publikation p")
     List<String> findAllKurzformen();
 
+    List<Publikation> findAllByOrderByKurzformAsc();
 }

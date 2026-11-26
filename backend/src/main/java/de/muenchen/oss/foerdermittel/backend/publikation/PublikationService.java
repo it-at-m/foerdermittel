@@ -25,7 +25,7 @@ public class PublikationService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<PublikationFormContextDTO> getPublikationFormContextDTOs() {
-        return publikationMapper.toFormContext(publikationRepository.findAll());
+        return publikationMapper.toFormContext(publikationRepository.findAllByOrderByKurzformAsc());
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)

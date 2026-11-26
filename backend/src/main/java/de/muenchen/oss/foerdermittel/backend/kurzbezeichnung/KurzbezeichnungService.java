@@ -68,7 +68,7 @@ public class KurzbezeichnungService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<KurzbezeichnungFormContextDTO> getKurzbezeichnungFormContextDTOs() {
-        return kurzbezeichnungMapper.toFormContext(kurzbezeichnungRepository.findAll());
+        return kurzbezeichnungMapper.toFormContext(kurzbezeichnungRepository.findAllByOrderByKurzbezAsc());
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)

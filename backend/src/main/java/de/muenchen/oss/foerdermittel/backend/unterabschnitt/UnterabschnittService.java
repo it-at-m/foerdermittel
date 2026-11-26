@@ -78,7 +78,7 @@ public class UnterabschnittService {
     @PreAuthorize(Authorities.HAS_ANY_ROLE)
     @Transactional(readOnly = true)
     public List<UnterabschnittFormContextDTO> getUnterabschnittFormContextDTOs() {
-        return unterabschnittMapper.toFormContext(unterabschnittRepository.findAll());
+        return unterabschnittMapper.toFormContext(unterabschnittRepository.findAllByOrderByUaAsc());
     }
 
     @PreAuthorize(Authorities.HAS_ANY_ROLE)

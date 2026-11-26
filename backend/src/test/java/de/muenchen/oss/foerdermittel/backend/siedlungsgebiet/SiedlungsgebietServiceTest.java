@@ -224,14 +224,14 @@ class SiedlungsgebietServiceTest {
                     Mockito.mock(SiedlungsgebietFormContextDTO.class),
                     Mockito.mock(SiedlungsgebietFormContextDTO.class));
 
-            when(siedlungsgebietRepository.findAll()).thenReturn(entities);
+            when(siedlungsgebietRepository.findAllByOrderBySiedlungsgebietAsc()).thenReturn(entities);
             when(siedlungsgebietMapper.toFormContext(entities)).thenReturn(expectedDTOs);
 
             // When
             final List<SiedlungsgebietFormContextDTO> result = unitUnderTest.getSiedlungsgebietFormContextDTOs();
 
             // Then
-            verify(siedlungsgebietRepository, times(1)).findAll();
+            verify(siedlungsgebietRepository, times(1)).findAllByOrderBySiedlungsgebietAsc();
             verify(siedlungsgebietMapper, times(1)).toFormContext(entities);
             assertThat(result).isEqualTo(expectedDTOs);
         }
