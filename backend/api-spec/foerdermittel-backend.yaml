@@ -5311,8 +5311,10 @@ components:
           type: boolean
         planab:
           type: string
+          format: date
         spseit:
           type: string
+          format: date
         op:
           type: boolean
         mp:

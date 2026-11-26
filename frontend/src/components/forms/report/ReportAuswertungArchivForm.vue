@@ -178,7 +178,6 @@
           clearable
         />
       </v-col>
-
       <v-col
         cols="12"
         md="4"
@@ -190,7 +189,40 @@
           clearable
         />
       </v-col>
-
+    </v-row>
+    <v-row>
+      <v-col
+        cols="12"
+        md="4"
+      >
+        <fm-date-input
+          v-model="modelValue.parameters!.planab"
+          :validation-attribute-map="
+            ReportAuswertungArchivDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="planab"
+          :label="t('domain.report.common.planab')"
+          density="comfortable"
+          clearable
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        md="4"
+      >
+        <fm-date-input
+          v-model="modelValue.parameters!.spseit"
+          :validation-attribute-map="
+            ReportAuswertungArchivDTOPropertyValidationAttributesMap
+          "
+          validation-attribute-key="spseit"
+          :label="t('domain.report.common.spseit')"
+          density="comfortable"
+          clearable
+        />
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col
         cols="12"
         md="4"
@@ -256,6 +288,7 @@ import { useI18n } from "vue-i18n";
 import { ReportAuswertungArchivDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
+import FmDateInput from "@/components/common/FmDateInput.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 import { getKrisofpTitle } from "@/util/krisofpUtils";

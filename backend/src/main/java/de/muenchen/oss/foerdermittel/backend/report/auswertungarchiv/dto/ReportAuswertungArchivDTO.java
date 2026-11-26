@@ -4,6 +4,8 @@ import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.time.LocalDate;
+
 public record ReportAuswertungArchivDTO(
 
         String bez,
@@ -17,8 +19,8 @@ public record ReportAuswertungArchivDTO(
         boolean film,
         boolean filmohne,
         boolean offen,
-        String planab,
-        String spseit,
+        LocalDate planab,
+        LocalDate spseit,
         boolean op,
         boolean mp,
 
