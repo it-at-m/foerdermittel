@@ -8,8 +8,9 @@
         cols="12"
         md="3"
       >
-        <fm-text-field
+        <fm-autocomplete
           v-model="modelValue.parameters!.jahr"
+          :items="jahrOptions"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
             ReportAuswertungVerwendungsnachweisDTOPropertyValidationAttributesMap
@@ -23,9 +24,9 @@
         cols="12"
         md="3"
       >
-        <fm-text-field
+        <fm-autocomplete
           v-model="modelValue.parameters!.monat"
-          :display-mode="InputDisplayMode.EDIT"
+          :items="monatOptions"
           :validation-attribute-map="
             ReportAuswertungVerwendungsnachweisDTOPropertyValidationAttributesMap
           "
@@ -310,26 +311,26 @@
         cols="12"
         md="3"
       >
+        <v-select
+          v-model="modelValue.parameters!.type"
+          :items="formatOptions"
+          item-title="title"
+          item-value="value"
+          :label="t('domain.report.common.reportType.modelName')"
+          variant="outlined"
+          density="comfortable"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        md="3"
+      >
         <fm-autocomplete
           v-model="modelValue.parameters!.sort"
           :items="filteredSortOptions"
           item-value="value"
           item-title="title"
           :label="t('domain.report.common.reportSort')"
-          density="comfortable"
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="3"
-      >
-        <v-select
-          v-model="modelValue.parameters!.type"
-          :items="formatOptions"
-          item-value="value"
-          :label="t('domain.report.common.reportType')"
-          variant="outlined"
           density="comfortable"
         />
       </v-col>
@@ -393,6 +394,7 @@ async function validate() {
     await formRef.value.validate();
   }
 }
+
 defineExpose({
   validate,
 });
@@ -406,6 +408,7 @@ function getStadtbezirkslisteTitle(
 ) {
   return item ? `${item.kurzbez} (${item.bezeichnung})` : "";
 }
+
 function getStadtbezirkTitle(item: StadtbezirkFormContextDTO) {
   return item ? `${item.stadtbezirk} (${item.bezeichnung})` : "";
 }
@@ -492,4 +495,25 @@ const formatOptions = [
     value: "PDF_FLAT",
   },
 ];
+
+const jahrOptions = computed(() =>
+  [
+    ...new Set(
+      (props.reportAuswertungVerwendungsnachweisFormContext?.projekte ?? [])
+        .map((projekt) => projekt.vndat?.getFullYear())
+        .filter((jahr): jahr is number => jahr !== undefined)
+    ),
+  ].sort((a, b) => b - a)
+);
+
+const monatOptions = computed(() =>
+  [
+    ...new Set(
+      (props.reportAuswertungVerwendungsnachweisFormContext?.projekte ?? [])
+        .map((projekt) => projekt.vndat?.getMonth())
+        .filter((monat): monat is number => monat !== undefined)
+        .map((monat) => monat + 1)
+    ),
+  ].sort((a, b) => a - b)
+);
 </script>

@@ -5,7 +5,7 @@ import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichFo
 import de.muenchen.oss.foerdermittel.backend.krankenhaus.dto.KrankenhausFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.dto.KurzbezeichnungFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
-import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungVerwendungsnachweisFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.dto.SiedlungsgebietFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameStadtbezirkslisteFormContextDTO;
@@ -15,7 +15,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 public record ReportAuswertungVerwendungsnachweisFormContext(
-        @NotNull List<ProjektFormContextDTO> projekte,
+        @NotNull List<ReportAuswertungVerwendungsnachweisFormContextDTO> projekte,
         @NotNull List<FoerderbereichFormContextDTO> fbs,
         @NotNull List<ListennameStadtbezirkslisteFormContextDTO> sbls,
         @NotNull List<StadtbezirkFormContextDTO> bezs,

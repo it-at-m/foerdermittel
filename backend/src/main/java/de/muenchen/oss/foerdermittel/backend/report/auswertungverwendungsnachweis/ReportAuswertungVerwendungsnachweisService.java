@@ -80,7 +80,7 @@ public class ReportAuswertungVerwendungsnachweisService {
         log.info("Get ReportAuswertungVerwendungsnachweis form context");
 
         return new ReportAuswertungVerwendungsnachweisFormContext(
-                projektService.getProjektFormContextDTOs(),
+                projektService.getReportAuswertungVerwendungsnachweisFormContextDTOs(),
                 foerderbereichService.getFoerderbereichFormContextDTOs(),
                 listennameStadtbezirkslisteService.getlistennameStadtbezirkslisteFormContextDTOs(),
                 stadtbezirkService.getStadtbezirkFormContextDTOs(),
