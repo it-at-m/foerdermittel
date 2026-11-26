@@ -1,10 +1,10 @@
-package de.muenchen.oss.foerdermittel.backend.report.verwendungsnachweis;
+package de.muenchen.oss.foerdermittel.backend.report.auswertungverwendungsnachweis;
 
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
 import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungverwendungsnachweis.dto.ReportAuswertungVerwendungsnachweisDTO;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungverwendungsnachweis.formcontext.ReportAuswertungVerwendungsnachweisFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
-import de.muenchen.oss.foerdermittel.backend.report.verwendungsnachweis.dto.ReportVerwendungsnachweisDTO;
-import de.muenchen.oss.foerdermittel.backend.report.verwendungsnachweis.formcontext.ReportVerwendungsnachweisFormContext;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,11 +28,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/report/verwendungsnachweis")
+@RequestMapping("/report/auswertungverwendungsnachweis")
 @SecurityRequirement(name = OpenAPIDocumentationConfiguration.SECURITY_SCHEME_NAME)
-public class ReportVerwendungsnachweisController {
+public class ReportAuswertungVerwendungsnachweisController {
 
-    private final ReportVerwendungsnachweisService reportVerwendungsnachweisService;
+    private final ReportAuswertungVerwendungsnachweisService reportAuswertungVerwendungsnachweisService;
 
     @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
@@ -48,19 +48,19 @@ public class ReportVerwendungsnachweisController {
                     }
             )
     )
-    public void getReportVerwendungsnachweis(
-            @Valid @ModelAttribute final ReportVerwendungsnachweisDTO parameters,
+    public void getReportAuswertungVerwendungsnachweis(
+            @Valid @ModelAttribute final ReportAuswertungVerwendungsnachweisDTO parameters,
             final HttpServletResponse response)
             throws IOException, SQLException, JRException {
-        final GeneratedReport generatedReport = reportVerwendungsnachweisService.generateReportVerwendungsnachweis(parameters);
+        final GeneratedReport generatedReport = reportAuswertungVerwendungsnachweisService.generateReportAuswertungVerwendungsnachweis(parameters);
         ReportControllerUtil.setMetadata(response, generatedReport);
         generatedReport.writer().write(response.getOutputStream());
     }
 
     @GetMapping(value = "/form-context", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ReportVerwendungsnachweisFormContext getReportVerwendungsnachweisFormContext() {
-        return reportVerwendungsnachweisService.getReportVerwendungsnachweisFormContext();
+    public ReportAuswertungVerwendungsnachweisFormContext getReportAuswertungVerwendungsnachweisFormContext() {
+        return reportAuswertungVerwendungsnachweisService.getReportAuswertungVerwendungsnachweisFormContext();
     }
 
 }

@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.report.verwendungsnachweis.formcontext;
+package de.muenchen.oss.foerdermittel.backend.report.auswertungverwendungsnachweis.formcontext;
 
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.dto.BauprogrammFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.foerderbereich.dto.FoerderbereichFormContextDTO;
@@ -14,7 +14,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-public record ReportVerwendungsnachweisFormContext(
+public record ReportAuswertungVerwendungsnachweisFormContext(
         @NotNull List<ProjektFormContextDTO> projekte,
         @NotNull List<FoerderbereichFormContextDTO> fbs,
         @NotNull List<ListennameStadtbezirkslisteFormContextDTO> sbls,
@@ -25,7 +25,7 @@ public record ReportVerwendungsnachweisFormContext(
         @NotNull List<SiedlungsgebietFormContextDTO> sgts,
         @NotNull List<KrankenhausFormContextDTO> krhs,
         @NotNull List<Krisofp> krisofps) {
-    public ReportVerwendungsnachweisFormContext {
+    public ReportAuswertungVerwendungsnachweisFormContext {
         projekte = List.copyOf(projekte);
         fbs = List.copyOf(fbs);
         sbls = List.copyOf(sbls);

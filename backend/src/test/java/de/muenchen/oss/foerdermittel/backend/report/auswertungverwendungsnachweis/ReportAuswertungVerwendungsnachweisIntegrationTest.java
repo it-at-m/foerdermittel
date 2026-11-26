@@ -1,5 +1,5 @@
 
-package de.muenchen.oss.foerdermittel.backend.report.verwendungsnachweis;
+package de.muenchen.oss.foerdermittel.backend.report.auswertungverwendungsnachweis;
 
 import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_TEST_PROFILE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -7,7 +7,7 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
 import de.muenchen.oss.foerdermittel.backend.TestUtils;
-import de.muenchen.oss.foerdermittel.backend.report.verwendungsnachweis.formcontext.ReportVerwendungsnachweisFormContext;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungverwendungsnachweis.formcontext.ReportAuswertungVerwendungsnachweisFormContext;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -34,10 +34,10 @@ import org.testcontainers.utility.DockerImageName;
 @AutoConfigureRestTestClient
 @ActiveProfiles(profiles = { SPRING_TEST_PROFILE })
 @Import(TestSecurityConfiguration.class)
-class ReportVerwendungsnachweisIntegrationTest {
+class ReportAuswertungVerwendungsnachweisIntegrationTest {
 
-    private static final String REPORT_PATH = "/report/verwendungsnachweis/";
-    private static final String FORM_CONTEXT_PATH = "/report/verwendungsnachweis/form-context";
+    private static final String REPORT_PATH = "/report/auswertungverwendungsnachweis/";
+    private static final String FORM_CONTEXT_PATH = "/report/auswertungverwendungsnachweis/form-context";
 
     @Autowired
     private RestTestClient restTestClient;
@@ -49,7 +49,7 @@ class ReportVerwendungsnachweisIntegrationTest {
             DockerImageName.parse(TestUtils.getImageFromDockerCompose("postgres")));
 
     @Nested
-    class GetReportVerwendungsnachweis {
+    class GetReportAuswertungVerwendungsnachweis {
 
         @Test
         void givenMissingRequiredParameters_thenReturnBadRequest() {
@@ -88,17 +88,17 @@ class ReportVerwendungsnachweisIntegrationTest {
     }
 
     @Nested
-    class GetReportVerwendungsnachweisFormContext {
+    class GetReportAuswertungVerwendungsnachweisFormContext {
 
         @Test
         void givenRequest_thenReturnFormContext() {
-            final ReportVerwendungsnachweisFormContext result = restTestClient.get()
+            final ReportAuswertungVerwendungsnachweisFormContext result = restTestClient.get()
                     .uri(FORM_CONTEXT_PATH)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer admin")
                     .exchange()
                     .expectStatus().isOk()
                     .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                    .expectBody(ReportVerwendungsnachweisFormContext.class)
+                    .expectBody(ReportAuswertungVerwendungsnachweisFormContext.class)
                     .returnResult()
                     .getResponseBody();
 

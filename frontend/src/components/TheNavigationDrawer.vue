@@ -287,7 +287,7 @@ const navigationItems: NavigationItem[] = [
       {
         title: t("domain.verwendungsNachweis", 2),
         props: {
-          to: "/report/verwendungsnachweis",
+          to: "/report/auswertungverwendungsnachweis",
         },
       },
       {

@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.report.verwendungsnachweis.dto;
+package de.muenchen.oss.foerdermittel.backend.report.auswertungverwendungsnachweis.dto;
 
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 @SuppressWarnings("Avoi")
-public record ReportVerwendungsnachweisDTO(
+public record ReportAuswertungVerwendungsnachweisDTO(
 
         @Pattern(regexp = "^(\\d{4})?$") String jahr,
         @Pattern(regexp = "^(\\d{2})?$") String monat,
@@ -26,7 +26,7 @@ public record ReportVerwendungsnachweisDTO(
         @Pattern(regexp = "^\\d*$") String sgt,
         @Pattern(regexp = "^\\d*$") String bpg,
         @NotNull ReportFormat type,
-        ReportVerwendungsnachweisSort sort
+        ReportAuswertungVerwendungsnachweisSort sort
 
 ) {
 }

@@ -1,4 +1,4 @@
-package de.muenchen.oss.foerdermittel.backend.report.verwendungsnachweis.dto;
+package de.muenchen.oss.foerdermittel.backend.report.auswertungverwendungsnachweis.dto;
 
 import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
 import java.util.HashMap;
@@ -6,9 +6,9 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ReportVerwendungsnachweisMapper {
+public class ReportAuswertungVerwendungsnachweisMapper {
     public Map<String, Object> toJasperParameters(
-            final ReportVerwendungsnachweisDTO dto) {
+            final ReportAuswertungVerwendungsnachweisDTO dto) {
 
         final Map<String, Object> parameters = new HashMap<>();
 

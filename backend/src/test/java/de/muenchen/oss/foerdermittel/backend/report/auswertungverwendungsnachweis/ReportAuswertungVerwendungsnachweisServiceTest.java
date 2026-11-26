@@ -1,5 +1,5 @@
 
-package de.muenchen.oss.foerdermittel.backend.report.verwendungsnachweis;
+package de.muenchen.oss.foerdermittel.backend.report.auswertungverwendungsnachweis;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -20,12 +20,12 @@ import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
 import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
 import de.muenchen.oss.foerdermittel.backend.report.ReportService;
 import de.muenchen.oss.foerdermittel.backend.report.ReportType;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungverwendungsnachweis.dto.ReportAuswertungVerwendungsnachweisDTO;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungverwendungsnachweis.dto.ReportAuswertungVerwendungsnachweisMapper;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungverwendungsnachweis.dto.ReportAuswertungVerwendungsnachweisSort;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungverwendungsnachweis.formcontext.ReportAuswertungVerwendungsnachweisFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.validation.CommonSearchParameters;
 import de.muenchen.oss.foerdermittel.backend.report.validation.ReportSearchParameterValidator;
-import de.muenchen.oss.foerdermittel.backend.report.verwendungsnachweis.dto.ReportVerwendungsnachweisDTO;
-import de.muenchen.oss.foerdermittel.backend.report.verwendungsnachweis.dto.ReportVerwendungsnachweisMapper;
-import de.muenchen.oss.foerdermittel.backend.report.verwendungsnachweis.dto.ReportVerwendungsnachweisSort;
-import de.muenchen.oss.foerdermittel.backend.report.verwendungsnachweis.formcontext.ReportVerwendungsnachweisFormContext;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietService;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkService;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.ListennameStadtbezirkslisteService;
@@ -41,7 +41,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class ReportVerwendungsnachweisServiceTest {
+class ReportAuswertungVerwendungsnachweisServiceTest {
 
     @Mock
     private FoerderbereichService foerderbereichService;
@@ -68,7 +68,7 @@ class ReportVerwendungsnachweisServiceTest {
     private KrankenhausService krankenhausService;
 
     @Mock
-    private ReportVerwendungsnachweisMapper reportVerwendungsnachweisMapper;
+    private ReportAuswertungVerwendungsnachweisMapper reportAuswertungVerwendungsnachweisMapper;
 
     @Mock
     private ReportService reportService;
@@ -80,15 +80,15 @@ class ReportVerwendungsnachweisServiceTest {
     private ReportSearchParameterValidator reportSearchParameterValidator;
 
     @InjectMocks
-    private ReportVerwendungsnachweisService reportVerwendungsnachweisService;
+    private ReportAuswertungVerwendungsnachweisService reportAuswertungVerwendungsnachweisService;
 
     @Nested
-    class GenerateReportVerwendungsnachweis {
+    class GenerateReportAuswertungVerwendungsnachweis {
 
         @Test
         void givenValidParameters_thenGeneratesReport() {
             // Given
-            final ReportVerwendungsnachweisDTO parameters = new ReportVerwendungsnachweisDTO(
+            final ReportAuswertungVerwendungsnachweisDTO parameters = new ReportAuswertungVerwendungsnachweisDTO(
                     "2025",
                     "01",
                     "SBL1",
@@ -107,7 +107,7 @@ class ReportVerwendungsnachweisServiceTest {
                     "1",
                     "1",
                     ReportFormat.PDF,
-                    ReportVerwendungsnachweisSort.PROJEKTNUMMER);
+                    ReportAuswertungVerwendungsnachweisSort.PROJEKTNUMMER);
 
             final Map<String, Object> jasperParameters = new HashMap<>();
 
@@ -126,7 +126,7 @@ class ReportVerwendungsnachweisServiceTest {
                     parameters.kurz(),
                     parameters.bpg());
 
-            when(reportVerwendungsnachweisMapper.toJasperParameters(parameters))
+            when(reportAuswertungVerwendungsnachweisMapper.toJasperParameters(parameters))
                     .thenReturn(jasperParameters);
 
             when(reportService.generateReport(
@@ -137,7 +137,7 @@ class ReportVerwendungsnachweisServiceTest {
                     .thenReturn(expectedReport);
 
             // When
-            final GeneratedReport generatedReport = reportVerwendungsnachweisService.generateReportVerwendungsnachweis(parameters);
+            final GeneratedReport generatedReport = reportAuswertungVerwendungsnachweisService.generateReportAuswertungVerwendungsnachweis(parameters);
 
             // Then
             assertThat(generatedReport).isSameAs(expectedReport);
@@ -148,7 +148,7 @@ class ReportVerwendungsnachweisServiceTest {
             verify(krankenhausService, times(1))
                     .checkExistsByKrankenhaus(parameters.krh());
 
-            verify(reportVerwendungsnachweisMapper, times(1))
+            verify(reportAuswertungVerwendungsnachweisMapper, times(1))
                     .toJasperParameters(parameters);
 
             verify(reportService, times(1)).generateReport(
@@ -161,7 +161,7 @@ class ReportVerwendungsnachweisServiceTest {
         @Test
         void givenInvalidCommonSearchParameters_thenDoesNotGenerateReport() {
             // Given
-            final ReportVerwendungsnachweisDTO parameters = new ReportVerwendungsnachweisDTO(
+            final ReportAuswertungVerwendungsnachweisDTO parameters = new ReportAuswertungVerwendungsnachweisDTO(
                     "2025",
                     "01",
                     "SBL1",
@@ -180,7 +180,7 @@ class ReportVerwendungsnachweisServiceTest {
                     "1",
                     "1",
                     ReportFormat.PDF,
-                    ReportVerwendungsnachweisSort.PROJEKTNUMMER);
+                    ReportAuswertungVerwendungsnachweisSort.PROJEKTNUMMER);
 
             doThrow(new IllegalArgumentException("Invalid search parameters"))
                     .when(reportSearchParameterValidator)
@@ -189,20 +189,20 @@ class ReportVerwendungsnachweisServiceTest {
             // When / Then
             assertThrows(
                     IllegalArgumentException.class,
-                    () -> reportVerwendungsnachweisService.generateReportVerwendungsnachweis(parameters));
+                    () -> reportAuswertungVerwendungsnachweisService.generateReportAuswertungVerwendungsnachweis(parameters));
 
             verify(reportSearchParameterValidator, times(1))
                     .validateCommonSearchParameters(any(CommonSearchParameters.class));
 
             verifyNoInteractions(
-                    reportVerwendungsnachweisMapper,
+                    reportAuswertungVerwendungsnachweisMapper,
                     reportService,
                     krankenhausService);
         }
     }
 
     @Nested
-    class GetReportVerwendungsnachweisFormContext {
+    class GetReportAuswertungVerwendungsnachweisFormContext {
 
         @Test
         void givenFormContext_thenReturnsAllFormContextData() {
@@ -219,7 +219,8 @@ class ReportVerwendungsnachweisServiceTest {
             when(krankenhausService.getKrankenhausFormContextDTOs()).thenReturn(List.of());
 
             // When
-            final ReportVerwendungsnachweisFormContext formContext = reportVerwendungsnachweisService.getReportVerwendungsnachweisFormContext();
+            final ReportAuswertungVerwendungsnachweisFormContext formContext = reportAuswertungVerwendungsnachweisService
+                    .getReportAuswertungVerwendungsnachweisFormContext();
 
             // Then
             assertThat(formContext).isNotNull();

@@ -1,22 +1,22 @@
-package de.muenchen.oss.foerdermittel.backend.report.verwendungsnachweis;
+package de.muenchen.oss.foerdermittel.backend.report.auswertungverwendungsnachweis;
 
-import static de.muenchen.oss.foerdermittel.backend.report.verwendungsnachweis.dto.ReportVerwendungsnachweisSort.PROJEKTNUMMER;
+import static de.muenchen.oss.foerdermittel.backend.report.auswertungverwendungsnachweis.dto.ReportAuswertungVerwendungsnachweisSort.PROJEKTNUMMER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
-import de.muenchen.oss.foerdermittel.backend.report.verwendungsnachweis.dto.ReportVerwendungsnachweisDTO;
-import de.muenchen.oss.foerdermittel.backend.report.verwendungsnachweis.dto.ReportVerwendungsnachweisMapper;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungverwendungsnachweis.dto.ReportAuswertungVerwendungsnachweisDTO;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungverwendungsnachweis.dto.ReportAuswertungVerwendungsnachweisMapper;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
-class ReportVerwendungsnachweisMapperTest {
+class ReportAuswertungVerwendungsnachweisMapperTest {
 
-    private final ReportVerwendungsnachweisMapper reportVerwendungsnachweisMapper = new ReportVerwendungsnachweisMapper();
+    private final ReportAuswertungVerwendungsnachweisMapper reportAuswertungVerwendungsnachweisMapper = new ReportAuswertungVerwendungsnachweisMapper();
 
     @Test
-    void givenReportVerwendungsnachweisDTO_thenReturnsCorrectParameters() {
-        final ReportVerwendungsnachweisDTO dto = new ReportVerwendungsnachweisDTO(
+    void givenReportAuswertungVerwendungsnachweisDTO_thenReturnsCorrectParameters() {
+        final ReportAuswertungVerwendungsnachweisDTO dto = new ReportAuswertungVerwendungsnachweisDTO(
                 "2025",
                 "01",
                 "SBL1",
@@ -37,7 +37,7 @@ class ReportVerwendungsnachweisMapperTest {
                 ReportFormat.PDF,
                 PROJEKTNUMMER);
 
-        final Map<String, Object> parameters = reportVerwendungsnachweisMapper.toJasperParameters(dto);
+        final Map<String, Object> parameters = reportAuswertungVerwendungsnachweisMapper.toJasperParameters(dto);
 
         assertThat(parameters)
                 .hasSize(17)

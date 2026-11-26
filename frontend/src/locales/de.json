@@ -383,6 +383,26 @@
           "pdf": "PDF: Gruppierung Förderbereich"
         }
       },
+      "auswertungVerwendungsnachweis": {
+        "modelName": "Verwendungsnachweis",
+        "jahr": "VN aus Jahr",
+        "monat": "Monat",
+        "fag": "Nur FAG",
+        "notizen": "Ausgabe Notizen",
+        "win": "nur falls Mittelvergabe vorhanden",
+        "ohneschluss": "nur mit fehlenden Schlussbeschleid",
+        "krh": "Krankenhaus",
+        "reportType": {
+          "pdf": "PDF: Gruppierung Förderbereich",
+          "pdfFlat": "PDF: keine Gruppierung"
+        },
+        "sortEnum": {
+          "projektnummer": "Projektnummer",
+          "strasseProjektnummer": "Projektstraße, Projektnummer",
+          "fbProjektnummer": "Förderbereich, Projektnummer",
+          "fbProjektstrasse": "Förderbereich, Projektstraße"
+        }
+      },
       "fortsetzungsAntrag": {
         "modelName": "Fortsetzungsantrag | Fortsetzungsanträge",
         "fag": "Nur FAG",
@@ -466,26 +486,6 @@
           "projektnummer": "Projektnummer",
           "strasseProjektnummer": "Straße, Projektnummer",
           "fbProjektnummer": "Förderbereich, Projektnummer"
-        }
-      },
-      "verwendungsnachweis": {
-        "modelName": "Verwendungsnachweis",
-        "jahr": "VN aus Jahr",
-        "monat": "Monat",
-        "fag": "Nur FAG",
-        "notizen": "Ausgabe Notizen",
-        "win": "nur falls Mittelvergabe vorhanden",
-        "ohneschluss": "nur mit fehlenden Schlussbeschleid",
-        "krh": "Krankenhaus",
-        "type": {
-          "pdf": "PDF: Gruppierung Förderbereich",
-          "pdfFlat": "PDF: keine Gruppierung"
-        },
-        "sortEnum": {
-          "projektnummer": "Projektnummer",
-          "strasseProjektnummer": "Straße, Projektnummer",
-          "fbProjektnummer": "Förderbereich, Projektnummer",
-          "fbProjektstrasse": "Förderbereich, Projektstrasse"
         }
       }
     }
