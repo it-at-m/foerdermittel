@@ -14,4 +14,5 @@ public interface KrankenhausRepository extends PagingAndSortingRepository<Kranke
     @Query("SELECT k.krhname FROM Krankenhaus k")
     List<String> findAllKrhNamen();
 
+    List<Krankenhaus> findAllByOrderByKrhnameAsc();
 }

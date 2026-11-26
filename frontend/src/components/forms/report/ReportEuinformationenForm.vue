@@ -9,27 +9,33 @@
         cols="12"
         md="6"
       >
-        <fm-text-field
+        <fm-number-input
           v-model="modelValue.parameters!.jahrVon"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
             ReportEuinformationDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrVon"
+          :additional-rules="jahrVonAdditionalRules"
           :label="t('domain.report.euinformation.jahrVon')"
-          :error-messages="jahrVonError"
+          density="comfortable"
+          control-variant="hidden"
+          clearable
         />
       </v-col>
       <v-col md="6">
-        <fm-text-field
+        <fm-number-input
           v-model="modelValue.parameters!.jahrBis"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
             ReportEuinformationDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrBis"
+          :additional-rules="jahrBisAdditionalRules"
           :label="t('domain.report.euinformation.jahrBis')"
-          :error-messages="jahrBisError"
+          density="comfortable"
+          control-variant="hidden"
+          clearable
         />
       </v-col>
     </v-row>
@@ -48,6 +54,7 @@
           "
           validation-attribute-key="publikation"
           :label="t('domain.report.euinformation.publikation')"
+          clearable
         />
       </v-col>
 
@@ -58,6 +65,7 @@
           item-value="value"
           :label="t('domain.report.euinformation.referat')"
           variant="outlined"
+          clearable
         />
       </v-col>
     </v-row>
@@ -74,6 +82,7 @@
           "
           validation-attribute-key="inhalt"
           :label="t('domain.report.euinformation.inhalt')"
+          clearable
         />
       </v-col>
 
@@ -101,14 +110,17 @@ import type { VForm } from "vuetify/components";
 
 import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRules } from "vuetify";
 
 import { ReportEuinformationDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
+import FmNumberInput from "@/components/common/FmNumberInput.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
-import { getJahrBisError, getJahrVonError } from "@/util/yearHelper.ts";
 
 const { t } = useI18n();
+
+const rules = useRules();
 
 const modelValue = defineModel<Partial<GetReportEuinformationenRequest>>({
   required: true,
@@ -233,17 +245,15 @@ const sortOptions = [
   },
 ];
 
-const jahrVonError = computed(() =>
-  getJahrVonError(
-    modelValue.value.parameters?.jahrVon,
-    modelValue.value.parameters?.jahrBis
-  )
-);
+const jahrVonAdditionalRules = computed(() => {
+  const jahrBis = modelValue.value.parameters?.jahrBis;
+  const rule = jahrBis != null && rules["max"]?.(jahrBis, false);
+  return rule ? [rule] : [];
+});
 
-const jahrBisError = computed(() =>
-  getJahrBisError(
-    modelValue.value.parameters?.jahrVon,
-    modelValue.value.parameters?.jahrBis
-  )
-);
+const jahrBisAdditionalRules = computed(() => {
+  const jahrVon = modelValue.value.parameters?.jahrVon;
+  const rule = jahrVon != null && rules["min"]?.(jahrVon, false);
+  return rule ? [rule] : [];
+});
 </script>

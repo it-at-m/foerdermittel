@@ -1,18 +1,18 @@
 package de.muenchen.oss.foerdermittel.backend.report.auswertungabrufe.dto;
 
-import static de.muenchen.oss.foerdermittel.backend.report.validation.ValidationPatterns.SUPPORTED_YEAR_RANGE_PATTERN;
-
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record ReportAuswertungAbrufeDTO(
-        @Pattern(regexp = SUPPORTED_YEAR_RANGE_PATTERN) String jahrAbrufVon,
-        @Pattern(regexp = SUPPORTED_YEAR_RANGE_PATTERN) String jahrAbrufBis,
-        @Pattern(regexp = SUPPORTED_YEAR_RANGE_PATTERN) String jahrErhaltVon,
-        @Pattern(regexp = SUPPORTED_YEAR_RANGE_PATTERN) String jahrErhaltBis,
+        @Min(1970) @Max(2100) @Digits(integer = 4, fraction = 0) Integer jahrAbrufVon,
+        @Min(1970) @Max(2100) @Digits(integer = 4, fraction = 0) Integer jahrAbrufBis,
+        @Min(1970) @Max(2100) @Digits(integer = 4, fraction = 0) Integer jahrErhaltVon,
+        @Min(1970) @Max(2100) @Digits(integer = 4, fraction = 0) Integer jahrErhaltBis,
         String bez,
         String fb,
         String ua,

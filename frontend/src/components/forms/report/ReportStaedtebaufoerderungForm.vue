@@ -9,15 +9,18 @@
         cols="12"
         md="3"
       >
-        <fm-text-field
+        <fm-number-input
           v-model="modelValue.parameters!.jahrVon"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
             ReportStaedtebaufoerderungDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrVon"
+          :additional-rules="jahrVonAdditionalRules"
           :label="t('domain.report.staedtebaufoerderung.jahrVon')"
-          :error-messages="jahrVonError"
+          density="comfortable"
+          control-variant="hidden"
+          clearable
         />
       </v-col>
 
@@ -25,15 +28,18 @@
         cols="12"
         md="3"
       >
-        <fm-text-field
+        <fm-number-input
           v-model="modelValue.parameters!.jahrBis"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
             ReportStaedtebaufoerderungDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrBis"
+          :additional-rules="jahrBisAdditionalRules"
           :label="t('domain.report.staedtebaufoerderung.jahrBis')"
-          :error-messages="jahrBisError"
+          density="comfortable"
+          control-variant="hidden"
+          clearable
         />
       </v-col>
       <v-col
@@ -51,6 +57,8 @@
           validation-attribute-key="traeger"
           :label="t('domain.report.staedtebaufoerderung.traeger')"
           :error-messages="traegerError"
+          density="comfortable"
+          clearable
         />
       </v-col>
     </v-row>
@@ -67,7 +75,8 @@
           "
           validation-attribute-key="pname"
           :label="t('domain.report.staedtebaufoerderung.pname')"
-          density="comfort"
+          density="comfortable"
+          clearable
         />
       </v-col>
 
@@ -95,15 +104,18 @@ import type { VForm } from "vuetify/components";
 
 import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRules } from "vuetify";
 
 import { ReportStaedtebaufoerderungDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
+import FmNumberInput from "@/components/common/FmNumberInput.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
-import { getJahrBisError, getJahrVonError } from "@/util/yearHelper.ts";
 
 const { t } = useI18n();
+
+const rules = useRules();
 
 const modelValue = defineModel<Partial<GetReportStaedtebaufoerderungRequest>>({
   required: true,
@@ -137,19 +149,6 @@ function getTraegerTitle(item: TraegerFormContextDTO) {
   return item ? `${item.kurzform} (${item.bezeichnung})` : "";
 }
 
-const jahrVonError = computed(() =>
-  getJahrVonError(
-    modelValue.value.parameters?.jahrVon,
-    modelValue.value.parameters?.jahrBis
-  )
-);
-
-const jahrBisError = computed(() =>
-  getJahrBisError(
-    modelValue.value.parameters?.jahrVon,
-    modelValue.value.parameters?.jahrBis
-  )
-);
 const traegerError = computed(() => {
   const selectedTraeger = modelValue.value.parameters?.traeger;
   const traegerOptions = reportStaedtebaufoerderungFormContext?.traeger;
@@ -161,5 +160,17 @@ const traegerError = computed(() => {
   return traegerOptions.some((item) => item.kurzform === selectedTraeger)
     ? []
     : ["Der ausgewählte Träger wurde nicht gefunden."];
+});
+
+const jahrVonAdditionalRules = computed(() => {
+  const jahrBis = modelValue.value.parameters?.jahrBis;
+  const rule = jahrBis != null && rules["max"]?.(jahrBis, false);
+  return rule ? [rule] : [];
+});
+
+const jahrBisAdditionalRules = computed(() => {
+  const jahrVon = modelValue.value.parameters?.jahrVon;
+  const rule = jahrVon != null && rules["min"]?.(jahrVon, false);
+  return rule ? [rule] : [];
 });
 </script>

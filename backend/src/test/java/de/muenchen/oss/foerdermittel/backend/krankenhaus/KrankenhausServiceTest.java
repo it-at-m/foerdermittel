@@ -222,14 +222,14 @@ class KrankenhausServiceTest {
                     Mockito.mock(KrankenhausFormContextDTO.class),
                     Mockito.mock(KrankenhausFormContextDTO.class));
 
-            when(krankenhausRepository.findAll()).thenReturn(entities);
+            when(krankenhausRepository.findAllByOrderByKrhnameAsc()).thenReturn(entities);
             when(krankenhausMapper.toFormContext(entities)).thenReturn(expectedDTOs);
 
             // When
             final List<KrankenhausFormContextDTO> result = unitUnderTest.getKrankenhausFormContextDTOs();
 
             // Then
-            verify(krankenhausRepository, times(1)).findAll();
+            verify(krankenhausRepository, times(1)).findAllByOrderByKrhnameAsc();
             verify(krankenhausMapper, times(1)).toFormContext(entities);
             assertThat(result).isEqualTo(expectedDTOs);
         }

@@ -15,4 +15,5 @@ public interface FoerderbereichRepository extends PagingAndSortingRepository<Foe
     @Query("SELECT f.fb FROM Foerderbereich f ORDER BY f.fb")
     List<BigDecimal> findAllFb();
 
+    List<Foerderbereich> findAllByOrderByFbAsc();
 }

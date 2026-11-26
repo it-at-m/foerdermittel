@@ -2023,6 +2023,9 @@ paths:
           type: array
           items:
             type: string
+          default:
+          - "projekt.projnr,DESC"
+          - "aenderungsdatum,DESC"
       responses:
         "200":
           description: OK
@@ -2439,41 +2442,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ReportBewilligungAuszahlungProjektFormContext"
-      security:
-      - bearerAuth: []
-  /report/auswertungverwendungsnachweis/form-context:
-    get:
-      tags:
-      - report-auswertung-verwendungsnachweis-controller
-      operationId: getReportAuswertungVerwendungsnachweisFormContext
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ReportAuswertungVerwendungsnachweisFormContext"
-      security:
-      - bearerAuth: []
-  /report/auswertungverwendungsnachweis/:
-    get:
-      tags:
-      - report-auswertung-verwendungsnachweis-controller
-      operationId: getReportAuswertungVerwendungsnachweis
-      parameters:
-      - name: parameters
-        in: query
-        required: true
-        schema:
-          $ref: "#/components/schemas/ReportAuswertungVerwendungsnachweisDTO"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/pdf:
-              schema:
-                type: string
-                format: binary
       security:
       - bearerAuth: []
   /report/auswertungprojekte/form-context:
@@ -4635,11 +4603,15 @@ components:
       type: object
       properties:
         jahrVon:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
         jahrBis:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
         pname:
           maxLength: 40
           minLength: 0
@@ -5007,11 +4979,15 @@ components:
       type: object
       properties:
         jahrVon:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
         jahrBis:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
         inhalt:
           maxLength: 40
           minLength: 0
@@ -5062,163 +5038,6 @@ components:
           type: string
         pname:
           type: string
-    KrankenhausFormContextDTO:
-      required:
-      - bezeichnung
-      - krhname
-      type: object
-      properties:
-        krhname:
-          type: string
-          description: ""
-        bezeichnung:
-          type: string
-          description: ""
-    ReportAuswertungVerwendungsnachweisFormContext:
-      required:
-      - bezs
-      - bpgs
-      - fbs
-      - krhs
-      - krisofps
-      - kurzs
-      - projekte
-      - sbls
-      - sgts
-      - uas
-      type: object
-      properties:
-        projekte:
-          type: array
-          items:
-            $ref: "#/components/schemas/ReportAuswertungVerwendungsnachweisFormContextDTO"
-        fbs:
-          type: array
-          items:
-            $ref: "#/components/schemas/FoerderbereichFormContextDTO"
-        sbls:
-          type: array
-          items:
-            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
-        bezs:
-          type: array
-          items:
-            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
-        uas:
-          type: array
-          items:
-            $ref: "#/components/schemas/UnterabschnittFormContextDTO"
-        kurzs:
-          type: array
-          items:
-            $ref: "#/components/schemas/KurzbezeichnungFormContextDTO"
-        bpgs:
-          type: array
-          items:
-            $ref: "#/components/schemas/BauprogrammFormContextDTO"
-        sgts:
-          type: array
-          items:
-            $ref: "#/components/schemas/SiedlungsgebietFormContextDTO"
-        krhs:
-          type: array
-          items:
-            $ref: "#/components/schemas/KrankenhausFormContextDTO"
-        krisofps:
-          type: array
-          items:
-            type: string
-            enum:
-            - F
-            - K
-            - S
-            - V
-            - W
-            - X
-            - "Y"
-            - Z
-    ReportAuswertungVerwendungsnachweisFormContextDTO:
-      type: object
-      properties:
-        vndat:
-          type: string
-          format: date
-        pstrasse:
-          type: string
-        pname:
-          type: string
-        krisofp:
-          type: string
-          enum:
-          - F
-          - K
-          - S
-          - V
-          - W
-          - X
-          - "Y"
-          - Z
-    ReportAuswertungVerwendungsnachweisDTO:
-      required:
-      - type
-      type: object
-      properties:
-        jahr:
-          type: string
-        monat:
-          type: string
-        sbl:
-          type: string
-        bez:
-          pattern: ^\d*$
-          type: string
-        fb:
-          pattern: ^\d*$
-          type: string
-        ua:
-          type: string
-        krh:
-          type: string
-        pname:
-          type: string
-        pstrasse:
-          type: string
-        kurz:
-          type: string
-        ohneschluss:
-          type: string
-        notizen:
-          type: string
-        fag:
-          type: string
-        win:
-          type: string
-        krisofp:
-          type: string
-          enum:
-          - F
-          - K
-          - S
-          - V
-          - W
-          - X
-          - "Y"
-          - Z
-        sgt:
-          pattern: ^\d*$
-          type: string
-        bpg:
-          pattern: ^\d*$
-          type: string
-        type:
-          $ref: "#/components/schemas/ReportFormat"
-        sort:
-          type: string
-          enum:
-          - FOERDERBEREICH_PROJEKTNUMMER
-          - FOERDERBEREICH_STRASSE
-          - PROJEKTSTRASSE_PROJEKTNUMMER
-          - PROJEKTNUMMER
     ReportAuswertungProjektFormContext:
       required:
       - bezs
@@ -5446,11 +5265,15 @@ components:
       type: object
       properties:
         jahrVon:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
         jahrBis:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
         bez:
           type: string
         fb:
@@ -5511,6 +5334,18 @@ components:
           - PROJEKTNUMMER
         type:
           $ref: "#/components/schemas/ReportFormat"
+    KrankenhausFormContextDTO:
+      required:
+      - bezeichnung
+      - krhname
+      type: object
+      properties:
+        krhname:
+          type: string
+          description: ""
+        bezeichnung:
+          type: string
+          description: ""
     ReferatFormContextDTO:
       required:
       - bezeichnung
@@ -5598,17 +5433,25 @@ components:
       type: object
       properties:
         jahrAbrufVon:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
         jahrAbrufBis:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
         jahrErhaltVon:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
         jahrErhaltBis:
-          pattern: "^(|19[7-9]\\d|20\\d{2}|2100)$"
-          type: string
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
         bez:
           type: string
         fb:

@@ -187,14 +187,14 @@ class TraegerServiceTest {
                     Mockito.mock(TraegerFormContextDTO.class),
                     Mockito.mock(TraegerFormContextDTO.class));
 
-            when(traegerRepository.findAll()).thenReturn(entities);
+            when(traegerRepository.findAllByOrderByKurzformAsc()).thenReturn(entities);
             when(traegerMapper.toFormContext(entities)).thenReturn(expectedDTOs);
 
             // When
             final List<TraegerFormContextDTO> result = unitUnderTest.getTraegerFormContextDTOs();
 
             // Then
-            verify(traegerRepository).findAll();
+            verify(traegerRepository).findAllByOrderByKurzformAsc();
             verify(traegerMapper).toFormContext(entities);
             assertThat(result).isEqualTo(expectedDTOs);
         }
