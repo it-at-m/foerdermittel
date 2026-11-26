@@ -23,6 +23,8 @@ import jakarta.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -84,6 +86,9 @@ public class Projekt extends AuditableEntity implements Serializable {
 
     @Column(name = "lfdnr2", length = 2)
     private String lfdnr2;
+
+    @Column(name = "vndat")
+    private LocalDate vndat;
 
     @Column(name = "pname")
     @Size(max = 100) private String pname;

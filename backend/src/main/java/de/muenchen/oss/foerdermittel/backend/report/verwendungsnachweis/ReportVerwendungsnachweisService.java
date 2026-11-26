@@ -5,6 +5,7 @@ import de.muenchen.oss.foerdermittel.backend.foerderbereich.FoerderbereichServic
 import de.muenchen.oss.foerdermittel.backend.krankenhaus.KrankenhausService;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungService;
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
+import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
 import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
 import de.muenchen.oss.foerdermittel.backend.report.ReportService;
 import de.muenchen.oss.foerdermittel.backend.report.ReportType;
@@ -18,12 +19,14 @@ import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.SiedlungsgebietServ
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkService;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.ListennameStadtbezirkslisteService;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittService;
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 @Slf4j
@@ -40,6 +43,7 @@ public class ReportVerwendungsnachweisService {
     private final KrankenhausService krankenhausService;
     private final ReportVerwendungsnachweisMapper reportVerwendungsnachweisMapper;
     private final ReportService reportService;
+    private final ProjektService projektService;
 
     private final ReportSearchParameterValidator reportSearchParameterValidator;
 
@@ -58,6 +62,10 @@ public class ReportVerwendungsnachweisService {
                         parameters.kurz(),
                         parameters.bpg()));
 
+        if (StringUtils.hasText(parameters.krh())) {
+            krankenhausService.checkExistsByKrankenhaus(parameters.krh());
+        }
+
         final String orderBy = parameters.sort().getOrderBy();
 
         return reportService.generateReport(
@@ -73,6 +81,7 @@ public class ReportVerwendungsnachweisService {
         log.info("Get ReportAuswertungProjekte form context");
 
         return new ReportVerwendungsnachweisFormContext(
+                projektService.getProjektFormContextDTOs(),
                 foerderbereichService.getFoerderbereichFormContextDTOs(),
                 listennameStadtbezirkslisteService.getlistennameStadtbezirkslisteFormContextDTOs(),
                 stadtbezirkService.getStadtbezirkFormContextDTOs(),

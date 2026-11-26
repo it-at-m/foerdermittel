@@ -1,7 +1,6 @@
 package de.muenchen.oss.foerdermittel.backend.report.verwendungsnachweis;
 
 import de.muenchen.oss.foerdermittel.backend.configuration.OpenAPIDocumentationConfiguration;
-import de.muenchen.oss.foerdermittel.backend.report.CustomReportContentTypes;
 import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
 import de.muenchen.oss.foerdermittel.backend.report.util.ReportControllerUtil;
 import de.muenchen.oss.foerdermittel.backend.report.verwendungsnachweis.dto.ReportVerwendungsnachweisDTO;
@@ -44,10 +43,6 @@ public class ReportVerwendungsnachweisController {
                     content = {
                             @Content(
                                     mediaType = MediaType.APPLICATION_PDF_VALUE,
-                                    schema = @Schema(type = "string", format = "binary")
-                            ),
-                            @Content(
-                                    mediaType = CustomReportContentTypes.EXCEL_CONTENT_TYPE,
                                     schema = @Schema(type = "string", format = "binary")
                             )
                     }
