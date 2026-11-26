@@ -2,6 +2,7 @@ package de.muenchen.oss.foerdermittel.backend.projekt;
 
 import de.muenchen.oss.foerdermittel.backend.common.InsertAndUpdateRepository;
 import de.muenchen.oss.foerdermittel.backend.projekt.dao.AuswertungProjektDAO;
+import de.muenchen.oss.foerdermittel.backend.projekt.dao.AuswertungVerwendungsnachhweisDAO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dao.BasicProjektDAO;
 
 import java.util.List;
@@ -20,6 +21,9 @@ public interface ProjektRepository extends
 
     @Query("SELECT p.jahr, p.pname, p.pstrasse, p.krisofp FROM Projekt p")
     List<AuswertungProjektDAO> findAllAuswertungProjekte();
+
+    @Query("SELECT p.vndat, p.pname, p.pstrasse, p.krisofp FROM Projekt p")
+    List<AuswertungVerwendungsnachhweisDAO> findAllAuswertungVerwendungsnachweis();
 
     @Query("SELECT p.projnr, p.pname, p.pstrasse FROM Projekt p order by p.projnr")
     List<BasicProjektDAO> findAllAsBasic();

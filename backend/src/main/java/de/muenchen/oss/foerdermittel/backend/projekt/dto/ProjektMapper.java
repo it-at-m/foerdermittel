@@ -2,6 +2,7 @@ package de.muenchen.oss.foerdermittel.backend.projekt.dto;
 
 import de.muenchen.oss.foerdermittel.backend.projekt.Projekt;
 import de.muenchen.oss.foerdermittel.backend.projekt.dao.AuswertungProjektDAO;
+import de.muenchen.oss.foerdermittel.backend.projekt.dao.AuswertungVerwendungsnachhweisDAO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dao.BasicProjektDAO;
 import java.util.List;
 import org.mapstruct.Mapper;
@@ -70,4 +71,7 @@ public interface ProjektMapper {
 
     List<ReportAuswertungAntragFormContextDTO> toReportAuswertungAntragFormContext(
             List<BasicProjektDAO> projekte);
+
+    List<ReportAuswertungVerwendungsnachweisFormContextDTO> toReportAuswertungVerwendungsnachweisFormContext(
+            List<AuswertungVerwendungsnachhweisDAO> projekte);
 }
