@@ -17,10 +17,10 @@ public class ReportAuswertungAbrufeMapperTest {
     void givenReportAuswertungAbrufeDTO_thenReturnsCorrectParameters() {
         // Given
         final ReportAuswertungAbrufeDTO dto = new ReportAuswertungAbrufeDTO(
-                "1998",
-                "2020",
-                "1991",
-                "2021",
+                1998,
+                2020,
+                1991,
+                2021,
                 "1",
                 "1",
                 "11",
@@ -48,10 +48,10 @@ public class ReportAuswertungAbrufeMapperTest {
         // Then
         assertThat(parameters)
                 .hasSize(22)
-                .containsEntry("P_JAHR_A_VON", dto.jahrAbrufVon())
-                .containsEntry("P_JAHR_A_BIS", dto.jahrAbrufBis())
-                .containsEntry("P_JAHR_E_VON", dto.jahrErhaltVon())
-                .containsEntry("P_JAHR_E_BIS", dto.jahrErhaltBis())
+                .containsEntry("P_JAHR_A_VON", dto.jahrAbrufVon().toString())
+                .containsEntry("P_JAHR_A_BIS", dto.jahrAbrufBis().toString())
+                .containsEntry("P_JAHR_E_VON", dto.jahrErhaltVon().toString())
+                .containsEntry("P_JAHR_E_BIS", dto.jahrErhaltBis().toString())
                 .containsEntry("P_BEZ", "1")
                 .containsEntry("P_FB", "1")
                 .containsEntry("P_UA", "11")
