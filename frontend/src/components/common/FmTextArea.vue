@@ -1,5 +1,6 @@
 <template>
   <v-textarea
+    ref="inputRef"
     v-model="model"
     :readonly="canNotEdit"
     :counter="counter"
@@ -61,7 +62,7 @@ const {
 const { required, allRules, counter, canNotEdit } = useInputValidation(
   displayMode,
   disableEdit,
-  additionalRules,
+  () => additionalRules,
   validationAttributeMap,
   validationAttributeKey,
   true,
