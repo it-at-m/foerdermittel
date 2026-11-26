@@ -1,8 +1,6 @@
 package de.muenchen.oss.foerdermittel.backend.report.auswertungarchiv.dto;
 
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
-import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
-import de.muenchen.oss.foerdermittel.backend.report.auswertungantrag.dto.ReportAuswertungAntraegeSort;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -24,7 +22,7 @@ public record ReportAuswertungArchivDTO(
         boolean op,
         boolean mp,
 
-        @NotNull ReportAuswertungAntraegeSort sort,
+        @NotNull ReportAuswertungArchivSort sort)
 
-        @NotNull ReportFormat type) {
+{
 }

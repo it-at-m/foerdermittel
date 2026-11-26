@@ -295,6 +295,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("model.archiv.modelName"),
+        props: {
+          to: "/report/auswertungarchiv",
+        },
       },
       {
         title: t("domain.report.unbedenklichkeitsAntrag", 2),

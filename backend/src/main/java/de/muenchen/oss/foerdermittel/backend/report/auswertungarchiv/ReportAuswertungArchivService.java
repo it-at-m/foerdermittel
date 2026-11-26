@@ -5,6 +5,7 @@ import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.KurzbezeichnungServ
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.projekt.ProjektService;
 import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
+import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
 import de.muenchen.oss.foerdermittel.backend.report.ReportService;
 import de.muenchen.oss.foerdermittel.backend.report.ReportType;
 import de.muenchen.oss.foerdermittel.backend.report.auswertungarchiv.dto.ReportAuswertungArchivDTO;
@@ -59,7 +60,7 @@ public class ReportAuswertungArchivService {
         return reportService.generateReport(
                 reportMapper.toJasperParameters(parameters),
                 ReportType.FMW_ARCHIV,
-                parameters.type(),
+                ReportFormat.PDF,
                 orderBy);
     }
 
