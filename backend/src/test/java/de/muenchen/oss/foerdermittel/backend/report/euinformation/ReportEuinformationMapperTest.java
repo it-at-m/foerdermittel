@@ -16,8 +16,8 @@ class ReportEuinformationMapperTest {
     void givenReportEuinformationDTO_thenReturnsCorrectParameters() {
         // given
         final ReportEuinformationDTO dto = new ReportEuinformationDTO(
-                "1999",
-                "2010",
+                1999,
+                2010,
                 "Test",
                 "1",
                 "1",
@@ -41,8 +41,8 @@ class ReportEuinformationMapperTest {
     void givenReportEuinformationDTOWithBlankValues_thenReturnsNullParameters() {
         // given
         final ReportEuinformationDTO dto = new ReportEuinformationDTO(
-                "",
-                "",
+                null,
+                null,
                 "",
                 "",
                 "",

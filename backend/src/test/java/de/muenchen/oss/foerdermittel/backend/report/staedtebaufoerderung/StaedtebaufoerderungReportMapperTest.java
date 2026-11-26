@@ -15,8 +15,8 @@ public class StaedtebaufoerderungReportMapperTest {
     void givenReportStaedtebaufoerderungDTO_thenReturnsCorrectParameters() {
         // given
         final ReportStaedtebaufoerderungDTO dto = new ReportStaedtebaufoerderungDTO(
-                "1999",
-                "2010",
+                1999,
+                2010,
                 "Test",
                 "1",
                 "1");
@@ -38,8 +38,8 @@ public class StaedtebaufoerderungReportMapperTest {
     void givenReportStaedtebaufoerderungDTOWithBlankValues_thenReturnsNullParameters() {
         // given
         final ReportStaedtebaufoerderungDTO dto = new ReportStaedtebaufoerderungDTO(
-                "",
-                "",
+                null,
+                null,
                 "",
                 "",
                 "");

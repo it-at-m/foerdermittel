@@ -2,13 +2,17 @@ import type { ValidationAttributes } from "@/util/validation";
 import type { ComputedRef, MaybeRefOrGetter } from "vue";
 import type { ValidationRule } from "vuetify";
 
-import { computed, toValue } from "vue";
+import { computed, toValue, useTemplateRef, watch } from "vue";
 
 import useOpenApiRules from "@/composables/useOpenApiRules";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 import { getOpenAPIValidationConstraint } from "@/util/validation";
 
-export function useInputValidation(
+export function useInputValidation<
+  T extends { validate: () => Promise<unknown> } = {
+    validate: () => Promise<unknown>;
+  },
+>(
   displayMode: MaybeRefOrGetter<InputDisplayMode>,
   disableEdit: MaybeRefOrGetter<boolean>,
   additionalRules: MaybeRefOrGetter<ValidationRule[]> = [],
@@ -46,6 +50,16 @@ export function useInputValidation(
     ...toValue(additionalRules),
   ]);
 
+  const inputRef = useTemplateRef<T>("inputRef");
+  // Validate after the input has received the updated rules.
+  watch(
+    allRules,
+    () => {
+      void inputRef.value?.validate();
+    },
+    { flush: "post" }
+  );
+
   const counter = computed(() => {
     const map = toValue(validationAttributesMap);
     const key = toValue(property);
@@ -67,6 +81,7 @@ export function useInputValidation(
   return {
     required,
     allRules,
+    inputRef,
     counter,
     canNotEdit,
   };
