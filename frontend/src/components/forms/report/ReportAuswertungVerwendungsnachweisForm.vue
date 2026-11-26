@@ -12,10 +12,10 @@
           v-model="modelValue.parameters!.jahr"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
-            ReportVerwendungsnachweisDTOPropertyValidationAttributesMap
+            ReportAuswertungVerwendungsnachweisDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahr"
-          :label="t('domain.report.verwendungsnachweis.jahr')"
+          :label="t('domain.report.auswertungVerwendungsnachweis.jahr')"
           density="comfortable"
         />
       </v-col>
@@ -27,10 +27,10 @@
           v-model="modelValue.parameters!.monat"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
-            ReportVerwendungsnachweisDTOPropertyValidationAttributesMap
+            ReportAuswertungVerwendungsnachweisDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="monat"
-          :label="t('domain.report.verwendungsnachweis.monat')"
+          :label="t('domain.report.auswertungVerwendungsnachweis.monat')"
           density="comfortable"
       /></v-col>
     </v-row>
@@ -43,7 +43,7 @@
           v-model="modelValue.parameters!.pname"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
-            ReportVerwendungsnachweisDTOPropertyValidationAttributesMap
+            ReportAuswertungVerwendungsnachweisDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="pname"
           :label="t('domain.report.common.pname')"
@@ -59,7 +59,7 @@
           v-model="modelValue.parameters!.pstrasse"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
-            ReportVerwendungsnachweisDTOPropertyValidationAttributesMap
+            ReportAuswertungVerwendungsnachweisDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="pstrasse"
           :label="t('domain.report.common.pstrasse')"
@@ -74,7 +74,7 @@
       >
         <fm-checkbox
           v-model="modelValue.parameters!.fag"
-          :label="t('domain.report.verwendungsnachweis.fag')"
+          :label="t('domain.report.auswertungVerwendungsnachweis.fag')"
           true-value="1"
           false-value="0"
           density="compact"
@@ -87,7 +87,7 @@
       >
         <fm-checkbox
           v-model="modelValue.parameters!.notizen"
-          :label="t('domain.report.verwendungsnachweis.notizen')"
+          :label="t('domain.report.auswertungVerwendungsnachweis.notizen')"
           true-value="1"
           false-value="0"
           density="compact"
@@ -100,7 +100,7 @@
       >
         <fm-checkbox
           v-model="modelValue.parameters!.win"
-          :label="t('domain.report.verwendungsnachweis.win')"
+          :label="t('domain.report.auswertungVerwendungsnachweis.win')"
           true-value="1"
           false-value="0"
           density="compact"
@@ -112,7 +112,7 @@
       >
         <fm-checkbox
           v-model="modelValue.parameters!.ohneschluss"
-          :label="t('domain.report.verwendungsnachweis.ohneschluss')"
+          :label="t('domain.report.auswertungVerwendungsnachweis.ohneschluss')"
           true-value="1"
           false-value="0"
           density="compact"
@@ -127,11 +127,13 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.sbl"
-          :items="props.reportVerwendungsnachweisFormContext?.sbls ?? []"
+          :items="
+            props.reportAuswertungVerwendungsnachweisFormContext?.sbls ?? []
+          "
           :item-title="getStadtbezirkslisteTitle"
           item-value="kurzbez"
           :validation-attribute-map="
-            ReportVerwendungsnachweisDTOPropertyValidationAttributesMap
+            ReportAuswertungVerwendungsnachweisDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="sbl"
           :label="t('domain.report.common.sbl')"
@@ -146,11 +148,13 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.bez"
-          :items="props.reportVerwendungsnachweisFormContext?.bezs ?? []"
+          :items="
+            props.reportAuswertungVerwendungsnachweisFormContext?.bezs ?? []
+          "
           :item-title="getStadtbezirkTitle"
           item-value="stadtbezirk"
           :validation-attribute-map="
-            ReportVerwendungsnachweisDTOPropertyValidationAttributesMap
+            ReportAuswertungVerwendungsnachweisDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="bez"
           :label="t('domain.report.common.bez')"
@@ -165,11 +169,13 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.fb"
-          :items="props.reportVerwendungsnachweisFormContext?.fbs ?? []"
+          :items="
+            props.reportAuswertungVerwendungsnachweisFormContext?.fbs ?? []
+          "
           :item-title="getFoerderbereichTitle"
           item-value="fb"
           :validation-attribute-map="
-            ReportVerwendungsnachweisDTOPropertyValidationAttributesMap
+            ReportAuswertungVerwendungsnachweisDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="fb"
           :label="t('domain.report.common.fb')"
@@ -183,11 +189,13 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.ua"
-          :items="props.reportVerwendungsnachweisFormContext?.uas ?? []"
+          :items="
+            props.reportAuswertungVerwendungsnachweisFormContext?.uas ?? []
+          "
           :item-title="getUnterabschnittTitle"
           item-value="ua"
           :validation-attribute-map="
-            ReportVerwendungsnachweisDTOPropertyValidationAttributesMap
+            ReportAuswertungVerwendungsnachweisDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="ua"
           :label="t('domain.report.common.ua')"
@@ -203,11 +211,13 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.kurz"
-          :items="props.reportVerwendungsnachweisFormContext?.kurzs ?? []"
+          :items="
+            props.reportAuswertungVerwendungsnachweisFormContext?.kurzs ?? []
+          "
           :item-title="getKurzbezeichnungTitle"
           item-value="kurzbez"
           :validation-attribute-map="
-            ReportVerwendungsnachweisDTOPropertyValidationAttributesMap
+            ReportAuswertungVerwendungsnachweisDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="kurz"
           :label="t('domain.report.common.kurz')"
@@ -221,11 +231,13 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.sgt"
-          :items="props.reportVerwendungsnachweisFormContext?.sgts ?? []"
+          :items="
+            props.reportAuswertungVerwendungsnachweisFormContext?.sgts ?? []
+          "
           :item-title="getSiedlungsgebietTitle"
           item-value="siedlungsgebiet"
           :validation-attribute-map="
-            ReportVerwendungsnachweisDTOPropertyValidationAttributesMap
+            ReportAuswertungVerwendungsnachweisDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="sgt"
           :label="t('domain.report.common.sgt')"
@@ -239,11 +251,13 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.bpg"
-          :items="props.reportVerwendungsnachweisFormContext?.bpgs ?? []"
+          :items="
+            props.reportAuswertungVerwendungsnachweisFormContext?.bpgs ?? []
+          "
           :item-title="getBauprogrammTitle"
           item-value="bauprogramm"
           :validation-attribute-map="
-            ReportVerwendungsnachweisDTOPropertyValidationAttributesMap
+            ReportAuswertungVerwendungsnachweisDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="bpg"
           :label="t('domain.report.common.bpg')"
@@ -257,14 +271,16 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.krh"
-          :items="props.reportVerwendungsnachweisFormContext?.krhs ?? []"
+          :items="
+            props.reportAuswertungVerwendungsnachweisFormContext?.krhs ?? []
+          "
           :item-title="getKrankenhausTitle"
           item-value="krankenhaus"
           :validation-attribute-map="
-            ReportVerwendungsnachweisDTOPropertyValidationAttributesMap
+            ReportAuswertungVerwendungsnachweisDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="krh"
-          :label="t('domain.report.verwendungsnachweis.krh')"
+          :label="t('domain.report.auswertungVerwendungsnachweis.krh')"
           density="comfortable"
         />
       </v-col>
@@ -276,11 +292,13 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.krisofp"
-          :items="props.reportVerwendungsnachweisFormContext?.krisofps ?? []"
+          :items="
+            props.reportAuswertungVerwendungsnachweisFormContext?.krisofps ?? []
+          "
           :item-title="getKrisofpTitle"
           :item-value="getKrisofpValue"
           :validation-attribute-map="
-            ReportVerwendungsnachweisDTOPropertyValidationAttributesMap
+            ReportAuswertungVerwendungsnachweisDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="krisofp"
           :label="t('domain.report.common.krisofp')"
@@ -294,7 +312,7 @@
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.sort"
-          :items="sortOptions"
+          :items="filteredSortOptions"
           item-value="value"
           item-title="title"
           :label="t('domain.report.common.reportSort')"
@@ -310,7 +328,7 @@
           v-model="modelValue.parameters!.type"
           :items="formatOptions"
           item-value="value"
-          label="Format"
+          :label="t('domain.report.common.reportType')"
           variant="outlined"
           density="comfortable"
         />
@@ -323,11 +341,11 @@
 import type {
   BauprogrammFormContextDTO,
   FoerderbereichFormContextDTO,
-  GetReportVerwendungsnachweisRequest,
+  GetReportAuswertungVerwendungsnachweisRequest,
   KrankenhausFormContextDTO,
   KurzbezeichnungFormContextDTO,
   ListennameStadtbezirkslisteFormContextDTO,
-  ReportVerwendungsnachweisFormContext,
+  ReportAuswertungVerwendungsnachweisFormContext,
   SiedlungsgebietFormContextDTO,
   StadtbezirkFormContextDTO,
   UnterabschnittFormContextDTO,
@@ -335,12 +353,12 @@ import type {
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
 
-import { useTemplateRef } from "vue";
+import { computed, useTemplateRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
 import {
-  ReportVerwendungsnachweisDTOKrisofpEnum,
-  ReportVerwendungsnachweisDTOPropertyValidationAttributesMap,
+  ReportAuswertungVerwendungsnachweisDTOKrisofpEnum,
+  ReportAuswertungVerwendungsnachweisDTOPropertyValidationAttributesMap,
 } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
@@ -350,12 +368,14 @@ import { getKrisofpTitle } from "@/util/krisofpUtils.ts";
 
 const { t } = useI18n();
 
-const modelValue = defineModel<Partial<GetReportVerwendungsnachweisRequest>>({
+const modelValue = defineModel<
+  Partial<GetReportAuswertungVerwendungsnachweisRequest>
+>({
   required: true,
 });
 
 const props = defineProps<{
-  reportVerwendungsnachweisFormContext?: DeepReadonly<ReportVerwendungsnachweisFormContext>;
+  reportAuswertungVerwendungsnachweisFormContext?: DeepReadonly<ReportAuswertungVerwendungsnachweisFormContext>;
 }>();
 
 const emit = defineEmits<{
@@ -411,37 +431,64 @@ function getKrankenhausTitle(item: KrankenhausFormContextDTO) {
 }
 
 function getKrisofpValue(
-  item: ReportVerwendungsnachweisDTOKrisofpEnum
+  item: ReportAuswertungVerwendungsnachweisDTOKrisofpEnum
 ): string {
   return item;
 }
 
+const filteredSortOptions = computed(() => {
+  if (modelValue.value.parameters?.type === "PDF") {
+    return sortOptions.slice(0, 2);
+  }
+
+  return sortOptions;
+});
+
+watch(
+  () => modelValue.value.parameters?.type,
+  (type) => {
+    const parameters = modelValue.value.parameters;
+
+    if (type === "PDF" && parameters) {
+      parameters.sort = "FOERDERBEREICH_PROJEKTNUMMER";
+    }
+  }
+);
+
 const sortOptions = [
   {
-    title: t("domain.report.verwendungsnachweis.sortEnum.projektnummer"),
+    title: t(
+      "domain.report.auswertungVerwendungsnachweis.sortEnum.fbProjektnummer"
+    ),
+    value: "FOERDERBEREICH_PROJEKTNUMMER",
+  },
+  {
+    title: t(
+      "domain.report.auswertungVerwendungsnachweis.sortEnum.fbProjektstrasse"
+    ),
+    value: "FOERDERBEREICH_STRASSE",
+  },
+  {
+    title: t(
+      "domain.report.auswertungVerwendungsnachweis.sortEnum.strasseProjektnummer"
+    ),
+    value: "PROJEKTSTRASSE_PROJEKTNUMMER",
+  },
+  {
+    title: t(
+      "domain.report.auswertungVerwendungsnachweis.sortEnum.projektnummer"
+    ),
     value: "PROJEKTNUMMER",
-  },
-  {
-    title: t("domain.report.verwendungsnachweis.sortEnum.strasseProjektnummer"),
-    value: "STRASSENAME",
-  },
-  {
-    title: t("domain.report.verwendungsnachweis.sortEnum.fbProjektnummer"),
-    value: "FBPROJNR",
-  },
-  {
-    title: t("domain.report.verwendungsnachweis.sortEnum.fbProjektstrasse"),
-    value: "FBSTRASSE",
   },
 ];
 
 const formatOptions = [
   {
-    title: t("domain.report.verwendungsnachweis.type.pdf"),
+    title: t("domain.report.auswertungVerwendungsnachweis.reportType.pdf"),
     value: "PDF",
   },
   {
-    title: t("domain.report.verwendungsnachweis.type.pdfFlat"),
+    title: t("domain.report.auswertungVerwendungsnachweis.reportType.pdfFlat"),
     value: "PDF_FLAT",
   },
 ];
