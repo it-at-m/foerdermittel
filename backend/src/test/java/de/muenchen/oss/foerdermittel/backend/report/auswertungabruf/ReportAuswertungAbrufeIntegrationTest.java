@@ -94,7 +94,7 @@ public class ReportAuswertungAbrufeIntegrationTest {
     @Nested
     class GetReportAuswertungabrufe {
 
-        private static final String VALID_SORT = "PROJEKTNUMMER";
+        private static final String VALID_SORT = "FOERDERBEREICH_PROJEKTNUMMER_ADATUM";
         private static final String VALID_TYPE = "PDF";
 
         @BeforeEach
@@ -157,7 +157,7 @@ public class ReportAuswertungAbrufeIntegrationTest {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path(REPORT_PATH)
-                            .queryParam("jahrVon", "NOTFOUND")
+                            .queryParam("jahrAbrufVon", "NOTFOUND")
                             .queryParam("sort", VALID_SORT)
                             .queryParam("type", VALID_TYPE)
                             .build())
@@ -175,7 +175,9 @@ public class ReportAuswertungAbrufeIntegrationTest {
 
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path(FORM_CONTEXT_PATH)
+                            .path(REPORT_PATH)
+                            .queryParam("sort", VALID_SORT)
+                            .queryParam("type", VALID_TYPE)
                             .build())
                     .header(
                             HttpHeaders.AUTHORIZATION,

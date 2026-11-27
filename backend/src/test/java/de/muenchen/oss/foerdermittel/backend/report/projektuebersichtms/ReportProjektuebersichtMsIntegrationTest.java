@@ -50,6 +50,8 @@ class ReportProjektuebersichtMsIntegrationTest {
 
     @Nested
     class GetReportProjektuebersichtms {
+        private static final String VALID_SORT = "PROJEKTNUMMER";
+        private static final String VALID_TYPE = "PDF";
 
         @Test
         void givenMissingParameters_thenReturnBadRequest() {
@@ -77,7 +79,11 @@ class ReportProjektuebersichtMsIntegrationTest {
                 final HttpStatus httpStatus) {
 
             restTestClient.get()
-                    .uri(FORM_CONTEXT_PATH)
+                    .uri(uriBuilder -> uriBuilder
+                            .path(REPORT_PATH)
+                            .queryParam("sort", VALID_SORT)
+                            .queryParam("type", VALID_TYPE)
+                            .build())
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             String.format("Bearer %s", role))

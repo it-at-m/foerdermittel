@@ -2483,6 +2483,45 @@ paths:
                 format: binary
       security:
       - bearerAuth: []
+  /report/auswertungbewilligungen/form-context:
+    get:
+      tags:
+      - report-auswertung-bewilligungen-controller
+      operationId: getReportAuswertungBewilligungenFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportAuswertungBewilligungenFormContext"
+      security:
+      - bearerAuth: []
+  /report/auswertungbewilligungen/:
+    get:
+      tags:
+      - report-auswertung-bewilligungen-controller
+      operationId: getReportAuswertungBewilligungen
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportAuswertungBewilligungenDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
   /report/auswertungantraege/form-context:
     get:
       tags:
@@ -5012,7 +5051,6 @@ components:
       properties:
         projnr:
           minLength: 1
-          pattern: \S
           type: string
         erfolgt:
           type: boolean
@@ -5174,6 +5212,166 @@ components:
           - STRASSE_PROJEKTNUMMER
           - FOERDERBEREICH_STRASSE
           - FOERDERBEREICH_PROJEKTNUMMER
+        type:
+          $ref: "#/components/schemas/ReportFormat"
+    ReportAuswertungBewilligungFormContextDTO:
+      required:
+      - projnr
+      type: object
+      properties:
+        projnr:
+          type: string
+        pname:
+          type: string
+        pstrasse:
+          type: string
+    ReportAuswertungBewilligungenFormContext:
+      required:
+      - bezs
+      - bpgs
+      - fbs
+      - krisofps
+      - kurzs
+      - projs
+      - sbls
+      - sgts
+      - uas
+      - zuwendungen
+      type: object
+      properties:
+        sbls:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListennameStadtbezirkslisteFormContextDTO"
+        bezs:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
+        fbs:
+          type: array
+          items:
+            $ref: "#/components/schemas/FoerderbereichFormContextDTO"
+        uas:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnterabschnittFormContextDTO"
+        kurzs:
+          type: array
+          items:
+            $ref: "#/components/schemas/KurzbezeichnungFormContextDTO"
+        projs:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportAuswertungBewilligungFormContextDTO"
+        krisofps:
+          type: array
+          items:
+            type: string
+            enum:
+            - F
+            - K
+            - S
+            - V
+            - W
+            - X
+            - "Y"
+            - Z
+        zuwendungen:
+          type: array
+          items:
+            type: string
+            enum:
+            - G
+            - R
+            - T
+            - V
+        sgts:
+          type: array
+          items:
+            $ref: "#/components/schemas/SiedlungsgebietFormContextDTO"
+        bpgs:
+          type: array
+          items:
+            $ref: "#/components/schemas/BauprogrammFormContextDTO"
+    ReportAuswertungBewilligungenDTO:
+      required:
+      - sort
+      - type
+      type: object
+      properties:
+        jahrVon:
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
+        jahrBis:
+          maximum: 2100
+          minimum: 1970
+          type: integer
+          format: int32
+        monat:
+          pattern: "^([1-9]|1[0-2])$"
+          type: string
+        datum:
+          type: string
+        bez:
+          type: string
+        fb:
+          type: string
+        ua:
+          type: string
+        kurz:
+          type: string
+        pstrasse:
+          maxLength: 30
+          minLength: 0
+          type: string
+        pname:
+          maxLength: 30
+          minLength: 0
+          type: string
+        projnr:
+          maxLength: 7
+          minLength: 0
+          type: string
+        sgt:
+          type: string
+        sbl:
+          type: string
+        bpg:
+          type: string
+        krisofp:
+          type: string
+          enum:
+          - F
+          - K
+          - S
+          - V
+          - W
+          - X
+          - "Y"
+          - Z
+        zuwendungsart:
+          type: string
+          enum:
+          - G
+          - R
+          - T
+          - V
+        fag:
+          type: string
+        erfolgt:
+          type: string
+        notizen:
+          type: string
+        sort:
+          type: string
+          enum:
+          - FOERDERBEREICH_PROJEKTNUMMER_BEWILLIGTAM
+          - FOERDERBEREICH_STRASSE_PROJEKTNUMMER
+          - PROJEKTNUMMER_BEWILLIGTAM
+          - PROJEKTSTRASSE_PROJEKTNUMMER_BEWILLIGTAM
+          - BEWILLIGTAM
         type:
           $ref: "#/components/schemas/ReportFormat"
     ReportAuswertungAntraegeFormContext:
@@ -5523,7 +5721,6 @@ components:
       properties:
         projnr:
           minLength: 1
-          pattern: \S
           type: string
     ReportAnnahmeAnordnungSapFormContext:
       required:

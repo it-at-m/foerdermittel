@@ -94,7 +94,7 @@ public class ReportAuswertungProjekteIntegrationTest {
     @Nested
     class GetReportAuswertungProjekte {
 
-        private static final String EXISTING_JAHR = "2026";
+        private static final String EXISTING_JAHR = "26";
         private static final String VALID_SORT = "STADTBEZIRK_STRASSE";
         private static final String VALID_TYPE = "PDF";
 
@@ -180,7 +180,9 @@ public class ReportAuswertungProjekteIntegrationTest {
 
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path(FORM_CONTEXT_PATH)
+                            .path(REPORT_PATH)
+                            .queryParam("sort", VALID_SORT)
+                            .queryParam("type", VALID_TYPE)
                             .build())
                     .header(
                             HttpHeaders.AUTHORIZATION,
