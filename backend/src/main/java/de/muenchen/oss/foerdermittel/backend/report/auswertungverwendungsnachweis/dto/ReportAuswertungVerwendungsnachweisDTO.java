@@ -5,7 +5,7 @@ import de.muenchen.oss.foerdermittel.backend.report.ReportFormat;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-@SuppressWarnings("Avoi")
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public record ReportAuswertungVerwendungsnachweisDTO(
 
         @Pattern(regexp = "^\\d{4}$") String jahr,
