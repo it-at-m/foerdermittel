@@ -155,11 +155,14 @@ public class ReportAuswertungArchivIntegrationTest {
         }
 
         @Test
-        void givenInvalidYearVon_thenReturnBadRequest() {
+        void givenInvalidParameters_thenReturnBadRequest() {
             restTestClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path(REPORT_PATH)
-                            .queryParam("jahrVon", "NOTFOUND")
+                            .queryParam("fb", "NOTFOUND")
+                            .queryParam("ua", "NOTFOUND")
+                            .queryParam("kurz", "NOTFOUND")
+                            .queryParam("bez", "NOTFOUND")
                             .queryParam("sort", VALID_SORT)
                             .queryParam("type", VALID_TYPE)
                             .build())
@@ -199,10 +202,7 @@ public class ReportAuswertungArchivIntegrationTest {
             return Stream.of(
                     Arguments.of(
                             null,
-                            VALID_TYPE),
-                    Arguments.of(
-                            VALID_SORT,
-                            null));
+                            VALID_TYPE));
         }
 
         @ParameterizedTest(name = "{0}")
