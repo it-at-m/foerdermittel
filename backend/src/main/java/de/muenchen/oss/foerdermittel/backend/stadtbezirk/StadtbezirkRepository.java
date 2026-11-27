@@ -15,4 +15,6 @@ public interface StadtbezirkRepository extends PagingAndSortingRepository<Stadtb
 
     @Query("SELECT s.stadtbezirk FROM Stadtbezirk s")
     List<BigDecimal> findAllStadtbezirke();
+
+    List<Stadtbezirk> findAllByOrderByStadtbezirkAsc();
 }

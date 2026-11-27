@@ -15,4 +15,5 @@ public interface ReferatRepository extends PagingAndSortingRepository<Referat, B
     @Query("SELECT r.refnr FROM Referat r ORDER BY r.refnr")
     List<BigDecimal> findAllRefNr();
 
+    List<Referat> findAllByOrderByRefnrAsc();
 }

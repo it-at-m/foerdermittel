@@ -223,14 +223,14 @@ class FoerderbereichServiceTest {
                     Mockito.mock(FoerderbereichFormContextDTO.class),
                     Mockito.mock(FoerderbereichFormContextDTO.class));
 
-            when(foerderbereichRepository.findAll()).thenReturn(entities);
+            when(foerderbereichRepository.findAllByOrderByFbAsc()).thenReturn(entities);
             when(foerderbereichMapper.toFormContext(entities)).thenReturn(expectedDTOs);
 
             // When
             final List<FoerderbereichFormContextDTO> result = unitUnderTest.getFoerderbereichFormContextDTOs();
 
             // Then
-            verify(foerderbereichRepository, times(1)).findAll();
+            verify(foerderbereichRepository, times(1)).findAllByOrderByFbAsc();
             verify(foerderbereichMapper, times(1)).toFormContext(entities);
             assertThat(result).isEqualTo(expectedDTOs);
         }
