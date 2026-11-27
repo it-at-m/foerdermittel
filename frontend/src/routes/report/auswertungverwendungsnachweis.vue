@@ -5,7 +5,7 @@
         :empty-form-template="EMPTY_FORM_TEMPLATE"
         :loading="baseViewLoading"
         :api="reportAuswertungVerwendungsnachweisApi"
-        :formref="reportAuswertungVerwendungsnachweisFormContext"
+        :form-ref="reportAuswertungVerwendungsnachweisFormRef"
       >
         <template #form="{ item, updateValidity }">
           <report-auswertung-verwendungsnachweis-form
@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import type { GetReportAuswertungVerwendungsnachweisRequest } from "@/api/generated/foerdermittel-backend";
 
-import { computed } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BaseView from "@/components/common/BaseView.vue";
@@ -80,4 +80,13 @@ const reportAuswertungVerwendungsnachweisApi =
 const reportAuswertungVerwendungsnachweisFormContext = computed(
   () => reportAuswertungVerwendungsnachweisApi.context.data.value
 );
+
+type ReportAuswertungVerwendungsnachweisFormRef = InstanceType<
+  typeof ReportAuswertungVerwendungsnachweisForm
+>;
+
+const reportAuswertungVerwendungsnachweisFormRef =
+  useTemplateRef<ReportAuswertungVerwendungsnachweisFormRef>(
+    "reportAuswertungVerwendungsnachweisForm"
+  );
 </script>

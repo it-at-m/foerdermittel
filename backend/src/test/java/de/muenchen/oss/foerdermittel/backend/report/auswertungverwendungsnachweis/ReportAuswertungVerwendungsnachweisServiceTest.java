@@ -207,7 +207,7 @@ class ReportAuswertungVerwendungsnachweisServiceTest {
         @Test
         void givenFormContext_thenReturnsAllFormContextData() {
             // Given
-            when(projektService.getProjektFormContextDTOs()).thenReturn(List.of());
+            when(projektService.getReportAuswertungVerwendungsnachweisFormContextDTOs()).thenReturn(List.of());
             when(foerderbereichService.getFoerderbereichFormContextDTOs()).thenReturn(List.of());
             when(listennameStadtbezirkslisteService.getlistennameStadtbezirkslisteFormContextDTOs())
                     .thenReturn(List.of());
@@ -225,7 +225,7 @@ class ReportAuswertungVerwendungsnachweisServiceTest {
             // Then
             assertThat(formContext).isNotNull();
 
-            verify(projektService, times(1)).getProjektFormContextDTOs();
+            verify(projektService, times(1)).getReportAuswertungVerwendungsnachweisFormContextDTOs();
             verify(foerderbereichService, times(1)).getFoerderbereichFormContextDTOs();
             verify(listennameStadtbezirkslisteService, times(1))
                     .getlistennameStadtbezirkslisteFormContextDTOs();

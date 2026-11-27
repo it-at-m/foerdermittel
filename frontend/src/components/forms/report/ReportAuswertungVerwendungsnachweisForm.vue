@@ -276,7 +276,7 @@
             props.reportAuswertungVerwendungsnachweisFormContext?.krhs ?? []
           "
           :item-title="getKrankenhausTitle"
-          item-value="krankenhaus"
+          item-value="krhname"
           :validation-attribute-map="
             ReportAuswertungVerwendungsnachweisDTOPropertyValidationAttributesMap
           "
