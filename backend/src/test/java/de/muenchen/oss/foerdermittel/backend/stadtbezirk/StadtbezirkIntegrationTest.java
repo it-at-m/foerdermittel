@@ -11,6 +11,7 @@ import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkCreateDT
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkUpdateDTO;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -61,7 +62,7 @@ class StadtbezirkIntegrationTest {
     @BeforeEach
     public void setUp() {
         stadtbezirkRepository.deleteAll();
-        final Stadtbezirk exampleEntity = new Stadtbezirk(new BigDecimal(EXISTING_ID), "Test");
+        final Stadtbezirk exampleEntity = new Stadtbezirk(new BigDecimal(EXISTING_ID), "Test", new ArrayList<>());
         stadtbezirkRepository.save(exampleEntity);
     }
 

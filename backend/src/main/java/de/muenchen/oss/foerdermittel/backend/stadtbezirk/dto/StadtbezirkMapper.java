@@ -14,9 +14,11 @@ public interface StadtbezirkMapper {
     @Mapping(source = "stadtbezirk", target = "stadtbezirk")
     StadtbezirkResponseDTO toDTO(Stadtbezirk stadtbezirk);
 
+    @Mapping(target = "stadtbezirkslisten", ignore = true)
     Stadtbezirk toEntity(StadtbezirkCreateDTO stadtbezirkCreateDTO);
 
     @Mapping(target = "stadtbezirk", ignore = true)
+    @Mapping(target = "stadtbezirkslisten", ignore = true)
     Stadtbezirk toEntity(StadtbezirkUpdateDTO stadtbezirkUpdateDTO);
 
     StadtbezirkFormContextDTO toFormContext(Stadtbezirk stadtbezirk);

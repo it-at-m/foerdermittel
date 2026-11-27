@@ -4,5 +4,5 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
-public record BasicHhplanDAO(@NotNull BigDecimal hhjJahr, String fipo) {
+public record BasicHhplanDAO(@NotNull BigDecimal hhjJahr, @NotNull String proProjnr, String fipo) {
 }

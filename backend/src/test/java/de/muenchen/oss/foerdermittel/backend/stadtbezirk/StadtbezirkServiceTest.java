@@ -1,3 +1,4 @@
+
 package de.muenchen.oss.foerdermittel.backend.stadtbezirk;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -10,6 +11,7 @@ import de.muenchen.oss.foerdermittel.backend.common.NotFoundException;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkMapper;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -28,15 +30,21 @@ import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
 class StadtbezirkServiceTest {
+
     private static final String BEZEICHNUNG = "testBezeichnung";
 
     @Mock
     private StadtbezirkRepository stadtbezirkRepository;
+
     @Mock
     private StadtbezirkMapper stadtbezirkMapper;
 
     @InjectMocks
     private StadtbezirkService unitUnderTest;
+
+    private Stadtbezirk createStadtbezirk(BigDecimal id, String bezeichnung) {
+        return new Stadtbezirk(id, bezeichnung, new ArrayList<>());
+    }
 
     @Nested
     class GetStadtbezirk {
@@ -45,7 +53,7 @@ class StadtbezirkServiceTest {
         void givenIdExists_thenReturnEntity() {
             // Given
             final BigDecimal stadtbezirk = BigDecimal.valueOf(23);
-            final Stadtbezirk expectedEntity = new Stadtbezirk(stadtbezirk, BEZEICHNUNG);
+            final Stadtbezirk expectedEntity = createStadtbezirk(stadtbezirk, BEZEICHNUNG);
 
             when(stadtbezirkRepository.findById(stadtbezirk)).thenReturn(Optional.of(expectedEntity));
 
@@ -66,17 +74,24 @@ class StadtbezirkServiceTest {
             when(stadtbezirkRepository.findById(stadtbezirk)).thenReturn(Optional.empty());
 
             // When
-            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.getStadtbezirk(stadtbezirk));
+            final Exception exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> unitUnderTest.getStadtbezirk(stadtbezirk));
 
             // Then
             verify(stadtbezirkRepository, times(1)).findById(stadtbezirk);
 
-            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Stadtbezirk.class.getSimpleName(), stadtbezirk));
+            assertThat(exception.getMessage())
+                    .isEqualTo(String.format(
+                            "The %s with ID %s was not found.",
+                            Stadtbezirk.class.getSimpleName(),
+                            stadtbezirk));
         }
     }
 
     @Nested
     class GetStadtbezirke {
+
         @Test
         void givenPageable_thenReturnPageOfEntities() {
             // Given
@@ -84,8 +99,8 @@ class StadtbezirkServiceTest {
             final int pageSize = 10;
             final Pageable pageable = PageRequest.of(pageNumber, pageSize);
 
-            final Stadtbezirk entity1 = new Stadtbezirk(BigDecimal.valueOf(1), "Test 1");
-            final Stadtbezirk entity2 = new Stadtbezirk(BigDecimal.valueOf(2), "Test 2");
+            final Stadtbezirk entity1 = createStadtbezirk(BigDecimal.valueOf(1), "Test 1");
+            final Stadtbezirk entity2 = createStadtbezirk(BigDecimal.valueOf(2), "Test 2");
             final List<Stadtbezirk> entities = Arrays.asList(entity1, entity2);
             final Page<Stadtbezirk> expectedPage = new PageImpl<>(entities, pageable, entities.size());
 
@@ -102,11 +117,13 @@ class StadtbezirkServiceTest {
 
     @Nested
     class CreateStadtbezirk {
+
         @Test
         void givenStadtbezirk_thenCallInsertEntity() {
             // Given
-            final Stadtbezirk entityToInsert = new Stadtbezirk(BigDecimal.valueOf(1), BEZEICHNUNG);
-            final Stadtbezirk expectedEntity = new Stadtbezirk(BigDecimal.valueOf(1), BEZEICHNUNG);
+            final Stadtbezirk entityToInsert = createStadtbezirk(BigDecimal.valueOf(1), BEZEICHNUNG);
+            final Stadtbezirk expectedEntity = createStadtbezirk(BigDecimal.valueOf(1), BEZEICHNUNG);
+
             when(stadtbezirkRepository.insert(entityToInsert)).thenReturn(expectedEntity);
 
             // When
@@ -116,18 +133,19 @@ class StadtbezirkServiceTest {
             verify(stadtbezirkRepository, times(1)).insert(entityToInsert);
             assertThat(result).usingRecursiveComparison().isEqualTo(expectedEntity);
         }
-
     }
 
     @Nested
     class UpdateStadtbezirk {
+
         @Test
         void givenEntityExists_thenReturnEntity() {
             // Given
             final BigDecimal id = BigDecimal.valueOf(1);
-            final Stadtbezirk entityToUpdate = new Stadtbezirk(id, "updated");
-            final Stadtbezirk foundEntity = new Stadtbezirk(id, BEZEICHNUNG);
-            final Stadtbezirk expectedEntity = new Stadtbezirk(id, "updated");
+            final Stadtbezirk entityToUpdate = createStadtbezirk(id, "updated");
+            final Stadtbezirk foundEntity = createStadtbezirk(id, BEZEICHNUNG);
+            final Stadtbezirk expectedEntity = createStadtbezirk(id, "updated");
+
             when(stadtbezirkRepository.findById(id)).thenReturn(Optional.of(foundEntity));
             when(stadtbezirkRepository.update(foundEntity)).thenReturn(expectedEntity);
 
@@ -144,21 +162,30 @@ class StadtbezirkServiceTest {
         void givenEntityNotExists_thenThrowNotFoundException() {
             // Given
             final BigDecimal id = BigDecimal.valueOf(1);
-            final Stadtbezirk entityToUpdate = new Stadtbezirk(id, BEZEICHNUNG);
+            final Stadtbezirk entityToUpdate = createStadtbezirk(id, BEZEICHNUNG);
+
             when(stadtbezirkRepository.findById(id)).thenReturn(Optional.empty());
 
             // When
-            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.updateStadtbezirk(entityToUpdate, id));
+            final Exception exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> unitUnderTest.updateStadtbezirk(entityToUpdate, id));
 
             // Then
             verify(stadtbezirkRepository, times(1)).findById(id);
             verify(stadtbezirkRepository, never()).update(entityToUpdate);
-            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Stadtbezirk.class.getSimpleName(), id));
+
+            assertThat(exception.getMessage())
+                    .isEqualTo(String.format(
+                            "The %s with ID %s was not found.",
+                            Stadtbezirk.class.getSimpleName(),
+                            id));
         }
     }
 
     @Nested
     class DeleteStadtbezirk {
+
         @Test
         void givenIdExists_thenReturnVoid() {
             // Given
@@ -181,12 +208,19 @@ class StadtbezirkServiceTest {
             when(stadtbezirkRepository.findById(id)).thenReturn(Optional.empty());
 
             // When
-            final Exception exception = Assertions.assertThrows(NotFoundException.class, () -> unitUnderTest.deleteStadtbezirk(id));
+            final Exception exception = Assertions.assertThrows(
+                    NotFoundException.class,
+                    () -> unitUnderTest.deleteStadtbezirk(id));
 
             // Then
             verify(stadtbezirkRepository, times(1)).findById(id);
             verify(stadtbezirkRepository, never()).deleteById(id);
-            assertThat(exception.getMessage()).isEqualTo(String.format("The %s with ID %s was not found.", Stadtbezirk.class.getSimpleName(), id));
+
+            assertThat(exception.getMessage())
+                    .isEqualTo(String.format(
+                            "The %s with ID %s was not found.",
+                            Stadtbezirk.class.getSimpleName(),
+                            id));
         }
     }
 
@@ -196,7 +230,11 @@ class StadtbezirkServiceTest {
         @Test
         void givenEntitiesExists_thenReturnCorrectFormContext() {
             // Given
-            final List<BigDecimal> allStadtbezirke = List.of(BigDecimal.valueOf(2), BigDecimal.valueOf(3), BigDecimal.valueOf(4));
+            final List<BigDecimal> allStadtbezirke = List.of(
+                    BigDecimal.valueOf(2),
+                    BigDecimal.valueOf(3),
+                    BigDecimal.valueOf(4));
+
             when(stadtbezirkRepository.findAllStadtbezirke()).thenReturn(allStadtbezirke);
 
             // When
@@ -214,12 +252,8 @@ class StadtbezirkServiceTest {
         @Test
         void givenEntitiesExist_thenReturnCorrectFormContextDTOs() {
             // Given
-            final Stadtbezirk entity1 = new Stadtbezirk(
-                    BigDecimal.valueOf(1),
-                    "Stadtbezirk 1");
-            final Stadtbezirk entity2 = new Stadtbezirk(
-                    BigDecimal.valueOf(2),
-                    "Stadtbezirk 2");
+            final Stadtbezirk entity1 = createStadtbezirk(BigDecimal.valueOf(1), "Stadtbezirk 1");
+            final Stadtbezirk entity2 = createStadtbezirk(BigDecimal.valueOf(2), "Stadtbezirk 2");
 
             final List<Stadtbezirk> entities = List.of(entity1, entity2);
 
@@ -249,8 +283,7 @@ class StadtbezirkServiceTest {
             // Given
             final BigDecimal bez = BigDecimal.valueOf(1);
 
-            when(stadtbezirkRepository.existsById(bez))
-                    .thenReturn(true);
+            when(stadtbezirkRepository.existsById(bez)).thenReturn(true);
 
             // When
             unitUnderTest.checkExistsByStadtbezirk(bez);
@@ -264,8 +297,7 @@ class StadtbezirkServiceTest {
             // Given
             final BigDecimal bez = BigDecimal.valueOf(1);
 
-            when(stadtbezirkRepository.existsById(bez))
-                    .thenReturn(false);
+            when(stadtbezirkRepository.existsById(bez)).thenReturn(false);
 
             // When
             final Exception exception = Assertions.assertThrows(
@@ -282,5 +314,4 @@ class StadtbezirkServiceTest {
                             bez));
         }
     }
-
 }

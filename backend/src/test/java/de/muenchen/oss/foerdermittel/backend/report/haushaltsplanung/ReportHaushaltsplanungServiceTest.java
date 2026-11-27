@@ -353,9 +353,9 @@ class ReportHaushaltsplanungServiceTest {
                     new ListennameStadtbezirkslisteFormContextDTO("L", "Test 2"), new ListennameStadtbezirkslisteFormContextDTO("M", "Test 3"));
             when(listennameStadtbezirkslisteService.getlistennameStadtbezirkslisteFormContextDTOs()).thenReturn(allStadtbezirkslisten);
 
-            final List<HhplanFormContextDTO> allHhplan = List.of(new HhplanFormContextDTO(new BigDecimal(2024), "0000.0000.000.123"),
-                    new HhplanFormContextDTO(new BigDecimal(2025), "0000.0000.000.111"),
-                    new HhplanFormContextDTO(new BigDecimal(2023), "0000.0000.000.222"));
+            final List<HhplanFormContextDTO> allHhplan = List.of(new HhplanFormContextDTO(new BigDecimal(2024), "100100", "0000.0000.000.123"),
+                    new HhplanFormContextDTO(new BigDecimal(2025), "100101", "0000.0000.000.111"),
+                    new HhplanFormContextDTO(new BigDecimal(2023), "100102", "0000.0000.000.222"));
             when(hhplanService.getHhplanFormContextDTOs()).thenReturn(allHhplan);
             // When
             final ReportHaushaltsplanungFormContext formContext = reportHaushaltsplanungService.getReportHaushaltsplanungFormContext();

@@ -49,7 +49,7 @@ public class Listenname implements Serializable {
                     CascadeType.MERGE
             },
             orphanRemoval = true,
-            fetch = FetchType.EAGER
+            fetch = FetchType.LAZY
     )
     @OrderBy("id.stadtbezirk ASC")
     private List<Stadtbezirksliste> stadtbezirkslisten = new ArrayList<>();

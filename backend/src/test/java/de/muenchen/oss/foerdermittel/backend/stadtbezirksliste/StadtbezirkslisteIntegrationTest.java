@@ -60,6 +60,7 @@ class StadtbezirkslisteIntegrationTest {
     @BeforeEach
     public void setUp() {
         listennameRepository.deleteAll();
+
         final Listenname exampleEntity = new Listenname("SL1", "test", List.of());
         listennameRepository.save(exampleEntity);
     }

@@ -167,10 +167,35 @@
       "fobFb": "FB"
     },
     "haushaltsjahr": {
-      "modelName": "Haushaltsjahr | Haushaltsjahre"
+      "modelName": "Haushaltsjahr | Haushaltsjahre",
+      "hhjahr": "Haushaltsjahr",
+      "hhbezeichnung": "Bezeichnung",
+      "notizen": "Notizen"
     },
     "haushaltsplanung": {
-      "modelName": "Haushaltsplanung | Haushaltsplanungen"
+      "modelName": "Haushaltsplanung | Haushaltsplanungen",
+      "proProjnr": "Projnr",
+      "fobFb": "FB",
+      "fipo": "Fipo",
+      "pname": "Projektname",
+      "pstrasse": "Projektstraße",
+      "mitteleinplanung": "Mitteleinplanung",
+      "bewilligungVoj": "Bewilligung Vorjahre",
+      "bewilligungHhj": "Bewilligung Haushaltsjahr",
+      "erhaltenVoj": "Erhalten Vorjahre",
+      "erhaltenHhj": "Erhalten Haushaltsjahr",
+      "baustandaktuell": "Akuteller Baustand",
+      "an": "Ansatz",
+      "n1": "1. Nachtrag",
+      "n2": "2. Nachtrag",
+      "notizen": "Notizen",
+      "anlagedatum": "Anlage am",
+      "anlagevon": "von",
+      "aenderungvon": "von",
+      "aenderungdatum": "Letzte Änderung am",
+      "stadtbezirk": "Bez",
+      "listenname": "Liste",
+      "details": "Weitere Details"
     },
     "staedtebaufoerderung": {
       "modelName": "Städtebauförderung | Städtebauförderungen"

@@ -8,6 +8,7 @@ import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkMapper;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.dto.StadtbezirkUpdateDTO;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,7 @@ public class StadtbezirkMapperTest {
         @Test
         void givenEntity_thenReturnsCorrectDTO() {
             // given
-            Stadtbezirk entity = new Stadtbezirk(BigDecimal.valueOf(1), "test");
+            Stadtbezirk entity = new Stadtbezirk(BigDecimal.valueOf(1), "test", new ArrayList<>());
 
             // when
             StadtbezirkResponseDTO dto = stadtbezirkMapper.toDTO(entity);
@@ -76,8 +77,8 @@ public class StadtbezirkMapperTest {
         @Test
         void givenEntityList_thenReturnsCorrectFormContextDTOList() {
             // given
-            Stadtbezirk entity1 = new Stadtbezirk(BigDecimal.valueOf(1), "Test 1");
-            Stadtbezirk entity2 = new Stadtbezirk(BigDecimal.valueOf(2), "Test 2");
+            Stadtbezirk entity1 = new Stadtbezirk(BigDecimal.valueOf(1), "Test 1", new ArrayList<>());
+            Stadtbezirk entity2 = new Stadtbezirk(BigDecimal.valueOf(2), "Test 2", new ArrayList<>());
 
             List<Stadtbezirk> entities = List.of(entity1, entity2);
 

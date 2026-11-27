@@ -90,7 +90,7 @@ class StadtbezirkslisteServiceTest {
         @Test
         void givenListenname_thenInsertEntity() {
             // Given
-            final Stadtbezirk stadtbezirk = new Stadtbezirk(BigDecimal.ONE, "Bezirk");
+            final Stadtbezirk stadtbezirk = new Stadtbezirk(BigDecimal.ONE, "Bezirk", new ArrayList<>());
             final Stadtbezirksliste assignment = new Stadtbezirksliste(null, null, stadtbezirk, "Test");
 
             final Listenname entity = new Listenname(KURZBEZ, BEZEICHNUNG, new ArrayList<>(List.of(assignment)));
@@ -115,7 +115,7 @@ class StadtbezirkslisteServiceTest {
         @Test
         void givenEntityExists_thenUpdateEntity() {
             // Given
-            final Stadtbezirk stadtbezirk = new Stadtbezirk(BigDecimal.ONE, "Bezirk");
+            final Stadtbezirk stadtbezirk = new Stadtbezirk(BigDecimal.ONE, "Bezirk", new ArrayList<>());
 
             final Stadtbezirksliste oldAssignment = new Stadtbezirksliste(null, null, stadtbezirk, "old");
 

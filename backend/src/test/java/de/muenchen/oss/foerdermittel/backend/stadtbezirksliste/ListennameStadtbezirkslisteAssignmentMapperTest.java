@@ -6,6 +6,7 @@ import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.ListennameStadtbezirkslisteAssignmentMapper;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirksliste.dto.StadtbezirkslisteAssignmentResponseDTO;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -20,7 +21,7 @@ public class ListennameStadtbezirkslisteAssignmentMapperTest {
         @Test
         void givenEntity_thenReturnsCorrectDTO() {
             // given
-            Stadtbezirk stadtbezirk = new Stadtbezirk(BigDecimal.ONE, "Altstadt");
+            Stadtbezirk stadtbezirk = new Stadtbezirk(BigDecimal.ONE, "Altstadt", new ArrayList<>());
 
             Stadtbezirksliste entity = new Stadtbezirksliste();
             entity.setId(new StadtbezirkslistePrimaryKey("SL1", BigDecimal.ONE));
