@@ -1,17 +1,22 @@
 import type { RequestOpts } from "@/api/generated/foerdermittel-backend";
 
+import { serializeDate } from "@/api/generated/foerdermittel-backend";
 import { BASE_API_PATH } from "@/constants";
 
 function flattenQuery(obj: Record<string, unknown>): Record<string, string> {
   const result: Record<string, string> = {};
 
   for (const [key, value] of Object.entries(obj)) {
-    if (value !== null && typeof value === "object" && !Array.isArray(value)) {
+    if (value === null || value === undefined) {
+      continue;
+    }
+
+    if (value instanceof Date) {
+      result[key] = serializeDate(value);
+    } else if (typeof value === "object" && !Array.isArray(value)) {
       Object.assign(result, flattenQuery(value as Record<string, unknown>));
     } else {
-      if (value !== null) {
-        result[key] = String(value);
-      }
+      result[key] = String(value);
     }
   }
 

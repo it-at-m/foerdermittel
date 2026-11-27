@@ -2483,6 +2483,41 @@ paths:
                 format: binary
       security:
       - bearerAuth: []
+  /report/auswertungarchiv/form-context:
+    get:
+      tags:
+      - report-auswertung-archiv-controller
+      operationId: getReportAuswertungArchivFormContext
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportAuswertungArchivFormContext"
+      security:
+      - bearerAuth: []
+  /report/auswertungarchiv/:
+    get:
+      tags:
+      - report-auswertung-archiv-controller
+      operationId: getReportAuswertungArchiv
+      parameters:
+      - name: parameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/ReportAuswertungArchivDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+      security:
+      - bearerAuth: []
   /report/auswertungantraege/form-context:
     get:
       tags:
@@ -5176,6 +5211,121 @@ components:
           - FOERDERBEREICH_PROJEKTNUMMER
         type:
           $ref: "#/components/schemas/ReportFormat"
+    ReportAuswertungArchivFormContext:
+      required:
+      - bezs
+      - fbs
+      - krisofps
+      - kurzs
+      - projs
+      - uas
+      type: object
+      properties:
+        bezs:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadtbezirkFormContextDTO"
+        fbs:
+          type: array
+          items:
+            $ref: "#/components/schemas/FoerderbereichFormContextDTO"
+        uas:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnterabschnittFormContextDTO"
+        kurzs:
+          type: array
+          items:
+            $ref: "#/components/schemas/KurzbezeichnungFormContextDTO"
+        projs:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportAuswertungArchivFormContextDTO"
+        krisofps:
+          type: array
+          items:
+            type: string
+            enum:
+            - F
+            - K
+            - S
+            - V
+            - W
+            - X
+            - "Y"
+            - Z
+    ReportAuswertungArchivFormContextDTO:
+      required:
+      - pname
+      - projnr
+      - pstrasse
+      type: object
+      properties:
+        projnr:
+          type: string
+        pname:
+          type: string
+        pstrasse:
+          type: string
+    ReportAuswertungArchivDTO:
+      required:
+      - sort
+      type: object
+      properties:
+        bez:
+          type: string
+        fb:
+          type: string
+        ua:
+          type: string
+        kurz:
+          type: string
+        pstrasse:
+          maxLength: 30
+          minLength: 0
+          type: string
+        pname:
+          maxLength: 30
+          minLength: 0
+          type: string
+        projnr:
+          maxLength: 7
+          minLength: 0
+          type: string
+        krisofp:
+          type: string
+          enum:
+          - F
+          - K
+          - S
+          - V
+          - W
+          - X
+          - "Y"
+          - Z
+        film:
+          type: boolean
+        filmohne:
+          type: boolean
+        offen:
+          type: boolean
+        planab:
+          type: string
+          format: date
+        spseit:
+          type: string
+          format: date
+        op:
+          type: boolean
+        mp:
+          type: boolean
+        sort:
+          type: string
+          enum:
+          - STRASSE_PROJEKTNUMMER
+          - FOERDERBEREICH_STRASSE
+          - PROJEKTNUMMER
+          - NOTIZ
     ReportAuswertungAntraegeFormContext:
       required:
       - antraege

@@ -383,6 +383,24 @@
           "pdf": "PDF: Gruppierung Förderbereich"
         }
       },
+      "auswertungArchiv": {
+        "modelName": "Auswertung Archiv",
+        "bez": "Stadtbezirk",
+        "film": "Nur bereits verfilmte Akten (bestellt)",
+        "filmohne": "Nur noch nicht verfilmte Akten (nicht bestellt)",
+        "offen": "Nur bestellt aber noch nicht erhalten",
+        "op": "Nur Akten ohne Projektbezug",
+        "mp": "mit Projektbezug",
+        "planab": "bestellt nach",
+        "spseit": "Im Speicher seit",
+
+        "sortEnum": {
+          "strasseProjektnummer": "Projektstraße, Projektnummer",
+          "fbStrasse": "Förderbereich, Projektstraße",
+          "projektnummer": "Projektnummer",
+          "notiz": "Notiz"
+        }
+      },
       "fortsetzungsAntrag": {
         "modelName": "Fortsetzungsantrag | Fortsetzungsanträge",
         "fag": "Nur FAG",
