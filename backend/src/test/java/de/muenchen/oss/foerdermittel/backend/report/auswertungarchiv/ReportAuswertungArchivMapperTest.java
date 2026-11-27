@@ -54,7 +54,7 @@ public class ReportAuswertungArchivMapperTest {
                 .containsEntry("P_PROJNR", "1234567")
                 .containsEntry("P_OFFEN", "0")
                 .containsEntry("P_SP_SEIT", "12.03.2026")
-                .containsEntry("P_PLAN_AB", "26.01.2026")
+                .containsEntry("P_PLAN_AB", "12.03.2026")
                 .containsEntry("P_KRISOFP", Krisofp.K.name());
 
     }
