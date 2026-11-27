@@ -11,6 +11,7 @@ import de.muenchen.oss.foerdermittel.backend.report.ReportService;
 import de.muenchen.oss.foerdermittel.backend.report.ReportType;
 import de.muenchen.oss.foerdermittel.backend.report.auswertungverwendungsnachweis.dto.ReportAuswertungVerwendungsnachweisDTO;
 import de.muenchen.oss.foerdermittel.backend.report.auswertungverwendungsnachweis.dto.ReportAuswertungVerwendungsnachweisMapper;
+import de.muenchen.oss.foerdermittel.backend.report.auswertungverwendungsnachweis.dto.ReportAuswertungVerwendungsnachweisSort;
 import de.muenchen.oss.foerdermittel.backend.report.auswertungverwendungsnachweis.formcontext.ReportAuswertungVerwendungsnachweisFormContext;
 import de.muenchen.oss.foerdermittel.backend.report.validation.CommonSearchParameters;
 import de.muenchen.oss.foerdermittel.backend.report.validation.ReportSearchParameterValidator;
@@ -65,7 +66,9 @@ public class ReportAuswertungVerwendungsnachweisService {
             krankenhausService.checkExistsByKrankenhaus(parameters.krh());
         }
 
-        final String orderBy = parameters.sort().getOrderBy();
+        final String orderBy = parameters.sort() != null
+                ? parameters.sort().getOrderBy()
+                : ReportAuswertungVerwendungsnachweisSort.PROJEKTNUMMER.getOrderBy();
 
         return reportService.generateReport(
                 reportAuswertungVerwendungsnachweisMapper.toJasperParameters(parameters),

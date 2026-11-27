@@ -102,7 +102,20 @@ class ReportAuswertungVerwendungsnachweisIntegrationTest {
                     .returnResult()
                     .getResponseBody();
 
-            assertThat(result).isNotNull();
+            assertThat(result)
+                    .isNotNull()
+                    .satisfies(formContext -> {
+                        assertThat(formContext.projekte()).isNotNull().doesNotContainNull();
+                        assertThat(formContext.fbs()).isNotNull().doesNotContainNull();
+                        assertThat(formContext.sbls()).isNotNull().doesNotContainNull();
+                        assertThat(formContext.bezs()).isNotNull().doesNotContainNull();
+                        assertThat(formContext.uas()).isNotNull().doesNotContainNull();
+                        assertThat(formContext.kurzs()).isNotNull().doesNotContainNull();
+                        assertThat(formContext.bpgs()).isNotNull().doesNotContainNull();
+                        assertThat(formContext.sgts()).isNotNull().doesNotContainNull();
+                        assertThat(formContext.krhs()).isNotNull().doesNotContainNull();
+                        assertThat(formContext.krisofps()).isNotNull().doesNotContainNull();
+                    });
         }
 
         private static Stream<Arguments> authorizationMappings() {

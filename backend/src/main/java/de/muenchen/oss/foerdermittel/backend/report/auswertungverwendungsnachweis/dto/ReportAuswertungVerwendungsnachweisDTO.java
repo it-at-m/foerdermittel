@@ -8,8 +8,9 @@ import jakarta.validation.constraints.Pattern;
 @SuppressWarnings("Avoi")
 public record ReportAuswertungVerwendungsnachweisDTO(
 
-        String jahr,
-        String monat,
+        @Pattern(regexp = "^\\d{4}$") String jahr,
+
+        @Pattern(regexp = "^(0?[1-9]|1[0-2])$") String monat,
         String sbl,
         @Pattern(regexp = "^\\d*$") String bez,
         @Pattern(regexp = "^\\d*$") String fb,
