@@ -17,7 +17,7 @@ public class ReportAuswertungBewilligungenMapperTest {
     @Test
     void givenReportAuswertungBewilligungenDTO_thenReturnsCorrectParameters() {
         // Given
-        final ReportAuswertungBewilligungenDTO dto = new ReportAuswertungBewilligungenDTO("2023", "2025", "10", "17.11.2026", "1", "1", "11", "KB1",
+        final ReportAuswertungBewilligungenDTO dto = new ReportAuswertungBewilligungenDTO(2023, 2025, "10", "17.11.2026", "1", "1", "11", "KB1",
                 "Projektstraße 1", "Projekt 1",
                 "1234567", "1",
                 "SBL1", "1", Krisofp.K, Zuwendungsart.G, "1", "1", "1", PROJEKTNUMMER_BEWILLIGTAM, ReportFormat.PDF);
@@ -28,8 +28,8 @@ public class ReportAuswertungBewilligungenMapperTest {
         // Then
         assertThat(parameters)
                 .hasSize(19)
-                .containsEntry("P_JAHR_VON", dto.jahrVon())
-                .containsEntry("P_JAHR_BIS", dto.jahrBis())
+                .containsEntry("P_JAHR_VON", dto.jahrVon().toString())
+                .containsEntry("P_JAHR_BIS", dto.jahrBis().toString())
                 .containsEntry("P_MONAT", dto.monat())
                 .containsEntry("P_BDATUM", dto.datum())
                 .containsEntry("P_BEZ", "1")
