@@ -5175,8 +5175,10 @@ components:
       type: object
       properties:
         jahr:
+          pattern: "^\\d{4}$"
           type: string
         monat:
+          pattern: "^(0?[1-9]|1[0-2])$"
           type: string
         sbl:
           type: string
