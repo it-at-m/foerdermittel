@@ -8,6 +8,7 @@ import de.muenchen.oss.foerdermittel.backend.foerderbereich.Foerderbereich;
 import de.muenchen.oss.foerdermittel.backend.hauptabschnitt.Hauptabschnitt;
 import de.muenchen.oss.foerdermittel.backend.kurzbezeichnung.Kurzbezeichnung;
 import de.muenchen.oss.foerdermittel.backend.projekt.dao.AuswertungProjektDAO;
+import de.muenchen.oss.foerdermittel.backend.projekt.dao.AuswertungVerwendungsnachhweisDAO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dao.BasicProjektDAO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektCreateDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektFormContextDTO;
@@ -15,12 +16,14 @@ import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektMapper;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektResponseDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ProjektUpdateDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungProjektFormContextDTO;
+import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportAuswertungVerwendungsnachweisFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportBewilligungAuszahlungProjektFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.projekt.dto.ReportProjektuebersichtFormContextDTO;
 import de.muenchen.oss.foerdermittel.backend.siedlungsgebiet.Siedlungsgebiet;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -248,6 +251,20 @@ class ProjektMapperTest {
             assertThat(result).containsExactly(
                     new ReportBewilligungAuszahlungProjektFormContextDTO(
                             "P-123", "Projektstraße 1", "Projektname"));
+        }
+
+        @Test
+        void givenAuswertungVerwendungsnachweisDAOList_thenReturnsAuswertungVerwendungsnachweisFormContextList() {
+
+            final AuswertungVerwendungsnachhweisDAO projekt = new AuswertungVerwendungsnachhweisDAO(LocalDate.of(2026, 12, 23), "Projektname",
+                    "Projektstraße 1", Krisofp.K);
+
+            final List<ReportAuswertungVerwendungsnachweisFormContextDTO> result = projektMapper
+                    .toReportAuswertungVerwendungsnachweisFormContext(List.of(projekt));
+
+            assertThat(result).containsExactly(
+                    new ReportAuswertungVerwendungsnachweisFormContextDTO(
+                            LocalDate.of(2026, 12, 23), "Projektstraße 1", "Projektname", Krisofp.K));
         }
     }
 }

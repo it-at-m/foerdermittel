@@ -286,6 +286,9 @@ const navigationItems: NavigationItem[] = [
       },
       {
         title: t("domain.verwendungsNachweis", 2),
+        props: {
+          to: "/report/auswertungverwendungsnachweis",
+        },
       },
       {
         title: t("model.termin.modelName", 2),
