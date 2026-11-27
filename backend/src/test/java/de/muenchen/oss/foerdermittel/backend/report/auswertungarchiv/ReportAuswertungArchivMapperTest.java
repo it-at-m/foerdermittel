@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import de.muenchen.oss.foerdermittel.backend.projekt.Krisofp;
 import de.muenchen.oss.foerdermittel.backend.report.auswertungarchiv.dto.ReportAuswertungArchivDTO;
 import de.muenchen.oss.foerdermittel.backend.report.auswertungarchiv.dto.ReportAuswertungArchivMapper;
-
 import java.time.LocalDate;
 import java.util.Map;
 import org.junit.jupiter.api.Test;

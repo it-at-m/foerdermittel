@@ -1,5 +1,8 @@
 package de.muenchen.oss.foerdermittel.backend.report.auswertungarchiv;
 
+import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_TEST_PROFILE;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import de.muenchen.oss.foerdermittel.backend.TestSecurityConfiguration;
 import de.muenchen.oss.foerdermittel.backend.TestUtils;
 import de.muenchen.oss.foerdermittel.backend.bauprogramm.Bauprogramm;
@@ -20,6 +23,9 @@ import de.muenchen.oss.foerdermittel.backend.stadtbezirk.Stadtbezirk;
 import de.muenchen.oss.foerdermittel.backend.stadtbezirk.StadtbezirkRepository;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.Unterabschnitt;
 import de.muenchen.oss.foerdermittel.backend.unterabschnitt.UnterabschnittRepository;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -41,13 +47,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.stream.Stream;
-
-import static de.muenchen.oss.foerdermittel.backend.TestConstants.SPRING_TEST_PROFILE;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -97,6 +96,7 @@ public class ReportAuswertungArchivIntegrationTest {
 
         private static final String VALID_SORT = "PROJEKTNUMMER";
         private static final String VALID_TYPE = "PDF";
+
         @BeforeEach
         void setUp() {
             final Foerderbereich foerderbereich = new Foerderbereich(BigDecimal.valueOf(99), "Test", false, false,
@@ -127,7 +127,7 @@ public class ReportAuswertungArchivIntegrationTest {
             projekt.setLfdnr1("0");
             projekt.setLfdnr2("01");
             projekt.setPname("Test");
-            projekt.setPstrasse("Teststrasse");
+            projekt.setPstrasse("Testsrasse");
             projekt.setFobFb(foerderbereich);
             projekt.setBezStadtbezirk(stadtbezirk);
             projekt.setUasUa(unterabschnitt);
@@ -142,7 +142,6 @@ public class ReportAuswertungArchivIntegrationTest {
             ReflectionTestUtils.setField(projekt, "anlagedatum", LocalDateTime.now());
 
             projektRepository.save(projekt);
-
         }
 
         @Test

@@ -7,7 +7,8 @@
     <v-row>
       <v-col
         cols="12"
-        md="3"
+        sm="6"
+        lg="3"
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.bez"
@@ -26,7 +27,8 @@
 
       <v-col
         cols="12"
-        md="3"
+        sm="6"
+        lg="3"
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.fb"
@@ -45,7 +47,8 @@
 
       <v-col
         cols="12"
-        md="3"
+        sm="6"
+        lg="3"
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.ua"
@@ -64,7 +67,8 @@
 
       <v-col
         cols="12"
-        md="3"
+        sm="6"
+        lg="3"
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.kurz"
@@ -84,7 +88,8 @@
     <v-row>
       <v-col
         cols="12"
-        md="3"
+        sm="6"
+        lg="3"
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.projnr"
@@ -103,7 +108,8 @@
 
       <v-col
         cols="12"
-        md="3"
+        sm="6"
+        lg="3"
       >
         <fm-text-field
           v-model="modelValue.parameters!.pname"
@@ -120,7 +126,8 @@
 
       <v-col
         cols="12"
-        md="3"
+        sm="6"
+        lg="3"
       >
         <fm-text-field
           v-model="modelValue.parameters!.pstrasse"
@@ -134,9 +141,11 @@
           clearable
         />
       </v-col>
+
       <v-col
         cols="12"
-        md="3"
+        sm="6"
+        lg="3"
       >
         <fm-autocomplete
           v-model="modelValue.parameters!.krisofp"
@@ -153,8 +162,7 @@
         />
       </v-col>
     </v-row>
-
-    <v-row align="center">
+    <v-row>
       <v-col
         cols="12"
         md="4"
@@ -178,6 +186,7 @@
           clearable
         />
       </v-col>
+
       <v-col
         cols="12"
         md="4"
@@ -190,10 +199,11 @@
         />
       </v-col>
     </v-row>
+
     <v-row>
       <v-col
         cols="12"
-        md="4"
+        md="6"
       >
         <fm-date-input
           v-model="modelValue.parameters!.planab"
@@ -201,14 +211,15 @@
             ReportAuswertungArchivDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="planab"
-          :label="t('domain.report.common.planab')"
+          :label="t('domain.report.auswertungArchiv.planab')"
           density="comfortable"
           clearable
         />
       </v-col>
+
       <v-col
         cols="12"
-        md="4"
+        md="6"
       >
         <fm-date-input
           v-model="modelValue.parameters!.spseit"
@@ -216,13 +227,13 @@
             ReportAuswertungArchivDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="spseit"
-          :label="t('domain.report.common.spseit')"
+          :label="t('domain.report.auswertungArchiv.spseit')"
           density="comfortable"
           clearable
         />
       </v-col>
     </v-row>
-    <v-row>
+    <v-row align="center">
       <v-col
         cols="12"
         md="4"
@@ -248,11 +259,10 @@
           clearable
         />
       </v-col>
-    </v-row>
-    <v-row>
+
       <v-col
         cols="12"
-        md="3"
+        md="4"
       >
         <v-select
           v-model="modelValue.parameters!.sort"

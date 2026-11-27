@@ -30,8 +30,8 @@ public class ReportAuswertungArchivMapper {
         parameters.put("P_FILM", dto.film() ? "1" : "0");
         parameters.put("P_FILM_OHNE", dto.filmohne() ? "1" : "0");
         parameters.put("P_OFFEN", dto.offen() ? "1" : "0");
-        parameters.put("P_PLAN_AB", ReportControllerUtil.toTrimmedStringOrNull(dto.planab()));
-        parameters.put("P_SP_SEIT", ReportControllerUtil.toTrimmedStringOrNull(dto.spseit()));
+        parameters.put("P_PLAN_AB", ReportControllerUtil.toDateParameter(dto.planab()));
+        parameters.put("P_SP_SEIT", ReportControllerUtil.toDateParameter(dto.spseit()));
         parameters.put("P_OP", dto.op() ? "1" : "0");
         parameters.put("P_MP", dto.mp() ? "1" : "0");
 

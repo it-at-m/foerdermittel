@@ -391,6 +391,8 @@
         "offen": "Nur bestellt aber noch nicht erhalten",
         "op": "Nur Akten ohne Projektbezug",
         "mp": "mit Projektbezug",
+        "planab": "bestellt nach",
+        "spseit": "Im Speicher seit",
 
         "sortEnum": {
           "strasseProjektnummer": "Projektstraße, Projektnummer",

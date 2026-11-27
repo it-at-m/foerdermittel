@@ -2,6 +2,8 @@ package de.muenchen.oss.foerdermittel.backend.report.util;
 
 import de.muenchen.oss.foerdermittel.backend.report.GeneratedReport;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;
 
@@ -48,5 +50,13 @@ public final class ReportControllerUtil {
         }
 
         return strValue.trim();
+    }
+
+    public static String toDateParameter(final LocalDate date) {
+        if (date == null) {
+            return null;
+        }
+
+        return date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 }
