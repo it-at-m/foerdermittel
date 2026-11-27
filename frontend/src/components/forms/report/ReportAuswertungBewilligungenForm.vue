@@ -9,36 +9,34 @@
         cols="12"
         md="2"
       >
-        <fm-text-field
+        <fm-number-input
           v-model="modelValue.parameters!.jahrVon"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
             ReportAuswertungBewilligungenDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrVon"
-          validate-on="blur"
+          :additional-rules="jahrVonAdditionalRules"
           :label="t('domain.report.common.jahrVon')"
-          :error-messages="jahrVonError"
           density="comfortable"
-          @blur="validateYears"
+          control-variant="hidden"
         />
       </v-col>
       <v-col
         cols="12"
         md="2"
       >
-        <fm-text-field
+        <fm-number-input
           v-model="modelValue.parameters!.jahrBis"
           :display-mode="InputDisplayMode.EDIT"
           :validation-attribute-map="
             ReportAuswertungBewilligungenDTOPropertyValidationAttributesMap
           "
           validation-attribute-key="jahrBis"
-          validate-on="blur"
+          :additional-rules="jahrBisAdditionalRules"
           :label="t('domain.report.common.jahrBis')"
-          :error-messages="jahrBisError"
           density="comfortable"
-          @blur="validateYears"
+          control-variant="hidden"
         />
       </v-col>
       <v-col
@@ -378,20 +376,23 @@ import type {
 import type { DeepReadonly } from "vue";
 import type { VForm } from "vuetify/components";
 
-import { computed, ref, useTemplateRef, watch } from "vue";
+import { computed, useTemplateRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRules } from "vuetify/framework";
 
 import { ReportAuswertungBewilligungenDTOPropertyValidationAttributesMap } from "@/api/generated/foerdermittel-backend";
 import FmAutocomplete from "@/components/common/FmAutocomplete.vue";
 import FmCheckbox from "@/components/common/FmCheckbox.vue";
 import FmDateInput from "@/components/common/FmDateInput.vue";
+import FmNumberInput from "@/components/common/FmNumberInput.vue";
 import FmTextField from "@/components/common/FmTextField.vue";
 import { InputDisplayMode } from "@/types/InputDisplayMode";
 import { getBewilligungenTitle } from "@/util/bewilligungenUtils.ts";
 import { getKrisofpTitle } from "@/util/krisofpUtils";
-import { getJahrBisError, getJahrVonError } from "@/util/yearHelper.ts";
 
 const { t } = useI18n();
+
+const rules = useRules();
 
 const modelValue = defineModel<
   Partial<GetReportAuswertungBewilligungenRequest>
@@ -532,17 +533,6 @@ const formatOptions = [
   },
 ];
 
-const jahrVonError = ref<ReturnType<typeof getJahrVonError>>();
-const jahrBisError = ref<ReturnType<typeof getJahrBisError>>();
-
-function validateYears() {
-  const von = modelValue.value.parameters?.jahrVon;
-  const bis = modelValue.value.parameters?.jahrBis;
-
-  jahrVonError.value = getJahrVonError(von, bis);
-  jahrBisError.value = getJahrBisError(von, bis);
-}
-
 const datumAsDate = computed<Date | undefined>({
   get: () => {
     const datum = modelValue.value.parameters?.datum;
@@ -599,5 +589,17 @@ const monat = computed<string | undefined>({
 
     parameters.monat = value;
   },
+});
+
+const jahrVonAdditionalRules = computed(() => {
+  const jahrBis = modelValue.value.parameters?.jahrBis;
+  const rule = jahrBis != null && rules["max"]?.(jahrBis, false);
+  return rule ? [rule] : [];
+});
+
+const jahrBisAdditionalRules = computed(() => {
+  const jahrVon = modelValue.value.parameters?.jahrVon;
+  const rule = jahrVon != null && rules["min"]?.(jahrVon, false);
+  return rule ? [rule] : [];
 });
 </script>
